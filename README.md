@@ -1,4 +1,4 @@
-# MATLAB Independent static semantics high integrity tool
+# MATLAB Independent, Small & Safe, High Integrity Tools
 
 Let's face it: MATLAB (R) and Octave are probably the worst
 programming language ever invented that aren't weird on purpose
