@@ -67,6 +67,17 @@ TOKEN_KINDS = frozenset([
     "SELECTION"
 ])
 
+TOKENS_WITH_IMPLICIT_VALUE = frozenset([
+    "COMMA",
+    "SEMICOLON",
+    "COLON",
+    "BRA", "KET",
+    "C_BRA", "C_KET",
+    "S_BRA", "S_KET",
+    "ASSIGNMENT",
+    "SELECTION"
+])
+
 
 # As of MATLAB 2019b
 # See: https://www.mathworks.com/help/matlab/ref/iskeyword.html
@@ -103,20 +114,37 @@ class Token:
         self.kind      = kind
         self.raw_text  = raw_text
 
+    def value(self):
+        if self.kind in TOKENS_WITH_IMPLICIT_VALUE:
+            return None
+        elif self.kind == "CONTINUATION":
+            return self.raw_text[3:].strip()
+        elif self.kind == "COMMENT":
+            return self.raw_text[1:].strip()
+        elif self.kind == "STRING":
+            return self.raw_text[1:-1]
+        else:
+            return self.raw_text
+
     def __repr__(self):
         return "Token(%s, %s)" % (self.kind, repr(self.raw_text))
+
+    def print_message(self, message):
+        raise ICE("attempting to raise error on anonymous token")
 
 
 class MATLAB_Token(Token):
     def __init__(self,
                  kind,
                  raw_text,
+                 filename,
                  line,
                  col_start,
                  col_end,
                  context,
                  first_in_line):
         super().__init__(kind, raw_text)
+        assert isinstance(filename, str)
         assert isinstance(line, int) and line >= 1
         assert isinstance(col_start, int) and col_start >= 0
         assert isinstance(col_end, int) and (col_end >= col_start or
@@ -126,11 +154,20 @@ class MATLAB_Token(Token):
         assert isinstance(first_in_line, bool)
 
         self.anonymous     = False
+        self.filename      = filename
         self.line          = line
         self.col_start     = col_start
         self.col_end       = col_end
         self.context       = context
         self.first_in_line = first_in_line
+
+    def print_message(self, message):
+        print("In %s, line %u" % (self.filename, self.line))
+        print("| " + self.context.replace("\t", " "))
+        print("| " +
+              (" " * self.col_start) +
+              ("^" * len(self.raw_text)) +
+              " " + message)
 
 
 class MATLAB_Lexer:
@@ -356,6 +393,7 @@ class MATLAB_Lexer:
 
         token = MATLAB_Token(kind,
                              raw_text,
+                             self.filename,
                              self.line,
                              col_start,
                              col_end,

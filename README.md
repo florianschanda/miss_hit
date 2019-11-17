@@ -20,7 +20,15 @@ If this is you, then this tool suite is for you.
 
 ## Tools
 
-Nothing so far, only this righteous rant. See below for a road map.
+Nothing finished so far, only this righteous rant.
+
+Incomplete stuff:
+
+* Lexer is mostly working, except for matrices
+
+* Parser is minimally working, and cannot yet deal with all constructs
+
+See below for a road map.
 
 ## Road map
 
