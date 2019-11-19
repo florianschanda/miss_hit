@@ -53,6 +53,7 @@ TOKEN_KINDS = frozenset([
     "CONTINUATION",
     "COMMENT",
     "IDENTIFIER",
+    "DIRECTORY",
     "NUMBER",
     "STRING",
     "KEYWORD",
@@ -64,7 +65,10 @@ TOKEN_KINDS = frozenset([
     "C_BRA", "C_KET",
     "S_BRA", "S_KET",
     "ASSIGNMENT",
-    "SELECTION"
+    "SELECTION",
+    "AT",
+    "BANG",
+    "METACLASS",
 ])
 
 TOKENS_WITH_IMPLICIT_VALUE = frozenset([
@@ -75,7 +79,10 @@ TOKENS_WITH_IMPLICIT_VALUE = frozenset([
     "C_BRA", "C_KET",
     "S_BRA", "S_KET",
     "ASSIGNMENT",
-    "SELECTION"
+    "SELECTION",
+    "AT",
+    "BANG",
+    "METACLASS"
 ])
 
 
@@ -122,12 +129,18 @@ class Token:
         elif self.kind == "COMMENT":
             return self.raw_text[1:].strip()
         elif self.kind == "STRING":
-            return self.raw_text[1:-1]
+            return self.raw_text[1:-1].replace("''", "'")
+        elif self.kind == "DIRECTORY":
+            return self.raw_text.strip()
         else:
             return self.raw_text
 
     def __repr__(self):
-        return "Token(%s, %s)" % (self.kind, repr(self.raw_text))
+        v = self.value()
+        if v is None or self.kind == "NEWLINE":
+            return "Token(%s)" % self.kind
+        else:
+            return "Token(%s, %s)" % (self.kind, v)
 
     def print_message(self, message):
         raise ICE("attempting to raise error on anonymous token")
@@ -148,9 +161,11 @@ class MATLAB_Token(Token):
         assert isinstance(line, int) and line >= 1
         assert isinstance(col_start, int) and col_start >= 0
         assert isinstance(col_end, int) and (col_end >= col_start or
-                                             kind == "NEWLINE")
+                                             kind in ("NEWLINE",
+                                                      "CONTINUATION"))
         assert isinstance(context, str) and (len(context) > col_end or
-                                             kind == "NEWLINE")
+                                             kind in ("NEWLINE",
+                                                      "CONTINUATION"))
         assert isinstance(first_in_line, bool)
 
         self.anonymous     = False
@@ -188,20 +203,28 @@ class MATLAB_Lexer:
 
         self.filename = filename
         self.lexpos = -1
+        self.col_offset = 0
         self.line = 1
-        self.col = -1
         self.matrix_stack = []
         self.first_in_line = True
+        self.in_dir_command = False
+
+        self.cc = None
+        self.nc = self.text[0] if len(self.text) > 0 else "\0"
+        self.nnc = self.text[1] if len(self.text) > 1 else "\0"
 
         self.last_kind = None
         self.last_value = None
 
     def next(self):
-        if self.lexpos >= 0 and self.text[self.lexpos] == "\n":
-            self.col = -1
         self.lexpos += 1
-        self.col += 1
-        return self.text[self.lexpos]
+        if self.cc == "\n":
+            self.col_offset = self.lexpos
+        self.cc = self.nc
+        self.nc = self.nnc
+        self.nnc = (self.text[self.lexpos+2]
+                    if len(self.text) > self.lexpos+2
+                    else "\0")
 
     def advance(self, n):
         assert isinstance(n, int) and n >= 0
@@ -216,70 +239,76 @@ class MATLAB_Lexer:
         else:
             return m.group(0)
 
-    def cc(self):
-        return self.text[self.lexpos]
-
-    def nc(self):
-        if self.lexpos + 1 >= len(self.text):
-            return "\0"
-        else:
-            return self.text[self.lexpos + 1]
-
-    def nnc(self):
-        if self.lexpos + 2 >= len(self.text):
-            return "\0"
-        else:
-            return self.text[self.lexpos + 2]
+    def lex_error(self, message=None):
+        raise errors.Lex_Error(self.filename,
+                               (message
+                                if message
+                                else "unexpected character %s" % repr(self.cc)),
+                               self.context_line[self.line - 1],
+                               self.line,
+                               self.lexpos - self.col_offset,
+                               self.lexpos - self.col_offset)
 
     def token(self):
-        def lex_error():
-            raise errors.Anonymous_Parse_Error(
-                self.filename,
-                self.line,
-                "unexpected character %s" %
-                repr(self.text[self.lexpos]))
-
         # First we scan to the next non-whitespace token
         preceeding_ws = False
         while True:
-            if self.next() not in (" ", "\t"):
+            self.next()
+            if self.cc in (" ", "\t"):
+                preceeding_ws = True
+            else:
                 break
-            preceeding_ws = True
 
         t_start = self.lexpos
-        col_start = self.col
+        col_start = t_start - self.col_offset
 
         # print("Begin lexing @ %u:%u <%s>" % (self.line,
-        #                                      self.col,
-        #                                      repr(self.cc())))
+        #                                      col_start,
+        #                                      repr(self.cc)))
 
-        if self.cc() == "%":
+        if self.cc in ("%", "#"):
             # Comments go until the end of the line
             kind = "COMMENT"
-            while self.nc() not in ("\n", "\0"):
+            while self.nc not in ("\n", "\0"):
                 self.next()
 
-        elif self.cc() == "\n":
+        elif self.cc == "\n":
             # Newlines are summarised into one token
             kind = "NEWLINE"
-            while self.nc() == "\n":
+            while self.nc in ("\n", " ", "\t"):
                 self.next()
 
-        elif self.cc() == "." and self.nc() == ".":
-            # This is a continuation
-            kind = "CONTINUATION"
-            self.next()
-            if self.next() != ".":
-                lex_error()
+        elif self.cc == ";":
+            kind = "SEMICOLON"
 
-        elif self.cc().isalpha():
+        elif self.in_dir_command:
+            kind = "DIRECTORY"
+            while self.nc not in ("\n", "\0", "#", "%", ";"):
+                self.next()
+
+        elif self.cc == "." and self.nc == ".":
+            # This is a continuation or the parent directory
+            self.next()
+            if self.nc == ".":
+                kind = "CONTINUATION"
+                self.next()
+
+                # We now need to eat everything until and including
+                # the next line
+                while self.cc not in ("\n", "\0"):
+                    self.next()
+
+            else:
+                self.lex_error("expected . to complete continuation token")
+
+        elif self.cc.isalpha():
             # Could be an identifier or keyword
             kind = "IDENTIFIER"
-            while self.nc().isalnum() or self.nc() == "_":
+            while self.nc.isalnum() or self.nc == "_":
                 self.next()
 
-        elif self.cc().isnumeric() or \
-             self.cc() == "." and self.nc().isnumeric():
+        elif self.cc.isnumeric() or \
+             self.cc == "." and self.nc.isnumeric():
             # Its some kind of number
             kind = "NUMBER"
             tmp = self.match_re(r"[0-9]*(\.[0-9]+)?([eE][+-]?[0-9]+)?")
@@ -287,34 +316,34 @@ class MATLAB_Lexer:
 
             # We need to make sure we now have something that isn't a
             # number to stop stupidity like 1.1.1
-            if self.nc().isnumeric() or \
-               self.nc() == "." and self.nnc().isnumeric():
-                lex_error()
+            if self.nc.isnumeric() or \
+               self.nc == "." and self.nnc.isnumeric():
+                self.lex_error()
 
-        elif self.cc() in ("<", ">", "=", "~"):
+        elif self.cc in ("<", ">", "=", "~"):
             # This is either a boolean relation, negation, or the
             # assignment
-            if self.nc() == "=":
+            if self.nc == "=":
                 self.next()
                 kind = "OPERATOR"
-            elif self.cc() == "=":
+            elif self.cc == "=":
                 kind = "ASSIGNMENT"
             else:
                 kind = "OPERATOR"
 
-        elif self.cc() in ("+", "-", "*", "/", "^", "\\"):
+        elif self.cc in ("+", "-", "*", "/", "^", "\\"):
             kind = "OPERATOR"
 
-        elif self.cc() in ("&", "|"):
+        elif self.cc in ("&", "|"):
             kind = "OPERATOR"
-            if self.nc() == self.cc():
+            if self.nc == self.cc:
                 self.next()
 
-        elif self.cc() == "." and self.nc() in ("*", "/", "\\", "^", "'"):
+        elif self.cc == "." and self.nc in ("*", "/", "\\", "^", "'"):
             kind = "OPERATOR"
             self.next()
 
-        elif self.cc() == "'":
+        elif self.cc == "'":
             # This is either a single-quoted string or the transpose
             # operation. If we had preceeding whitespace, it is never
             # transpose. Otherwise it depends on bracket nesting level
@@ -330,63 +359,85 @@ class MATLAB_Lexer:
             elif self.last_kind in ("IDENTIFIER", "NUMBER", "STRING",
                                     "KET", "S_KET", "C_KET"):
                 kind = "OPERATOR"
-            elif self.last_kind in ("BRA", "S_BRA", "C_BRA"):
-                kind = "STRING"
             elif self.last_kind == "OPERATOR" and self.last_value == "'":
                 kind = "OPERATOR"
+            elif self.last_kind in ("BRA", "S_BRA", "C_BRA", "COMMA",
+                                    "ASSIGNMENT", "OPERATOR", "SEMICOLON"):
+                kind = "STRING"
             else:
-                lex_error()
+                self.lex_error("unable to distinguish between string "
+                               "and transpose operation")
 
             if kind == "STRING":
-                while self.nc() != "'":
+                while True:
                     self.next()
-                    if self.cc() in ("\n", "\0"):
-                        lex_error()
-                self.next()
+                    if self.cc == "'" and self.nc == "'":
+                        self.next()
+                    elif self.cc == "'":
+                        break
+                    elif self.cc in ("\n", "\0"):
+                        self.lex_error()
 
-        elif self.cc() == ",":
+        elif self.cc == '"':
+            kind = "STRING"
+            while True:
+                self.next()
+                if self.cc == '"' and self.nc == '"':
+                    self.next()
+                elif self.cc == '"':
+                    break
+                elif self.cc in ("\n", "\0"):
+                    self.lex_error()
+
+        elif self.cc == ",":
             kind = "COMMA"
 
-        elif self.cc() == ";":
-            kind = "SEMICOLON"
-
-        elif self.cc() == ":":
+        elif self.cc == ":":
             kind = "COLON"
 
-        elif self.cc() == "(":
+        elif self.cc == "(":
             kind = "BRA"
 
-        elif self.cc() == ")":
+        elif self.cc == ")":
             kind = "KET"
 
-        elif self.cc() == "{":
+        elif self.cc == "{":
             kind = "C_BRA"
 
-        elif self.cc() == "}":
+        elif self.cc == "}":
             kind = "C_KET"
 
-        elif self.cc() == "[":
+        elif self.cc == "[":
             kind = "S_BRA"
 
-        elif self.cc() == "]":
+        elif self.cc == "]":
             kind = "S_KET"
 
-        elif self.cc() == ".":
+        elif self.cc == ".":
             kind = "SELECTION"
 
-        elif self.cc() == "\0":
+        elif self.cc == "@":
+            kind = "AT"
+
+        elif self.cc == "!":
+            kind = "BANG"
+
+        elif self.cc == "?":
+            kind = "METACLASS"
+
+        elif self.cc == "\0":
             return None
 
         else:
-            lex_error()
+            self.lex_error()
 
         t_end = self.lexpos
-        col_end = self.col
+        col_end = t_end - self.col_offset
         raw_text = self.text[t_start:t_end+1]
 
         # print("Ended lexing @ %u:%u <%s>" % (self.line,
         #                                      self.col,
-        #                                      repr(self.cc())))
+        #                                      repr(self.cc)))
 
         if kind == "IDENTIFIER" and raw_text in KEYWORDS:
             kind = "KEYWORD"
@@ -402,8 +453,17 @@ class MATLAB_Lexer:
         self.first_in_line = False
 
         if kind == "NEWLINE":
-            self.line += len(token.raw_text)
+            self.line += token.raw_text.count("\n")
             self.first_in_line = True
+            self.in_dir_command = False
+        elif kind == "CONTINUATION":
+            self.line += 1
+            self.first_in_line = True
+            if self.in_dir_command:
+                raise Parse_Error(token, "cannot line-continue a cd command")
+        elif kind == "IDENTIFIER" and token.first_in_line \
+             and raw_text in ("cd", "mkdir", "rmdir"):
+            self.in_dir_command = True
 
         self.last_kind = kind
         self.last_value = raw_text
@@ -419,7 +479,17 @@ def sanity_test():
         if t is None:
             break
         else:
-            print(t)
+            t.print_message(t.kind)
+
+    l = MATLAB_Lexer("tests/lexer/lexing_test_errors.m")
+
+    try:
+        while True:
+            t = l.token()
+            if t is None:
+                break
+    except errors.MISS_HIT_Error as err:
+        err.print_message()
 
 
 if __name__ == "__main__":

@@ -1,7 +1,9 @@
+%
 % This is a comment, and then a newline
 
 % This is a continuation
 ...
+...   This is really a `comment'
 
 % Identifier
 potato kitten99 miss_hit p0tat0
@@ -25,12 +27,15 @@ if otherwise parfor persistent return spmd switch try while
 % The transpose operator is special, since lexing is context sensitive
 1'
 potato''
+
+% In a ' string '' is the single quote
 'potato'''
-'''
+[a, '''', b, ''',']
 
 % Punctiation
 ,;:()[]{}
 a.b
+@?!
 
 % Assignment
 =
@@ -47,3 +52,7 @@ a.b
 [1++1]
 [1+++1]
 ['foo' '1]1' ]'
+
+% cd is weird and needs special care
+cd ../foo/_bar # potato?
+mkdir __potato?

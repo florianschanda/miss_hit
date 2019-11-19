@@ -25,23 +25,48 @@
 
 import m_lexer
 
-class ICE(Exception):
+class MISS_HIT_Error(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def print_message(self):
+        print(self.message)
+
+class ICE(MISS_HIT_Error):
     def __init__(self, reason):
-        self.reason = reason
+        super().__init__(reason)
 
-class Anonymous_Parse_Error(Exception):
-    def __init__(self, filename, line, message):
+    def print_message(self):
+        print("ICE: %s" % self.message)
+
+class Lex_Error(MISS_HIT_Error):
+    def __init__(self, filename, message, context, line, col_start, col_end):
+        super().__init__(message)
         assert isinstance(filename, str) and len(filename) > 0
+        assert isinstance(context, str)
         assert isinstance(line, int) and line >= 0
+        assert isinstance(col_start, int) and col_start >= 0
+        assert isinstance(col_end, int) and col_end >= 0
 
-        self.filename = filename
-        self.line     = line
-        self.message  = message
+        self.context   = context
+        self.filename  = filename
+        self.line      = line
+        self.col_start = col_start
+        self.col_end   = max(col_start, col_end)
 
-class Parse_Error(Anonymous_Parse_Error):
+    def print_message(self):
+        print("In %s, line %u" % (self.filename, self.line))
+        print("| " + self.context.replace("\t", " "))
+        print("| " +
+              (" " * self.col_start) +
+              ("^" * (self.col_end - self.col_start + 1)) +
+              " lex error: " + self.message)
+
+class Parse_Error(MISS_HIT_Error):
     def __init__(self, token, message):
         assert isinstance(token, m_lexer.MATLAB_Token)
-        super().__init__(token.filename,
-                         token.line,
-                         message)
+        super().__init__(message)
         self.token = token
+
+    def print_message(self):
+        self.token.print_message("error: %s" % self.message)

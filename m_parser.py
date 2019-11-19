@@ -540,14 +540,8 @@ def sanity_test(filename):
         parser = MATLAB_Parser(tokenstream(filename))
         parser.parse_file_input()
         print("%s: parsed OK" % filename)
-    except Parse_Error as e:
-        e.token.print_message("error: %s" % e.message)
-    except Anonymous_Parse_Error as e:
-        print("%s:%u: error: %s" % (e.filename,
-                                    e.line,
-                                    e.message))
-    except ICE as ice:
-        print("ICE: %s" % ice.reason)
+    except MISS_HIT_Error as e:
+        e.print_message()
 
 if __name__ == "__main__":
     sanity_test("tests/parser/simple.m")
