@@ -25,8 +25,9 @@
 
 import os
 import re
+from abc import ABCMeta, abstractmethod
 
-import errors
+from errors import Location, Error, mh
 
 # The 1999 technical report "The Design and Implementation of a Parser
 # and Scanner for the MATLAB Language in the MATCH Compiler" is a key
@@ -112,14 +113,27 @@ KEYWORDS = frozenset([
 ])
 
 
-class Token:
-    def __init__(self, kind, raw_text):
+class MATLAB_Token:
+    def __init__(self,
+                 kind,
+                 raw_text,
+                 location,
+                 first_in_line,
+                 anonymous = False):
         assert kind in TOKEN_KINDS
         assert isinstance(raw_text, str)
+        assert isinstance(location, Location)
+        assert isinstance(first_in_line, bool)
+        assert isinstance(anonymous, bool)
 
-        self.anonymous = True
-        self.kind      = kind
-        self.raw_text  = raw_text
+        self.kind          = kind
+        self.raw_text      = raw_text
+        self.location      = location
+        self.first_in_line = first_in_line
+        self.anonymous     = anonymous
+
+        # Not part of parsing, but some fix suggestions can be added
+        self.fix = {}
 
     def value(self):
         if self.kind in TOKENS_WITH_IMPLICIT_VALUE:
@@ -137,68 +151,38 @@ class Token:
 
     def __repr__(self):
         v = self.value()
+        star = "*" if self.anonymous else ""
+
         if v is None or self.kind == "NEWLINE":
-            return "Token(%s)" % self.kind
+            return "Token%s(%s)" % (star, self.kind)
         else:
-            return "Token(%s, %s)" % (self.kind, v)
-
-    def print_message(self, message):
-        raise ICE("attempting to raise error on anonymous token")
+            return "Token%s(%s, <<%s>>)" % (star, self.kind, v)
 
 
-class MATLAB_Token(Token):
-    def __init__(self,
-                 kind,
-                 raw_text,
-                 filename,
-                 line,
-                 col_start,
-                 col_end,
-                 context,
-                 first_in_line):
-        super().__init__(kind, raw_text)
+class Token_Generator(metaclass=ABCMeta):
+    def __init__(self, filename):
         assert isinstance(filename, str)
-        assert isinstance(line, int) and line >= 1
-        assert isinstance(col_start, int) and col_start >= 0
-        assert isinstance(col_end, int) and (col_end >= col_start or
-                                             kind in ("NEWLINE",
-                                                      "CONTINUATION"))
-        assert isinstance(context, str) and (len(context) > col_end or
-                                             kind in ("NEWLINE",
-                                                      "CONTINUATION"))
-        assert isinstance(first_in_line, bool)
+        self.filename = filename
 
-        self.anonymous     = False
-        self.filename      = filename
-        self.line          = line
-        self.col_start     = col_start
-        self.col_end       = col_end
-        self.context       = context
-        self.first_in_line = first_in_line
-
-    def print_message(self, message):
-        print("In %s, line %u" % (self.filename, self.line))
-        print("| " + self.context.replace("\t", " "))
-        print("| " +
-              (" " * self.col_start) +
-              ("^" * len(self.raw_text)) +
-              " " + message)
+    @abstractmethod
+    def token(self):
+        pass
 
 
-class MATLAB_Lexer:
+class MATLAB_Lexer(Token_Generator):
     def __init__(self, filename, encoding="utf-8"):
-        assert isinstance(filename, str)
+        super().__init__(filename)
+
+        mh.register_file(filename)
 
         if not os.path.exists(filename):
-            raise errors.Anonymous_Parse_Error(filename, 0,
-                                               "file does not exist")
+            mh.error(Location(filename), "file does not exist")
 
         if not os.path.isfile(filename):
-            raise errors.Anonymous_Parse_Error(filename, 0,
-                                               "is not a file")
+            mh.error(Location(filename), "is not a file")
 
         with open(filename, "r", encoding=encoding) as fd:
-            self.text = fd.read() + "\0"
+            self.text = fd.read()
         self.context_line = self.text.splitlines()
 
         self.filename = filename
@@ -240,14 +224,14 @@ class MATLAB_Lexer:
             return m.group(0)
 
     def lex_error(self, message=None):
-        raise errors.Lex_Error(self.filename,
-                               (message
-                                if message
-                                else "unexpected character %s" % repr(self.cc)),
-                               self.context_line[self.line - 1],
-                               self.line,
-                               self.lexpos - self.col_offset,
-                               self.lexpos - self.col_offset)
+        mh.lex_error(Location(self.filename,
+                              self.line,
+                              self.lexpos - self.col_offset,
+                              self.lexpos - self.col_offset,
+                              self.context_line[self.line - 1]),
+                     (message
+                      if message
+                      else "unexpected character %s" % repr(self.cc)))
 
     def token(self):
         # First we scan to the next non-whitespace token
@@ -444,11 +428,11 @@ class MATLAB_Lexer:
 
         token = MATLAB_Token(kind,
                              raw_text,
-                             self.filename,
-                             self.line,
-                             col_start,
-                             col_end,
-                             self.context_line[self.line - 1],
+                             Location(self.filename,
+                                      self.line,
+                                      col_start,
+                                      col_end,
+                                      self.context_line[self.line - 1]),
                              self.first_in_line)
         self.first_in_line = False
 
@@ -471,15 +455,78 @@ class MATLAB_Lexer:
         return token
 
 
+class Token_Buffer(Token_Generator):
+    def __init__(self, lexer):
+        assert isinstance(lexer, MATLAB_Lexer)
+        super().__init__(lexer.filename)
+
+        self.pos = 0
+        self.tokens = []
+        while True:
+            t = lexer.token()
+            if t is None:
+                break
+            else:
+                self.tokens.append(t)
+
+    def token(self):
+        if self.pos < len(self.tokens):
+            t = self.tokens[self.pos]
+            self.pos += 1
+        else:
+            t = None
+
+        return t
+
+    def reset(self):
+        self.pos = 0
+
+    def replay(self, fd):
+        for n, token in enumerate(self.tokens):
+            if n + 1 < len(self.tokens):
+                next_token = self.tokens[n + 1]
+            else:
+                next_token = None
+            if next_token and next_token.location.line == token.location.line:
+                next_in_line = next_token
+            else:
+                next_in_line = None
+
+            if token.first_in_line:
+                fd.write(" " * token.location.col_start)
+
+            if token.kind == "NEWLINE":
+                fd.write("\n" * min(2, token.raw_text.count("\n")))
+            elif token.kind == "CONTINUATION":
+                fd.write(token.raw_text)
+            else:
+                fd.write(token.raw_text.rstrip())
+
+            if next_in_line:
+                gap = next_in_line.location.col_start - (token.location.col_end + 1)
+                # At most one space, unless we have a comment, then
+                # it's ok for purposes of indentation
+                if next_in_line.kind not in ("COMMENT", "CONTINUATION"):
+                    gap = min(gap, 1)
+
+                if (token.fix.get("ensure_trim_after", False) or
+                    next_in_line.fix.get("ensure_trim_before", False)):
+                    gap = 0
+                elif (token.fix.get("ensure_ws_after", False) or
+                      next_in_line.fix.get("ensure_ws_before", False)):
+                    gap = max(gap, 1)
+
+                fd.write(" " * gap)
+
 def sanity_test():
-    l = MATLAB_Lexer("tests/lexer/lexing_test.m")
+    l = Token_Buffer(MATLAB_Lexer("tests/lexer/lexing_test.m"))
 
     while True:
         t = l.token()
         if t is None:
             break
         else:
-            t.print_message(t.kind)
+            mh.info(t.location, t.kind)
 
     l = MATLAB_Lexer("tests/lexer/lexing_test_errors.m")
 
@@ -488,8 +535,10 @@ def sanity_test():
             t = l.token()
             if t is None:
                 break
-    except errors.MISS_HIT_Error as err:
-        err.print_message()
+    except Error:
+        pass
+
+    mh.print_summary_and_exit()
 
 
 if __name__ == "__main__":

@@ -24,9 +24,10 @@
 ##############################################################################
 
 
-from errors import *
-from m_lexer import MATLAB_Lexer, MATLAB_Token
+from errors import mh, ICE, Error
+from m_lexer import Token_Generator, MATLAB_Lexer, MATLAB_Token
 from m_ast import *
+import tree_print
 
 IGNORED_TOKENS = frozenset(["COMMENT"])
 
@@ -74,40 +75,49 @@ class NIY(ICE):
 # 12. Short-circuit OR (||)
 
 class MATLAB_Parser:
-    def __init__(self, tokenstream):
-        self.tokenstream = tokenstream
+    def __init__(self, lexer):
+        assert isinstance(lexer, Token_Generator)
+        self.lexer = lexer
         self.ct = None
         self.nt = None
         self.next()
 
     def next(self):
         self.ct = self.nt
-        try:
-            self.nt = self.tokenstream.__next__()
-        except StopIteration:
-            self.nt = None
+        self.nt = self.lexer.token()
+
+        while self.nt:
+            # Skip comments
+            while self.nt and self.nt.kind == "COMMENT":
+                self.nt = self.lexer.token()
+
+            # Join new-lines
+            if (self.nt and
+                self.ct and
+                self.nt.kind == "NEWLINE" and
+                self.ct.kind == "NEWLINE"):
+                self.nt = self.lexer.token()
+            else:
+                break
 
     def match(self, kind, value=None):
         self.next()
         if self.ct is None:
-            raise Parse_Error(None,
-                              "expected %s, reached EOF instead" % kind)
+            mh.error(Location(lexer.filename),
+                     "expected %s, reached EOF instead" % kind)
         elif self.ct.kind != kind:
-            raise Parse_Error(self.ct,
-                              "expected %s, found %s instead" %
-                              (kind, self.ct))
+            mh.error(self.ct.location,
+                     "expected %s, found %s instead" % (kind, self.ct.kind))
         elif value and self.ct.value() != value:
-            raise Parse_Error(self.ct,
-                              "expected %s(%s), found %s instead" %
-                              (kind, value, self.ct))
-
+            mh.error(self.ct.location,
+                     "expected %s(%s), found %s(%s) instead" %
+                     (kind, value, self.ct.kind, self.ct.value()))
 
     def match_eof(self):
         self.next()
         if self.ct is not None:
-            raise Parse_Error(self.ct,
-                              "expected end of file, found %s instead" %
-                              self.ct)
+            mh.error(self.ct.location,
+                     "expected end of file, found %s instead" % self.ct.kind)
 
     def peek(self, kind, value=None):
         if self.nt and self.nt.kind == kind:
@@ -186,7 +196,7 @@ class MATLAB_Parser:
 
         body = self.parse_statement_list()
         for statement in body.statements:
-            statement.dump()
+            tree_print.treepr(statement)
 
         # TODO: Build function entity
 
@@ -225,9 +235,9 @@ class MATLAB_Parser:
             elif self.nt.value() == "return":
                 return self.parse_return_statement()
             else:
-                raise Parse_Error(self.nt,
-                                  "expected for|if|global|while|return,"
-                                  " found %s instead" % self.nt)
+                mh.error(self.nt.location,
+                         "expected for|if|global|while|return,"
+                         " found %s instead" % self.nt.value())
 
         else:
             return self.parse_assignment()
@@ -288,8 +298,7 @@ class MATLAB_Parser:
     def parse_precedence_1(self):
         if self.peek("NUMBER"):
             self.match("NUMBER")
-            # TODO
-            return Literal()
+            return Number_Literal(self.ct)
 
         elif self.peek("STRING"):
             self.match("STRING")
@@ -517,32 +526,15 @@ class MATLAB_Parser:
 
         return Simple_For_Statement(t_kw, n_ident, n_range, n_body)
 
-def tokenstream(filename):
-    lexer = MATLAB_Lexer(filename)
-
-    newline = False
-    while True:
-        t = lexer.token()
-        if t is None:
-            break
-        else:
-            if t.kind == "NEWLINE":
-                if not newline:
-                    newline = True
-                    yield t
-            elif t.kind not in IGNORED_TOKENS:
-                newline = False
-                yield t
-
-
 def sanity_test(filename):
     try:
-        parser = MATLAB_Parser(tokenstream(filename))
+        parser = MATLAB_Parser(MATLAB_Lexer(filename))
         parser.parse_file_input()
         print("%s: parsed OK" % filename)
-    except MISS_HIT_Error as e:
-        e.print_message()
+    except Error as e:
+        pass
 
 if __name__ == "__main__":
     sanity_test("tests/parser/simple.m")
     sanity_test("tests/parser/simple_pe.m")
+    mh.print_summary_and_exit()

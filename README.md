@@ -20,15 +20,50 @@ If this is you, then this tool suite is for you.
 
 ## Tools
 
-Nothing finished so far, only this righteous rant.
+### Style Checker
 
-Incomplete stuff:
+A simple style checker exists (mh_style.py). It can detect and correct
+(when the `--fix` options given) a number of coding style issues.
 
-* Lexer is mostly working, except for matrices
+* Max lines in file (configurable with `--file-length`, default is
+  1000)
 
-* Parser is minimally working, and cannot yet deal with all constructs
+* Max character per line (configurable with `--line-length`, default
+  is 80)
 
-See below for a road map.
+* Copyright notice in the form of `(C) Copyright YEAR-YEAR ENTITY` or
+  `(C) Copyright YEAR ENTITY`. The list of acceptable entities can be
+  configured with `--copyright-entity`.
+
+* (autofix) More than one consecutive blank line
+
+* (autofix) Trailing whitespace
+
+* (autofix) Whitespace around the assignment operation (=)
+
+* (autofix) No whitespace after opening brackets '(', and no
+  whitespace before closing brackets ')'
+
+* (autofix) Whitespace after certain words such as 'if' or 'properties'.
+
+* Use of tab anywhere
+
+* Ending a line with a comma
+
+## Infrastructure
+
+### Lexer
+
+The lexer is mostly working, but it does not yet deal with matrices or
+cells correctly. Specifically things it is currently impossible to
+distinguish between [1+ 1] and [1 +1]. I plan to fix this eventually
+by adding anonymous commas in the lexer.
+
+### Parser
+
+The parser is extremely incomplete and is work in progress. It is not
+yet useful, but trivial example programs are parsed correctly. There
+are many known bugs.
 
 ## Road map
 
@@ -84,5 +119,10 @@ compiler for use in your safety critical project.
 
 ## Copyright
 
-All contributions (so far) are (C) Florian Schanda and are licensed
-under the GNU GPL version 3 as described in LICENSE.
+Most of this work is (C) Florian Schanda and is licensed under the GNU
+GPL version 3 as described in LICENSE.
+
+Contributions from the following people and entities are under their
+copyright, with the same license:
+
+* Zenuity AB

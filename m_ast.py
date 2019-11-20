@@ -25,36 +25,40 @@
 
 from m_lexer import MATLAB_Token
 
+NODE_UID = [0]
+
 class Node:
-    def dump(indent=0):
-        pass
+    def __init__(self):
+        NODE_UID[0] += 1
+        self.uid = NODE_UID[0]
 
 class Expression(Node):
-    pass
+    def __init__(self):
+        super().__init__()
 
 class Sequence_Of_Statements(Node):
     def __init__(self, statements):
+        super().__init__()
         assert isinstance(statements, list)
         for statement in statements:
             assert isinstance(statement, Statement)
         self.statements = statements
 
 class Statement(Node):
-    pass
+    def __init__(self):
+        super().__init__()
 
 class Identifier(Expression):
     def __init__(self, t_ident):
+        super().__init__()
         assert isinstance(t_ident, MATLAB_Token)
         assert t_ident.kind == "IDENTIFIER"
 
         self.t_ident = t_ident;
 
-    def dump(indent=0):
-        print (" " * (indent * 2), "Identifier(%s)" % self.t_ident.value())
-
-
 class Range_Expression(Expression):
     def __init__(self, n_first, n_last, n_stride=None):
+        super().__init__()
         assert isinstance(n_first, Expression)
         assert isinstance(n_last, Expression)
         assert n_stride is None or isinstance(n_stride, Expression)
@@ -67,13 +71,9 @@ class Range_Expression(Expression):
         else:
             self.n_stride = n_stride
 
-    def dump(indent=0):
-        print (" " * (indent * 2), "Range_Expreesion")
-        print (" " * (indent * 2), "First")
-
-
 class Simple_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_range, n_body):
+        super().__init__()
         assert isinstance(t_for, MATLAB_Token)
         assert t_for.kind == "KEYWORD" and t_for.value() == "for"
         assert isinstance(n_ident, Identifier)
@@ -87,6 +87,7 @@ class Simple_For_Statement(Statement):
 
 class If_Statement(Statement):
     def __init__(self, actions):
+        super().__init__()
         assert isinstance(actions, list)
         assert len(actions) >= 1
         for action in actions:
@@ -104,6 +105,7 @@ class If_Statement(Statement):
 
 class Simple_Assignment_Statement(Statement):
     def __init__(self, t_eq, n_lhs, n_rhs):
+        super().__init__()
         assert isinstance(t_eq, MATLAB_Token)
         assert isinstance(n_lhs, Reference)
         assert isinstance(n_rhs, Expression)
@@ -114,6 +116,7 @@ class Simple_Assignment_Statement(Statement):
 
 class Return_Statement(Statement):
     def __init__(self, t_kw):
+        super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
         assert t_kw.kind == "KEYWORD" and t_kw.value() == "return"
 
@@ -121,6 +124,7 @@ class Return_Statement(Statement):
 
 class Reference(Expression):
     def __init__(self, n_ident, arglist):
+        super().__init__()
         assert isinstance(n_ident, Identifier)
         assert isinstance(arglist, list)
         for arg in arglist:
@@ -130,10 +134,20 @@ class Reference(Expression):
         self.arglist = arglist
 
 class Literal(Expression):
-    pass
+    def __init__(self):
+        super().__init__()
+
+class Number_Literal(Literal):
+    def __init__(self, t_value):
+        super().__init__()
+        assert isinstance(t_value, MATLAB_Token)
+        assert t_value.kind == "NUMBER"
+
+        self.t_value = t_value
 
 class String_Literal(Literal):
     def __init__(self, t_string):
+        super().__init__()
         assert isinstance(t_string, MATLAB_Token)
         assert t_string.kind == "STRING"
 
@@ -141,6 +155,7 @@ class String_Literal(Literal):
 
 class Unary_Operation(Expression):
     def __init__(self, precedence, t_op, n_expr):
+        super().__init__()
         assert 1 <= precedence <= 12
         assert isinstance(t_op, MATLAB_Token)
         assert t_op.kind == "OPERATOR"
@@ -153,6 +168,7 @@ class Unary_Operation(Expression):
 
 class Binary_Operation(Expression):
     def __init__(self, precedence, t_op, n_lhs, n_rhs):
+        super().__init__()
         assert 1 <= precedence <= 12
         assert isinstance(t_op, MATLAB_Token)
         assert t_op.kind == "OPERATOR"
