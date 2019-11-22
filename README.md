@@ -56,7 +56,7 @@ up intil we find one or hit the filesystem root. The syntax is
 simple. For example:
 
 ```
-# Like the commandline, but with _ instead of _
+# Like the commandline, but with _ instead of -
 line_length: 100
 copyright_entity: "Lord Buckethead"
 ```
