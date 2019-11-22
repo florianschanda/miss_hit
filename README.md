@@ -43,8 +43,8 @@ A simple style checker exists (mh_style.py). It can detect and correct
 
 * (autofix) Whitespace surrounding commas
 
-* (autofix) No whitespace after opening brackets '(', and no
-  whitespace before closing brackets ')'
+* (autofix) No whitespace after opening brackets '(' or '[', and no
+  whitespace before closing brackets ')' or ']'
 
 * (autofix) Whitespace after certain words such as 'if' or 'properties'.
 

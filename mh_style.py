@@ -255,18 +255,21 @@ def stage_2_analysis(cfg, tb):
                 mh.style_issue(token.location,
                                "= must be succeeded by whitespace")
 
-        # Corresponds to the old CodeChecker ParenthesisWhitespace rule
-        elif token.kind == "BRA":
+        # Corresponds to the old CodeChecker ParenthesisWhitespace and
+        # BracketsWhitespace rules
+        elif token.kind in ("BRA", "S_BRA"):
             if next_in_line and ws_after > 0 and \
                next_in_line.kind != "CONTINUATION":
                 mh.style_issue(token.location,
-                               "( must not be followed by whitespace")
+                               "%s must not be followed by whitespace" %
+                               token.raw_text)
                 token.fix["ensure_trim_after"] = True
 
-        elif token.kind == "KET":
+        elif token.kind in ("KET", "S_KET"):
             if prev_in_line and ws_before > 0:
                 mh.style_issue(token.location,
-                               ") must not be preceeded by whitespace")
+                               "%s must not be preceeded by whitespace" %
+                               token.raw_text)
                 token.fix["ensure_trim_before"] = True
 
         # Corresponds to the old CodeChecker KeywordWhitespace rule
