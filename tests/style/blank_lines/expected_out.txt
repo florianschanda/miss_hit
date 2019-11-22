@@ -1,0 +1,4 @@
+test.m:5: style: more than one consecutive blank line
+test.m:8: style: more than one consecutive blank line
+test.m:9: style: more than one consecutive blank line
+MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)

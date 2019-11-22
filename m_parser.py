@@ -4,6 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2019, Florian Schanda                         ##
+##              Copyright (C) 2019, Zenuity AB                              ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -24,7 +25,7 @@
 ##############################################################################
 
 
-from errors import mh, ICE, Error
+from errors import mh, ICE, Error, Location
 from m_lexer import Token_Generator, MATLAB_Lexer, MATLAB_Token
 from m_ast import *
 import tree_print
@@ -103,7 +104,7 @@ class MATLAB_Parser:
     def match(self, kind, value=None):
         self.next()
         if self.ct is None:
-            mh.error(Location(lexer.filename),
+            mh.error(Location(self.lexer.filename),
                      "expected %s, reached EOF instead" % kind)
         elif self.ct.kind != kind:
             mh.error(self.ct.location,

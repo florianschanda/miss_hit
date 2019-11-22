@@ -34,20 +34,20 @@ import re
 
 from m_lexer import MATLAB_Token, MATLAB_Lexer, Token_Buffer
 from errors import Location, mh
-
+import config
 
 COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"
 
-def stage_1_analysis(options, lexer):
+def stage_1_analysis(cfg, lexer):
     assert isinstance(lexer, MATLAB_Lexer)
 
     lines = lexer.context_line
 
     # Corresponds to the old CodeChecker LineCount rule
-    if len(lines) > options.file_length:
+    if len(lines) > cfg["file_length"]:
         mh.style_issue(Location(lexer.filename,
                                 len(lines)),
-                       "file exceeds %u lines" % options.file_length)
+                       "file exceeds %u lines" % cfg["file_length"])
 
     # Corresponds to the old CodeChecker EndingEmptyLine rule
     if len(lines) >= 2 and lines[-1] == "":
@@ -58,13 +58,13 @@ def stage_1_analysis(options, lexer):
     is_blank = False
     for n, line in enumerate(lines):
         # Corresponds to the old CodeChecker LineLength rule
-        if len(line) > options.line_length:
+        if len(line) > cfg["line_length"] + 1:
             mh.style_issue(Location(lexer.filename,
                                     n + 1,
-                                    options.line_length - 1,
-                                    len(line) - 1,
+                                    cfg["line_length"] + 1,
+                                    len(line),
                                     line),
-                           "line exceeds %u characters" % options.line_length)
+                           "line exceeds %u characters" % cfg["line_length"])
 
         # Corresponds to the old CodeChecker MultipleEmptyLines rule
         if len(line.strip()):
@@ -130,7 +130,7 @@ WORDS_WITH_WS = frozenset([
 ])
 
 
-def stage_2_analysis(options, tb):
+def stage_2_analysis(cfg, tb):
     assert isinstance(tb, Token_Buffer)
 
     in_copyright_notice = True
@@ -175,18 +175,18 @@ def stage_2_analysis(options, tb):
         # Corresponds to the old CodeChecker CopyrightCheck rule
         if in_copyright_notice:
             if token.kind == "COMMENT":
-                match = re.match(COPYRIGHT_REGEX, token.value())
+                match = re.search(COPYRIGHT_REGEX, token.value())
                 if match:
                     # We have a sane copyright string
                     copyright_token = token
                     generic_copyright_found = True
-                    if match.group("org").strip() in options.copyright_entity:
+                    if match.group("org").strip() in cfg["copyright_entity"]:
                         company_copyright_found = True
 
                 elif copyright_token is None:
                     # We might find something that could look like a
                     # copyright, but is not quite right
-                    for org in options.copyright_entity:
+                    for org in cfg["copyright_entity"]:
                         if org.lower() in token.value().lower():
                             copyright_token = token
                             break
@@ -214,10 +214,10 @@ def stage_2_analysis(options, tb):
                     # If we have something basic, we only raise an
                     # issue if we're supposed to have something
                     # specific.
-                    if options.copyright_entity:
+                    if cfg["copyright_entity"]:
                         mh.style_issue(copyright_token.location,
                                        "Copyright does not mention one of %s" %
-                                       (" or ".join(options.copyright_entity)))
+                                       (" or ".join(cfg["copyright_entity"])))
                 elif copyright_token:
                     # We found something that might be a copyright,
                     # but is not in a sane format
@@ -267,17 +267,25 @@ def stage_2_analysis(options, tb):
                 token.fix["ensure_ws_after"] = True
 
 
-def analyze(options, filename):
+def analyze(cfg, autofix, filename):
+    assert isinstance(cfg, dict)
+    assert list(cfg) == list(config.DEFAULT)
+    assert isinstance(autofix, bool)
     assert isinstance(filename, str)
     encoding = "cp1252"
 
-    lexer = MATLAB_Lexer(filename, encoding=encoding)
-
     # Do some file-based sanity checking
 
+    if not os.path.exists(filename):
+        mh.error(Location(filename), "file does not exist")
+
+    if not os.path.isfile(filename):
+        mh.error(Location(filename), "is not a file")
+
     if not filename.endswith(".m"):
-        mh.warning(Location(filename),
-                   "filename should end with '.m'")
+        mh.warning(Location(filename), "filename should end with '.m'")
+
+    lexer = MATLAB_Lexer(filename, encoding=encoding)
 
     # We're dealing with an empty file here. Lets just not do anything
 
@@ -287,7 +295,29 @@ def analyze(options, filename):
     # Stage 1 - rules around lines and the file itself. This doesn't
     # require any lexing yet.
 
-    stage_1_analysis(options, lexer)
+    stage_1_analysis(cfg, lexer)
+
+    # Tabs are just super annoying, and they require special
+    # treatment. There is a known but obscure bug here, in that tabs
+    # in strings are replaced as if they were part of normal
+    # text. This is probably not intentional. For example:
+    #
+    # "a<tab>b"
+    #    "a<tab>b"
+    #
+    # Will right now come out as
+    #
+    # "a   b"
+    # "  a b"
+    #
+    # This is probably not correct. Fixing this is will require a very
+    # different kind of lexing (which I am not in the mood for, I have
+    # suffered enough to deal with ') or a 2-pass solution (which is
+    # slow): first we lex and then fix up tabs inside tokens; and then
+    # we do the global replacement and lex again before we proceed.
+
+    if autofix:
+        lexer.correct_tabs(cfg["tab_width"])
 
     # Create tokenbuffer
 
@@ -300,11 +330,11 @@ def analyze(options, filename):
     # Stange 2. Look at raw token stream for some of the more basic
     # rules.
 
-    stage_2_analysis(options, tb)
+    stage_2_analysis(cfg, tb)
 
     # Re-write the file, with issues fixed
 
-    if options.fix:
+    if autofix:
         with open(filename, "w", encoding=encoding) as fd:
             tb.replay(fd)
 
@@ -327,16 +357,24 @@ def main():
     style_option = ap.add_argument_group("Style options")
     style_option.add_argument("--line-length",
                               metavar="N",
-                              default=80,
+                              default=None,
                               type=int,
-                              help=("Maximum line length, %(default)u by "
-                                    "default."))
+                              help=("Maximum line length, %u by default." %
+                                    config.DEFAULT["line_length"]))
     style_option.add_argument("--file-length",
                               metavar="N",
-                              default=1000,
+                              default=None,
                               type=int,
                               help=("Maximum number of lines per file, "
-                                    "%(default)u by default."))
+                                    "%u by default." %
+                                    config.DEFAULT["file_length"]))
+    style_option.add_argument("--tab-width",
+                              metavar="N",
+                              default=None,
+                              type=int,
+                              help=("Consider tabs to be N spaces wide, "
+                                    "%u by default." %
+                                    config.DEFAULT["tab_width"]))
     style_option.add_argument("--copyright-entity",
                               metavar="STR",
                               default=[],
@@ -346,6 +384,19 @@ def main():
                                     "multiple times."))
 
     options = ap.parse_args()
+
+    # Load options from config file first
+    cfg = config.load_config()
+
+    # Update with options from the command-line
+    if options.line_length:
+        cfg["line_length"] = options.line_length
+    if options.file_length:
+        cfg["file_length"] = options.file_length
+    if options.tab_width:
+        cfg["file_length"] = options.tab_width
+    if options.copyright_entity:
+        cfg["copyright_entity"] |= set(options.copyright_entity)
 
     if not options.brief and sys.stdout.encoding != "UTF-8":
         print("WARNING: It looks like your environment is not set up quite")
@@ -367,9 +418,9 @@ def main():
             for path, _, files in os.walk(item):
                 for f in files:
                     if f.endswith(".m"):
-                        analyze(options, os.path.join(path, f))
+                        analyze(cfg, options.fix, os.path.join(path, f))
         else:
-            analyze(options, item)
+            analyze(cfg, options.fix, item)
 
     mh.print_summary_and_exit()
 

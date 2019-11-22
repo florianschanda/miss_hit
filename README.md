@@ -46,9 +46,20 @@ A simple style checker exists (mh_style.py). It can detect and correct
 
 * (autofix) Whitespace after certain words such as 'if' or 'properties'.
 
-* Use of tab anywhere
+* (autofix) Use of tab anywhere (adjust with `--tab-width`)
 
 * Ending a line with a comma
+
+The style checker attempts to read a configuration file `miss_hit.cfg`
+in the current directory. If one cannot be found we traverse the tree
+up intil we find one or hit the filesystem root. The syntax is
+simple. For example:
+
+```
+# Like the commandline, but with _ instead of _
+line_length: 100
+copyright_entity: "Lord Buckethead"
+```
 
 ## Infrastructure
 

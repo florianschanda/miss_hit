@@ -4,6 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2019, Florian Schanda                         ##
+##              Copyright (C) 2019, Zenuity AB                              ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -143,7 +144,7 @@ class MATLAB_Token:
         elif self.kind == "COMMENT":
             return self.raw_text[1:].strip()
         elif self.kind == "STRING":
-            return self.raw_text[1:-1].replace("''", "'")
+            return self.raw_text[1:-1]
         elif self.kind == "DIRECTORY":
             return self.raw_text.strip()
         else:
@@ -175,12 +176,6 @@ class MATLAB_Lexer(Token_Generator):
 
         mh.register_file(filename)
 
-        if not os.path.exists(filename):
-            mh.error(Location(filename), "file does not exist")
-
-        if not os.path.isfile(filename):
-            mh.error(Location(filename), "is not a file")
-
         with open(filename, "r", encoding=encoding) as fd:
             self.text = fd.read()
         self.context_line = self.text.splitlines()
@@ -199,6 +194,24 @@ class MATLAB_Lexer(Token_Generator):
 
         self.last_kind = None
         self.last_value = None
+
+    def correct_tabs(self, tabwidth):
+        assert isinstance(tabwidth, int) and tabwidth >= 2
+
+        for line_id, line in enumerate(self.context_line):
+            tmp = ""
+            for c in line:
+                if c == "\t":
+                    tmp += " " * (tabwidth - (len(tmp) % tabwidth))
+                else:
+                    tmp += c
+            self.context_line[line_id] = tmp
+
+        self.text = "\n".join(self.context_line)
+
+        self.cc = None
+        self.nc = self.text[0] if len(self.text) > 0 else "\0"
+        self.nnc = self.text[1] if len(self.text) > 1 else "\0"
 
     def next(self):
         self.lexpos += 1
@@ -496,18 +509,26 @@ class Token_Buffer(Token_Generator):
                 fd.write(" " * token.location.col_start)
 
             if token.kind == "NEWLINE":
-                fd.write("\n" * min(2, token.raw_text.count("\n")))
+                amount = min(2, token.raw_text.count("\n"))
+                if n + 1 == len(self.tokens):
+                    # At the end of a file, we have at most one
+                    # newline. This newline is inserted manually at
+                    # the end
+                    amount = 0
+                fd.write("\n" * amount)
             elif token.kind == "CONTINUATION":
                 fd.write(token.raw_text)
             else:
                 fd.write(token.raw_text.rstrip())
 
-            if next_in_line:
+            if next_in_line and next_in_line.kind != "NEWLINE":
                 gap = next_in_line.location.col_start - (token.location.col_end + 1)
                 # At most one space, unless we have a comment, then
                 # it's ok for purposes of indentation
-                if next_in_line.kind not in ("COMMENT", "CONTINUATION"):
-                    gap = min(gap, 1)
+                #
+                # This can mess up some nice alignment, so disabled for now
+                # if next_in_line.kind not in ("COMMENT", "CONTINUATION"):
+                #    gap = min(gap, 1)
 
                 if (token.fix.get("ensure_trim_after", False) or
                     next_in_line.fix.get("ensure_trim_before", False)):
@@ -517,6 +538,7 @@ class Token_Buffer(Token_Generator):
                     gap = max(gap, 1)
 
                 fd.write(" " * gap)
+        fd.write("\n")
 
 def sanity_test():
     l = Token_Buffer(MATLAB_Lexer("tests/lexer/lexing_test.m"))

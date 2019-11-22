@@ -1,0 +1,16 @@
+In test.m, line 5
+|  return;
+| ^ style: tab is not allowed
+In test.m, line 8
+| # tabs in comments are not ok
+|                   ^ style: tab is not allowed
+In test.m, line 12
+|  "a b"
+|    ^ style: tab is not allowed
+In test.m, line 13
+| "a b"
+|   ^ style: tab is not allowed
+In test.m, line 16
+| x = 12;
+|  ^ style: tab is not allowed
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)

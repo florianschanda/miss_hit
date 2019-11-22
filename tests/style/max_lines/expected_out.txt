@@ -1,0 +1,2 @@
+test.m:12: style: file exceeds 10 lines
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

@@ -4,6 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2019, Florian Schanda                         ##
+##              Copyright (C) 2019, Zenuity AB                              ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -91,6 +92,15 @@ class Message_Handler:
         assert filename not in self.files
 
         self.files.add(filename)
+
+    def unregister_file(self, filename):
+        assert isinstance(filename, str)
+        assert filename in self.files
+
+        self.files.remove(filename)
+        self.messages = [m
+                         for m in self.messages
+                         if m.location.filename != filename]
 
     def __render_message(self, location, kind, message):
         if location.line is None:
