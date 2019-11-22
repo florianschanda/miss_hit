@@ -4,6 +4,7 @@
 % Potato
 %%% Potato
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%#codegen
 fprintf('%s', 'astring')
 
 % The following things are NOT OK

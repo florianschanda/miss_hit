@@ -284,7 +284,9 @@ def stage_2_analysis(cfg, tb):
         elif token.kind == "COMMENT":
             comment_char = token.raw_text[0]
             comment_body = token.raw_text.lstrip(comment_char)
-            if comment_body and not comment_body.startswith(" "):
+            if token.raw_text.startswith("%#codegen"):
+                pass
+            elif comment_body and not comment_body.startswith(" "):
                 mh.style_issue(token.location,
                                "comment body must be separated with "
                                "whitespace from the starting %s" %
