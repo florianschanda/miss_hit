@@ -50,6 +50,8 @@ A simple style checker exists (mh_style.py). It can detect and correct
 
 * (autofix) Use of tab anywhere (adjust with `--tab-width`)
 
+* (autofix) Whitespace after %# and before the body of the comment
+
 * Ending a line with a comma
 
 The style checker attempts to read a configuration file `miss_hit.cfg`

@@ -245,7 +245,7 @@ def stage_2_analysis(cfg, tb):
                                "and must be followed by whitespace")
 
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
-        if token.kind == "ASSIGNMENT":
+        elif token.kind == "ASSIGNMENT":
             token.fix["ensure_ws_before"] = True
             token.fix["ensure_ws_after"] = True
             if prev_in_line and ws_before == 0:
@@ -279,6 +279,20 @@ def stage_2_analysis(cfg, tb):
                 mh.style_issue(token.location,
                                "keyword must be succeeded by whitespace")
                 token.fix["ensure_ws_after"] = True
+
+        # Corresponds to the old CodeChecker CommentWhitespace rule
+        elif token.kind == "COMMENT":
+            comment_char = token.raw_text[0]
+            comment_body = token.raw_text.lstrip(comment_char)
+            if comment_body and not comment_body.startswith(" "):
+                mh.style_issue(token.location,
+                               "comment body must be separated with "
+                               "whitespace from the starting %s" %
+                               comment_char)
+                token.raw_text = (comment_char * (len(token.raw_text) -
+                                                  len(comment_body))
+                                  + " "
+                                  + comment_body)
 
 
 def analyze(cfg, autofix, filename):

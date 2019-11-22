@@ -1,0 +1,16 @@
+In test.m, line 10
+| %Potato
+| ^^^^^^^ style: comment body must be separated with whitespace from the starting %
+In test.m, line 11
+| %#############################
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
+In test.m, line 12
+| %%%Potato
+| ^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
+In test.m, line 13
+| %##Potato
+| ^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
+In test.m, line 14
+| %## Potato
+| ^^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
