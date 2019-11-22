@@ -228,10 +228,21 @@ def stage_2_analysis(cfg, tb):
                     mh.style_issue(token.location,
                                    "No copyright notice found in header")
 
-        # Corresponds to the old CodeChecker CommaLineEndings rule
-        if last_code_in_line and token.kind == "COMMA":
-            mh.style_issue(token.location,
-                           "lines must not end with a comma")
+        # Corresponds to the old CodeChecker CommaLineEndings and
+        # CommaWhitespace rules
+        if token.kind == "COMMA":
+            token.fix["ensure_trim_before"] = True
+            token.fix["ensure_ws_after"] = True
+
+            if last_code_in_line:
+                mh.style_issue(token.location,
+                               "lines must not end with a comma")
+
+            if (next_in_line and ws_after == 0) or \
+               (prev_in_line and ws_before > 0):
+                mh.style_issue(token.location,
+                               "comma cannot be preceeded by whitespace "
+                               "and must be followed by whitespace")
 
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
         if token.kind == "ASSIGNMENT":

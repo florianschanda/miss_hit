@@ -41,6 +41,8 @@ A simple style checker exists (mh_style.py). It can detect and correct
 
 * (autofix) Whitespace around the assignment operation (=)
 
+* (autofix) Whitespace surrounding commas
+
 * (autofix) No whitespace after opening brackets '(', and no
   whitespace before closing brackets ')'
 

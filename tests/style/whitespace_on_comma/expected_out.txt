@@ -1,0 +1,10 @@
+In test.m, line 5
+| somevar , othervar;  % not ok
+|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+In test.m, line 6
+| somevar ,othervar;   % not ok
+|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+In test.m, line 7
+| somevar,othervar;    % not ok
+|        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)
