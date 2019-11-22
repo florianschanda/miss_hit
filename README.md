@@ -54,16 +54,32 @@ A simple style checker exists (mh_style.py). It can detect and correct
 
 * Ending a line with a comma
 
-The style checker attempts to read a configuration file `miss_hit.cfg`
-in the current directory. If one cannot be found we traverse the tree
-up intil we find one or hit the filesystem root. The syntax is
-simple. For example:
+Options are read from configuration files `miss_hit.cfg`. A file in
+`foo/bar/potato.m` will first look in the root, then
+`foo/miss_hit.cfg`, and finally in `foo/bar/miss_hit.cfg`. Each file
+augments/overwrites previously given configuration, and command-line
+options overwrite everything.
+
+For example you can put this `miss_hit.cfg` in your project root:
 
 ```
-# Like the commandline, but with _ instead of -
+# Options written like on the commandline, but with _ instead of -
 line_length: 100
+file_length: 2500
 copyright_entity: "Lord Buckethead"
 ```
+
+And you can adjust options in subdirectories, for example if you place
+this in `foo/miss_hit.cfg`:
+
+```
+# Legacy code which had a different coding standard
+line_length: 180
+```
+
+Then files in `foo/` or below will be checked for a line length of 180
+(redefined) and a file length of 2500 (taken over from the project
+root).
 
 ## Infrastructure
 

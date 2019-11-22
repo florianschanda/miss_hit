@@ -174,8 +174,6 @@ class MATLAB_Lexer(Token_Generator):
     def __init__(self, filename, encoding="utf-8"):
         super().__init__(filename)
 
-        mh.register_file(filename)
-
         with open(filename, "r", encoding=encoding) as fd:
             self.text = fd.read()
         self.context_line = self.text.splitlines()

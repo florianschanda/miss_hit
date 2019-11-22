@@ -297,12 +297,13 @@ def stage_2_analysis(cfg, tb):
                                   + comment_body)
 
 
-def analyze(cfg, autofix, filename):
-    assert isinstance(cfg, dict)
-    assert list(cfg) == list(config.DEFAULT)
-    assert isinstance(autofix, bool)
+def analyze(filename, autofix):
     assert isinstance(filename, str)
+    assert isinstance(autofix, bool)
+
     encoding = "cp1252"
+
+    mh.register_file(filename)
 
     # Do some file-based sanity checking
 
@@ -315,6 +316,9 @@ def analyze(cfg, autofix, filename):
     if not filename.endswith(".m"):
         mh.warning(Location(filename), "filename should end with '.m'")
 
+    # Get configuration and create lexer
+
+    cfg = config.get_config(filename)
     lexer = MATLAB_Lexer(filename, encoding=encoding)
 
     # We're dealing with an empty file here. Lets just not do anything
@@ -415,19 +419,6 @@ def main():
 
     options = ap.parse_args()
 
-    # Load options from config file first
-    cfg = config.load_config()
-
-    # Update with options from the command-line
-    if options.line_length:
-        cfg["line_length"] = options.line_length
-    if options.file_length:
-        cfg["file_length"] = options.file_length
-    if options.tab_width:
-        cfg["file_length"] = options.tab_width
-    if options.copyright_entity:
-        cfg["copyright_entity"] |= set(options.copyright_entity)
-
     if not options.brief and sys.stdout.encoding != "UTF-8":
         print("WARNING: It looks like your environment is not set up quite")
         print("         right since python will encode to %s on stdout." %
@@ -445,12 +436,19 @@ def main():
 
     for item in options.files:
         if os.path.isdir(item):
+            config.register_tree(os.path.abspath(item))
+        elif os.path.isfile(item):
+            config.register_tree(os.path.dirname(os.path.abspath(item)))
+    config.build_config_tree(options)
+
+    for item in options.files:
+        if os.path.isdir(item):
             for path, _, files in os.walk(item):
                 for f in files:
                     if f.endswith(".m"):
-                        analyze(cfg, options.fix, os.path.join(path, f))
+                        analyze(os.path.join(path, f), options.fix)
         else:
-            analyze(cfg, options.fix, item)
+            analyze(item, options.fix)
 
     mh.print_summary_and_exit()
 

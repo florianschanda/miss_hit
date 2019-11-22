@@ -27,7 +27,7 @@ import os
 from copy import deepcopy
 
 from m_lexer import MATLAB_Lexer
-from errors import mh, Error, Location
+from errors import mh, ICE, Error, Location
 
 CONFIG_FILENAME = "miss_hit.cfg"
 
@@ -38,18 +38,8 @@ DEFAULT = {
     "copyright_entity" : set()
 }
 
-def find_config_file():
-    """ Find config file for MISS_HIT by going up the directory tree """
-    path = os.getcwd()
-    while not os.path.isfile(os.path.join(path, CONFIG_FILENAME)):
-        parent = os.path.dirname(path)
-        if parent == path:
-            return None
-        path = parent
+CONFIG_TREE = {}
 
-    path = os.path.normpath(os.path.join(os.path.relpath(path),
-                                         CONFIG_FILENAME))
-    return path
 
 class Config_Parser:
     def __init__(self, config_file):
@@ -106,9 +96,7 @@ class Config_Parser:
             return False
         self.ct
 
-    def parse_file(self):
-        options = deepcopy(DEFAULT)
-
+    def parse_file(self, cfg):
         while self.nt:
             if self.nt.kind == "NEWLINE":
                 self.match("NEWLINE")
@@ -118,17 +106,17 @@ class Config_Parser:
                 key = self.ct.value()
                 self.match("COLON")
 
-                if key not in options:
+                if key not in cfg:
                     mh.error(t_key.location,
                              "unknown option %s" % key)
-                elif isinstance(options[key], int):
+                elif isinstance(cfg[key], int):
                     self.match("NUMBER")
                     try:
                         value = int(self.ct.value())
                     except ValueError:
                         mh.error(self.ct.location,
                                  "%s option requires an integer" % key)
-                elif isinstance(options[key], set):
+                elif isinstance(cfg[key], set):
                     self.match("STRING")
                     value = self.ct.value()
 
@@ -137,27 +125,118 @@ class Config_Parser:
                 else:
                     self.match_eof()
 
-                if isinstance(options[key], set):
-                    options[key].add(value)
+                if isinstance(cfg[key], set):
+                    cfg[key].add(value)
                 else:
-                    options[key] = value
+                    cfg[key] = value
 
-        return options
 
-def load_config():
-    cfg = deepcopy(DEFAULT)
-
-    cfg_file = find_config_file()
-    if cfg_file is None:
-        return cfg
+def load_config(cfg_file, cfg):
+    assert isinstance(cfg_file, str)
+    assert os.path.isfile(cfg_file)
+    assert isinstance(cfg, dict)
 
     try:
+        mh.register_file(cfg_file)
         p = Config_Parser(cfg_file)
-        cfg = p.parse_file()
+        p.parse_file(cfg)
         # Now that we have parsed the file, we should remove it again
         # from the list of files known to the error handler
         mh.unregister_file(cfg_file)
     except Error:
         mh.print_summary_and_exit()
 
-    return cfg
+
+def register_tree(dirname):
+    assert isinstance(dirname, str)
+    assert os.path.isdir(dirname)
+    assert dirname == os.path.abspath(dirname)
+
+    def register_parent(dirname):
+        if dirname in CONFIG_TREE:
+            return
+
+        # Stop if we reach the root filesystem or a .git directory
+        parent = os.path.dirname(dirname)
+        is_root = (parent == dirname or
+                   os.path.isdir(os.path.join(dirname, ".git")))
+
+        if not is_root:
+            register_parent(parent)
+            CONFIG_TREE[parent]["children"].add(dirname)
+
+        CONFIG_TREE[dirname] = {
+            "children"   : set(),
+            "subtree"    : False,
+            "has_config" : os.path.isfile(os.path.join(dirname,
+                                                       CONFIG_FILENAME)),
+            "root"       : is_root,
+            "parent"     : None if is_root else parent
+        }
+
+    def register_subtree(dirname):
+        if CONFIG_TREE[dirname]["subtree"]:
+            return
+
+        CONFIG_TREE[dirname]["children"] = set([
+            os.path.join(dirname, d)
+            for d in os.listdir(dirname)
+            if os.path.isdir(os.path.join(dirname, d))])
+
+        for child in CONFIG_TREE[dirname]["children"]:
+            register_tree(child)
+
+        CONFIG_TREE[dirname]["subtree"] = True
+
+    register_parent(dirname)
+    register_subtree(dirname)
+
+
+def build_config_tree(cmdline_options):
+    roots = [d for d in CONFIG_TREE if CONFIG_TREE[d]["root"]]
+
+    def merge_command_line(cfg):
+        # Overwrite with options from the command-line
+        if cmdline_options.line_length:
+            cfg["line_length"] = options.line_length
+        if cmdline_options.file_length:
+            cfg["file_length"] = options.file_length
+        if cmdline_options.tab_width:
+            cfg["tab_width"] = options.tab_width
+        if cmdline_options.copyright_entity:
+            cfg["copyright_entity"] = set(options.copyright_entity)
+
+    def build(node, allow_root=False):
+        if CONFIG_TREE[node]["root"]:
+            if allow_root:
+                CONFIG_TREE[node]["config"] = deepcopy(DEFAULT)
+                merge_command_line(CONFIG_TREE[node]["config"])
+            else:
+                return
+        else:
+            parent = CONFIG_TREE[node]["parent"]
+            parent_config = CONFIG_TREE[parent]["config"]
+            if CONFIG_TREE[node]["has_config"]:
+                CONFIG_TREE[node]["config"] = deepcopy(parent_config)
+            else:
+                CONFIG_TREE[node]["config"] = parent_config
+
+        if CONFIG_TREE[node]["has_config"]:
+            load_config(os.path.join(node, CONFIG_FILENAME),
+                        CONFIG_TREE[node]["config"])
+            merge_command_line(CONFIG_TREE[node]["config"])
+
+        for child in CONFIG_TREE[node]["children"]:
+            build(child)
+
+    for root in roots:
+        build(root, True)
+
+
+def get_config(filename):
+    d = os.path.dirname(os.path.abspath(filename))
+
+    if d not in CONFIG_TREE:
+        raise ICE("expected %s to be in configuration tree" % d)
+
+    return CONFIG_TREE[d]["config"]
