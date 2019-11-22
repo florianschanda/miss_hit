@@ -26,15 +26,21 @@
 
 
 from errors import mh, ICE, Error, Location
-from m_lexer import Token_Generator, MATLAB_Lexer, MATLAB_Token
-from m_ast import *
+from m_lexer import Token_Generator, MATLAB_Lexer
 import tree_print
 
+# pylint: disable=wildcard-import,unused-wildcard-import
+from m_ast import *
+# pylint: enable=wildcard-import,unused-wildcard-import
+
+
 IGNORED_TOKENS = frozenset(["COMMENT"])
+
 
 class NIY(ICE):
     def __init__(self):
         super().__init__("not implemented yet")
+
 
 # Operator precedence as of MATLAB 2019b
 # https://www.mathworks.com/help/matlab/matlab_prog/operator-precedence.html
@@ -79,8 +85,12 @@ class MATLAB_Parser:
     def __init__(self, lexer):
         assert isinstance(lexer, Token_Generator)
         self.lexer = lexer
+
+        # pylint: disable=invalid-name
         self.ct = None
         self.nt = None
+        # pylint: enable=invalid-name
+
         self.next()
 
     def next(self):
@@ -196,6 +206,8 @@ class MATLAB_Parser:
         self.match("NEWLINE")
 
         body = self.parse_statement_list()
+
+        tree_print.treepr(name)
         for statement in body.statements:
             tree_print.treepr(statement)
 
@@ -527,13 +539,15 @@ class MATLAB_Parser:
 
         return Simple_For_Statement(t_kw, n_ident, n_range, n_body)
 
+
 def sanity_test(filename):
     try:
         parser = MATLAB_Parser(MATLAB_Lexer(filename))
         parser.parse_file_input()
         print("%s: parsed OK" % filename)
-    except Error as e:
+    except Error:
         pass
+
 
 if __name__ == "__main__":
     sanity_test("tests/parser/simple.m")

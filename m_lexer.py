@@ -24,7 +24,6 @@
 ##                                                                          ##
 ##############################################################################
 
-import os
 import re
 from abc import ABCMeta, abstractmethod
 
@@ -151,13 +150,13 @@ class MATLAB_Token:
             return self.raw_text
 
     def __repr__(self):
-        v = self.value()
+        val = self.value()
         star = "*" if self.anonymous else ""
 
-        if v is None or self.kind == "NEWLINE":
+        if val is None or self.kind == "NEWLINE":
             return "Token%s(%s)" % (star, self.kind)
         else:
-            return "Token%s(%s, <<%s>>)" % (star, self.kind, v)
+            return "Token%s(%s, <<%s>>)" % (star, self.kind, val)
 
 
 class Token_Generator(metaclass=ABCMeta):
@@ -186,9 +185,11 @@ class MATLAB_Lexer(Token_Generator):
         self.first_in_line = True
         self.in_dir_command = False
 
+        # pylint: disable=invalid-name
         self.cc = None
         self.nc = self.text[0] if len(self.text) > 0 else "\0"
         self.nnc = self.text[1] if len(self.text) > 1 else "\0"
+        # pylint: enable=invalid-name
 
         self.last_kind = None
         self.last_value = None
@@ -217,22 +218,22 @@ class MATLAB_Lexer(Token_Generator):
             self.col_offset = self.lexpos
         self.cc = self.nc
         self.nc = self.nnc
-        self.nnc = (self.text[self.lexpos+2]
-                    if len(self.text) > self.lexpos+2
+        self.nnc = (self.text[self.lexpos + 2]
+                    if len(self.text) > self.lexpos + 2
                     else "\0")
 
     def advance(self, n):
         assert isinstance(n, int) and n >= 0
-        for i in range(n):
+        for _ in range(n):
             self.next()
 
     def match_re(self, regex):
-        m = re.match("^" + regex,
-                     self.text[self.lexpos:])
-        if m is None:
+        match = re.match("^" + regex,
+                         self.text[self.lexpos:])
+        if match is None:
             return None
         else:
-            return m.group(0)
+            return match.group(0)
 
     def lex_error(self, message=None):
         mh.lex_error(Location(self.filename,
@@ -428,7 +429,7 @@ class MATLAB_Lexer(Token_Generator):
 
         t_end = self.lexpos
         col_end = t_end - self.col_offset
-        raw_text = self.text[t_start:t_end+1]
+        raw_text = self.text[t_start:t_end + 1]
 
         # print("Ended lexing @ %u:%u <%s>" % (self.line,
         #                                      self.col,
@@ -455,7 +456,8 @@ class MATLAB_Lexer(Token_Generator):
             self.line += 1
             self.first_in_line = True
             if self.in_dir_command:
-                raise Parse_Error(token, "cannot line-continue a cd command")
+                mh.error(token.location,
+                         "cannot line-continue a cd command")
         elif kind == "IDENTIFIER" and token.first_in_line \
              and raw_text in ("cd", "mkdir", "rmdir"):
             self.in_dir_command = True
@@ -474,20 +476,20 @@ class Token_Buffer(Token_Generator):
         self.pos = 0
         self.tokens = []
         while True:
-            t = lexer.token()
-            if t is None:
+            tok = lexer.token()
+            if tok is None:
                 break
             else:
-                self.tokens.append(t)
+                self.tokens.append(tok)
 
     def token(self):
         if self.pos < len(self.tokens):
-            t = self.tokens[self.pos]
+            tok = self.tokens[self.pos]
             self.pos += 1
         else:
-            t = None
+            tok = None
 
-        return t
+        return tok
 
     def reset(self):
         self.pos = 0
@@ -520,7 +522,8 @@ class Token_Buffer(Token_Generator):
                 fd.write(token.raw_text.rstrip())
 
             if next_in_line and next_in_line.kind != "NEWLINE":
-                gap = next_in_line.location.col_start - (token.location.col_end + 1)
+                gap = (next_in_line.location.col_start -
+                       (token.location.col_end + 1))
                 # At most one space, unless we have a comment, then
                 # it's ok for purposes of indentation
                 #
@@ -538,22 +541,23 @@ class Token_Buffer(Token_Generator):
                 fd.write(" " * gap)
         fd.write("\n")
 
+
 def sanity_test():
-    l = Token_Buffer(MATLAB_Lexer("tests/lexer/lexing_test.m"))
+    lexer = Token_Buffer(MATLAB_Lexer("tests/lexer/lexing_test.m"))
 
     while True:
-        t = l.token()
-        if t is None:
+        tok = lexer.token()
+        if tok is None:
             break
         else:
-            mh.info(t.location, t.kind)
+            mh.info(tok.location, tok.kind)
 
-    l = MATLAB_Lexer("tests/lexer/lexing_test_errors.m")
+    lexer = MATLAB_Lexer("tests/lexer/lexing_test_errors.m")
 
     try:
         while True:
-            t = l.token()
-            if t is None:
+            tok = lexer.token()
+            if tok is None:
                 break
     except Error:
         pass

@@ -46,8 +46,12 @@ class Config_Parser:
     def __init__(self, config_file):
         self.filename = config_file
         self.lexer = MATLAB_Lexer(self.filename)
+
+        # pylint: disable=invalid-name
         self.ct = None
         self.nt = None
+        # pylint: enable=invalid-name
+
         self.next()
 
     def next(self):
@@ -95,7 +99,6 @@ class Config_Parser:
                 return self.nt.value() == value
         else:
             return False
-        self.ct
 
     def parse_file(self, cfg):
         while self.nt:
@@ -149,8 +152,8 @@ def load_config(cfg_file, cfg):
 
     try:
         mh.register_file(cfg_file)
-        p = Config_Parser(cfg_file)
-        p.parse_file(cfg)
+        parser = Config_Parser(cfg_file)
+        parser.parse_file(cfg)
         # Now that we have parsed the file, we should remove it again
         # from the list of files known to the error handler
         mh.unregister_file(cfg_file)
@@ -209,13 +212,13 @@ def build_config_tree(cmdline_options):
     def merge_command_line(cfg):
         # Overwrite with options from the command-line
         if cmdline_options.line_length:
-            cfg["line_length"] = options.line_length
+            cfg["line_length"] = cmdline_options.line_length
         if cmdline_options.file_length:
-            cfg["file_length"] = options.file_length
+            cfg["file_length"] = cmdline_options.file_length
         if cmdline_options.tab_width:
-            cfg["tab_width"] = options.tab_width
+            cfg["tab_width"] = cmdline_options.tab_width
         if cmdline_options.copyright_entity:
-            cfg["copyright_entity"] = set(options.copyright_entity)
+            cfg["copyright_entity"] = set(cmdline_options.copyright_entity)
 
     def build(node, allow_root=False):
         if CONFIG_TREE[node]["root"]:
@@ -243,10 +246,11 @@ def build_config_tree(cmdline_options):
     for root in roots:
         build(root, True)
 
+
 def get_config(filename):
-    d = os.path.dirname(os.path.abspath(filename))
+    dirname = os.path.dirname(os.path.abspath(filename))
 
-    if d not in CONFIG_TREE:
-        raise ICE("expected %s to be in configuration tree" % d)
+    if dirname not in CONFIG_TREE:
+        raise ICE("expected %s to be in configuration tree" % dirname)
 
-    return CONFIG_TREE[d]["config"]
+    return CONFIG_TREE[dirname]["config"]

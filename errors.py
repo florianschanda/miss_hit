@@ -59,9 +59,11 @@ class Location:
         return (self.filename, self.line, self.col_start) < \
             (other.filename, other.line, other.col_start)
 
+
 class ICE(Exception):
     """ Internal compiler errors """
     def __init__(self, reason):
+        super().__init__()
         self.reason = reason
 
 
@@ -71,6 +73,7 @@ class Error(Exception):
         assert isinstance(location, Location)
         assert isinstance(message, str)
 
+        super().__init__()
         self.location = location
         self.message = message
 
@@ -207,4 +210,6 @@ class Message_Handler:
             sys.exit(0)
 
 
+# pylint: disable=invalid-name
 mh = Message_Handler()
+# pylint: enable=invalid-name

@@ -32,11 +32,12 @@ import os
 import argparse
 import re
 
-from m_lexer import MATLAB_Token, MATLAB_Lexer, Token_Buffer
-from errors import Location, mh
+from m_lexer import MATLAB_Lexer, Token_Buffer
+from errors import Location, Error, mh
 import config
 
 COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"
+
 
 def stage_1_analysis(cfg, lexer):
     assert isinstance(lexer, MATLAB_Lexer)
@@ -109,6 +110,7 @@ def stage_1_analysis(cfg, lexer):
                                         line),
                                "trailing whitespace")
 
+
 WORDS_WITH_WS = frozenset([
     "case",
     "catch",
@@ -130,8 +132,8 @@ WORDS_WITH_WS = frozenset([
 ])
 
 
-def stage_2_analysis(cfg, tb):
-    assert isinstance(tb, Token_Buffer)
+def stage_2_analysis(cfg, tbuf):
+    assert isinstance(tbuf, Token_Buffer)
 
     in_copyright_notice = True
     company_copyright_found = False
@@ -139,10 +141,10 @@ def stage_2_analysis(cfg, tb):
     copyright_token = None
     copyright_notice = []
 
-    for n, token in enumerate(tb.tokens):
+    for n, token in enumerate(tbuf.tokens):
         if (n - 1 >= 0 and
-            tb.tokens[n - 1].location.line == token.location.line):
-            prev_in_line = tb.tokens[n - 1]
+            tbuf.tokens[n - 1].location.line == token.location.line):
+            prev_in_line = tbuf.tokens[n - 1]
             ws_before = (token.location.col_start -
                          prev_in_line.location.col_end) - 1
 
@@ -150,13 +152,13 @@ def stage_2_analysis(cfg, tb):
             prev_in_line = None
             ws_before = None
 
-        if (n + 1 < len(tb.tokens) and
-            tb.tokens[n + 1].location.line == token.location.line):
-            if tb.tokens[n + 1].kind == "NEWLINE":
+        if (n + 1 < len(tbuf.tokens) and
+            tbuf.tokens[n + 1].location.line == token.location.line):
+            if tbuf.tokens[n + 1].kind == "NEWLINE":
                 next_in_line = None
                 ws_after = None
             else:
-                next_in_line = tb.tokens[n + 1]
+                next_in_line = tbuf.tokens[n + 1]
                 ws_after = (next_in_line.location.col_start -
                             token.location.col_end) - 1
         else:
@@ -190,8 +192,8 @@ def stage_2_analysis(cfg, tb):
                         if org.lower() in token.value().lower():
                             copyright_token = token
                             break
-                    for s in ("(c)", "copyright"):
-                        if s in token.value().lower():
+                    for substr in ("(c)", "copyright"):
+                        if substr in token.value().lower():
                             copyright_token = token
                             break
 
@@ -292,9 +294,9 @@ def stage_2_analysis(cfg, tb):
                                "whitespace from the starting %s" %
                                comment_char)
                 token.raw_text = (comment_char * (len(token.raw_text) -
-                                                  len(comment_body))
-                                  + " "
-                                  + comment_body)
+                                                  len(comment_body)) +
+                                  " " +
+                                  comment_body)
 
 
 def analyze(filename, autofix):
@@ -363,7 +365,7 @@ def analyze(filename, autofix):
     # Create tokenbuffer
 
     try:
-        tb = Token_Buffer(lexer)
+        tbuf = Token_Buffer(lexer)
     except Error:
         # If there are lex errors, we can stop here
         return
@@ -371,13 +373,13 @@ def analyze(filename, autofix):
     # Stange 2. Look at raw token stream for some of the more basic
     # rules.
 
-    stage_2_analysis(cfg, tb)
+    stage_2_analysis(cfg, tbuf)
 
     # Re-write the file, with issues fixed
 
     if autofix:
         with open(filename, "w", encoding=encoding) as fd:
-            tb.replay(fd)
+            tbuf.replay(fd)
 
 
 def main():

@@ -27,14 +27,16 @@ from m_lexer import MATLAB_Token
 
 NODE_UID = [0]
 
+
 class Node:
     def __init__(self):
         NODE_UID[0] += 1
         self.uid = NODE_UID[0]
 
+
 class Expression(Node):
-    def __init__(self):
-        super().__init__()
+    pass
+
 
 class Sequence_Of_Statements(Node):
     def __init__(self, statements):
@@ -44,9 +46,10 @@ class Sequence_Of_Statements(Node):
             assert isinstance(statement, Statement)
         self.statements = statements
 
+
 class Statement(Node):
-    def __init__(self):
-        super().__init__()
+    pass
+
 
 class Identifier(Expression):
     def __init__(self, t_ident):
@@ -54,7 +57,8 @@ class Identifier(Expression):
         assert isinstance(t_ident, MATLAB_Token)
         assert t_ident.kind == "IDENTIFIER"
 
-        self.t_ident = t_ident;
+        self.t_ident = t_ident
+
 
 class Range_Expression(Expression):
     def __init__(self, n_first, n_last, n_stride=None):
@@ -71,6 +75,7 @@ class Range_Expression(Expression):
         else:
             self.n_stride = n_stride
 
+
 class Simple_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_range, n_body):
         super().__init__()
@@ -78,12 +83,13 @@ class Simple_For_Statement(Statement):
         assert t_for.kind == "KEYWORD" and t_for.value() == "for"
         assert isinstance(n_ident, Identifier)
         assert isinstance(n_range, Range_Expression)
-        assert isinstance(n_body, Sequence_Of_Statements);
+        assert isinstance(n_body, Sequence_Of_Statements)
 
         self.t_for   = t_for
         self.n_ident = n_ident
         self.n_range = n_range
         self.n_body  = n_body
+
 
 class If_Statement(Statement):
     def __init__(self, actions):
@@ -103,6 +109,7 @@ class If_Statement(Statement):
         self.actions = actions
         self.has_else = actions[-1][0].value() == "else"
 
+
 class Simple_Assignment_Statement(Statement):
     def __init__(self, t_eq, n_lhs, n_rhs):
         super().__init__()
@@ -114,6 +121,7 @@ class Simple_Assignment_Statement(Statement):
         self.n_lhs = n_lhs
         self.n_rhs = n_rhs
 
+
 class Return_Statement(Statement):
     def __init__(self, t_kw):
         super().__init__()
@@ -121,6 +129,7 @@ class Return_Statement(Statement):
         assert t_kw.kind == "KEYWORD" and t_kw.value() == "return"
 
         self.t_kw = t_kw
+
 
 class Reference(Expression):
     def __init__(self, n_ident, arglist):
@@ -133,9 +142,10 @@ class Reference(Expression):
         self.n_ident = n_ident
         self.arglist = arglist
 
+
 class Literal(Expression):
-    def __init__(self):
-        super().__init__()
+    pass
+
 
 class Number_Literal(Literal):
     def __init__(self, t_value):
@@ -145,6 +155,7 @@ class Number_Literal(Literal):
 
         self.t_value = t_value
 
+
 class String_Literal(Literal):
     def __init__(self, t_string):
         super().__init__()
@@ -152,6 +163,7 @@ class String_Literal(Literal):
         assert t_string.kind == "STRING"
 
         self.t_string = t_string
+
 
 class Unary_Operation(Expression):
     def __init__(self, precedence, t_op, n_expr):
@@ -165,6 +177,7 @@ class Unary_Operation(Expression):
         self.precedence = precedence
         self.t_op   = t_op
         self.n_expr = n_expr
+
 
 class Binary_Operation(Expression):
     def __init__(self, precedence, t_op, n_lhs, n_rhs):
