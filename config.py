@@ -32,6 +32,7 @@ from errors import mh, ICE, Error, Location
 CONFIG_FILENAME = "miss_hit.cfg"
 
 DEFAULT = {
+    "enable"           : True,
     "file_length"      : 1000,
     "line_length"      : 80,
     "tab_width"        : 4,
@@ -109,6 +110,7 @@ class Config_Parser:
                 if key not in cfg:
                     mh.error(t_key.location,
                              "unknown option %s" % key)
+
                 elif isinstance(cfg[key], int):
                     self.match("NUMBER")
                     try:
@@ -116,6 +118,15 @@ class Config_Parser:
                     except ValueError:
                         mh.error(self.ct.location,
                                  "%s option requires an integer" % key)
+
+                elif isinstance(cfg[key], bool):
+                    self.match("NUMBER")
+                    if self.ct.value() in ("0", "1"):
+                        value = self.ct.value() == "1"
+                    else:
+                        mh.error(self.ct.location,
+                                 "boolean option %s requires 0 or 1" % key)
+
                 elif isinstance(cfg[key], set):
                     self.match("STRING")
                     value = self.ct.value()
@@ -231,7 +242,6 @@ def build_config_tree(cmdline_options):
 
     for root in roots:
         build(root, True)
-
 
 def get_config(filename):
     d = os.path.dirname(os.path.abspath(filename))

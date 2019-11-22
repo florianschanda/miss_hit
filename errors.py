@@ -82,6 +82,7 @@ class Message_Handler:
         self.style_issues = 0
         self.errors = 0
         self.files = set()
+        self.excluded_files = set()
 
         self.show_context = True
         self.sort_messages = True
@@ -90,8 +91,16 @@ class Message_Handler:
     def register_file(self, filename):
         assert isinstance(filename, str)
         assert filename not in self.files
+        assert filename not in self.excluded_files
 
         self.files.add(filename)
+
+    def register_exclusion(self, filename):
+        assert isinstance(filename, str)
+        assert filename not in self.files
+        assert filename not in self.excluded_files
+
+        self.excluded_files.add(filename)
 
     def unregister_file(self, filename):
         assert isinstance(filename, str)
@@ -187,6 +196,9 @@ class Message_Handler:
         if len(stats) == 1:
             stats.append("everything semes fine")
         tmp += ", ".join(stats)
+        if self.excluded_files:
+            tmp += ("; %u file(s) excluded from analysis" %
+                    len(self.excluded_files))
         print(tmp)
 
         if self.style_issues or self.warnings or self.errors:

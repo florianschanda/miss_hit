@@ -54,6 +54,8 @@ A simple style checker exists (mh_style.py). It can detect and correct
 
 * Ending a line with a comma
 
+#### Configuration files
+
 Options are read from configuration files `miss_hit.cfg`. A file in
 `foo/bar/potato.m` will first look in the root, then
 `foo/miss_hit.cfg`, and finally in `foo/bar/miss_hit.cfg`. Each file
@@ -80,6 +82,28 @@ line_length: 180
 Then files in `foo/` or below will be checked for a line length of 180
 (redefined) and a file length of 2500 (taken over from the project
 root).
+
+#### Excluding files from analysis
+
+A special entry `enable` into a `miss_hit.cfg` can be used to enable
+or disable analysis for the subtree.
+
+For example if you have a lot of legacy code you can put this into
+your root configuration:
+
+```
+enable: 0
+line_length: 100
+```
+
+And then enable analysis for some subdirectories, e.g. in
+`foo/new_code/miss_hit.cfg` you can write:
+
+```
+enable: 1
+```
+
+Like any other option, the "closest one" takes precedence.
 
 ## Infrastructure
 

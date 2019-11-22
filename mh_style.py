@@ -303,6 +303,14 @@ def analyze(filename, autofix):
 
     encoding = "cp1252"
 
+    # Get config first, since we might want to skip this file
+
+    cfg = config.get_config(filename)
+
+    if not cfg["enable"]:
+        mh.register_exclusion(filename)
+        return
+
     mh.register_file(filename)
 
     # Do some file-based sanity checking
@@ -318,7 +326,6 @@ def analyze(filename, autofix):
 
     # Get configuration and create lexer
 
-    cfg = config.get_config(filename)
     lexer = MATLAB_Lexer(filename, encoding=encoding)
 
     # We're dealing with an empty file here. Lets just not do anything
@@ -433,6 +440,7 @@ def main():
         sys.exit(1)
 
     mh.show_context = not options.brief
+    # mh.sort_messages = False
 
     for item in options.files:
         if os.path.isdir(item):
