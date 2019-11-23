@@ -1,0 +1,7 @@
+In test.m, line 7
+| sutff; # mh:ignore_style
+|        ^^^^^^^^^^^^^^^^^ warning: style justification does not apply
+In test.m, line 10
+|   potato ];
+|          ^ style: ] must not be preceeded by whitespace
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s), 1 warning(s), 2 justified message(s)

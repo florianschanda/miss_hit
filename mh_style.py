@@ -174,6 +174,11 @@ def stage_2_analysis(cfg, tbuf):
         else:
             last_code_in_line = False
 
+        # Recognize justifications
+        if token.kind in ("COMMENT", "CONTINUATION"):
+            if "mh:ignore_style" in token.value():
+                mh.register_justification(token)
+
         # Corresponds to the old CodeChecker CopyrightCheck rule
         if in_copyright_notice:
             if token.kind == "COMMENT":

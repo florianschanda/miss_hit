@@ -26,6 +26,9 @@
 
 import sys
 
+# pylint: disable=cyclic-import
+import m_lexer
+
 
 class Location:
     """ This fully describes where a message originates from """
@@ -78,12 +81,26 @@ class Error(Exception):
         self.message = message
 
 
+class Justification:
+    def __init__(self, token):
+        assert isinstance(token, m_lexer.MATLAB_Token)
+        assert token.kind in ("COMMENT", "CONTINUATION")
+
+        self.token = token
+        self.used = False
+
+
+class Style_Justification(Justification):
+    pass
+
+
 class Message_Handler:
     """ All messages should be routed through this class """
     def __init__(self):
         self.warnings = 0
         self.style_issues = 0
         self.errors = 0
+        self.justified = 0
         self.files = set()
         self.excluded_files = set()
 
@@ -91,12 +108,15 @@ class Message_Handler:
         self.sort_messages = True
         self.messages = []
 
+        self.style_justifications = {}
+
     def register_file(self, filename):
         assert isinstance(filename, str)
         assert filename not in self.files
         assert filename not in self.excluded_files
 
         self.files.add(filename)
+        self.style_justifications[filename] = {}
 
     def register_exclusion(self, filename):
         assert isinstance(filename, str)
@@ -110,11 +130,30 @@ class Message_Handler:
         assert filename in self.files
 
         self.files.remove(filename)
+        del self.style_justifications[filename]
+
         self.messages = [m
                          for m in self.messages
                          if m.location.filename != filename]
 
     def __render_message(self, location, kind, message):
+        # First, check if a justification applies
+        if kind == "style":
+            st_just = self.style_justifications[location.filename]
+            if location.line in st_just:
+                st_just[location.line].used = True
+                self.justified += 1
+                return
+
+        # Count the message. Note that errors have already been
+        # counted, so don't count them again,
+        if kind == "info":
+            pass
+        elif kind == "style":
+            self.style_issues += 1
+        elif kind == "warning":
+            self.warnings += 1
+
         if location.line is None:
             print("%s: %s: %s" % (location.filename,
                                   kind,
@@ -159,15 +198,21 @@ class Message_Handler:
         else:
             self.__render_message(location, kind, message)
 
-        if kind == "info":
-            pass
-        elif kind == "style":
-            self.style_issues += 1
-        elif kind == "warning":
-            self.warnings += 1
-        else:
+        if kind in ("lex error", "error"):
             self.errors += 1
             raise Error(location, message)
+
+    def register_justification(self, token):
+        assert isinstance(token, m_lexer.MATLAB_Token)
+        assert token.kind in ("COMMENT", "CONTINUATION")
+
+        if "mh:ignore_style" in token.value():
+            just = Style_Justification(token)
+            st_just = self.style_justifications[token.location.filename]
+            st_just[token.location.line] = just
+        else:
+            self.warning(token.location,
+                         "invalid justification not recognized")
 
     def info(self, location, message):
         self.__register_message(location, "info", message)
@@ -185,6 +230,21 @@ class Message_Handler:
         self.__register_message(location, "error", message)
 
     def print_summary_and_exit(self):
+        # Check which justifications actually apply
+        for location, kind, message in sorted(self.messages):
+            if kind == "style":
+                st_just = self.style_justifications[location.filename]
+                if location.line in st_just:
+                    st_just[location.line].used = True
+
+        # New messages for justifications that did not apply
+        for filename in self.style_justifications:
+            for just in self.style_justifications[filename].values():
+                if not just.used:
+                    mh.warning(just.token.location,
+                               "style justification does not apply")
+
+        # Finally print remaining messages
         for location, kind, message in sorted(self.messages):
             self.__render_message(location, kind, message)
 
@@ -198,6 +258,8 @@ class Message_Handler:
             stats.append("%u error(s)" % self.errors)
         if len(stats) == 1:
             stats.append("everything semes fine")
+        if self.justified > 0:
+            stats.append("%u justified message(s)" % self.justified)
         tmp += ", ".join(stats)
         if self.excluded_files:
             tmp += ("; %u file(s) excluded from analysis" %

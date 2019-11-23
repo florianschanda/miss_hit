@@ -105,6 +105,14 @@ enable: 1
 
 Like any other option, the "closest one" takes precedence.
 
+#### Justifications
+
+Style issues can be justified by placing `mh:ignore_style` into a
+comment or line continuation. The justification applies to all style
+issues on that line.
+
+Justifications that are useless generate a warning.
+
 ## Infrastructure
 
 ### Lexer
