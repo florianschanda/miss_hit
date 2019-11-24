@@ -59,8 +59,12 @@ class Location:
     def __lt__(self, other):
         assert isinstance(other, Location)
 
-        return (self.filename, self.line, self.col_start) < \
-            (other.filename, other.line, other.col_start)
+        return (self.filename,
+                self.line if self.line else 0,
+                self.col_start if self.col_start else -1) < \
+            (other.filename,
+             other.line if other.line else 0,
+             other.col_start if other.col_start else -1)
 
 
 class ICE(Exception):
