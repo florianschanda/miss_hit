@@ -91,7 +91,7 @@ def rec(indent, prefix, node):
         if len(node.arglist) == 0:
             rec(indent, prefix, node.n_ident)
         else:
-            rec(indent, "Reference: ", node.n_ident)
+            rec(indent, prefix + "Reference: ", node.n_ident)
             for arg in node.arglist:
                 rec(indent + 2, "arg: ", arg)
 
@@ -104,9 +104,12 @@ def rec(indent, prefix, node):
     elif isinstance(node, Identifier):
         emit(node.t_ident.value())
 
+    elif isinstance(node, Selection):
+        emit("Selection of field %s" % node.n_field.t_ident.value())
+        rec(indent + 2, "root: ", node.n_root)
+
     else:
-        emit("TODO <" + node.__class__.__name__ + ">")
-        raise ICE("cannot print " + node.__class__.__name__)
+        emit("\033[31;1mTODO\033[0m <" + node.__class__.__name__ + ">")
 
 
 def treepr(root_node):

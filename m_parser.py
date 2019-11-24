@@ -25,8 +25,8 @@
 ##############################################################################
 
 
-from errors import mh, ICE, Error, Location
 from m_lexer import Token_Generator, MATLAB_Lexer
+from errors import mh, ICE, Error, Location
 import tree_print
 
 # pylint: disable=wildcard-import,unused-wildcard-import
@@ -98,8 +98,8 @@ class MATLAB_Parser:
         self.nt = self.lexer.token()
 
         while self.nt:
-            # Skip comments
-            while self.nt and self.nt.kind == "COMMENT":
+            # Skip comments and continuations
+            while self.nt and self.nt.kind in ("COMMENT", "CONTINUATION"):
                 self.nt = self.lexer.token()
 
             # Join new-lines
@@ -145,6 +145,17 @@ class MATLAB_Parser:
     def parse_identifier(self):
         self.match("IDENTIFIER")
         return Identifier(self.ct)
+
+    def parse_selection(self):
+        rv = self.parse_identifier()
+
+        while self.peek("SELECTION"):
+            self.match("SELECTION")
+            dot = self.ct
+            field = self.parse_identifier()
+            rv = Selection(dot, rv, field)
+
+        return rv
 
     def parse_file_input(self):
         while self.peek("NEWLINE"):
@@ -253,13 +264,17 @@ class MATLAB_Parser:
                          " found %s instead" % self.nt.value())
 
         else:
-            return self.parse_assignment()
+            return self.parse_assignment_or_call()
 
-    def parse_assignment(self):
-        # Three options
+    def parse_assignment_or_call(self):
+        # Assignment
         #   reference "=" expr                   '<ref> = <expr>'
         #   s_assignee_matrix "=" expr           '[<ref>] = <expr>'
         #   m_assignee_matrix "=" reference      '[<ref>, <ref>] = <ref>'
+        # Call
+        #   potato();                            '<ref>'
+        #
+        # TODO: need to make sure the call case has brackets.
 
         lhs = []
         if self.peek("S_BRA"):
@@ -273,6 +288,12 @@ class MATLAB_Parser:
             self.match("S_KET")
         else:
             lhs.append(self.parse_reference())
+
+        # This is the call case
+        if len(lhs) == 1 and not self.peek("ASSIGNMENT"):
+            self.match("SEMICOLON")
+            self.match("NEWLINE")
+            return lhs[0]
 
         self.match("ASSIGNMENT")
         t_eq = self.ct
@@ -294,8 +315,10 @@ class MATLAB_Parser:
     def parse_reference(self):
         # identifier                   'potato'
         # identifier ( arglist )       'array(12)'
+        # ident.field                  'foo.bar'
+        # ident.field ( arglist )      'coord.x(12)'
 
-        n_ident = self.parse_identifier()
+        n_ident = self.parse_selection()
 
         if self.peek("BRA"):
             arglist = self.parse_argument_list()
@@ -332,6 +355,7 @@ class MATLAB_Parser:
     # 2. Transpose (.'), power (.^), complex conjugate transpose ('),
     #    matrix power (^)
     def parse_precedence_2(self):
+        # TODO: fix chaining
         lhs = self.parse_precedence_1()
 
         if self.peek("OPERATOR") and self.nt.value() in ("'", ".'"):
@@ -357,7 +381,7 @@ class MATLAB_Parser:
     #    parentheses to explicitly specify the intended precedence of
     #    statements containing these operator combinations.
     def parse_precedence_3(self):
-        # TODO
+        # TODO: actually implement this
         return self.parse_precedence_2()
 
     # 4. Unary plus (+), unary minus (-), logical negation (~)
@@ -374,26 +398,29 @@ class MATLAB_Parser:
     #    matrix multiplication (*), matrix right division (/), matrix left
     #    division (\)
     def parse_precedence_5(self):
-        lhs = self.parse_precedence_4()
-        if self.peek("OPERATOR") and self.nt.value() in (".*", "./", r".\\",
-                                                         "*", "/", "\\"):
+        rv = self.parse_precedence_4()
+
+        while self.peek("OPERATOR") and self.nt.value() in ("*", ".*",
+                                                            "/", "./",
+                                                            "\\", ".\\"):
             self.match("OPERATOR")
             t_op = self.ct
-            rhs = self.parse_precedence_5()
-            return Binary_Operation(5, t_op, lhs, rhs)
-        else:
-            return lhs
+            rhs = self.parse_precedence_4()
+            rv = Binary_Operation(5, t_op, rv, rhs)
+
+        return rv
 
     # 6. Addition (+), subtraction (-)
     def parse_precedence_6(self):
-        lhs = self.parse_precedence_5()
-        if self.peek("OPERATOR") and self.nt.value() in ("+", "-"):
+        rv = self.parse_precedence_5()
+
+        while self.peek("OPERATOR") and self.nt.value() in ("+", "-"):
             self.match("OPERATOR")
             t_op = self.ct
-            rhs = self.parse_precedence_6()
-            return Binary_Operation(6, t_op, lhs, rhs)
-        else:
-            return lhs
+            rhs = self.parse_precedence_5()
+            rv = Binary_Operation(6, t_op, rv, rhs)
+
+        return rv
 
     # 7. Colon operator (:)
     def parse_range_expression(self):
@@ -417,59 +444,65 @@ class MATLAB_Parser:
     # 8. Less than (<), less than or equal to (<=), greater than (>),
     #    greater than or equal to (>=), equal to (==), not equal to (~=)
     def parse_precedence_8(self):
-        lhs = self.parse_range_expression()
-        if self.peek("OPERATOR") and self.nt.value() in ("<", "<=", ">", ">=",
-                                                         "==", "~="):
+        rv = self.parse_range_expression()
+
+        while self.peek("OPERATOR") and self.nt.value() in ("<", "<=",
+                                                            ">", ">=",
+                                                            "==", "~="):
             self.match("OPERATOR")
             t_op = self.ct
-            rhs = self.parse_precedence_8()
-            return Binary_Operation(8, t_op, lhs, rhs)
-        else:
-            return lhs
+            rhs = self.parse_range_expression()
+            rv = Binary_Operation(8, t_op, rv, rhs)
+
+        return rv
 
     # 9. Element-wise AND (&)
     def parse_precedence_9(self):
-        lhs = self.parse_precedence_8()
-        if self.peek("OPERATOR", "&"):
+        rv = self.parse_precedence_8()
+
+        while self.peek("OPERATOR", "&"):
             self.match("OPERATOR", "&")
             t_op = self.ct
-            rhs = self.parse_precedence_9()
-            return Binary_Operation(9, t_op, lhs, rhs)
-        else:
-            return lhs
+            rhs = self.parse_precedence_8()
+            rv = Binary_Operation(9, t_op, rv, rhs)
+
+        return rv
 
     # 10. Element-wise OR (|)
     def parse_precedence_10(self):
-        lhs = self.parse_precedence_9()
-        if self.peek("OPERATOR", "|"):
+        rv = self.parse_precedence_9()
+
+        while self.peek("OPERATOR", "|"):
             self.match("OPERATOR", "|")
             t_op = self.ct
-            rhs = self.parse_precedence_10()
-            return Binary_Operation(10, t_op, lhs, rhs)
-        else:
-            return lhs
+            rhs = self.parse_precedence_9()
+            rv = Binary_Operation(10, t_op, rv, rhs)
+
+        return rv
 
     # 11. Short-circuit AND (&&)
     def parse_precedence_11(self):
-        lhs = self.parse_precedence_10()
-        if self.peek("OPERATOR", "|"):
-            self.match("OPERATOR", "|")
+        rv = self.parse_precedence_10()
+
+        while self.peek("OPERATOR", "&&"):
+            self.match("OPERATOR", "&&")
             t_op = self.ct
-            rhs = self.parse_precedence_11()
-            return Binary_Operation(11, t_op, lhs, rhs)
-        else:
-            return lhs
+            rhs = self.parse_precedence_10()
+            rv = Binary_Operation(11, t_op, rv, rhs)
+
+        return rv
 
     # 12. Short-circuit OR (||)
     def parse_precedence_12(self):
-        lhs = self.parse_precedence_11()
-        if self.peek("OPERATOR", "|"):
-            self.match("OPERATOR", "|")
+        rv = self.parse_precedence_11()
+
+        while self.peek("OPERATOR", "||"):
+            self.match("OPERATOR", "||")
             t_op = self.ct
-            rhs = self.parse_precedence_12()
-            return Binary_Operation(12, t_op, lhs, rhs)
-        else:
-            return lhs
+            rhs = self.parse_precedence_11()
+            rv = Binary_Operation(12, t_op, rv, rhs)
+
+        return rv
 
     def parse_matrix(self):
         raise NIY()
@@ -477,6 +510,10 @@ class MATLAB_Parser:
     def parse_argument_list(self):
         args = []
         self.match("BRA")
+        if self.peek("KET"):
+            self.match("KET")
+            return args
+
         while True:
             args.append(self.parse_expression())
             if self.peek("COMMA"):
@@ -542,6 +579,7 @@ class MATLAB_Parser:
 
 def sanity_test(filename):
     try:
+        mh.register_file(filename)
         parser = MATLAB_Parser(MATLAB_Lexer(filename))
         parser.parse_file_input()
         print("%s: parsed OK" % filename)
