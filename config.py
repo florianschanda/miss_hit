@@ -208,6 +208,7 @@ def register_tree(dirname):
 
 def build_config_tree(cmdline_options):
     roots = [d for d in CONFIG_TREE if CONFIG_TREE[d]["root"]]
+    parse_config = not cmdline_options.ignore_config
 
     def merge_command_line(cfg):
         # Overwrite with options from the command-line
@@ -235,7 +236,7 @@ def build_config_tree(cmdline_options):
             else:
                 CONFIG_TREE[node]["config"] = parent_config
 
-        if CONFIG_TREE[node]["has_config"]:
+        if CONFIG_TREE[node]["has_config"] and parse_config:
             load_config(os.path.join(node, CONFIG_FILENAME),
                         CONFIG_TREE[node]["config"])
             merge_command_line(CONFIG_TREE[node]["config"])

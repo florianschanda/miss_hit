@@ -406,6 +406,10 @@ def main():
                     action="store_true",
                     default=False,
                     help="Automatically fix issues where the fix is obvious")
+    ap.add_argument("--ignore-config",
+                    action="store_true",
+                    default=False,
+                    help="Ignore all %s files." % config.CONFIG_FILENAME)
     style_option = ap.add_argument_group("Style options")
     style_option.add_argument("--line-length",
                               metavar="N",

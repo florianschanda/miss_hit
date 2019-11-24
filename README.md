@@ -56,11 +56,12 @@ A simple style checker exists (mh_style.py). It can detect and correct
 
 #### Configuration files
 
-Options are read from configuration files `miss_hit.cfg`. A file in
-`foo/bar/potato.m` will first look in the root, then
-`foo/miss_hit.cfg`, and finally in `foo/bar/miss_hit.cfg`. Each file
-augments/overwrites previously given configuration, and command-line
-options overwrite everything.
+Options are read from configuration files `miss_hit.cfg`. (This
+behaviour can be disabled with the `--ignore-config` option). When
+analysing the file `foo/bar/potato.m`, we will first look in the root
+for `miss_hit.cfg`, then in `foo/miss_hit.cfg`, and finally in
+`foo/bar/miss_hit.cfg`. Each file augments/overwrites previously given
+configuration, and command-line options overwrite everything.
 
 For example you can put this `miss_hit.cfg` in your project root:
 
