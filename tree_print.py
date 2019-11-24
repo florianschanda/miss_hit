@@ -41,6 +41,12 @@ def rec(indent, prefix, node):
         rec(indent + 2, "dst: ", node.n_lhs)
         rec(indent + 2, "src: ", node.n_rhs)
 
+    elif isinstance(node, Compound_Assignment_Statement):
+        emit("Assignment on line %u" % node.t_eq.location.line)
+        for n, n_lhs in enumerate(node.l_lhs):
+            rec(indent + 2, "dst%u: " % n, n_lhs)
+        rec(indent + 2, "src: ", node.n_rhs)
+
     elif isinstance(node, If_Statement):
         emit("If statement on line %u" % node.actions[0][0].location.line)
         for t_kw, n_expr, n_body in node.actions:
@@ -60,6 +66,9 @@ def rec(indent, prefix, node):
 
     elif isinstance(node, Return_Statement):
         emit("Return statement on line %u" % node.t_kw.location.line)
+
+    elif isinstance(node, Naked_Expression_Statement):
+        rec(indent, prefix + "Naked Expression: ", node.n_expr)
 
     elif isinstance(node, Sequence_Of_Statements):
         if len(node.statements) == 0:

@@ -43,7 +43,7 @@ class Sequence_Of_Statements(Node):
         super().__init__()
         assert isinstance(statements, list)
         for statement in statements:
-            assert isinstance(statement, (Expression, Statement))
+            assert isinstance(statement, Statement)
         self.statements = statements
 
 
@@ -55,7 +55,8 @@ class Identifier(Expression):
     def __init__(self, t_ident):
         super().__init__()
         assert isinstance(t_ident, MATLAB_Token)
-        assert t_ident.kind == "IDENTIFIER"
+        assert t_ident.kind == "IDENTIFIER" or \
+            (t_ident.kind == "OPERATOR" and t_ident.value() == "~")
 
         self.t_ident = t_ident
 
@@ -138,12 +139,37 @@ class Simple_Assignment_Statement(Statement):
     def __init__(self, t_eq, n_lhs, n_rhs):
         super().__init__()
         assert isinstance(t_eq, MATLAB_Token)
+        assert t_eq.kind == "ASSIGNMENT"
         assert isinstance(n_lhs, Reference)
         assert isinstance(n_rhs, Expression)
 
         self.t_eq  = t_eq
         self.n_lhs = n_lhs
         self.n_rhs = n_rhs
+
+
+class Compound_Assignment_Statement(Statement):
+    def __init__(self, t_eq, l_lhs, n_rhs):
+        super().__init__()
+        assert isinstance(t_eq, MATLAB_Token)
+        assert t_eq.kind == "ASSIGNMENT"
+        assert isinstance(l_lhs, list)
+        assert len(l_lhs) >= 2
+        for n_lhs in l_lhs:
+            assert isinstance(n_lhs, Reference)
+        assert isinstance(n_rhs, Expression)
+
+        self.t_eq  = t_eq
+        self.l_lhs = l_lhs
+        self.n_rhs = n_rhs
+
+
+class Naked_Expression_Statement(Statement):
+    def __init__(self, n_expr):
+        super().__init__()
+        assert isinstance(n_expr, Expression)
+
+        self.n_expr = n_expr
 
 
 class Return_Statement(Statement):

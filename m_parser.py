@@ -142,12 +142,19 @@ class MATLAB_Parser:
     ##########################################################################
     # Parsing
 
-    def parse_identifier(self):
-        self.match("IDENTIFIER")
-        return Identifier(self.ct)
+    def parse_identifier(self, in_reference=False):
+        if self.peek("OPERATOR", "~") and in_reference:
+            self.match("OPERATOR")
+            return Identifier(self.ct)
+        else:
+            self.match("IDENTIFIER")
+            return Identifier(self.ct)
 
-    def parse_selection(self):
-        rv = self.parse_identifier()
+    def parse_selection(self, in_reference=False):
+        rv = self.parse_identifier(in_reference)
+
+        if rv.t_ident.value() == "~":
+            return rv
 
         while self.peek("SELECTION"):
             self.match("SELECTION")
@@ -293,7 +300,7 @@ class MATLAB_Parser:
         if len(lhs) == 1 and not self.peek("ASSIGNMENT"):
             self.match("SEMICOLON")
             self.match("NEWLINE")
-            return lhs[0]
+            return Naked_Expression_Statement(lhs[0])
 
         self.match("ASSIGNMENT")
         t_eq = self.ct
@@ -310,7 +317,7 @@ class MATLAB_Parser:
         if len(lhs) == 1:
             return Simple_Assignment_Statement(t_eq, lhs[0], rhs)
         else:
-            raise NIY()
+            return Compound_Assignment_Statement(t_eq, lhs, rhs)
 
     def parse_reference(self):
         # identifier                   'potato'
@@ -318,7 +325,7 @@ class MATLAB_Parser:
         # ident.field                  'foo.bar'
         # ident.field ( arglist )      'coord.x(12)'
 
-        n_ident = self.parse_selection()
+        n_ident = self.parse_selection(in_reference=True)
 
         if self.peek("BRA"):
             arglist = self.parse_argument_list()
@@ -588,6 +595,11 @@ def sanity_test(filename):
 
 
 if __name__ == "__main__":
-    sanity_test("tests/parser/simple.m")
-    sanity_test("tests/parser/simple_pe.m")
+    from argparse import ArgumentParser
+    ap = ArgumentParser()
+    ap.add_argument("file")
+    options = ap.parse_args()
+
+    sanity_test(options.file)
+
     mh.print_summary_and_exit()
