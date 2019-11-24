@@ -386,6 +386,10 @@ def analyze(filename, autofix):
         with open(filename, "w", encoding=encoding) as fd:
             tbuf.replay(fd)
 
+    # Emit messages
+
+    mh.flush_messages(filename)
+
 
 def main():
     ap = argparse.ArgumentParser(

@@ -229,6 +229,43 @@ class Message_Handler:
     def error(self, location, message):
         self.__register_message(location, "error", message)
 
+    def flush_messages(self, filename):
+        assert isinstance(filename, str)
+        assert filename in self.files
+
+        # Check which justifications actually apply here
+        for location, kind, message in self.messages:
+            if location.filename != filename:
+                continue
+
+            if kind == "style":
+                st_just = self.style_justifications[location.filename]
+                if location.line in st_just:
+                    st_just[location.line].used = True
+
+        # New messages for justifications that did not apply
+        for just in self.style_justifications[filename].values():
+            if not just.used:
+                mh.warning(just.token.location,
+                           "style justification does not apply")
+
+        # Sort messages into stuff that applies to us and others
+        applicable_msg = []
+        other_msg = []
+        for location, kind, message in self.messages:
+            if location.filename == filename:
+                applicable_msg.append((location, kind, message))
+            else:
+                other_msg.append((location, kind, message))
+        self.messages = other_msg
+
+        # Print messages for this file
+        for location, kind, message in sorted(applicable_msg):
+            self.__render_message(location, kind, message)
+
+        # Clean up justifications
+        self.style_justifications[filename] = {}
+
     def print_summary_and_exit(self):
         # Check which justifications actually apply
         for location, kind, message in sorted(self.messages):
