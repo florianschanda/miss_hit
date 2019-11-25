@@ -197,16 +197,17 @@ class MATLAB_Lexer(Token_Generator):
     def correct_tabs(self, tabwidth):
         assert isinstance(tabwidth, int) and tabwidth >= 2
 
-        for line_id, line in enumerate(self.context_line):
+        new_lines = []
+        for line in self.context_line:
             tmp = ""
             for c in line:
                 if c == "\t":
                     tmp += " " * (tabwidth - (len(tmp) % tabwidth))
                 else:
                     tmp += c
-            self.context_line[line_id] = tmp
-
-        self.text = "\n".join(self.context_line)
+            new_lines.append(tmp)
+        self.context_line = new_lines
+        self.text = "\n".join(new_lines) + "\n"
 
         self.cc = None
         self.nc = self.text[0] if len(self.text) > 0 else "\0"
