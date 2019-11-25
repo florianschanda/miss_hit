@@ -12,22 +12,27 @@ def execute_style_test(name):
                           "style",
                           name))
 
-    files = [f for f in os.listdir(".") if f.endswith(".m")]
+    m_files = []
+    for path, _, files in os.walk("."):
+        for f in files:
+            if f.endswith(".m"):
+                m_files.append(os.path.join(path, f))
 
     # Take a copy of the original file
     orig = {}
-    for f in files:
+    for f in m_files:
         with open(f, "r") as fd:
             orig[f] = fd.read()
 
-    r = subprocess.run(["../../../mh_style.py"] + files +
-                       ["--fix"],
+    r = subprocess.run(["../../../mh_style.py",
+                        ".",
+                        "--fix"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
                        encoding="utf-8")
 
     # Rename the fixed files, and restore the original
-    for f in files:
+    for f in m_files:
         os.rename(f, f + "_fixed")
         with open(f, "w") as fd:
             fd.write(orig[f])

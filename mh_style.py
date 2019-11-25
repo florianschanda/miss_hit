@@ -640,12 +640,14 @@ def main():
 
     for item in options.files:
         if os.path.isdir(item):
-            for path, _, files in os.walk(item):
-                for f in files:
+            for path, dirs, files in os.walk(item):
+                dirs.sort()
+                for f in sorted(files):
                     if f.endswith(".m"):
-                        analyze(os.path.join(path, f), options.fix)
+                        analyze(os.path.normpath(os.path.join(path, f)),
+                                options.fix)
         else:
-            analyze(item, options.fix)
+            analyze(os.path.normpath(item), options.fix)
 
     mh.print_summary_and_exit()
 

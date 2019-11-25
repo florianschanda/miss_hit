@@ -29,6 +29,8 @@ from copy import deepcopy
 from m_lexer import MATLAB_Lexer
 from errors import mh, ICE, Error, Location
 
+from pprint import pprint
+
 CONFIG_FILENAME = "miss_hit.cfg"
 
 DEFAULT = {
@@ -36,7 +38,8 @@ DEFAULT = {
     "file_length"      : 1000,
     "line_length"      : 80,
     "tab_width"        : 4,
-    "copyright_entity" : set()
+    "copyright_entity" : set(),
+    "exclude_dir"      : set(),
 }
 
 CONFIG_TREE = {}
@@ -231,8 +234,9 @@ def build_config_tree(cmdline_options):
         else:
             parent = CONFIG_TREE[node]["parent"]
             parent_config = CONFIG_TREE[parent]["config"]
-            if CONFIG_TREE[node]["has_config"]:
+            if CONFIG_TREE[node]["has_config"] or parent_config["exclude_dir"]:
                 CONFIG_TREE[node]["config"] = deepcopy(parent_config)
+                CONFIG_TREE[node]["config"]["exclude_dir"] = set()
             else:
                 CONFIG_TREE[node]["config"] = parent_config
 
@@ -240,6 +244,10 @@ def build_config_tree(cmdline_options):
             load_config(os.path.join(node, CONFIG_FILENAME),
                         CONFIG_TREE[node]["config"])
             merge_command_line(CONFIG_TREE[node]["config"])
+
+        if not CONFIG_TREE[node]["root"]:
+            if os.path.basename(node) in parent_config["exclude_dir"]:
+                CONFIG_TREE[node]["config"]["enable"] = False
 
         for child in CONFIG_TREE[node]["children"]:
             build(child)
