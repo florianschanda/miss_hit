@@ -22,8 +22,9 @@ If this is you, then this tool suite is for you.
 
 ### Style Checker
 
-A simple coding style checker for MATLAB. See [doc/style_checker.md]
-for more information.
+A simple coding style checker for MATLAB. See
+[doc/style_checker.md](https://github.com/florianschanda/miss_hit/blob/master/doc/style_checker.md)
+for more information and a user manual.
 
 ## Infrastructure
 
