@@ -23,8 +23,6 @@
 ##                                                                          ##
 ##############################################################################
 
-from errors import ICE
-
 # pylint: disable=wildcard-import,unused-wildcard-import
 from m_ast import *
 # pylint: enable=wildcard-import,unused-wildcard-import

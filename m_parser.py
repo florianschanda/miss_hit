@@ -193,39 +193,63 @@ class MATLAB_Parser:
         # Parse returns. Either 'x' or a list '[x, y]'
         returns = []
         if self.peek("S_BRA"):
+            out_brackets = True
             self.match("S_BRA")
-            while True:
-                self.parse_identifier()
-                returns.append(self.ct.value())
-                if self.peek("COMMA"):
-                    self.match("COMMA")
-                else:
-                    break
-            self.match("S_KET")
+            if self.peek("S_KET"):
+                self.match("S_KET")
+            else:
+                while True:
+                    returns.append(self.parse_selection(in_reference=True))
+                    if self.peek("COMMA"):
+                        self.match("COMMA")
+                    else:
+                        break
+                self.match("S_KET")
         else:
-            self.parse_identifier()
-            returns.append(self.ct.value())
+            out_brackets = False
+            returns.append(self.parse_selection())
 
-        self.match("ASSIGNMENT")
-        name = self.parse_identifier()
+        if self.peek("BRA") and len(returns) == 1 and not out_brackets:
+            # This is a function that doesn't return anything, so
+            # function foo(...
+            function_name = returns[0]
+            returns = []
+
+        elif self.peek("NEWLINE") and len(returns) == 1 and not out_brackets:
+            # As above, but without the brackets
+            function_name = returns[0]
+            returns = []
+
+        else:
+            # This is a normal function, so something like
+            # function [a, b] = potato...
+            # function a = potato...
+            self.match("ASSIGNMENT")
+            function_name = self.parse_selection()
 
         inputs = []
         if self.peek("BRA"):
             self.match("BRA")
-            while True:
-                self.parse_identifier()
-                inputs.append(self.ct.value())
-                if self.peek("COMMA"):
-                    self.match("COMMA")
-                else:
-                    break
-            self.match("KET")
+            if self.peek("KET"):
+                self.match("KET")
+            else:
+                while True:
+                    self.parse_identifier(in_reference=True)
+                    inputs.append(self.ct.value())
+                    if self.peek("COMMA"):
+                        self.match("COMMA")
+                    else:
+                        break
+                self.match("KET")
+
+        if self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
 
         self.match("NEWLINE")
 
         body = self.parse_statement_list()
 
-        tree_print.treepr(name)
+        tree_print.treepr(function_name)
         for statement in body.statements:
             tree_print.treepr(statement)
 
@@ -595,6 +619,7 @@ def sanity_test(filename):
 
 
 if __name__ == "__main__":
+    # pylint: disable=invalid-name
     from argparse import ArgumentParser
     ap = ArgumentParser()
     ap.add_argument("file")

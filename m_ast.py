@@ -101,6 +101,7 @@ class Range_Expression(Expression):
         else:
             return "%s:%s" % (self.n_first, self.n_last)
 
+
 class Simple_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_range, n_body):
         super().__init__()
@@ -224,7 +225,7 @@ class String_Literal(Literal):
         self.t_string = t_string
 
     def __str__(self):
-        return self.t_value.raw_text
+        return self.t_string.raw_text
 
 
 class Unary_Operation(Expression):

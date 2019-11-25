@@ -109,6 +109,7 @@ class Message_Handler:
         self.excluded_files = set()
 
         self.show_context = True
+        self.show_style = True
         self.sort_messages = True
         self.messages = []
 
@@ -147,6 +148,9 @@ class Message_Handler:
             if location.line in st_just:
                 st_just[location.line].used = True
                 self.justified += 1
+                return
+
+            if not self.show_style:
                 return
 
         # Count the message. Note that errors have already been
