@@ -231,13 +231,21 @@ def build_config_tree(cmdline_options):
             cfg["copyright_entity"] = set(cmdline_options.copyright_entity)
 
     def build(node, allow_root=False, exclude=False):
+        # TODO: The way we deal with exclusions is too complex. This
+        # should be rewritten.
+
         if CONFIG_TREE[node]["root"]:
+            # First we set up basic config. For roots this is a copy
+            # of the default config.
             if allow_root:
                 CONFIG_TREE[node]["config"] = deepcopy(DEFAULT)
                 merge_command_line(CONFIG_TREE[node]["config"])
             else:
                 return
         else:
+            # For non-roots we copy (or link) the parent config. The
+            # one exception is "exclude_dir" which we strip from any
+            # child.
             parent = CONFIG_TREE[node]["parent"]
             parent_config = CONFIG_TREE[parent]["config"]
             if CONFIG_TREE[node]["has_config"] or parent_config["exclude_dir"]:
@@ -246,6 +254,10 @@ def build_config_tree(cmdline_options):
             else:
                 CONFIG_TREE[node]["config"] = parent_config
 
+        # We now have basic configuration for this node.
+
+        # Next, we read a config file. As a special hack, if we're in
+        # "exclude" mode, we overwrite any enable to False.
         if CONFIG_TREE[node]["has_config"] and parse_config:
             load_config(os.path.join(node, CONFIG_FILENAME),
                         CONFIG_TREE[node]["config"])
@@ -253,10 +265,14 @@ def build_config_tree(cmdline_options):
             if exclude:
                 CONFIG_TREE[node]["config"]["enable"] = False
 
+        # If we're a child, we look to our parent to see if we should
+        # exclude ourselves.
         if not CONFIG_TREE[node]["root"]:
             if os.path.basename(node) in parent_config["exclude_dir"]:
                 CONFIG_TREE[node]["config"]["enable"] = False
 
+        # Finally, loop over all children to continue building the
+        # tree.
         for child in CONFIG_TREE[node]["children"]:
             to_exclude = (exclude or
                           os.path.basename(child) in
