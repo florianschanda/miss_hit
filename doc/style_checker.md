@@ -91,8 +91,10 @@ Like any other option, the "closest one" takes precedence.
 You can also specify the special `exclude_dir` property in
 configuration files. This property must name a directory *directly
 inside* (i.e. you can't specify `foo/bar`) the same directory the
-configuration file resides in. This is especially useful when
-including an external repository, over which we have limited control.
+configuration file resides in. This permanently excludes the entire
+subtree from analysis, i.e. it cannot be overwritten with `enable: 1`.
+This is especially useful when including an external repository, over
+which we have limited control.
 
 Below is given a more realistic root configuration:
 ```

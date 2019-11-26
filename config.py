@@ -230,7 +230,7 @@ def build_config_tree(cmdline_options):
         if cmdline_options.copyright_entity:
             cfg["copyright_entity"] = set(cmdline_options.copyright_entity)
 
-    def build(node, allow_root=False):
+    def build(node, allow_root=False, exclude=False):
         if CONFIG_TREE[node]["root"]:
             if allow_root:
                 CONFIG_TREE[node]["config"] = deepcopy(DEFAULT)
@@ -250,13 +250,18 @@ def build_config_tree(cmdline_options):
             load_config(os.path.join(node, CONFIG_FILENAME),
                         CONFIG_TREE[node]["config"])
             merge_command_line(CONFIG_TREE[node]["config"])
+            if exclude:
+                CONFIG_TREE[node]["config"]["enable"] = False
 
         if not CONFIG_TREE[node]["root"]:
             if os.path.basename(node) in parent_config["exclude_dir"]:
                 CONFIG_TREE[node]["config"]["enable"] = False
 
         for child in CONFIG_TREE[node]["children"]:
-            build(child)
+            to_exclude = (exclude or
+                          os.path.basename(child) in
+                          CONFIG_TREE[node]["config"]["exclude_dir"])
+            build(child, exclude=to_exclude)
 
     for root in roots:
         build(root, True)
