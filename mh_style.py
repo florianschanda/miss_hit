@@ -31,14 +31,18 @@ import sys
 import os
 import argparse
 import re
+import traceback
+import textwrap
 
 from m_lexer import MATLAB_Lexer, Token_Buffer
-from errors import Location, Error, mh
+from errors import Location, Error, ICE, mh
 import config
 
 # pylint: disable=wildcard-import,unused-wildcard-import
 from m_ast import *
 # pylint: enable=wildcard-import,unused-wildcard-import
+
+GITHUB_ISSUES = "https://github.com/florianschanda/miss_hit/issues"
 
 COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"
 
@@ -631,25 +635,43 @@ def main():
     mh.show_style   = not options.no_style
     # mh.sort_messages = False
 
-    for item in options.files:
-        if os.path.isdir(item):
-            config.register_tree(os.path.abspath(item))
-        elif os.path.isfile(item):
-            config.register_tree(os.path.dirname(os.path.abspath(item)))
-    config.build_config_tree(options)
+    try:
+        for item in options.files:
+            if os.path.isdir(item):
+                config.register_tree(os.path.abspath(item))
+            elif os.path.isfile(item):
+                config.register_tree(os.path.dirname(os.path.abspath(item)))
+            else:
+                ap.error("%s is neither a file nor directory" % item)
+        config.build_config_tree(options)
 
-    for item in options.files:
-        if os.path.isdir(item):
-            for path, dirs, files in os.walk(item):
-                dirs.sort()
-                for f in sorted(files):
-                    if f.endswith(".m"):
-                        analyze(os.path.normpath(os.path.join(path, f)),
-                                options.fix)
-        else:
-            analyze(os.path.normpath(item), options.fix)
+        for item in options.files:
+            if os.path.isdir(item):
+                for path, dirs, files in os.walk(item):
+                    dirs.sort()
+                    for f in sorted(files):
+                        if f.endswith(".m"):
+                            analyze(os.path.normpath(os.path.join(path, f)),
+                                    options.fix)
+            else:
+                analyze(os.path.normpath(item), options.fix)
 
-    mh.print_summary_and_exit()
+        mh.print_summary_and_exit()
+
+    except ICE as internal_compiler_error:
+        traceback.print_exc()
+        print("-" * 70)
+        print("- Encountered an internal compiler error. This is a tool")
+        print("- bug, please report it on our github issues so we can fix it:")
+        print("-")
+        print("-    %s" % GITHUB_ISSUES)
+        print("-")
+        print("- Please include the above backtrace in your bug report, and")
+        print("- the following information:")
+        print("-")
+        lines = textwrap.wrap(internal_compiler_error.reason)
+        print("\n".join("- %s" % l for l in lines))
+        print("-" * 70)
 
 
 if __name__ == "__main__":

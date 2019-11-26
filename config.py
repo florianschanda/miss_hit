@@ -29,8 +29,6 @@ from copy import deepcopy
 from m_lexer import MATLAB_Lexer
 from errors import mh, ICE, Error, Location
 
-from pprint import pprint
-
 CONFIG_FILENAME = "miss_hit.cfg"
 
 DEFAULT = {
@@ -260,6 +258,10 @@ def get_config(filename):
     dirname = os.path.dirname(os.path.abspath(filename))
 
     if dirname not in CONFIG_TREE:
-        raise ICE("expected %s to be in configuration tree" % dirname)
+        if not os.path.isdir(dirname):
+            hint = " (note: this is not a directory)"
+        raise ICE("%s: expected %s to be in configuration tree%s" % (filename,
+                                                                     dirname,
+                                                                     hint))
 
     return CONFIG_TREE[dirname]["config"]
