@@ -268,6 +268,8 @@ def get_config(filename):
     if dirname not in CONFIG_TREE:
         if not os.path.isdir(dirname):
             hint = " (note: this is not a directory)"
+        else:
+            hint = ""
         raise ICE("%s: expected %s to be in configuration tree%s" % (filename,
                                                                      dirname,
                                                                      hint))
