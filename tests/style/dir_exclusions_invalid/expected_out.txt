@@ -1,0 +1,4 @@
+In /home/flosch/zen/miss_hit/tests/style/dir_exclusions_invalid/miss_hit.cfg, line 1
+| exclude_dir: "potato"
+|              ^^^^^^^^ error: must be a valid local directory
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

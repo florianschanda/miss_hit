@@ -46,6 +46,7 @@ CONFIG_TREE = {}
 class Config_Parser:
     def __init__(self, config_file):
         self.filename = config_file
+        self.dirname = os.path.dirname(config_file)
         self.lexer = MATLAB_Lexer(self.filename)
 
         # pylint: disable=invalid-name
@@ -134,6 +135,13 @@ class Config_Parser:
                 elif isinstance(cfg[key], set):
                     self.match("STRING")
                     value = self.ct.value()
+
+                    if key == "exclude_dir":
+                        if os.path.basename(value) != value or \
+                           not os.path.isdir(os.path.join(self.dirname,
+                                                          value)):
+                            mh.error(self.ct.location,
+                                     "must be a valid local directory")
 
                 if self.nt:
                     self.match("NEWLINE")
