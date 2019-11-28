@@ -28,6 +28,7 @@ import re
 from abc import ABCMeta, abstractmethod
 
 from errors import Location, Error, mh
+from m_language import KEYWORDS
 
 # The 1999 technical report "The Design and Implementation of a Parser
 # and Scanner for the MATLAB Language in the MATCH Compiler" is a key
@@ -84,32 +85,6 @@ TOKENS_WITH_IMPLICIT_VALUE = frozenset([
     "AT",
     "BANG",
     "METACLASS"
-])
-
-
-# As of MATLAB 2019b
-# See: https://www.mathworks.com/help/matlab/ref/iskeyword.html
-KEYWORDS = frozenset([
-    'break',
-    'case',
-    'catch',
-    'classdef',
-    'continue',
-    'else',
-    'elseif',
-    'end',
-    'for',
-    'function',
-    'global',
-    'if',
-    'otherwise',
-    'parfor',
-    'persistent',
-    'return',
-    'spmd',
-    'switch',
-    'try',
-    'while',
 ])
 
 

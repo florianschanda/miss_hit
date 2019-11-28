@@ -26,9 +26,6 @@
 
 import sys
 
-# pylint: disable=cyclic-import
-import m_lexer
-
 
 class Location:
     """ This fully describes where a message originates from """
@@ -87,7 +84,7 @@ class Error(Exception):
 
 class Justification:
     def __init__(self, token):
-        assert isinstance(token, m_lexer.MATLAB_Token)
+        # assert isinstance(token, m_lexer.MATLAB_Token)
         assert token.kind in ("COMMENT", "CONTINUATION")
 
         self.token = token
@@ -211,7 +208,7 @@ class Message_Handler:
             raise Error(location, message)
 
     def register_justification(self, token):
-        assert isinstance(token, m_lexer.MATLAB_Token)
+        # assert isinstance(token, m_lexer.MATLAB_Token)
         assert token.kind in ("COMMENT", "CONTINUATION")
 
         if "mh:ignore_style" in token.value():
