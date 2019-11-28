@@ -32,9 +32,13 @@ style issues, some of which are configurable.
 * (autofix) Use of tab anywhere (adjust with `--tab-width`)
 
 * (autofix) Whitespace after the comment indicator % or #, and before
-  the body of the comment
+  the body of the comment.
+
+* (autofix) Whitespace before comments or continuations.
 
 * Ending a line with a comma
+
+* Line continuations should not start with an operator of any kind.
 
 ## Configuration files
 

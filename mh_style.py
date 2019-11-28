@@ -306,9 +306,19 @@ def stage_2_analysis(cfg, tbuf):
     copyright_notice = []
 
     for n, token in enumerate(tbuf.tokens):
-        if (n - 1 >= 0 and
-            tbuf.tokens[n - 1].location.line == token.location.line):
-            prev_in_line = tbuf.tokens[n - 1]
+        if n - 1 >= 0:
+            prev_token = tbuf.tokens[n - 1]
+        else:
+            prev_token = None
+
+        if n + 1 < len(tbuf.tokens):
+            next_token = tbuf.tokens[n + 1]
+        else:
+            next_token = None
+
+        if (prev_token and
+            prev_token.location.line == token.location.line):
+            prev_in_line = prev_token
             ws_before = (token.location.col_start -
                          prev_in_line.location.col_end) - 1
 
@@ -316,13 +326,13 @@ def stage_2_analysis(cfg, tbuf):
             prev_in_line = None
             ws_before = None
 
-        if (n + 1 < len(tbuf.tokens) and
-            tbuf.tokens[n + 1].location.line == token.location.line):
-            if tbuf.tokens[n + 1].kind == "NEWLINE":
+        if (next_token and
+            next_token.location.line == token.location.line):
+            if next_token.kind == "NEWLINE":
                 next_in_line = None
                 ws_after = None
             else:
-                next_in_line = tbuf.tokens[n + 1]
+                next_in_line = next_token
                 ws_after = (next_in_line.location.col_start -
                             token.location.col_end) - 1
         else:
@@ -507,6 +517,11 @@ def stage_2_analysis(cfg, tbuf):
                 mh.style_issue(token.location,
                                "continuation must be preceeded by whitespace")
                 token.fix["ensure_ws_before"] = True
+
+        if (prev_token and prev_token.kind == "CONTINUATION" and
+            token.first_in_line and token.kind == "OPERATOR"):
+            mh.style_issue(token.location,
+                           "continuations should not start with operators")
 
 
 def analyze(filename, autofix):
