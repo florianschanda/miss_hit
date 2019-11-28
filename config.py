@@ -159,13 +159,15 @@ def load_config(cfg_file, cfg):
     assert os.path.isfile(cfg_file)
     assert isinstance(cfg, dict)
 
+    rel_name = os.path.relpath(cfg_file)
+
     try:
-        mh.register_file(cfg_file)
-        parser = Config_Parser(cfg_file)
+        mh.register_file(rel_name)
+        parser = Config_Parser(rel_name)
         parser.parse_file(cfg)
         # Now that we have parsed the file, we should remove it again
         # from the list of files known to the error handler
-        mh.unregister_file(cfg_file)
+        mh.unregister_file(rel_name)
     except Error:
         mh.print_summary_and_exit()
 
