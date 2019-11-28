@@ -7,4 +7,4 @@ lint: style
 	@pylint3 --rcfile=pylint3.cfg --reports=no *.py
 
 style:
-	@pycodestyle *.py
+	@python3 -m pycodestyle *.py

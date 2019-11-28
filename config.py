@@ -203,11 +203,11 @@ def register_tree(dirname):
         if CONFIG_TREE[dirname]["subtree"]:
             return
 
-        CONFIG_TREE[dirname]["children"] = set([
+        CONFIG_TREE[dirname]["children"] = set(
             os.path.join(dirname, d)
             for d in os.listdir(dirname)
             if os.path.isdir(os.path.join(dirname, d))
-        ])
+        )
 
         for child in CONFIG_TREE[dirname]["children"]:
             register_parent(child, find_roots=False)

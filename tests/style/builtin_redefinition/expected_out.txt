@@ -1,0 +1,10 @@
+In test.m, line 4
+| false = 0.01; % bad
+| ^^^^^ warning: redefinition of builtin function is a very naughty thing to do
+In test.m, line 6
+| x = pi, [true] = 42; % bad
+|          ^^^^ warning: redefinition of builtin function is a very naughty thing to do
+In test.m, line 8
+| function x = pi() % bad
+|              ^^ warning: redefinition of builtin function is a very naughty thing to do
+MISS_HIT Summary: 1 file(s) analysed, 3 warning(s)

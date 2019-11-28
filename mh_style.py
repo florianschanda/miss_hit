@@ -34,6 +34,7 @@ import re
 import traceback
 import textwrap
 
+from m_language_builtins import BUILTIN_FUNCTIONS
 from m_lexer import MATLAB_Lexer, Token_Buffer
 from errors import Location, Error, ICE, mh
 import config
@@ -182,6 +183,12 @@ class Mini_Parser:
             self.match("ASSIGNMENT")
             function_name = self.parse_selection()
 
+        if isinstance(function_name, Identifier):
+            if function_name.t_ident.value() in BUILTIN_FUNCTIONS:
+                mh.warning(function_name.t_ident.location,
+                           "redefinition of builtin function is a"
+                           " very naughty thing to do")
+
         inputs = []
         if self.peek("BRA"):
             self.match("BRA")
@@ -305,6 +312,8 @@ def stage_2_analysis(cfg, tbuf):
     copyright_token = None
     copyright_notice = []
 
+    last_newline = 0
+
     for n, token in enumerate(tbuf.tokens):
         if n - 1 >= 0:
             prev_token = tbuf.tokens[n - 1]
@@ -325,6 +334,9 @@ def stage_2_analysis(cfg, tbuf):
         else:
             prev_in_line = None
             ws_before = None
+
+        if token.kind == "NEWLINE":
+            last_newline = n
 
         if (next_token and
             next_token.location.line == token.location.line):
@@ -443,12 +455,51 @@ def stage_2_analysis(cfg, tbuf):
         elif token.kind == "ASSIGNMENT":
             token.fix["ensure_ws_before"] = True
             token.fix["ensure_ws_after"] = True
+
             if prev_in_line and ws_before == 0:
                 mh.style_issue(token.location,
                                "= must be preceeded by whitespace")
             elif next_in_line and ws_after == 0:
                 mh.style_issue(token.location,
                                "= must be succeeded by whitespace")
+
+            # Here we now try to figure out what we assigned to. In
+            # the absence of parser we can just go backwards to the
+            # last newline, reverse matching brackets on the way.
+            brackets = []
+            badness = []
+            for i in reversed(range(last_newline, n)):
+                if tbuf.tokens[i].kind == "S_KET":
+                    brackets.append("]")
+                elif tbuf.tokens[i].kind == "KET":
+                    brackets.append(")")
+                elif tbuf.tokens[i].kind == "S_BRA":
+                    if brackets.pop() != "]":
+                        mh.info(tbuf.tokens[i].location,
+                                "unable to match")
+                        break
+                elif tbuf.tokens[i].kind == "BRA":
+                    if brackets.pop() != ")":
+                        mh.info(tbuf.tokens[i].location,
+                                "unable to match")
+                        break
+                elif tbuf.tokens[i].kind == "COMMA" and len(brackets) == 0:
+                    break
+                elif tbuf.tokens[i].kind == "IDENTIFIER":
+                    if tbuf.tokens[i].value() in BUILTIN_FUNCTIONS:
+                        badness.append(tbuf.tokens[i])
+                elif tbuf.tokens[i].kind == "KEYWORD" and \
+                     tbuf.tokens[i].value() == "for":
+                    # If we find a for, then we're in a for loop. We
+                    # special case i and j since they are so damn
+                    # common.
+                    badness = [t
+                               for t in badness
+                               if t.value() not in ("i", "j")]
+            for tok in badness:
+                mh.warning(tok.location,
+                           "redefinition of builtin function is a"
+                           " very naughty thing to do")
 
         # Corresponds to the old CodeChecker ParenthesisWhitespace and
         # BracketsWhitespace rules

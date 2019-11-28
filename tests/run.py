@@ -5,6 +5,7 @@ import subprocess
 
 TEST_ROOT = os.getcwd()
 
+
 def execute_style_test(name):
     print("Running style test %s" % name)
 
