@@ -495,6 +495,19 @@ def stage_2_analysis(cfg, tbuf):
                                   " " +
                                   comment_body)
 
+            # Make sure we have whitespace before each comment
+            if prev_in_line and ws_before == 0:
+                mh.style_issue(token.location,
+                               "comment must be preceeded by whitespace")
+                token.fix["ensure_ws_before"] = True
+
+        elif token.kind == "CONTINUATION":
+            # Make sure we have whitespace before each line continuation
+            if prev_in_line and ws_before == 0:
+                mh.style_issue(token.location,
+                               "continuation must be preceeded by whitespace")
+                token.fix["ensure_ws_before"] = True
+
 
 def analyze(filename, autofix):
     assert isinstance(filename, str)

@@ -1,0 +1,7 @@
+In test.m, line 2
+| x = a + b;% Some comment
+|           ^^^^^^^^^^^^^^ style: comment must be preceeded by whitespace
+In test.m, line 3
+| y = a + b +... Another comment
+|            ^^^^^^^^^^^^^^^^^^^^ style: continuation must be preceeded by whitespace
+MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
