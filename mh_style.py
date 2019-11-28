@@ -524,8 +524,12 @@ def stage_2_analysis(cfg, tbuf):
                 # parsing), so we under-approximate
                 if prev_token and prev_token.kind == "OPERATOR":
                     pass
+                elif prev_token and prev_token.kind == "ASSIGNMENT":
+                    # x = ...
+                    #    -potato (this is ok)
+                    pass
                 else:
-                    mh.style_issue(token.location,
+                    mh.style_issue(next_token.location,
                                    "continuations should not start with operators")
 
 
