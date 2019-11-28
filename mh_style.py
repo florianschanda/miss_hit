@@ -425,6 +425,20 @@ def stage_2_analysis(cfg, tbuf):
                                "comma cannot be preceeded by whitespace "
                                "and must be followed by whitespace")
 
+        elif token.kind == "COLON":
+            token.fix["ensure_trim_before"] = True
+            token.fix["ensure_trim_after"] = True
+
+            if prev_in_line and prev_in_line.kind == "COMMA":
+                token.fix["ensure_trim_before"] = False
+                # We don't deal with this here. If anything it's the
+                # problem of the comma whitespace rules.
+            else:
+                if ((prev_in_line and ws_before > 0) or
+                    (next_in_line and ws_after > 0)):
+                    mh.style_issue(token.location,
+                                   "no whitespace around colon allowed")
+
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
         elif token.kind == "ASSIGNMENT":
             token.fix["ensure_ws_before"] = True

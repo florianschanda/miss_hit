@@ -36,6 +36,8 @@ style issues, some of which are configurable.
 
 * (autofix) Whitespace before comments or continuations.
 
+* (autofix) No whitespace around colon (except for after a comma)
+
 * Ending a line with a comma
 
 * Line continuations should not start with an operator of any kind.
