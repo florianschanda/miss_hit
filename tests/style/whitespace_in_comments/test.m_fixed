@@ -6,6 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %#codegen
 fprintf('%s', 'astring')
+%#ok<potato>
 
 % The following things are NOT OK
 % Potato
@@ -13,3 +14,5 @@ fprintf('%s', 'astring')
 %%% Potato
 % ##Potato
 % ## Potato
+%#codegen
+%#ok

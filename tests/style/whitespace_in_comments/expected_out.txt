@@ -1,16 +1,22 @@
-In test.m, line 11
+In test.m, line 12
 | %Potato
 | ^^^^^^^ style: comment body must be separated with whitespace from the starting %
-In test.m, line 12
+In test.m, line 13
 | %#############################
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
-In test.m, line 13
+In test.m, line 14
 | %%%Potato
 | ^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
-In test.m, line 14
+In test.m, line 15
 | %##Potato
 | ^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
-In test.m, line 15
+In test.m, line 16
 | %## Potato
 | ^^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
-MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
+In test.m, line 17
+| %#     codegen
+| ^^^^^^^^^^^^^^ style: MATLAB pragma must not contain whitespace between %# and the pragma
+In test.m, line 18
+| %# ok
+| ^^^^^ style: MATLAB pragma must not contain whitespace between %# and the pragma
+MISS_HIT Summary: 1 file(s) analysed, 7 style issue(s)

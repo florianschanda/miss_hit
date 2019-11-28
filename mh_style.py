@@ -463,9 +463,21 @@ def stage_2_analysis(cfg, tbuf):
         elif token.kind == "COMMENT":
             comment_char = token.raw_text[0]
             comment_body = token.raw_text.lstrip(comment_char)
-            if token.raw_text.startswith("%#codegen"):
+            if re.match("^%#[a-zA-Z]", token.raw_text):
+                # Stuff like %#codegen or %#ok are pragmas and should
+                # not be subject to style checks
                 pass
+
+            elif re.match("^%# +[a-zA-Z]", token.raw_text):
+                # This looks like a pragma, but there is a spurious
+                # space
+                mh.style_issue(token.location,
+                               "MATLAB pragma must not contain whitespace "
+                               "between %# and the pragma")
+                token.raw_text = "%#" + token.raw_text[2:].strip()
+
             elif comment_body and not comment_body.startswith(" "):
+                # Normal comments should contain whitespace
                 mh.style_issue(token.location,
                                "comment body must be separated with "
                                "whitespace from the starting %s" %
