@@ -518,7 +518,8 @@ def stage_2_analysis(cfg, tbuf):
                                "continuation must be preceeded by whitespace")
                 token.fix["ensure_ws_before"] = True
 
-            if next_token and next_token.first_in_line and next_token.kind == "OPERATOR":
+            if next_token and next_token.first_in_line and \
+               next_token.kind == "OPERATOR":
                 # Continuations should not start with operators unless
                 # its a unary. Right now we can't tell (needs
                 # parsing), so we under-approximate
@@ -530,7 +531,8 @@ def stage_2_analysis(cfg, tbuf):
                     pass
                 else:
                     mh.style_issue(next_token.location,
-                                   "continuations should not start with operators")
+                                   "continuations should not start with "
+                                   "operators")
 
 
 def analyze(filename, autofix):
