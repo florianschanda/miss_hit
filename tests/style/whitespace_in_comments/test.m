@@ -16,3 +16,5 @@ fprintf('%s', 'astring')
 %## Potato
 %#     codegen
 %# ok
+% #ok
+%    #ok

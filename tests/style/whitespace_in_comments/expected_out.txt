@@ -19,4 +19,10 @@ In test.m, line 17
 In test.m, line 18
 | %# ok
 | ^^^^^ style: MATLAB pragma must not contain whitespace between %# and the pragma
-MISS_HIT Summary: 1 file(s) analysed, 7 style issue(s)
+In test.m, line 19
+| % #ok
+| ^^^^^ style: MATLAB pragma must not contain whitespace between % and the pragma
+In test.m, line 20
+| %    #ok
+| ^^^^^^^^ style: MATLAB pragma must not contain whitespace between % and the pragma
+MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)

@@ -476,6 +476,14 @@ def stage_2_analysis(cfg, tbuf):
                                "between %# and the pragma")
                 token.raw_text = "%#" + token.raw_text[2:].strip()
 
+            elif re.match("^% +#[a-zA-Z]", token.raw_text):
+                # This looks like a pragma that got "fixed" before we
+                # fixed our pragma handling
+                mh.style_issue(token.location,
+                               "MATLAB pragma must not contain whitespace "
+                               "between % and the pragma")
+                token.raw_text = "%#" + token.raw_text.split("#", 1)[1]
+
             elif comment_body and not comment_body.startswith(" "):
                 # Normal comments should contain whitespace
                 mh.style_issue(token.location,
