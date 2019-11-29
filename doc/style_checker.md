@@ -203,8 +203,8 @@ avoid extreme levels of nesting and avoids having to scroll around.
 #### Copyright notice ("copyright_notice")
 
 This rules looks for a copyright notice at the beginning of each file
-in the form of `(C) Copyright YEAR-YEAR ENTITY` or `(C) Copyright YEAR
-ENTITY`.  The list of acceptable entities can be configured with
+in the form of `(C) Copyright YEAR-YEAR ENTITY` or 
+`(C) Copyright YEAR ENTITY`.  The list of acceptable entities can be configured with
 `copyright_entity`.  This option can be given more than once to permit
 a set of valid copyright holders. If this options is not set, the rule
 just looks for _any_ copyright notice.
