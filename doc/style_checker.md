@@ -57,8 +57,8 @@ enable: 1
 Like any other option, the "closest one" takes precedence.
 
 You can also specify the special `exclude_dir` property in
-configuration files. This property must name a directory *directly
-inside* (i.e. you can't specify `foo/bar`) the same directory the
+configuration files. This property must name a directory directly
+inside (i.e. you can't specify `foo/bar`) the same directory the
 configuration file resides in. This is especially useful when
 including an external repository, over which we have limited control.
 
@@ -174,9 +174,9 @@ or `properties`.
 
 #### Whitespace in comments ("whitespace_comments")
 
-This rule makes sure there is some whitespace between the comment character
-(%) and the rest of the comment. The exception is "divisor" comments like
-`%%%%%%%%%%%%%%` and the special `%#codegen` comment.
+This rule makes sure there is some whitespace between the comment
+character (%) and the rest of the comment. The exception is "divisor"
+comments like `%%%%%%%%%%%%%%` and the pragmas such as `%#codegen`.
 
 #### Whitespace in comments ("whitespace_continuation")
 
@@ -203,11 +203,11 @@ avoid extreme levels of nesting and avoids having to scroll around.
 #### Copyright notice ("copyright_notice")
 
 This rules looks for a copyright notice at the beginning of each file
-in the form of `(C) Copyright YEAR-YEAR ENTITY` or 
-`(C) Copyright YEAR ENTITY`.  The list of acceptable entities can be configured with
-`copyright_entity`.  This option can be given more than once to permit
-a set of valid copyright holders. If this options is not set, the rule
-just looks for _any_ copyright notice.
+in the form of `(C) Copyright YEAR-YEAR ENTITY` or
+`(C) Copyright YEAR ENTITY`. The list of acceptable entities can be
+configured with `copyright_entity`. This option can be given more than
+once to permit a set of valid copyright holders. If this options is not
+set, the rule just looks for _any_ copyright notice.
 
 #### Comma line endings ("eol_comma")
 
