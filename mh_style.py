@@ -474,12 +474,18 @@ def stage_2_analysis(cfg, tbuf):
                 elif tbuf.tokens[i].kind == "KET":
                     brackets.append(")")
                 elif tbuf.tokens[i].kind == "S_BRA":
-                    if brackets.pop() != "]":
+                    if len(brackets) == 0:
+                        # Almost certain a syntax error
+                        break
+                    elif brackets.pop() != "]":
                         mh.info(tbuf.tokens[i].location,
                                 "unable to match")
                         break
                 elif tbuf.tokens[i].kind == "BRA":
-                    if brackets.pop() != ")":
+                    if len(brackets) == 0:
+                        # Syntax error or maybe classdef
+                        break
+                    elif brackets.pop() != ")":
                         mh.info(tbuf.tokens[i].location,
                                 "unable to match")
                         break
