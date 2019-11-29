@@ -478,16 +478,12 @@ def stage_2_analysis(cfg, tbuf):
                         # Almost certain a syntax error
                         break
                     elif brackets.pop() != "]":
-                        mh.info(tbuf.tokens[i].location,
-                                "unable to match")
                         break
                 elif tbuf.tokens[i].kind == "BRA":
                     if len(brackets) == 0:
                         # Syntax error or maybe classdef
                         break
                     elif brackets.pop() != ")":
-                        mh.info(tbuf.tokens[i].location,
-                                "unable to match")
                         break
                 elif tbuf.tokens[i].kind == "COMMA" and len(brackets) == 0:
                     break
@@ -503,9 +499,12 @@ def stage_2_analysis(cfg, tbuf):
                                for t in badness
                                if t.value() not in ("i", "j")]
             for tok in badness:
-                mh.warning(tok.location,
-                           "redefinition of builtin function is a"
-                           " very naughty thing to do")
+                # Check disabled right now because of the number of
+                # false alarms.
+                #
+                # mh.warning(tok.location,
+                #            "redefinition of builtin function is a"
+                #            " very naughty thing to do")
 
         # Corresponds to the old CodeChecker ParenthesisWhitespace and
         # BracketsWhitespace rules
