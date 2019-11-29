@@ -183,11 +183,12 @@ class Mini_Parser:
             self.match("ASSIGNMENT")
             function_name = self.parse_selection()
 
-        if isinstance(function_name, Identifier):
-            if function_name.t_ident.value() in BUILTIN_FUNCTIONS:
-                mh.warning(function_name.t_ident.location,
-                           "redefinition of builtin function is a"
-                           " very naughty thing to do")
+        # Currently disabled. It generates a lot of alarms for classes.
+        # if isinstance(function_name, Identifier):
+        #     if function_name.t_ident.value() in BUILTIN_FUNCTIONS:
+        #         mh.warning(function_name.t_ident.location,
+        #                    "redefinition of builtin function is a"
+        #                    " very naughty thing to do")
 
         inputs = []
         if self.peek("BRA"):
@@ -468,11 +469,13 @@ def stage_2_analysis(cfg, tbuf):
             # last newline, reverse matching brackets on the way.
             brackets = []
             badness = []
+            parens = 0
             for i in reversed(range(last_newline, n)):
                 if tbuf.tokens[i].kind == "S_KET":
                     brackets.append("]")
                 elif tbuf.tokens[i].kind == "KET":
                     brackets.append(")")
+                    parens += 1
                 elif tbuf.tokens[i].kind == "S_BRA":
                     if len(brackets) == 0:
                         # Almost certain a syntax error
@@ -485,9 +488,10 @@ def stage_2_analysis(cfg, tbuf):
                         break
                     elif brackets.pop() != ")":
                         break
+                    parens -= 1
                 elif tbuf.tokens[i].kind == "COMMA" and len(brackets) == 0:
                     break
-                elif tbuf.tokens[i].kind == "IDENTIFIER":
+                elif tbuf.tokens[i].kind == "IDENTIFIER" and parens == 0:
                     if tbuf.tokens[i].value() in BUILTIN_FUNCTIONS:
                         badness.append(tbuf.tokens[i])
                 elif tbuf.tokens[i].kind == "KEYWORD" and \
@@ -499,12 +503,9 @@ def stage_2_analysis(cfg, tbuf):
                                for t in badness
                                if t.value() not in ("i", "j")]
             for tok in badness:
-                # Check disabled right now because of the number of
-                # false alarms.
-                #
-                # mh.warning(tok.location,
-                #            "redefinition of builtin function is a"
-                #            " very naughty thing to do")
+                mh.warning(tok.location,
+                           "redefinition of builtin function is a"
+                           " very naughty thing to do")
 
         # Corresponds to the old CodeChecker ParenthesisWhitespace and
         # BracketsWhitespace rules
