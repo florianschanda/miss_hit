@@ -38,9 +38,38 @@ DEFAULT = {
     "tab_width"        : 4,
     "copyright_entity" : set(),
     "exclude_dir"      : set(),
+    "suppress_rule"    : set(),
 }
 
 CONFIG_TREE = {}
+
+STYLE_RULES = {
+    "file_length" : ("Ensures files do not get too big."),
+    "line_length" : ("Ensures lines do not get too long."),
+    "copyright_notice" : ("Ensures the first thing in each file is a"
+                          " copyright notice."),
+    "whitespace_comma" : ("Ensures there is no whitespace before a comma"
+                          " and whitespace after."),
+    "whitespace_colon" : ("Ensures there is no whitespace around colons"
+                          " except if they come after a comma."),
+    "whitespace_assignment" : ("Ensures there is whitespace around the"
+                               " assignment operator (=)."),
+    "whitespace_brackets" : ("Ensures no whitespace after (/[, and no "
+                             " whitespace before )/]."),
+    "whitespace_keywords" : ("Ensures whitespace after some words, such as "
+                             " if, or properties."),
+    "whitespace_comments" : ("Ensures whitespace before comments and"
+                             " whitespace between the % and the body of the"
+                             " comment. Pragmas (%#) are exempt."),
+    "whitespace_continuation" : ("Ensures whitespace before continuations and"
+                                 " whitespace between the ... and any in-line"
+                                 " comment."),
+    "operator_after_continuation" : ("Complains about operators after"
+                                     " a line continuation."),
+    "eol_comma" : ("Ensures lines do not end with a comma."),
+    "builtin_shadow" : ("Checks that assignments do not overwrite builtin"
+                        " functions such as true, false, or pi."),
+}
 
 
 class Config_Parser:
@@ -110,9 +139,18 @@ class Config_Parser:
                 self.match("IDENTIFIER")
                 t_key = self.ct
                 key = self.ct.value()
+                value = None
                 self.match("COLON")
 
-                if key not in cfg:
+                if key == "enable_rule":
+                    self.match("STRING")
+                    value = self.ct.value()
+                    if value not in STYLE_RULES:
+                        mh.error(self.ct.location,
+                                 "unknown rule")
+                        # TODO: Use difflib to find a likely one
+
+                elif key not in cfg:
                     mh.error(t_key.location,
                              "unknown option %s" % key)
 
@@ -143,12 +181,21 @@ class Config_Parser:
                             mh.error(self.ct.location,
                                      "must be a valid local directory")
 
+                    elif key == "suppress_rule":
+                        if value not in STYLE_RULES:
+                            mh.error(self.ct.location,
+                                     "unknown rule")
+                            # TODO: Use difflib to find a likely one
+
                 if self.nt:
                     self.match("NEWLINE")
                 else:
                     self.match_eof()
 
-                if isinstance(cfg[key], set):
+                if key == "enable_rule":
+                    if value in cfg["suppress_rule"]:
+                        cfg["suppress_rule"].remove(value)
+                elif isinstance(cfg[key], set):
                     cfg[key].add(value)
                 else:
                     cfg[key] = value
@@ -294,3 +341,9 @@ def get_config(filename):
                                                                      hint))
 
     return CONFIG_TREE[dirname]["config"]
+
+
+def active(cfg, rule):
+    assert isinstance(rule, str)
+    assert rule in STYLE_RULES
+    return rule not in cfg["suppress_rule"]

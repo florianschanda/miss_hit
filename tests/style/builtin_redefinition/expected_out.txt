@@ -1,13 +1,13 @@
 In test.m, line 4
 | false = 0.01; % bad
-| ^^^^^ warning: redefinition of builtin function is a very naughty thing to do
+| ^^^^^ style: redefinition of builtin function is a very naughty thing to do
 In test.m, line 6
 | x = pi, [true] = 42; % bad
-|          ^^^^ warning: redefinition of builtin function is a very naughty thing to do
+|          ^^^^ style: redefinition of builtin function is a very naughty thing to do
 In test.m, line 8
 | [a, uint8, b(i)] = potato; % uint8 bad, but the i is ok
-|     ^^^^^ warning: redefinition of builtin function is a very naughty thing to do
+|     ^^^^^ style: redefinition of builtin function is a very naughty thing to do
 In test.m, line 14
 |     i = x;  % no, for many reasons
-|     ^ warning: redefinition of builtin function is a very naughty thing to do
-MISS_HIT Summary: 1 file(s) analysed, 4 warning(s)
+|     ^ style: redefinition of builtin function is a very naughty thing to do
+MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

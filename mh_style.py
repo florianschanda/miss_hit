@@ -217,7 +217,7 @@ def stage_1_analysis(cfg, lexer):
     lines = lexer.context_line
 
     # Corresponds to the old CodeChecker LineCount rule
-    if len(lines) > cfg["file_length"]:
+    if config.active(cfg, "file_length") and len(lines) > cfg["file_length"]:
         mh.style_issue(Location(lexer.filename,
                                 len(lines)),
                        "file exceeds %u lines" % cfg["file_length"])
@@ -231,7 +231,8 @@ def stage_1_analysis(cfg, lexer):
     is_blank = False
     for n, line in enumerate(lines):
         # Corresponds to the old CodeChecker LineLength rule
-        if len(line) > cfg["line_length"] + 1:
+        if config.active(cfg, "line_length") and \
+           len(line) > cfg["line_length"] + 1:
             mh.style_issue(Location(lexer.filename,
                                     n + 1,
                                     cfg["line_length"] + 1,
@@ -307,7 +308,7 @@ WORDS_WITH_WS = frozenset([
 def stage_2_analysis(cfg, tbuf):
     assert isinstance(tbuf, Token_Buffer)
 
-    in_copyright_notice = True
+    in_copyright_notice = config.active(cfg, "copyright_notice")
     company_copyright_found = False
     generic_copyright_found = False
     copyright_token = None
@@ -425,92 +426,97 @@ def stage_2_analysis(cfg, tbuf):
         # Corresponds to the old CodeChecker CommaLineEndings and
         # CommaWhitespace rules
         if token.kind == "COMMA":
-            token.fix["ensure_trim_before"] = True
-            token.fix["ensure_ws_after"] = True
+            if config.active(cfg, "whitespace_comma"):
+                token.fix["ensure_trim_before"] = True
+                token.fix["ensure_ws_after"] = True
 
-            if last_code_in_line:
+                if (next_in_line and ws_after == 0) or \
+                   (prev_in_line and ws_before > 0):
+                    mh.style_issue(token.location,
+                                   "comma cannot be preceeded by whitespace "
+                                   "and must be followed by whitespace")
+
+            if config.active(cfg, "eol_comma") and last_code_in_line:
                 mh.style_issue(token.location,
                                "lines must not end with a comma")
 
-            if (next_in_line and ws_after == 0) or \
-               (prev_in_line and ws_before > 0):
-                mh.style_issue(token.location,
-                               "comma cannot be preceeded by whitespace "
-                               "and must be followed by whitespace")
-
         elif token.kind == "COLON":
-            token.fix["ensure_trim_before"] = True
-            token.fix["ensure_trim_after"] = True
+            if config.active(cfg, "whitespace_colon"):
+                token.fix["ensure_trim_before"] = True
+                token.fix["ensure_trim_after"] = True
 
-            if prev_in_line and prev_in_line.kind == "COMMA":
-                token.fix["ensure_trim_before"] = False
-                # We don't deal with this here. If anything it's the
-                # problem of the comma whitespace rules.
-            else:
-                if ((prev_in_line and ws_before > 0) or
-                    (next_in_line and ws_after > 0)):
-                    mh.style_issue(token.location,
-                                   "no whitespace around colon allowed")
+                if prev_in_line and prev_in_line.kind == "COMMA":
+                    token.fix["ensure_trim_before"] = False
+                    # We don't deal with this here. If anything it's the
+                    # problem of the comma whitespace rules.
+                else:
+                    if ((prev_in_line and ws_before > 0) or
+                        (next_in_line and ws_after > 0)):
+                        mh.style_issue(token.location,
+                                       "no whitespace around colon allowed")
 
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
         elif token.kind == "ASSIGNMENT":
-            token.fix["ensure_ws_before"] = True
-            token.fix["ensure_ws_after"] = True
+            if config.active(cfg, "whitespace_assignment"):
+                token.fix["ensure_ws_before"] = True
+                token.fix["ensure_ws_after"] = True
 
-            if prev_in_line and ws_before == 0:
-                mh.style_issue(token.location,
-                               "= must be preceeded by whitespace")
-            elif next_in_line and ws_after == 0:
-                mh.style_issue(token.location,
-                               "= must be succeeded by whitespace")
+                if prev_in_line and ws_before == 0:
+                    mh.style_issue(token.location,
+                                   "= must be preceeded by whitespace")
+                elif next_in_line and ws_after == 0:
+                    mh.style_issue(token.location,
+                                   "= must be succeeded by whitespace")
 
-            # Here we now try to figure out what we assigned to. In
-            # the absence of parser we can just go backwards to the
-            # last newline, reverse matching brackets on the way.
-            brackets = []
-            badness = []
-            parens = 0
-            for i in reversed(range(last_newline, n)):
-                if tbuf.tokens[i].kind == "S_KET":
-                    brackets.append("]")
-                elif tbuf.tokens[i].kind == "KET":
-                    brackets.append(")")
-                    parens += 1
-                elif tbuf.tokens[i].kind == "S_BRA":
-                    if len(brackets) == 0:
-                        # Almost certain a syntax error
+            if config.active(cfg, "builtin_shadow"):
+                # Here we now try to figure out what we assigned to. In
+                # the absence of parser we can just go backwards to the
+                # last newline, reverse matching brackets on the way.
+                brackets = []
+                badness = []
+                parens = 0
+                for i in reversed(range(last_newline, n)):
+                    if tbuf.tokens[i].kind == "S_KET":
+                        brackets.append("]")
+                    elif tbuf.tokens[i].kind == "KET":
+                        brackets.append(")")
+                        parens += 1
+                    elif tbuf.tokens[i].kind == "S_BRA":
+                        if len(brackets) == 0:
+                            # Almost certain a syntax error
+                            break
+                        elif brackets.pop() != "]":
+                            break
+                    elif tbuf.tokens[i].kind == "BRA":
+                        if len(brackets) == 0:
+                            # Syntax error or maybe classdef
+                            break
+                        elif brackets.pop() != ")":
+                            break
+                        parens -= 1
+                    elif tbuf.tokens[i].kind == "COMMA" and len(brackets) == 0:
                         break
-                    elif brackets.pop() != "]":
-                        break
-                elif tbuf.tokens[i].kind == "BRA":
-                    if len(brackets) == 0:
-                        # Syntax error or maybe classdef
-                        break
-                    elif brackets.pop() != ")":
-                        break
-                    parens -= 1
-                elif tbuf.tokens[i].kind == "COMMA" and len(brackets) == 0:
-                    break
-                elif tbuf.tokens[i].kind == "IDENTIFIER" and parens == 0:
-                    if tbuf.tokens[i].value() in BUILTIN_FUNCTIONS:
-                        badness.append(tbuf.tokens[i])
-                elif tbuf.tokens[i].kind == "KEYWORD" and \
-                     tbuf.tokens[i].value() == "for":
-                    # If we find a for, then we're in a for loop. We
-                    # special case i and j since they are so damn
-                    # common.
-                    badness = [t
-                               for t in badness
-                               if t.value() not in ("i", "j")]
-            for tok in badness:
-                mh.warning(tok.location,
-                           "redefinition of builtin function is a"
-                           " very naughty thing to do")
+                    elif tbuf.tokens[i].kind == "IDENTIFIER" and parens == 0:
+                        if tbuf.tokens[i].value() in BUILTIN_FUNCTIONS:
+                            badness.append(tbuf.tokens[i])
+                    elif tbuf.tokens[i].kind == "KEYWORD" and \
+                         tbuf.tokens[i].value() == "for":
+                        # If we find a for, then we're in a for loop. We
+                        # special case i and j since they are so damn
+                        # common.
+                        badness = [t
+                                   for t in badness
+                                   if t.value() not in ("i", "j")]
+                for tok in badness:
+                    mh.style_issue(tok.location,
+                                   "redefinition of builtin function is a"
+                                   " very naughty thing to do")
 
         # Corresponds to the old CodeChecker ParenthesisWhitespace and
         # BracketsWhitespace rules
         elif token.kind in ("BRA", "S_BRA"):
-            if next_in_line and ws_after > 0 and \
+            if config.active(cfg, "whitespace_brackets") and \
+               next_in_line and ws_after > 0 and \
                next_in_line.kind != "CONTINUATION":
                 mh.style_issue(token.location,
                                "%s must not be followed by whitespace" %
@@ -518,7 +524,8 @@ def stage_2_analysis(cfg, tbuf):
                 token.fix["ensure_trim_after"] = True
 
         elif token.kind in ("KET", "S_KET"):
-            if prev_in_line and ws_before > 0:
+            if config.active(cfg, "whitespace_brackets") and \
+               prev_in_line and ws_before > 0:
                 mh.style_issue(token.location,
                                "%s must not be preceeded by whitespace" %
                                token.raw_text)
@@ -527,7 +534,8 @@ def stage_2_analysis(cfg, tbuf):
         # Corresponds to the old CodeChecker KeywordWhitespace rule
         elif (token.kind in ("KEYWORD", "IDENTIFIER") and
               token.value() in WORDS_WITH_WS):
-            if next_in_line and ws_after == 0:
+            if config.active(cfg, "whitespace_keywords") and \
+               next_in_line and ws_after == 0:
                 mh.style_issue(token.location,
                                "keyword must be succeeded by whitespace")
                 token.fix["ensure_ws_after"] = True
@@ -542,54 +550,57 @@ def stage_2_analysis(cfg, tbuf):
 
         # Corresponds to the old CodeChecker CommentWhitespace rule
         elif token.kind == "COMMENT":
-            comment_char = token.raw_text[0]
-            comment_body = token.raw_text.lstrip(comment_char)
-            if re.match("^%#[a-zA-Z]", token.raw_text):
-                # Stuff like %#codegen or %#ok are pragmas and should
-                # not be subject to style checks
-                pass
+            if config.active(cfg, "whitespace_comments"):
+                comment_char = token.raw_text[0]
+                comment_body = token.raw_text.lstrip(comment_char)
+                if re.match("^%#[a-zA-Z]", token.raw_text):
+                    # Stuff like %#codegen or %#ok are pragmas and should
+                    # not be subject to style checks
+                    pass
 
-            elif re.match("^%# +[a-zA-Z]", token.raw_text):
-                # This looks like a pragma, but there is a spurious
-                # space
-                mh.style_issue(token.location,
-                               "MATLAB pragma must not contain whitespace "
-                               "between %# and the pragma")
-                token.raw_text = "%#" + token.raw_text[2:].strip()
+                elif re.match("^%# +[a-zA-Z]", token.raw_text):
+                    # This looks like a pragma, but there is a spurious
+                    # space
+                    mh.style_issue(token.location,
+                                   "MATLAB pragma must not contain whitespace "
+                                   "between %# and the pragma")
+                    token.raw_text = "%#" + token.raw_text[2:].strip()
 
-            elif re.match("^% +#[a-zA-Z]", token.raw_text):
-                # This looks like a pragma that got "fixed" before we
-                # fixed our pragma handling
-                mh.style_issue(token.location,
-                               "MATLAB pragma must not contain whitespace "
-                               "between % and the pragma")
-                token.raw_text = "%#" + token.raw_text.split("#", 1)[1]
+                elif re.match("^% +#[a-zA-Z]", token.raw_text):
+                    # This looks like a pragma that got "fixed" before we
+                    # fixed our pragma handling
+                    mh.style_issue(token.location,
+                                   "MATLAB pragma must not contain whitespace "
+                                   "between % and the pragma")
+                    token.raw_text = "%#" + token.raw_text.split("#", 1)[1]
 
-            elif comment_body and not comment_body.startswith(" "):
-                # Normal comments should contain whitespace
-                mh.style_issue(token.location,
-                               "comment body must be separated with "
-                               "whitespace from the starting %s" %
-                               comment_char)
-                token.raw_text = (comment_char * (len(token.raw_text) -
-                                                  len(comment_body)) +
-                                  " " +
-                                  comment_body)
+                elif comment_body and not comment_body.startswith(" "):
+                    # Normal comments should contain whitespace
+                    mh.style_issue(token.location,
+                                   "comment body must be separated with "
+                                   "whitespace from the starting %s" %
+                                   comment_char)
+                    token.raw_text = (comment_char * (len(token.raw_text) -
+                                                      len(comment_body)) +
+                                      " " +
+                                      comment_body)
 
-            # Make sure we have whitespace before each comment
-            if prev_in_line and ws_before == 0:
-                mh.style_issue(token.location,
-                               "comment must be preceeded by whitespace")
-                token.fix["ensure_ws_before"] = True
+                # Make sure we have whitespace before each comment
+                if prev_in_line and ws_before == 0:
+                    mh.style_issue(token.location,
+                                   "comment must be preceeded by whitespace")
+                    token.fix["ensure_ws_before"] = True
 
         elif token.kind == "CONTINUATION":
             # Make sure we have whitespace before each line continuation
-            if prev_in_line and ws_before == 0:
+            if config.active(cfg, "whitespace_continuation") and \
+               prev_in_line and ws_before == 0:
                 mh.style_issue(token.location,
                                "continuation must be preceeded by whitespace")
                 token.fix["ensure_ws_before"] = True
 
-            if next_token and next_token.first_in_line and \
+            if config.active(cfg, "operator_after_continuation") and \
+               next_token and next_token.first_in_line and \
                next_token.kind == "OPERATOR":
                 # Continuations should not start with operators unless
                 # its a unary. Right now we can't tell (needs
