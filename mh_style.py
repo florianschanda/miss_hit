@@ -34,6 +34,8 @@ import re
 import traceback
 import textwrap
 
+from abc import ABCMeta, abstractmethod
+
 from m_language_builtins import BUILTIN_FUNCTIONS
 from m_lexer import MATLAB_Lexer, Token_Buffer
 from errors import Location, Error, ICE, mh
@@ -210,78 +212,278 @@ class Mini_Parser:
 
         self.match("NEWLINE")
 
+##############################################################################
 
-def stage_1_analysis(cfg, lexer):
-    assert isinstance(lexer, MATLAB_Lexer)
 
-    lines = lexer.context_line
+class Style_Rule(metaclass=ABCMeta):
+    def __init__(self, name, autofix):
+        assert isinstance(name, str)
+        assert isinstance(autofix, bool)
+        self.name = name
+        self.autofix = autofix
+        self.mandatory = False
 
-    # Corresponds to the old CodeChecker LineCount rule
-    if config.active(cfg, "file_length") and len(lines) > cfg["file_length"]:
-        mh.style_issue(Location(lexer.filename,
-                                len(lines)),
-                       "file exceeds %u lines" % cfg["file_length"])
 
-    # Corresponds to the old CodeChecker EndingEmptyLine rule
-    if len(lines) >= 2 and lines[-1] == "":
-        mh.style_issue(Location(lexer.filename,
-                                len(lines)),
-                       "trailing blank lines at end of file")
+class Style_Rule_File(Style_Rule):
+    def __init__(self, name):
+        super().__init__(name, False)
 
-    is_blank = False
-    for n, line in enumerate(lines):
-        # Corresponds to the old CodeChecker LineLength rule
-        if config.active(cfg, "line_length") and \
-           len(line) > cfg["line_length"] + 1:
-            mh.style_issue(Location(lexer.filename,
-                                    n + 1,
+    @abstractmethod
+    def apply(self, cfg, filename, lines):
+        pass
+
+
+class Style_Rule_Line(Style_Rule):
+    @abstractmethod
+    def apply(self, cfg, filename, line_no, line):
+        pass
+
+
+class Rule_File_Length(Style_Rule_File):
+    """Maximum file length
+
+    This is configurable with `file_length`. It is a good idea to keep
+    the length of your files under some limit since it forces your
+    project into avoiding the worst spaghetti code.
+
+    """
+
+    parameters = {
+        "file_length": {
+            "type"    : int,
+            "metavar" : "N",
+            "help"    : "Maximum lines in a file, 1000 by default.",
+        }
+    }
+
+    defaults = {
+        "file_length" : 1000,
+    }
+
+    def __init__(self):
+        super().__init__("file_length")
+
+    def apply(self, cfg, filename, lines):
+        if len(lines) > cfg["file_length"]:
+            mh.style_issue(Location(filename,
+                                    len(lines)),
+                           "file exceeds %u lines" % cfg["file_length"])
+
+
+class Rule_File_EOF_Lines(Style_Rule_File):
+    """Trailing newlines at end of file
+
+    This mandatory rule makes sure there is a single trailing newline
+    at the end of a file.
+
+    """
+
+    def __init__(self):
+        super().__init__("eof_newlines")
+        self.mandatory = True
+        self.autofix = True
+
+    def apply(self, cfg, filename, lines):
+        if len(lines) >= 2 and lines[-1] == "":
+            mh.style_issue(Location(filename,
+                                    len(lines)),
+                           "trailing blank lines at end of file")
+
+
+class Rule_Line_Length(Style_Rule_Line):
+    """Max characters per line
+
+    This is configurable with `line_length`, default is 80. It is a
+    good idea for readability to avoid overly long lines. This can help
+    you avoid extreme levels of nesting and avoids having to scroll
+    around.
+
+    """
+
+    parameters = {
+        "line_length": {
+            "type"    : int,
+            "metavar" : "N",
+            "help"    : "Maximum characters per line, 80 by default.",
+        }
+    }
+
+    defaults = {
+        "line_length" : 80,
+    }
+
+    def __init__(self):
+        super().__init__("line_length", False)
+
+    def apply(self, cfg, filename, line_no, line):
+        if len(line) > cfg["line_length"] + 1:
+            mh.style_issue(Location(filename,
+                                    line_no,
                                     cfg["line_length"] + 1,
                                     len(line),
                                     line),
                            "line exceeds %u characters" % cfg["line_length"])
 
-        # Corresponds to the old CodeChecker MultipleEmptyLines rule
+
+class Rule_Line_Blank_Lines(Style_Rule_Line):
+    """Consecutive blank lines
+
+    This rule allows a maximum of one blank line to separate code blocks.
+    Comments are not considered blank lines.
+
+    """
+
+    def __init__(self):
+        super().__init__("consecutive_blanks", True)
+        self.mandatory = True
+        self.is_blank = False
+
+    def apply(self, cfg, filename, line_no, line):
         if len(line.strip()):
-            is_blank = False
-        elif is_blank:
-            mh.style_issue(Location(lexer.filename,
-                                    n + 1),
+            self.is_blank = False
+        elif self.is_blank:
+            mh.style_issue(Location(filename,
+                                    line_no),
                            "more than one consecutive blank line")
         else:
-            is_blank = True
+            self.is_blank = True
 
-        # Corresponds to the old CodeChecker TabIndentation rule
-        #
-        # It is actually a bit more aggressive, and bans the <tab>
-        # character everywhere.
+
+class Rule_Line_Tabs(Style_Rule_Line):
+    """Use of tab
+
+    This rule enforces the absence of the tabulation character
+    *everywhere*. When auto-fixing, a tab-width of 4 is used by default,
+    but this can be configured with the options `tab_width`.
+
+    Note that the fix replaces the tab everywhere, including in strings
+    literals. This means
+    ```
+    "a<tab>b"
+       "a<tab>b"
+    ```
+    might be fixed to
+    ```
+    "a        b"
+       "a     b"
+    ```
+
+    Which may or may not what you had intended originally. I am not sure
+    if this is a bug or a feature, but either way it would be *painful* to
+    change so I am going to leave this as is.
+
+    """
+
+    parameters = {
+        "tab_width": {
+            "type"    : int,
+            "metavar" : "N",
+            "help"    : "Tab-width, by default 4.",
+        }
+    }
+
+    defaults = {
+        "tab_width" : 4,
+    }
+
+    def __init__(self):
+        super().__init__("tabs", True)
+        self.mandatory = True
+
+    def apply(self, cfg, filename, line_no, line):
         if "\t" in line:
-            mh.style_issue(Location(lexer.filename,
-                                    n + 1,
+            mh.style_issue(Location(filename,
+                                    line_no,
                                     line.index("\t"),
                                     line.index("\t"),
                                     line),
                            "tab is not allowed")
 
-        # Corresponds to the old CodeChecker TrailingWhitespaces and
-        # EmptyLineRelativeIndentation rules.
-        #
-        # Since this tool can re-write easily, we've made it a bit
-        # more strict: No trailing WS is allowed, so empty lines must
-        # not contain any characters. Hence the MATLAB editor doesn't
-        # really get in the way anymore, since you don't have to fix
-        # it by hand.
+
+class Rule_Line_Trailing_Whitesapce(Style_Rule_Line):
+    """Trailing whitespace
+
+    This rule enforces that there is no trailing whitespace in your files.
+    You *really* want to do this, even if the MATLAB default editor makes
+    this really hard. The reason is that it minimises conflicts when using
+    modern version control systems.
+
+    """
+
+    def __init__(self):
+        super().__init__("trailing_whitespace", True)
+        self.mandatory = True
+
+    def apply(self, cfg, filename, line_no, line):
         if line.endswith(" "):
             if len(line.strip()) == 0:
-                mh.style_issue(Location(lexer.filename,
-                                        n + 1),
+                mh.style_issue(Location(filename,
+                                        line_no),
                                "whitespace on blank line")
             else:
-                mh.style_issue(Location(lexer.filename,
-                                        n + 1,
+                mh.style_issue(Location(filename,
+                                        line_no,
                                         len(line.rstrip()),
                                         len(line),
                                         line),
                                "trailing whitespace")
+
+
+def get_rules():
+    rules = {
+        "on_file" : [],
+        "on_line" : [],
+        "on_token" : [],
+    }
+
+    def rec(root):
+        is_leaf = True
+        for subclass in root.__subclasses__():
+            rec(subclass)
+            is_leaf = False
+
+        if is_leaf:
+            if issubclass(root, Style_Rule_File):
+                rules["on_file"].append(root)
+            elif issubclass(root, Style_Rule_Line):
+                rules["on_line"].append(root)
+            else:
+                raise ICE("Unable to categorize %s with base %s" %
+                          (root.__name__,
+                           " and ".join(b.__name__
+                                        for b in root.__bases__)))
+
+    rec(Style_Rule)
+    return rules
+
+
+def build_library(cfg, rules):
+    lib = {
+        "on_file" : [],
+        "on_line" : [],
+        "on_token" : []
+    }
+
+    for kind in rules:
+        for rule in rules[kind]:
+            inst = rule()
+            if inst.mandatory or config.active(cfg, inst.name):
+                lib[kind].append(inst)
+
+    return lib
+
+
+def build_default_config(rule_set):
+    cfg = {}
+
+    for kind in rule_set:
+        for rule in rule_set[kind]:
+            cfg.update(getattr(rule, "defaults", {}))
+
+    return cfg
+
+
+##############################################################################
 
 
 WORDS_WITH_WS = frozenset([
@@ -305,7 +507,7 @@ WORDS_WITH_WS = frozenset([
 ])
 
 
-def stage_2_analysis(cfg, tbuf):
+def stage_3_analysis(cfg, tbuf):
     assert isinstance(tbuf, Token_Buffer)
 
     in_copyright_notice = config.active(cfg, "copyright_notice")
@@ -617,7 +819,7 @@ def stage_2_analysis(cfg, tbuf):
                                    "operators")
 
 
-def analyze(filename, autofix):
+def analyze(filename, rule_set, autofix):
     assert isinstance(filename, str)
     assert isinstance(autofix, bool)
 
@@ -626,6 +828,7 @@ def analyze(filename, autofix):
     # Get config first, since we might want to skip this file
 
     cfg = config.get_config(filename)
+    rule_lib = build_library(cfg, rule_set)
 
     if not cfg["enable"]:
         mh.register_exclusion(filename)
@@ -644,7 +847,7 @@ def analyze(filename, autofix):
     if not filename.endswith(".m"):
         mh.warning(Location(filename), "filename should end with '.m'")
 
-    # Get configuration and create lexer
+    # Create lexer
 
     lexer = MATLAB_Lexer(filename, encoding=encoding)
 
@@ -653,10 +856,16 @@ def analyze(filename, autofix):
     if len(lexer.text.strip()) == 0:
         return
 
-    # Stage 1 - rules around lines and the file itself. This doesn't
-    # require any lexing yet.
+    # Stage 1 - rules around the file itself
 
-    stage_1_analysis(cfg, lexer)
+    for rule in rule_lib["on_file"]:
+        rule.apply(cfg, lexer.filename, lexer.context_line)
+
+    # Stage 2 - rules around raw text lines
+
+    for line_no, line in enumerate(lexer.context_line, 1):
+        for rule in rule_lib["on_line"]:
+            rule.apply(cfg, lexer.filename, line_no, line)
 
     # Tabs are just super annoying, and they require special
     # treatment. There is a known but obscure bug here, in that tabs
@@ -688,10 +897,9 @@ def analyze(filename, autofix):
         # If there are lex errors, we can stop here
         return
 
-    # Stange 2. Look at raw token stream for some of the more basic
-    # rules.
+    # Stage 3 - rules around individual tokens
 
-    stage_2_analysis(cfg, tbuf)
+    stage_3_analysis(cfg, tbuf)
 
     # Re-write the file, with issues fixed
 
@@ -705,6 +913,8 @@ def analyze(filename, autofix):
 
 
 def main():
+    rule_set = get_rules()
+
     ap = argparse.ArgumentParser(
         description="MATLAB Independent Syntax and Semantics System")
     ap.add_argument("files",
@@ -728,27 +938,18 @@ def main():
                     action="store_true",
                     default=False,
                     help="Ignore all %s files." % config.CONFIG_FILENAME)
-    style_option = ap.add_argument_group("Style options")
-    style_option.add_argument("--line-length",
-                              metavar="N",
-                              default=None,
-                              type=int,
-                              help=("Maximum line length, %u by default." %
-                                    config.DEFAULT["line_length"]))
-    style_option.add_argument("--file-length",
-                              metavar="N",
-                              default=None,
-                              type=int,
-                              help=("Maximum number of lines per file, "
-                                    "%u by default." %
-                                    config.DEFAULT["file_length"]))
-    style_option.add_argument("--tab-width",
-                              metavar="N",
-                              default=None,
-                              type=int,
-                              help=("Consider tabs to be N spaces wide, "
-                                    "%u by default." %
-                                    config.DEFAULT["tab_width"]))
+    style_option = ap.add_argument_group("Rule options")
+
+    # Add any parameters from rules
+    for rule_kind in rule_set:
+        for rule in rule_set[rule_kind]:
+            rule_params = getattr(rule, "parameters", None)
+            if not rule_params:
+                continue
+            for p_name in rule_params:
+                style_option.add_argument("--" + p_name,
+                                          **rule_params[p_name])
+
     style_option.add_argument("--copyright-entity",
                               metavar="STR",
                               default=[],
@@ -776,29 +977,36 @@ def main():
     mh.show_style   = not options.no_style
     # mh.sort_messages = False
 
+    for item in options.files:
+        if os.path.isdir(item):
+            config.register_tree(os.path.abspath(item))
+        elif os.path.isfile(item):
+            config.register_tree(os.path.dirname(os.path.abspath(item)))
+        else:
+            ap.error("%s is neither a file nor directory" % item)
+    config.build_config_tree(build_default_config(rule_set),
+                             options)
+
+    for item in options.files:
+        if os.path.isdir(item):
+            for path, dirs, files in os.walk(item):
+                dirs.sort()
+                for f in sorted(files):
+                    if f.endswith(".m"):
+                        analyze(os.path.normpath(os.path.join(path, f)),
+                                rule_set,
+                                options.fix)
+        else:
+            analyze(os.path.normpath(item),
+                    rule_set,
+                    options.fix)
+
+    mh.print_summary_and_exit()
+
+
+def ice_handler():
     try:
-        for item in options.files:
-            if os.path.isdir(item):
-                config.register_tree(os.path.abspath(item))
-            elif os.path.isfile(item):
-                config.register_tree(os.path.dirname(os.path.abspath(item)))
-            else:
-                ap.error("%s is neither a file nor directory" % item)
-        config.build_config_tree(options)
-
-        for item in options.files:
-            if os.path.isdir(item):
-                for path, dirs, files in os.walk(item):
-                    dirs.sort()
-                    for f in sorted(files):
-                        if f.endswith(".m"):
-                            analyze(os.path.normpath(os.path.join(path, f)),
-                                    options.fix)
-            else:
-                analyze(os.path.normpath(item), options.fix)
-
-        mh.print_summary_and_exit()
-
+        main()
     except ICE as internal_compiler_error:
         traceback.print_exc()
         print("-" * 70)
@@ -816,4 +1024,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    ice_handler()

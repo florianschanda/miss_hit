@@ -31,11 +31,8 @@ from errors import mh, ICE, Error, Location
 
 CONFIG_FILENAME = "miss_hit.cfg"
 
-DEFAULT = {
+BASE_CONFIG = {
     "enable"           : True,
-    "file_length"      : 1000,
-    "line_length"      : 80,
-    "tab_width"        : 4,
     "copyright_entity" : set(),
     "exclude_dir"      : set(),
     "suppress_rule"    : set(),
@@ -268,7 +265,12 @@ def register_tree(dirname):
     register_subtree(dirname)
 
 
-def build_config_tree(cmdline_options):
+def build_config_tree(defaults, cmdline_options):
+    # Construct basic default options
+    root_config = deepcopy(BASE_CONFIG)
+    root_config.update(defaults)
+
+    # Find root of config tree
     roots = [d for d in CONFIG_TREE if CONFIG_TREE[d]["root"]]
     if len(roots) == 0:
         raise ICE("could not find any project or filesystem root")
@@ -294,7 +296,7 @@ def build_config_tree(cmdline_options):
         if CONFIG_TREE[node]["root"]:
             # First we set up basic config. For roots this is a copy
             # of the default config.
-            CONFIG_TREE[node]["config"] = deepcopy(DEFAULT)
+            CONFIG_TREE[node]["config"] = deepcopy(root_config)
             merge_command_line(CONFIG_TREE[node]["config"])
         else:
             # For non-roots we copy the parent config.
