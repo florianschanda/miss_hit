@@ -165,8 +165,8 @@ class MATLAB_Parser:
         return rv
 
     def parse_file_input(self):
-        while self.peek("NEWLINE"):
-            self.match("NEWLINE")
+        while self.peek("NEWLINE") or self.peek("COMMENT"):
+            self.next()
 
         if self.peek("KEYWORD", "function"):
             return self.parse_function_file()
@@ -174,7 +174,7 @@ class MATLAB_Parser:
             return self.parse_script_file()
 
     def parse_script_file(self):
-        raise NIY()
+        return self.parse_delimited_input()
 
     def parse_function_file(self):
         functions = []

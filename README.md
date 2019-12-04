@@ -102,3 +102,9 @@ Contributions from the following people and entities are under their
 copyright, with the same license:
 
 * Zenuity AB
+
+### Copyright of octave tests
+
+This project includes modified/adapted parts of the GNU Octave
+testsuite under `tests/parser/octave_*`. These are (c) their original
+authors. Each file there describes from which file they derive.
