@@ -286,7 +286,7 @@ class MATLAB_Parser:
             elif self.nt.value() == "global":
                 raise NIY()
             elif self.nt.value() == "while":
-                raise NIY()
+                return self.parse_while_statement()
             elif self.nt.value() == "return":
                 return self.parse_return_statement()
             else:
@@ -535,8 +535,50 @@ class MATLAB_Parser:
 
         return rv
 
+    def parse_matrix_row(self, required_elements=None):
+        assert required_elements is None or required_elements >= 1
+        rv = []
+
+        if required_elements:
+            for i in range(required_elements):
+                if i > 0:
+                    self.match("COMMA")
+                rv.append(self.parse_expression())
+        else:
+            while not (self.peek("SEMICOLON") or
+                       self.peek("NEWLINE") or
+                       self.peek("M_KET")):
+                rv.append(self.parse_expression())
+                if self.peek("COMMA"):
+                    self.match("COMMA")
+
+        return rv
+
     def parse_matrix(self):
-        raise NIY()
+        self.match("M_BRA")
+        t_open = self.ct
+
+        rows = [self.parse_matrix_row()]
+        if self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
+        if self.peek("NEWLINE"):
+            self.match("NEWLINE")
+        dim_x = len(rows[0])
+
+        while not (self.peek("SEMICOLON") or
+                   self.peek("NEWLINE") or
+                   self.peek("M_KET")):
+            rows.append(self.parse_matrix_row(dim_x))
+            if self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
+            if self.peek("NEWLINE"):
+                self.match("NEWLINE")
+
+        self.match("M_KET")
+        t_close = self.ct
+
+        rv = Matrix_Expression(t_open, t_close, rows)
+        return rv
 
     def parse_argument_list(self):
         args = []
@@ -587,7 +629,8 @@ class MATLAB_Parser:
     def parse_return_statement(self):
         self.match("KEYWORD", "return")
         t_kw = self.ct
-        self.match("SEMICOLON")
+        if self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
         self.match("NEWLINE")
 
         return Return_Statement(t_kw)
@@ -606,6 +649,20 @@ class MATLAB_Parser:
         self.match("NEWLINE")
 
         return Simple_For_Statement(t_kw, n_ident, n_range, n_body)
+
+    def parse_while_statement(self):
+        self.match("KEYWORD", "while")
+        t_kw = self.ct
+
+        n_guard = self.parse_expression()
+        self.match("NEWLINE")
+
+        n_body = self.parse_delimited_input()
+        self.match("KEYWORD", "end")
+
+        self.match("NEWLINE")
+
+        return While_Statement(t_kw, n_guard, n_body)
 
 
 def sanity_test(filename):

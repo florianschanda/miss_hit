@@ -62,6 +62,11 @@ def rec(indent, prefix, node):
         rec(indent + 2, "range: ", node.n_range)
         rec(indent + 2, "body: ", node.n_body)
 
+    elif isinstance(node, While_Statement):
+        emit("While statement on line %u" % node.t_while.location.line)
+        rec(indent + 2, "guard: ", node.n_guard)
+        rec(indent + 2, "body: ", node.n_body)
+
     elif isinstance(node, Return_Statement):
         emit("Return statement on line %u" % node.t_kw.location.line)
 
@@ -93,6 +98,12 @@ def rec(indent, prefix, node):
         if node.n_stride:
             rec(indent + 2, "stride: ", node.n_stride)
         rec(indent + 2, "last: ", node.n_last)
+
+    elif isinstance(node, Matrix_Expression):
+        emit("Matrix (%ux%u)" % (len(node.items[0]), len(node.items)))
+        for row_id, row in enumerate(node.items, 1):
+            for item in row:
+                rec(indent + 2, "row %u: " % row_id, item)
 
     elif isinstance(node, Reference):
         if len(node.arglist) == 0:

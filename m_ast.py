@@ -102,6 +102,28 @@ class Range_Expression(Expression):
             return "%s:%s" % (self.n_first, self.n_last)
 
 
+class Matrix_Expression(Expression):
+    def __init__(self, t_open, t_close, items):
+        super().__init__()
+        assert isinstance(t_open, MATLAB_Token)
+        assert isinstance(t_close, MATLAB_Token)
+        assert isinstance(items, list)
+        for row in items:
+            assert isinstance(row, list)
+            for item in row:
+                assert isinstance(item, Expression)
+
+        self.t_open  = t_open
+        self.t_close = t_close
+        self.items   = items
+
+    def __str__(self):
+        rows = []
+        for row in self.items:
+            rows.append(", ".join(str(item) for item in row))
+        return "[" + "; ".join(rows) + "]"
+
+
 class Simple_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_range, n_body):
         super().__init__()
@@ -114,6 +136,19 @@ class Simple_For_Statement(Statement):
         self.t_for   = t_for
         self.n_ident = n_ident
         self.n_range = n_range
+        self.n_body  = n_body
+
+
+class While_Statement(Statement):
+    def __init__(self, t_while, n_guard, n_body):
+        super().__init__()
+        assert isinstance(t_while, MATLAB_Token)
+        assert t_while.kind == "KEYWORD" and t_while.value() == "while"
+        assert isinstance(n_guard, Expression)
+        assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_while = t_while
+        self.n_guard = n_guard
         self.n_body  = n_body
 
 
