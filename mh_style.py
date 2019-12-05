@@ -267,7 +267,8 @@ class Rule_File_Length(Style_Rule_File):
         if len(lines) > cfg["file_length"]:
             mh.style_issue(Location(filename,
                                     len(lines)),
-                           "file exceeds %u lines" % cfg["file_length"])
+                           "file exceeds %u lines" % cfg["file_length"],
+                           self.autofix)
 
 
 class Rule_File_EOF_Lines(Style_Rule_File):
@@ -287,7 +288,8 @@ class Rule_File_EOF_Lines(Style_Rule_File):
         if len(lines) >= 2 and lines[-1] == "":
             mh.style_issue(Location(filename,
                                     len(lines)),
-                           "trailing blank lines at end of file")
+                           "trailing blank lines at end of file",
+                           self.autofix)
 
 
 class Rule_Line_Length(Style_Rule_Line):
@@ -322,7 +324,8 @@ class Rule_Line_Length(Style_Rule_Line):
                                     cfg["line_length"] + 1,
                                     len(line),
                                     line),
-                           "line exceeds %u characters" % cfg["line_length"])
+                           "line exceeds %u characters" % cfg["line_length"],
+                           self.autofix)
 
 
 class Rule_Line_Blank_Lines(Style_Rule_Line):
@@ -344,7 +347,8 @@ class Rule_Line_Blank_Lines(Style_Rule_Line):
         elif self.is_blank:
             mh.style_issue(Location(filename,
                                     line_no),
-                           "more than one consecutive blank line")
+                           "more than one consecutive blank line",
+                           self.autofix)
         else:
             self.is_blank = True
 
@@ -397,7 +401,8 @@ class Rule_Line_Tabs(Style_Rule_Line):
                                     line.index("\t"),
                                     line.index("\t"),
                                     line),
-                           "tab is not allowed")
+                           "tab is not allowed",
+                           self.autofix)
 
 
 class Rule_Line_Trailing_Whitesapce(Style_Rule_Line):
@@ -419,14 +424,16 @@ class Rule_Line_Trailing_Whitesapce(Style_Rule_Line):
             if len(line.strip()) == 0:
                 mh.style_issue(Location(filename,
                                         line_no),
-                               "whitespace on blank line")
+                               "whitespace on blank line",
+                               self.autofix)
             else:
                 mh.style_issue(Location(filename,
                                         line_no,
                                         len(line.rstrip()),
                                         len(line),
                                         line),
-                               "trailing whitespace")
+                               "trailing whitespace",
+                               self.autofix)
 
 
 def get_rules():
@@ -636,7 +643,8 @@ def stage_3_analysis(cfg, tbuf):
                    (prev_in_line and ws_before > 0):
                     mh.style_issue(token.location,
                                    "comma cannot be preceeded by whitespace "
-                                   "and must be followed by whitespace")
+                                   "and must be followed by whitespace",
+                                   True)
 
             if config.active(cfg, "eol_comma") and last_code_in_line:
                 mh.style_issue(token.location,
@@ -655,7 +663,8 @@ def stage_3_analysis(cfg, tbuf):
                     if ((prev_in_line and ws_before > 0) or
                         (next_in_line and ws_after > 0)):
                         mh.style_issue(token.location,
-                                       "no whitespace around colon allowed")
+                                       "no whitespace around colon allowed",
+                                       True)
 
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
         elif token.kind == "ASSIGNMENT":
@@ -665,10 +674,12 @@ def stage_3_analysis(cfg, tbuf):
 
                 if prev_in_line and ws_before == 0:
                     mh.style_issue(token.location,
-                                   "= must be preceeded by whitespace")
+                                   "= must be preceeded by whitespace",
+                                   True)
                 elif next_in_line and ws_after == 0:
                     mh.style_issue(token.location,
-                                   "= must be succeeded by whitespace")
+                                   "= must be succeeded by whitespace",
+                                   True)
 
             if config.active(cfg, "builtin_shadow"):
                 # Here we now try to figure out what we assigned to. In
@@ -722,7 +733,8 @@ def stage_3_analysis(cfg, tbuf):
                next_in_line.kind != "CONTINUATION":
                 mh.style_issue(token.location,
                                "%s must not be followed by whitespace" %
-                               token.raw_text)
+                               token.raw_text,
+                               True)
                 token.fix["ensure_trim_after"] = True
 
         elif token.kind in ("KET", "A_KET", "M_KET"):
@@ -730,7 +742,8 @@ def stage_3_analysis(cfg, tbuf):
                prev_in_line and ws_before > 0:
                 mh.style_issue(token.location,
                                "%s must not be preceeded by whitespace" %
-                               token.raw_text)
+                               token.raw_text,
+                               True)
                 token.fix["ensure_trim_before"] = True
 
         # Corresponds to the old CodeChecker KeywordWhitespace rule
@@ -739,7 +752,8 @@ def stage_3_analysis(cfg, tbuf):
             if config.active(cfg, "whitespace_keywords") and \
                next_in_line and ws_after == 0:
                 mh.style_issue(token.location,
-                               "keyword must be succeeded by whitespace")
+                               "keyword must be succeeded by whitespace",
+                               True)
                 token.fix["ensure_ws_after"] = True
 
             # Corresponds to the old CodeChecker FunctionName rule
@@ -765,7 +779,8 @@ def stage_3_analysis(cfg, tbuf):
                     # space
                     mh.style_issue(token.location,
                                    "MATLAB pragma must not contain whitespace "
-                                   "between %# and the pragma")
+                                   "between %# and the pragma",
+                                   True)
                     token.raw_text = "%#" + token.raw_text[2:].strip()
 
                 elif re.match("^% +#[a-zA-Z]", token.raw_text):
@@ -773,7 +788,8 @@ def stage_3_analysis(cfg, tbuf):
                     # fixed our pragma handling
                     mh.style_issue(token.location,
                                    "MATLAB pragma must not contain whitespace "
-                                   "between % and the pragma")
+                                   "between % and the pragma",
+                                   True)
                     token.raw_text = "%#" + token.raw_text.split("#", 1)[1]
 
                 elif comment_body and not comment_body.startswith(" "):
@@ -781,7 +797,8 @@ def stage_3_analysis(cfg, tbuf):
                     mh.style_issue(token.location,
                                    "comment body must be separated with "
                                    "whitespace from the starting %s" %
-                                   comment_char)
+                                   comment_char,
+                                   True)
                     token.raw_text = (comment_char * (len(token.raw_text) -
                                                       len(comment_body)) +
                                       " " +
@@ -790,7 +807,8 @@ def stage_3_analysis(cfg, tbuf):
                 # Make sure we have whitespace before each comment
                 if prev_in_line and ws_before == 0:
                     mh.style_issue(token.location,
-                                   "comment must be preceeded by whitespace")
+                                   "comment must be preceeded by whitespace",
+                                   True)
                     token.fix["ensure_ws_before"] = True
 
         elif token.kind == "CONTINUATION":
@@ -798,7 +816,8 @@ def stage_3_analysis(cfg, tbuf):
             if config.active(cfg, "whitespace_continuation") and \
                prev_in_line and ws_before == 0:
                 mh.style_issue(token.location,
-                               "continuation must be preceeded by whitespace")
+                               "continuation must be preceeded by whitespace",
+                               True)
                 token.fix["ensure_ws_before"] = True
 
             if config.active(cfg, "operator_after_continuation") and \
@@ -975,6 +994,7 @@ def main():
 
     mh.show_context = not options.brief
     mh.show_style   = not options.no_style
+    mh.autofix      = options.fix
     # mh.sort_messages = False
 
     for item in options.files:

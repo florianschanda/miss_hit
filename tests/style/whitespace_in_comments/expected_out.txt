@@ -1,28 +1,28 @@
 In test.m, line 12
 | %Potato
-| ^^^^^^^ style: comment body must be separated with whitespace from the starting %
+| ^^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]
 In test.m, line 13
 | %#############################
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]
 In test.m, line 14
 | %%%Potato
-| ^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
+| ^^^^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]
 In test.m, line 15
 | %##Potato
-| ^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
+| ^^^^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]
 In test.m, line 16
 | %## Potato
-| ^^^^^^^^^^ style: comment body must be separated with whitespace from the starting %
+| ^^^^^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]
 In test.m, line 17
 | %#     codegen
-| ^^^^^^^^^^^^^^ style: MATLAB pragma must not contain whitespace between %# and the pragma
+| ^^^^^^^^^^^^^^ style: MATLAB pragma must not contain whitespace between %# and the pragma [fixed]
 In test.m, line 18
 | %# ok
-| ^^^^^ style: MATLAB pragma must not contain whitespace between %# and the pragma
+| ^^^^^ style: MATLAB pragma must not contain whitespace between %# and the pragma [fixed]
 In test.m, line 19
 | % #ok
-| ^^^^^ style: MATLAB pragma must not contain whitespace between % and the pragma
+| ^^^^^ style: MATLAB pragma must not contain whitespace between % and the pragma [fixed]
 In test.m, line 20
 | %    #ok
-| ^^^^^^^^ style: MATLAB pragma must not contain whitespace between % and the pragma
+| ^^^^^^^^ style: MATLAB pragma must not contain whitespace between % and the pragma [fixed]
 MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)

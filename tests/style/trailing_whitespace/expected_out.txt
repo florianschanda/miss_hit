@@ -1,11 +1,11 @@
 In fail_1.m, line 4
 | potato 
-|       ^^ style: trailing whitespace
-fail_1.m:7: style: whitespace on blank line
+|       ^^ style: trailing whitespace [fixed]
+fail_1.m:7: style: whitespace on blank line [fixed]
 In fail_1.m, line 8
 | % Also not OK on comments or continuations 
-|                                           ^^ style: trailing whitespace
+|                                           ^^ style: trailing whitespace [fixed]
 In fail_1.m, line 9
 | ... 
-|    ^^ style: trailing whitespace
+|    ^^ style: trailing whitespace [fixed]
 MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

@@ -6,7 +6,7 @@ In test.m, line 5
 |           ^ style: lines must not end with a comma
 In test.m, line 5
 | potato = 2, 
-|            ^^ style: trailing whitespace
+|            ^^ style: trailing whitespace [fixed]
 In test.m, line 6
 | kitten = 3,     # comment
 |           ^ style: lines must not end with a comma

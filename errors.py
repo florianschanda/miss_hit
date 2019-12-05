@@ -105,6 +105,7 @@ class Message_Handler:
         self.files = set()
         self.excluded_files = set()
 
+        self.autofix = False
         self.colour = False
         self.show_context = True
         self.show_style = True
@@ -139,7 +140,7 @@ class Message_Handler:
                          for m in self.messages
                          if m.location.filename != filename]
 
-    def __render_message(self, location, kind, message):
+    def __render_message(self, location, kind, message, autofix):
         # First, check if a justification applies
         if kind == "style":
             st_just = self.style_justifications[location.filename]
@@ -169,6 +170,9 @@ class Message_Handler:
                 kstring = kind
         else:
             kstring = kind
+
+        if autofix and self.autofix:
+            message += " [fixed]"
 
         if location.line is None:
             print("%s: %s: %s" % (location.filename,
@@ -200,20 +204,21 @@ class Message_Handler:
                                             kstring,
                                             message))
 
-    def __register_message(self, location, kind, message, fatal):
+    def __register_message(self, location, kind, message, fatal, autofix):
         assert isinstance(location, Location)
         assert kind in ("info", "style", "warning", "lex error", "error")
         assert isinstance(message, str)
         assert isinstance(fatal, bool)
+        assert isinstance(autofix, bool)
 
         if location.filename not in self.files:
             raise ICE("attempted to emit message on unknown file")
 
         # TODO: Use bisect to keep it sorted
         if self.sort_messages:
-            self.messages.append((location, kind, message))
+            self.messages.append((location, kind, message, autofix))
         else:
-            self.__render_message(location, kind, message)
+            self.__render_message(location, kind, message, autofix)
 
         if kind in ("lex error", "error"):
             self.errors += 1
@@ -234,26 +239,26 @@ class Message_Handler:
                          "invalid justification not recognized")
 
     def info(self, location, message):
-        self.__register_message(location, "info", message, False)
+        self.__register_message(location, "info", message, False, False)
 
-    def style_issue(self, location, message):
-        self.__register_message(location, "style", message, False)
+    def style_issue(self, location, message, autofix=False):
+        self.__register_message(location, "style", message, False, autofix)
 
     def warning(self, location, message):
-        self.__register_message(location, "warning", message, False)
+        self.__register_message(location, "warning", message, False, False)
 
     def lex_error(self, location, message, fatal=True):
-        self.__register_message(location, "lex error", message, fatal)
+        self.__register_message(location, "lex error", message, fatal, False)
 
     def error(self, location, message, fatal=True):
-        self.__register_message(location, "error", message, fatal)
+        self.__register_message(location, "error", message, fatal, False)
 
     def flush_messages(self, filename):
         assert isinstance(filename, str)
         assert filename in self.files
 
         # Check which justifications actually apply here
-        for location, kind, message in self.messages:
+        for location, kind, message, autofix in self.messages:
             if location.filename != filename:
                 continue
 
@@ -271,23 +276,23 @@ class Message_Handler:
         # Sort messages into stuff that applies to us and others
         applicable_msg = []
         other_msg = []
-        for location, kind, message in self.messages:
+        for location, kind, message, autofix in self.messages:
             if location.filename == filename:
-                applicable_msg.append((location, kind, message))
+                applicable_msg.append((location, kind, message, autofix))
             else:
-                other_msg.append((location, kind, message))
+                other_msg.append((location, kind, message, autofix))
         self.messages = other_msg
 
         # Print messages for this file
-        for location, kind, message in sorted(applicable_msg):
-            self.__render_message(location, kind, message)
+        for location, kind, message, autofix in sorted(applicable_msg):
+            self.__render_message(location, kind, message, autofix)
 
         # Clean up justifications
         self.style_justifications[filename] = {}
 
     def print_summary_and_exit(self):
         # Check which justifications actually apply
-        for location, kind, message in sorted(self.messages):
+        for location, kind, message, autofix in sorted(self.messages):
             if kind == "style":
                 st_just = self.style_justifications[location.filename]
                 if location.line in st_just:
@@ -301,8 +306,8 @@ class Message_Handler:
                                "style justification does not apply")
 
         # Finally print remaining messages
-        for location, kind, message in sorted(self.messages):
-            self.__render_message(location, kind, message)
+        for location, kind, message, autofix, in sorted(self.messages):
+            self.__render_message(location, kind, message, autofix)
 
         tmp = "MISS_HIT Summary: "
         stats = ["%u file(s) analysed" % len(self.files)]
