@@ -192,11 +192,11 @@ class MATLAB_Parser:
 
         # Parse returns. Either 'x' or a list '[x, y]'
         returns = []
-        if self.peek("S_BRA"):
+        if self.peek("A_BRA"):
             out_brackets = True
-            self.match("S_BRA")
-            if self.peek("S_KET"):
-                self.match("S_KET")
+            self.match("A_BRA")
+            if self.peek("A_KET"):
+                self.match("A_KET")
             else:
                 while True:
                     returns.append(self.parse_selection(in_reference=True))
@@ -204,7 +204,7 @@ class MATLAB_Parser:
                         self.match("COMMA")
                     else:
                         break
-                self.match("S_KET")
+                self.match("A_KET")
         else:
             out_brackets = False
             returns.append(self.parse_selection())
@@ -308,15 +308,15 @@ class MATLAB_Parser:
         # TODO: need to make sure the call case has brackets.
 
         lhs = []
-        if self.peek("S_BRA"):
-            self.match("S_BRA")
+        if self.peek("A_BRA"):
+            self.match("A_BRA")
             while True:
                 lhs.append(self.parse_reference())
                 if self.peek("COMMA"):
                     self.match("COMMA")
                 else:
                     break
-            self.match("S_KET")
+            self.match("A_KET")
         else:
             lhs.append(self.parse_reference())
 
@@ -377,7 +377,7 @@ class MATLAB_Parser:
             self.match("KET")
             return expr
 
-        elif self.peek("S_BRA"):
+        elif self.peek("M_BRA"):
             return self.parse_matrix()
 
         else:

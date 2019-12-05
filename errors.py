@@ -105,6 +105,7 @@ class Message_Handler:
         self.files = set()
         self.excluded_files = set()
 
+        self.colour = False
         self.show_context = True
         self.show_style = True
         self.sort_messages = True
@@ -159,14 +160,24 @@ class Message_Handler:
         elif kind == "warning":
             self.warnings += 1
 
+        if self.colour:
+            if kind in ("error", "lex error"):
+                kstring = "\033[31;1m%s\033[0m" % kind
+            elif kind == "warning":
+                kstring = "\033[31m%s\033[0m" % kind
+            else:
+                kstring = kind
+        else:
+            kstring = kind
+
         if location.line is None:
             print("%s: %s: %s" % (location.filename,
-                                  kind,
+                                  kstring,
                                   message))
         elif location.col_start is None:
             print("%s:%u: %s: %s" % (location.filename,
                                      location.line,
-                                     kind,
+                                     kstring,
                                      message))
         else:
             if location.context is None:
@@ -181,18 +192,19 @@ class Message_Handler:
                 print("| " +
                       (" " * location.col_start) +
                       ("^" * (location.col_end - location.col_start + 1)) +
-                      " %s: %s" % (kind, message))
+                      " %s: %s" % (kstring, message))
             else:
                 print("%s:%u:%u: %s: %s" % (location.filename,
                                             location.line,
                                             location.col_start,
-                                            kind,
+                                            kstring,
                                             message))
 
-    def __register_message(self, location, kind, message):
+    def __register_message(self, location, kind, message, fatal):
         assert isinstance(location, Location)
         assert kind in ("info", "style", "warning", "lex error", "error")
         assert isinstance(message, str)
+        assert isinstance(fatal, bool)
 
         if location.filename not in self.files:
             raise ICE("attempted to emit message on unknown file")
@@ -205,6 +217,8 @@ class Message_Handler:
 
         if kind in ("lex error", "error"):
             self.errors += 1
+
+        if fatal:
             raise Error(location, message)
 
     def register_justification(self, token):
@@ -220,19 +234,19 @@ class Message_Handler:
                          "invalid justification not recognized")
 
     def info(self, location, message):
-        self.__register_message(location, "info", message)
+        self.__register_message(location, "info", message, False)
 
     def style_issue(self, location, message):
-        self.__register_message(location, "style", message)
+        self.__register_message(location, "style", message, False)
 
     def warning(self, location, message):
-        self.__register_message(location, "warning", message)
+        self.__register_message(location, "warning", message, False)
 
-    def lex_error(self, location, message):
-        self.__register_message(location, "lex error", message)
+    def lex_error(self, location, message, fatal=True):
+        self.__register_message(location, "lex error", message, fatal)
 
-    def error(self, location, message):
-        self.__register_message(location, "error", message)
+    def error(self, location, message, fatal=True):
+        self.__register_message(location, "error", message, fatal)
 
     def flush_messages(self, filename):
         assert isinstance(filename, str)

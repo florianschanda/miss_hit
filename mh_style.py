@@ -150,11 +150,11 @@ class Mini_Parser:
 
         # Parse returns. Either 'x' or a list '[x, y]'
         returns = []
-        if self.peek("S_BRA"):
+        if self.peek("A_BRA"):
             out_brackets = True
-            self.match("S_BRA")
-            if self.peek("S_KET"):
-                self.match("S_KET")
+            self.match("A_BRA")
+            if self.peek("A_KET"):
+                self.match("A_KET")
             else:
                 while True:
                     returns.append(self.parse_selection(in_reference=True))
@@ -162,7 +162,7 @@ class Mini_Parser:
                         self.match("COMMA")
                     else:
                         break
-                self.match("S_KET")
+                self.match("A_KET")
         else:
             out_brackets = False
             returns.append(self.parse_selection())
@@ -678,12 +678,12 @@ def stage_3_analysis(cfg, tbuf):
                 badness = []
                 parens = 0
                 for i in reversed(range(last_newline, n)):
-                    if tbuf.tokens[i].kind == "S_KET":
+                    if tbuf.tokens[i].kind in ("A_KET", "M_KET"):
                         brackets.append("]")
                     elif tbuf.tokens[i].kind == "KET":
                         brackets.append(")")
                         parens += 1
-                    elif tbuf.tokens[i].kind == "S_BRA":
+                    elif tbuf.tokens[i].kind in ("A_BRA", "M_BRA"):
                         if len(brackets) == 0:
                             # Almost certain a syntax error
                             break
@@ -716,7 +716,7 @@ def stage_3_analysis(cfg, tbuf):
 
         # Corresponds to the old CodeChecker ParenthesisWhitespace and
         # BracketsWhitespace rules
-        elif token.kind in ("BRA", "S_BRA"):
+        elif token.kind in ("BRA", "A_BRA", "M_BRA"):
             if config.active(cfg, "whitespace_brackets") and \
                next_in_line and ws_after > 0 and \
                next_in_line.kind != "CONTINUATION":
@@ -725,7 +725,7 @@ def stage_3_analysis(cfg, tbuf):
                                token.raw_text)
                 token.fix["ensure_trim_after"] = True
 
-        elif token.kind in ("KET", "S_KET"):
+        elif token.kind in ("KET", "A_KET", "M_KET"):
             if config.active(cfg, "whitespace_brackets") and \
                prev_in_line and ws_before > 0:
                 mh.style_issue(token.location,

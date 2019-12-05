@@ -63,9 +63,10 @@ TOKEN_KINDS = frozenset([
     "COMMA",
     "SEMICOLON",
     "COLON",
-    "BRA", "KET",
-    "C_BRA", "C_KET",
-    "S_BRA", "S_KET",
+    "BRA", "KET",      # ( )
+    "C_BRA", "C_KET",  # { }
+    "M_BRA", "M_KET",  # [ ] for matrices
+    "A_BRA", "A_KET",  # [ ] for reference lists
     "ASSIGNMENT",
     "SELECTION",
     "AT",
@@ -77,9 +78,10 @@ TOKENS_WITH_IMPLICIT_VALUE = frozenset([
     "COMMA",
     "SEMICOLON",
     "COLON",
-    "BRA", "KET",
-    "C_BRA", "C_KET",
-    "S_BRA", "S_KET",
+    "BRA", "KET",      # ( )
+    "C_BRA", "C_KET",  # { }
+    "M_BRA", "M_KET",  # [ ] for matrices
+    "A_BRA", "A_KET",  # [ ] for reference lists
     "ASSIGNMENT",
     "SELECTION",
     "AT",
@@ -156,7 +158,7 @@ class MATLAB_Lexer(Token_Generator):
         self.lexpos = -1
         self.col_offset = 0
         self.line = 1
-        self.matrix_stack = []
+        self.bracket_stack = []
         self.first_in_line = True
         self.in_dir_command = False
 
@@ -329,11 +331,11 @@ class MATLAB_Lexer(Token_Generator):
             if preceeding_ws or self.first_in_line:
                 kind = "STRING"
             elif self.last_kind in ("IDENTIFIER", "NUMBER", "STRING",
-                                    "KET", "S_KET", "C_KET"):
+                                    "KET", "A_KET", "M_KET", "C_KET"):
                 kind = "OPERATOR"
             elif self.last_kind == "OPERATOR" and self.last_value == "'":
                 kind = "OPERATOR"
-            elif self.last_kind in ("BRA", "S_BRA", "C_BRA", "COMMA",
+            elif self.last_kind in ("BRA", "A_BRA", "M_BRA", "C_BRA", "COMMA",
                                     "ASSIGNMENT", "OPERATOR", "SEMICOLON"):
                 kind = "STRING"
             else:
@@ -380,10 +382,74 @@ class MATLAB_Lexer(Token_Generator):
             kind = "C_KET"
 
         elif self.cc == "[":
-            kind = "S_BRA"
+            # So [ is much harder than it looks. Thanks again for
+            # this. Depending on the context it is either a matrix or
+            # list of references used in an assignment. This means we
+            # need to search ahead for the matching closing bracket,
+            # and then check if the following first non-ws token is ==
+            # (then this is M_BRA) or = (A_BRA). Of course we also
+            # need to deal with line continuations.
+            kind = "M_BRA"
+
+            if self.bracket_stack:
+                # If we're already in some bracket then this is always
+                # going to be a matrix.
+                pass
+
+            else:
+                skip_cont = 0
+                bstack = ["["]
+                assignment = False
+                for c in self.text[self.lexpos + 1:]:
+                    # We're searching for the closing bracket
+                    if bstack:
+                        if c in ("[", "(", "{"):
+                            bstack.append(c)
+                        elif c in ("]", ")", "}"):
+                            matching_bracket = bstack.pop()
+                            if c == "]" and matching_bracket != "[":
+                                self.lex_error("unbalanced [")
+                            elif c == ")" and matching_bracket != "(":
+                                self.lex_error("unbalanced (")
+                            elif c == "}" and matching_bracket != "}":
+                                self.lex_error("unbalanced {")
+
+                    # We found it, now we need to search for the first
+                    # non-ws token
+                    else:
+                        if assignment and c == "=":
+                            # Yes, it really is ==
+                            assignment = False
+                            break
+                        elif assignment:
+                            break
+                        elif c in (" ", "\t"):
+                            pass
+                        elif c == "." and skip_cont < 3:
+                            skip_cont += 1
+                        elif skip_cont == 3 and c == "\n":
+                            skip_cont = 0
+                        elif skip_cont == 3:
+                            pass
+                        elif 1 <= skip_cont < 3:
+                            # Not a continuation, and so not a =, so
+                            # its a matrix
+                            break
+                        elif c == "=":
+                            # Could be = or ==
+                            assignment = True
+                        else:
+                            break
+                if assignment:
+                    kind = "A_BRA"
 
         elif self.cc == "]":
-            kind = "S_KET"
+            # We don't raise errors here if brackets don't match, this
+            # is done later.
+            if self.bracket_stack and self.bracket_stack[-1].kind == "A_BRA":
+                kind = "A_KET"
+            else:
+                kind = "M_KET"
 
         elif self.cc == ".":
             kind = "SELECTION"
@@ -440,6 +506,31 @@ class MATLAB_Lexer(Token_Generator):
 
         self.last_kind = kind
         self.last_value = raw_text
+
+        if token.kind in ("BRA", "A_BRA", "M_BRA", "C_BRA"):
+            self.bracket_stack.append(token)
+        elif token.kind in ("KET", "A_KET", "M_KET", "C_KET"):
+            if self.bracket_stack:
+                matching_bracket = self.bracket_stack.pop()
+                if (token.kind == "KET" and
+                    matching_bracket.kind != "BRA") or \
+                   (token.kind == "A_KET" and
+                    matching_bracket.kind != "A_BRA") or \
+                   (token.kind == "M_KET" and
+                    matching_bracket.kind != "M_BRA") or \
+                   (token.kind == "C_KET" and
+                    matching_bracket.kind != "C_BRA"):
+                    mh.lex_error(token.location,
+                                 "mismatched brackets %s ... %s" %
+                                 (matching_bracket.raw_text,
+                                  token.raw_text))
+            else:
+                # Raise a non-fatal lex error (so that the style
+                # checker can continue; the parser will throw up soon
+                # anyway).
+                mh.lex_error(token.location,
+                             "unmatched %s" % token.raw_text,
+                             False)
 
         return token
 
@@ -518,28 +609,30 @@ class Token_Buffer(Token_Generator):
         fd.write("\n")
 
 
-def sanity_test():
-    lexer = Token_Buffer(MATLAB_Lexer("tests/lexer/lexing_test.m"))
-
-    while True:
-        tok = lexer.token()
-        if tok is None:
-            break
-        else:
-            mh.info(tok.location, tok.kind)
-
-    lexer = MATLAB_Lexer("tests/lexer/lexing_test_errors.m")
-
+def sanity_test(filename):
+    mh.sort_messages = False
+    mh.colour = True
     try:
+        mh.register_file(filename)
+        lexer = MATLAB_Lexer(filename)
         while True:
             tok = lexer.token()
             if tok is None:
                 break
+            else:
+                mh.info(tok.location, tok.kind)
+        print("%s: lexed OK" % filename)
     except Error:
-        pass
-
-    mh.print_summary_and_exit()
+        print("%s: lexed with errors" % filename)
 
 
 if __name__ == "__main__":
-    sanity_test()
+    # pylint: disable=invalid-name
+    from argparse import ArgumentParser
+    ap = ArgumentParser()
+    ap.add_argument("file")
+    options = ap.parse_args()
+
+    sanity_test(options.file)
+
+    mh.print_summary_and_exit()
