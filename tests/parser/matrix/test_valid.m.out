@@ -1,0 +1,341 @@
+In test_valid.m, line 1
+| % (c) Copyright 2019 Zenuity AB
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In test_valid.m, line 1
+| % (c) Copyright 2019 Zenuity AB
+|                                ^ info: NEWLINE
+In test_valid.m, line 3
+| function potato()
+| ^^^^^^^^ info: KEYWORD
+In test_valid.m, line 3
+| function potato()
+|          ^^^^^^ info: IDENTIFIER
+In test_valid.m, line 3
+| function potato()
+|                ^ info: BRA
+In test_valid.m, line 3
+| function potato()
+|                 ^ info: KET
+In test_valid.m, line 3
+| function potato()
+|                  ^ info: NEWLINE
+In test_valid.m, line 4
+|     a = 9;
+|     ^ info: IDENTIFIER
+In test_valid.m, line 4
+|     a = 9;
+|       ^ info: ASSIGNMENT
+In test_valid.m, line 4
+|     a = 9;
+|         ^ info: NUMBER
+In test_valid.m, line 4
+|     a = 9;
+|          ^ info: SEMICOLON
+In test_valid.m, line 4
+|     a = 9;
+|           ^ info: NEWLINE
+In test_valid.m, line 5
+|     b = [4 5 6];
+|     ^ info: IDENTIFIER
+In test_valid.m, line 5
+|     b = [4 5 6];
+|       ^ info: ASSIGNMENT
+In test_valid.m, line 5
+|     b = [4 5 6];
+|         ^ info: M_BRA
+In test_valid.m, line 5
+|     b = [4 5 6];
+|          ^ info: NUMBER
+In test_valid.m, line 5
+|     b = [4<anon,> 5 6];
+|           ^^^^^^^ info: [32madded comma[0m
+In test_valid.m, line 5
+|     b = [4<anon,> 5 6];
+|           ^^^^^^^ info: COMMA
+In test_valid.m, line 5
+|     b = [4 5 6];
+|            ^ info: NUMBER
+In test_valid.m, line 5
+|     b = [4 5<anon,> 6];
+|             ^^^^^^^ info: [32madded comma[0m
+In test_valid.m, line 5
+|     b = [4 5<anon,> 6];
+|             ^^^^^^^ info: COMMA
+In test_valid.m, line 5
+|     b = [4 5 6];
+|              ^ info: NUMBER
+In test_valid.m, line 5
+|     b = [4 5 6];
+|               ^ info: M_KET
+In test_valid.m, line 5
+|     b = [4 5 6];
+|                ^ info: SEMICOLON
+In test_valid.m, line 5
+|     b = [4 5 6];
+|                 ^ info: NEWLINE
+In test_valid.m, line 7
+|     x = [1]; % x == 1
+|     ^ info: IDENTIFIER
+In test_valid.m, line 7
+|     x = [1]; % x == 1
+|       ^ info: ASSIGNMENT
+In test_valid.m, line 7
+|     x = [1]; % x == 1
+|         ^ info: M_BRA
+In test_valid.m, line 7
+|     x = [1]; % x == 1
+|          ^ info: NUMBER
+In test_valid.m, line 7
+|     x = [1]; % x == 1
+|           ^ info: M_KET
+In test_valid.m, line 7
+|     x = [1]; % x == 1
+|            ^ info: SEMICOLON
+In test_valid.m, line 7
+|     x = [1]; % x == 1
+|              ^^^^^^^^ info: COMMENT
+In test_valid.m, line 7
+|     x = [1]; % x == 1
+|                      ^ info: NEWLINE
+In test_valid.m, line 8
+|     x
+|     ^ info: IDENTIFIER
+In test_valid.m, line 8
+|     x
+|      ^ info: NEWLINE
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|     ^ info: IDENTIFIER
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|       ^ info: ASSIGNMENT
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|         ^ info: M_BRA
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|          ^ info: NUMBER
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|           ^ info: COMMA
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|             ^ info: NUMBER
+In test_valid.m, line 10
+|     x = [1, 2<anon,> -3 + 4    % 1 2 1
+|              ^^^^^^^ info: [32madded comma[0m
+In test_valid.m, line 10
+|     x = [1, 2<anon,> -3 + 4    % 1 2 1
+|              ^^^^^^^ info: COMMA
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|               ^ info: OPERATOR
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|                ^ info: NUMBER
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|                  ^ info: OPERATOR
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|                    ^ info: NUMBER
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|                         ^^^^^^^ info: COMMENT
+In test_valid.m, line 10
+|     x = [1, 2 -3 + 4    % 1 2 1
+|                                ^ info: NEWLINE
+In test_valid.m, line 11
+|         0.1 +.1i .2     % .1 .1i .2
+|         ^^^ info: NUMBER
+In test_valid.m, line 11
+|         0.1 +.1i .2     % .1 .1i .2
+|             ^ info: OPERATOR
+In test_valid.m, line 11
+|         0.1 +.1i .2     % .1 .1i .2
+|              ^^ info: NUMBER
+In test_valid.m, line 11
+|         0.1 +.1i .2     % .1 .1i .2
+|                ^ info: IDENTIFIER
+In test_valid.m, line 11
+|         0.1 +.1i<anon,> .2     % .1 .1i .2
+|                 ^^^^^^^ info: [32madded comma[0m
+In test_valid.m, line 11
+|         0.1 +.1i<anon,> .2     % .1 .1i .2
+|                 ^^^^^^^ info: COMMA
+In test_valid.m, line 11
+|         0.1 +.1i .2     % .1 .1i .2
+|                  ^^ info: NUMBER
+In test_valid.m, line 11
+|         0.1 +.1i .2     % .1 .1i .2
+|                         ^^^^^^^^^^^ info: COMMENT
+In test_valid.m, line 11
+|         0.1 +.1i .2     % .1 .1i .2
+|                                    ^ info: NEWLINE
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|         ^ info: IDENTIFIER
+In test_valid.m, line 12
+|         a<anon,> (3) b(3);];   % a 3 b(3)
+|          ^^^^^^^ info: [32madded comma[0m
+In test_valid.m, line 12
+|         a<anon,> (3) b(3);];   % a 3 b(3)
+|          ^^^^^^^ info: COMMA
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|           ^ info: BRA
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|            ^ info: NUMBER
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|             ^ info: KET
+In test_valid.m, line 12
+|         a (3)<anon,> b(3);];   % a 3 b(3)
+|              ^^^^^^^ info: [32madded comma[0m
+In test_valid.m, line 12
+|         a (3)<anon,> b(3);];   % a 3 b(3)
+|              ^^^^^^^ info: COMMA
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|               ^ info: IDENTIFIER
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|                ^ info: BRA
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|                 ^ info: NUMBER
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|                  ^ info: KET
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|                   ^ info: SEMICOLON
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|                    ^ info: M_KET
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|                     ^ info: SEMICOLON
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|                         ^^^^^^^^^^ info: COMMENT
+In test_valid.m, line 12
+|         a (3) b(3);];   % a 3 b(3)
+|                                   ^ info: NEWLINE
+In test_valid.m, line 13
+|     x
+|     ^ info: IDENTIFIER
+In test_valid.m, line 13
+|     x
+|      ^ info: NEWLINE
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|     ^ info: A_BRA
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|      ^ info: IDENTIFIER
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|       ^ info: BRA
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|        ^ info: NUMBER
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|         ^ info: KET
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|          ^ info: A_KET
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|            ^ info: ASSIGNMENT
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|              ^^ info: NUMBER
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|                ^ info: SEMICOLON
+In test_valid.m, line 15
+|     [b(2)] = 10;
+|                 ^ info: NEWLINE
+In test_valid.m, line 17
+|     b (2)    % 10
+|     ^ info: IDENTIFIER
+In test_valid.m, line 17
+|     b (2)    % 10
+|       ^ info: BRA
+In test_valid.m, line 17
+|     b (2)    % 10
+|        ^ info: NUMBER
+In test_valid.m, line 17
+|     b (2)    % 10
+|         ^ info: KET
+In test_valid.m, line 17
+|     b (2)    % 10
+|              ^^^^ info: COMMENT
+In test_valid.m, line 17
+|     b (2)    % 10
+|                  ^ info: NEWLINE
+In test_valid.m, line 18
+|     [b(2)]   % 10
+|     ^ info: M_BRA
+In test_valid.m, line 18
+|     [b(2)]   % 10
+|      ^ info: IDENTIFIER
+In test_valid.m, line 18
+|     [b(2)]   % 10
+|       ^ info: BRA
+In test_valid.m, line 18
+|     [b(2)]   % 10
+|        ^ info: NUMBER
+In test_valid.m, line 18
+|     [b(2)]   % 10
+|         ^ info: KET
+In test_valid.m, line 18
+|     [b(2)]   % 10
+|          ^ info: M_KET
+In test_valid.m, line 18
+|     [b(2)]   % 10
+|              ^^^^ info: COMMENT
+In test_valid.m, line 18
+|     [b(2)]   % 10
+|                  ^ info: NEWLINE
+In test_valid.m, line 19
+|     [b (2)]  % [4 10 6 2]
+|     ^ info: M_BRA
+In test_valid.m, line 19
+|     [b (2)]  % [4 10 6 2]
+|      ^ info: IDENTIFIER
+In test_valid.m, line 19
+|     [b<anon,> (2)]  % [4 10 6 2]
+|       ^^^^^^^ info: [32madded comma[0m
+In test_valid.m, line 19
+|     [b<anon,> (2)]  % [4 10 6 2]
+|       ^^^^^^^ info: COMMA
+In test_valid.m, line 19
+|     [b (2)]  % [4 10 6 2]
+|        ^ info: BRA
+In test_valid.m, line 19
+|     [b (2)]  % [4 10 6 2]
+|         ^ info: NUMBER
+In test_valid.m, line 19
+|     [b (2)]  % [4 10 6 2]
+|          ^ info: KET
+In test_valid.m, line 19
+|     [b (2)]  % [4 10 6 2]
+|           ^ info: M_KET
+In test_valid.m, line 19
+|     [b (2)]  % [4 10 6 2]
+|              ^^^^^^^^^^^^ info: COMMENT
+In test_valid.m, line 19
+|     [b (2)]  % [4 10 6 2]
+|                          ^ info: NEWLINE
+In test_valid.m, line 21
+| end
+| ^^^ info: KEYWORD
+In test_valid.m, line 21
+| end
+|    ^ info: NEWLINE
+test_valid.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything semes fine

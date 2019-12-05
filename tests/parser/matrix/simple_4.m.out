@@ -1,0 +1,74 @@
+In simple_4.m, line 1
+| [ a.foo ]
+| ^ info: M_BRA
+In simple_4.m, line 1
+| [ a.foo ]
+|   ^ info: IDENTIFIER
+In simple_4.m, line 1
+| [ a.foo ]
+|    ^ info: SELECTION
+In simple_4.m, line 1
+| [ a.foo ]
+|     ^^^ info: IDENTIFIER
+In simple_4.m, line 1
+| [ a.foo ]
+|         ^ info: M_KET
+In simple_4.m, line 1
+| [ a.foo ]
+|          ^ info: NEWLINE
+In simple_4.m, line 2
+| [ a. foo ]
+| ^ info: M_BRA
+In simple_4.m, line 2
+| [ a. foo ]
+|   ^ info: IDENTIFIER
+In simple_4.m, line 2
+| [ a. foo ]
+|    ^ info: SELECTION
+In simple_4.m, line 2
+| [ a. foo ]
+|      ^^^ info: IDENTIFIER
+In simple_4.m, line 2
+| [ a. foo ]
+|          ^ info: M_KET
+In simple_4.m, line 2
+| [ a. foo ]
+|           ^ info: NEWLINE
+In simple_4.m, line 3
+| [ a .foo ]
+| ^ info: M_BRA
+In simple_4.m, line 3
+| [ a .foo ]
+|   ^ info: IDENTIFIER
+In simple_4.m, line 3
+| [ a .foo ]
+|     ^ info: SELECTION
+In simple_4.m, line 3
+| [ a .foo ]
+|      ^^^ info: IDENTIFIER
+In simple_4.m, line 3
+| [ a .foo ]
+|          ^ info: M_KET
+In simple_4.m, line 3
+| [ a .foo ]
+|           ^ info: NEWLINE
+In simple_4.m, line 4
+| [ a . foo ]
+| ^ info: M_BRA
+In simple_4.m, line 4
+| [ a . foo ]
+|   ^ info: IDENTIFIER
+In simple_4.m, line 4
+| [ a . foo ]
+|     ^ info: SELECTION
+In simple_4.m, line 4
+| [ a . foo ]
+|       ^^^ info: IDENTIFIER
+In simple_4.m, line 4
+| [ a . foo ]
+|           ^ info: M_KET
+In simple_4.m, line 4
+| [ a . foo ]
+|            ^ info: NEWLINE
+simple_4.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything semes fine

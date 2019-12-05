@@ -1,0 +1,140 @@
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+| ^ info: M_BRA
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|  ^ info: BRA
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|   ^ info: NUMBER
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|    ^ info: KET
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|     ^ info: OPERATOR
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|      ^ info: BRA
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|       ^ info: NUMBER
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|        ^ info: KET
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|         ^ info: M_KET
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|             ^^^ info: COMMENT
+In simple_2.m, line 1
+| [(1)+(1)]   % 2
+|                ^ info: NEWLINE
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+| ^ info: M_BRA
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|  ^ info: BRA
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|   ^ info: NUMBER
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|    ^ info: KET
+In simple_2.m, line 2
+| [(1)<anon,> +(1)]  % [1 1]
+|     ^^^^^^^ info: [32madded comma[0m
+In simple_2.m, line 2
+| [(1)<anon,> +(1)]  % [1 1]
+|     ^^^^^^^ info: COMMA
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|      ^ info: OPERATOR
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|       ^ info: BRA
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|        ^ info: NUMBER
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|         ^ info: KET
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|          ^ info: M_KET
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|             ^^^^^^^ info: COMMENT
+In simple_2.m, line 2
+| [(1) +(1)]  % [1 1]
+|                    ^ info: NEWLINE
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+| ^ info: M_BRA
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|  ^ info: BRA
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|   ^ info: NUMBER
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|    ^ info: KET
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|     ^ info: OPERATOR
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|       ^ info: BRA
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|        ^ info: NUMBER
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|         ^ info: KET
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|          ^ info: M_KET
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|             ^^^ info: COMMENT
+In simple_2.m, line 3
+| [(1)+ (1)]  % 2
+|                ^ info: NEWLINE
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+| ^ info: M_BRA
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|  ^ info: BRA
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|   ^ info: NUMBER
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|    ^ info: KET
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|      ^ info: OPERATOR
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|        ^ info: BRA
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|         ^ info: NUMBER
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|          ^ info: KET
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|           ^ info: M_KET
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|             ^^^ info: COMMENT
+In simple_2.m, line 4
+| [(1) + (1)] % 2
+|                ^ info: NEWLINE
+simple_2.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything semes fine

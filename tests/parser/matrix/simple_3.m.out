@@ -1,0 +1,95 @@
+In simple_3.m, line 1
+| [ a.x a.y ]
+| ^ info: M_BRA
+In simple_3.m, line 1
+| [ a.x a.y ]
+|   ^ info: IDENTIFIER
+In simple_3.m, line 1
+| [ a.x a.y ]
+|    ^ info: SELECTION
+In simple_3.m, line 1
+| [ a.x a.y ]
+|     ^ info: IDENTIFIER
+In simple_3.m, line 1
+| [ a.x<anon,> a.y ]
+|      ^^^^^^^ info: [32madded comma[0m
+In simple_3.m, line 1
+| [ a.x<anon,> a.y ]
+|      ^^^^^^^ info: COMMA
+In simple_3.m, line 1
+| [ a.x a.y ]
+|       ^ info: IDENTIFIER
+In simple_3.m, line 1
+| [ a.x a.y ]
+|        ^ info: SELECTION
+In simple_3.m, line 1
+| [ a.x a.y ]
+|         ^ info: IDENTIFIER
+In simple_3.m, line 1
+| [ a.x a.y ]
+|           ^ info: M_KET
+In simple_3.m, line 1
+| [ a.x a.y ]
+|            ^ info: NEWLINE
+In simple_3.m, line 3
+| % if b is [5, 6]
+| ^^^^^^^^^^^^^^^^ info: COMMENT
+In simple_3.m, line 3
+| % if b is [5, 6]
+|                 ^ info: NEWLINE
+In simple_3.m, line 4
+| [ b (2) ]   % 5 6 2
+| ^ info: M_BRA
+In simple_3.m, line 4
+| [ b (2) ]   % 5 6 2
+|   ^ info: IDENTIFIER
+In simple_3.m, line 4
+| [ b<anon,> (2) ]   % 5 6 2
+|    ^^^^^^^ info: [32madded comma[0m
+In simple_3.m, line 4
+| [ b<anon,> (2) ]   % 5 6 2
+|    ^^^^^^^ info: COMMA
+In simple_3.m, line 4
+| [ b (2) ]   % 5 6 2
+|     ^ info: BRA
+In simple_3.m, line 4
+| [ b (2) ]   % 5 6 2
+|      ^ info: NUMBER
+In simple_3.m, line 4
+| [ b (2) ]   % 5 6 2
+|       ^ info: KET
+In simple_3.m, line 4
+| [ b (2) ]   % 5 6 2
+|         ^ info: M_KET
+In simple_3.m, line 4
+| [ b (2) ]   % 5 6 2
+|             ^^^^^^^ info: COMMENT
+In simple_3.m, line 4
+| [ b (2) ]   % 5 6 2
+|                    ^ info: NEWLINE
+In simple_3.m, line 5
+| [ b(2) ]    % 6
+| ^ info: M_BRA
+In simple_3.m, line 5
+| [ b(2) ]    % 6
+|   ^ info: IDENTIFIER
+In simple_3.m, line 5
+| [ b(2) ]    % 6
+|    ^ info: BRA
+In simple_3.m, line 5
+| [ b(2) ]    % 6
+|     ^ info: NUMBER
+In simple_3.m, line 5
+| [ b(2) ]    % 6
+|      ^ info: KET
+In simple_3.m, line 5
+| [ b(2) ]    % 6
+|        ^ info: M_KET
+In simple_3.m, line 5
+| [ b(2) ]    % 6
+|             ^^^ info: COMMENT
+In simple_3.m, line 5
+| [ b(2) ]    % 6
+|                ^ info: NEWLINE
+simple_3.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything semes fine

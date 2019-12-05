@@ -1,0 +1,71 @@
+In simple_9.m, line 1
+| [~, data{k}] = potato
+| ^ info: A_BRA
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|  ^ info: OPERATOR
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|   ^ info: COMMA
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|     ^^^^ info: IDENTIFIER
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|         ^ info: C_BRA
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|          ^ info: IDENTIFIER
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|           ^ info: C_KET
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|            ^ info: A_KET
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|              ^ info: ASSIGNMENT
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|                ^^^^^^ info: IDENTIFIER
+In simple_9.m, line 1
+| [~, data{k}] = potato
+|                      ^ info: NEWLINE
+In simple_9.m, line 2
+| [~ data{k}] = potato
+| ^ info: A_BRA
+In simple_9.m, line 2
+| [~ data{k}] = potato
+|  ^ info: OPERATOR
+In simple_9.m, line 2
+| [~<anon,> data{k}] = potato
+|   ^^^^^^^ info: [32madded comma[0m
+In simple_9.m, line 2
+| [~<anon,> data{k}] = potato
+|   ^^^^^^^ info: COMMA
+In simple_9.m, line 2
+| [~ data{k}] = potato
+|    ^^^^ info: IDENTIFIER
+In simple_9.m, line 2
+| [~ data{k}] = potato
+|        ^ info: C_BRA
+In simple_9.m, line 2
+| [~ data{k}] = potato
+|         ^ info: IDENTIFIER
+In simple_9.m, line 2
+| [~ data{k}] = potato
+|          ^ info: C_KET
+In simple_9.m, line 2
+| [~ data{k}] = potato
+|           ^ info: A_KET
+In simple_9.m, line 2
+| [~ data{k}] = potato
+|             ^ info: ASSIGNMENT
+In simple_9.m, line 2
+| [~ data{k}] = potato
+|               ^^^^^^ info: IDENTIFIER
+In simple_9.m, line 2
+| [~ data{k}] = potato
+|                     ^ info: NEWLINE
+simple_9.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything semes fine

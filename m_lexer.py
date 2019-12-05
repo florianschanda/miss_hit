@@ -161,6 +161,8 @@ class MATLAB_Lexer(Token_Generator):
         self.bracket_stack = []
         self.first_in_line = True
         self.in_dir_command = False
+        self.add_comma = False
+        self.debug_comma = False
 
         # pylint: disable=invalid-name
         self.cc = None
@@ -224,6 +226,29 @@ class MATLAB_Lexer(Token_Generator):
                       else "unexpected character %s" % repr(self.cc)))
 
     def token(self):
+        # If we've been instructed to add an anonymous comma, we do
+        # that and nothing else.
+        if self.add_comma:
+            self.add_comma = False
+            fake_line = self.context_line[self.line - 1]
+            fake_col = self.lexpos - self.col_offset + 1
+            fake_line = fake_line[:fake_col] + "<anon,>" + fake_line[fake_col:]
+            token = MATLAB_Token("COMMA",
+                                 ",",
+                                 Location(self.filename,
+                                          self.line,
+                                          fake_col,
+                                          fake_col + 6,
+                                          fake_line),
+                                 False,
+                                 True)
+            self.last_kind = "COMMA"
+            self.last_value = ","
+            if self.debug_comma:
+                mh.info(token.location,
+                        "\033[32madded comma\033[0m")
+            return token
+
         # First we scan to the next non-whitespace token
         preceeding_ws = False
         while True:
@@ -411,7 +436,7 @@ class MATLAB_Lexer(Token_Generator):
                                 self.lex_error("unbalanced [")
                             elif c == ")" and matching_bracket != "(":
                                 self.lex_error("unbalanced (")
-                            elif c == "}" and matching_bracket != "}":
+                            elif c == "}" and matching_bracket != "{":
                                 self.lex_error("unbalanced {")
 
                     # We found it, now we need to search for the first
@@ -532,6 +557,63 @@ class MATLAB_Lexer(Token_Generator):
                              "unmatched %s" % token.raw_text,
                              False)
 
+        # Determine if whitespace is currently significant (i.e. we're
+        # in a matrix).
+        ws_is_significant = (self.bracket_stack and
+                             self.bracket_stack[-1].kind in ("A_BRA",
+                                                             "M_BRA",
+                                                             "C_BRA") and
+                             self.bracket_stack[-1] != token)
+        ws_follows = self.nc in (" ", "\t")
+        next_non_ws = None
+        after_next_non_ws = None
+        for c in self.text[self.lexpos + 1:]:
+            if next_non_ws is not None:
+                after_next_non_ws = c
+                break
+            elif c in (" ", "\t"):
+                pass
+            elif next_non_ws is None:
+                next_non_ws = c
+
+        token_relevant = (token.kind in ("NUMBER",
+                                         "STRING",
+                                         "IDENTIFIER",
+                                         "KET",
+                                         "M_KET",
+                                         "C_KET") or
+                          (token.kind == "OPERATOR" and
+                           token.value() in ("'", ".'", "~")))
+
+        if ws_is_significant and ws_follows and next_non_ws and token_relevant:
+            if next_non_ws in (".", ",", ";", "]", "}",
+                               "*", "^", ":", "<", ">",
+                               "=", "&", "|", "\\", "/",
+                               "\n"):
+                if after_next_non_ws.isdigit():
+                    self.add_comma = True
+                else:
+                    # no comma here
+                    pass
+            elif next_non_ws in ("'", ):
+                # string comes next, so comma here
+                self.add_comma = True
+            elif self.last_kind in ("SELECTION", ):
+                pass
+            elif next_non_ws in ("+", "-"):
+                if after_next_non_ws in ("+", "-", "("):
+                    self.add_comma = True
+                elif after_next_non_ws.isalnum():
+                    # +6...
+                    self.add_comma = True
+            else:
+                if next_non_ws == "(":
+                    # [f (foo)] is always f, foo
+                    self.add_comma = True
+                elif next_non_ws.isalnum():
+                    # [f f] is [f, f]
+                    self.add_comma = True
+
         return token
 
 
@@ -562,9 +644,11 @@ class Token_Buffer(Token_Generator):
         self.pos = 0
 
     def replay(self, fd):
-        for n, token in enumerate(self.tokens):
-            if n + 1 < len(self.tokens):
-                next_token = self.tokens[n + 1]
+        real_tokens = [t for t in self.tokens if not t.anonymous]
+
+        for n, token in enumerate(real_tokens):
+            if n + 1 < len(real_tokens):
+                next_token = real_tokens[n + 1]
             else:
                 next_token = None
             if next_token and next_token.location.line == token.location.line:
@@ -577,7 +661,7 @@ class Token_Buffer(Token_Generator):
 
             if token.kind == "NEWLINE":
                 amount = min(2, token.raw_text.count("\n"))
-                if n + 1 == len(self.tokens):
+                if n + 1 == len(real_tokens):
                     # At the end of a file, we have at most one
                     # newline. This newline is inserted manually at
                     # the end
@@ -615,6 +699,7 @@ def sanity_test(filename):
     try:
         mh.register_file(filename)
         lexer = MATLAB_Lexer(filename)
+        lexer.debug_comma = True
         while True:
             tok = lexer.token()
             if tok is None:

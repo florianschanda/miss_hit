@@ -1,0 +1,89 @@
+In simple_8.m, line 1
+| x = [1 2 3
+| ^ info: IDENTIFIER
+In simple_8.m, line 1
+| x = [1 2 3
+|   ^ info: ASSIGNMENT
+In simple_8.m, line 1
+| x = [1 2 3
+|     ^ info: M_BRA
+In simple_8.m, line 1
+| x = [1 2 3
+|      ^ info: NUMBER
+In simple_8.m, line 1
+| x = [1<anon,> 2 3
+|       ^^^^^^^ info: [32madded comma[0m
+In simple_8.m, line 1
+| x = [1<anon,> 2 3
+|       ^^^^^^^ info: COMMA
+In simple_8.m, line 1
+| x = [1 2 3
+|        ^ info: NUMBER
+In simple_8.m, line 1
+| x = [1 2<anon,> 3
+|         ^^^^^^^ info: [32madded comma[0m
+In simple_8.m, line 1
+| x = [1 2<anon,> 3
+|         ^^^^^^^ info: COMMA
+In simple_8.m, line 1
+| x = [1 2 3
+|          ^ info: NUMBER
+In simple_8.m, line 1
+| x = [1 2 3
+|           ^ info: NEWLINE
+In simple_8.m, line 2
+|      4 5 6
+|      ^ info: NUMBER
+In simple_8.m, line 2
+|      4<anon,> 5 6
+|       ^^^^^^^ info: [32madded comma[0m
+In simple_8.m, line 2
+|      4<anon,> 5 6
+|       ^^^^^^^ info: COMMA
+In simple_8.m, line 2
+|      4 5 6
+|        ^ info: NUMBER
+In simple_8.m, line 2
+|      4 5<anon,> 6
+|         ^^^^^^^ info: [32madded comma[0m
+In simple_8.m, line 2
+|      4 5<anon,> 6
+|         ^^^^^^^ info: COMMA
+In simple_8.m, line 2
+|      4 5 6
+|          ^ info: NUMBER
+In simple_8.m, line 2
+|      4 5 6
+|           ^ info: NEWLINE
+In simple_8.m, line 3
+|      7 8 9];
+|      ^ info: NUMBER
+In simple_8.m, line 3
+|      7<anon,> 8 9];
+|       ^^^^^^^ info: [32madded comma[0m
+In simple_8.m, line 3
+|      7<anon,> 8 9];
+|       ^^^^^^^ info: COMMA
+In simple_8.m, line 3
+|      7 8 9];
+|        ^ info: NUMBER
+In simple_8.m, line 3
+|      7 8<anon,> 9];
+|         ^^^^^^^ info: [32madded comma[0m
+In simple_8.m, line 3
+|      7 8<anon,> 9];
+|         ^^^^^^^ info: COMMA
+In simple_8.m, line 3
+|      7 8 9];
+|          ^ info: NUMBER
+In simple_8.m, line 3
+|      7 8 9];
+|           ^ info: M_KET
+In simple_8.m, line 3
+|      7 8 9];
+|            ^ info: SEMICOLON
+In simple_8.m, line 3
+|      7 8 9];
+|             ^ info: NEWLINE
+simple_8.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything semes fine
