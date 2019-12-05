@@ -185,10 +185,15 @@ class MATLAB_Parser:
                 self.match("NEWLINE")
 
         self.match_eof()
+
+        for f in functions:
+            tree_print.treepr(f)
+
         return functions
 
     def parse_function_def(self):
         self.match("KEYWORD", "function")
+        t_fun = self.ct
 
         # Parse returns. Either 'x' or a list '[x, y]'
         returns = []
@@ -234,8 +239,7 @@ class MATLAB_Parser:
                 self.match("KET")
             else:
                 while True:
-                    self.parse_identifier(in_reference=True)
-                    inputs.append(self.ct.value())
+                    inputs.append(self.parse_identifier(in_reference=True))
                     if self.peek("COMMA"):
                         self.match("COMMA")
                     else:
@@ -249,9 +253,7 @@ class MATLAB_Parser:
 
         body = self.parse_statement_list()
 
-        tree_print.treepr(function_name)
-        for statement in body.statements:
-            tree_print.treepr(statement)
+        return Function_Definition(t_fun, function_name, inputs, returns, body)
 
         # TODO: Build function entity
 

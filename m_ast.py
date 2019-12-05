@@ -51,6 +51,27 @@ class Statement(Node):
     pass
 
 
+class Function_Definition(Node):
+    def __init__(self, t_fun, n_name, l_inputs, l_outputs, n_body):
+        super().__init__()
+        assert isinstance(t_fun, MATLAB_Token)
+        assert t_fun.kind == "KEYWORD" and t_fun.value() == "function"
+        assert isinstance(n_name, (Identifier, Selection))
+        assert isinstance(l_inputs, list)
+        for n in l_inputs:
+            assert isinstance(n, Identifier), str(n) + " is %s and not an Identifier" % n.__class__.__name__
+        for n in l_outputs:
+            assert isinstance(n, Identifier)
+        assert isinstance(l_outputs, list)
+        assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_fun     = t_fun
+        self.n_name    = n_name
+        self.l_inputs  = l_inputs
+        self.l_outputs = l_outputs
+        self.n_body    = n_body
+
+
 class Identifier(Expression):
     def __init__(self, t_ident):
         super().__init__()

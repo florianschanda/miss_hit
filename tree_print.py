@@ -126,6 +126,14 @@ def rec(indent, prefix, node):
         emit("Selection of field %s" % node.n_field.t_ident.value())
         rec(indent + 2, "root: ", node.n_root)
 
+    elif isinstance(node, Function_Definition):
+        emit("Function definition for %s" % node.n_name)
+        for item in node.l_inputs:
+            rec(indent + 2, "input: ", item)
+        for item in node.l_outputs:
+            rec(indent + 2, "output: ", item)
+        rec(indent + 2, "body: ", node.n_body)
+
     else:
         emit("\033[31;1mTODO\033[0m <" + node.__class__.__name__ + ">")
 
