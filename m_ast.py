@@ -59,7 +59,8 @@ class Function_Definition(Node):
         assert isinstance(n_name, (Identifier, Selection))
         assert isinstance(l_inputs, list)
         for n in l_inputs:
-            assert isinstance(n, Identifier), str(n) + " is %s and not an Identifier" % n.__class__.__name__
+            assert isinstance(n, Identifier), \
+                str(n) + " is %s and not an Identifier" % n.__class__.__name__
         for n in l_outputs:
             assert isinstance(n, Identifier)
         assert isinstance(l_outputs, list)

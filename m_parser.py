@@ -180,14 +180,14 @@ class MATLAB_Parser:
         functions = []
 
         while self.peek("KEYWORD", "function"):
-            functions.append(self.parse_function_def())
+            fdef = self.parse_function_def()
+            tree_print.dotpr(str(fdef.n_name) + ".dot",
+                             fdef)
+            functions.append(fdef)
             if self.peek("NEWLINE"):
                 self.match("NEWLINE")
 
         self.match_eof()
-
-        for f in functions:
-            tree_print.treepr(f)
 
         return functions
 
