@@ -73,7 +73,47 @@ class Function_Definition(Node):
         self.n_body    = n_body
 
 
-class Identifier(Expression):
+class Name(Expression):
+    pass
+
+
+class Reference(Name):
+    def __init__(self, n_ident, arglist):
+        super().__init__()
+        assert isinstance(n_ident, Name)
+        assert isinstance(arglist, list)
+        for arg in arglist:
+            assert isinstance(arg, Expression)
+
+        self.n_ident = n_ident
+        self.arglist = arglist
+
+    def __str__(self):
+        if self.arglist:
+            return "%s(%s)" % (self.n_ident, ", ".join(map(str, self.arglist)))
+        else:
+            return str(self.n_ident)
+
+
+class Cell_Reference(Name):
+    def __init__(self, n_ident, arglist):
+        super().__init__()
+        assert isinstance(n_ident, Name)
+        assert isinstance(arglist, list)
+        for arg in arglist:
+            assert isinstance(arg, Expression)
+
+        self.n_ident = n_ident
+        self.arglist = arglist
+
+    def __str__(self):
+        if self.arglist:
+            return "%s{%s}" % (self.n_ident, ", ".join(map(str, self.arglist)))
+        else:
+            return str(self.n_ident)
+
+
+class Identifier(Name):
     def __init__(self, t_ident):
         super().__init__()
         assert isinstance(t_ident, MATLAB_Token)
@@ -86,20 +126,20 @@ class Identifier(Expression):
         return self.t_ident.value()
 
 
-class Selection(Expression):
-    def __init__(self, t_selection, n_root, n_field):
+class Selection(Name):
+    def __init__(self, t_selection, n_prefix, n_field):
         super().__init__()
         assert isinstance(t_selection, MATLAB_Token)
         assert t_selection.kind == "SELECTION"
-        assert isinstance(n_root, Expression)
+        assert isinstance(n_prefix, Name)
         assert isinstance(n_field, Identifier)
 
         self.t_selection = t_selection
-        self.n_root      = n_root
+        self.n_prefix    = n_prefix
         self.n_field     = n_field
 
     def __str__(self):
-        return "%s.%s" % (self.n_root, self.n_field)
+        return "%s.%s" % (self.n_prefix, self.n_field)
 
 
 class Range_Expression(Expression):
@@ -198,7 +238,7 @@ class Simple_Assignment_Statement(Statement):
         super().__init__()
         assert isinstance(t_eq, MATLAB_Token)
         assert t_eq.kind == "ASSIGNMENT"
-        assert isinstance(n_lhs, Reference)
+        assert isinstance(n_lhs, Name)
         assert isinstance(n_rhs, Expression)
 
         self.t_eq  = t_eq
@@ -214,7 +254,7 @@ class Compound_Assignment_Statement(Statement):
         assert isinstance(l_lhs, list)
         assert len(l_lhs) >= 2
         for n_lhs in l_lhs:
-            assert isinstance(n_lhs, Reference)
+            assert isinstance(n_lhs, Name)
         assert isinstance(n_rhs, Expression)
 
         self.t_eq  = t_eq
@@ -237,24 +277,6 @@ class Return_Statement(Statement):
         assert t_kw.kind == "KEYWORD" and t_kw.value() == "return"
 
         self.t_kw = t_kw
-
-
-class Reference(Expression):
-    def __init__(self, n_ident, arglist):
-        super().__init__()
-        assert isinstance(n_ident, (Identifier, Selection))
-        assert isinstance(arglist, list)
-        for arg in arglist:
-            assert isinstance(arg, Expression)
-
-        self.n_ident = n_ident
-        self.arglist = arglist
-
-    def __str__(self):
-        if self.arglist:
-            return "%s(%s)" % (self.n_ident, ", ".join(map(str, self.arglist)))
-        else:
-            return str(self.n_ident)
 
 
 class Literal(Expression):

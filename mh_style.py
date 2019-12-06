@@ -40,6 +40,7 @@ from m_language_builtins import BUILTIN_FUNCTIONS
 from m_lexer import MATLAB_Lexer, Token_Buffer
 from errors import Location, Error, ICE, mh
 import config
+from m_parser import MATLAB_Parser
 
 # pylint: disable=wildcard-import,unused-wildcard-import
 from m_ast import *
@@ -48,171 +49,6 @@ from m_ast import *
 GITHUB_ISSUES = "https://github.com/florianschanda/miss_hit/issues"
 
 COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"
-
-
-class Mini_Parser:
-    def __init__(self, tbuf, idx):
-        assert isinstance(tbuf, Token_Buffer)
-        assert isinstance(idx, int) and 0 <= idx < len(tbuf.tokens)
-
-        self.tbuf = tbuf
-        self.c_idx = None
-        self.n_idx = idx
-
-        # pylint: disable=invalid-name
-        self.ct = None
-        self.nt = self.get_token(idx)
-        # pylint: enable=invalid-name
-
-        self.filename = self.nt.location.filename
-
-    def get_token(self, n):
-        if n < len(self.tbuf.tokens):
-            return self.tbuf.tokens[n]
-        else:
-            return None
-
-    def next(self):
-        self.c_idx = self.n_idx
-        self.ct = self.nt
-
-        self.n_idx += 1
-        self.nt = self.get_token(self.n_idx)
-
-        while self.nt:
-            # Skip comments and continuations
-            while self.nt and self.nt.kind in ("COMMENT", "CONTINUATION"):
-                self.n_idx += 1
-                self.nt = self.get_token(self.n_idx)
-
-            # Join new-lines
-            if (self.nt and
-                self.ct and
-                self.nt.kind == "NEWLINE" and
-                self.ct.kind == "NEWLINE"):
-                self.n_idx += 1
-                self.nt = self.get_token(self.n_idx)
-            else:
-                break
-
-    def match(self, kind, value=None):
-        self.next()
-        if self.ct is None:
-            mh.error(Location(self.filename),
-                     "expected %s, reached EOF instead" % kind)
-        elif self.ct.kind != kind:
-            mh.error(self.ct.location,
-                     "expected %s, found %s instead" % (kind, self.ct.kind))
-        elif value and self.ct.value() != value:
-            mh.error(self.ct.location,
-                     "expected %s(%s), found %s(%s) instead" %
-                     (kind, value, self.ct.kind, self.ct.value()))
-
-    def match_eof(self):
-        self.next()
-        if self.ct is not None:
-            mh.error(self.ct.location,
-                     "expected end of file, found %s instead" % self.ct.kind)
-
-    def peek(self, kind, value=None):
-        if self.nt and self.nt.kind == kind:
-            if value is None:
-                return True
-            else:
-                return self.nt.value() == value
-        else:
-            return False
-
-    def parse_identifier(self, in_reference=False):
-        if self.peek("OPERATOR", "~") and in_reference:
-            self.match("OPERATOR")
-            return Identifier(self.ct)
-        else:
-            self.match("IDENTIFIER")
-            return Identifier(self.ct)
-
-    def parse_selection(self, in_reference=False):
-        rv = self.parse_identifier(in_reference)
-
-        if rv.t_ident.value() == "~":
-            return rv
-
-        while self.peek("SELECTION"):
-            self.match("SELECTION")
-            dot = self.ct
-            field = self.parse_identifier()
-            rv = Selection(dot, rv, field)
-
-        return rv
-
-    def parse_function_declaration(self):
-        self.match("KEYWORD", "function")
-
-        # Parse returns. Either 'x' or a list '[x, y]'
-        returns = []
-        if self.peek("A_BRA"):
-            out_brackets = True
-            self.match("A_BRA")
-            if self.peek("A_KET"):
-                self.match("A_KET")
-            else:
-                while True:
-                    returns.append(self.parse_selection(in_reference=True))
-                    if self.peek("COMMA"):
-                        self.match("COMMA")
-                    else:
-                        break
-                self.match("A_KET")
-        else:
-            out_brackets = False
-            returns.append(self.parse_selection())
-
-        if self.peek("BRA") and len(returns) == 1 and not out_brackets:
-            # This is a function that doesn't return anything, so
-            # function foo(...
-            function_name = returns[0]
-            returns = []
-
-        elif self.peek("NEWLINE") and len(returns) == 1 and not out_brackets:
-            # As above, but without the brackets
-            function_name = returns[0]
-            returns = []
-
-        else:
-            # This is a normal function, so something like
-            # function [a, b] = potato...
-            # function a = potato...
-            self.match("ASSIGNMENT")
-            function_name = self.parse_selection()
-
-        # Currently disabled. It generates a lot of alarms for classes.
-        # if isinstance(function_name, Identifier):
-        #     if function_name.t_ident.value() in BUILTIN_FUNCTIONS:
-        #         mh.warning(function_name.t_ident.location,
-        #                    "redefinition of builtin function is a"
-        #                    " very naughty thing to do")
-
-        inputs = []
-        if self.peek("BRA"):
-            self.match("BRA")
-            if self.peek("KET"):
-                self.match("KET")
-            else:
-                while True:
-                    self.parse_identifier(in_reference=True)
-                    inputs.append(self.ct.value())
-                    if self.peek("COMMA"):
-                        self.match("COMMA")
-                    else:
-                        break
-                self.match("KET")
-
-        if self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-
-        self.match("NEWLINE")
-
-##############################################################################
 
 
 class Style_Rule(metaclass=ABCMeta):
@@ -756,14 +592,6 @@ def stage_3_analysis(cfg, tbuf):
                                True)
                 token.fix["ensure_ws_after"] = True
 
-            # Corresponds to the old CodeChecker FunctionName rule
-            if token.kind == "KEYWORD" and token.value() == "function":
-                try:
-                    parser = Mini_Parser(tbuf, n)
-                    parser.parse_function_declaration()
-                except Error:
-                    pass
-
         # Corresponds to the old CodeChecker CommentWhitespace rule
         elif token.kind == "COMMENT":
             if config.active(cfg, "whitespace_comments"):
@@ -857,14 +685,17 @@ def analyze(filename, rule_set, autofix):
 
     # Do some file-based sanity checking
 
-    if not os.path.exists(filename):
-        mh.error(Location(filename), "file does not exist")
+    try:
+        if not os.path.exists(filename):
+            mh.error(Location(filename), "file does not exist")
 
-    if not os.path.isfile(filename):
-        mh.error(Location(filename), "is not a file")
+        if not os.path.isfile(filename):
+            mh.error(Location(filename), "is not a file")
 
-    if not filename.endswith(".m"):
-        mh.warning(Location(filename), "filename should end with '.m'")
+        if not filename.endswith(".m"):
+            mh.warning(Location(filename), "filename should end with '.m'")
+    except Error:
+        return
 
     # Create lexer
 
@@ -919,6 +750,16 @@ def analyze(filename, rule_set, autofix):
     # Stage 3 - rules around individual tokens
 
     stage_3_analysis(cfg, tbuf)
+
+    # Stage 4 - parsing
+
+    # pylint: disable=unused-variable
+    try:
+        parser = MATLAB_Parser(tbuf)
+        # parser.parse_file_input()
+    except Error:
+        pass
+    # pylint: enable=unused-variable
 
     # Re-write the file, with issues fixed
 

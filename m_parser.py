@@ -24,8 +24,9 @@
 ##                                                                          ##
 ##############################################################################
 
+import traceback
 
-from m_lexer import Token_Generator, MATLAB_Lexer
+from m_lexer import Token_Generator, MATLAB_Lexer, TOKEN_KINDS
 from errors import mh, ICE, Error, Location
 import tree_print
 
@@ -112,6 +113,7 @@ class MATLAB_Parser:
                 break
 
     def match(self, kind, value=None):
+        assert kind in TOKEN_KINDS
         self.next()
         if self.ct is None:
             mh.error(Location(self.lexer.filename),
@@ -131,6 +133,7 @@ class MATLAB_Parser:
                      "expected end of file, found %s instead" % self.ct.kind)
 
     def peek(self, kind, value=None):
+        assert kind in TOKEN_KINDS
         if self.nt and self.nt.kind == kind:
             if value is None:
                 return True
@@ -139,28 +142,44 @@ class MATLAB_Parser:
         else:
             return False
 
+    def peek_eof(self):
+        return self.nt is None
+
     ##########################################################################
     # Parsing
 
-    def parse_identifier(self, in_reference=False):
-        if self.peek("OPERATOR", "~") and in_reference:
+    def parse_identifier(self, allow_void):
+        # identifier ::= <IDENTIFIER>
+        #
+        # void_or_identifier ::= identifier
+        #                      | '~'
+        if self.peek("OPERATOR", "~") and allow_void:
             self.match("OPERATOR")
             return Identifier(self.ct)
         else:
             self.match("IDENTIFIER")
             return Identifier(self.ct)
 
-    def parse_selection(self, in_reference=False):
-        rv = self.parse_identifier(in_reference)
+    def parse_name(self, allow_void):
+        # reference ::= identifier
+        #             | reference '.' identifier
+        #             | reference '(' expression_list ')'
+        #             | reference '{' expression_list '}'
 
-        if rv.t_ident.value() == "~":
-            return rv
+        rv = self.parse_identifier(allow_void)
 
-        while self.peek("SELECTION"):
-            self.match("SELECTION")
-            dot = self.ct
-            field = self.parse_identifier()
-            rv = Selection(dot, rv, field)
+        while self.peek("SELECTION") or self.peek("BRA") or self.peek("C_BRA"):
+            if self.peek("SELECTION"):
+                self.match("SELECTION")
+                tok = self.ct
+                field = self.parse_identifier(allow_void=False)
+                rv = Selection(tok, rv, field)
+            elif self.peek("BRA"):
+                rv = Reference(rv, self.parse_argument_list())
+            elif self.peek("C_BRA"):
+                rv = Cell_Reference(rv, self.parse_cell_argument_list())
+            else:
+                raise ICE("impossible path (nt.kind = %s)" % self.nt.kind)
 
         return rv
 
@@ -174,7 +193,12 @@ class MATLAB_Parser:
             return self.parse_script_file()
 
     def parse_script_file(self):
-        return self.parse_delimited_input()
+        statements = []
+
+        while not self.peek_eof():
+            statements.append(self.parse_statement())
+
+        return Sequence_Of_Statements(statements)
 
     def parse_function_file(self):
         functions = []
@@ -204,7 +228,7 @@ class MATLAB_Parser:
                 self.match("A_KET")
             else:
                 while True:
-                    returns.append(self.parse_selection(in_reference=True))
+                    returns.append(self.parse_name(allow_void=True))
                     if self.peek("COMMA"):
                         self.match("COMMA")
                     else:
@@ -212,7 +236,7 @@ class MATLAB_Parser:
                 self.match("A_KET")
         else:
             out_brackets = False
-            returns.append(self.parse_selection())
+            returns.append(self.parse_name(allow_void=False))
 
         if self.peek("BRA") and len(returns) == 1 and not out_brackets:
             # This is a function that doesn't return anything, so
@@ -230,7 +254,7 @@ class MATLAB_Parser:
             # function [a, b] = potato...
             # function a = potato...
             self.match("ASSIGNMENT")
-            function_name = self.parse_selection()
+            function_name = self.parse_name(allow_void=False)
 
         inputs = []
         if self.peek("BRA"):
@@ -239,7 +263,7 @@ class MATLAB_Parser:
                 self.match("KET")
             else:
                 while True:
-                    inputs.append(self.parse_identifier(in_reference=True))
+                    inputs.append(self.parse_identifier(allow_void=True))
                     if self.peek("COMMA"):
                         self.match("COMMA")
                     else:
@@ -313,14 +337,14 @@ class MATLAB_Parser:
         if self.peek("A_BRA"):
             self.match("A_BRA")
             while True:
-                lhs.append(self.parse_reference())
+                lhs.append(self.parse_name(allow_void=True))
                 if self.peek("COMMA"):
                     self.match("COMMA")
                 else:
                     break
             self.match("A_KET")
         else:
-            lhs.append(self.parse_reference())
+            lhs.append(self.parse_name(allow_void=False))
 
         # This is the call case
         if len(lhs) == 1 and not self.peek("ASSIGNMENT"):
@@ -335,7 +359,7 @@ class MATLAB_Parser:
         if len(lhs) == 1:
             rhs = self.parse_expression()
         else:
-            rhs = self.parse_reference()
+            rhs = self.parse_name(allow_void=False)
 
         self.match("SEMICOLON")
         self.match("NEWLINE")
@@ -344,21 +368,6 @@ class MATLAB_Parser:
             return Simple_Assignment_Statement(t_eq, lhs[0], rhs)
         else:
             return Compound_Assignment_Statement(t_eq, lhs, rhs)
-
-    def parse_reference(self):
-        # identifier                   'potato'
-        # identifier ( arglist )       'array(12)'
-        # ident.field                  'foo.bar'
-        # ident.field ( arglist )      'coord.x(12)'
-
-        n_ident = self.parse_selection(in_reference=True)
-
-        if self.peek("BRA"):
-            arglist = self.parse_argument_list()
-        else:
-            arglist = []
-
-        return Reference(n_ident, arglist)
 
     def parse_expression(self):
         return self.parse_precedence_12()
@@ -383,7 +392,7 @@ class MATLAB_Parser:
             return self.parse_matrix()
 
         else:
-            return self.parse_reference()
+            return self.parse_name(allow_void=False)
 
     # 2. Transpose (.'), power (.^), complex conjugate transpose ('),
     #    matrix power (^)
@@ -583,6 +592,10 @@ class MATLAB_Parser:
         return rv
 
     def parse_argument_list(self):
+        # arglist ::= '(' ')'
+        #           | '(' expression { ',' expression } '}'
+        #
+        # Note: This list can be empty
         args = []
         self.match("BRA")
         if self.peek("KET"):
@@ -593,9 +606,26 @@ class MATLAB_Parser:
             args.append(self.parse_expression())
             if self.peek("COMMA"):
                 self.match("COMMA")
-            else:
+            elif self.peek("KET"):
                 break
         self.match("KET")
+        return args
+
+    def parse_cell_argument_list(self):
+        # cell_arglist ::= '{' expression { ',' expression } '}'
+        #
+        # Note: cannot be empty
+        args = []
+        self.match("C_BRA")
+
+        while True:
+            args.append(self.parse_expression())
+            if self.peek("COMMA"):
+                self.match("COMMA")
+            elif self.peek("C_KET"):
+                break
+
+        self.match("C_KET")
         return args
 
     def parse_if_statement(self):
@@ -640,7 +670,7 @@ class MATLAB_Parser:
     def parse_for_statement(self):
         self.match("KEYWORD", "for")
         t_kw = self.ct
-        n_ident = self.parse_identifier()
+        n_ident = self.parse_identifier(allow_void=False)
         self.match("ASSIGNMENT")
         n_range = self.parse_range_expression()
         self.match("NEWLINE")
@@ -674,7 +704,7 @@ def sanity_test(filename):
         parser.parse_file_input()
         print("%s: parsed OK" % filename)
     except Error:
-        pass
+        traceback.print_exc()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,4 @@
+In assignment_to_field_of_array.m, line 1
+| [foo(i).x] = 42;
+|        ^ error: expected A_KET, found SELECTION instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
