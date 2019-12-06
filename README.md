@@ -30,10 +30,7 @@ for more information and a user manual.
 
 ### Lexer
 
-The lexer is mostly working, but it does not yet deal with matrices or
-cells correctly. Specifically things it is currently impossible to
-distinguish between [1+ 1] and [1 +1]. I plan to fix this eventually
-by adding anonymous commas in the lexer.
+The lexer should be correct, except for dealing with "command syntax".
 
 ### Parser
 
