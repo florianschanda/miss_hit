@@ -111,6 +111,7 @@ class Message_Handler:
         self.show_style = True
         self.sort_messages = True
         self.messages = []
+        self.html = False
 
         self.style_justifications = {}
 
@@ -204,6 +205,14 @@ class Message_Handler:
                                             kstring,
                                             message))
 
+    def __render_message_as_html(self, location, kind, message, autofix):
+        if not autofix:
+            return """<a href=\"matlab:opentoline('%s', %u, %u)\"><div class=\"file_mention\">%s at %u:
+                <code>%s</code></div></a>\n""" % (location.filename, location.line, location.col_start + 1,
+                                                  location.filename, location.line, message)
+        else:
+            return ""
+
     def __register_message(self, location, kind, message, fatal, autofix):
         assert isinstance(location, Location)
         assert kind in ("info", "style", "warning", "lex error", "error")
@@ -256,6 +265,10 @@ class Message_Handler:
     def flush_messages(self, filename):
         assert isinstance(filename, str)
         assert filename in self.files
+
+        # Keep all messages for the HTML report
+        if self.html:
+            return
 
         # Check which justifications actually apply here
         for location, kind, message, autofix in self.messages:
@@ -318,7 +331,7 @@ class Message_Handler:
         if self.errors:
             stats.append("%u error(s)" % self.errors)
         if len(stats) == 1:
-            stats.append("everything semes fine")
+            stats.append("everything seemes fine")
         if self.justified > 0:
             stats.append("%u justified message(s)" % self.justified)
         tmp += ", ".join(stats)
@@ -326,6 +339,18 @@ class Message_Handler:
             tmp += ("; %u file(s) excluded from analysis" %
                     len(self.excluded_files))
         print(tmp)
+
+        if self.style_issues or self.warnings or self.errors:
+            sys.exit(1)
+        else:
+            sys.exit(0)
+
+    def print_html_and_exit(self, html_file):
+        with open(html_file, "w") as f:
+            f.write("<html><head><link type=\"text/css\" rel=\"stylesheet\" href=\"html/style.css\"></head><body>\n")
+            for location, kind, message, autofix in sorted(self.messages):
+                f.write(self.__render_message_as_html(location, kind, message, autofix))
+            f.write("</body></html>\n")
 
         if self.style_issues or self.warnings or self.errors:
             sys.exit(1)

@@ -957,6 +957,9 @@ def main():
                     action="store_true",
                     default=False,
                     help="Ignore all %s files." % config.CONFIG_FILENAME)
+    ap.add_argument('--html',
+                    default=None,
+                    help="Write report to given file as HTML")
     style_option = ap.add_argument_group("Rule options")
 
     # Add any parameters from rules
@@ -995,6 +998,7 @@ def main():
     mh.show_context = not options.brief
     mh.show_style   = not options.no_style
     mh.autofix      = options.fix
+    mh.html         = options.html is not None
     # mh.sort_messages = False
 
     for item in options.files:
@@ -1021,7 +1025,10 @@ def main():
                     rule_set,
                     options.fix)
 
-    mh.print_summary_and_exit()
+    if options.html is not None:
+        mh.print_html_and_exit(options.html)
+    else:
+        mh.print_summary_and_exit()
 
 
 def ice_handler():
