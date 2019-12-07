@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>
+      MISS_HIT - MATLAB independent, small & safe, high integrity tools
+    </title>
+  </head>
+
+  <body>
+    <h1>MISS_HIT Style Checker</h1>
+
+    MISS_HIT includes a simple style checker
+    (<span class="file">mh_style.py</span>). It can detect and
+    correct (when the --fix options given) a number of coding style
+    issues, most of which are configurable.
+
+    <h2>Configuration</h2>
+
+    <h3>Files</h3>
+
+    <div>
+      Options are read from configuration
+      files <span class="file">miss_hit.cfg</span>. This behaviour can
+      be disabled with the --ignore-config option. When analysing the
+      file <span class="file">foo/bar/potato.m</span>, we will first
+      look in the root for <span class="file">miss_hit.cfg</span>,
+      then in <span class="file">foo/miss_hit.cfg</span>, and finally
+      in <span class="file">foo/bar/miss_hit.cfg</span>. Each file
+      augments or overwrites previously given configuration, and
+      command-line options overwrite everything.
+    </div>
+
+    <div>
+      For example you can put
+      this <span class="file">miss_hit.cfg</span> in your project
+      root:
+    </div>
+
+    <div>
+      <pre>
+# Options written like on the commandline
+line_length: 100
+file_length: 2500
+copyright_entity: "Lord Buckethead"
+      </pre>
+    </div>
+
+    <div>
+      And you can adjust options in subdirectories, for example if you place
+      this in <span class="file">foo/miss_hit.cfg</span>:
+    </div>
+
+    <div>
+      <pre>
+# Legacy code which had a different coding standard
+line_length: 180
+      </pre>
+    </div>
+
+    <div>
+      Then files in <span class="file">foo/</span> or below will be
+      checked for a line length of 180 (redefined) and a file length
+      of 2500 (taken over from the project root).
+    </div>
+
+    <h3>Excluding directories from analysis</h3>
+
+    <div>
+      A special entry "enable" into
+      a <span class="file">miss_hit.cfg</span> can be used to enable
+      or disable analysis for the subtree.
+    </div>
+
+    <div>
+      For example if you have a lot of legacy code you can put this
+      into your root configuration:
+    </div>
+
+    <div>
+      <pre>
+enable: 0
+line_length: 100
+      </pre>
+    </div>
+
+    <div>
+      And then enable analysis for some subdirectories, e.g. in
+      <span class="file">foo/new_code/miss_hit.cfg</span> you can
+      write:
+    </div>
+
+    <div>
+      <pre>
+enable: 1
+      </pre>
+    </div>
+
+    <div>
+      Like any other option, the "closest one" takes precedence.
+    </div>
+
+    <div>
+      You can also specify the special "exclude_dir" property in
+      configuration files. This property must name a directory
+      directly inside (i.e. you can't
+      specify <span class="file">foo/bar</span>) the same directory
+      the configuration file resides in. This is especially useful
+      when including an external repository, over which we have
+      limited control.
+    </div>
+
+    <div>
+      Below is given a more realistic root configuration:
+    </div>
+
+    <div>
+      <pre>
+file_length: 1000
+line_length: 120
+copyright_entity: "Potato Inc."
+
+% We include the delightful miss_hit tools in our repo, but don't want to
+% accidentally check their weird test cases
+exclude_dir: "miss_hit"
+      </pre>
+    </div>
+
+    <h2>Justifications</h2>
+
+    <div>
+      Style issues can be justified by placing "mh:ignore_style" into
+      a comment or line continuation. The justification applies to all
+      style issues on that line.
+    </div>
+
+    <div>
+      <pre>
+% we normally get a message about no whitespace surrounding the =
+x=5; % mh:ignore_style
+      </pre>
+    </div>
+
+    <div>
+      Justifications that are useless generate a warning.
+    </div>
+
+    <h2>Style Rules</h2>
+
+    <div>
+      There are three types of rules:
+    </div>
+
+    <div>
+      <ul>
+        <li>
+          <b>Mandatory rules</b>: they are always active and can be
+          automatically fixed
+        </li>
+        <li>
+          <b>Autofix rules</b>: they are optional and can be
+          automatically fixed
+        </li>
+        <li><b>Rules</b>: they are optional and cannot be
+          automatically fixed
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      Rules with a name (for example "whitespace_keywords") can be
+      individually suppressed in or re-enabled in configuration files. For
+      example:
+    </div>
+
+    <div>
+      <pre>
+suppress_rule: "operator_after_continuation"
+suppress_rule: "builtin_shadow"
+enable_rule: "file_length"
+      </pre>
+    </div>
+
+    <div>
+      By default all rules are active.
+    </div>
+
+    <h3>Mandatory rules</h3>
+
+    <div>
+      These rules are always active. The technical reason for this is
+      that it would be too difficult to autofix issues without
+      autofixing these. If you pay me an excessive amount of money I
+      could look into this but I'd rather keep the lexer vaguely
+      sane. All of them are automatically fixed
+      by <span class="file">mh_style.py</span> when the --fix option
+      is specified.
+    </div>
+
+    <!-- HOOK: MANDATORY RULES -->
+
+    <h3>Autofix rules</h3>
+
+    <div>
+      The following rules are automatically fixed
+      by <span class="file">mh_style.py</span> when the --fix option
+      is specified.
+    </div>
+
+    <!-- HOOK: AUTOFIX RULES -->
+
+    <h3>Rules</h3>
+
+    <div>
+      These rules cannot be auto-fixed because there is no "obvious"
+      fix.
+    </div>
+
+    <!-- HOOK: RULES -->
+
+  </body>
+</html>
