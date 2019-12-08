@@ -24,6 +24,7 @@
 ##                                                                          ##
 ##############################################################################
 
+import os
 import sys
 import html
 
@@ -386,10 +387,14 @@ class HTML_Message_Handler(Message_Handler):
     def __init__(self, filename):
         super().__init__()
         self.fd = open(filename, "w")
+        self.fd.write("<!DOCTYPE html>\n")
         self.fd.write("<html>\n")
         self.fd.write("<head>\n")
-        # self.fd.write("<link type=\"text/css\" rel=\"stylesheet\" "
-        #               "href=\"html/style.css\">\n")
+        self.fd.write("<meta charset=\"UTF-8\">\n")
+        self.fd.write("<link rel=\"stylesheet\" href=\"file:%s\">\n" %
+                      os.path.relpath(os.path.join(sys.path[0],
+                                                   "docs",
+                                                   "style.css")))
         self.fd.write("</head>\n")
         self.fd.write("<body>\n")
 
