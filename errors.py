@@ -207,9 +207,15 @@ class Message_Handler:
 
     def __render_message_as_html(self, location, kind, message, autofix):
         if not autofix:
-            return """<a href=\"matlab:opentoline('%s', %u, %u)\"><div class=\"file_mention\">%s at %u:
-                <code>%s</code></div></a>\n""" % (location.filename, location.line, location.col_start + 1,
-                                                  location.filename, location.line, message)
+            tmp = ("<a href=\"matlab:opentoline('%s', %u, %u)\">" %
+                   (location.filename, location.line, location.col_start + 1))
+            tmp += "<div class=\"file_mention\">"
+            tmp += "%s at %u: <code>%s: %s</code>" % (location.filename,
+                                                      location.line,
+                                                      kind,
+                                                      message)
+            tmp += "</div></a>\n"
+            return tmp
         else:
             return ""
 
@@ -346,11 +352,20 @@ class Message_Handler:
             sys.exit(0)
 
     def print_html_and_exit(self, html_file):
-        with open(html_file, "w") as f:
-            f.write("<html><head><link type=\"text/css\" rel=\"stylesheet\" href=\"html/style.css\"></head><body>\n")
+        with open(html_file, "w") as fd:
+            fd.write("<html>\n")
+            fd.write("<head>\n")
+            fd.write("<link type=\"text/css\" rel=\"stylesheet\" "
+                     "href=\"html/style.css\">\n")
+            fd.write("</head>\n")
+            fd.write("<body>\n")
             for location, kind, message, autofix in sorted(self.messages):
-                f.write(self.__render_message_as_html(location, kind, message, autofix))
-            f.write("</body></html>\n")
+                fd.write(self.__render_message_as_html(location,
+                                                       kind,
+                                                       message,
+                                                       autofix))
+            fd.write("</body>\n")
+            fd.write("</html>\n")
 
         if self.style_issues or self.warnings or self.errors:
             sys.exit(1)

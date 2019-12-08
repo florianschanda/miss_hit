@@ -1,1 +1,1 @@
-MISS_HIT Summary: 1 file(s) analysed, everything semes fine
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
