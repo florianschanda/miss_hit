@@ -25,6 +25,7 @@
 ##############################################################################
 
 import sys
+import html
 
 
 class Location:
@@ -95,13 +96,44 @@ class Style_Justification(Justification):
     pass
 
 
+class Message:
+    def __init__(self, location, kind, message, fatal, autofixed):
+        assert isinstance(location, Location)
+        assert kind in ("info", "style", "warning", "lex error", "error")
+        assert isinstance(message, str)
+        assert isinstance(fatal, bool)
+        assert isinstance(autofixed, bool)
+        assert not fatal or kind in ("lex error", "error"), \
+            "fatal=%s, kind=%s violates precondition" % (fatal, kind)
+
+        self.location  = location
+        self.kind      = kind
+        self.message   = message
+        self.fixed     = autofixed
+        self.fatal     = fatal
+        self.justified = False
+
+    def __lt__(self, other):
+        assert isinstance(other, Message)
+
+        return self.location < other.location
+
+    def check_justification(self, justification):
+        if self.kind == "style" and \
+           isinstance(justification, Style_Justification):
+            if self.location.line == justification.token.location.line:
+                self.justified = True
+                justification.used = True
+
+
 class Message_Handler:
     """ All messages should be routed through this class """
     def __init__(self):
-        self.warnings = 0
         self.style_issues = 0
+        self.warnings = 0
         self.errors = 0
         self.justified = 0
+        self.file_count = 0
         self.files = set()
         self.excluded_files = set()
 
@@ -110,10 +142,9 @@ class Message_Handler:
         self.show_context = True
         self.show_style = True
         self.sort_messages = True
-        self.messages = []
-        self.html = False
 
-        self.style_justifications = {}
+        self.messages = {}        # file -> line -> message
+        self.justifications = {}  # file -> line -> justification
 
     def register_file(self, filename):
         assert isinstance(filename, str)
@@ -121,7 +152,8 @@ class Message_Handler:
         assert filename not in self.excluded_files
 
         self.files.add(filename)
-        self.style_justifications[filename] = {}
+        self.messages[filename] = {}
+        self.justifications[filename] = {}
 
     def register_exclusion(self, filename):
         assert isinstance(filename, str)
@@ -135,201 +167,83 @@ class Message_Handler:
         assert filename in self.files
 
         self.files.remove(filename)
-        del self.style_justifications[filename]
+        del self.messages[filename]
+        del self.justifications[filename]
 
-        self.messages = [m
-                         for m in self.messages
-                         if m.location.filename != filename]
-
-    def __render_message(self, location, kind, message, autofix):
-        # First, check if a justification applies
-        if kind == "style":
-            st_just = self.style_justifications[location.filename]
-            if location.line in st_just:
-                st_just[location.line].used = True
-                self.justified += 1
-                return
-
-            if not self.show_style:
-                return
-
-        # Count the message. Note that errors have already been
-        # counted, so don't count them again,
-        if kind == "info":
+    def process_message(self, message):
+        # Count the message
+        if message.justified:
+            self.justified += 1
+            return
+        elif message.kind == "info":
             pass
-        elif kind == "style":
-            self.style_issues += 1
-        elif kind == "warning":
-            self.warnings += 1
-
-        if self.colour:
-            if kind in ("error", "lex error"):
-                kstring = "\033[31;1m%s\033[0m" % kind
-            elif kind == "warning":
-                kstring = "\033[31m%s\033[0m" % kind
+        elif message.kind == "style":
+            if self.show_style:
+                self.style_issues += 1
             else:
-                kstring = kind
+                return
+        elif message.kind == "warning":
+            self.warnings += 1
+        elif message.kind in ("lex error", "error"):
+            self.errors += 1
         else:
-            kstring = kind
+            raise ICE("unexpeced message kind %s" % message.kind)
 
-        if autofix and self.autofix:
-            message += " [fixed]"
+        # Emit
+        self.emit_message(message)
 
-        if location.line is None:
-            print("%s: %s: %s" % (location.filename,
+    def emit_message(self, message):
+        if self.colour:
+            if message.kind in ("error", "lex error"):
+                kstring = "\033[31;1m%s\033[0m" % message.kind
+            elif message.kind == "warning":
+                kstring = "\033[31m%s\033[0m" % message.kind
+            else:
+                kstring = message.kind
+        else:
+            kstring = message.kind
+
+        mtext = message.message
+
+        if message.fixed and self.autofix:
+            mtext += " [fixed]"
+
+        if message.location.line is None:
+            print("%s: %s: %s" % (message.location.filename,
                                   kstring,
-                                  message))
-        elif location.col_start is None:
-            print("%s:%u: %s: %s" % (location.filename,
-                                     location.line,
+                                  mtext))
+        elif message.location.col_start is None:
+            print("%s:%u: %s: %s" % (message.location.filename,
+                                     message.location.line,
                                      kstring,
-                                     message))
+                                     mtext))
         else:
-            if location.context is None:
+            if message.location.context is None:
                 show_context = False
-            elif len(location.context.strip()) > 0:
+            elif len(message.location.context.strip()) > 0:
                 show_context = self.show_context
             else:
                 show_context = False
+
             if show_context:
-                print("In %s, line %u" % (location.filename, location.line))
-                print("| " + location.context.replace("\t", " "))
+                print("In %s, line %u" % (message.location.filename,
+                                          message.location.line))
+                print("| " + message.location.context.replace("\t", " "))
                 print("| " +
-                      (" " * location.col_start) +
-                      ("^" * (location.col_end - location.col_start + 1)) +
-                      " %s: %s" % (kstring, message))
+                      (" " * message.location.col_start) +
+                      ("^" * (message.location.col_end -
+                              message.location.col_start + 1)) +
+                      " %s: %s" % (kstring, mtext))
             else:
-                print("%s:%u:%u: %s: %s" % (location.filename,
-                                            location.line,
-                                            location.col_start,
+                print("%s:%u:%u: %s: %s" % (message.location.filename,
+                                            message.location.line,
+                                            message.location.col_start,
                                             kstring,
-                                            message))
+                                            mtext))
 
-    def __render_message_as_html(self, location, kind, message, autofix):
-        if not autofix:
-            tmp = ("<a href=\"matlab:opentoline('%s', %u, %u)\">" %
-                   (location.filename, location.line, location.col_start + 1))
-            tmp += "<div class=\"file_mention\">"
-            tmp += "%s at %u: <code>%s: %s</code>" % (location.filename,
-                                                      location.line,
-                                                      kind,
-                                                      message)
-            tmp += "</div></a>\n"
-            return tmp
-        else:
-            return ""
-
-    def __register_message(self, location, kind, message, fatal, autofix):
-        assert isinstance(location, Location)
-        assert kind in ("info", "style", "warning", "lex error", "error")
-        assert isinstance(message, str)
-        assert isinstance(fatal, bool)
-        assert isinstance(autofix, bool)
-
-        if location.filename not in self.files:
-            raise ICE("attempted to emit message on unknown file")
-
-        # TODO: Use bisect to keep it sorted
-        if self.sort_messages:
-            self.messages.append((location, kind, message, autofix))
-        else:
-            self.__render_message(location, kind, message, autofix)
-
-        if kind in ("lex error", "error"):
-            self.errors += 1
-
-        if fatal:
-            raise Error(location, message)
-
-    def register_justification(self, token):
-        # assert isinstance(token, m_lexer.MATLAB_Token)
-        assert token.kind in ("COMMENT", "CONTINUATION")
-
-        if "mh:ignore_style" in token.value():
-            just = Style_Justification(token)
-            st_just = self.style_justifications[token.location.filename]
-            st_just[token.location.line] = just
-        else:
-            self.warning(token.location,
-                         "invalid justification not recognized")
-
-    def info(self, location, message):
-        self.__register_message(location, "info", message, False, False)
-
-    def style_issue(self, location, message, autofix=False):
-        self.__register_message(location, "style", message, False, autofix)
-
-    def warning(self, location, message):
-        self.__register_message(location, "warning", message, False, False)
-
-    def lex_error(self, location, message, fatal=True):
-        self.__register_message(location, "lex error", message, fatal, False)
-
-    def error(self, location, message, fatal=True):
-        self.__register_message(location, "error", message, fatal, False)
-
-    def flush_messages(self, filename):
-        assert isinstance(filename, str)
-        assert filename in self.files
-
-        # Keep all messages for the HTML report
-        if self.html:
-            return
-
-        # Check which justifications actually apply here
-        for location, kind, message, autofix in self.messages:
-            if location.filename != filename:
-                continue
-
-            if kind == "style":
-                st_just = self.style_justifications[location.filename]
-                if location.line in st_just:
-                    st_just[location.line].used = True
-
-        # New messages for justifications that did not apply
-        for just in self.style_justifications[filename].values():
-            if not just.used:
-                mh.warning(just.token.location,
-                           "style justification does not apply")
-
-        # Sort messages into stuff that applies to us and others
-        applicable_msg = []
-        other_msg = []
-        for location, kind, message, autofix in self.messages:
-            if location.filename == filename:
-                applicable_msg.append((location, kind, message, autofix))
-            else:
-                other_msg.append((location, kind, message, autofix))
-        self.messages = other_msg
-
-        # Print messages for this file
-        for location, kind, message, autofix in sorted(applicable_msg):
-            self.__render_message(location, kind, message, autofix)
-
-        # Clean up justifications
-        self.style_justifications[filename] = {}
-
-    def print_summary_and_exit(self):
-        # Check which justifications actually apply
-        for location, kind, message, autofix in sorted(self.messages):
-            if kind == "style":
-                st_just = self.style_justifications[location.filename]
-                if location.line in st_just:
-                    st_just[location.line].used = True
-
-        # New messages for justifications that did not apply
-        for filename in self.style_justifications:
-            for just in self.style_justifications[filename].values():
-                if not just.used:
-                    mh.warning(just.token.location,
-                               "style justification does not apply")
-
-        # Finally print remaining messages
-        for location, kind, message, autofix, in sorted(self.messages):
-            self.__render_message(location, kind, message, autofix)
-
+    def emit_summary(self):
         tmp = "MISS_HIT Summary: "
-        stats = ["%u file(s) analysed" % len(self.files)]
+        stats = ["%u file(s) analysed" % self.file_count]
         if self.style_issues:
             stats.append("%u style issue(s)" % self.style_issues)
         if self.warnings:
@@ -346,33 +260,176 @@ class Message_Handler:
                     len(self.excluded_files))
         print(tmp)
 
+    def register_message(self, msg):
+        assert isinstance(msg, Message)
+
+        if msg.location.filename not in self.files:
+            raise ICE("attempted to emit message on unknown file")
+
+        # Add message to list
+        messages = self.messages[msg.location.filename]
+        if msg.location.line not in messages:
+            messages[msg.location.line] = [msg]
+        else:
+            messages[msg.location.line].append(msg)
+
+        # Check if a justification applies
+        just = self.messages[msg.location.filename]
+        if msg.location.line in just:
+            for j in just[msg.location.line]:
+                msg.check_justification(j)
+
+        # Raise exception for fatal messages
+        if msg.fatal:
+            raise Error(msg.location, msg.message)
+
+    def register_justification(self, token):
+        # assert isinstance(token, m_lexer.MATLAB_Token)
+        assert token.kind in ("COMMENT", "CONTINUATION")
+
+        if token.location.filename not in self.files:
+            raise ICE("attempted to add justification to an unknown file")
+
+        if "mh:ignore_style" in token.value():
+            justification = Style_Justification(token)
+        else:
+            self.warning(token.location,
+                         "invalid justification not recognized")
+
+        # Add justification
+        just = self.justifications[token.location.filename]
+        if token.location.line not in just:
+            just[token.location.line] = [justification]
+        else:
+            just[token.location.line].append(justification)
+
+        # Check if a message is justified
+        messages = self.messages[token.location.filename]
+        if token.location.line in messages:
+            for msg in messages[token.location.line]:
+                msg.check_justification(justification)
+
+    def info(self, location, message):
+        msg = Message(location  = location,
+                      kind      = "info",
+                      message   = message,
+                      fatal     = False,
+                      autofixed = False)
+        self.register_message(msg)
+
+    def style_issue(self, location, message, autofix=False):
+        msg = Message(location  = location,
+                      kind      = "style",
+                      message   = message,
+                      fatal     = False,
+                      autofixed = autofix)
+        self.register_message(msg)
+
+    def warning(self, location, message):
+        msg = Message(location  = location,
+                      kind      = "warning",
+                      message   = message,
+                      fatal     = False,
+                      autofixed = False)
+        self.register_message(msg)
+
+    def lex_error(self, location, message, fatal=True):
+        msg = Message(location  = location,
+                      kind      = "lex error",
+                      message   = message,
+                      fatal     = fatal,
+                      autofixed = False)
+        self.register_message(msg)
+
+    def error(self, location, message, fatal=True):
+        msg = Message(location  = location,
+                      kind      = "error",
+                      message   = message,
+                      fatal     = fatal,
+                      autofixed = False)
+        self.register_message(msg)
+
+    def finalize_file(self, filename):
+        assert isinstance(filename, str)
+        assert filename in self.files
+
+        # New messages for justifications that did not apply
+        for justifications in self.justifications[filename].values():
+            for justification in justifications:
+                if not justification.used:
+                    self.warning(justification.token.location,
+                                 "style justification does not apply")
+
+        # Process messages
+        for messages in sorted(self.messages[filename].values()):
+            for message in sorted(messages):
+                self.process_message(message)
+
+        # Remove file
+        self.unregister_file(filename)
+        self.file_count += 1
+
+    def summary_and_exit(self):
+        files = list(self.messages)
+        for filename in files:
+            self.finalize_file(filename)
+
+        self.emit_summary()
+
         if self.style_issues or self.warnings or self.errors:
             sys.exit(1)
         else:
             sys.exit(0)
 
-    def print_html_and_exit(self, html_file):
-        with open(html_file, "w") as fd:
-            fd.write("<html>\n")
-            fd.write("<head>\n")
-            fd.write("<link type=\"text/css\" rel=\"stylesheet\" "
-                     "href=\"html/style.css\">\n")
-            fd.write("</head>\n")
-            fd.write("<body>\n")
-            for location, kind, message, autofix in sorted(self.messages):
-                fd.write(self.__render_message_as_html(location,
-                                                       kind,
-                                                       message,
-                                                       autofix))
-            fd.write("</body>\n")
-            fd.write("</html>\n")
 
-        if self.style_issues or self.warnings or self.errors:
-            sys.exit(1)
+class HTML_Message_Handler(Message_Handler):
+    def __init__(self, filename):
+        super().__init__()
+        self.fd = open(filename, "w")
+        self.fd.write("<html>\n")
+        self.fd.write("<head>\n")
+        # self.fd.write("<link type=\"text/css\" rel=\"stylesheet\" "
+        #               "href=\"html/style.css\">\n")
+        self.fd.write("</head>\n")
+        self.fd.write("<body>\n")
+
+    def finalize_file(self, filename):
+        self.fd.write("<h1>%s</h1>\n" % filename)
+        super().finalize_file(filename)
+
+    def emit_message(self, message):
+        mtext = message.message
+        if message.fixed and self.autofix:
+            mtext += " [fixed]"
+
+        self.fd.write("<div class=\"message\">")
+        if message.location.col_start:
+            self.fd.write("<a href=\"matlab:opentoline('%s', %u, %u)\">" %
+                          (message.location.filename,
+                           message.location.line,
+                           message.location.col_start + 1))
+            self.fd.write("%s: line %u:" % (message.location.filename,
+                                            message.location.line))
+        elif message.location.line:
+            self.fd.write("<a href=\"matlab:opentoline('%s', %u)\">" %
+                          (message.location.filename,
+                           message.location.line))
+            self.fd.write("%s: line %u:" % (message.location.filename,
+                                            message.location.line))
         else:
-            sys.exit(0)
+            self.fd.write("<a href=\"matlab:opentoline('%s')\">" %
+                          message.location.filename)
+            self.fd.write("%s:" % message.location.filename)
+        self.fd.write("</a>")
 
+        self.fd.write(" %s:" % message.kind)
+        self.fd.write(" %s" % html.escape(message.message))
 
-# pylint: disable=invalid-name
-mh = Message_Handler()
-# pylint: enable=invalid-name
+        self.fd.write("</div>\n")
+
+    def emit_summary(self):
+        super().emit_summary()
+        self.fd.write("</body>\n")
+        self.fd.write("</html>\n")
+        self.fd.close()
+        self.fd = None

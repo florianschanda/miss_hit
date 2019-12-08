@@ -1,7 +1,11 @@
+=== PLAIN MODE ===
 In test.m, line 17
 |     + c + d;
 |     ^ style: continuations should not start with operators
 In test.m, line 19
 |     && (c || d);
 |     ^^ style: continuations should not start with operators
+MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
+
+=== HTML MODE ===
 MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)

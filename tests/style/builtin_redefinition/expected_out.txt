@@ -1,3 +1,4 @@
+=== PLAIN MODE ===
 In test.m, line 4
 | false = 0.01; % bad
 | ^^^^^ style: redefinition of builtin function is a very naughty thing to do
@@ -10,4 +11,7 @@ In test.m, line 8
 In test.m, line 14
 |     i = x;  % no, for many reasons
 |     ^ style: redefinition of builtin function is a very naughty thing to do
+MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)
+
+=== HTML MODE ===
 MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

@@ -1,3 +1,4 @@
+=== PLAIN MODE ===
 In test.m, line 15
 | for i = 1 : 2
 |           ^ style: no whitespace around colon allowed [fixed]
@@ -13,4 +14,7 @@ In test.m, line 18
 In test.m, line 18
 | x = j : i : k
 |           ^ style: no whitespace around colon allowed [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
+
+=== HTML MODE ===
 MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)

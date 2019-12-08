@@ -1,3 +1,4 @@
+=== PLAIN MODE ===
 In test.m, line 3
 | [ somevar] = 1;
 | ^ style: [ must not be followed by whitespace [fixed]
@@ -13,4 +14,7 @@ In test.m, line 5
 In test.m, line 6
 | niceTable = [ 0  1  2  3; ...
 |             ^ style: [ must not be followed by whitespace [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
+
+=== HTML MODE ===
 MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)

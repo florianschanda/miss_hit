@@ -27,7 +27,7 @@ import os
 from copy import deepcopy
 
 from m_lexer import MATLAB_Lexer
-from errors import mh, ICE, Error, Location
+from errors import ICE, Error, Location
 
 CONFIG_FILENAME = "miss_hit.cfg"
 
@@ -70,10 +70,11 @@ STYLE_RULES = {
 
 
 class Config_Parser:
-    def __init__(self, config_file):
+    def __init__(self, mh, config_file):
         self.filename = config_file
         self.dirname = os.path.dirname(config_file)
-        self.lexer = MATLAB_Lexer(self.filename)
+        self.lexer = MATLAB_Lexer(mh, self.filename)
+        self.mh = mh
 
         # pylint: disable=invalid-name
         self.ct = None
@@ -103,21 +104,23 @@ class Config_Parser:
     def match(self, kind, value=None):
         self.next()
         if self.ct is None:
-            mh.error(Location(self.lexer.filename),
-                     "expected %s, reached EOF instead" % kind)
+            self.mh.error(Location(self.lexer.filename),
+                          "expected %s, reached EOF instead" % kind)
         elif self.ct.kind != kind:
-            mh.error(self.ct.location,
-                     "expected %s, found %s instead" % (kind, self.ct.kind))
+            self.mh.error(self.ct.location,
+                          "expected %s, found %s instead" % (kind,
+                                                             self.ct.kind))
         elif value and self.ct.value() != value:
-            mh.error(self.ct.location,
-                     "expected %s(%s), found %s(%s) instead" %
-                     (kind, value, self.ct.kind, self.ct.value()))
+            self.mh.error(self.ct.location,
+                          "expected %s(%s), found %s(%s) instead" %
+                          (kind, value, self.ct.kind, self.ct.value()))
 
     def match_eof(self):
         self.next()
         if self.ct is not None:
-            mh.error(self.ct.location,
-                     "expected end of file, found %s instead" % self.ct.kind)
+            self.mh.error(self.ct.location,
+                          "expected end of file, found %s instead" %
+                          self.ct.kind)
 
     def peek(self, kind, value=None):
         if self.nt and self.nt.kind == kind:
@@ -143,29 +146,30 @@ class Config_Parser:
                     self.match("STRING")
                     value = self.ct.value()
                     if value not in STYLE_RULES:
-                        mh.error(self.ct.location,
-                                 "unknown rule")
+                        self.mh.error(self.ct.location,
+                                      "unknown rule")
                         # TODO: Use difflib to find a likely one
 
                 elif key not in cfg:
-                    mh.error(t_key.location,
-                             "unknown option %s" % key)
+                    self.mh.error(t_key.location,
+                                  "unknown option %s" % key)
 
                 elif isinstance(cfg[key], int):
                     self.match("NUMBER")
                     try:
                         value = int(self.ct.value())
                     except ValueError:
-                        mh.error(self.ct.location,
-                                 "%s option requires an integer" % key)
+                        self.mh.error(self.ct.location,
+                                      "%s option requires an integer" % key)
 
                 elif isinstance(cfg[key], bool):
                     self.match("NUMBER")
                     if self.ct.value() in ("0", "1"):
                         value = self.ct.value() == "1"
                     else:
-                        mh.error(self.ct.location,
-                                 "boolean option %s requires 0 or 1" % key)
+                        self.mh.error(self.ct.location,
+                                      "boolean option %s requires 0 or 1" %
+                                      key)
 
                 elif isinstance(cfg[key], set):
                     self.match("STRING")
@@ -175,13 +179,13 @@ class Config_Parser:
                         if os.path.basename(value) != value or \
                            not os.path.isdir(os.path.join(self.dirname,
                                                           value)):
-                            mh.error(self.ct.location,
-                                     "must be a valid local directory")
+                            self.mh.error(self.ct.location,
+                                          "must be a valid local directory")
 
                     elif key == "suppress_rule":
                         if value not in STYLE_RULES:
-                            mh.error(self.ct.location,
-                                     "unknown rule")
+                            self.mh.error(self.ct.location,
+                                          "unknown rule")
                             # TODO: Use difflib to find a likely one
 
                 if self.nt:
@@ -198,7 +202,7 @@ class Config_Parser:
                     cfg[key] = value
 
 
-def load_config(cfg_file, cfg):
+def load_config(mh, cfg_file, cfg):
     assert isinstance(cfg_file, str)
     assert os.path.isfile(cfg_file)
     assert isinstance(cfg, dict)
@@ -207,13 +211,13 @@ def load_config(cfg_file, cfg):
 
     try:
         mh.register_file(rel_name)
-        parser = Config_Parser(rel_name)
+        parser = Config_Parser(mh, rel_name)
         parser.parse_file(cfg)
         # Now that we have parsed the file, we should remove it again
         # from the list of files known to the error handler
         mh.unregister_file(rel_name)
     except Error:
-        mh.print_summary_and_exit()
+        mh.summary_and_exit()
 
 
 def register_tree(dirname):
@@ -265,7 +269,7 @@ def register_tree(dirname):
     register_subtree(dirname)
 
 
-def build_config_tree(defaults, cmdline_options):
+def build_config_tree(mh, defaults, cmdline_options):
     # Construct basic default options
     root_config = deepcopy(BASE_CONFIG)
     root_config.update(defaults)
@@ -315,7 +319,8 @@ def build_config_tree(defaults, cmdline_options):
 
         # Otherwise we process any config file
         elif CONFIG_TREE[node]["has_config"] and parse_config:
-            load_config(os.path.join(node, CONFIG_FILENAME),
+            load_config(mh,
+                        os.path.join(node, CONFIG_FILENAME),
                         CONFIG_TREE[node]["config"])
             merge_command_line(CONFIG_TREE[node]["config"])
 

@@ -38,7 +38,7 @@ from abc import ABCMeta, abstractmethod
 
 from m_language_builtins import BUILTIN_FUNCTIONS
 from m_lexer import MATLAB_Lexer, Token_Buffer
-from errors import Location, Error, ICE, mh
+from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
 import config
 from m_parser import MATLAB_Parser
 
@@ -65,13 +65,13 @@ class Style_Rule_File(Style_Rule):
         super().__init__(name, False)
 
     @abstractmethod
-    def apply(self, cfg, filename, lines):
+    def apply(self, mh, cfg, filename, lines):
         pass
 
 
 class Style_Rule_Line(Style_Rule):
     @abstractmethod
-    def apply(self, cfg, filename, line_no, line):
+    def apply(self, mh, cfg, filename, line_no, line):
         pass
 
 
@@ -99,7 +99,7 @@ class Rule_File_Length(Style_Rule_File):
     def __init__(self):
         super().__init__("file_length")
 
-    def apply(self, cfg, filename, lines):
+    def apply(self, mh, cfg, filename, lines):
         if len(lines) > cfg["file_length"]:
             mh.style_issue(Location(filename,
                                     len(lines)),
@@ -120,7 +120,7 @@ class Rule_File_EOF_Lines(Style_Rule_File):
         self.mandatory = True
         self.autofix = True
 
-    def apply(self, cfg, filename, lines):
+    def apply(self, mh, cfg, filename, lines):
         if len(lines) >= 2 and lines[-1] == "":
             mh.style_issue(Location(filename,
                                     len(lines)),
@@ -153,7 +153,7 @@ class Rule_Line_Length(Style_Rule_Line):
     def __init__(self):
         super().__init__("line_length", False)
 
-    def apply(self, cfg, filename, line_no, line):
+    def apply(self, mh, cfg, filename, line_no, line):
         if len(line) > cfg["line_length"] + 1:
             mh.style_issue(Location(filename,
                                     line_no,
@@ -177,7 +177,7 @@ class Rule_Line_Blank_Lines(Style_Rule_Line):
         self.mandatory = True
         self.is_blank = False
 
-    def apply(self, cfg, filename, line_no, line):
+    def apply(self, mh, cfg, filename, line_no, line):
         if len(line.strip()):
             self.is_blank = False
         elif self.is_blank:
@@ -230,7 +230,7 @@ class Rule_Line_Tabs(Style_Rule_Line):
         super().__init__("tabs", True)
         self.mandatory = True
 
-    def apply(self, cfg, filename, line_no, line):
+    def apply(self, mh, cfg, filename, line_no, line):
         if "\t" in line:
             mh.style_issue(Location(filename,
                                     line_no,
@@ -255,7 +255,7 @@ class Rule_Line_Trailing_Whitesapce(Style_Rule_Line):
         super().__init__("trailing_whitespace", True)
         self.mandatory = True
 
-    def apply(self, cfg, filename, line_no, line):
+    def apply(self, mh, cfg, filename, line_no, line):
         if line.endswith(" "):
             if len(line.strip()) == 0:
                 mh.style_issue(Location(filename,
@@ -350,7 +350,7 @@ WORDS_WITH_WS = frozenset([
 ])
 
 
-def stage_3_analysis(cfg, tbuf):
+def stage_3_analysis(mh, cfg, tbuf):
     assert isinstance(tbuf, Token_Buffer)
 
     in_copyright_notice = config.active(cfg, "copyright_notice")
@@ -666,7 +666,7 @@ def stage_3_analysis(cfg, tbuf):
                                    "operators")
 
 
-def analyze(filename, rule_set, autofix):
+def analyze(mh, filename, rule_set, autofix):
     assert isinstance(filename, str)
     assert isinstance(autofix, bool)
 
@@ -699,7 +699,7 @@ def analyze(filename, rule_set, autofix):
 
     # Create lexer
 
-    lexer = MATLAB_Lexer(filename, encoding=encoding)
+    lexer = MATLAB_Lexer(mh, filename, encoding=encoding)
 
     # We're dealing with an empty file here. Lets just not do anything
 
@@ -709,13 +709,13 @@ def analyze(filename, rule_set, autofix):
     # Stage 1 - rules around the file itself
 
     for rule in rule_lib["on_file"]:
-        rule.apply(cfg, lexer.filename, lexer.context_line)
+        rule.apply(mh, cfg, lexer.filename, lexer.context_line)
 
     # Stage 2 - rules around raw text lines
 
     for line_no, line in enumerate(lexer.context_line, 1):
         for rule in rule_lib["on_line"]:
-            rule.apply(cfg, lexer.filename, line_no, line)
+            rule.apply(mh, cfg, lexer.filename, line_no, line)
 
     # Tabs are just super annoying, and they require special
     # treatment. There is a known but obscure bug here, in that tabs
@@ -749,13 +749,13 @@ def analyze(filename, rule_set, autofix):
 
     # Stage 3 - rules around individual tokens
 
-    stage_3_analysis(cfg, tbuf)
+    stage_3_analysis(mh, cfg, tbuf)
 
     # Stage 4 - parsing
 
     # pylint: disable=unused-variable
     try:
-        parser = MATLAB_Parser(tbuf)
+        parser = MATLAB_Parser(mh, tbuf)
         # parser.parse_file_input()
     except Error:
         pass
@@ -769,7 +769,7 @@ def analyze(filename, rule_set, autofix):
 
     # Emit messages
 
-    mh.flush_messages(filename)
+    mh.finalize_file(filename)
 
 
 def main():
@@ -836,6 +836,11 @@ def main():
         ap.print_help()
         sys.exit(1)
 
+    if options.html:
+        mh = HTML_Message_Handler(options.html)
+    else:
+        mh = Message_Handler()
+
     mh.show_context = not options.brief
     mh.show_style   = not options.no_style
     mh.autofix      = options.fix
@@ -849,7 +854,8 @@ def main():
             config.register_tree(os.path.dirname(os.path.abspath(item)))
         else:
             ap.error("%s is neither a file nor directory" % item)
-    config.build_config_tree(build_default_config(rule_set),
+    config.build_config_tree(mh,
+                             build_default_config(rule_set),
                              options)
 
     for item in options.files:
@@ -858,18 +864,17 @@ def main():
                 dirs.sort()
                 for f in sorted(files):
                     if f.endswith(".m"):
-                        analyze(os.path.normpath(os.path.join(path, f)),
+                        analyze(mh,
+                                os.path.normpath(os.path.join(path, f)),
                                 rule_set,
                                 options.fix)
         else:
-            analyze(os.path.normpath(item),
+            analyze(mh,
+                    os.path.normpath(item),
                     rule_set,
                     options.fix)
 
-    if options.html is not None:
-        mh.print_html_and_exit(options.html)
-    else:
-        mh.print_summary_and_exit()
+    mh.summary_and_exit()
 
 
 def ice_handler():

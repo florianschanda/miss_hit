@@ -27,7 +27,7 @@
 import traceback
 
 from m_lexer import Token_Generator, MATLAB_Lexer, TOKEN_KINDS
-from errors import mh, ICE, Error, Location
+from errors import ICE, Error, Location, Message_Handler
 import tree_print
 
 # pylint: disable=wildcard-import,unused-wildcard-import
@@ -83,9 +83,10 @@ class NIY(ICE):
 # 12. Short-circuit OR (||)
 
 class MATLAB_Parser:
-    def __init__(self, lexer):
+    def __init__(self, mh, lexer):
         assert isinstance(lexer, Token_Generator)
         self.lexer = lexer
+        self.mh = mh
 
         # pylint: disable=invalid-name
         self.ct = None
@@ -116,21 +117,23 @@ class MATLAB_Parser:
         assert kind in TOKEN_KINDS
         self.next()
         if self.ct is None:
-            mh.error(Location(self.lexer.filename),
-                     "expected %s, reached EOF instead" % kind)
+            self.mh.error(Location(self.lexer.filename),
+                          "expected %s, reached EOF instead" % kind)
         elif self.ct.kind != kind:
-            mh.error(self.ct.location,
-                     "expected %s, found %s instead" % (kind, self.ct.kind))
+            self.mh.error(self.ct.location,
+                          "expected %s, found %s instead" % (kind,
+                                                             self.ct.kind))
         elif value and self.ct.value() != value:
-            mh.error(self.ct.location,
-                     "expected %s(%s), found %s(%s) instead" %
-                     (kind, value, self.ct.kind, self.ct.value()))
+            self.mh.error(self.ct.location,
+                          "expected %s(%s), found %s(%s) instead" %
+                          (kind, value, self.ct.kind, self.ct.value()))
 
     def match_eof(self):
         self.next()
         if self.ct is not None:
-            mh.error(self.ct.location,
-                     "expected end of file, found %s instead" % self.ct.kind)
+            self.mh.error(self.ct.location,
+                          "expected end of file, found %s instead" %
+                          self.ct.kind)
 
     def peek(self, kind, value=None):
         assert kind in TOKEN_KINDS
@@ -316,9 +319,9 @@ class MATLAB_Parser:
             elif self.nt.value() == "return":
                 return self.parse_return_statement()
             else:
-                mh.error(self.nt.location,
-                         "expected for|if|global|while|return,"
-                         " found %s instead" % self.nt.value())
+                self.mh.error(self.nt.location,
+                              "expected for|if|global|while|return,"
+                              " found %s instead" % self.nt.value())
 
         else:
             return self.parse_assignment_or_call()
@@ -697,23 +700,30 @@ class MATLAB_Parser:
         return While_Statement(t_kw, n_guard, n_body)
 
 
-def sanity_test(filename):
+def sanity_test(mh, filename):
     try:
         mh.register_file(filename)
-        parser = MATLAB_Parser(MATLAB_Lexer(filename))
+        parser = MATLAB_Parser(mh, MATLAB_Lexer(mh, filename))
         parser.parse_file_input()
         print("%s: parsed OK" % filename)
     except Error:
         traceback.print_exc()
 
 
-if __name__ == "__main__":
-    # pylint: disable=invalid-name
+def parser_test_main():
     from argparse import ArgumentParser
     ap = ArgumentParser()
     ap.add_argument("file")
     options = ap.parse_args()
 
-    sanity_test(options.file)
+    mh = Message_Handler()
+    mh.sort_messages = False
+    mh.colour = True
 
-    mh.print_summary_and_exit()
+    sanity_test(mh, options.file)
+
+    mh.summary_and_exit()
+
+
+if __name__ == "__main__":
+    parser_test_main()

@@ -1,3 +1,4 @@
+=== PLAIN MODE ===
 In test.m, line 5
 |  return;
 | ^ style: tab is not allowed [fixed]
@@ -13,4 +14,7 @@ In test.m, line 13
 In test.m, line 16
 | x = 12;
 |  ^ style: tab is not allowed [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
+
+=== HTML MODE ===
 MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)

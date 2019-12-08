@@ -1,2 +1,6 @@
+=== PLAIN MODE ===
 test_fail_1.m:4: style: trailing blank lines at end of file [fixed]
+MISS_HIT Summary: 3 file(s) analysed, 1 style issue(s)
+
+=== HTML MODE ===
 MISS_HIT Summary: 3 file(s) analysed, 1 style issue(s)

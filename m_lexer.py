@@ -27,7 +27,7 @@
 import re
 from abc import ABCMeta, abstractmethod
 
-from errors import Location, Error, mh
+from errors import Location, Error, Message_Handler
 from m_language import KEYWORDS
 
 # The 1999 technical report "The Design and Implementation of a Parser
@@ -147,13 +147,14 @@ class Token_Generator(metaclass=ABCMeta):
 
 
 class MATLAB_Lexer(Token_Generator):
-    def __init__(self, filename, encoding="utf-8"):
+    def __init__(self, mh, filename, encoding="utf-8"):
         super().__init__(filename)
 
         with open(filename, "r", encoding=encoding) as fd:
             self.text = fd.read()
         self.context_line = self.text.splitlines()
 
+        self.mh = mh
         self.filename = filename
         self.lexpos = -1
         self.col_offset = 0
@@ -216,14 +217,14 @@ class MATLAB_Lexer(Token_Generator):
             return match.group(0)
 
     def lex_error(self, message=None):
-        mh.lex_error(Location(self.filename,
-                              self.line,
-                              self.lexpos - self.col_offset,
-                              self.lexpos - self.col_offset,
-                              self.context_line[self.line - 1]),
-                     (message
-                      if message
-                      else "unexpected character %s" % repr(self.cc)))
+        self.mh.lex_error(Location(self.filename,
+                                   self.line,
+                                   self.lexpos - self.col_offset,
+                                   self.lexpos - self.col_offset,
+                                   self.context_line[self.line - 1]),
+                          (message
+                           if message
+                           else "unexpected character %s" % repr(self.cc)))
 
     def token(self):
         # If we've been instructed to add an anonymous comma, we do
@@ -245,8 +246,8 @@ class MATLAB_Lexer(Token_Generator):
             self.last_kind = "COMMA"
             self.last_value = ","
             if self.debug_comma:
-                mh.info(token.location,
-                        "\033[32madded comma\033[0m")
+                self.mh.info(token.location,
+                             "\033[32madded comma\033[0m")
             return token
 
         # First we scan to the next non-whitespace token
@@ -523,8 +524,8 @@ class MATLAB_Lexer(Token_Generator):
             self.line += 1
             self.first_in_line = True
             if self.in_dir_command:
-                mh.error(token.location,
-                         "cannot line-continue a cd command")
+                self.mh.error(token.location,
+                              "cannot line-continue a cd command")
         elif kind == "IDENTIFIER" and token.first_in_line \
              and raw_text in ("cd", "mkdir", "rmdir"):
             self.in_dir_command = True
@@ -545,17 +546,17 @@ class MATLAB_Lexer(Token_Generator):
                     matching_bracket.kind != "M_BRA") or \
                    (token.kind == "C_KET" and
                     matching_bracket.kind != "C_BRA"):
-                    mh.lex_error(token.location,
-                                 "mismatched brackets %s ... %s" %
-                                 (matching_bracket.raw_text,
-                                  token.raw_text))
+                    self.mh.lex_error(token.location,
+                                      "mismatched brackets %s ... %s" %
+                                      (matching_bracket.raw_text,
+                                       token.raw_text))
             else:
                 # Raise a non-fatal lex error (so that the style
                 # checker can continue; the parser will throw up soon
                 # anyway).
-                mh.lex_error(token.location,
-                             "unmatched %s" % token.raw_text,
-                             False)
+                self.mh.lex_error(token.location,
+                                  "unmatched %s" % token.raw_text,
+                                  False)
 
         # Determine if whitespace is currently significant (i.e. we're
         # in a matrix).
@@ -643,6 +644,51 @@ class Token_Buffer(Token_Generator):
     def reset(self):
         self.pos = 0
 
+    # def extended_iterate(self):
+    #     self.reset()
+    #     rv = {
+    #         "id"            : self.pos,
+    #         "next_token"    : None,
+    #         "prev_token"    : None,
+    #         "next_in_line"  : None,
+    #         "prev_in_line"  : None,
+    #         "ws_before"     : None,
+    #         "ws_after"      : None,
+    #         "first_in_line" : True,
+    #         "last_in_line"  : None,
+    #     }
+    #     tok = self.token
+    #     rv["next_token"] = self.token()
+
+    #     def set_last_in_line():
+    #         rv["last_in_line"] = (rv["next_token"] and
+    #                               rv["next_token"].kind == "NEWLINE")
+
+    #     def advance():
+    #         rv["id"] = self.pos
+    #         rv["prev_token"] = tok
+    #         tok = rv["next_token"]
+    #         rv["next_token"] = self.token()
+
+    #     def set_neighbours():
+    #         if not tok or tok.first_in_line:
+    #             rv["prev_in_line"] = None
+    #             rv["ws_before"] = None
+    #         else:
+    #             rv["prev_in_line"] = rv["prev_token"]
+    #             rv["ws_before"] = (tok.location.col_start -
+    #                                rv["prev_in_line"].location.col_end) - 1
+
+    #         if not rv["next_token"] or rv["next_token"].kind == "NEWLINE":
+    #             rv["next_in_line"] = None
+    #             rv["ws_after"] = None
+    #         else:
+    #             rv["next_in_line"] = rv["next_token"]
+    #             rv["ws_after"] = (rv["next_in_line"].location.col_start -
+    #                               tok.location.col_end) - 1
+
+    #     set_last_in_line()
+
     def replay(self, fd):
         real_tokens = [t for t in self.tokens if not t.anonymous]
 
@@ -693,12 +739,10 @@ class Token_Buffer(Token_Generator):
         fd.write("\n")
 
 
-def sanity_test(filename):
-    mh.sort_messages = False
-    mh.colour = True
+def sanity_test(mh, filename):
     try:
         mh.register_file(filename)
-        lexer = MATLAB_Lexer(filename)
+        lexer = MATLAB_Lexer(mh, filename)
         lexer.debug_comma = True
         while True:
             tok = lexer.token()
@@ -711,13 +755,20 @@ def sanity_test(filename):
         print("%s: lexed with errors" % filename)
 
 
-if __name__ == "__main__":
-    # pylint: disable=invalid-name
+def lexer_test_main():
     from argparse import ArgumentParser
     ap = ArgumentParser()
     ap.add_argument("file")
     options = ap.parse_args()
 
-    sanity_test(options.file)
+    mh = Message_Handler()
+    mh.sort_messages = False
+    mh.colour = True
 
-    mh.print_summary_and_exit()
+    sanity_test(mh, options.file)
+
+    mh.summary_and_exit()
+
+
+if __name__ == "__main__":
+    lexer_test_main()
