@@ -1,4 +1,7 @@
-pre-commit-checks: test lint
+pre-commit-checks: doc test lint
+
+doc:
+	@cd util; ./update_docs.py
 
 test:
 	@cd tests; ./run.py
@@ -8,3 +11,5 @@ lint: style
 
 style:
 	@python3 -m pycodestyle *.py
+
+.PHONY: doc test lint style

@@ -20,11 +20,14 @@ If this is you, then this tool suite is for you.
 
 ## Tools
 
+All tools are documented here:
+https://florianschanda.github.io/miss_hit/
+
 ### Style Checker
 
 A simple coding style checker for MATLAB. See
-[doc/style_checker.md](https://github.com/florianschanda/miss_hit/blob/master/doc/style_checker.md)
-for more information and a user manual.
+https://florianschanda.github.io/miss_hit/style_checker.html for more
+information and a user manual.
 
 ## Infrastructure
 
