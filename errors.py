@@ -397,12 +397,15 @@ class HTML_Message_Handler(Message_Handler):
                                                    "style.css")))
         self.fd.write("</head>\n")
         self.fd.write("<body>\n")
+        self.fd.write("<h1>MISS_HIT Report</h1>\n")
 
-    def finalize_file(self, filename):
-        self.fd.write("<h1>%s</h1>\n" % filename)
-        super().finalize_file(filename)
+        self.last_file = None
 
     def emit_message(self, message):
+        if self.last_file != message.location.filename:
+            self.last_file = message.location.filename
+            self.fd.write("<h2>%s</h2>\n" % message.location.filename)
+
         mtext = message.message
         if message.fixed and self.autofix:
             mtext += " [fixed]"
@@ -434,6 +437,8 @@ class HTML_Message_Handler(Message_Handler):
 
     def emit_summary(self):
         super().emit_summary()
+        if not (self.style_issues or self.warnings or self.errors):
+            self.fd.write("<div>Everything is fine :)</div>")
         self.fd.write("</body>\n")
         self.fd.write("</html>\n")
         self.fd.close()
