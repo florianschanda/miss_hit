@@ -120,9 +120,15 @@ class MATLAB_Parser:
             self.mh.error(Location(self.lexer.filename),
                           "expected %s, reached EOF instead" % kind)
         elif self.ct.kind != kind:
-            self.mh.error(self.ct.location,
-                          "expected %s, found %s instead" % (kind,
-                                                             self.ct.kind))
+            if value:
+                self.mh.error(self.ct.location,
+                              "expected %s(%s), found %s instead" %
+                              (kind, value, self.ct.kind))
+            else:
+                self.mh.error(self.ct.location,
+                              "expected %s, found %s instead" % (kind,
+                                                                 self.ct.kind))
+
         elif value and self.ct.value() != value:
             self.mh.error(self.ct.location,
                           "expected %s(%s), found %s(%s) instead" %
@@ -187,11 +193,13 @@ class MATLAB_Parser:
         return rv
 
     def parse_file_input(self):
-        while self.peek("NEWLINE") or self.peek("COMMENT"):
+        while self.peek("NEWLINE"):
             self.next()
 
         if self.peek("KEYWORD", "function"):
             return self.parse_function_file()
+        elif self.peek("KEYWORD", "classdef"):
+            return self.parse_class_file()
         else:
             return self.parse_script_file()
 
@@ -202,6 +210,10 @@ class MATLAB_Parser:
             statements.append(self.parse_statement())
 
         return Sequence_Of_Statements(statements)
+
+    def parse_class_file(self):
+        the_class = self.parse_classdef()
+        functions = self.parse_function_file()
 
     def parse_function_file(self):
         functions = []
@@ -283,6 +295,147 @@ class MATLAB_Parser:
         return Function_Definition(t_fun, function_name, inputs, returns, body)
 
         # TODO: Build function entity
+
+    def parse_class_property_list(self):
+        properties = []
+        if self.peek("BRA"):
+            self.match("BRA")
+            while True:
+                self.match("IDENTIFIER")
+                self.mh.info(self.ct.location,
+                             "class attributes are currently ignored")
+                self.match("ASSIGNMENT")
+                self.parse_expression()
+                if self.peek("COMMA"):
+                    self.match("COMMA")
+                else:
+                    break
+            self.match("KET")
+        return properties
+
+    def parse_class_properties(self):
+        # See
+        # https://uk.mathworks.com/help/matlab/matlab_oop/validate-property-values.html
+        # https://uk.mathworks.com/help/matlab/matlab_oop/property-validator-functions.html
+
+        self.match("KEYWORD", "properties")
+        attributes = self.parse_class_property_list()
+        self.match("NEWLINE")
+
+        while not self.peek("KEYWORD", "end"):
+            prop_name = self.parse_identifier(allow_void=False)
+
+            # We might have validation stuff.
+
+            # Dimension validation
+            val_dim = []
+            if self.peek("BRA"):
+                self.match("BRA")
+
+                while True:
+                    if self.peek("NUMBER"):
+                        self.match("NUMBER")
+                        val_dim.append(self.ct)
+                    elif self.peek("COLON"):
+                        self.match("COLON")
+                        val_dim.append(self.ct)
+                    else:
+                        self.mh.error(self.nt.location,
+                                      "property dimension validation may"
+                                      " contain only integral numbers or :")
+
+                    if self.peek("COMMA"):
+                        self.match("COMMA")
+                    else:
+                        break
+
+                self.match("KET")
+
+            # Class validation
+            val_cls = None
+            if self.peek("IDENTIFIER"):
+                # TODO: Make sure it's a simple dotted name
+                val_cls = self.parse_name(allow_void=None)
+
+            # Function validation
+            val_fun = []
+            if self.peek("C_BRA"):
+                self.match("C_BRA")
+
+                while True:
+                    val_fun.append(self.parse_name(allow_void=False))
+                    if self.peek("COMMA"):
+                        self.match("COMMA")
+                    else:
+                        break
+
+                self.match("C_KET")
+
+            # Default value
+            default_value = None
+            if self.peek("ASSIGNMENT"):
+                self.match("ASSIGNMENT")
+                default_value = self.parse_expression()
+
+            # TODO: Style issue?
+            if self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
+
+            self.match("NEWLINE")
+
+        self.match("KEYWORD", "end")
+        self.match("NEWLINE")
+
+    def parse_classdef(self):
+        # Using the syntax described in
+        # https://uk.mathworks.com/help/matlab/matlab_oop/user-defined-classes.html
+
+        self.match("KEYWORD", "classdef")
+
+        # Class attributes. Ignored for now.
+        attributes = self.parse_class_property_list()
+
+        # Class name
+        class_name = self.parse_identifier(allow_void=False)
+
+        # Inheritance
+        superclasses = []
+        if self.peek("OPERATOR", "<"):
+            self.match("OPERATOR", "<")
+
+            while True:
+                sc_name = self.parse_name(allow_void=False)
+                # TODO: Make sure it's a simple dotted name
+                superclasses.append(sc_name)
+                if self.peek("OPERATOR", "&"):
+                    self.match("OPERATOR", "&")
+                else:
+                    break
+
+        self.match("NEWLINE")
+
+        properties = []
+        methods = []
+        events = []
+        enumeration = []
+
+        while True:
+            if self.peek("KEYWORD", "properties"):
+                self.parse_class_properties()
+            elif self.peek("KEYWORD", "methods"):
+                raise NIY()
+            elif self.peek("KEYWORD", "events"):
+                raise NIY()
+            elif self.peek("KEYWORD", "enumeration"):
+                raise NIY()
+            elif self.peek("KEYWORD", "end"):
+                break
+            else:
+                self.mh.error(self.nt.location,
+                              "expected properties|methods|events|enumeration"
+                              " inside classdef")
+
+        self.match("KEYWORD", "end")
 
     def parse_statement_list(self):
         statements = []

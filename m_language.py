@@ -47,4 +47,11 @@ KEYWORDS = frozenset([
     'switch',
     'try',
     'while',
+
+    # These are keywords inside classdef. But for sanity lets just
+    # assume they are keywords
+    'properties',
+    'methods',
+    'events',
+    'enumeration',
 ])

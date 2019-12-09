@@ -56,7 +56,7 @@ class Function_Definition(Node):
         super().__init__()
         assert isinstance(t_fun, MATLAB_Token)
         assert t_fun.kind == "KEYWORD" and t_fun.value() == "function"
-        assert isinstance(n_name, (Identifier, Selection))
+        assert isinstance(n_name, Name)
         assert isinstance(l_inputs, list)
         for n in l_inputs:
             assert isinstance(n, Identifier), \
