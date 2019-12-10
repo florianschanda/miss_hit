@@ -195,6 +195,10 @@ def dot(fd, parent, annotation, node):
     # elif isinstance(node, Naked_Expression_Statement):
     #     rec(indent, prefix + "Naked Expression: ", node.n_expr)
 
+    elif isinstance(node, Global_Statement):
+        for n_name in node.l_names:
+            dot(fd, node, "", n_name)
+
     elif isinstance(node, Sequence_Of_Statements):
         for statement in node.statements:
             dot(fd, node, "", statement)

@@ -552,8 +552,8 @@ class MATLAB_Parser:
                 return self.parse_for_statement()
             elif self.nt.value() == "if":
                 return self.parse_if_statement()
-            # elif self.nt.value() == "global":
-            #     raise NIY()
+            elif self.nt.value() == "global":
+                return self.parse_global_statement()
             elif self.nt.value() == "while":
                 return self.parse_while_statement()
             elif self.nt.value() == "return":
@@ -963,6 +963,22 @@ class MATLAB_Parser:
         self.match("NEWLINE")
 
         return While_Statement(t_kw, n_guard, n_body)
+
+    def parse_global_statement(self):
+        self.match("KEYWORD", "global")
+        t_global = self.ct
+
+        global_names = []
+        while True:
+            global_names.append(self.parse_identifier(allow_void=False))
+            if self.peek("NEWLINE"):
+                self.match("NEWLINE")
+                break
+            elif self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
+                self.match("NEWLINE")
+
+        return Global_Statement(t_global, global_names)
 
 
 def sanity_test(mh, filename):

@@ -307,6 +307,19 @@ class Return_Statement(Statement):
         self.t_kw = t_kw
 
 
+class Global_Statement(Statement):
+    def __init__(self, t_kw, l_names):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value() == "global"
+        assert isinstance(l_names, list)
+        for n_name in l_names:
+            assert isinstance(n_name, Identifier)
+
+        self.t_kw    = t_kw
+        self.l_names = l_names
+
+
 class Literal(Expression):
     pass
 
