@@ -192,6 +192,23 @@ class MATLAB_Parser:
 
         return rv
 
+    def parse_simple_name(self):
+        # reference ::= identifier
+        #             | reference '.' identifier
+
+        rv = self.parse_identifier(allow_void=False)
+
+        while self.peek("SELECTION"):
+            if self.peek("SELECTION"):
+                self.match("SELECTION")
+                tok = self.ct
+                field = self.parse_identifier(allow_void=False)
+                rv = Selection(tok, rv, field)
+            else:
+                raise ICE("impossible path (nt.kind = %s)" % self.nt.kind)
+
+        return rv
+
     def parse_file_input(self):
         while self.peek("NEWLINE"):
             self.next()
@@ -220,11 +237,7 @@ class MATLAB_Parser:
 
         while self.peek("KEYWORD", "function"):
             fdef = self.parse_function_def()
-            tree_print.dotpr(str(fdef.n_name) + ".dot",
-                             fdef)
             functions.append(fdef)
-            if self.peek("NEWLINE"):
-                self.match("NEWLINE")
 
         self.match_eof()
 
@@ -243,7 +256,7 @@ class MATLAB_Parser:
                 self.match("A_KET")
             else:
                 while True:
-                    returns.append(self.parse_name(allow_void=True))
+                    returns.append(self.parse_identifier(allow_void=True))
                     if self.peek("COMMA"):
                         self.match("COMMA")
                     else:
@@ -251,7 +264,7 @@ class MATLAB_Parser:
                 self.match("A_KET")
         else:
             out_brackets = False
-            returns.append(self.parse_name(allow_void=False))
+            returns.append(self.parse_simple_name())
 
         if self.peek("BRA") and len(returns) == 1 and not out_brackets:
             # This is a function that doesn't return anything, so
@@ -269,7 +282,7 @@ class MATLAB_Parser:
             # function [a, b] = potato...
             # function a = potato...
             self.match("ASSIGNMENT")
-            function_name = self.parse_name(allow_void=False)
+            function_name = self.parse_simple_name()
 
         inputs = []
         if self.peek("BRA"):
@@ -285,16 +298,17 @@ class MATLAB_Parser:
                         break
                 self.match("KET")
 
-        if self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-
         self.match("NEWLINE")
 
         body = self.parse_statement_list()
+        # The end+NL is gobbled by parse_statement_list
 
-        return Function_Definition(t_fun, function_name, inputs, returns, body)
+        rv = Function_Definition(t_fun, function_name, inputs, returns, body)
 
-        # TODO: Build function entity
+        # Some debug output for now
+        tree_print.dotpr(str(rv.n_name) + ".dot", rv)
+
+        return rv
 
     def parse_class_property_list(self):
         properties = []
@@ -351,11 +365,15 @@ class MATLAB_Parser:
 
                 self.match("KET")
 
+            if len(val_dim) == 1:
+                self.mh.error(self.ct.location,
+                              "in MATLAB dimension constraints must contain"
+                              " at least two dimensions for some reason")
+
             # Class validation
             val_cls = None
             if self.peek("IDENTIFIER"):
-                # TODO: Make sure it's a simple dotted name
-                val_cls = self.parse_name(allow_void=None)
+                val_cls = self.parse_simple_name()
 
             # Function validation
             val_fun = []
@@ -386,9 +404,61 @@ class MATLAB_Parser:
         self.match("KEYWORD", "end")
         self.match("NEWLINE")
 
+        return []
+
+    def parse_class_methods(self):
+        # Using:
+        # https://uk.mathworks.com/help/matlab/matlab_oop/specifying-methods-and-functions.html
+        # https://uk.mathworks.com/help/matlab/matlab_oop/method-attributes.html
+
+        self.match("KEYWORD", "methods")
+
+        attributes = self.parse_class_property_list()
+        self.match("NEWLINE")
+
+        methods = []
+        while self.peek("KEYWORD", "function"):
+            methods.append(self.parse_function_def())
+
+        self.match("KEYWORD", "end")
+        self.match("NEWLINE")
+
+        return []
+
+    def parse_enumeration(self):
+        # Using:
+        # https://uk.mathworks.com/help/matlab/matlab_oop/enumerations.html
+
+        self.match("KEYWORD", "enumeration")
+        self.match("NEWLINE")
+
+        enums = []
+        while not self.peek("KEYWORD", "end"):
+            name = self.parse_identifier(allow_void=False)
+            if self.peek("BRA"):
+                self.match("BRA")
+                while True:
+                    self.parse_expression()
+                    if self.peek("COMMA"):
+                        self.match("COMMA")
+                    else:
+                        break
+                self.match("KET")
+
+            if self.peek("COMMA"):
+                self.match("COMMA")
+            if self.peek("NEWLINE"):
+                self.match("NEWLINE")
+
+        self.match("KEYWORD", "end")
+        self.match("NEWLINE")
+
+        return []
+
     def parse_classdef(self):
         # Using the syntax described in
         # https://uk.mathworks.com/help/matlab/matlab_oop/user-defined-classes.html
+        # https://uk.mathworks.com/help/matlab/matlab_oop/class-components.html
 
         self.match("KEYWORD", "classdef")
 
@@ -404,8 +474,7 @@ class MATLAB_Parser:
             self.match("OPERATOR", "<")
 
             while True:
-                sc_name = self.parse_name(allow_void=False)
-                # TODO: Make sure it's a simple dotted name
+                sc_name = self.parse_simple_name()
                 superclasses.append(sc_name)
                 if self.peek("OPERATOR", "&"):
                     self.match("OPERATOR", "&")
@@ -421,13 +490,13 @@ class MATLAB_Parser:
 
         while True:
             if self.peek("KEYWORD", "properties"):
-                self.parse_class_properties()
+                properties += self.parse_class_properties()
             elif self.peek("KEYWORD", "methods"):
-                raise NIY()
+                methods += self.parse_class_methods()
             elif self.peek("KEYWORD", "events"):
                 raise NIY()
             elif self.peek("KEYWORD", "enumeration"):
-                raise NIY()
+                enumeration += self.parse_enumeration()
             elif self.peek("KEYWORD", "end"):
                 break
             else:
@@ -436,6 +505,7 @@ class MATLAB_Parser:
                               " inside classdef")
 
         self.match("KEYWORD", "end")
+        self.match("NEWLINE")
 
     def parse_statement_list(self):
         statements = []
@@ -444,6 +514,7 @@ class MATLAB_Parser:
             statements.append(self.parse_statement())
 
         self.match("KEYWORD", "end")
+        self.match("NEWLINE")
 
         return Sequence_Of_Statements(statements)
 
@@ -513,8 +584,15 @@ class MATLAB_Parser:
 
         assert len(lhs) >= 1
         if len(lhs) == 1:
+            # We've got something like
+            #    [x] = <expr>
             rhs = self.parse_expression()
         else:
+            # We've got something like
+            #    [x, y] = fun(...)
+            #
+            # I believe that this can't be an expression, it basically
+            # has to be a function call. Needs to be checked.
             rhs = self.parse_name(allow_void=False)
 
         self.match("SEMICOLON")
