@@ -261,6 +261,29 @@ class If_Statement(Statement):
         self.has_else = actions[-1][0].value() == "else"
 
 
+class Switch_Statement(Statement):
+    def __init__(self, t_kw, n_switch_expr, l_options):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value() == "switch"
+        assert isinstance(n_switch_expr, Expression)
+        assert isinstance(l_options, list)
+        assert len(l_options) >= 1
+        for option in l_options:
+            assert isinstance(option, tuple) and len(option) == 3
+            t_kw, n_expr, n_body = option
+            assert isinstance(t_kw, MATLAB_Token)
+            assert t_kw.kind == "KEYWORD" and t_kw.value() in ("case",
+                                                               "otherwise")
+            assert n_expr is None or isinstance(n_expr, Expression)
+            assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_kw = t_kw
+        self.n_expr = n_switch_expr
+        self.l_options = l_options
+        self.has_otherwise = l_options[-1][0].value() == "otherwise"
+
+
 class Simple_Assignment_Statement(Statement):
     def __init__(self, t_eq, n_lhs, n_rhs):
         super().__init__()

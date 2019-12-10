@@ -539,6 +539,8 @@ class MATLAB_Parser:
 
         while True:
             if self.peek("KEYWORD") and self.nt.value() in ("end",
+                                                            "case",
+                                                            "otherwise",
                                                             "else",
                                                             "elseif"):
                 break
@@ -558,6 +560,8 @@ class MATLAB_Parser:
                 return self.parse_while_statement()
             elif self.nt.value() == "return":
                 return self.parse_return_statement()
+            elif self.nt.value() == "switch":
+                return self.parse_switch_statement()
             else:
                 self.mh.error(self.nt.location,
                               "expected for|if|global|while|return,"
@@ -979,6 +983,38 @@ class MATLAB_Parser:
                 self.match("NEWLINE")
 
         return Global_Statement(t_global, global_names)
+
+    def parse_switch_statement(self):
+        self.match("KEYWORD", "switch")
+        t_switch = self.ct
+
+        n_switch_expr = self.parse_expression()
+        self.match("NEWLINE")
+
+        l_options = []
+        while True:
+            if self.peek("KEYWORD", "otherwise"):
+                self.match("KEYWORD", "otherwise")
+                t_kw = self.ct
+                self.match("NEWLINE")
+                n_body = self.parse_delimited_input()
+                l_options.append((t_kw, None, n_body))
+                break
+            else:
+                self.match("KEYWORD", "case")
+                t_kw = self.ct
+                n_expr = self.parse_expression()
+                self.match("NEWLINE")
+                n_body = self.parse_delimited_input()
+                l_options.append((t_kw, n_expr, n_body))
+
+            if self.peek("KEYWORD", "end"):
+                break
+
+        self.match("KEYWORD", "end")
+        self.match("NEWLINE")
+
+        return Switch_Statement(t_switch, n_switch_expr, l_options)
 
 
 def sanity_test(mh, filename, show_bt):

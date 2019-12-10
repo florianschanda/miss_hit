@@ -178,6 +178,14 @@ def dot(fd, parent, annotation, node):
                 dot(fd, node, t_kw.value() + " guard", n_expr)
             dot(fd, node, t_kw.value() + " body", n_body)
 
+    elif isinstance(node, Switch_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "switch expr", node.n_expr)
+        for t_kw, n_expr, n_body in node.l_options:
+            if t_kw.value() == "case":
+                dot(fd, node, "case expr", n_expr)
+            dot(fd, node, t_kw.value() + " body", n_body)
+
     # elif isinstance(node, Simple_For_Statement):
     #     emit("For statement on line %u" % node.t_for.location.line)
     #     rec(indent + 2, "var: ", node.n_ident)
@@ -192,8 +200,8 @@ def dot(fd, parent, annotation, node):
     # elif isinstance(node, Return_Statement):
     #     emit("Return statement on line %u" % node.t_kw.location.line)
 
-    # elif isinstance(node, Naked_Expression_Statement):
-    #     rec(indent, prefix + "Naked Expression: ", node.n_expr)
+    elif isinstance(node, Naked_Expression_Statement):
+        dot(fd, node, "", node.n_expr)
 
     elif isinstance(node, Global_Statement):
         for n_name in node.l_names:
