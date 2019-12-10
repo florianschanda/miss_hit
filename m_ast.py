@@ -118,7 +118,8 @@ class Identifier(Name):
         super().__init__()
         assert isinstance(t_ident, MATLAB_Token)
         assert t_ident.kind == "IDENTIFIER" or \
-            (t_ident.kind == "OPERATOR" and t_ident.value() == "~")
+            (t_ident.kind == "OPERATOR" and t_ident.value() == "~") or \
+            (t_ident.kind == "KEYWORD" and t_ident.value() == "end")
 
         self.t_ident = t_ident
 
@@ -140,6 +141,18 @@ class Selection(Name):
 
     def __str__(self):
         return "%s.%s" % (self.n_prefix, self.n_field)
+
+
+class Reshape(Expression):
+    def __init__(self, t_colon):
+        super().__init__()
+        assert isinstance(t_colon, MATLAB_Token)
+        assert t_colon.kind == "COLON"
+
+        self.t_colon = t_colon
+
+    def __str__(self):
+        return ":"
 
 
 class Range_Expression(Expression):
@@ -198,6 +211,21 @@ class Simple_For_Statement(Statement):
         self.t_for   = t_for
         self.n_ident = n_ident
         self.n_range = n_range
+        self.n_body  = n_body
+
+
+class General_For_Statement(Statement):
+    def __init__(self, t_for, n_ident, n_expr, n_body):
+        super().__init__()
+        assert isinstance(t_for, MATLAB_Token)
+        assert t_for.kind == "KEYWORD" and t_for.value() == "for"
+        assert isinstance(n_ident, Identifier)
+        assert isinstance(n_expr, Expression)
+        assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_for   = t_for
+        self.n_ident = n_ident
+        self.n_expr = n_expr
         self.n_body  = n_body
 
 

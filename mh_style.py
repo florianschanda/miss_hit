@@ -666,9 +666,10 @@ def stage_3_analysis(mh, cfg, tbuf):
                                    "operators")
 
 
-def analyze(mh, filename, rule_set, autofix):
+def analyze(mh, filename, rule_set, autofix, debug_parse):
     assert isinstance(filename, str)
     assert isinstance(autofix, bool)
+    assert isinstance(debug_parse, bool)
 
     encoding = "cp1252"
 
@@ -756,7 +757,8 @@ def analyze(mh, filename, rule_set, autofix):
     # pylint: disable=unused-variable
     try:
         parser = MATLAB_Parser(mh, tbuf)
-        # parser.parse_file_input()
+        if debug_parse:
+            parser.parse_file_input()
     except Error:
         pass
     # pylint: enable=unused-variable
@@ -801,6 +803,11 @@ def main():
     ap.add_argument('--html',
                     default=None,
                     help="Write report to given file as HTML")
+    ap.add_argument('--debug_parse',
+                    default=False,
+                    action="store_true",
+                    help=("Attempt to parse. Note: This is highly incomplete"
+                          " and is expected to not work."))
     style_option = ap.add_argument_group("Rule options")
 
     # Add any parameters from rules
@@ -867,12 +874,14 @@ def main():
                         analyze(mh,
                                 os.path.normpath(os.path.join(path, f)),
                                 rule_set,
-                                options.fix)
+                                options.fix,
+                                options.debug_parse)
         else:
             analyze(mh,
                     os.path.normpath(item),
                     rule_set,
-                    options.fix)
+                    options.fix,
+                    options.debug_parse)
 
     mh.summary_and_exit()
 

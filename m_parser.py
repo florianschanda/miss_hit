@@ -165,6 +165,9 @@ class MATLAB_Parser:
         if self.peek("OPERATOR", "~") and allow_void:
             self.match("OPERATOR")
             return Identifier(self.ct)
+        elif self.peek("KEYWORD", "end"):
+            self.match("KEYWORD", "end")
+            return Identifier(self.ct)
         else:
             self.match("IDENTIFIER")
             return Identifier(self.ct)
@@ -300,7 +303,7 @@ class MATLAB_Parser:
 
         self.match("NEWLINE")
 
-        body = self.parse_statement_list()
+        body = self.parse_statement_list(permit_eof=True)
         # The end+NL is gobbled by parse_statement_list
 
         rv = Function_Definition(t_fun, function_name, inputs, returns, body)
@@ -316,10 +319,11 @@ class MATLAB_Parser:
             self.match("BRA")
             while True:
                 self.match("IDENTIFIER")
-                self.mh.info(self.ct.location,
-                             "class attributes are currently ignored")
-                self.match("ASSIGNMENT")
-                self.parse_expression()
+                # self.mh.info(self.ct.location,
+                #              "class attributes are currently ignored")
+                if self.peek("ASSIGNMENT"):
+                    self.match("ASSIGNMENT")
+                    self.parse_expression()
                 if self.peek("COMMA"):
                     self.match("COMMA")
                 else:
@@ -447,7 +451,13 @@ class MATLAB_Parser:
 
             if self.peek("COMMA"):
                 self.match("COMMA")
-            if self.peek("NEWLINE"):
+                if self.peek("NEWLINE"):
+                    self.match("NEWLINE")
+            elif self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
+                if self.peek("NEWLINE"):
+                    self.match("NEWLINE")
+            else:
                 self.match("NEWLINE")
 
         self.match("KEYWORD", "end")
@@ -507,14 +517,20 @@ class MATLAB_Parser:
         self.match("KEYWORD", "end")
         self.match("NEWLINE")
 
-    def parse_statement_list(self):
+    def parse_statement_list(self, permit_eof=False):
+        assert isinstance(permit_eof, bool)
+
         statements = []
 
-        while not self.peek("KEYWORD", "end"):
+        while not (self.peek("KEYWORD", "end") or self.peek_eof()):
             statements.append(self.parse_statement())
 
-        self.match("KEYWORD", "end")
-        self.match("NEWLINE")
+        if permit_eof and self.peek_eof():
+            # TODO: style issue
+            pass
+        else:
+            self.match("KEYWORD", "end")
+            self.match("NEWLINE")
 
         return Sequence_Of_Statements(statements)
 
@@ -536,8 +552,8 @@ class MATLAB_Parser:
                 return self.parse_for_statement()
             elif self.nt.value() == "if":
                 return self.parse_if_statement()
-            elif self.nt.value() == "global":
-                raise NIY()
+            # elif self.nt.value() == "global":
+            #     raise NIY()
             elif self.nt.value() == "while":
                 return self.parse_while_statement()
             elif self.nt.value() == "return":
@@ -575,8 +591,13 @@ class MATLAB_Parser:
 
         # This is the call case
         if len(lhs) == 1 and not self.peek("ASSIGNMENT"):
-            self.match("SEMICOLON")
-            self.match("NEWLINE")
+            if self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
+                if self.peek("NEWLINE"):
+                    self.match("NEWLINE")
+            else:
+                # TODO: Flag style issue
+                self.match("NEWLINE")
             return Naked_Expression_Statement(lhs[0])
 
         self.match("ASSIGNMENT")
@@ -595,8 +616,13 @@ class MATLAB_Parser:
             # has to be a function call. Needs to be checked.
             rhs = self.parse_name(allow_void=False)
 
-        self.match("SEMICOLON")
-        self.match("NEWLINE")
+        if self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
+            if self.peek("NEWLINE"):
+                self.match("NEWLINE")
+        else:
+            # TODO: Flag style issue
+            self.match("NEWLINE")
 
         if len(lhs) == 1:
             return Simple_Assignment_Statement(t_eq, lhs[0], rhs)
@@ -624,6 +650,10 @@ class MATLAB_Parser:
 
         elif self.peek("M_BRA"):
             return self.parse_matrix()
+
+        elif self.peek("COLON"):
+            self.match("COLON")
+            return Reshape(self.ct)
 
         else:
             return self.parse_name(allow_void=False)
@@ -906,7 +936,8 @@ class MATLAB_Parser:
         t_kw = self.ct
         n_ident = self.parse_identifier(allow_void=False)
         self.match("ASSIGNMENT")
-        n_range = self.parse_range_expression()
+        n_expr = self.parse_expression()
+
         self.match("NEWLINE")
 
         n_body = self.parse_delimited_input()
@@ -914,7 +945,10 @@ class MATLAB_Parser:
         self.match("KEYWORD", "end")
         self.match("NEWLINE")
 
-        return Simple_For_Statement(t_kw, n_ident, n_range, n_body)
+        if isinstance(n_expr, Range_Expression):
+            return Simple_For_Statement(t_kw, n_ident, n_expr, n_body)
+        else:
+            return General_For_Statement(t_kw, n_ident, n_expr, n_body)
 
     def parse_while_statement(self):
         self.match("KEYWORD", "while")

@@ -57,9 +57,15 @@ def rec(indent, prefix, node):
                 n_body)
 
     elif isinstance(node, Simple_For_Statement):
-        emit("For statement on line %u" % node.t_for.location.line)
+        emit("Simple for statement on line %u" % node.t_for.location.line)
         rec(indent + 2, "var: ", node.n_ident)
         rec(indent + 2, "range: ", node.n_range)
+        rec(indent + 2, "body: ", node.n_body)
+
+    elif isinstance(node, General_For_Statement):
+        emit("General for statement on line %u" % node.t_for.location.line)
+        rec(indent + 2, "var: ", node.n_ident)
+        rec(indent + 2, "expr: ", node.n_expr)
         rec(indent + 2, "body: ", node.n_body)
 
     elif isinstance(node, While_Statement):
