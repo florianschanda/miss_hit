@@ -225,20 +225,20 @@ def dot(fd, parent, annotation, node):
             attr.append("shape=none")
 
     elif isinstance(node, String_Literal):
-        lbl += " " + str(node)
+        lbl += "\\n" + str(node)
         attr.append("shape=none")
 
     elif isinstance(node, Number_Literal):
-        lbl += " " + str(node)
+        lbl += "\\n" + str(node)
         attr.append("shape=none")
 
     elif isinstance(node, Identifier):
-        lbl += " " + str(node)
+        lbl += "\\n" + str(node)
         attr.append("shape=none")
 
-    # elif isinstance(node, Selection):
-    #     emit("Selection of field %s" % node.n_field.t_ident.value())
-    #     rec(indent + 2, "root: ", node.n_root)
+    elif isinstance(node, Selection):
+        dot(fd, node, "prefix", node.n_prefix)
+        dot(fd, node, "field", node.n_field)
 
     else:
         lbl = "TODO: " + lbl
