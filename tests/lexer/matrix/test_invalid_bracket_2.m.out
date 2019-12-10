@@ -1,3 +1,4 @@
+test_invalid_bracket_2.m: lexed with errors
 In test_invalid_bracket_2.m, line 1
 | % (c) Copyright 2019 Zenuity AB
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
@@ -22,5 +23,4 @@ In test_invalid_bracket_2.m, line 2
 In test_invalid_bracket_2.m, line 2
 | x = (1 2}
 |         ^ [31;1mlex error[0m: mismatched brackets ( ... }
-test_invalid_bracket_2.m: lexed with errors
 MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

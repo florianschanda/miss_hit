@@ -1,3 +1,4 @@
+test_valid.m: lexed OK
 In test_valid.m, line 1
 | % (c) Copyright 2019 Zenuity AB
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
@@ -337,5 +338,4 @@ In test_valid.m, line 21
 In test_valid.m, line 21
 | end
 |    ^ info: NEWLINE
-test_valid.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything semes fine
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

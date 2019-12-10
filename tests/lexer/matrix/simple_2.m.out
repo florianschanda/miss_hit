@@ -1,3 +1,4 @@
+simple_2.m: lexed OK
 In simple_2.m, line 1
 | [(1)+(1)]   % 2
 | ^ info: M_BRA
@@ -136,5 +137,4 @@ In simple_2.m, line 4
 In simple_2.m, line 4
 | [(1) + (1)] % 2
 |                ^ info: NEWLINE
-simple_2.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything semes fine
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

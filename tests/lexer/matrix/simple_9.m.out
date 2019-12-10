@@ -1,3 +1,4 @@
+simple_9.m: lexed OK
 In simple_9.m, line 1
 | [~, data{k}] = potato
 | ^ info: A_BRA
@@ -67,5 +68,4 @@ In simple_9.m, line 2
 In simple_9.m, line 2
 | [~ data{k}] = potato
 |                     ^ info: NEWLINE
-simple_9.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything semes fine
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

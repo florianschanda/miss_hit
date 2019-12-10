@@ -1,3 +1,4 @@
+simple_3.m: lexed OK
 In simple_3.m, line 1
 | [ a.x a.y ]
 | ^ info: M_BRA
@@ -91,5 +92,4 @@ In simple_3.m, line 5
 In simple_3.m, line 5
 | [ b(2) ]    % 6
 |                ^ info: NEWLINE
-simple_3.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything semes fine
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,3 +1,4 @@
+test_invalid_assignment_1.m: lexed OK
 In test_invalid_assignment_1.m, line 1
 | a = [1 2 3];
 | ^ info: IDENTIFIER
@@ -136,5 +137,4 @@ In test_invalid_assignment_1.m, line 5
 In test_invalid_assignment_1.m, line 5
 | [a (2)] = 12; % not ok
 |                       ^ info: NEWLINE
-test_invalid_assignment_1.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything semes fine
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

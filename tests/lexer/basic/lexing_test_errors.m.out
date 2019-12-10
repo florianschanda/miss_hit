@@ -1,0 +1,11 @@
+lexing_test_errors.m: lexed with errors
+In lexing_test_errors.m, line 1
+| This is _not_ ok.
+| ^^^^ info: IDENTIFIER
+In lexing_test_errors.m, line 1
+| This is _not_ ok.
+|      ^^ info: IDENTIFIER
+In lexing_test_errors.m, line 1
+| This is _not_ ok.
+|         ^ [31;1mlex error[0m: unexpected character '_'
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

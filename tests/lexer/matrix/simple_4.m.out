@@ -1,3 +1,4 @@
+simple_4.m: lexed OK
 In simple_4.m, line 1
 | [ a.foo ]
 | ^ info: M_BRA
@@ -70,5 +71,4 @@ In simple_4.m, line 4
 In simple_4.m, line 4
 | [ a . foo ]
 |            ^ info: NEWLINE
-simple_4.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything semes fine
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

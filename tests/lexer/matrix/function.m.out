@@ -1,3 +1,4 @@
+function.m: lexed OK
 In function.m, line 1
 | function [a, b] = c()
 | ^^^^^^^^ info: KEYWORD
@@ -139,5 +140,4 @@ In function.m, line 13
 In function.m, line 13
 | = 5;
 |     ^ info: NEWLINE
-function.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything semes fine
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
