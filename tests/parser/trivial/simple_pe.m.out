@@ -1,0 +1,4 @@
+In simple_pe.m, line 2
+|   result = x +;
+|               ^ error: expected IDENTIFIER, found SEMICOLON instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

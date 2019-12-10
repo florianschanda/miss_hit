@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import subprocess
 
 TEST_ROOT = os.getcwd()
@@ -57,12 +58,43 @@ def execute_style_test(name):
         fd.write("=== HTML MODE ===\n")
         fd.write(html_out)
 
+def execute_parser_test(name):
+    print("Running parser test %s" % name)
+
+    os.chdir(os.path.join(TEST_ROOT,
+                          "parser",
+                          name))
+
+    files = [f
+             for f in os.listdir(".")
+             if f.endswith(".m")]
+
+    for f in files:
+        r = subprocess.run([sys.executable,
+                            "../../../m_parser.py",
+                            "--no-tb",
+                            f],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT,
+                           encoding="utf-8")
+        plain_out = r.stdout
+
+        with open(f + ".out", "w") as fd:
+            fd.write(plain_out)
+
+
 def main():
     # Make sure we're in the right directory
     assert os.path.isfile("../mh_style.py")
+    root = os.getcwd()
 
+    os.chdir(root)
     for t in os.listdir("style"):
         execute_style_test(t)
+
+    os.chdir(root)
+    for t in os.listdir("parser"):
+        execute_parser_test(t)
 
 
 if __name__ == "__main__":

@@ -981,27 +981,32 @@ class MATLAB_Parser:
         return Global_Statement(t_global, global_names)
 
 
-def sanity_test(mh, filename):
+def sanity_test(mh, filename, show_bt):
     try:
         mh.register_file(filename)
         parser = MATLAB_Parser(mh, MATLAB_Lexer(mh, filename))
         parser.parse_file_input()
-        print("%s: parsed OK" % filename)
     except Error:
-        traceback.print_exc()
+        if show_bt:
+            traceback.print_exc()
+    mh.finalize_file(filename)
 
 
 def parser_test_main():
     from argparse import ArgumentParser
     ap = ArgumentParser()
     ap.add_argument("file")
+    ap.add_argument("--no-tb",
+                    action="store_true",
+                    default=False,
+                    help="Do not show debug-style backtrace")
     options = ap.parse_args()
 
     mh = Message_Handler()
     mh.sort_messages = False
-    mh.colour = True
+    mh.colour = False
 
-    sanity_test(mh, options.file)
+    sanity_test(mh, options.file, not options.no_tb)
 
     mh.summary_and_exit()
 
