@@ -568,6 +568,10 @@ class MATLAB_Parser:
                 return self.parse_return_statement()
             elif self.nt.value() == "switch":
                 return self.parse_switch_statement()
+            elif self.nt.value() == "break":
+                return self.parse_break_statement()
+            elif self.nt.value() == "continue":
+                return self.parse_continue_statement()
             else:
                 self.mh.error(self.nt.location,
                               "expected for|if|global|while|return,"
@@ -961,6 +965,24 @@ class MATLAB_Parser:
         self.match("NEWLINE")
 
         return Return_Statement(t_kw)
+
+    def parse_break_statement(self):
+        self.match("KEYWORD", "break")
+        t_kw = self.ct
+        if self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
+        self.match("NEWLINE")
+
+        return Break_Statement(t_kw)
+
+    def parse_continue_statement(self):
+        self.match("KEYWORD", "continue")
+        t_kw = self.ct
+        if self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
+        self.match("NEWLINE")
+
+        return Continue_Statement(t_kw)
 
     def parse_for_statement(self):
         self.match("KEYWORD", "for")

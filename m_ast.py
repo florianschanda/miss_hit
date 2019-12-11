@@ -352,6 +352,24 @@ class Return_Statement(Statement):
         self.t_kw = t_kw
 
 
+class Break_Statement(Statement):
+    def __init__(self, t_kw):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value() == "break"
+
+        self.t_kw = t_kw
+
+
+class Continue_Statement(Statement):
+    def __init__(self, t_kw):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value() == "continue"
+
+        self.t_kw = t_kw
+
+
 class Global_Statement(Statement):
     def __init__(self, t_kw, l_names):
         super().__init__()

@@ -76,6 +76,12 @@ def rec(indent, prefix, node):
     elif isinstance(node, Return_Statement):
         emit("Return statement on line %u" % node.t_kw.location.line)
 
+    elif isinstance(node, Break_Statement):
+        emit("Break statement on line %u" % node.t_kw.location.line)
+
+    elif isinstance(node, Continue_Statement):
+        emit("Continue statement on line %u" % node.t_kw.location.line)
+
     elif isinstance(node, Naked_Expression_Statement):
         rec(indent, prefix + "Naked Expression: ", node.n_expr)
 
@@ -203,8 +209,14 @@ def dot(fd, parent, annotation, node):
     #     rec(indent + 2, "guard: ", node.n_guard)
     #     rec(indent + 2, "body: ", node.n_body)
 
-    # elif isinstance(node, Return_Statement):
-    #     emit("Return statement on line %u" % node.t_kw.location.line)
+    elif isinstance(node, Return_Statement):
+        attr.append("shape=diamond")
+
+    elif isinstance(node, Break_Statement):
+        attr.append("shape=diamond")
+
+    elif isinstance(node, Continue_Statement):
+        attr.append("shape=diamond")
 
     elif isinstance(node, Naked_Expression_Statement):
         dot(fd, node, "", node.n_expr)
