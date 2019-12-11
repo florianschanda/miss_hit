@@ -199,6 +199,28 @@ class Matrix_Expression(Expression):
         return "[" + "; ".join(rows) + "]"
 
 
+class Cell_Expression(Expression):
+    def __init__(self, t_open, t_close, items):
+        super().__init__()
+        assert isinstance(t_open, MATLAB_Token)
+        assert isinstance(t_close, MATLAB_Token)
+        assert isinstance(items, list)
+        for row in items:
+            assert isinstance(row, list)
+            for item in row:
+                assert isinstance(item, Expression)
+
+        self.t_open  = t_open
+        self.t_close = t_close
+        self.items   = items
+
+    def __str__(self):
+        rows = []
+        for row in self.items:
+            rows.append(", ".join(str(item) for item in row))
+        return "{" + "; ".join(rows) + "}"
+
+
 class Simple_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_range, n_body):
         super().__init__()

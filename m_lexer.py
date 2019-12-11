@@ -615,8 +615,11 @@ class MATLAB_Lexer(Token_Generator):
                     # +6...
                     self.add_comma = True
             else:
-                if next_non_ws == "(":
-                    # [f (foo)] is always f, foo
+                if next_non_ws in ("(", "{", "["):
+                    # [f (foo)] is f, foo
+                    #    TODO: except for function handles?
+                    # [f [foo]] is f, [foo]
+                    # {f {foo}} is f, {foo}
                     self.add_comma = True
                 elif next_non_ws.isalnum():
                     # [f f] is [f, f]

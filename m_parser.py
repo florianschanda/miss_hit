@@ -25,6 +25,7 @@
 ##############################################################################
 
 import traceback
+import subprocess
 
 from m_lexer import Token_Generator, MATLAB_Lexer, TOKEN_KINDS
 from errors import ICE, Error, Location, Message_Handler
@@ -92,6 +93,8 @@ class MATLAB_Parser:
         self.ct = None
         self.nt = None
         # pylint: enable=invalid-name
+
+        self.debug_tree = False
 
         self.next()
 
@@ -308,8 +311,11 @@ class MATLAB_Parser:
 
         rv = Function_Definition(t_fun, function_name, inputs, returns, body)
 
-        # Some debug output for now
-        tree_print.dotpr(str(rv.n_name) + ".dot", rv)
+        if self.debug_tree:
+            tree_print.dotpr(str(rv.n_name) + ".dot", rv)
+            subprocess.run(["dot", "-Tpdf",
+                            str(rv.n_name) + ".dot",
+                            "-o" + str(rv.n_name) + ".pdf"])
 
         return rv
 
@@ -655,6 +661,9 @@ class MATLAB_Parser:
         elif self.peek("M_BRA"):
             return self.parse_matrix()
 
+        elif self.peek("C_BRA"):
+            return self.parse_cell()
+
         elif self.peek("COLON"):
             self.match("COLON")
             return Reshape(self.ct)
@@ -814,22 +823,16 @@ class MATLAB_Parser:
 
         return rv
 
-    def parse_matrix_row(self, required_elements=None):
-        assert required_elements is None or required_elements >= 1
+    def parse_matrix_row(self):
         rv = []
 
-        if required_elements:
-            for i in range(required_elements):
-                if i > 0:
-                    self.match("COMMA")
-                rv.append(self.parse_expression())
-        else:
-            while not (self.peek("SEMICOLON") or
-                       self.peek("NEWLINE") or
-                       self.peek("M_KET")):
-                rv.append(self.parse_expression())
-                if self.peek("COMMA"):
-                    self.match("COMMA")
+        while not (self.peek("SEMICOLON") or
+                   self.peek("NEWLINE") or
+                   self.peek("C_KET") or
+                   self.peek("M_KET")):
+            rv.append(self.parse_expression())
+            if self.peek("COMMA"):
+                self.match("COMMA")
 
         return rv
 
@@ -842,12 +845,11 @@ class MATLAB_Parser:
             self.match("SEMICOLON")
         if self.peek("NEWLINE"):
             self.match("NEWLINE")
-        dim_x = len(rows[0])
 
         while not (self.peek("SEMICOLON") or
                    self.peek("NEWLINE") or
                    self.peek("M_KET")):
-            rows.append(self.parse_matrix_row(dim_x))
+            rows.append(self.parse_matrix_row())
             if self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
             if self.peek("NEWLINE"):
@@ -857,6 +859,31 @@ class MATLAB_Parser:
         t_close = self.ct
 
         rv = Matrix_Expression(t_open, t_close, rows)
+        return rv
+
+    def parse_cell(self):
+        self.match("C_BRA")
+        t_open = self.ct
+
+        rows = [self.parse_matrix_row()]
+        if self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
+        if self.peek("NEWLINE"):
+            self.match("NEWLINE")
+
+        while not (self.peek("SEMICOLON") or
+                   self.peek("NEWLINE") or
+                   self.peek("C_KET")):
+            rows.append(self.parse_matrix_row())
+            if self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
+            if self.peek("NEWLINE"):
+                self.match("NEWLINE")
+
+        self.match("C_KET")
+        t_close = self.ct
+
+        rv = Cell_Expression(t_open, t_close, rows)
         return rv
 
     def parse_argument_list(self):
@@ -1017,10 +1044,11 @@ class MATLAB_Parser:
         return Switch_Statement(t_switch, n_switch_expr, l_options)
 
 
-def sanity_test(mh, filename, show_bt):
+def sanity_test(mh, filename, show_bt, show_tree):
     try:
         mh.register_file(filename)
         parser = MATLAB_Parser(mh, MATLAB_Lexer(mh, filename))
+        parser.debug_tree = show_tree
         parser.parse_file_input()
     except Error:
         if show_bt:
@@ -1036,13 +1064,17 @@ def parser_test_main():
                     action="store_true",
                     default=False,
                     help="Do not show debug-style backtrace")
+    ap.add_argument("--tree",
+                    action="store_true",
+                    default=False,
+                    help="Create parse tree with graphviz for each function")
     options = ap.parse_args()
 
     mh = Message_Handler()
     mh.sort_messages = False
     mh.colour = False
 
-    sanity_test(mh, options.file, not options.no_tb)
+    sanity_test(mh, options.file, not options.no_tb, options.tree)
 
     mh.summary_and_exit()
 

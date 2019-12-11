@@ -1,0 +1,4 @@
+In afun.m, line 3
+|     af_in_cell = {@(x) [1 2]};
+|                   ^ error: expected IDENTIFIER, found AT instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

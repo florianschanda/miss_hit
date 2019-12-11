@@ -111,6 +111,12 @@ def rec(indent, prefix, node):
             for item in row:
                 rec(indent + 2, "row %u: " % row_id, item)
 
+    elif isinstance(node, Cell_Expression):
+        emit("Cell (%ux%u)" % (len(node.items[0]), len(node.items)))
+        for row_id, row in enumerate(node.items, 1):
+            for item in row:
+                rec(indent + 2, "row %u: " % row_id, item)
+
     elif isinstance(node, Reference):
         if len(node.arglist) == 0:
             rec(indent, prefix, node.n_ident)
@@ -228,6 +234,13 @@ def dot(fd, parent, annotation, node):
     #     rec(indent + 2, "last: ", node.n_last)
 
     elif isinstance(node, Matrix_Expression):
+        lbl = "%ux%u %s\\n%s" % (len(node.items[0]),
+                                 len(node.items),
+                                 lbl,
+                                 str(node).replace("; ", "\\n"))
+        attr.append("shape=none")
+
+    elif isinstance(node, Cell_Expression):
         lbl = "%ux%u %s\\n%s" % (len(node.items[0]),
                                  len(node.items),
                                  lbl,

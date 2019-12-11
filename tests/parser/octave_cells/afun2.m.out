@@ -1,0 +1,4 @@
+In afun2.m, line 3
+|     a = {1, @sin, 2, @cos};
+|             ^ error: expected IDENTIFIER, found AT instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
