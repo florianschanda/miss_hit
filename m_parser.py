@@ -1008,6 +1008,7 @@ class MATLAB_Parser:
             elif self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
                 self.match("NEWLINE")
+                break
 
         return Global_Statement(t_global, global_names)
 
