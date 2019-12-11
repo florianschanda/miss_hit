@@ -429,7 +429,14 @@ class MATLAB_Lexer(Token_Generator):
                 for c in self.text[self.lexpos + 1:]:
                     # We're searching for the closing bracket
                     if bstack:
-                        if c in ("[", "(", "{"):
+                        if c in ("'", "\""):
+                            # We've found a quotation or
+                            # transpose. This means there is no way
+                            # this can be an assignment list, it has
+                            # to be a matrix. See bug #45 for some fun
+                            # tests on this topic.
+                            break
+                        elif c in ("[", "(", "{"):
                             bstack.append(c)
                         elif c in ("]", ")", "}"):
                             matching_bracket = bstack.pop()

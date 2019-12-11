@@ -1,0 +1,332 @@
+foo.m: lexed OK
+In foo.m, line 1
+| % (c) Copyright 2019 Zenuity AB
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In foo.m, line 1
+| % (c) Copyright 2019 Zenuity AB
+|                                ^ info: NEWLINE
+In foo.m, line 2
+| a1 = ['('];
+| ^^ info: IDENTIFIER
+In foo.m, line 2
+| a1 = ['('];
+|    ^ info: ASSIGNMENT
+In foo.m, line 2
+| a1 = ['('];
+|      ^ info: M_BRA
+In foo.m, line 2
+| a1 = ['('];
+|       ^^^ info: STRING
+In foo.m, line 2
+| a1 = ['('];
+|          ^ info: M_KET
+In foo.m, line 2
+| a1 = ['('];
+|           ^ info: SEMICOLON
+In foo.m, line 2
+| a1 = ['('];
+|            ^ info: NEWLINE
+In foo.m, line 3
+| a2 = ['{'];
+| ^^ info: IDENTIFIER
+In foo.m, line 3
+| a2 = ['{'];
+|    ^ info: ASSIGNMENT
+In foo.m, line 3
+| a2 = ['{'];
+|      ^ info: M_BRA
+In foo.m, line 3
+| a2 = ['{'];
+|       ^^^ info: STRING
+In foo.m, line 3
+| a2 = ['{'];
+|          ^ info: M_KET
+In foo.m, line 3
+| a2 = ['{'];
+|           ^ info: SEMICOLON
+In foo.m, line 3
+| a2 = ['{'];
+|            ^ info: NEWLINE
+In foo.m, line 4
+| a3 = ['['];
+| ^^ info: IDENTIFIER
+In foo.m, line 4
+| a3 = ['['];
+|    ^ info: ASSIGNMENT
+In foo.m, line 4
+| a3 = ['['];
+|      ^ info: M_BRA
+In foo.m, line 4
+| a3 = ['['];
+|       ^^^ info: STRING
+In foo.m, line 4
+| a3 = ['['];
+|          ^ info: M_KET
+In foo.m, line 4
+| a3 = ['['];
+|           ^ info: SEMICOLON
+In foo.m, line 4
+| a3 = ['['];
+|            ^ info: NEWLINE
+In foo.m, line 5
+| a4 = [')'];
+| ^^ info: IDENTIFIER
+In foo.m, line 5
+| a4 = [')'];
+|    ^ info: ASSIGNMENT
+In foo.m, line 5
+| a4 = [')'];
+|      ^ info: M_BRA
+In foo.m, line 5
+| a4 = [')'];
+|       ^^^ info: STRING
+In foo.m, line 5
+| a4 = [')'];
+|          ^ info: M_KET
+In foo.m, line 5
+| a4 = [')'];
+|           ^ info: SEMICOLON
+In foo.m, line 5
+| a4 = [')'];
+|            ^ info: NEWLINE
+In foo.m, line 6
+| a5 = ['}'];
+| ^^ info: IDENTIFIER
+In foo.m, line 6
+| a5 = ['}'];
+|    ^ info: ASSIGNMENT
+In foo.m, line 6
+| a5 = ['}'];
+|      ^ info: M_BRA
+In foo.m, line 6
+| a5 = ['}'];
+|       ^^^ info: STRING
+In foo.m, line 6
+| a5 = ['}'];
+|          ^ info: M_KET
+In foo.m, line 6
+| a5 = ['}'];
+|           ^ info: SEMICOLON
+In foo.m, line 6
+| a5 = ['}'];
+|            ^ info: NEWLINE
+In foo.m, line 7
+| a6 = [']'];
+| ^^ info: IDENTIFIER
+In foo.m, line 7
+| a6 = [']'];
+|    ^ info: ASSIGNMENT
+In foo.m, line 7
+| a6 = [']'];
+|      ^ info: M_BRA
+In foo.m, line 7
+| a6 = [']'];
+|       ^^^ info: STRING
+In foo.m, line 7
+| a6 = [']'];
+|          ^ info: M_KET
+In foo.m, line 7
+| a6 = [']'];
+|           ^ info: SEMICOLON
+In foo.m, line 7
+| a6 = [']'];
+|            ^ info: NEWLINE
+In foo.m, line 8
+| b1 = [tmp' '('];
+| ^^ info: IDENTIFIER
+In foo.m, line 8
+| b1 = [tmp' '('];
+|    ^ info: ASSIGNMENT
+In foo.m, line 8
+| b1 = [tmp' '('];
+|      ^ info: M_BRA
+In foo.m, line 8
+| b1 = [tmp' '('];
+|       ^^^ info: IDENTIFIER
+In foo.m, line 8
+| b1 = [tmp' '('];
+|          ^ info: OPERATOR
+In foo.m, line 8
+| b1 = [tmp'<anon,> '('];
+|           ^^^^^^^ info: [32madded comma[0m
+In foo.m, line 8
+| b1 = [tmp'<anon,> '('];
+|           ^^^^^^^ info: COMMA
+In foo.m, line 8
+| b1 = [tmp' '('];
+|            ^^^ info: STRING
+In foo.m, line 8
+| b1 = [tmp' '('];
+|               ^ info: M_KET
+In foo.m, line 8
+| b1 = [tmp' '('];
+|                ^ info: SEMICOLON
+In foo.m, line 8
+| b1 = [tmp' '('];
+|                 ^ info: NEWLINE
+In foo.m, line 9
+| b2 = [tmp' '{'];
+| ^^ info: IDENTIFIER
+In foo.m, line 9
+| b2 = [tmp' '{'];
+|    ^ info: ASSIGNMENT
+In foo.m, line 9
+| b2 = [tmp' '{'];
+|      ^ info: M_BRA
+In foo.m, line 9
+| b2 = [tmp' '{'];
+|       ^^^ info: IDENTIFIER
+In foo.m, line 9
+| b2 = [tmp' '{'];
+|          ^ info: OPERATOR
+In foo.m, line 9
+| b2 = [tmp'<anon,> '{'];
+|           ^^^^^^^ info: [32madded comma[0m
+In foo.m, line 9
+| b2 = [tmp'<anon,> '{'];
+|           ^^^^^^^ info: COMMA
+In foo.m, line 9
+| b2 = [tmp' '{'];
+|            ^^^ info: STRING
+In foo.m, line 9
+| b2 = [tmp' '{'];
+|               ^ info: M_KET
+In foo.m, line 9
+| b2 = [tmp' '{'];
+|                ^ info: SEMICOLON
+In foo.m, line 9
+| b2 = [tmp' '{'];
+|                 ^ info: NEWLINE
+In foo.m, line 10
+| b3 = [tmp' '['];
+| ^^ info: IDENTIFIER
+In foo.m, line 10
+| b3 = [tmp' '['];
+|    ^ info: ASSIGNMENT
+In foo.m, line 10
+| b3 = [tmp' '['];
+|      ^ info: M_BRA
+In foo.m, line 10
+| b3 = [tmp' '['];
+|       ^^^ info: IDENTIFIER
+In foo.m, line 10
+| b3 = [tmp' '['];
+|          ^ info: OPERATOR
+In foo.m, line 10
+| b3 = [tmp'<anon,> '['];
+|           ^^^^^^^ info: [32madded comma[0m
+In foo.m, line 10
+| b3 = [tmp'<anon,> '['];
+|           ^^^^^^^ info: COMMA
+In foo.m, line 10
+| b3 = [tmp' '['];
+|            ^^^ info: STRING
+In foo.m, line 10
+| b3 = [tmp' '['];
+|               ^ info: M_KET
+In foo.m, line 10
+| b3 = [tmp' '['];
+|                ^ info: SEMICOLON
+In foo.m, line 10
+| b3 = [tmp' '['];
+|                 ^ info: NEWLINE
+In foo.m, line 11
+| b4 = [tmp' ')'];
+| ^^ info: IDENTIFIER
+In foo.m, line 11
+| b4 = [tmp' ')'];
+|    ^ info: ASSIGNMENT
+In foo.m, line 11
+| b4 = [tmp' ')'];
+|      ^ info: M_BRA
+In foo.m, line 11
+| b4 = [tmp' ')'];
+|       ^^^ info: IDENTIFIER
+In foo.m, line 11
+| b4 = [tmp' ')'];
+|          ^ info: OPERATOR
+In foo.m, line 11
+| b4 = [tmp'<anon,> ')'];
+|           ^^^^^^^ info: [32madded comma[0m
+In foo.m, line 11
+| b4 = [tmp'<anon,> ')'];
+|           ^^^^^^^ info: COMMA
+In foo.m, line 11
+| b4 = [tmp' ')'];
+|            ^^^ info: STRING
+In foo.m, line 11
+| b4 = [tmp' ')'];
+|               ^ info: M_KET
+In foo.m, line 11
+| b4 = [tmp' ')'];
+|                ^ info: SEMICOLON
+In foo.m, line 11
+| b4 = [tmp' ')'];
+|                 ^ info: NEWLINE
+In foo.m, line 12
+| b5 = [tmp' '}'];
+| ^^ info: IDENTIFIER
+In foo.m, line 12
+| b5 = [tmp' '}'];
+|    ^ info: ASSIGNMENT
+In foo.m, line 12
+| b5 = [tmp' '}'];
+|      ^ info: M_BRA
+In foo.m, line 12
+| b5 = [tmp' '}'];
+|       ^^^ info: IDENTIFIER
+In foo.m, line 12
+| b5 = [tmp' '}'];
+|          ^ info: OPERATOR
+In foo.m, line 12
+| b5 = [tmp'<anon,> '}'];
+|           ^^^^^^^ info: [32madded comma[0m
+In foo.m, line 12
+| b5 = [tmp'<anon,> '}'];
+|           ^^^^^^^ info: COMMA
+In foo.m, line 12
+| b5 = [tmp' '}'];
+|            ^^^ info: STRING
+In foo.m, line 12
+| b5 = [tmp' '}'];
+|               ^ info: M_KET
+In foo.m, line 12
+| b5 = [tmp' '}'];
+|                ^ info: SEMICOLON
+In foo.m, line 12
+| b5 = [tmp' '}'];
+|                 ^ info: NEWLINE
+In foo.m, line 13
+| b6 = [tmp' ']'];
+| ^^ info: IDENTIFIER
+In foo.m, line 13
+| b6 = [tmp' ']'];
+|    ^ info: ASSIGNMENT
+In foo.m, line 13
+| b6 = [tmp' ']'];
+|      ^ info: M_BRA
+In foo.m, line 13
+| b6 = [tmp' ']'];
+|       ^^^ info: IDENTIFIER
+In foo.m, line 13
+| b6 = [tmp' ']'];
+|          ^ info: OPERATOR
+In foo.m, line 13
+| b6 = [tmp'<anon,> ']'];
+|           ^^^^^^^ info: [32madded comma[0m
+In foo.m, line 13
+| b6 = [tmp'<anon,> ']'];
+|           ^^^^^^^ info: COMMA
+In foo.m, line 13
+| b6 = [tmp' ']'];
+|            ^^^ info: STRING
+In foo.m, line 13
+| b6 = [tmp' ']'];
+|               ^ info: M_KET
+In foo.m, line 13
+| b6 = [tmp' ']'];
+|                ^ info: SEMICOLON
+In foo.m, line 13
+| b6 = [tmp' ']'];
+|                 ^ info: NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
