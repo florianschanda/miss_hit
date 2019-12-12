@@ -108,3 +108,9 @@ copyright, with the same license:
 This project includes modified/adapted parts of the GNU Octave
 testsuite under `tests/parser/octave_*`. These are (c) their original
 authors. Each file there describes from which file they derive.
+
+### Note on parser tests
+
+Some of the parser tests include code samples and documentation
+snippets from the publically available MathWorks website. An
+attribution (in comment form) is always included in these cases.

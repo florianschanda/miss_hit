@@ -577,10 +577,12 @@ class MATLAB_Parser:
                 return self.parse_import_statement()
             elif self.nt.value() == "try":
                 return self.parse_try_statement()
+            elif self.nt.value() == "persistent":
+                return self.parse_persistent_statement()
             else:
                 self.mh.error(self.nt.location,
                               "expected for|if|global|while|return|switch|"
-                              "break|continue|import|try,"
+                              "break|continue|import|try|persistent,"
                               " found %s instead" % self.nt.value())
 
         else:
@@ -1039,6 +1041,23 @@ class MATLAB_Parser:
                 break
 
         return Global_Statement(t_global, global_names)
+
+    def parse_persistent_statement(self):
+        self.match("KEYWORD", "persistent")
+        t_kw = self.ct
+
+        l_names = []
+        while True:
+            l_names.append(self.parse_identifier(allow_void=False))
+            if self.peek("NEWLINE"):
+                self.match("NEWLINE")
+                break
+            elif self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
+                self.match("NEWLINE")
+                break
+
+        return Persistent_Statement(t_kw, l_names)
 
     def parse_switch_statement(self):
         self.match("KEYWORD", "switch")

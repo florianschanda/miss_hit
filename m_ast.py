@@ -383,6 +383,19 @@ class Global_Statement(Statement):
         self.l_names = l_names
 
 
+class Persistent_Statement(Statement):
+    def __init__(self, t_kw, l_names):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value() == "persistent"
+        assert isinstance(l_names, list)
+        for n_name in l_names:
+            assert isinstance(n_name, Identifier)
+
+        self.t_kw    = t_kw
+        self.l_names = l_names
+
+
 class Import_Statement(Statement):
     def __init__(self, t_kw, l_chain):
         super().__init__()

@@ -225,6 +225,10 @@ def dot(fd, parent, annotation, node):
         for n_name in node.l_names:
             dot(fd, node, "", n_name)
 
+    elif isinstance(node, Persistent_Statement):
+        for n_name in node.l_names:
+            dot(fd, node, "", n_name)
+
     elif isinstance(node, Import_Statement):
         lbl += "\n"
         lbl += ".".join(t.value() if t.kind == "IDENTIFIER" else "*"
