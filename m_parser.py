@@ -177,11 +177,20 @@ class MATLAB_Parser:
 
     def parse_name(self, allow_void):
         # reference ::= identifier
+        #             | identifier '@' reference
         #             | reference '.' identifier
         #             | reference '(' expression_list ')'
         #             | reference '{' expression_list '}'
 
         rv = self.parse_identifier(allow_void)
+
+        if self.peek("AT"):
+            self.match("AT")
+            t_at = self.ct
+            at_prefix = rv
+            rv = self.parse_identifier(allow_void=False)
+        else:
+            t_at = None
 
         while self.peek("SELECTION") or self.peek("BRA") or self.peek("C_BRA"):
             if self.peek("SELECTION"):
@@ -195,6 +204,9 @@ class MATLAB_Parser:
                 rv = Cell_Reference(rv, self.parse_cell_argument_list())
             else:
                 raise ICE("impossible path (nt.kind = %s)" % self.nt.kind)
+
+        if t_at:
+            rv = Superclass_Reference(t_at, at_prefix, rv)
 
         return rv
 

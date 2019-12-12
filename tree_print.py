@@ -299,6 +299,10 @@ def dot(fd, parent, annotation, node):
         dot(fd, node, "prefix", node.n_prefix)
         dot(fd, node, "field", node.n_field)
 
+    elif isinstance(node, Superclass_Reference):
+        lbl += "\\n" + str(node)
+        attr.append("shape=none")
+
     else:
         lbl = "TODO: " + lbl
         attr.append("fillcolor=yellow")

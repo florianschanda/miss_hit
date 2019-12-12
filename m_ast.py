@@ -143,6 +143,22 @@ class Selection(Name):
         return "%s.%s" % (self.n_prefix, self.n_field)
 
 
+class Superclass_Reference(Name):
+    def __init__(self, t_at, n_prefix, n_reference):
+        super().__init__()
+        assert isinstance(t_at, MATLAB_Token)
+        assert t_at.kind == "AT"
+        assert isinstance(n_prefix, Identifier)
+        assert isinstance(n_reference, Name)
+
+        self.t_at = t_at
+        self.n_prefix = n_prefix
+        self.n_reference = n_reference
+
+    def __str__(self):
+        return "%s@%s" % (self.n_prefix, self.n_reference)
+
+
 class Reshape(Expression):
     def __init__(self, t_colon):
         super().__init__()
