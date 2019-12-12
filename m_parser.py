@@ -545,6 +545,7 @@ class MATLAB_Parser:
 
         while True:
             if self.peek("KEYWORD") and self.nt.value() in ("end",
+                                                            "catch",
                                                             "case",
                                                             "otherwise",
                                                             "else",
@@ -574,10 +575,12 @@ class MATLAB_Parser:
                 return self.parse_continue_statement()
             elif self.nt.value() == "import":
                 return self.parse_import_statement()
+            elif self.nt.value() == "try":
+                return self.parse_try_statement()
             else:
                 self.mh.error(self.nt.location,
                               "expected for|if|global|while|return|switch|"
-                              "break|continue|import,"
+                              "break|continue|import|try,"
                               " found %s instead" % self.nt.value())
 
         else:
@@ -1089,6 +1092,28 @@ class MATLAB_Parser:
         self.match("NEWLINE")
 
         return Import_Statement(t_kw, chain)
+
+    def parse_try_statement(self):
+        self.match("KEYWORD", "try")
+        t_try = self.ct
+        self.match("NEWLINE")
+
+        n_body = self.parse_delimited_input()
+
+        self.match("KEYWORD", "catch")
+        t_catch = self.ct
+        if self.peek("NEWLINE"):
+            n_ident = None
+        else:
+            n_ident = self.parse_identifier(allow_void = False)
+        self.match("NEWLINE")
+
+        n_handler = self.parse_delimited_input()
+
+        self.match("KEYWORD", "end")
+        self.match("NEWLINE")
+
+        return Try_Statement(t_try, n_body, t_catch, n_ident, n_handler)
 
 
 def sanity_test(mh, filename, show_bt, show_tree):

@@ -398,6 +398,24 @@ class Import_Statement(Statement):
         self.l_chain = l_chain
 
 
+class Try_Statement(Statement):
+    def __init__(self, t_try, n_body, t_catch, n_ident, n_handler):
+        super().__init__()
+        assert isinstance(t_try, MATLAB_Token)
+        assert t_try.kind == "KEYWORD" and t_try.value() == "try"
+        assert isinstance(t_catch, MATLAB_Token)
+        assert t_catch.kind == "KEYWORD" and t_catch.value() == "catch"
+        assert isinstance(n_body, Sequence_Of_Statements)
+        assert isinstance(n_handler, Sequence_Of_Statements)
+        assert n_ident is None or isinstance(n_ident, Identifier)
+
+        self.t_try     = t_try
+        self.t_catch   = t_catch
+        self.n_body    = n_body
+        self.n_ident   = n_ident
+        self.n_handler = n_handler
+
+
 class Literal(Expression):
     pass
 

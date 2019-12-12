@@ -234,6 +234,13 @@ def dot(fd, parent, annotation, node):
         for statement in node.statements:
             dot(fd, node, "", statement)
 
+    elif isinstance(node, Try_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "try", node.n_body)
+        if node.n_ident:
+            dot(fd, node, "ident", node.n_ident)
+        dot(fd, node, "catch", node.n_handler)
+
     elif isinstance(node, Unary_Operation):
         lbl += " %s" % node.t_op.value()
         dot(fd, node, "", node.n_expr)
