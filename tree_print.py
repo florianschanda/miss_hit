@@ -225,6 +225,11 @@ def dot(fd, parent, annotation, node):
         for n_name in node.l_names:
             dot(fd, node, "", n_name)
 
+    elif isinstance(node, Import_Statement):
+        lbl += "\n"
+        lbl += ".".join(t.value() if t.kind == "IDENTIFIER" else "*"
+                        for t in node.l_chain)
+
     elif isinstance(node, Sequence_Of_Statements):
         for statement in node.statements:
             dot(fd, node, "", statement)

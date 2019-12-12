@@ -383,6 +383,21 @@ class Global_Statement(Statement):
         self.l_names = l_names
 
 
+class Import_Statement(Statement):
+    def __init__(self, t_kw, l_chain):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value() == "import"
+        assert isinstance(l_chain, list)
+        for t_item in l_chain:
+            assert isinstance(t_item, MATLAB_Token)
+            assert t_item.kind == "IDENTIFIER" or \
+                (t_item.kind == "OPERATOR" and t_item.value() == ".*")
+
+        self.t_kw    = t_kw
+        self.l_chain = l_chain
+
+
 class Literal(Expression):
     pass
 
