@@ -692,6 +692,9 @@ class MATLAB_Parser:
             self.match("COLON")
             return Reshape(self.ct)
 
+        elif self.peek("AT"):
+            return self.parse_function_handle()
+
         else:
             return self.parse_name(allow_void=False)
 
@@ -909,6 +912,26 @@ class MATLAB_Parser:
 
         rv = Cell_Expression(t_open, t_close, rows)
         return rv
+
+    def parse_function_handle(self):
+        self.match("AT")
+        t_at = self.ct
+
+        if self.peek("BRA"):
+            self.match("BRA")
+            lambda_args = []
+            while not self.peek("KET"):
+                lambda_args.append(self.parse_identifier(allow_void=False))
+                if self.peek("COMMA"):
+                    self.match("COMMA")
+                else:
+                    break
+            self.match("KET")
+            lambda_body = self.parse_expression()
+            return Lambda_Function(t_at, lambda_args, lambda_body)
+        else:
+            name = self.parse_simple_name()
+            return Function_Pointer(t_at, name)
 
     def parse_argument_list(self):
         # arglist ::= '(' ')'

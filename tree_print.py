@@ -303,6 +303,16 @@ def dot(fd, parent, annotation, node):
         lbl += "\\n" + str(node)
         attr.append("shape=none")
 
+    elif isinstance(node, Lambda_Function):
+        attr.append("shape=box")
+        for param in node.l_parameters:
+            dot(fd, node, "param", param)
+        dot(fd, node, "body", node.n_body)
+
+    elif isinstance(node, Function_Pointer):
+        attr.append("shape=box")
+        lbl += "\\nto " + str(node.n_name)
+
     else:
         lbl = "TODO: " + lbl
         attr.append("fillcolor=yellow")

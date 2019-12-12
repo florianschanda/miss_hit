@@ -506,3 +506,36 @@ class Binary_Operation(Expression):
 
     def __str__(self):
         return "(%s %s %s)" % (self.n_lhs, self.t_op.value(), self.n_rhs)
+
+
+class Lambda_Function(Expression):
+    def __init__(self, t_at, l_parameters, n_body):
+        super().__init__()
+        assert isinstance(t_at, MATLAB_Token)
+        assert t_at.kind == "AT"
+        assert isinstance(l_parameters, list)
+        for param in l_parameters:
+            assert isinstance(param, Identifier)
+        assert isinstance(n_body, Expression)
+
+        self.t_at         = t_at
+        self.l_parameters = l_parameters
+        self.n_body       = n_body
+
+    def __str__(self):
+        return "@(%s) %s" % (",".join(map(str, self.l_parameters)),
+                             str(self.n_body))
+
+
+class Function_Pointer(Expression):
+    def __init__(self, t_at, n_name):
+        super().__init__()
+        assert isinstance(t_at, MATLAB_Token)
+        assert t_at.kind == "AT"
+        assert isinstance(n_name, Name)
+
+        self.t_at   = t_at
+        self.n_name = n_name
+
+    def __str__(self):
+        return "@" + str(self.n_name)

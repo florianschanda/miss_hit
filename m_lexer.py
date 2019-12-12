@@ -160,6 +160,7 @@ class MATLAB_Lexer(Token_Generator):
         self.col_offset = 0
         self.line = 1
         self.bracket_stack = []
+        self.in_lambda = False
         self.first_in_line = True
         self.in_dir_command = False
         self.add_comma = False
@@ -523,6 +524,9 @@ class MATLAB_Lexer(Token_Generator):
                              self.first_in_line)
         self.first_in_line = False
 
+        if kind == "BRA" and self.last_kind == "AT":
+            self.in_lambda = True
+
         if kind == "NEWLINE":
             self.line += token.raw_text.count("\n")
             self.first_in_line = True
@@ -624,6 +628,10 @@ class MATLAB_Lexer(Token_Generator):
                 elif next_non_ws.isalnum():
                     # [f f] is [f, f]
                     self.add_comma = True
+
+        if self.in_lambda and token.kind == "KET":
+            self.add_comma = False
+            self.in_lambda = False
 
         return token
 
