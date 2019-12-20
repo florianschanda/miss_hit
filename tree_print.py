@@ -177,11 +177,10 @@ def dot(fd, parent, annotation, node):
         dot(fd, node, "target", node.n_lhs)
         dot(fd, node, "expression", node.n_rhs)
 
-    # elif isinstance(node, Compound_Assignment_Statement):
-    #     emit("Assignment on line %u" % node.t_eq.location.line)
-    #     for n, n_lhs in enumerate(node.l_lhs):
-    #         rec(indent + 2, "dst%u: " % n, n_lhs)
-    #     rec(indent + 2, "src: ", node.n_rhs)
+    elif isinstance(node, Compound_Assignment_Statement):
+        for n, n_lhs in enumerate(node.l_lhs, 1):
+            dot(fd, node, "target %u" % n, n_lhs)
+        dot(fd, node, "expression", node.n_rhs)
 
     elif isinstance(node, If_Statement):
         attr.append("shape=diamond")
@@ -304,6 +303,10 @@ def dot(fd, parent, annotation, node):
         attr.append("shape=none")
 
     elif isinstance(node, Selection):
+        dot(fd, node, "prefix", node.n_prefix)
+        dot(fd, node, "field", node.n_field)
+
+    elif isinstance(node, Dynamic_Selection):
         dot(fd, node, "prefix", node.n_prefix)
         dot(fd, node, "field", node.n_field)
 

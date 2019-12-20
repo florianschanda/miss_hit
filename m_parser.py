@@ -179,6 +179,7 @@ class MATLAB_Parser:
         # reference ::= identifier
         #             | identifier '@' reference
         #             | reference '.' identifier
+        #             | reference '.' '(' expression ')'
         #             | reference '(' expression_list ')'
         #             | reference '{' expression_list '}'
 
@@ -196,8 +197,15 @@ class MATLAB_Parser:
             if self.peek("SELECTION"):
                 self.match("SELECTION")
                 tok = self.ct
-                field = self.parse_identifier(allow_void=False)
-                rv = Selection(tok, rv, field)
+
+                if self.peek("BRA"):
+                    self.match("BRA")
+                    dyn_field = self.parse_expression()
+                    self.match("KET")
+                    rv = Dynamic_Selection(tok, rv, dyn_field)
+                else:
+                    field = self.parse_identifier(allow_void=False)
+                    rv = Selection(tok, rv, field)
             elif self.peek("BRA"):
                 rv = Reference(rv, self.parse_argument_list())
             elif self.peek("C_BRA"):

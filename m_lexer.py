@@ -27,7 +27,7 @@
 import re
 from abc import ABCMeta, abstractmethod
 
-from errors import Location, Error, Message_Handler
+from errors import Location, Error, Message_Handler, ICE
 from m_language import KEYWORDS
 
 # The 1999 technical report "The Design and Implementation of a Parser
@@ -66,7 +66,7 @@ TOKEN_KINDS = frozenset([
     "BRA", "KET",      # ( )
     "C_BRA", "C_KET",  # { }
     "M_BRA", "M_KET",  # [ ] for matrices
-    "A_BRA", "A_KET",  # [ ] for reference lists
+    "A_BRA", "A_KET",  # [ ] for assignment targets
     "ASSIGNMENT",
     "SELECTION",
     "AT",
@@ -81,7 +81,7 @@ TOKENS_WITH_IMPLICIT_VALUE = frozenset([
     "BRA", "KET",      # ( )
     "C_BRA", "C_KET",  # { }
     "M_BRA", "M_KET",  # [ ] for matrices
-    "A_BRA", "A_KET",  # [ ] for reference lists
+    "A_BRA", "A_KET",  # [ ] for assignment targets
     "ASSIGNMENT",
     "SELECTION",
     "AT",
@@ -159,12 +159,32 @@ class MATLAB_Lexer(Token_Generator):
         self.lexpos = -1
         self.col_offset = 0
         self.line = 1
-        self.bracket_stack = []
-        self.in_lambda = False
-        self.first_in_line = True
         self.in_dir_command = False
+
+        self.first_in_line = True
+        # Keep track if this would be the first token on a
+        # typographical line (i.e. we do not take into account line
+        # continuations). This is passed down to tokens themselves.
+
+        self.bracket_stack = []
+        # The lexer must keep track of brackets, since whitespace
+        # works differently when in top-level matrix expressions. We
+        # push the opening bracket tokens on this stack, and remove
+        # them again when we encounter the relevant closing bracket.
+
         self.add_comma = False
         self.debug_comma = False
+        # Sometimes (in matrices) we must add anonymous commas so that
+        # the parser does not have to worry about whitespace. If the
+        # debug flag is set to true we print some useful bits.
+
+        self.in_lambda = False
+        # If we encounter a lambda function (e.g. @(...) expr) then we
+        # must *not* add a comma after the ) if it occurs in a matrix
+        # or cell. This is a temporary override for add_comma.
+
+        self.delay_list = []
+        # See token() for a description.
 
         # pylint: disable=invalid-name
         self.cc = None
@@ -227,7 +247,7 @@ class MATLAB_Lexer(Token_Generator):
                            if message
                            else "unexpected character %s" % repr(self.cc)))
 
-    def token(self):
+    def __token(self):
         # If we've been instructed to add an anonymous comma, we do
         # that and nothing else.
         if self.add_comma:
@@ -358,11 +378,11 @@ class MATLAB_Lexer(Token_Generator):
             if preceeding_ws or self.first_in_line:
                 kind = "STRING"
             elif self.last_kind in ("IDENTIFIER", "NUMBER", "STRING",
-                                    "KET", "A_KET", "M_KET", "C_KET"):
+                                    "KET", "M_KET", "C_KET"):
                 kind = "OPERATOR"
             elif self.last_kind == "OPERATOR" and self.last_value == "'":
                 kind = "OPERATOR"
-            elif self.last_kind in ("BRA", "A_BRA", "M_BRA", "C_BRA", "COMMA",
+            elif self.last_kind in ("BRA", "M_BRA", "C_BRA", "COMMA",
                                     "ASSIGNMENT", "OPERATOR", "SEMICOLON"):
                 kind = "STRING"
             else:
@@ -409,81 +429,19 @@ class MATLAB_Lexer(Token_Generator):
             kind = "C_KET"
 
         elif self.cc == "[":
-            # So [ is much harder than it looks. Thanks again for
-            # this. Depending on the context it is either a matrix or
-            # list of references used in an assignment. This means we
-            # need to search ahead for the matching closing bracket,
-            # and then check if the following first non-ws token is ==
-            # (then this is M_BRA) or = (A_BRA). Of course we also
-            # need to deal with line continuations.
+            # I have decided to not do what is described in section 7
+            # of the 1999 technical report, since it makes it very
+            # hard to deal with stuff like [a.('foo')] = 10. The
+            # lookahead for the = would be bordering on impossible if
+            # we need to ignore = inside strings.
+            #
+            # Instead we're going to do this as a post-processing step
+            # that delays returning from the lexer until we encounter
+            # an = after the coressponding closing bracket, or not.
             kind = "M_BRA"
 
-            if self.bracket_stack:
-                # If we're already in some bracket then this is always
-                # going to be a matrix.
-                pass
-
-            else:
-                skip_cont = 0
-                bstack = ["["]
-                assignment = False
-                for c in self.text[self.lexpos + 1:]:
-                    # We're searching for the closing bracket
-                    if bstack:
-                        if c in ("'", "\""):
-                            # We've found a quotation or
-                            # transpose. This means there is no way
-                            # this can be an assignment list, it has
-                            # to be a matrix. See bug #45 for some fun
-                            # tests on this topic.
-                            break
-                        elif c in ("[", "(", "{"):
-                            bstack.append(c)
-                        elif c in ("]", ")", "}"):
-                            matching_bracket = bstack.pop()
-                            if c == "]" and matching_bracket != "[":
-                                self.lex_error("unbalanced [")
-                            elif c == ")" and matching_bracket != "(":
-                                self.lex_error("unbalanced (")
-                            elif c == "}" and matching_bracket != "{":
-                                self.lex_error("unbalanced {")
-
-                    # We found it, now we need to search for the first
-                    # non-ws token
-                    else:
-                        if assignment and c == "=":
-                            # Yes, it really is ==
-                            assignment = False
-                            break
-                        elif assignment:
-                            break
-                        elif c in (" ", "\t"):
-                            pass
-                        elif c == "." and skip_cont < 3:
-                            skip_cont += 1
-                        elif skip_cont == 3 and c == "\n":
-                            skip_cont = 0
-                        elif skip_cont == 3:
-                            pass
-                        elif 1 <= skip_cont < 3:
-                            # Not a continuation, and so not a =, so
-                            # its a matrix
-                            break
-                        elif c == "=":
-                            # Could be = or ==
-                            assignment = True
-                        else:
-                            break
-                if assignment:
-                    kind = "A_BRA"
-
         elif self.cc == "]":
-            # We don't raise errors here if brackets don't match, this
-            # is done later.
-            if self.bracket_stack and self.bracket_stack[-1].kind == "A_BRA":
-                kind = "A_KET"
-            else:
-                kind = "M_KET"
+            kind = "M_KET"
 
         elif self.cc == ".":
             kind = "SELECTION"
@@ -544,15 +502,13 @@ class MATLAB_Lexer(Token_Generator):
         self.last_kind = kind
         self.last_value = raw_text
 
-        if token.kind in ("BRA", "A_BRA", "M_BRA", "C_BRA"):
+        if token.kind in ("BRA", "M_BRA", "C_BRA"):
             self.bracket_stack.append(token)
-        elif token.kind in ("KET", "A_KET", "M_KET", "C_KET"):
+        elif token.kind in ("KET", "M_KET", "C_KET"):
             if self.bracket_stack:
                 matching_bracket = self.bracket_stack.pop()
                 if (token.kind == "KET" and
                     matching_bracket.kind != "BRA") or \
-                   (token.kind == "A_KET" and
-                    matching_bracket.kind != "A_BRA") or \
                    (token.kind == "M_KET" and
                     matching_bracket.kind != "M_BRA") or \
                    (token.kind == "C_KET" and
@@ -572,8 +528,7 @@ class MATLAB_Lexer(Token_Generator):
         # Determine if whitespace is currently significant (i.e. we're
         # in a matrix).
         ws_is_significant = (self.bracket_stack and
-                             self.bracket_stack[-1].kind in ("A_BRA",
-                                                             "M_BRA",
+                             self.bracket_stack[-1].kind in ("M_BRA",
                                                              "C_BRA") and
                              self.bracket_stack[-1] != token)
         ws_follows = self.nc in (" ", "\t")
@@ -634,6 +589,64 @@ class MATLAB_Lexer(Token_Generator):
             self.in_lambda = False
 
         return token
+
+    def token(self):
+        # To deal with assignment, it is sometimes necessary to delay
+        # returning tokens until we know if we get "] =" or not.
+
+        if self.delay_list:
+            tok = self.delay_list.pop(0)
+            return tok
+
+        tok = self.__token()
+        if tok is None:
+            return None
+
+        if len(self.bracket_stack) > 1 or tok.kind != "M_BRA":
+            # We're in a nested context, or this is not a [. Just
+            # return the token.
+            return tok
+
+        open_bracket = tok
+        if open_bracket.kind != "M_BRA":
+            raise ICE("supposed open bracket is %s instead" %
+                      open_bracket.kind)
+
+        # We have a top-level [. So now we squirrel away tokens until
+        # we get to the matching closing bracket.
+        self.delay_list = [tok]
+        while self.bracket_stack:
+            tok = self.__token()
+            self.delay_list.append(tok)
+            if tok is None:
+                break
+
+        close_bracket = self.delay_list[-1]
+        if close_bracket is not None and close_bracket.kind != "M_KET":
+            raise ICE("supposed close bracket is %s instead" %
+                      close_bracket.kind)
+
+        # Now we add more until we hit an assignment or not a
+        # continuation
+        while close_bracket:
+            tok = self.__token()
+            self.delay_list.append(tok)
+            if tok is None:
+                break
+            elif tok.kind == "CONTINUATION":
+                continue
+            else:
+                break
+
+        # Now we check if we have an =
+        tok = self.delay_list[-1]
+        if tok and tok.kind == "ASSIGNMENT":
+            open_bracket.kind = "A_BRA"
+            close_bracket.kind = "A_KET"
+
+        # Finally, start by returning the first token
+        tok = self.delay_list.pop(0)
+        return tok
 
 
 class Token_Buffer(Token_Generator):

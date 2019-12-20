@@ -143,6 +143,22 @@ class Selection(Name):
         return "%s.%s" % (self.n_prefix, self.n_field)
 
 
+class Dynamic_Selection(Name):
+    def __init__(self, t_selection, n_prefix, n_field):
+        super().__init__()
+        assert isinstance(t_selection, MATLAB_Token)
+        assert t_selection.kind == "SELECTION"
+        assert isinstance(n_prefix, Name)
+        assert isinstance(n_field, Expression)
+
+        self.t_selection = t_selection
+        self.n_prefix    = n_prefix
+        self.n_field     = n_field
+
+    def __str__(self):
+        return "%s.(%s)" % (self.n_prefix, self.n_field)
+
+
 class Superclass_Reference(Name):
     def __init__(self, t_at, n_prefix, n_reference):
         super().__init__()
