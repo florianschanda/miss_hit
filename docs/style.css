@@ -1,27 +1,29 @@
 body {
-    background-color: #ffe;
+    background-color: #ccd;
     color: #000;
     font-family: sans;
-    max-width: 50em;
     margin-left: 2em;
+    margin-right: 2em;
 }
 
 h1 {
     padding-bottom: 10px;
-    text-shadow: 2px 2px #ccc;
+    border-top: 0.5em solid #88f;
+    border-bottom: 0.5em solid #88f;
+    padding: 1em;
+    text-align: center;
 }
 
 h2 {
-    text-shadow: 2px 2px #ccc;
+    margin-left: -0.5em;
 }
 
 h3 {
-    text-shadow: 2px 2px #ccc;
+    margin-left: -0.5em;
 }
 
 h4 {
-    text-shadow: 1px 1px #ccc;
-    border-left: 0.3em solid #cc8;
+    border-left: 0.3em solid #88f;
     padding-left: 0.2em;
 }
 
@@ -32,8 +34,8 @@ a {
 }
 
 a:hover {
-    background-color: #cc8;
-    border-radius: 5px;
+    background-color: #eef;
+    border-radius: 3px;
 }
 
 span.file {
@@ -44,9 +46,18 @@ div {
     margin-top: 1em;
 }
 
+div.section {
+    background-color: #fff;
+    border-radius: 0.4em;
+    border-top: 0.2em solid #ccf;
+    border-bottom: 0.2em solid #ccf;
+    padding: 0.5em;
+}
+
 pre {
-    background-color: #ddc;
     border-radius: 5px;
     padding-top: 1.5em;
     padding-left: 2em;
+    border: 0.1em solid #88f;
+    background-color: #eef;
 }

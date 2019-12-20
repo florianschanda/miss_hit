@@ -11,112 +11,117 @@
   <body>
     <h1>MISS_HIT Style Checker</h1>
 
-    MISS_HIT includes a simple style checker
-    (<span class="file">mh_style.py</span>). It can detect and
-    correct (when the --fix options given) a number of coding style
-    issues, most of which are configurable.
+    <div class="section">
+      MISS_HIT includes a simple style checker
+      (<span class="file">mh_style.py</span>). It can detect and
+      correct (when the --fix options given) a number of coding style
+      issues, most of which are configurable.
+    </div>
 
     <h2>Configuration</h2>
 
     <h3>Files</h3>
 
-    <div>
-      Options are read from configuration
-      files <span class="file">miss_hit.cfg</span>. This behaviour can
-      be disabled with the --ignore-config option. When analysing the
-      file <span class="file">foo/bar/potato.m</span>, we will first
-      look in the root for <span class="file">miss_hit.cfg</span>,
-      then in <span class="file">foo/miss_hit.cfg</span>, and finally
-      in <span class="file">foo/bar/miss_hit.cfg</span>. Each file
-      augments or overwrites previously given configuration, and
-      command-line options overwrite everything.
-    </div>
+    <div class="section">
+      <div>
+        Options are read from configuration
+        files <span class="file">miss_hit.cfg</span>. This behaviour can
+        be disabled with the --ignore-config option. When analysing the
+        file <span class="file">foo/bar/potato.m</span>, we will first
+        look in the root for <span class="file">miss_hit.cfg</span>,
+        then in <span class="file">foo/miss_hit.cfg</span>, and finally
+        in <span class="file">foo/bar/miss_hit.cfg</span>. Each file
+        augments or overwrites previously given configuration, and
+        command-line options overwrite everything.
+      </div>
 
-    <div>
-      For example you can put
-      this <span class="file">miss_hit.cfg</span> in your project
-      root:
-    </div>
+      <div>
+        For example you can put
+        this <span class="file">miss_hit.cfg</span> in your project
+        root:
+      </div>
 
-    <div>
-      <pre>
+      <div>
+        <pre>
 # Options written like on the commandline
 line_length: 100
 file_length: 2500
 copyright_entity: "Lord Buckethead"
-      </pre>
-    </div>
+        </pre>
+      </div>
 
-    <div>
-      And you can adjust options in subdirectories, for example if you place
-      this in <span class="file">foo/miss_hit.cfg</span>:
-    </div>
+      <div>
+        And you can adjust options in subdirectories, for example if you place
+        this in <span class="file">foo/miss_hit.cfg</span>:
+      </div>
 
-    <div>
-      <pre>
+      <div>
+        <pre>
 # Legacy code which had a different coding standard
 line_length: 180
-      </pre>
-    </div>
+        </pre>
+      </div>
 
-    <div>
-      Then files in <span class="file">foo/</span> or below will be
-      checked for a line length of 180 (redefined) and a file length
-      of 2500 (taken over from the project root).
+      <div>
+        Then files in <span class="file">foo/</span> or below will be
+        checked for a line length of 180 (redefined) and a file length
+        of 2500 (taken over from the project root).
+      </div>
     </div>
 
     <h3>Excluding directories from analysis</h3>
 
-    <div>
-      A special entry "enable" into
-      a <span class="file">miss_hit.cfg</span> can be used to enable
-      or disable analysis for the subtree.
-    </div>
+    <div class="section">
+      <div>
+        A special entry "enable" into
+        a <span class="file">miss_hit.cfg</span> can be used to enable
+        or disable analysis for the subtree.
+      </div>
 
-    <div>
-      For example if you have a lot of legacy code you can put this
-      into your root configuration:
-    </div>
+      <div>
+        For example if you have a lot of legacy code you can put this
+        into your root configuration:
+      </div>
 
-    <div>
-      <pre>
+      <div>
+        <pre>
 enable: 0
 line_length: 100
-      </pre>
-    </div>
+        </pre>
+      </div>
 
-    <div>
-      And then enable analysis for some subdirectories, e.g. in
-      <span class="file">foo/new_code/miss_hit.cfg</span> you can
-      write:
-    </div>
+      <div>
+        And then enable analysis for some subdirectories, e.g. in
+        <span class="file">foo/new_code/miss_hit.cfg</span> you can
+        write:
+      </div>
 
-    <div>
-      <pre>
+      <div>
+        <pre>
 enable: 1
-      </pre>
-    </div>
+        </pre>
+      </div>
 
-    <div>
-      Like any other option, the "closest one" takes precedence.
-    </div>
+      <div>
+        Like any other option, the "closest one" takes precedence.
+      </div>
 
-    <div>
-      You can also specify the special "exclude_dir" property in
-      configuration files. This property must name a directory
-      directly inside (i.e. you can't
-      specify <span class="file">foo/bar</span>) the same directory
-      the configuration file resides in. This is especially useful
-      when including an external repository, over which we have
-      limited control.
-    </div>
+      <div>
+        You can also specify the special "exclude_dir" property in
+        configuration files. This property must name a directory
+        directly inside (i.e. you can't
+        specify <span class="file">foo/bar</span>) the same directory
+        the configuration file resides in. This is especially useful
+        when including an external repository, over which we have
+        limited control.
+      </div>
 
-    <div>
-      Below is given a more realistic root configuration:
-    </div>
+      <div>
+        Below is given a more realistic root configuration:
+      </div>
 
-    <div>
-      <pre>
+      <div>
+        <pre>
 file_length: 1000
 line_length: 120
 copyright_entity: "Potato Inc."
@@ -124,79 +129,85 @@ copyright_entity: "Potato Inc."
 % We include the delightful miss_hit tools in our repo, but don't want to
 % accidentally check their weird test cases
 exclude_dir: "miss_hit"
-      </pre>
+        </pre>
+      </div>
     </div>
 
     <h2>Justifications</h2>
 
-    <div>
-      Style issues can be justified by placing "mh:ignore_style" into
-      a comment or line continuation. The justification applies to all
-      style issues on that line.
-    </div>
+    <div class="section">
+      <div>
+        Style issues can be justified by placing "mh:ignore_style" into
+        a comment or line continuation. The justification applies to all
+        style issues on that line.
+      </div>
 
-    <div>
-      <pre>
+      <div>
+        <pre>
 % we normally get a message about no whitespace surrounding the =
 x=5; % mh:ignore_style
-      </pre>
-    </div>
+        </pre>
+      </div>
 
-    <div>
-      Justifications that are useless generate a warning.
+      <div>
+        Justifications that are useless generate a warning.
+      </div>
     </div>
 
     <h2>Style Rules</h2>
 
-    <div>
-      There are three types of rules:
-    </div>
+    <div class="section">
+      <div>
+        There are three types of rules:
+      </div>
 
-    <div>
-      <ul>
-        <li>
-          <b>Mandatory rules</b>: they are always active and can be
-          automatically fixed
-        </li>
-        <li>
-          <b>Autofix rules</b>: they are optional and can be
-          automatically fixed
-        </li>
-        <li><b>Rules</b>: they are optional and cannot be
-          automatically fixed
-        </li>
-      </ul>
-    </div>
+      <div>
+        <ul>
+          <li>
+            <b>Mandatory rules</b>: they are always active and can be
+            automatically fixed
+          </li>
+          <li>
+            <b>Autofix rules</b>: they are optional and can be
+            automatically fixed
+          </li>
+          <li><b>Rules</b>: they are optional and cannot be
+            automatically fixed
+          </li>
+        </ul>
+      </div>
 
-    <div>
-      Rules with a name (for example "whitespace_keywords") can be
-      individually suppressed in or re-enabled in configuration files. For
-      example:
-    </div>
+      <div>
+        Rules with a name (for example "whitespace_keywords") can be
+        individually suppressed in or re-enabled in configuration files. For
+        example:
+      </div>
 
-    <div>
-      <pre>
+      <div>
+        <pre>
 suppress_rule: "operator_after_continuation"
 suppress_rule: "builtin_shadow"
 enable_rule: "file_length"
-      </pre>
-    </div>
+        </pre>
+      </div>
 
-    <div>
-      By default all rules are active.
+      <div>
+        By default all rules are active.
+      </div>
     </div>
 
     <h3>Mandatory rules</h3>
 
-    <div>
-      These rules are always active. The technical reason for this is
-      that it would be too difficult to autofix issues without
-      autofixing these. If you pay me an excessive amount of money I
-      could look into this but I'd rather keep the lexer vaguely
-      sane. All of them are automatically fixed
-      by <span class="file">mh_style.py</span> when the --fix option
-      is specified.
-    </div>
+    <div class="section">
+      <div>
+        These rules are always active. The technical reason for this is
+        that it would be too difficult to autofix issues without
+        autofixing these. If you pay me an excessive amount of money I
+        could look into this but I'd rather keep the lexer vaguely
+        sane. All of them are automatically fixed
+        by <span class="file">mh_style.py</span> when the --fix option
+        is specified.
+      </div>
 
     <!-- HOOK: MANDATORY RULES -->
     <h4>Trailing newlines at end of file</h4>
@@ -265,117 +276,122 @@ enable_rule: "file_length"
     </div>
 
     <!-- END HOOK: MANDATORY RULES -->
+    </div>
 
     <h3>Autofix rules</h3>
 
-    <div>
-      The following rules are automatically fixed
-      by <span class="file">mh_style.py</span> when the --fix option
-      is specified.
-    </div>
+    <div class="section">
 
-    <h4>Whitespace surrounding commas ("whitespace_comma")</h4>
+      <div>
+        The following rules are automatically fixed
+        by <span class="file">mh_style.py</span> when the --fix option
+        is specified.
+      </div>
 
-    <div>
-      This rule enforces whitespace after commas, and no whitespace
-      before commas, e.g. `foo, bar, baz`.
-    </div>
+      <h4>Whitespace surrounding commas ("whitespace_comma")</h4>
 
-    <h4>Whitespace surrounding colon ("whitespace_colon")</h4>
+      <div>
+        This rule enforces whitespace after commas, and no whitespace
+        before commas, e.g. `foo, bar, baz`.
+      </div>
 
-    <div>
-      This rule enforces no whitespace around colons, except after
-      commas.
-    </div>
+      <h4>Whitespace surrounding colon ("whitespace_colon")</h4>
 
-    <h4>Whitespace around assignment ("whitespace_assignment")</h4>
+      <div>
+        This rule enforces no whitespace around colons, except after
+        commas.
+      </div>
 
-    <div>
-      This rule enforces whitespace around the assignment operation
-      (=).
-    </div>
+      <h4>Whitespace around assignment ("whitespace_assignment")</h4>
 
-    <h4>Whitespace surrounding brackets ("whitespace_brackets")</h4>
+      <div>
+        This rule enforces whitespace around the assignment operation
+        (=).
+      </div>
 
-    <div>
-      This rule enforces whitespace after square and round brackets,
-      and no whitespace before their closing counterpart.  For
-      example: [foo, bar]
-    </div>
+      <h4>Whitespace surrounding brackets ("whitespace_brackets")</h4>
 
-    <h4>Whitespace after some words ("whitespace_keywords")</h4>
+      <div>
+        This rule enforces whitespace after square and round brackets,
+        and no whitespace before their closing counterpart.  For
+        example: [foo, bar]
+      </div>
 
-    <div>
-      This rule makes sure there is whitespace after some words such
-      as "if" or "properties".
-    </div>
+      <h4>Whitespace after some words ("whitespace_keywords")</h4>
 
-    <h4>Whitespace in comments ("whitespace_comments")</h4>
+      <div>
+        This rule makes sure there is whitespace after some words such
+        as "if" or "properties".
+      </div>
 
-    <div>
-      This rule makes sure there is some whitespace between the
-      comment character (%) and the rest of the comment. The exception
-      is "divisor" comments like "%%%%%%%%%%%%%%" and the pragmas such
-      as "%#codegen".
-    </div>
+      <h4>Whitespace in comments ("whitespace_comments")</h4>
 
-    <h4>Whitespace in continuation ("whitespace_continuation")</h4>
+      <div>
+        This rule makes sure there is some whitespace between the
+        comment character (%) and the rest of the comment. The exception
+        is "divisor" comments like "%%%%%%%%%%%%%%" and the pragmas such
+        as "%#codegen".
+      </div>
 
-    <div>
-      This rule makes sure there is some whitespace between the last
-      thing on a line and a line continuation.
-    </div>
+      <h4>Whitespace in continuation ("whitespace_continuation")</h4>
+
+      <div>
+        This rule makes sure there is some whitespace between the last
+        thing on a line and a line continuation.
+      </div>
 
     <!-- HOOK: AUTOFIX RULES -->
     <!-- END HOOK: AUTOFIX RULES -->
+    </div>
 
     <h3>Rules</h3>
 
-    <div>
+    <div class="section">
+      <div>
       These rules cannot be auto-fixed because there is no "obvious"
       fix.
-    </div>
+      </div>
 
-    <h4>Copyright notice ("copyright_notice")</h4>
+      <h4>Copyright notice ("copyright_notice")</h4>
 
-    <div>
-      This rules looks for a copyright notice at the beginning of each
-      file in the form of "(C) Copyright YEAR-YEAR ENTITY" or "(C)
-      Copyright YEAR ENTITY". The list of acceptable entities can be
-      configured with copyright_entity. This option can be given more
-      than once to permit a set of valid copyright holders. If this
-      options is not set, the rule just looks for any copyright
-      notice.
-    </div>
+      <div>
+        This rules looks for a copyright notice at the beginning of each
+        file in the form of "(C) Copyright YEAR-YEAR ENTITY" or "(C)
+        Copyright YEAR ENTITY". The list of acceptable entities can be
+        configured with copyright_entity. This option can be given more
+        than once to permit a set of valid copyright holders. If this
+        options is not set, the rule just looks for any copyright
+        notice.
+      </div>
 
-    <div>
-      Configuration parameters:
-      <ul>
-        <li>
-          <b>copyright_entity</b>: Can be specified more than
-          once. Make sure each copyright notice mentions one of these.
-        </li>
-      </ul>
-    </div>
+      <div>
+        Configuration parameters:
+        <ul>
+          <li>
+            <b>copyright_entity</b>: Can be specified more than
+            once. Make sure each copyright notice mentions one of these.
+          </li>
+        </ul>
+      </div>
 
-    <h4>Comma line endings ("eol_comma")</h4>
+      <h4>Comma line endings ("eol_comma")</h4>
 
-    <div>
-      This rule complains about any line that ends in a comma. If you
-      have a ; at the end of each statement it really helps you
-      pretend that your using a real programming language, and so this
-      rule is quite helpful for sanity.
-    </div>
+      <div>
+        This rule complains about any line that ends in a comma. If you
+        have a ; at the end of each statement it really helps you
+        pretend that your using a real programming language, and so this
+        rule is quite helpful for sanity.
+      </div>
 
-    <h4>Shadowing of built-in functions ("builtin_shadow")</h4>
+      <h4>Shadowing of built-in functions ("builtin_shadow")</h4>
 
-    <div>
-      This rule attempts to find cases where we assign to a MATLAB
-      builtin function (e.g. re-defining false to be 1). Note: this
-      rule does not catch all cases and raises false alarms because we
-      don't have a working parser yet. Once we have a parser this can
-      be done easily and correctly.
-    </div>
+      <div>
+        This rule attempts to find cases where we assign to a MATLAB
+        builtin function (e.g. re-defining false to be 1). Note: this
+        rule does not catch all cases and raises false alarms because we
+        don't have a working parser yet. Once we have a parser this can
+        be done easily and correctly.
+      </div>
 
     <!-- HOOK: RULES -->
     <h4>Maximum file length ("file_length")</h4>
@@ -412,6 +428,7 @@ enable_rule: "file_length"
     </div>
 
     <!-- END HOOK: RULES -->
+    </div>
 
   </body>
 </html>
