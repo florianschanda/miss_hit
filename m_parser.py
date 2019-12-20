@@ -227,7 +227,9 @@ class MATLAB_Parser:
 
         return rv
 
-    def parse_file_input(self):
+    def parse_file(self):
+        # This is the top-level parse function. First we need to
+        # figure out exactly what kind of file we're dealing with.
         while self.peek("NEWLINE"):
             self.next()
 
@@ -240,9 +242,21 @@ class MATLAB_Parser:
 
     def parse_script_file(self):
         statements = []
+        functions = []
 
         while not self.peek_eof():
-            statements.append(self.parse_statement())
+            if self.peek("KEYWORD", "function"):
+                break
+            else:
+                statements.append(self.parse_statement())
+
+        if self.peek("KEYWORD", "function"):
+            while not self.peek_eof():
+                if not self.peek("KEYWORD", "function"):
+                    break
+                functions.append(self.parse_function_def())
+
+        self.match_eof()
 
         return Sequence_Of_Statements(statements)
 
@@ -1180,7 +1194,7 @@ def sanity_test(mh, filename, show_bt, show_tree):
         mh.register_file(filename)
         parser = MATLAB_Parser(mh, MATLAB_Lexer(mh, filename))
         parser.debug_tree = show_tree
-        parser.parse_file_input()
+        parser.parse_file()
     except Error:
         if show_bt:
             traceback.print_exc()

@@ -758,7 +758,7 @@ def analyze(mh, filename, rule_set, autofix, debug_parse):
     try:
         parser = MATLAB_Parser(mh, tbuf)
         if debug_parse:
-            parser.parse_file_input()
+            parser.parse_file()
     except Error:
         pass
     # pylint: enable=unused-variable

@@ -1,0 +1,4 @@
+In bar.m, line 7
+| kittens = 42; % Illegal
+| ^^^^^^^ error: expected end of file, found IDENTIFIER instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
