@@ -283,6 +283,14 @@ def dot(fd, parent, annotation, node):
         else:
             attr.append("shape=none")
 
+    elif isinstance(node, Cell_Reference):
+        lbl += " to %s" % str(node.n_ident)
+        if node.arglist:
+            for arg in node.arglist:
+                dot(fd, node, "arg", arg)
+        else:
+            attr.append("shape=none")
+
     elif isinstance(node, String_Literal):
         lbl += "\\n" + str(node)
         attr.append("shape=none")
