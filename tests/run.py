@@ -3,13 +3,11 @@
 import os
 import sys
 import subprocess
+import multiprocessing
 
 TEST_ROOT = os.getcwd()
 
-
 def execute_style_test(name):
-    print("Running style test %s" % name)
-
     os.chdir(os.path.join(TEST_ROOT,
                           "style",
                           name))
@@ -58,10 +56,10 @@ def execute_style_test(name):
         fd.write("=== HTML MODE ===\n")
         fd.write(html_out)
 
+    return "Ran style test %s" % name
+
 
 def execute_lexer_test(name):
-    print("Running lexer test %s" % name)
-
     os.chdir(os.path.join(TEST_ROOT,
                           "lexer",
                           name))
@@ -82,10 +80,10 @@ def execute_lexer_test(name):
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
 
+    return "Ran lexer test %s" % name
+
 
 def execute_parser_test(name):
-    print("Running parser test %s" % name)
-
     os.chdir(os.path.join(TEST_ROOT,
                           "parser",
                           name))
@@ -107,23 +105,30 @@ def execute_parser_test(name):
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
 
+    return "Ran parser test %s" % name
+
+
+def run_test(test):
+    fn = {"style" : execute_style_test,
+          "lexer" : execute_lexer_test,
+          "parser" : execute_parser_test}
+    return fn[test["kind"]](test["test"])
 
 def main():
     # Make sure we're in the right directory
     assert os.path.isfile("../mh_style.py")
     root = os.getcwd()
 
-    os.chdir(root)
-    for t in os.listdir("lexer"):
-        execute_lexer_test(t)
+    tests = []
 
-    os.chdir(root)
-    for t in os.listdir("style"):
-        execute_style_test(t)
+    for kind in ("lexer", "style", "parser"):
+        for t in os.listdir(kind):
+            tests.append({"kind" : kind,
+                          "test" : t})
 
-    os.chdir(root)
-    for t in os.listdir("parser"):
-        execute_parser_test(t)
+    pool = multiprocessing.Pool()
+    for res in pool.imap_unordered(run_test, tests, 2):
+        print(res)
 
 
 if __name__ == "__main__":
