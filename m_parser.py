@@ -695,6 +695,11 @@ class MATLAB_Parser:
         elif self.peek("AT"):
             return self.parse_function_handle()
 
+        elif self.peek("METACLASS"):
+            self.match("METACLASS")
+            tok = self.ct
+            return Metaclass(tok, self.parse_simple_name())
+
         else:
             return self.parse_name(allow_void=False)
 

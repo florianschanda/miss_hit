@@ -321,6 +321,10 @@ def dot(fd, parent, annotation, node):
         attr.append("shape=box")
         lbl += "\\nto " + str(node.n_name)
 
+    elif isinstance(node, Metaclass):
+        attr.append("shape=none")
+        lbl += " of " + str(node.n_name)
+
     else:
         lbl = "TODO: " + lbl
         attr.append("fillcolor=yellow")

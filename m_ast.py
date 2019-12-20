@@ -539,3 +539,17 @@ class Function_Pointer(Expression):
 
     def __str__(self):
         return "@" + str(self.n_name)
+
+
+class Metaclass(Expression):
+    def __init__(self, t_mc, n_name):
+        super().__init__()
+        assert isinstance(t_mc, MATLAB_Token)
+        assert t_mc.kind == "METACLASS"
+        assert isinstance(n_name, Name)
+
+        self.t_mc   = t_mc
+        self.n_name = n_name
+
+    def __str__(self):
+        return "?" + str(self.n_name)
