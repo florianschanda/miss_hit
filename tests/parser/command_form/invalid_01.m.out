@@ -1,0 +1,4 @@
+In invalid_01.m, line 6
+|     foo+kitten; % semantic error (foo is function and missing input)
+|        ^ error: expected NEWLINE, found OPERATOR instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

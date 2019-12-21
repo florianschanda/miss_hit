@@ -1,3 +1,5 @@
+% (c) Copyright 2019 Florian Schanda
+
 function invalid_01()
     kitten = 12;
 
