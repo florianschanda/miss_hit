@@ -1,0 +1,4 @@
+In invalid_10.m, line 5
+|   x + 1  % ok, 6
+|     ^ error: expected NEWLINE, found OPERATOR instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
