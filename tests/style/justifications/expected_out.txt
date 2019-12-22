@@ -1,6 +1,6 @@
 === PLAIN MODE ===
 In test.m, line 7
-| sutff; # mh:ignore_style
+| sutff; % mh:ignore_style
 |        ^^^^^^^^^^^^^^^^^ warning: style justification does not apply
 In test.m, line 10
 |   potato ];

@@ -1,10 +1,10 @@
 % (c) Copyright 2019 Florian Schanda
 
-# This is wrong and the justification fixes it
-potato,  # mh:ignore_style
+% This is wrong and the justification fixes it
+potato,  % mh:ignore_style
 
-# Nothing wrong here and the justification is an issue
-sutff; # mh:ignore_style
+% Nothing wrong here and the justification is an issue
+sutff; % mh:ignore_style
 
 [ potato ... mh:ignore_style
   potato ];

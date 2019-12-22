@@ -7,7 +7,7 @@ end
 [a] ...
 == b;
 
-[a] # potato
+[a] % potato
 
 [a] ... potato
 = 5;

@@ -701,6 +701,8 @@ def analyze(mh, filename, rule_set, autofix, debug_parse):
     # Create lexer
 
     lexer = MATLAB_Lexer(mh, filename, encoding=encoding)
+    if cfg["octave"]:
+        lexer.set_octave_mode()
 
     # We're dealing with an empty file here. Lets just not do anything
 
@@ -803,11 +805,21 @@ def main():
     ap.add_argument('--html',
                     default=None,
                     help="Write report to given file as HTML")
-    ap.add_argument('--debug_parse',
+    ap.add_argument('--debug-parse',
                     default=False,
                     action="store_true",
                     help=("Attempt to parse. Note: This is highly incomplete"
                           " and is expected to not work."))
+
+    language_option = ap.add_argument_group("Language options")
+    language_option.add_argument("--octave",
+                                 default=False,
+                                 action="store_true",
+                                 help=("Enable support for the Octave"
+                                       " language. Note: This is highly"
+                                       " incomplete right now, only the"
+                                       " # comments are supported."))
+
     style_option = ap.add_argument_group("Rule options")
 
     # Add any parameters from rules

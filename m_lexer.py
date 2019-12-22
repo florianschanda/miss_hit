@@ -203,7 +203,7 @@ class MATLAB_Lexer(Token_Generator):
         # things will be returned as strings, except for line
         # continuations. Comments and newlines end command form.
 
-        self.comment_char = set("%#")
+        self.comment_char = frozenset("%")
         # Characters that start a line comment. MATLAB only uses %,
         # and Octave uses either.
         #
@@ -220,6 +220,12 @@ class MATLAB_Lexer(Token_Generator):
         # set, we don't do command_mode at all, because quite frankly
         # this concept is idiotic.
 
+        self.octave_mode = False
+        # If set to true, also deal with Octave's extensions to
+        # MATLAB.
+        #
+        # Note that this is highly incomplete right now.
+
         # pylint: disable=invalid-name
         self.cc = None
         self.nc = self.text[0] if len(self.text) > 0 else "\0"
@@ -229,6 +235,14 @@ class MATLAB_Lexer(Token_Generator):
 
         self.last_kind = None
         self.last_value = None
+
+    def set_octave_mode(self):
+        self.octave_mode = True
+        self.comment_char = frozenset("%#")
+
+    def set_config_file_mode(self):
+        self.config_file_mode = True
+        self.comment_char = frozenset("#")
 
     def correct_tabs(self, tabwidth):
         assert isinstance(tabwidth, int) and tabwidth >= 2

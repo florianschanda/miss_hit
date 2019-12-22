@@ -3,7 +3,7 @@ In test.m, line 5
 |  return;
 | ^ style: tab is not allowed [fixed]
 In test.m, line 8
-| # tabs in comments are not ok
+| % tabs in comments are not ok
 |                   ^ style: tab is not allowed [fixed]
 In test.m, line 12
 |  "a b"

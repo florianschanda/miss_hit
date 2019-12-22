@@ -33,6 +33,7 @@ CONFIG_FILENAME = "miss_hit.cfg"
 
 BASE_CONFIG = {
     "enable"           : True,
+    "octave"           : False,
     "copyright_entity" : set(),
     "exclude_dir"      : set(),
     "suppress_rule"    : set(),
@@ -74,7 +75,7 @@ class Config_Parser:
         self.filename = config_file
         self.dirname = os.path.dirname(config_file)
         self.lexer = MATLAB_Lexer(mh, self.filename)
-        self.lexer.config_file_mode = True
+        self.lexer.set_config_file_mode()
         self.mh = mh
 
         # pylint: disable=invalid-name
@@ -296,6 +297,8 @@ def build_config_tree(mh, defaults, cmdline_options):
             cfg["tab_width"] = cmdline_options.tab_width
         if cmdline_options.copyright_entity:
             cfg["copyright_entity"] = set(cmdline_options.copyright_entity)
+        if cmdline_options.octave:
+            cfg["octave"] = cmdline_options.octave
 
     def build(node, exclude=False):
         if CONFIG_TREE[node]["root"]:

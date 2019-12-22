@@ -1,9 +1,9 @@
 === PLAIN MODE ===
 In test.m, line 5
-| # This line is a bit too lengthy for this test.
+| % This line is a bit too lengthy for this test.
 |                                               ^^ style: line exceeds 45 characters
 In test.m, line 6
-| # This line is way out what is normally acceptable.
+| % This line is way out what is normally acceptable.
 |                                               ^^^^^^ style: line exceeds 45 characters
 MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
 

@@ -9,7 +9,7 @@ In test.m, line 5
 | potato = 2, 
 |            ^^ style: trailing whitespace [fixed]
 In test.m, line 6
-| kitten = 3,     # comment
+| kitten = 3,     % comment
 |           ^ style: lines must not end with a comma
 MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)
 

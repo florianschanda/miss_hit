@@ -565,16 +565,16 @@ In lexing_test.m, line 59
 | % cd is weird and needs special care
 |                                     ^ info: NEWLINE
 In lexing_test.m, line 60
-| cd ../foo/_bar # potato?
+| cd ../foo/_bar % potato?
 | ^^ info: [SL] IDENTIFIER
 In lexing_test.m, line 60
-| cd ../foo/_bar # potato?
+| cd ../foo/_bar % potato?
 |    ^^^^^^^^^^^ info: CARRAY
 In lexing_test.m, line 60
-| cd ../foo/_bar # potato?
+| cd ../foo/_bar % potato?
 |                ^^^^^^^^^ info: COMMENT
 In lexing_test.m, line 60
-| cd ../foo/_bar # potato?
+| cd ../foo/_bar % potato?
 |                         ^ info: NEWLINE
 In lexing_test.m, line 61
 | mkdir __potato?

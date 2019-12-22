@@ -102,19 +102,19 @@ In function.m, line 8
 | == b;
 |      ^ info: [S ] NEWLINE
 In function.m, line 10
-| [a] # potato
+| [a] % potato
 | ^ info: [SL] M_BRA
 In function.m, line 10
-| [a] # potato
+| [a] % potato
 |  ^ info: IDENTIFIER
 In function.m, line 10
-| [a] # potato
+| [a] % potato
 |   ^ info: M_KET
 In function.m, line 10
-| [a] # potato
+| [a] % potato
 |     ^^^^^^^^ info: COMMENT
 In function.m, line 10
-| [a] # potato
+| [a] % potato
 |             ^ info: NEWLINE
 In function.m, line 12
 | [a] ... potato

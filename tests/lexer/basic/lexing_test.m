@@ -57,5 +57,5 @@ a.b
 ['foo' '1]1' ]'
 
 % cd is weird and needs special care
-cd ../foo/_bar # potato?
+cd ../foo/_bar % potato?
 mkdir __potato?
