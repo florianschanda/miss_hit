@@ -637,7 +637,9 @@ class MATLAB_Lexer(Token_Generator):
                         # Single or multi-char operators. We need to
                         # lookahead by 1 here.
                         if n + 1 < len(self.text):
+                            # pylint: disable=invalid-name
                             nc = self.text[n + 1]
+                            # pylint: enable=invalid-name
                         else:
                             break
 
