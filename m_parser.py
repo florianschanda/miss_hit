@@ -757,6 +757,16 @@ class MATLAB_Parser:
 
     # 2. Transpose (.'), power (.^), complex conjugate transpose ('),
     #    matrix power (^)
+    #
+    # 3. Power with unary minus (.^-), unary plus (.^+), or logical
+    #    negation (.^~) as well as matrix power with unary minus (^-), unary
+    #    plus (^+), or logical negation (^~).
+    #
+    #    Note: Although most operators work from left to right, the
+    #    operators (^-), (.^-), (^+), (.^+), (^~), and (.^~) work from
+    #    second from the right to left. It is recommended that you use
+    #    parentheses to explicitly specify the intended precedence of
+    #    statements containing these operator combinations.
     def parse_precedence_2(self):
         # In Octave chaining ^ is left associative, i.e. 2 ^ 3 ^ 2 ==
         # (2 ^ 3) ^ 2 == 64.
@@ -769,24 +779,22 @@ class MATLAB_Parser:
             self.match("OPERATOR")
             t_op = self.ct
             if t_op.value() in ("^", ".^"):
+                unary_chain = []
+                while self.peek("OPERATOR") and \
+                      self.nt.value() in ("-", "+", "~"):
+                    self.match("OPERATOR")
+                    unary_chain.append(self.ct)
                 rhs = self.parse_precedence_1()
+                while unary_chain:
+                    rhs = Unary_Operation(3, unary_chain.pop(), rhs)
                 rv = Binary_Operation(2, t_op, rv, rhs)
             else:
                 rv = Unary_Operation(2, t_op, rv)
 
         return rv
 
-    # 3. Power with unary minus (.^-), unary plus (.^+), or logical
-    #    negation (.^~) as well as matrix power with unary minus (^-), unary
-    #    plus (^+), or logical negation (^~).
-    #
-    #    Note: Although most operators work from left to right, the
-    #    operators (^-), (.^-), (^+), (.^+), (^~), and (.^~) work from
-    #    second from the right to left. It is recommended that you use
-    #    parentheses to explicitly specify the intended precedence of
-    #    statements containing these operator combinations.
     def parse_precedence_3(self):
-        # TODO: actually implement this
+        # This is dealt with as a special case in (2).
         return self.parse_precedence_2()
 
     # 4. Unary plus (+), unary minus (-), logical negation (~)
