@@ -1035,6 +1035,8 @@ class MATLAB_Parser:
         self.match("KEYWORD", "if")
         t_kw = self.ct
         n_expr = self.parse_expression()
+        if self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
         self.match("NEWLINE")
         n_body = self.parse_delimited_input()
         actions.append((t_kw, n_expr, n_body))
@@ -1043,6 +1045,8 @@ class MATLAB_Parser:
             self.match("KEYWORD", "elseif")
             t_kw = self.ct
             n_expr = self.parse_expression()
+            if self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
             self.match("NEWLINE")
             n_body = self.parse_delimited_input()
             actions.append((t_kw, n_expr, n_body))
@@ -1050,11 +1054,15 @@ class MATLAB_Parser:
         if self.peek("KEYWORD", "else"):
             self.match("KEYWORD", "else")
             t_kw = self.ct
+            if self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
             self.match("NEWLINE")
             n_body = self.parse_delimited_input()
             actions.append((t_kw, None, n_body))
 
         self.match("KEYWORD", "end")
+        if self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
         self.match("NEWLINE")
 
         return If_Statement(actions)
