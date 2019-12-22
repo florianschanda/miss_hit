@@ -294,6 +294,10 @@ def dot(fd, parent, annotation, node):
         lbl += "\\n" + str(node)
         attr.append("shape=none")
 
+    elif isinstance(node, Char_Array_Literal):
+        lbl += "\\n" + str(node)
+        attr.append("shape=none")
+
     elif isinstance(node, Number_Literal):
         lbl += "\\n" + str(node)
         attr.append("shape=none")
@@ -328,12 +332,19 @@ def dot(fd, parent, annotation, node):
         attr.append("shape=none")
         lbl += " of " + str(node.n_name)
 
+    elif isinstance(node, Function_Call):
+        lbl = "Call to %s" % str(node.n_name)
+        if node.command_form:
+            lbl += " in command form"
+        for n, n_arg in enumerate(node.l_args, 1):
+            dot(fd, node, "arg %u" % n, n_arg)
+
     else:
         lbl = "TODO: " + lbl
         attr.append("fillcolor=yellow")
         attr.append("style=filled")
 
-    attr.append("label=\"%s\"" % lbl)
+    attr.append("label=\"%s\"" % lbl.replace("\"", "\\\""))
     fd.write("  %u [%s];\n" % (node.uid, ",".join(attr)))
 
     if parent:

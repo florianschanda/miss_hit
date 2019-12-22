@@ -253,6 +253,30 @@ class Cell_Expression(Expression):
         return "{" + "; ".join(rows) + "}"
 
 
+class Function_Call(Expression):
+    def __init__(self, n_name, l_args, command_form=False):
+        super().__init__()
+        assert isinstance(command_form, bool)
+        assert isinstance(n_name, Name)
+        assert isinstance(l_args, list)
+        for n_arg in l_args:
+            assert isinstance(n_arg, Expression)
+            if command_form:
+                assert isinstance(n_arg, Char_Array_Literal)
+
+        self.command_form = command_form
+        self.n_name = n_name
+        self.l_args = l_args
+
+    def __str__(self):
+        if self.command_form:
+            return "%s %s" % (self.n_name,
+                              " ".join(map(str, self.l_args)))
+        else:
+            return "%s(%s)" % (self.n_name,
+                               ", ".join(map(str, self.l_args)))
+
+
 class Simple_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_range, n_body):
         super().__init__()
@@ -486,7 +510,7 @@ class Char_Array_Literal(Literal):
         self.t_string = t_string
 
     def __str__(self):
-        return self.t_string.raw_text
+        return "'" + self.t_string.value() + "'"
 
 
 class String_Literal(Literal):
@@ -498,7 +522,7 @@ class String_Literal(Literal):
         self.t_string = t_string
 
     def __str__(self):
-        return self.t_string.raw_text
+        return '"' + self.t_string.value() + '"'
 
 
 class Unary_Operation(Expression):

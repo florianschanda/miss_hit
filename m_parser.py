@@ -618,48 +618,74 @@ class MATLAB_Parser:
                               "expected for|if|global|while|return|switch|"
                               "break|continue|import|try|persistent,"
                               " found %s instead" % self.nt.value())
-
+        elif self.peek("A_BRA"):
+            return self.parse_list_assignment()
         else:
-            return self.parse_assignment_or_call()
+            # This can be one of three things
+            # other_stmt ::= reference "=" expr # simple assignment
+            #              | reference CARRAY+  # command form
+            #              | expression         # naked expression, could be
+            #                                   # a call
+            rv = self.parse_expression()
 
-    def parse_assignment_or_call(self):
-        # Assignment
-        #   reference "=" expr                   '<ref> = <expr>'
-        #   s_assignee_matrix "=" expr           '[<ref>] = <expr>'
-        #   m_assignee_matrix "=" reference      '[<ref>, <ref>] = <ref>'
-        # Call
-        #   potato();                            '<ref>'
-        #
-        # TODO: need to make sure the call case has brackets.
+            if self.peek("ASSIGNMENT"):
+                self.match("ASSIGNMENT")
+                t_eq = self.ct
+                rhs = self.parse_expression()
+                rv = Simple_Assignment_Statement(t_eq, rv, rhs)
 
-        lhs = []
-        if self.peek("A_BRA"):
-            self.match("A_BRA")
-            while True:
-                lhs.append(self.parse_name(allow_void=True))
-                if self.peek("COMMA"):
-                    self.match("COMMA")
-                else:
-                    break
-            self.match("A_KET")
-        else:
-            lhs.append(self.parse_name(allow_void=False))
+            elif self.peek("CARRAY"):
+                # Sanity check that the function is a simple name
+                if not isinstance(rv, (Identifier, Selection)):
+                    self.mh.error(self.ct.location,
+                                  "command form requires a simple (dotted)"
+                                  " identifier; found %s instead" %
+                                  rv.__class__.__name__)
 
-        # This is the call case
-        if len(lhs) == 1 and not self.peek("ASSIGNMENT"):
+                arg_list = []
+                while self.peek("CARRAY"):
+                    self.match("CARRAY")
+                    arg_list.append(Char_Array_Literal(self.ct))
+                rv = Function_Call(rv, arg_list, command_form=True)
+                rv = Naked_Expression_Statement(rv)
+
+            else:
+                rv = Naked_Expression_Statement(rv)
+
             if self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
+                if self.peek("NEWLINE"):
+                    self.match("NEWLINE")
+            elif self.peek("COLON"):
+                # TODO: Flag style issue
+                self.match("COLON")
                 if self.peek("NEWLINE"):
                     self.match("NEWLINE")
             else:
                 # TODO: Flag style issue
                 self.match("NEWLINE")
-            return Naked_Expression_Statement(lhs[0])
+
+            return rv
+
+    def parse_list_assignment(self):
+        # Assignment
+        #   s_assignee_matrix "=" expr           '[<ref>] = <expr>'
+        #   m_assignee_matrix "=" reference      '[<ref>, <ref>] = <ref>'
+
+        lhs = []
+
+        self.match("A_BRA")
+        while True:
+            lhs.append(self.parse_name(allow_void=True))
+            if self.peek("COMMA"):
+                self.match("COMMA")
+            else:
+                break
+        self.match("A_KET")
 
         self.match("ASSIGNMENT")
         t_eq = self.ct
 
-        assert len(lhs) >= 1
         if len(lhs) == 1:
             # We've got something like
             #    [x] = <expr>

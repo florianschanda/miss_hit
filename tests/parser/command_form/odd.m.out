@@ -1,4 +1,4 @@
 In odd.m, line 5
 |   wibble a' 'b c  % wibble('a b', 'c')
-|          ^^ error: expected NEWLINE, found CARRAY instead
+|                                 ^ error: expected NEWLINE, found COMMA instead
 MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

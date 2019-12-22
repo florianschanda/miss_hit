@@ -1,4 +1,1 @@
-In invalid_07.m, line 5
-|     potato + kitten % var, but unknwon
-|            ^ error: expected NEWLINE, found OPERATOR instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
