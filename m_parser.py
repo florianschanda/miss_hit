@@ -39,11 +39,6 @@ from m_ast import *
 IGNORED_TOKENS = frozenset(["COMMENT"])
 
 
-class NIY(ICE):
-    def __init__(self):
-        super().__init__("not implemented yet")
-
-
 # Operator precedence as of MATLAB 2019b
 # https://www.mathworks.com/help/matlab/matlab_prog/operator-precedence.html
 #
@@ -503,7 +498,23 @@ class MATLAB_Parser:
         self.match("KEYWORD", "end")
         self.match("NEWLINE")
 
-        return []
+        return enums
+
+    def parse_class_events(self):
+        # Using the syntax described in
+        # https://www.mathworks.com/help/matlab/matlab_oop/events-and-listeners.html
+        self.match("KEYWORD", "events")
+        self.match("NEWLINE")
+
+        events = []
+        while not self.peek("KEYWORD", "end"):
+            name = self.parse_identifier(allow_void=False)
+            self.match("NEWLINE")
+
+        self.match("KEYWORD", "end")
+        self.match("NEWLINE")
+
+        return events
 
     def parse_classdef(self):
         # Using the syntax described in
@@ -544,7 +555,7 @@ class MATLAB_Parser:
             elif self.peek("KEYWORD", "methods"):
                 methods += self.parse_class_methods()
             elif self.peek("KEYWORD", "events"):
-                raise NIY()
+                events += self.parse_class_events()
             elif self.peek("KEYWORD", "enumeration"):
                 enumeration += self.parse_enumeration()
             elif self.peek("KEYWORD", "end"):
