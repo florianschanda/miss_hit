@@ -1,7 +1,7 @@
 simple_9.m: lexed OK
 In simple_9.m, line 1
 | [~, data{k}] = potato
-| ^ info: A_BRA
+| ^ info: [SL] A_BRA
 In simple_9.m, line 1
 | [~, data{k}] = potato
 |  ^ info: OPERATOR
@@ -34,7 +34,7 @@ In simple_9.m, line 1
 |                      ^ info: NEWLINE
 In simple_9.m, line 2
 | [~ data{k}] = potato
-| ^ info: A_BRA
+| ^ info: [SL] A_BRA
 In simple_9.m, line 2
 | [~ data{k}] = potato
 |  ^ info: OPERATOR

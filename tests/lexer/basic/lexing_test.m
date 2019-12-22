@@ -6,7 +6,10 @@
 ...   This is really a `comment'
 
 % Identifier
-potato kitten99 miss_hit p0tat0
+potato
+kitten99
+miss_hit
+p0tat0
 
 % Number
 1 1.1 .1

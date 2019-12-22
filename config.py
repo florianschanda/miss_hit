@@ -74,6 +74,7 @@ class Config_Parser:
         self.filename = config_file
         self.dirname = os.path.dirname(config_file)
         self.lexer = MATLAB_Lexer(mh, self.filename)
+        self.lexer.config_file_mode = True
         self.mh = mh
 
         # pylint: disable=invalid-name

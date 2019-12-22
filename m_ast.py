@@ -477,6 +477,18 @@ class Number_Literal(Literal):
         return self.t_value.value()
 
 
+class Char_Array_Literal(Literal):
+    def __init__(self, t_string):
+        super().__init__()
+        assert isinstance(t_string, MATLAB_Token)
+        assert t_string.kind == "CARRAY"
+
+        self.t_string = t_string
+
+    def __str__(self):
+        return self.t_string.raw_text
+
+
 class String_Literal(Literal):
     def __init__(self, t_string):
         super().__init__()

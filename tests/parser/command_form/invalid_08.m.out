@@ -1,4 +1,4 @@
 In invalid_08.m, line 4
 |   cd ../...
-|      ^^^^^^ error: expected NEWLINE, found DIRECTORY instead
+|      ^^^ error: expected NEWLINE, found CARRAY instead
 MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

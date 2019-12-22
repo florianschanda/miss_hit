@@ -1,0 +1,74 @@
+commands.m: lexed OK
+In commands.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In commands.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+|                                     ^ info: NEWLINE
+In commands.m, line 2
+| foo bar baz
+| ^^^ info: [SL] IDENTIFIER
+In commands.m, line 2
+| foo bar baz
+|     ^^^ info: CARRAY
+In commands.m, line 2
+| foo bar baz
+|         ^^^ info: CARRAY
+In commands.m, line 2
+| foo bar baz
+|            ^ info: NEWLINE
+In commands.m, line 3
+| foo +1
+| ^^^ info: [SL] IDENTIFIER
+In commands.m, line 3
+| foo +1
+|     ^^ info: CARRAY
+In commands.m, line 3
+| foo +1
+|       ^ info: NEWLINE
+In commands.m, line 4
+| cd ../x
+| ^^ info: [SL] IDENTIFIER
+In commands.m, line 4
+| cd ../x
+|    ^^^^ info: CARRAY
+In commands.m, line 4
+| cd ../x
+|        ^ info: NEWLINE
+In commands.m, line 5
+| foo ./1
+| ^^^ info: [SL] IDENTIFIER
+In commands.m, line 5
+| foo ./1
+|     ^^^ info: CARRAY
+In commands.m, line 5
+| foo ./1
+|        ^ info: NEWLINE
+In commands.m, line 6
+| foo bar %baz
+| ^^^ info: [SL] IDENTIFIER
+In commands.m, line 6
+| foo bar %baz
+|     ^^^ info: CARRAY
+In commands.m, line 6
+| foo bar %baz
+|         ^^^^ info: COMMENT
+In commands.m, line 6
+| foo bar %baz
+|             ^ info: NEWLINE
+In commands.m, line 7
+| foo bar...baz
+| ^^^ info: [SL] IDENTIFIER
+In commands.m, line 7
+| foo bar...baz
+|     ^^^ info: CARRAY
+In commands.m, line 7
+| foo bar...baz
+|        ^^^^^^^ info: CONTINUATION
+In commands.m, line 8
+|     bork
+|     ^^^^ info: [ L] CARRAY
+In commands.m, line 8
+|     bork
+|         ^ info: NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

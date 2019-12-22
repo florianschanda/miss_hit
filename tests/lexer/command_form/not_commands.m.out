@@ -1,0 +1,83 @@
+not_commands.m: lexed OK
+In not_commands.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In not_commands.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+|                                     ^ info: NEWLINE
+In not_commands.m, line 2
+| foo + 1
+| ^^^ info: [SL] IDENTIFIER
+In not_commands.m, line 2
+| foo + 1
+|     ^ info: OPERATOR
+In not_commands.m, line 2
+| foo + 1
+|       ^ info: NUMBER
+In not_commands.m, line 2
+| foo + 1
+|        ^ info: NEWLINE
+In not_commands.m, line 3
+| foo = 1
+| ^^^ info: [SL] IDENTIFIER
+In not_commands.m, line 3
+| foo = 1
+|     ^ info: ASSIGNMENT
+In not_commands.m, line 3
+| foo = 1
+|       ^ info: NUMBER
+In not_commands.m, line 3
+| foo = 1
+|        ^ info: NEWLINE
+In not_commands.m, line 4
+| foo =1
+| ^^^ info: [SL] IDENTIFIER
+In not_commands.m, line 4
+| foo =1
+|     ^ info: ASSIGNMENT
+In not_commands.m, line 4
+| foo =1
+|      ^ info: NUMBER
+In not_commands.m, line 4
+| foo =1
+|       ^ info: NEWLINE
+In not_commands.m, line 5
+| foo(1)
+| ^^^ info: [SL] IDENTIFIER
+In not_commands.m, line 5
+| foo(1)
+|    ^ info: BRA
+In not_commands.m, line 5
+| foo(1)
+|     ^ info: NUMBER
+In not_commands.m, line 5
+| foo(1)
+|      ^ info: KET
+In not_commands.m, line 5
+| foo(1)
+|       ^ info: NEWLINE
+In not_commands.m, line 6
+| foo ./ 1
+| ^^^ info: [SL] IDENTIFIER
+In not_commands.m, line 6
+| foo ./ 1
+|     ^^ info: OPERATOR
+In not_commands.m, line 6
+| foo ./ 1
+|        ^ info: NUMBER
+In not_commands.m, line 6
+| foo ./ 1
+|         ^ info: NEWLINE
+In not_commands.m, line 7
+| foo./1
+| ^^^ info: [SL] IDENTIFIER
+In not_commands.m, line 7
+| foo./1
+|    ^^ info: OPERATOR
+In not_commands.m, line 7
+| foo./1
+|      ^ info: NUMBER
+In not_commands.m, line 7
+| foo./1
+|       ^ info: NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

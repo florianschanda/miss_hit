@@ -1,579 +1,588 @@
 lexing_test.m: lexed OK
 In lexing_test.m, line 1
 | %
-| ^ info: COMMENT
+| ^ info: [SL] COMMENT
 In lexing_test.m, line 1
 | %
 |  ^ info: NEWLINE
 In lexing_test.m, line 2
 | % This is a comment, and then a newline
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
 In lexing_test.m, line 2
 | % This is a comment, and then a newline
 |                                        ^ info: NEWLINE
 In lexing_test.m, line 4
 | % This is a continuation
-| ^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
 In lexing_test.m, line 4
 | % This is a continuation
 |                         ^ info: NEWLINE
 In lexing_test.m, line 5
 | ...
-| ^^^^ info: CONTINUATION
+| ^^^^ info: [SL] CONTINUATION
 In lexing_test.m, line 6
 | ...   This is really a `comment'
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: CONTINUATION
-lexing_test.m:7:0: info: NEWLINE
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [ L] CONTINUATION
+lexing_test.m:7:0: info: [ L] NEWLINE
 In lexing_test.m, line 8
 | % Identifier
-| ^^^^^^^^^^^^ info: COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT
 In lexing_test.m, line 8
 | % Identifier
 |             ^ info: NEWLINE
 In lexing_test.m, line 9
-| potato kitten99 miss_hit p0tat0
-| ^^^^^^ info: IDENTIFIER
+| potato
+| ^^^^^^ info: [SL] IDENTIFIER
 In lexing_test.m, line 9
-| potato kitten99 miss_hit p0tat0
-|        ^^^^^^^^ info: IDENTIFIER
-In lexing_test.m, line 9
-| potato kitten99 miss_hit p0tat0
-|                 ^^^^^^^^ info: IDENTIFIER
-In lexing_test.m, line 9
-| potato kitten99 miss_hit p0tat0
-|                          ^^^^^^ info: IDENTIFIER
-In lexing_test.m, line 9
-| potato kitten99 miss_hit p0tat0
-|                                ^ info: NEWLINE
+| potato
+|       ^ info: NEWLINE
+In lexing_test.m, line 10
+| kitten99
+| ^^^^^^^^ info: [SL] IDENTIFIER
+In lexing_test.m, line 10
+| kitten99
+|         ^ info: NEWLINE
 In lexing_test.m, line 11
-| % Number
-| ^^^^^^^^ info: COMMENT
+| miss_hit
+| ^^^^^^^^ info: [SL] IDENTIFIER
 In lexing_test.m, line 11
-| % Number
+| miss_hit
 |         ^ info: NEWLINE
 In lexing_test.m, line 12
-| 1 1.1 .1
-| ^ info: NUMBER
+| p0tat0
+| ^^^^^^ info: [SL] IDENTIFIER
 In lexing_test.m, line 12
+| p0tat0
+|       ^ info: NEWLINE
+In lexing_test.m, line 14
+| % Number
+| ^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 14
+| % Number
+|         ^ info: NEWLINE
+In lexing_test.m, line 15
+| 1 1.1 .1
+| ^ info: [SL] NUMBER
+In lexing_test.m, line 15
 | 1 1.1 .1
 |   ^^^ info: NUMBER
-In lexing_test.m, line 12
+In lexing_test.m, line 15
 | 1 1.1 .1
 |       ^^ info: NUMBER
-In lexing_test.m, line 12
+In lexing_test.m, line 15
 | 1 1.1 .1
 |         ^ info: NEWLINE
-In lexing_test.m, line 13
+In lexing_test.m, line 16
 | 1.1e2
-| ^^^^^ info: NUMBER
-In lexing_test.m, line 13
+| ^^^^^ info: [SL] NUMBER
+In lexing_test.m, line 16
 | 1.1e2
 |      ^ info: NEWLINE
-In lexing_test.m, line 14
-| 1.1e+2
-| ^^^^^^ info: NUMBER
-In lexing_test.m, line 14
-| 1.1e+2
-|       ^ info: NEWLINE
-In lexing_test.m, line 15
-| 1.1e-2
-| ^^^^^^ info: NUMBER
-In lexing_test.m, line 15
-| 1.1e-2
-|       ^ info: NEWLINE
 In lexing_test.m, line 17
+| 1.1e+2
+| ^^^^^^ info: [SL] NUMBER
+In lexing_test.m, line 17
+| 1.1e+2
+|       ^ info: NEWLINE
+In lexing_test.m, line 18
+| 1.1e-2
+| ^^^^^^ info: [SL] NUMBER
+In lexing_test.m, line 18
+| 1.1e-2
+|       ^ info: NEWLINE
+In lexing_test.m, line 20
 | % Keyword
-| ^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 17
+| ^^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 20
 | % Keyword
 |          ^ info: NEWLINE
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
-| ^^^^^ info: KEYWORD
-In lexing_test.m, line 18
+| ^^^^^ info: [SL] KEYWORD
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |       ^^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |            ^^^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |                  ^^^^^^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |                           ^^^^^^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |                                    ^^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |                                         ^^^^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |                                                ^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |                                                    ^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |                                                        ^^^^^^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |                                                                 ^^^^^^ info: KEYWORD
-In lexing_test.m, line 18
+In lexing_test.m, line 21
 | break case catch classdef continue else elseif end for function global
 |                                                                       ^ info: NEWLINE
-In lexing_test.m, line 19
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
-| ^^ info: KEYWORD
-In lexing_test.m, line 19
+| ^^ info: [SL] KEYWORD
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |    ^^^^^^^^^ info: KEYWORD
-In lexing_test.m, line 19
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |              ^^^^^^ info: KEYWORD
-In lexing_test.m, line 19
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |                     ^^^^^^^^^^ info: KEYWORD
-In lexing_test.m, line 19
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |                                ^^^^^^ info: KEYWORD
-In lexing_test.m, line 19
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |                                       ^^^^ info: KEYWORD
-In lexing_test.m, line 19
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |                                            ^^^^^^ info: KEYWORD
-In lexing_test.m, line 19
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |                                                   ^^^ info: KEYWORD
-In lexing_test.m, line 19
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |                                                       ^^^^^ info: KEYWORD
-In lexing_test.m, line 19
+In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |                                                            ^ info: NEWLINE
-In lexing_test.m, line 21
+In lexing_test.m, line 24
 | % Simple operators
-| ^^^^^^^^^^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 21
+| ^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 24
 | % Simple operators
 |                   ^ info: NEWLINE
-In lexing_test.m, line 22
+In lexing_test.m, line 25
 | < <= > >= == ~=
-| ^ info: OPERATOR
-In lexing_test.m, line 22
+| ^ info: [SL] OPERATOR
+In lexing_test.m, line 25
 | < <= > >= == ~=
 |   ^^ info: OPERATOR
-In lexing_test.m, line 22
+In lexing_test.m, line 25
 | < <= > >= == ~=
 |      ^ info: OPERATOR
-In lexing_test.m, line 22
+In lexing_test.m, line 25
 | < <= > >= == ~=
 |        ^^ info: OPERATOR
-In lexing_test.m, line 22
+In lexing_test.m, line 25
 | < <= > >= == ~=
 |           ^^ info: OPERATOR
-In lexing_test.m, line 22
+In lexing_test.m, line 25
 | < <= > >= == ~=
 |              ^^ info: OPERATOR
-In lexing_test.m, line 22
+In lexing_test.m, line 25
 | < <= > >= == ~=
 |                ^ info: NEWLINE
-In lexing_test.m, line 23
+In lexing_test.m, line 26
 | + - * / ~ ^ \
-| ^ info: OPERATOR
-In lexing_test.m, line 23
+| ^ info: [SL] OPERATOR
+In lexing_test.m, line 26
 | + - * / ~ ^ \
 |   ^ info: OPERATOR
-In lexing_test.m, line 23
+In lexing_test.m, line 26
 | + - * / ~ ^ \
 |     ^ info: OPERATOR
-In lexing_test.m, line 23
+In lexing_test.m, line 26
 | + - * / ~ ^ \
 |       ^ info: OPERATOR
-In lexing_test.m, line 23
+In lexing_test.m, line 26
 | + - * / ~ ^ \
 |         ^ info: OPERATOR
-In lexing_test.m, line 23
+In lexing_test.m, line 26
 | + - * / ~ ^ \
 |           ^ info: OPERATOR
-In lexing_test.m, line 23
+In lexing_test.m, line 26
 | + - * / ~ ^ \
 |             ^ info: OPERATOR
-In lexing_test.m, line 23
+In lexing_test.m, line 26
 | + - * / ~ ^ \
 |              ^ info: NEWLINE
-In lexing_test.m, line 24
+In lexing_test.m, line 27
 | & && | ||
-| ^ info: OPERATOR
-In lexing_test.m, line 24
+| ^ info: [SL] OPERATOR
+In lexing_test.m, line 27
 | & && | ||
 |   ^^ info: OPERATOR
-In lexing_test.m, line 24
+In lexing_test.m, line 27
 | & && | ||
 |      ^ info: OPERATOR
-In lexing_test.m, line 24
+In lexing_test.m, line 27
 | & && | ||
 |        ^^ info: OPERATOR
-In lexing_test.m, line 24
+In lexing_test.m, line 27
 | & && | ||
 |          ^ info: NEWLINE
-In lexing_test.m, line 25
+In lexing_test.m, line 28
 | .* ./ .\ .^ .'
-| ^^ info: OPERATOR
-In lexing_test.m, line 25
+| ^^ info: [SL] OPERATOR
+In lexing_test.m, line 28
 | .* ./ .\ .^ .'
 |    ^^ info: OPERATOR
-In lexing_test.m, line 25
+In lexing_test.m, line 28
 | .* ./ .\ .^ .'
 |       ^^ info: OPERATOR
-In lexing_test.m, line 25
+In lexing_test.m, line 28
 | .* ./ .\ .^ .'
 |          ^^ info: OPERATOR
-In lexing_test.m, line 25
+In lexing_test.m, line 28
 | .* ./ .\ .^ .'
 |             ^^ info: OPERATOR
-In lexing_test.m, line 25
+In lexing_test.m, line 28
 | .* ./ .\ .^ .'
 |               ^ info: NEWLINE
-In lexing_test.m, line 27
+In lexing_test.m, line 30
 | % The transpose operator is special, since lexing is context sensitive
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 27
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 30
 | % The transpose operator is special, since lexing is context sensitive
 |                                                                       ^ info: NEWLINE
-In lexing_test.m, line 28
+In lexing_test.m, line 31
 | 1'
-| ^ info: NUMBER
-In lexing_test.m, line 28
+| ^ info: [SL] NUMBER
+In lexing_test.m, line 31
 | 1'
 |  ^ info: OPERATOR
-In lexing_test.m, line 28
+In lexing_test.m, line 31
 | 1'
 |   ^ info: NEWLINE
-In lexing_test.m, line 29
+In lexing_test.m, line 32
 | potato''
-| ^^^^^^ info: IDENTIFIER
-In lexing_test.m, line 29
+| ^^^^^^ info: [SL] IDENTIFIER
+In lexing_test.m, line 32
 | potato''
 |       ^ info: OPERATOR
-In lexing_test.m, line 29
+In lexing_test.m, line 32
 | potato''
 |        ^ info: OPERATOR
-In lexing_test.m, line 29
+In lexing_test.m, line 32
 | potato''
 |         ^ info: NEWLINE
-In lexing_test.m, line 31
+In lexing_test.m, line 34
 | % In a ' string '' is the single quote
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 31
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 34
 | % In a ' string '' is the single quote
 |                                       ^ info: NEWLINE
-In lexing_test.m, line 32
+In lexing_test.m, line 35
 | 'potato'''
-| ^^^^^^^^^^ info: STRING
-In lexing_test.m, line 32
+| ^^^^^^^^^^ info: [SL] CARRAY
+In lexing_test.m, line 35
 | 'potato'''
 |           ^ info: NEWLINE
-In lexing_test.m, line 33
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
-| ^ info: M_BRA
-In lexing_test.m, line 33
+| ^ info: [SL] M_BRA
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
 |  ^ info: IDENTIFIER
-In lexing_test.m, line 33
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
 |   ^ info: COMMA
-In lexing_test.m, line 33
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
-|     ^^^^ info: STRING
-In lexing_test.m, line 33
+|     ^^^^ info: CARRAY
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
 |         ^ info: COMMA
-In lexing_test.m, line 33
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
 |           ^ info: IDENTIFIER
-In lexing_test.m, line 33
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
 |            ^ info: COMMA
-In lexing_test.m, line 33
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
-|              ^^^^^ info: STRING
-In lexing_test.m, line 33
+|              ^^^^^ info: CARRAY
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
 |                   ^ info: M_KET
-In lexing_test.m, line 33
+In lexing_test.m, line 36
 | [a, '''', b, ''',']
 |                    ^ info: NEWLINE
-In lexing_test.m, line 35
+In lexing_test.m, line 38
 | % Punctiation
-| ^^^^^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 35
+| ^^^^^^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 38
 | % Punctiation
 |              ^ info: NEWLINE
-In lexing_test.m, line 36
+In lexing_test.m, line 39
 | ,;:()[]{}
-| ^ info: COMMA
-In lexing_test.m, line 36
+| ^ info: [SL] COMMA
+In lexing_test.m, line 39
 | ,;:()[]{}
-|  ^ info: SEMICOLON
-In lexing_test.m, line 36
+|  ^ info: [S ] SEMICOLON
+In lexing_test.m, line 39
 | ,;:()[]{}
-|   ^ info: COLON
-In lexing_test.m, line 36
+|   ^ info: [S ] COLON
+In lexing_test.m, line 39
 | ,;:()[]{}
 |    ^ info: BRA
-In lexing_test.m, line 36
+In lexing_test.m, line 39
 | ,;:()[]{}
 |     ^ info: KET
-In lexing_test.m, line 36
+In lexing_test.m, line 39
 | ,;:()[]{}
 |      ^ info: M_BRA
-In lexing_test.m, line 36
+In lexing_test.m, line 39
 | ,;:()[]{}
 |       ^ info: M_KET
-In lexing_test.m, line 36
+In lexing_test.m, line 39
 | ,;:()[]{}
 |        ^ info: C_BRA
-In lexing_test.m, line 36
+In lexing_test.m, line 39
 | ,;:()[]{}
 |         ^ info: C_KET
-In lexing_test.m, line 36
+In lexing_test.m, line 39
 | ,;:()[]{}
 |          ^ info: NEWLINE
-In lexing_test.m, line 37
+In lexing_test.m, line 40
 | a.b
-| ^ info: IDENTIFIER
-In lexing_test.m, line 37
+| ^ info: [SL] IDENTIFIER
+In lexing_test.m, line 40
 | a.b
 |  ^ info: SELECTION
-In lexing_test.m, line 37
+In lexing_test.m, line 40
 | a.b
 |   ^ info: IDENTIFIER
-In lexing_test.m, line 37
+In lexing_test.m, line 40
 | a.b
 |    ^ info: NEWLINE
-In lexing_test.m, line 38
+In lexing_test.m, line 41
 | @?!
-| ^ info: AT
-In lexing_test.m, line 38
+| ^ info: [SL] AT
+In lexing_test.m, line 41
 | @?!
 |  ^ info: METACLASS
-In lexing_test.m, line 38
+In lexing_test.m, line 41
 | @?!
 |   ^ info: BANG
-In lexing_test.m, line 38
+In lexing_test.m, line 41
 | @?!
 |    ^ info: NEWLINE
-In lexing_test.m, line 40
+In lexing_test.m, line 43
 | % Assignment
-| ^^^^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 40
+| ^^^^^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 43
 | % Assignment
 |             ^ info: NEWLINE
-In lexing_test.m, line 41
+In lexing_test.m, line 44
 | =
-| ^ info: ASSIGNMENT
-In lexing_test.m, line 41
+| ^ info: [SL] ASSIGNMENT
+In lexing_test.m, line 44
 | =
 |  ^ info: NEWLINE
-In lexing_test.m, line 43
+In lexing_test.m, line 46
 | % Strings, again the single quote is super special
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 43
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 46
 | % Strings, again the single quote is super special
 |                                                   ^ info: NEWLINE
-In lexing_test.m, line 44
+In lexing_test.m, line 47
 | 'potato'
-| ^^^^^^^^ info: STRING
-In lexing_test.m, line 44
+| ^^^^^^^^ info: [SL] CARRAY
+In lexing_test.m, line 47
 | 'potato'
 |         ^ info: NEWLINE
-In lexing_test.m, line 45
+In lexing_test.m, line 48
 | ''
-| ^^ info: STRING
-In lexing_test.m, line 45
+| ^^ info: [SL] CARRAY
+In lexing_test.m, line 48
 | ''
 |   ^ info: NEWLINE
-In lexing_test.m, line 47
+In lexing_test.m, line 50
 | % Some fun constructs that will make you really appreciate the language
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 47
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 50
 | % Some fun constructs that will make you really appreciate the language
 |                                                                        ^ info: NEWLINE
-In lexing_test.m, line 48
+In lexing_test.m, line 51
 | [1+1]
-| ^ info: M_BRA
-In lexing_test.m, line 48
+| ^ info: [SL] M_BRA
+In lexing_test.m, line 51
 | [1+1]
 |  ^ info: NUMBER
-In lexing_test.m, line 48
+In lexing_test.m, line 51
 | [1+1]
 |   ^ info: OPERATOR
-In lexing_test.m, line 48
+In lexing_test.m, line 51
 | [1+1]
 |    ^ info: NUMBER
-In lexing_test.m, line 48
+In lexing_test.m, line 51
 | [1+1]
 |     ^ info: M_KET
-In lexing_test.m, line 48
+In lexing_test.m, line 51
 | [1+1]
 |      ^ info: NEWLINE
-In lexing_test.m, line 49
+In lexing_test.m, line 52
 | [1 +1]
-| ^ info: M_BRA
-In lexing_test.m, line 49
+| ^ info: [SL] M_BRA
+In lexing_test.m, line 52
 | [1 +1]
 |  ^ info: NUMBER
-In lexing_test.m, line 49
+In lexing_test.m, line 52
 | [1<anon,> +1]
 |   ^^^^^^^ info: [32madded comma[0m
-In lexing_test.m, line 49
+In lexing_test.m, line 52
 | [1<anon,> +1]
 |   ^^^^^^^ info: COMMA
-In lexing_test.m, line 49
+In lexing_test.m, line 52
 | [1 +1]
 |    ^ info: OPERATOR
-In lexing_test.m, line 49
+In lexing_test.m, line 52
 | [1 +1]
 |     ^ info: NUMBER
-In lexing_test.m, line 49
+In lexing_test.m, line 52
 | [1 +1]
 |      ^ info: M_KET
-In lexing_test.m, line 49
+In lexing_test.m, line 52
 | [1 +1]
 |       ^ info: NEWLINE
-In lexing_test.m, line 50
+In lexing_test.m, line 53
 | [1 + 1]
-| ^ info: M_BRA
-In lexing_test.m, line 50
+| ^ info: [SL] M_BRA
+In lexing_test.m, line 53
 | [1 + 1]
 |  ^ info: NUMBER
-In lexing_test.m, line 50
+In lexing_test.m, line 53
 | [1 + 1]
 |    ^ info: OPERATOR
-In lexing_test.m, line 50
+In lexing_test.m, line 53
 | [1 + 1]
 |      ^ info: NUMBER
-In lexing_test.m, line 50
+In lexing_test.m, line 53
 | [1 + 1]
 |       ^ info: M_KET
-In lexing_test.m, line 50
+In lexing_test.m, line 53
 | [1 + 1]
 |        ^ info: NEWLINE
-In lexing_test.m, line 51
+In lexing_test.m, line 54
 | [1+ 1]
-| ^ info: M_BRA
-In lexing_test.m, line 51
+| ^ info: [SL] M_BRA
+In lexing_test.m, line 54
 | [1+ 1]
 |  ^ info: NUMBER
-In lexing_test.m, line 51
+In lexing_test.m, line 54
 | [1+ 1]
 |   ^ info: OPERATOR
-In lexing_test.m, line 51
+In lexing_test.m, line 54
 | [1+ 1]
 |     ^ info: NUMBER
-In lexing_test.m, line 51
+In lexing_test.m, line 54
 | [1+ 1]
 |      ^ info: M_KET
-In lexing_test.m, line 51
+In lexing_test.m, line 54
 | [1+ 1]
 |       ^ info: NEWLINE
-In lexing_test.m, line 52
+In lexing_test.m, line 55
 | [1++1]
-| ^ info: M_BRA
-In lexing_test.m, line 52
+| ^ info: [SL] M_BRA
+In lexing_test.m, line 55
 | [1++1]
 |  ^ info: NUMBER
-In lexing_test.m, line 52
+In lexing_test.m, line 55
 | [1++1]
 |   ^ info: OPERATOR
-In lexing_test.m, line 52
+In lexing_test.m, line 55
 | [1++1]
 |    ^ info: OPERATOR
-In lexing_test.m, line 52
+In lexing_test.m, line 55
 | [1++1]
 |     ^ info: NUMBER
-In lexing_test.m, line 52
+In lexing_test.m, line 55
 | [1++1]
 |      ^ info: M_KET
-In lexing_test.m, line 52
+In lexing_test.m, line 55
 | [1++1]
 |       ^ info: NEWLINE
-In lexing_test.m, line 53
+In lexing_test.m, line 56
 | [1+++1]
-| ^ info: M_BRA
-In lexing_test.m, line 53
+| ^ info: [SL] M_BRA
+In lexing_test.m, line 56
 | [1+++1]
 |  ^ info: NUMBER
-In lexing_test.m, line 53
+In lexing_test.m, line 56
 | [1+++1]
 |   ^ info: OPERATOR
-In lexing_test.m, line 53
+In lexing_test.m, line 56
 | [1+++1]
 |    ^ info: OPERATOR
-In lexing_test.m, line 53
+In lexing_test.m, line 56
 | [1+++1]
 |     ^ info: OPERATOR
-In lexing_test.m, line 53
+In lexing_test.m, line 56
 | [1+++1]
 |      ^ info: NUMBER
-In lexing_test.m, line 53
+In lexing_test.m, line 56
 | [1+++1]
 |       ^ info: M_KET
-In lexing_test.m, line 53
+In lexing_test.m, line 56
 | [1+++1]
 |        ^ info: NEWLINE
-In lexing_test.m, line 54
+In lexing_test.m, line 57
 | ['foo' '1]1' ]'
-| ^ info: M_BRA
-In lexing_test.m, line 54
+| ^ info: [SL] M_BRA
+In lexing_test.m, line 57
 | ['foo' '1]1' ]'
-|  ^^^^^ info: STRING
-In lexing_test.m, line 54
+|  ^^^^^ info: CARRAY
+In lexing_test.m, line 57
 | ['foo'<anon,> '1]1' ]'
 |       ^^^^^^^ info: [32madded comma[0m
-In lexing_test.m, line 54
+In lexing_test.m, line 57
 | ['foo'<anon,> '1]1' ]'
 |       ^^^^^^^ info: COMMA
-In lexing_test.m, line 54
+In lexing_test.m, line 57
 | ['foo' '1]1' ]'
-|        ^^^^^ info: STRING
-In lexing_test.m, line 54
+|        ^^^^^ info: CARRAY
+In lexing_test.m, line 57
 | ['foo' '1]1' ]'
 |              ^ info: M_KET
-In lexing_test.m, line 54
+In lexing_test.m, line 57
 | ['foo' '1]1' ]'
 |               ^ info: OPERATOR
-In lexing_test.m, line 54
+In lexing_test.m, line 57
 | ['foo' '1]1' ]'
 |                ^ info: NEWLINE
-In lexing_test.m, line 56
+In lexing_test.m, line 59
 | % cd is weird and needs special care
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 56
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In lexing_test.m, line 59
 | % cd is weird and needs special care
 |                                     ^ info: NEWLINE
-In lexing_test.m, line 57
+In lexing_test.m, line 60
 | cd ../foo/_bar # potato?
-| ^^ info: IDENTIFIER
-In lexing_test.m, line 57
+| ^^ info: [SL] IDENTIFIER
+In lexing_test.m, line 60
 | cd ../foo/_bar # potato?
-|    ^^^^^^^^^^^^ info: DIRECTORY
-In lexing_test.m, line 57
+|    ^^^^^^^^^^^ info: CARRAY
+In lexing_test.m, line 60
 | cd ../foo/_bar # potato?
 |                ^^^^^^^^^ info: COMMENT
-In lexing_test.m, line 57
+In lexing_test.m, line 60
 | cd ../foo/_bar # potato?
 |                         ^ info: NEWLINE
-In lexing_test.m, line 58
+In lexing_test.m, line 61
 | mkdir __potato?
-| ^^^^^ info: IDENTIFIER
-In lexing_test.m, line 58
+| ^^^^^ info: [SL] IDENTIFIER
+In lexing_test.m, line 61
 | mkdir __potato?
-|       ^^^^^^^^^ info: DIRECTORY
-In lexing_test.m, line 58
+|       ^^^^^^^^^ info: CARRAY
+In lexing_test.m, line 61
 | mkdir __potato?
 |                ^ info: NEWLINE
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

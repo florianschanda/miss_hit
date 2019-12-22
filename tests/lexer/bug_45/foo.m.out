@@ -1,13 +1,13 @@
 foo.m: lexed OK
 In foo.m, line 1
 | % (c) Copyright 2019 Zenuity AB
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
 In foo.m, line 1
 | % (c) Copyright 2019 Zenuity AB
 |                                ^ info: NEWLINE
 In foo.m, line 2
 | a1 = ['('];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 2
 | a1 = ['('];
 |    ^ info: ASSIGNMENT
@@ -16,7 +16,7 @@ In foo.m, line 2
 |      ^ info: M_BRA
 In foo.m, line 2
 | a1 = ['('];
-|       ^^^ info: STRING
+|       ^^^ info: CARRAY
 In foo.m, line 2
 | a1 = ['('];
 |          ^ info: M_KET
@@ -25,10 +25,10 @@ In foo.m, line 2
 |           ^ info: SEMICOLON
 In foo.m, line 2
 | a1 = ['('];
-|            ^ info: NEWLINE
+|            ^ info: [S ] NEWLINE
 In foo.m, line 3
 | a2 = ['{'];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 3
 | a2 = ['{'];
 |    ^ info: ASSIGNMENT
@@ -37,7 +37,7 @@ In foo.m, line 3
 |      ^ info: M_BRA
 In foo.m, line 3
 | a2 = ['{'];
-|       ^^^ info: STRING
+|       ^^^ info: CARRAY
 In foo.m, line 3
 | a2 = ['{'];
 |          ^ info: M_KET
@@ -46,10 +46,10 @@ In foo.m, line 3
 |           ^ info: SEMICOLON
 In foo.m, line 3
 | a2 = ['{'];
-|            ^ info: NEWLINE
+|            ^ info: [S ] NEWLINE
 In foo.m, line 4
 | a3 = ['['];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 4
 | a3 = ['['];
 |    ^ info: ASSIGNMENT
@@ -58,7 +58,7 @@ In foo.m, line 4
 |      ^ info: M_BRA
 In foo.m, line 4
 | a3 = ['['];
-|       ^^^ info: STRING
+|       ^^^ info: CARRAY
 In foo.m, line 4
 | a3 = ['['];
 |          ^ info: M_KET
@@ -67,10 +67,10 @@ In foo.m, line 4
 |           ^ info: SEMICOLON
 In foo.m, line 4
 | a3 = ['['];
-|            ^ info: NEWLINE
+|            ^ info: [S ] NEWLINE
 In foo.m, line 5
 | a4 = [')'];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 5
 | a4 = [')'];
 |    ^ info: ASSIGNMENT
@@ -79,7 +79,7 @@ In foo.m, line 5
 |      ^ info: M_BRA
 In foo.m, line 5
 | a4 = [')'];
-|       ^^^ info: STRING
+|       ^^^ info: CARRAY
 In foo.m, line 5
 | a4 = [')'];
 |          ^ info: M_KET
@@ -88,10 +88,10 @@ In foo.m, line 5
 |           ^ info: SEMICOLON
 In foo.m, line 5
 | a4 = [')'];
-|            ^ info: NEWLINE
+|            ^ info: [S ] NEWLINE
 In foo.m, line 6
 | a5 = ['}'];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 6
 | a5 = ['}'];
 |    ^ info: ASSIGNMENT
@@ -100,7 +100,7 @@ In foo.m, line 6
 |      ^ info: M_BRA
 In foo.m, line 6
 | a5 = ['}'];
-|       ^^^ info: STRING
+|       ^^^ info: CARRAY
 In foo.m, line 6
 | a5 = ['}'];
 |          ^ info: M_KET
@@ -109,10 +109,10 @@ In foo.m, line 6
 |           ^ info: SEMICOLON
 In foo.m, line 6
 | a5 = ['}'];
-|            ^ info: NEWLINE
+|            ^ info: [S ] NEWLINE
 In foo.m, line 7
 | a6 = [']'];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 7
 | a6 = [']'];
 |    ^ info: ASSIGNMENT
@@ -121,7 +121,7 @@ In foo.m, line 7
 |      ^ info: M_BRA
 In foo.m, line 7
 | a6 = [']'];
-|       ^^^ info: STRING
+|       ^^^ info: CARRAY
 In foo.m, line 7
 | a6 = [']'];
 |          ^ info: M_KET
@@ -130,10 +130,10 @@ In foo.m, line 7
 |           ^ info: SEMICOLON
 In foo.m, line 7
 | a6 = [']'];
-|            ^ info: NEWLINE
+|            ^ info: [S ] NEWLINE
 In foo.m, line 8
 | b1 = [tmp' '('];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 8
 | b1 = [tmp' '('];
 |    ^ info: ASSIGNMENT
@@ -154,7 +154,7 @@ In foo.m, line 8
 |           ^^^^^^^ info: COMMA
 In foo.m, line 8
 | b1 = [tmp' '('];
-|            ^^^ info: STRING
+|            ^^^ info: CARRAY
 In foo.m, line 8
 | b1 = [tmp' '('];
 |               ^ info: M_KET
@@ -163,10 +163,10 @@ In foo.m, line 8
 |                ^ info: SEMICOLON
 In foo.m, line 8
 | b1 = [tmp' '('];
-|                 ^ info: NEWLINE
+|                 ^ info: [S ] NEWLINE
 In foo.m, line 9
 | b2 = [tmp' '{'];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 9
 | b2 = [tmp' '{'];
 |    ^ info: ASSIGNMENT
@@ -187,7 +187,7 @@ In foo.m, line 9
 |           ^^^^^^^ info: COMMA
 In foo.m, line 9
 | b2 = [tmp' '{'];
-|            ^^^ info: STRING
+|            ^^^ info: CARRAY
 In foo.m, line 9
 | b2 = [tmp' '{'];
 |               ^ info: M_KET
@@ -196,10 +196,10 @@ In foo.m, line 9
 |                ^ info: SEMICOLON
 In foo.m, line 9
 | b2 = [tmp' '{'];
-|                 ^ info: NEWLINE
+|                 ^ info: [S ] NEWLINE
 In foo.m, line 10
 | b3 = [tmp' '['];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 10
 | b3 = [tmp' '['];
 |    ^ info: ASSIGNMENT
@@ -220,7 +220,7 @@ In foo.m, line 10
 |           ^^^^^^^ info: COMMA
 In foo.m, line 10
 | b3 = [tmp' '['];
-|            ^^^ info: STRING
+|            ^^^ info: CARRAY
 In foo.m, line 10
 | b3 = [tmp' '['];
 |               ^ info: M_KET
@@ -229,10 +229,10 @@ In foo.m, line 10
 |                ^ info: SEMICOLON
 In foo.m, line 10
 | b3 = [tmp' '['];
-|                 ^ info: NEWLINE
+|                 ^ info: [S ] NEWLINE
 In foo.m, line 11
 | b4 = [tmp' ')'];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 11
 | b4 = [tmp' ')'];
 |    ^ info: ASSIGNMENT
@@ -253,7 +253,7 @@ In foo.m, line 11
 |           ^^^^^^^ info: COMMA
 In foo.m, line 11
 | b4 = [tmp' ')'];
-|            ^^^ info: STRING
+|            ^^^ info: CARRAY
 In foo.m, line 11
 | b4 = [tmp' ')'];
 |               ^ info: M_KET
@@ -262,10 +262,10 @@ In foo.m, line 11
 |                ^ info: SEMICOLON
 In foo.m, line 11
 | b4 = [tmp' ')'];
-|                 ^ info: NEWLINE
+|                 ^ info: [S ] NEWLINE
 In foo.m, line 12
 | b5 = [tmp' '}'];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 12
 | b5 = [tmp' '}'];
 |    ^ info: ASSIGNMENT
@@ -286,7 +286,7 @@ In foo.m, line 12
 |           ^^^^^^^ info: COMMA
 In foo.m, line 12
 | b5 = [tmp' '}'];
-|            ^^^ info: STRING
+|            ^^^ info: CARRAY
 In foo.m, line 12
 | b5 = [tmp' '}'];
 |               ^ info: M_KET
@@ -295,10 +295,10 @@ In foo.m, line 12
 |                ^ info: SEMICOLON
 In foo.m, line 12
 | b5 = [tmp' '}'];
-|                 ^ info: NEWLINE
+|                 ^ info: [S ] NEWLINE
 In foo.m, line 13
 | b6 = [tmp' ']'];
-| ^^ info: IDENTIFIER
+| ^^ info: [SL] IDENTIFIER
 In foo.m, line 13
 | b6 = [tmp' ']'];
 |    ^ info: ASSIGNMENT
@@ -319,7 +319,7 @@ In foo.m, line 13
 |           ^^^^^^^ info: COMMA
 In foo.m, line 13
 | b6 = [tmp' ']'];
-|            ^^^ info: STRING
+|            ^^^ info: CARRAY
 In foo.m, line 13
 | b6 = [tmp' ']'];
 |               ^ info: M_KET
@@ -328,5 +328,5 @@ In foo.m, line 13
 |                ^ info: SEMICOLON
 In foo.m, line 13
 | b6 = [tmp' ']'];
-|                 ^ info: NEWLINE
+|                 ^ info: [S ] NEWLINE
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

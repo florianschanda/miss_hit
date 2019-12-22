@@ -694,6 +694,10 @@ class MATLAB_Parser:
             self.match("NUMBER")
             return Number_Literal(self.ct)
 
+        elif self.peek("CARRAY"):
+            self.match("CARRAY")
+            return Char_Array_Literal(self.ct)
+
         elif self.peek("STRING"):
             self.match("STRING")
             return String_Literal(self.ct)

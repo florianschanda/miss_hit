@@ -1,7 +1,7 @@
 simple_2.m: lexed OK
 In simple_2.m, line 1
 | [(1)+(1)]   % 2
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_2.m, line 1
 | [(1)+(1)]   % 2
 |  ^ info: BRA
@@ -34,7 +34,7 @@ In simple_2.m, line 1
 |                ^ info: NEWLINE
 In simple_2.m, line 2
 | [(1) +(1)]  % [1 1]
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_2.m, line 2
 | [(1) +(1)]  % [1 1]
 |  ^ info: BRA
@@ -73,7 +73,7 @@ In simple_2.m, line 2
 |                    ^ info: NEWLINE
 In simple_2.m, line 3
 | [(1)+ (1)]  % 2
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_2.m, line 3
 | [(1)+ (1)]  % 2
 |  ^ info: BRA
@@ -106,7 +106,7 @@ In simple_2.m, line 3
 |                ^ info: NEWLINE
 In simple_2.m, line 4
 | [(1) + (1)] % 2
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_2.m, line 4
 | [(1) + (1)] % 2
 |  ^ info: BRA

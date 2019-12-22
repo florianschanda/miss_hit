@@ -1,0 +1,33 @@
+MATLAB OPERATORS
+================
+
++           plus or unary plus
+-           minus or unary minus
+*           matrix mult
+/           matrix right division
+\           matrix left division
+^           matrix power
+'           complex conjugate transpose
+<           less than
+   <=       less than or equal
+>           greater than
+   >=       greater than or equal
+&           and
+   &&       short-circuit and
+|           or
+   ||       short-circuit or
+~           not
+   ~=       not equal
+.           field/package selection
+   .*       element-wise mult
+   ./       element-wise right division
+   .\       element-wise left division
+   .^       element-wise power
+   .'       transpose
+   .?       field of name-value structure
+=           (assignment)
+   ==       equals
+@           lambda function or function pointer
+?           metaclass
+:           range
+!           (shell escape)

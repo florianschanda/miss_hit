@@ -1,7 +1,7 @@
 function.m: lexed OK
 In function.m, line 1
 | function [a, b] = c()
-| ^^^^^^^^ info: KEYWORD
+| ^^^^^^^^ info: [SL] KEYWORD
 In function.m, line 1
 | function [a, b] = c()
 |          ^ info: A_BRA
@@ -34,13 +34,13 @@ In function.m, line 1
 |                      ^ info: NEWLINE
 In function.m, line 2
 | end
-| ^^^ info: KEYWORD
+| ^^^ info: [SL] KEYWORD
 In function.m, line 2
 | end
 |    ^ info: NEWLINE
 In function.m, line 4
 | function [d, e] = f()
-| ^^^^^^^^ info: KEYWORD
+| ^^^^^^^^ info: [SL] KEYWORD
 In function.m, line 4
 | function [d, e] = f()
 |          ^ info: A_BRA
@@ -73,13 +73,13 @@ In function.m, line 4
 |                      ^ info: NEWLINE
 In function.m, line 5
 | end
-| ^^^ info: KEYWORD
+| ^^^ info: [SL] KEYWORD
 In function.m, line 5
 | end
 |    ^ info: NEWLINE
 In function.m, line 7
 | [a] ...
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In function.m, line 7
 | [a] ...
 |  ^ info: IDENTIFIER
@@ -91,7 +91,7 @@ In function.m, line 7
 |     ^^^^ info: CONTINUATION
 In function.m, line 8
 | == b;
-| ^^ info: OPERATOR
+| ^^ info: [ L] OPERATOR
 In function.m, line 8
 | == b;
 |    ^ info: IDENTIFIER
@@ -100,10 +100,10 @@ In function.m, line 8
 |     ^ info: SEMICOLON
 In function.m, line 8
 | == b;
-|      ^ info: NEWLINE
+|      ^ info: [S ] NEWLINE
 In function.m, line 10
 | [a] # potato
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In function.m, line 10
 | [a] # potato
 |  ^ info: IDENTIFIER
@@ -118,7 +118,7 @@ In function.m, line 10
 |             ^ info: NEWLINE
 In function.m, line 12
 | [a] ... potato
-| ^ info: A_BRA
+| ^ info: [SL] A_BRA
 In function.m, line 12
 | [a] ... potato
 |  ^ info: IDENTIFIER
@@ -130,7 +130,7 @@ In function.m, line 12
 |     ^^^^^^^^^^^ info: CONTINUATION
 In function.m, line 13
 | = 5;
-| ^ info: ASSIGNMENT
+| ^ info: [ L] ASSIGNMENT
 In function.m, line 13
 | = 5;
 |   ^ info: NUMBER
@@ -139,5 +139,5 @@ In function.m, line 13
 |    ^ info: SEMICOLON
 In function.m, line 13
 | = 5;
-|     ^ info: NEWLINE
+|     ^ info: [S ] NEWLINE
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,7 +1,7 @@
 simple_8.m: lexed OK
 In simple_8.m, line 1
 | x = [1 2 3
-| ^ info: IDENTIFIER
+| ^ info: [SL] IDENTIFIER
 In simple_8.m, line 1
 | x = [1 2 3
 |   ^ info: ASSIGNMENT
@@ -34,7 +34,7 @@ In simple_8.m, line 1
 |           ^ info: NEWLINE
 In simple_8.m, line 2
 |      4 5 6
-|      ^ info: NUMBER
+|      ^ info: [ L] NUMBER
 In simple_8.m, line 2
 |      4<anon,> 5 6
 |       ^^^^^^^ info: [32madded comma[0m
@@ -58,7 +58,7 @@ In simple_8.m, line 2
 |           ^ info: NEWLINE
 In simple_8.m, line 3
 |      7 8 9];
-|      ^ info: NUMBER
+|      ^ info: [ L] NUMBER
 In simple_8.m, line 3
 |      7<anon,> 8 9];
 |       ^^^^^^^ info: [32madded comma[0m
@@ -85,5 +85,5 @@ In simple_8.m, line 3
 |            ^ info: SEMICOLON
 In simple_8.m, line 3
 |      7 8 9];
-|             ^ info: NEWLINE
+|             ^ info: [S ] NEWLINE
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

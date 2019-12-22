@@ -1,7 +1,7 @@
 simple_3.m: lexed OK
 In simple_3.m, line 1
 | [ a.x a.y ]
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_3.m, line 1
 | [ a.x a.y ]
 |   ^ info: IDENTIFIER
@@ -34,13 +34,13 @@ In simple_3.m, line 1
 |            ^ info: NEWLINE
 In simple_3.m, line 3
 | % if b is [5, 6]
-| ^^^^^^^^^^^^^^^^ info: COMMENT
+| ^^^^^^^^^^^^^^^^ info: [SL] COMMENT
 In simple_3.m, line 3
 | % if b is [5, 6]
 |                 ^ info: NEWLINE
 In simple_3.m, line 4
 | [ b (2) ]   % 5 6 2
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_3.m, line 4
 | [ b (2) ]   % 5 6 2
 |   ^ info: IDENTIFIER
@@ -70,7 +70,7 @@ In simple_3.m, line 4
 |                    ^ info: NEWLINE
 In simple_3.m, line 5
 | [ b(2) ]    % 6
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_3.m, line 5
 | [ b(2) ]    % 6
 |   ^ info: IDENTIFIER

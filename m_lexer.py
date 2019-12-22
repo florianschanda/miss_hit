@@ -55,9 +55,9 @@ TOKEN_KINDS = frozenset([
     "CONTINUATION",
     "COMMENT",
     "IDENTIFIER",
-    "DIRECTORY",
     "NUMBER",
-    "STRING",
+    "CARRAY",          # 'foo' character array
+    "STRING",          # "foo" string class literal
     "KEYWORD",
     "OPERATOR",
     "COMMA",
@@ -96,18 +96,25 @@ class MATLAB_Token:
                  raw_text,
                  location,
                  first_in_line,
-                 anonymous = False):
+                 first_in_statement,
+                 anonymous = False,
+                 contains_quotes = False):
         assert kind in TOKEN_KINDS
         assert isinstance(raw_text, str)
         assert isinstance(location, Location)
         assert isinstance(first_in_line, bool)
+        assert isinstance(first_in_statement, bool)
         assert isinstance(anonymous, bool)
+        assert isinstance(contains_quotes, bool)
+        assert not contains_quotes or kind in ("STRING", "CARRAY")
 
-        self.kind          = kind
-        self.raw_text      = raw_text
-        self.location      = location
-        self.first_in_line = first_in_line
-        self.anonymous     = anonymous
+        self.kind               = kind
+        self.raw_text           = raw_text
+        self.location           = location
+        self.first_in_line      = first_in_line
+        self.first_in_statement = first_in_statement
+        self.anonymous          = anonymous
+        self.contains_quotes    = contains_quotes
 
         # Not part of parsing, but some fix suggestions can be added
         self.fix = {}
@@ -119,10 +126,11 @@ class MATLAB_Token:
             return self.raw_text[3:].strip()
         elif self.kind == "COMMENT":
             return self.raw_text[1:].strip()
-        elif self.kind == "STRING":
-            return self.raw_text[1:-1]
-        elif self.kind == "DIRECTORY":
-            return self.raw_text.strip()
+        elif self.kind in ("CARRAY", "STRING"):
+            if self.contains_quotes:
+                return self.raw_text[1:-1]
+            else:
+                return self.raw_text
         else:
             return self.raw_text
 
@@ -159,12 +167,16 @@ class MATLAB_Lexer(Token_Generator):
         self.lexpos = -1
         self.col_offset = 0
         self.line = 1
-        self.in_dir_command = False
 
         self.first_in_line = True
         # Keep track if this would be the first token on a
         # typographical line (i.e. we do not take into account line
         # continuations). This is passed down to tokens themselves.
+
+        self.first_in_statement = True
+        # Flags tokens that are the first in a statement. This is true
+        # if first_in_line is true and we did not have a continuation,
+        # or after a comma or semicolon outside a matrix.
 
         self.bracket_stack = []
         # The lexer must keep track of brackets, since whitespace
@@ -186,10 +198,33 @@ class MATLAB_Lexer(Token_Generator):
         self.delay_list = []
         # See token() for a description.
 
+        self.command_mode = False
+        # If true, we completely change how we process input. Most
+        # things will be returned as strings, except for line
+        # continuations. Comments and newlines end command form.
+
+        self.comment_char = set("%#")
+        # Characters that start a line comment. MATLAB only uses %,
+        # and Octave uses either.
+        #
+        # TODO: This should be configurable (see #44).
+
+        self.in_special_section = False
+        # Some keywords (properties, attributes, etc.) introduce a
+        # special section, in which the command_mode is never
+        # activated. This section ends with the first 'end' keyword is
+        # encountered.
+
+        self.config_file_mode = False
+        # We abuse this lexer to parse our config files. If this is
+        # set, we don't do command_mode at all, because quite frankly
+        # this concept is idiotic.
+
         # pylint: disable=invalid-name
         self.cc = None
         self.nc = self.text[0] if len(self.text) > 0 else "\0"
         self.nnc = self.text[1] if len(self.text) > 1 else "\0"
+        self.nnnc = self.text[2] if len(self.text) > 2 else "\0"
         # pylint: enable=invalid-name
 
         self.last_kind = None
@@ -220,9 +255,10 @@ class MATLAB_Lexer(Token_Generator):
             self.col_offset = self.lexpos
         self.cc = self.nc
         self.nc = self.nnc
-        self.nnc = (self.text[self.lexpos + 2]
-                    if len(self.text) > self.lexpos + 2
-                    else "\0")
+        self.nnc = self.nnnc
+        self.nnnc = (self.text[self.lexpos + 3]
+                     if len(self.text) > self.lexpos + 3
+                     else "\0")
 
     def advance(self, n):
         assert isinstance(n, int) and n >= 0
@@ -263,7 +299,8 @@ class MATLAB_Lexer(Token_Generator):
                                           fake_col + 6,
                                           fake_line),
                                  False,
-                                 True)
+                                 False,
+                                 anonymous = True)
             self.last_kind = "COMMA"
             self.last_value = ","
             if self.debug_comma:
@@ -271,7 +308,7 @@ class MATLAB_Lexer(Token_Generator):
                              "\033[32madded comma\033[0m")
             return token
 
-        # First we scan to the next non-whitespace token
+        # First we scan to the next non-whitespace character
         preceeding_ws = False
         while True:
             self.next()
@@ -282,114 +319,35 @@ class MATLAB_Lexer(Token_Generator):
 
         t_start = self.lexpos
         col_start = t_start - self.col_offset
+        contains_quotes = False
 
         # print("Begin lexing @ %u:%u <%s>" % (self.line,
         #                                      col_start,
         #                                      repr(self.cc)))
 
-        if self.cc in ("%", "#"):
-            # Comments go until the end of the line
-            kind = "COMMENT"
-            while self.nc not in ("\n", "\0"):
-                self.next()
-
-        elif self.cc == "\n":
-            # Newlines are summarised into one token
-            kind = "NEWLINE"
-            while self.nc in ("\n", " ", "\t"):
-                self.next()
-
-        elif self.cc == ";":
-            kind = "SEMICOLON"
-
-        elif self.in_dir_command:
-            kind = "DIRECTORY"
-            while self.nc not in ("\n", "\0", "#", "%", ";"):
-                self.next()
-
-        elif self.cc == "." and self.nc == ".":
-            # This is a continuation or the parent directory
-            self.next()
-            if self.nc == ".":
-                kind = "CONTINUATION"
-                self.next()
-
-                # We now need to eat everything until and including
-                # the next line
-                while self.cc not in ("\n", "\0"):
+        if self.command_mode:
+            # Lexing in command mode
+            if self.cc in self.comment_char:
+                # Comments go until the end of the line
+                kind = "COMMENT"
+                while self.nc not in ("\n", "\0"):
                     self.next()
 
-            else:
-                self.lex_error("expected . to complete continuation token")
+            elif self.cc == "\n":
+                # Newlines are summarised into one token
+                kind = "NEWLINE"
+                while self.nc in ("\n", " ", "\t"):
+                    self.next()
 
-        elif self.cc.isalpha():
-            # Could be an identifier or keyword
-            kind = "IDENTIFIER"
-            while self.nc.isalnum() or self.nc == "_":
-                self.next()
+            elif self.cc == ";":
+                kind = "SEMICOLON"
 
-        elif self.cc.isnumeric() or \
-             self.cc == "." and self.nc.isnumeric():
-            # Its some kind of number
-            kind = "NUMBER"
-            tmp = self.match_re(r"[0-9]*(\.[0-9]+)?([eE][+-]?[0-9]+)?")
-            self.advance(len(tmp) - 1)
+            elif self.cc == ",":
+                kind = "COMMA"
 
-            # We need to make sure we now have something that isn't a
-            # number to stop stupidity like 1.1.1
-            if self.nc.isnumeric() or \
-               self.nc == "." and self.nnc.isnumeric():
-                self.lex_error()
-
-        elif self.cc in ("<", ">", "=", "~"):
-            # This is either a boolean relation, negation, or the
-            # assignment
-            if self.nc == "=":
-                self.next()
-                kind = "OPERATOR"
-            elif self.cc == "=":
-                kind = "ASSIGNMENT"
-            else:
-                kind = "OPERATOR"
-
-        elif self.cc in ("+", "-", "*", "/", "^", "\\"):
-            kind = "OPERATOR"
-
-        elif self.cc in ("&", "|"):
-            kind = "OPERATOR"
-            if self.nc == self.cc:
-                self.next()
-
-        elif self.cc == "." and self.nc in ("*", "/", "\\", "^", "'"):
-            kind = "OPERATOR"
-            self.next()
-
-        elif self.cc == "'":
-            # This is either a single-quoted string or the transpose
-            # operation. If we had preceeding whitespace, it is never
-            # transpose. Otherwise it depends on bracket nesting level
-            # and/or the previous token. At this point I'd like to
-            # express a heartfelt THANK YOU to the MATLAB language
-            # designers for this feature. If you need more ideas, wny
-            # not permit unicode (including LTR, skin-tone modifiers
-            # and homonyms for space) in MATLAB variable names as
-            # well? Seriously, what is wrong with you people?
-            kind = None
-            if preceeding_ws or self.first_in_line:
-                kind = "STRING"
-            elif self.last_kind in ("IDENTIFIER", "NUMBER", "STRING",
-                                    "KET", "M_KET", "C_KET"):
-                kind = "OPERATOR"
-            elif self.last_kind == "OPERATOR" and self.last_value == "'":
-                kind = "OPERATOR"
-            elif self.last_kind in ("BRA", "M_BRA", "C_BRA", "COMMA",
-                                    "ASSIGNMENT", "OPERATOR", "SEMICOLON"):
-                kind = "STRING"
-            else:
-                self.lex_error("unable to distinguish between string "
-                               "and transpose operation")
-
-            if kind == "STRING":
+            elif self.cc == "'":
+                kind = "CARRAY"
+                contains_quotes = True
                 while True:
                     self.next()
                     if self.cc == "'" and self.nc == "'":
@@ -399,67 +357,207 @@ class MATLAB_Lexer(Token_Generator):
                     elif self.cc in ("\n", "\0"):
                         self.lex_error()
 
-        elif self.cc == '"':
-            kind = "STRING"
-            while True:
-                self.next()
-                if self.cc == '"' and self.nc == '"':
+            elif self.cc == "." and \
+                 self.nc == "." and \
+                 self.nnc == ".":
+                kind = "CONTINUATION"
+                # We now need to eat everything until and including
+                # the next line
+                while self.cc not in ("\n", "\0"):
                     self.next()
-                elif self.cc == '"':
-                    break
-                elif self.cc in ("\n", "\0"):
-                    self.lex_error()
 
-        elif self.cc == ",":
-            kind = "COMMA"
+            else:
+                # Everything else in command form is converted into a
+                # string.
+                kind = "CARRAY"
+                while self.nc not in (" ", "\t", "\n", "\0", ",", ";"):
+                    # We just need to make sure to not eat line
+                    # continuatins by accident
+                    if self.nc == "." and \
+                       self.nnc == "." and \
+                       self.nnnc == ".":
+                        break
 
-        elif self.cc == ":":
-            kind = "COLON"
+                    # We also need to make sure not to eat comments
+                    if self.nc in self.comment_char:
+                        break
 
-        elif self.cc == "(":
-            kind = "BRA"
-
-        elif self.cc == ")":
-            kind = "KET"
-
-        elif self.cc == "{":
-            kind = "C_BRA"
-
-        elif self.cc == "}":
-            kind = "C_KET"
-
-        elif self.cc == "[":
-            # I have decided to not do what is described in section 7
-            # of the 1999 technical report, since it makes it very
-            # hard to deal with stuff like [a.('foo')] = 10. The
-            # lookahead for the = would be bordering on impossible if
-            # we need to ignore = inside strings.
-            #
-            # Instead we're going to do this as a post-processing step
-            # that delays returning from the lexer until we encounter
-            # an = after the coressponding closing bracket, or not.
-            kind = "M_BRA"
-
-        elif self.cc == "]":
-            kind = "M_KET"
-
-        elif self.cc == ".":
-            kind = "SELECTION"
-
-        elif self.cc == "@":
-            kind = "AT"
-
-        elif self.cc == "!":
-            kind = "BANG"
-
-        elif self.cc == "?":
-            kind = "METACLASS"
-
-        elif self.cc == "\0":
-            return None
+                    self.next()
 
         else:
-            self.lex_error()
+            # Ordinary lexing
+
+            if self.cc in self.comment_char:
+                # Comments go until the end of the line
+                kind = "COMMENT"
+                while self.nc not in ("\n", "\0"):
+                    self.next()
+
+            elif self.cc == "\n":
+                # Newlines are summarised into one token
+                kind = "NEWLINE"
+                while self.nc in ("\n", " ", "\t"):
+                    self.next()
+
+            elif self.cc == ";":
+                kind = "SEMICOLON"
+
+            elif self.cc == "." and self.nc == ".":
+                # This is a continuation
+                self.next()
+                if self.nc == ".":
+                    kind = "CONTINUATION"
+                    self.next()
+
+                    # We now need to eat everything until and including
+                    # the next line
+                    while self.cc not in ("\n", "\0"):
+                        self.next()
+
+                else:
+                    self.lex_error("expected . to complete continuation token")
+
+            elif self.cc.isalpha():
+                # Could be an identifier or keyword
+                kind = "IDENTIFIER"
+                while self.nc.isalnum() or self.nc == "_":
+                    self.next()
+
+            elif self.cc.isnumeric() or \
+                 self.cc == "." and self.nc.isnumeric():
+                # Its some kind of number
+                kind = "NUMBER"
+                tmp = self.match_re(r"[0-9]*(\.[0-9]+)?([eE][+-]?[0-9]+)?")
+                self.advance(len(tmp) - 1)
+
+                # We need to make sure we now have something that isn't a
+                # number to stop stupidity like 1.1.1
+                if self.nc.isnumeric() or \
+                   self.nc == "." and self.nnc.isnumeric():
+                    self.lex_error()
+
+            elif self.cc in ("<", ">", "=", "~"):
+                # This is either a boolean relation, negation, or the
+                # assignment
+                if self.nc == "=":
+                    self.next()
+                    kind = "OPERATOR"
+                elif self.cc == "=":
+                    kind = "ASSIGNMENT"
+                else:
+                    kind = "OPERATOR"
+
+            elif self.cc in ("+", "-", "*", "/", "^", "\\"):
+                kind = "OPERATOR"
+
+            elif self.cc in ("&", "|"):
+                kind = "OPERATOR"
+                if self.nc == self.cc:
+                    self.next()
+
+            elif self.cc == "." and self.nc in ("*", "/", "\\", "^", "'"):
+                kind = "OPERATOR"
+                self.next()
+
+            elif self.cc == "'":
+                # This is either a single-quoted string or the transpose
+                # operation. If we had preceeding whitespace, it is never
+                # transpose. Otherwise it depends on bracket nesting level
+                # and/or the previous token. At this point I'd like to
+                # express a heartfelt THANK YOU to the MATLAB language
+                # designers for this feature. If you need more ideas, wny
+                # not permit unicode (including LTR, skin-tone modifiers
+                # and homonyms for space) in MATLAB variable names as
+                # well? Seriously, what is wrong with you people?
+                kind = None
+                if preceeding_ws or self.first_in_line:
+                    kind = "CARRAY"
+                    contains_quotes = True
+                elif self.last_kind in ("IDENTIFIER", "NUMBER", "CARRAY",
+                                        "KET", "M_KET", "C_KET"):
+                    kind = "OPERATOR"
+                elif self.last_kind == "OPERATOR" and self.last_value == "'":
+                    kind = "OPERATOR"
+                elif self.last_kind in ("BRA", "M_BRA", "C_BRA", "COMMA",
+                                        "ASSIGNMENT", "OPERATOR", "SEMICOLON"):
+                    kind = "CARRAY"
+                    contains_quotes = True
+                else:
+                    self.lex_error("unable to distinguish between string "
+                                   "and transpose operation")
+
+                if kind == "CARRAY":
+                    while True:
+                        self.next()
+                        if self.cc == "'" and self.nc == "'":
+                            self.next()
+                        elif self.cc == "'":
+                            break
+                        elif self.cc in ("\n", "\0"):
+                            self.lex_error()
+
+            elif self.cc == '"':
+                kind = "STRING"
+                contains_quotes = True
+                while True:
+                    self.next()
+                    if self.cc == '"' and self.nc == '"':
+                        self.next()
+                    elif self.cc == '"':
+                        break
+                    elif self.cc in ("\n", "\0"):
+                        self.lex_error()
+
+            elif self.cc == ",":
+                kind = "COMMA"
+
+            elif self.cc == ":":
+                kind = "COLON"
+
+            elif self.cc == "(":
+                kind = "BRA"
+
+            elif self.cc == ")":
+                kind = "KET"
+
+            elif self.cc == "{":
+                kind = "C_BRA"
+
+            elif self.cc == "}":
+                kind = "C_KET"
+
+            elif self.cc == "[":
+                # I have decided to not do what is described in section 7
+                # of the 1999 technical report, since it makes it very
+                # hard to deal with stuff like [a.('foo')] = 10. The
+                # lookahead for the = would be bordering on impossible if
+                # we need to ignore = inside strings.
+                #
+                # Instead we're going to do this as a post-processing step
+                # that delays returning from the lexer until we encounter
+                # an = after the coressponding closing bracket, or not.
+                kind = "M_BRA"
+
+            elif self.cc == "]":
+                kind = "M_KET"
+
+            elif self.cc == ".":
+                kind = "SELECTION"
+
+            elif self.cc == "@":
+                kind = "AT"
+
+            elif self.cc == "!":
+                kind = "BANG"
+
+            elif self.cc == "?":
+                kind = "METACLASS"
+
+            elif self.cc == "\0":
+                return None
+
+            else:
+                self.lex_error()
 
         t_end = self.lexpos
         col_end = t_end - self.col_offset
@@ -479,8 +577,11 @@ class MATLAB_Lexer(Token_Generator):
                                       col_start,
                                       col_end,
                                       self.context_line[self.line - 1]),
-                             self.first_in_line)
+                             self.first_in_line,
+                             self.first_in_statement,
+                             contains_quotes = contains_quotes)
         self.first_in_line = False
+        self.first_in_statement = False
 
         if kind == "BRA" and self.last_kind == "AT":
             self.in_lambda = True
@@ -488,16 +589,105 @@ class MATLAB_Lexer(Token_Generator):
         if kind == "NEWLINE":
             self.line += token.raw_text.count("\n")
             self.first_in_line = True
-            self.in_dir_command = False
         elif kind == "CONTINUATION":
             self.line += 1
             self.first_in_line = True
-            if self.in_dir_command:
-                self.mh.error(token.location,
-                              "cannot line-continue a cd command")
-        elif kind == "IDENTIFIER" and token.first_in_line \
-             and raw_text in ("cd", "mkdir", "rmdir"):
-            self.in_dir_command = True
+
+        # Detect if we're entering or leaving a special section
+        if not self.bracket_stack and \
+           token.first_in_statement and \
+           token.kind == "KEYWORD" and \
+           token.value() in ("properties",
+                             "arguments",
+                             "enumeration",
+                             "events"):
+            self.in_special_section = True
+        elif not self.bracket_stack and \
+             token.kind == "KEYWORD" and \
+             token.value() == "end":
+            self.in_special_section = False
+
+        # Detect if we should enter command form. If the next
+        # character is not a space, it's never a command.
+        if not self.config_file_mode and \
+           not self.in_special_section and \
+           token.first_in_statement and \
+           token.kind == "IDENTIFIER" and \
+           self.nc in (" ", "\t"):
+            # We need to scan ahead to the next non-space character
+            mode = "search_ws"
+            for n, c in enumerate(self.text[self.lexpos + 1:],
+                                  self.lexpos + 1):
+                if mode == "search_ws":
+                    if c == "\n":
+                        # We found a newline, so we had a identifier
+                        # followed by trailing whitespace. No need to
+                        # enter command form.
+                        break
+                    elif c in (" ", "\t"):
+                        # Skip spaces
+                        pass
+                    elif c == "(":
+                        # Open bracket is always a function call
+                        break
+                    elif c in r"+-*/\^'@?:":
+                        # Single-character operators
+                        mode = "found_op"
+                    elif c in r"<>&|~.=":
+                        # Single or multi-char operators. We need to
+                        # lookahead by 1 here.
+                        if n + 1 < len(self.text):
+                            nc = self.text[n + 1]
+                        else:
+                            break
+
+                        if c == "<" and nc == "=":
+                            mode = "skip_one"
+                        elif c == ">" and nc == "=":
+                            mode = "skip_one"
+                        elif c == "&" and nc == "&":
+                            mode = "skip_one"
+                        elif c == "|" and nc == "|":
+                            mode = "skip_one"
+                        elif c == "~" and nc == "=":
+                            mode = "skip_one"
+                        elif c == "." and nc in r"*/\&'?":
+                            mode = "skip_one"
+                        elif c == "=" and nc == "=":
+                            mode = "skip_one"
+                        elif c == "=":
+                            # Assignment, so never a command
+                            break
+                        else:
+                            mode = "found_op"
+                    else:
+                        # Anything else indicates a command
+                        self.command_mode = True
+                        break
+
+                elif mode == "skip_one":
+                    mode = "found_op"
+
+                elif mode == "found_op":
+                    # We found an operator after a whitespace. Now we
+                    # need to check if this character is also a space,
+                    # in which case we do not have a
+                    # command. Otherwise, it's a command
+                    if c in (" ", "\t"):
+                        break
+                    else:
+                        self.command_mode = True
+                        break
+
+                else:
+                    raise ICE("logic error")
+
+        # Detect new statements. Note that this flags comments as
+        # well, but that is fine.
+        if not self.bracket_stack:
+            if kind in ("NEWLINE", "COMMA", "SEMICOLON"):
+                self.first_in_statement = True
+                self.command_mode = False
 
         self.last_kind = kind
         self.last_value = raw_text
@@ -544,6 +734,7 @@ class MATLAB_Lexer(Token_Generator):
                 next_non_ws = c
 
         token_relevant = (token.kind in ("NUMBER",
+                                         "CARRAY",
                                          "STRING",
                                          "IDENTIFIER",
                                          "KET",
@@ -780,7 +971,14 @@ def sanity_test(mh, filename):
             if tok is None:
                 break
             else:
-                mh.info(tok.location, tok.kind)
+                if tok.first_in_statement or tok.first_in_line:
+                    txt = "[%s%s] %s" % (
+                        "S" if tok.first_in_statement else " ",
+                        "L" if tok.first_in_line else " ",
+                        tok.kind)
+                else:
+                    txt = tok.kind
+                mh.info(tok.location, txt)
         print("%s: lexed OK" % filename)
     except Error:
         print("%s: lexed with errors" % filename)

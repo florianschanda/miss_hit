@@ -1,7 +1,7 @@
 simple_7.m: lexed OK
 In simple_7.m, line 1
 | [1 2, 3,4]
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_7.m, line 1
 | [1 2, 3,4]
 |  ^ info: NUMBER
@@ -34,7 +34,7 @@ In simple_7.m, line 1
 |           ^ info: NEWLINE
 In simple_7.m, line 2
 | [a .1]
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_7.m, line 2
 | [a .1]
 |  ^ info: IDENTIFIER

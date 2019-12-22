@@ -50,6 +50,7 @@ KEYWORDS = frozenset([
 
     # These really should be keywords but are not
     'import',
+    'arguments',
 
     # These are keywords inside classdef. But for sanity lets just
     # assume they are keywords

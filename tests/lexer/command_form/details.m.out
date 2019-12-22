@@ -1,0 +1,176 @@
+details.m: lexed OK
+In details.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In details.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+|                                     ^ info: NEWLINE
+In details.m, line 3
+| function test_06()
+| ^^^^^^^^ info: [SL] KEYWORD
+In details.m, line 3
+| function test_06()
+|          ^^^^^^^ info: IDENTIFIER
+In details.m, line 3
+| function test_06()
+|                 ^ info: BRA
+In details.m, line 3
+| function test_06()
+|                  ^ info: KET
+In details.m, line 3
+| function test_06()
+|                   ^ info: NEWLINE
+In details.m, line 4
+|   wibble a b  % wibble('a', 'b')
+|   ^^^^^^ info: [SL] IDENTIFIER
+In details.m, line 4
+|   wibble a b  % wibble('a', 'b')
+|          ^ info: CARRAY
+In details.m, line 4
+|   wibble a b  % wibble('a', 'b')
+|            ^ info: CARRAY
+In details.m, line 4
+|   wibble a b  % wibble('a', 'b')
+|               ^^^^^^^^^^^^^^^^^^ info: COMMENT
+In details.m, line 4
+|   wibble a b  % wibble('a', 'b')
+|                                 ^ info: NEWLINE
+In details.m, line 6
+|   wibble a...
+|   ^^^^^^ info: [SL] IDENTIFIER
+In details.m, line 6
+|   wibble a...
+|          ^ info: CARRAY
+In details.m, line 6
+|   wibble a...
+|           ^^^^ info: CONTINUATION
+In details.m, line 7
+|          b % ditto
+|          ^ info: [ L] CARRAY
+In details.m, line 7
+|          b % ditto
+|            ^^^^^^^ info: COMMENT
+In details.m, line 7
+|          b % ditto
+|                   ^ info: NEWLINE
+In details.m, line 9
+|   wibble a....
+|   ^^^^^^ info: [SL] IDENTIFIER
+In details.m, line 9
+|   wibble a....
+|          ^ info: CARRAY
+In details.m, line 9
+|   wibble a....
+|           ^^^^^ info: CONTINUATION
+In details.m, line 10
+|          b % ditto
+|          ^ info: [ L] CARRAY
+In details.m, line 10
+|          b % ditto
+|            ^^^^^^^ info: COMMENT
+In details.m, line 10
+|          b % ditto
+|                   ^ info: NEWLINE
+In details.m, line 12
+|   wible "a    b" % wibble ('"a', 'b"')
+|   ^^^^^ info: [SL] IDENTIFIER
+In details.m, line 12
+|   wible "a    b" % wibble ('"a', 'b"')
+|         ^^ info: CARRAY
+In details.m, line 12
+|   wible "a    b" % wibble ('"a', 'b"')
+|               ^^ info: CARRAY
+In details.m, line 12
+|   wible "a    b" % wibble ('"a', 'b"')
+|                  ^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In details.m, line 12
+|   wible "a    b" % wibble ('"a', 'b"')
+|                                       ^ info: NEWLINE
+In details.m, line 14
+|   wibble 'a b' c % wibble('a b', 'c')
+|   ^^^^^^ info: [SL] IDENTIFIER
+In details.m, line 14
+|   wibble 'a b' c % wibble('a b', 'c')
+|          ^^^^^ info: CARRAY
+In details.m, line 14
+|   wibble 'a b' c % wibble('a b', 'c')
+|                ^ info: CARRAY
+In details.m, line 14
+|   wibble 'a b' c % wibble('a b', 'c')
+|                  ^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In details.m, line 14
+|   wibble 'a b' c % wibble('a b', 'c')
+|                                      ^ info: NEWLINE
+In details.m, line 16
+|   wibble a b %c % wibble('a', 'b')
+|   ^^^^^^ info: [SL] IDENTIFIER
+In details.m, line 16
+|   wibble a b %c % wibble('a', 'b')
+|          ^ info: CARRAY
+In details.m, line 16
+|   wibble a b %c % wibble('a', 'b')
+|            ^ info: CARRAY
+In details.m, line 16
+|   wibble a b %c % wibble('a', 'b')
+|              ^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In details.m, line 16
+|   wibble a b %c % wibble('a', 'b')
+|                                   ^ info: NEWLINE
+In details.m, line 18
+|   wibble a b% wibble('a', 'b')
+|   ^^^^^^ info: [SL] IDENTIFIER
+In details.m, line 18
+|   wibble a b% wibble('a', 'b')
+|          ^ info: CARRAY
+In details.m, line 18
+|   wibble a b% wibble('a', 'b')
+|            ^ info: CARRAY
+In details.m, line 18
+|   wibble a b% wibble('a', 'b')
+|             ^^^^^^^^^^^^^^^^^^ info: COMMENT
+In details.m, line 18
+|   wibble a b% wibble('a', 'b')
+|                               ^ info: NEWLINE
+In details.m, line 20
+|   wibble 'a' ...
+|   ^^^^^^ info: [SL] IDENTIFIER
+In details.m, line 20
+|   wibble 'a' ...
+|          ^^^ info: CARRAY
+In details.m, line 20
+|   wibble 'a' ...
+|              ^^^^ info: CONTINUATION
+In details.m, line 21
+|          ...
+|          ^^^^ info: [ L] CONTINUATION
+In details.m, line 22
+|          b % c  % wibble('a', 'b')
+|          ^ info: [ L] CARRAY
+In details.m, line 22
+|          b % c  % wibble('a', 'b')
+|            ^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In details.m, line 22
+|          b % c  % wibble('a', 'b')
+|                                   ^ info: NEWLINE
+In details.m, line 24
+|   wibble ../.././a b % wibble('../.././a', 'b')
+|   ^^^^^^ info: [SL] IDENTIFIER
+In details.m, line 24
+|   wibble ../.././a b % wibble('../.././a', 'b')
+|          ^^^^^^^^^ info: CARRAY
+In details.m, line 24
+|   wibble ../.././a b % wibble('../.././a', 'b')
+|                    ^ info: CARRAY
+In details.m, line 24
+|   wibble ../.././a b % wibble('../.././a', 'b')
+|                      ^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In details.m, line 24
+|   wibble ../.././a b % wibble('../.././a', 'b')
+|                                                ^ info: NEWLINE
+In details.m, line 25
+| end
+| ^^^ info: [SL] KEYWORD
+In details.m, line 25
+| end
+|    ^ info: NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

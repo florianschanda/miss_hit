@@ -1,0 +1,113 @@
+mistakes.m: lexed OK
+In mistakes.m, line 1
+| % From https://www.mathworks.com/help/matlab/matlab_prog/command-vs-function-syntax.html
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In mistakes.m, line 1
+| % From https://www.mathworks.com/help/matlab/matlab_prog/command-vs-function-syntax.html
+|                                                                                         ^ info: NEWLINE
+In mistakes.m, line 3
+| open filename        % open('filename')
+| ^^^^ info: [SL] IDENTIFIER
+In mistakes.m, line 3
+| open filename        % open('filename')
+|      ^^^^^^^^ info: CARRAY
+In mistakes.m, line 3
+| open filename        % open('filename')
+|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT
+In mistakes.m, line 3
+| open filename        % open('filename')
+|                                        ^ info: NEWLINE
+In mistakes.m, line 4
+| isequal A B          % isequal('A', 'B')
+| ^^^^^^^ info: [SL] IDENTIFIER
+In mistakes.m, line 4
+| isequal A B          % isequal('A', 'B')
+|         ^ info: CARRAY
+In mistakes.m, line 4
+| isequal A B          % isequal('A', 'B')
+|           ^ info: CARRAY
+In mistakes.m, line 4
+| isequal A B          % isequal('A', 'B')
+|                      ^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In mistakes.m, line 4
+| isequal A B          % isequal('A', 'B')
+|                                         ^ info: NEWLINE
+In mistakes.m, line 5
+| strcmp class(A) int8 % strcmp('class(A)', 'int8')
+| ^^^^^^ info: [SL] IDENTIFIER
+In mistakes.m, line 5
+| strcmp class(A) int8 % strcmp('class(A)', 'int8')
+|        ^^^^^^^^ info: CARRAY
+In mistakes.m, line 5
+| strcmp class(A) int8 % strcmp('class(A)', 'int8')
+|                 ^^^^ info: CARRAY
+In mistakes.m, line 5
+| strcmp class(A) int8 % strcmp('class(A)', 'int8')
+|                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In mistakes.m, line 5
+| strcmp class(A) int8 % strcmp('class(A)', 'int8')
+|                                                  ^ info: NEWLINE
+In mistakes.m, line 6
+| cd matlabroot        % cd('matlabroot')
+| ^^ info: [SL] IDENTIFIER
+In mistakes.m, line 6
+| cd matlabroot        % cd('matlabroot')
+|    ^^^^^^^^^^ info: CARRAY
+In mistakes.m, line 6
+| cd matlabroot        % cd('matlabroot')
+|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT
+In mistakes.m, line 6
+| cd matlabroot        % cd('matlabroot')
+|                                        ^ info: NEWLINE
+In mistakes.m, line 7
+| isnumeric 500        % isnumeric('500')
+| ^^^^^^^^^ info: [SL] IDENTIFIER
+In mistakes.m, line 7
+| isnumeric 500        % isnumeric('500')
+|           ^^^ info: CARRAY
+In mistakes.m, line 7
+| isnumeric 500        % isnumeric('500')
+|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT
+In mistakes.m, line 7
+| isnumeric 500        % isnumeric('500')
+|                                        ^ info: NEWLINE
+In mistakes.m, line 8
+| round 3.499          % round('3.499')
+| ^^^^^ info: [SL] IDENTIFIER
+In mistakes.m, line 8
+| round 3.499          % round('3.499')
+|       ^^^^^ info: CARRAY
+In mistakes.m, line 8
+| round 3.499          % round('3.499')
+|                      ^^^^^^^^^^^^^^^^ info: COMMENT
+In mistakes.m, line 8
+| round 3.499          % round('3.499')
+|                                      ^ info: NEWLINE
+In mistakes.m, line 9
+| disp hello world     % disp('hello','world')
+| ^^^^ info: [SL] IDENTIFIER
+In mistakes.m, line 9
+| disp hello world     % disp('hello','world')
+|      ^^^^^ info: CARRAY
+In mistakes.m, line 9
+| disp hello world     % disp('hello','world')
+|            ^^^^^ info: CARRAY
+In mistakes.m, line 9
+| disp hello world     % disp('hello','world')
+|                      ^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In mistakes.m, line 9
+| disp hello world     % disp('hello','world')
+|                                             ^ info: NEWLINE
+In mistakes.m, line 10
+| disp "string"        % disp('"string"')
+| ^^^^ info: [SL] IDENTIFIER
+In mistakes.m, line 10
+| disp "string"        % disp('"string"')
+|      ^^^^^^^^ info: CARRAY
+In mistakes.m, line 10
+| disp "string"        % disp('"string"')
+|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT
+In mistakes.m, line 10
+| disp "string"        % disp('"string"')
+|                                        ^ info: NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

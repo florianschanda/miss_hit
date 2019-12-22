@@ -1,7 +1,7 @@
 test_invalid_assignment_1.m: lexed OK
 In test_invalid_assignment_1.m, line 1
 | a = [1 2 3];
-| ^ info: IDENTIFIER
+| ^ info: [SL] IDENTIFIER
 In test_invalid_assignment_1.m, line 1
 | a = [1 2 3];
 |   ^ info: ASSIGNMENT
@@ -37,10 +37,10 @@ In test_invalid_assignment_1.m, line 1
 |            ^ info: SEMICOLON
 In test_invalid_assignment_1.m, line 1
 | a = [1 2 3];
-|             ^ info: NEWLINE
+|             ^ info: [S ] NEWLINE
 In test_invalid_assignment_1.m, line 3
 | [a(2)] = 5;  % ok
-| ^ info: A_BRA
+| ^ info: [SL] A_BRA
 In test_invalid_assignment_1.m, line 3
 | [a(2)] = 5;  % ok
 |  ^ info: IDENTIFIER
@@ -67,13 +67,13 @@ In test_invalid_assignment_1.m, line 3
 |           ^ info: SEMICOLON
 In test_invalid_assignment_1.m, line 3
 | [a(2)] = 5;  % ok
-|              ^^^^ info: COMMENT
+|              ^^^^ info: [S ] COMMENT
 In test_invalid_assignment_1.m, line 3
 | [a(2)] = 5;  % ok
 |                  ^ info: NEWLINE
 In test_invalid_assignment_1.m, line 4
 | a (2) = 10;  % ok
-| ^ info: IDENTIFIER
+| ^ info: [SL] IDENTIFIER
 In test_invalid_assignment_1.m, line 4
 | a (2) = 10;  % ok
 |   ^ info: BRA
@@ -94,13 +94,13 @@ In test_invalid_assignment_1.m, line 4
 |           ^ info: SEMICOLON
 In test_invalid_assignment_1.m, line 4
 | a (2) = 10;  % ok
-|              ^^^^ info: COMMENT
+|              ^^^^ info: [S ] COMMENT
 In test_invalid_assignment_1.m, line 4
 | a (2) = 10;  % ok
 |                  ^ info: NEWLINE
 In test_invalid_assignment_1.m, line 5
 | [a (2)] = 12; % not ok
-| ^ info: A_BRA
+| ^ info: [SL] A_BRA
 In test_invalid_assignment_1.m, line 5
 | [a (2)] = 12; % not ok
 |  ^ info: IDENTIFIER
@@ -133,7 +133,7 @@ In test_invalid_assignment_1.m, line 5
 |             ^ info: SEMICOLON
 In test_invalid_assignment_1.m, line 5
 | [a (2)] = 12; % not ok
-|               ^^^^^^^^ info: COMMENT
+|               ^^^^^^^^ info: [S ] COMMENT
 In test_invalid_assignment_1.m, line 5
 | [a (2)] = 12; % not ok
 |                       ^ info: NEWLINE

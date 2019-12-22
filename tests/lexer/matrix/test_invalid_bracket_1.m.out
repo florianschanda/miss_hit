@@ -1,13 +1,13 @@
 test_invalid_bracket_1.m: lexed OK
 In test_invalid_bracket_1.m, line 1
 | % (c) Copyright 2019 Zenuity AB
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
 In test_invalid_bracket_1.m, line 1
 | % (c) Copyright 2019 Zenuity AB
 |                                ^ info: NEWLINE
 In test_invalid_bracket_1.m, line 2
 | x = 1 2}
-| ^ info: IDENTIFIER
+| ^ info: [SL] IDENTIFIER
 In test_invalid_bracket_1.m, line 2
 | x = 1 2}
 |   ^ info: ASSIGNMENT

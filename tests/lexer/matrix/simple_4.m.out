@@ -1,7 +1,7 @@
 simple_4.m: lexed OK
 In simple_4.m, line 1
 | [ a.foo ]
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_4.m, line 1
 | [ a.foo ]
 |   ^ info: IDENTIFIER
@@ -19,7 +19,7 @@ In simple_4.m, line 1
 |          ^ info: NEWLINE
 In simple_4.m, line 2
 | [ a. foo ]
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_4.m, line 2
 | [ a. foo ]
 |   ^ info: IDENTIFIER
@@ -37,7 +37,7 @@ In simple_4.m, line 2
 |           ^ info: NEWLINE
 In simple_4.m, line 3
 | [ a .foo ]
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_4.m, line 3
 | [ a .foo ]
 |   ^ info: IDENTIFIER
@@ -55,7 +55,7 @@ In simple_4.m, line 3
 |           ^ info: NEWLINE
 In simple_4.m, line 4
 | [ a . foo ]
-| ^ info: M_BRA
+| ^ info: [SL] M_BRA
 In simple_4.m, line 4
 | [ a . foo ]
 |   ^ info: IDENTIFIER
