@@ -758,21 +758,23 @@ class MATLAB_Parser:
     # 2. Transpose (.'), power (.^), complex conjugate transpose ('),
     #    matrix power (^)
     def parse_precedence_2(self):
-        # TODO: fix chaining
-        lhs = self.parse_precedence_1()
+        # In Octave chaining ^ is left associative, i.e. 2 ^ 3 ^ 2 ==
+        # (2 ^ 3) ^ 2 == 64.
+        #
+        # TODO: Is this also true for MATLAB?
+        rv = self.parse_precedence_1()
 
-        if self.peek("OPERATOR") and self.nt.value() in ("'", ".'"):
-            self.match("OPERATOR")
-            return Unary_Operation(2, self.ct, lhs)
-
-        elif self.peek("OPERATOR") and self.nt.value() in ("^", ".^"):
+        while self.peek("OPERATOR") and self.nt.value() in ("^", ".^",
+                                                            "'", ".'"):
             self.match("OPERATOR")
             t_op = self.ct
-            rhs = self.parse_precedence_1()
-            return Binary_Operation(2, t_op, lhs, rhs)
+            if t_op.value() in ("^", ".^"):
+                rhs = self.parse_precedence_1()
+                rv = Binary_Operation(2, t_op, rv, rhs)
+            else:
+                rv = Unary_Operation(2, t_op, rv)
 
-        else:
-            return lhs
+        return rv
 
     # 3. Power with unary minus (.^-), unary plus (.^+), or logical
     #    negation (.^~) as well as matrix power with unary minus (^-), unary
