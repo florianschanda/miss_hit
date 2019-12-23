@@ -1,0 +1,122 @@
+test_01.m: lexed OK
+In test_01.m, line 1
+| % From https://www.mathworks.com/help/matlab/matlab_external/run-external-commands-scripts-and-programs.html
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test_01.m, line 1
+| % From https://www.mathworks.com/help/matlab/matlab_external/run-external-commands-scripts-and-programs.html
+|                                                                                                             ^ info: NEWLINE
+In test_01.m, line 2
+| % From https://www.mathworks.com/help/matlab/matlab_external/shell-escape-functions.html
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test_01.m, line 2
+| % From https://www.mathworks.com/help/matlab/matlab_external/shell-escape-functions.html
+|                                                                                         ^ info: NEWLINE
+In test_01.m, line 4
+| !vi yearlystats.m
+| ^^^^^^^^^^^^^^^^^ info: [SL] BANG
+In test_01.m, line 4
+| !vi yearlystats.m
+|                  ^ info: NEWLINE
+In test_01.m, line 5
+| !excel.exe &
+| ^^^^^^^^^^^^ info: [SL] BANG
+In test_01.m, line 5
+| !excel.exe &
+|             ^ info: NEWLINE
+In test_01.m, line 6
+| !dir &
+| ^^^^^^ info: [SL] BANG
+In test_01.m, line 6
+| !dir &
+|       ^ info: NEWLINE
+In test_01.m, line 7
+| !echo $PATH
+| ^^^^^^^^^^^ info: [SL] BANG
+In test_01.m, line 7
+| !echo $PATH
+|            ^ info: NEWLINE
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+| ^^^^^^^^ info: [SL] KEYWORD
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|          ^ info: IDENTIFIER
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|            ^ info: ASSIGNMENT
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|              ^^^^^^^^ info: IDENTIFIER
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                      ^ info: BRA
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                       ^ info: IDENTIFIER
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                        ^ info: COMMA
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                         ^ info: IDENTIFIER
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                          ^ info: COMMA
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                           ^ info: IDENTIFIER
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                            ^ info: COMMA
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                             ^ info: IDENTIFIER
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                              ^ info: KET
+In test_01.m, line 9
+| function y = garfield(a,b,q,r)
+|                               ^ info: NEWLINE
+In test_01.m, line 10
+|   save gardata a b q r
+|   ^^^^ info: [SL] IDENTIFIER
+In test_01.m, line 10
+|   save gardata a b q r
+|        ^^^^^^^ info: CARRAY
+In test_01.m, line 10
+|   save gardata a b q r
+|                ^ info: CARRAY
+In test_01.m, line 10
+|   save gardata a b q r
+|                  ^ info: CARRAY
+In test_01.m, line 10
+|   save gardata a b q r
+|                    ^ info: CARRAY
+In test_01.m, line 10
+|   save gardata a b q r
+|                      ^ info: CARRAY
+In test_01.m, line 10
+|   save gardata a b q r
+|                       ^ info: NEWLINE
+In test_01.m, line 11
+|   !gareqn
+|   ^^^^^^^ info: [SL] BANG
+In test_01.m, line 11
+|   !gareqn
+|          ^ info: NEWLINE
+In test_01.m, line 12
+|   load gardata
+|   ^^^^ info: [SL] IDENTIFIER
+In test_01.m, line 12
+|   load gardata
+|        ^^^^^^^ info: CARRAY
+In test_01.m, line 12
+|   load gardata
+|               ^ info: NEWLINE
+In test_01.m, line 13
+| end
+| ^^^ info: [SL] KEYWORD
+In test_01.m, line 13
+| end
+|    ^ info: NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

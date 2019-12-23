@@ -85,7 +85,6 @@ TOKENS_WITH_IMPLICIT_VALUE = frozenset([
     "ASSIGNMENT",
     "SELECTION",
     "AT",
-    "BANG",
     "METACLASS"
 ])
 
@@ -131,6 +130,8 @@ class MATLAB_Token:
                 return self.raw_text[1:-1]
             else:
                 return self.raw_text
+        elif self.kind == "BANG":
+            return self.raw_text[1:]
         else:
             return self.raw_text
 
@@ -562,6 +563,9 @@ class MATLAB_Lexer(Token_Generator):
                 kind = "AT"
 
             elif self.cc == "!":
+                # Shell escapes go up to the end of the line
+                while self.nc not in ("\n", "\0"):
+                    self.next()
                 kind = "BANG"
 
             elif self.cc == "?":

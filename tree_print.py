@@ -337,8 +337,8 @@ def dot(fd, parent, annotation, node):
 
     elif isinstance(node, Function_Call):
         lbl = "Call to %s" % str(node.n_name)
-        if node.command_form:
-            lbl += " in command form"
+        if node.variant != "normal":
+            lbl += " in %s form" % node.variant
         for n, n_arg in enumerate(node.l_args, 1):
             dot(fd, node, "arg %u" % n, n_arg)
 

@@ -254,12 +254,16 @@ class Identifier(Name):
         assert isinstance(t_ident, MATLAB_Token)
         assert t_ident.kind == "IDENTIFIER" or \
             (t_ident.kind == "OPERATOR" and t_ident.value() == "~") or \
-            (t_ident.kind == "KEYWORD" and t_ident.value() == "end")
+            (t_ident.kind == "KEYWORD" and t_ident.value() == "end") or \
+            t_ident.kind == "BANG"
 
         self.t_ident = t_ident
 
     def __str__(self):
-        return self.t_ident.value()
+        if self.t_ident.kind == "BANG":
+            return "system"
+        else:
+            return self.t_ident.value()
 
 
 class Selection(Name):
@@ -389,27 +393,32 @@ class Cell_Expression(Expression):
 
 
 class Function_Call(Expression):
-    def __init__(self, n_name, l_args, command_form=False):
+    def __init__(self, n_name, l_args, variant="normal"):
         super().__init__()
-        assert isinstance(command_form, bool)
         assert isinstance(n_name, Name)
         assert isinstance(l_args, list)
         for n_arg in l_args:
             assert isinstance(n_arg, Expression)
-            if command_form:
+            if variant in ("command", "escape"):
                 assert isinstance(n_arg, Char_Array_Literal)
+        assert variant in ("normal", "command", "escape")
+        if variant == "escape":
+            assert str(n_name) == "system"
+            assert len(l_args) == 1
 
-        self.command_form = command_form
+        self.variant = variant
         self.n_name = n_name
         self.l_args = l_args
 
     def __str__(self):
-        if self.command_form:
+        if self.variant == "normal":
+            return "%s(%s)" % (self.n_name,
+                               ", ".join(map(str, self.l_args)))
+        elif self.variant == "command":
             return "%s %s" % (self.n_name,
                               " ".join(map(str, self.l_args)))
         else:
-            return "%s(%s)" % (self.n_name,
-                               ", ".join(map(str, self.l_args)))
+            return "!%s" % str(self.l_args[0])
 
 
 class Simple_For_Statement(Statement):
@@ -640,7 +649,7 @@ class Char_Array_Literal(Literal):
     def __init__(self, t_string):
         super().__init__()
         assert isinstance(t_string, MATLAB_Token)
-        assert t_string.kind == "CARRAY"
+        assert t_string.kind in ("CARRAY", "BANG")
 
         self.t_string = t_string
 

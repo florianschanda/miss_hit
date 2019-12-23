@@ -655,6 +655,14 @@ class MATLAB_Parser:
                               "expected for|if|global|while|return|switch|"
                               "break|continue|import|try|persistent,"
                               " found %s instead" % self.nt.value())
+        elif self.peek("BANG"):
+            self.match("BANG")
+            t_bang = self.ct
+            self.match("NEWLINE")
+            return Naked_Expression_Statement(
+                Function_Call(Identifier(t_bang),
+                              [Char_Array_Literal(t_bang)],
+                              "escape"))
         elif self.peek("A_BRA"):
             return self.parse_list_assignment()
         else:
@@ -683,7 +691,7 @@ class MATLAB_Parser:
                 while self.peek("CARRAY"):
                     self.match("CARRAY")
                     arg_list.append(Char_Array_Literal(self.ct))
-                rv = Function_Call(rv, arg_list, command_form=True)
+                rv = Function_Call(rv, arg_list, "command")
                 rv = Naked_Expression_Statement(rv)
 
             else:
