@@ -33,13 +33,37 @@ information and a user manual.
 
 ### Lexer
 
-The lexer should be correct, except for dealing with "command syntax".
+The Lexer is more or less complete and works correctly. The following
+difficult features of the MATLAB are fully supported:
+
+* Adding anonymous commas in matrices, so that the parser will always
+  see a comma-separated row and does not have to care about
+  whitespace. So `[1 1]` will be lexed to `[1, 1]`.
+
+* Distinguishing ' (transpose) from ' (single-quoted character array)
+
+* Support for lambda functions inside matrix/cells (think about the
+  extra special treatment of whitespace in `{@(x) 1}`)
+
+* Support for weird matrices (e.g. `[1 +1]` and `[1 ++1]` are lexed
+  correctly)
+
+* Distinguishing between matrices and assignment lists
+
+* Command form transformation (e.g. `foo bar (baz)` is lexed as
+  identifier `foo`, char array `bar`, and char array `(baz)`.
+
+* Classdef blocks (e.g. `foo uint8` is not lexed as command form, but
+  correctly as two identifiers).
+
+The notable missing features can be found in our [lexer issues](https://github.com/florianschanda/miss_hit/issues?q=is%3Aopen+is%3Aissue+label%3A%22component%3A+lexer%22).
 
 ### Parser
 
-The parser is extremely incomplete and is work in progress. It is not
-yet useful, but trivial example programs are parsed correctly. There
-are many known bugs.
+The parser is incomplete and is work in progress. It is not yet
+useful, but trivial example programs are parsed correctly. There are
+many known bugs. At the moment only a basic AST is created, and *no*
+semantic analysis takes place.
 
 ## Road map
 
