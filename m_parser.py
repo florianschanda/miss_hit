@@ -237,11 +237,11 @@ class MATLAB_Parser:
             self.next()
 
         if self.peek("KEYWORD", "function"):
-            return self.parse_function_file()
+            self.parse_function_file()
         elif self.peek("KEYWORD", "classdef"):
-            return self.parse_class_file()
+            self.parse_class_file()
         else:
-            return self.parse_script_file()
+            self.parse_script_file()
 
     def parse_script_file(self):
         statements = []
@@ -264,19 +264,14 @@ class MATLAB_Parser:
         return Sequence_Of_Statements(statements)
 
     def parse_class_file(self):
-        the_class = self.parse_classdef()
-        functions = self.parse_function_file()
+        self.parse_classdef()
+        self.parse_function_file()
 
     def parse_function_file(self):
-        functions = []
-
         while self.peek("KEYWORD", "function"):
-            fdef = self.parse_function_def()
-            functions.append(fdef)
+            self.parse_function_def()
 
         self.match_eof()
-
-        return functions
 
     def parse_function_def(self):
         self.match("KEYWORD", "function")
@@ -341,29 +336,33 @@ class MATLAB_Parser:
         rv = Function_Definition(t_fun, function_name, inputs, returns, body)
 
         if self.debug_tree:
-            tree_print.dotpr(str(rv.n_name) + ".dot", rv)
+            tree_print.dotpr("fun_" + str(rv.n_name) + ".dot", rv)
             subprocess.run(["dot", "-Tpdf",
-                            str(rv.n_name) + ".dot",
-                            "-o" + str(rv.n_name) + ".pdf"])
+                            "fun_" + str(rv.n_name) + ".dot",
+                            "-ofun_" + str(rv.n_name) + ".pdf"])
 
         return rv
 
-    def parse_class_property_list(self):
+    def parse_class_attribute_list(self):
         properties = []
+
         if self.peek("BRA"):
             self.match("BRA")
             while True:
-                self.match("IDENTIFIER")
-                # self.mh.info(self.ct.location,
-                #              "class attributes are currently ignored")
+                n_name = self.parse_identifier(allow_void=False)
                 if self.peek("ASSIGNMENT"):
                     self.match("ASSIGNMENT")
-                    self.parse_expression()
+                    n_value = self.parse_expression()
+                    properties.append(Class_Attribute(n_name, n_value))
+                else:
+                    properties.append(Class_Attribute(n_name))
+
                 if self.peek("COMMA"):
                     self.match("COMMA")
                 else:
                     break
             self.match("KET")
+
         return properties
 
     def parse_class_properties(self):
@@ -372,8 +371,12 @@ class MATLAB_Parser:
         # https://uk.mathworks.com/help/matlab/matlab_oop/property-validator-functions.html
 
         self.match("KEYWORD", "properties")
-        attributes = self.parse_class_property_list()
+        t_kw = self.ct
+
+        attributes = self.parse_class_attribute_list()
         self.match("NEWLINE")
+
+        rv = Class_Block(t_kw, attributes)
 
         while not self.peek("KEYWORD", "end"):
             prop_name = self.parse_identifier(allow_void=False)
@@ -440,10 +443,16 @@ class MATLAB_Parser:
 
             self.match("NEWLINE")
 
+            rv.add_property(Class_Property(prop_name,
+                                           val_dim,
+                                           val_cls,
+                                           val_fun,
+                                           default_value))
+
         self.match("KEYWORD", "end")
         self.match("NEWLINE")
 
-        return []
+        return rv
 
     def parse_class_methods(self):
         # Using:
@@ -451,38 +460,46 @@ class MATLAB_Parser:
         # https://uk.mathworks.com/help/matlab/matlab_oop/method-attributes.html
 
         self.match("KEYWORD", "methods")
+        t_kw = self.ct
 
-        attributes = self.parse_class_property_list()
+        attributes = self.parse_class_attribute_list()
         self.match("NEWLINE")
 
-        methods = []
+        rv = Class_Block(t_kw, attributes)
+
         while self.peek("KEYWORD", "function"):
-            methods.append(self.parse_function_def())
+            rv.add_method(self.parse_function_def())
 
         self.match("KEYWORD", "end")
         self.match("NEWLINE")
 
-        return []
+        return rv
 
     def parse_enumeration(self):
         # Using:
         # https://uk.mathworks.com/help/matlab/matlab_oop/enumerations.html
 
         self.match("KEYWORD", "enumeration")
+        t_kw = self.ct
         self.match("NEWLINE")
 
-        enums = []
+        rv = Class_Block(t_kw, [])
+
         while not self.peek("KEYWORD", "end"):
             name = self.parse_identifier(allow_void=False)
+
+            args = []
             if self.peek("BRA"):
                 self.match("BRA")
                 while True:
-                    self.parse_expression()
+                    args.append(self.parse_expression())
                     if self.peek("COMMA"):
                         self.match("COMMA")
                     else:
                         break
                 self.match("KET")
+
+            rv.add_enumeration(Class_Enumeration(name, args))
 
             if self.peek("COMMA"):
                 self.match("COMMA")
@@ -498,23 +515,25 @@ class MATLAB_Parser:
         self.match("KEYWORD", "end")
         self.match("NEWLINE")
 
-        return enums
+        return rv
 
     def parse_class_events(self):
         # Using the syntax described in
         # https://www.mathworks.com/help/matlab/matlab_oop/events-and-listeners.html
         self.match("KEYWORD", "events")
+        t_kw = self.ct
         self.match("NEWLINE")
 
-        events = []
+        rv = Class_Block(t_kw, [])
+
         while not self.peek("KEYWORD", "end"):
-            name = self.parse_identifier(allow_void=False)
+            rv.add_event(self.parse_identifier(allow_void=False))
             self.match("NEWLINE")
 
         self.match("KEYWORD", "end")
         self.match("NEWLINE")
 
-        return events
+        return rv
 
     def parse_classdef(self):
         # Using the syntax described in
@@ -522,21 +541,23 @@ class MATLAB_Parser:
         # https://uk.mathworks.com/help/matlab/matlab_oop/class-components.html
 
         self.match("KEYWORD", "classdef")
+        t_classdef = self.ct
 
         # Class attributes. Ignored for now.
-        attributes = self.parse_class_property_list()
+        attributes = self.parse_class_attribute_list()
 
         # Class name
         class_name = self.parse_identifier(allow_void=False)
 
         # Inheritance
-        superclasses = []
+        l_super = []
         if self.peek("OPERATOR", "<"):
             self.match("OPERATOR", "<")
 
             while True:
                 sc_name = self.parse_simple_name()
-                superclasses.append(sc_name)
+                l_super.append(sc_name)
+
                 if self.peek("OPERATOR", "&"):
                     self.match("OPERATOR", "&")
                 else:
@@ -544,20 +565,17 @@ class MATLAB_Parser:
 
         self.match("NEWLINE")
 
-        properties = []
-        methods = []
-        events = []
-        enumeration = []
+        rv = Class_Definition(t_classdef, class_name, attributes, l_super)
 
         while True:
             if self.peek("KEYWORD", "properties"):
-                properties += self.parse_class_properties()
+                rv.add_block(self.parse_class_properties())
             elif self.peek("KEYWORD", "methods"):
-                methods += self.parse_class_methods()
+                rv.add_block(self.parse_class_methods())
             elif self.peek("KEYWORD", "events"):
-                events += self.parse_class_events()
+                rv.add_block(self.parse_class_events())
             elif self.peek("KEYWORD", "enumeration"):
-                enumeration += self.parse_enumeration()
+                rv.add_block(self.parse_enumeration())
             elif self.peek("KEYWORD", "end"):
                 break
             else:
@@ -567,6 +585,14 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "end")
         self.match("NEWLINE")
+
+        if self.debug_tree:
+            tree_print.dotpr("cls_" + str(rv.n_name) + ".dot", rv)
+            subprocess.run(["dot", "-Tpdf",
+                            "cls_" + str(rv.n_name) + ".dot",
+                            "-ocls_" + str(rv.n_name) + ".pdf"])
+
+        return rv
 
     def parse_statement_list(self, permit_eof=False):
         assert isinstance(permit_eof, bool)

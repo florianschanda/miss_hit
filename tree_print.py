@@ -167,11 +167,14 @@ def dot(fd, parent, annotation, node):
 
     if isinstance(node, Function_Definition):
         lbl += " for %s" % str(node.n_name)
-        for item in node.l_inputs:
-            dot(fd, node, "input", item)
-        for item in node.l_outputs:
-            dot(fd, node, "output ", item)
-        dot(fd, node, "body", node.n_body)
+
+        # Only show the body if this is the root
+        if parent is None:
+            for item in node.l_inputs:
+                dot(fd, node, "input", item)
+            for item in node.l_outputs:
+                dot(fd, node, "output ", item)
+            dot(fd, node, "body", node.n_body)
 
     elif isinstance(node, Simple_Assignment_Statement):
         dot(fd, node, "target", node.n_lhs)
@@ -339,17 +342,67 @@ def dot(fd, parent, annotation, node):
         for n, n_arg in enumerate(node.l_args, 1):
             dot(fd, node, "arg %u" % n, n_arg)
 
+    elif isinstance(node, Class_Definition):
+        lbl += " of %s" % str(node.n_name)
+        for n_super in node.l_super:
+            dot(fd, node, "super", n_super)
+        for n_attr in node.l_attr:
+            dot(fd, node, "attr", n_attr)
+        for n in (node.l_properties +
+                  node.l_events +
+                  node.l_enumerations +
+                  node.l_methods):
+            dot(fd, node, "block", n)
+
+    elif isinstance(node, Class_Block):
+        lbl = node.t_kw.value()
+        for n_attr in node.l_attr:
+            dot(fd, node, "attr", n_attr)
+        for item in node.l_items:
+            dot(fd, node, "", item)
+
+    elif isinstance(node, Class_Attribute):
+        lbl += " " + str(node.n_name)
+        if node.n_value:
+            dot(fd, node, "value", node.n_value)
+
+    elif isinstance(node, Class_Property):
+        lbl = str(node.n_name)
+        attr.append("shape=none")
+
+        if node.n_default_value:
+            dot(fd, node, "default", node.n_default_value)
+        for n, n_dim in enumerate(node.l_dim_constraint, 1):
+            dot(fd, node, "dim %u" % n, n_dim)
+        if node.n_class_constraint:
+            dot(fd, node, "class", node.n_class_constraint)
+        for n_fun in node.l_fun_constraint:
+            dot(fd, node, "constraint", n_fun)
+
+    elif isinstance(node, Class_Enumeration):
+        lbl = str(node.n_name)
+        attr.append("shape=none")
+
+        for n, n_arg in enumerate(node.l_args, 1):
+            dot(fd, node, "arg %u" % n, n_arg)
+
+    elif isinstance(node, MATLAB_Token):
+        attr.append("shape=box")
+        attr.append("style=filled")
+        attr.append("fillcolor=gray")
+        lbl = node.kind + "\\n" + node.raw_text
+
     else:
         lbl = "TODO: " + lbl
         attr.append("fillcolor=yellow")
         attr.append("style=filled")
 
     attr.append("label=\"%s\"" % lbl.replace("\"", "\\\""))
-    fd.write("  %u [%s];\n" % (node.uid, ",".join(attr)))
+    fd.write("  %u [%s];\n" % (hash(node), ",".join(attr)))
 
     if parent:
-        fd.write("  %u -> %s [label=\"%s\"];" % (parent.uid,
-                                                 node.uid,
+        fd.write("  %u -> %s [label=\"%s\"];" % (hash(parent),
+                                                 hash(node),
                                                  annotation))
 
 

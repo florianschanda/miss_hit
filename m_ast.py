@@ -24,6 +24,7 @@
 ##############################################################################
 
 from m_lexer import MATLAB_Token
+from errors import ICE
 
 NODE_UID = [0]
 
@@ -71,6 +72,140 @@ class Function_Definition(Node):
         self.l_inputs  = l_inputs
         self.l_outputs = l_outputs
         self.n_body    = n_body
+
+
+class Class_Attribute(Node):
+    """ AST for items of the various attribute lists inside classdefs
+
+    For example (Access = protected)
+    """
+    def __init__(self, n_name, n_value=None):
+        super().__init__()
+        assert isinstance(n_name, Identifier)
+        assert n_value is None or isinstance(n_value, Expression)
+
+        self.n_name = n_name
+        self.n_value = n_value
+
+
+class Class_Block(Node):
+    """ AST for properties, methods, events and enumeration blocks """
+    def __init__(self, t_kw, l_attr):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value() in ("properties",
+                                                           "methods",
+                                                           "events",
+                                                           "enumeration")
+        assert isinstance(l_attr, list)
+        for n_attr in l_attr:
+            assert isinstance(n_attr, Class_Attribute)
+
+        self.t_kw = t_kw
+        self.l_attr = l_attr
+        self.l_items = []
+
+    def kind(self):
+        return self.t_kw.value()
+
+    def add_property(self, n_prop):
+        assert isinstance(n_prop, Class_Property)
+        assert self.kind() == "properties"
+        self.l_items.append(n_prop)
+
+    def add_method(self, n_method):
+        assert isinstance(n_method, Function_Definition)
+        assert self.kind() == "methods"
+        self.l_items.append(n_method)
+
+    def add_enumeration(self, n_enum):
+        assert isinstance(n_enum, Class_Enumeration)
+        assert self.kind() == "enumeration"
+        self.l_items.append(n_enum)
+
+    def add_event(self, n_event):
+        assert isinstance(n_event, Identifier)
+        assert self.kind() == "events"
+        self.l_items.append(n_event)
+
+
+class Class_Property(Node):
+    """ AST for a class property (inside a properties block """
+    def __init__(self, n_name,
+                 l_dim_constraint, n_class_constraint, l_fun_constraint,
+                 n_default_value):
+        super().__init__()
+        assert isinstance(n_name, Identifier)
+        assert isinstance(l_dim_constraint, list)
+        assert len(l_dim_constraint) != 1
+        for n_dim_constraint in l_dim_constraint:
+            assert isinstance(n_dim_constraint, MATLAB_Token)
+            assert n_dim_constraint.kind in ("NUMBER", "COLON")
+        assert n_class_constraint is None or isinstance(n_class_constraint,
+                                                        Name)
+        assert isinstance(l_fun_constraint, list)
+        for n_fun_constraint in l_fun_constraint:
+            assert isinstance(n_fun_constraint, Name)
+        assert n_default_value is None or isinstance(n_default_value,
+                                                     Expression)
+
+        self.n_name             = n_name
+        self.l_dim_constraint   = l_dim_constraint
+        self.n_class_constraint = n_class_constraint
+        self.l_fun_constraint   = l_fun_constraint
+        self.n_default_value    = n_default_value
+
+
+class Class_Enumeration(Node):
+    """ AST for enumeration literal/constructors inside classdefs """
+    def __init__(self, n_name, l_args):
+        super().__init__()
+        assert isinstance(n_name, Identifier)
+        assert isinstance(l_args, list)
+        for n_arg in l_args:
+            assert isinstance(n_arg, Expression)
+
+        self.n_name = n_name
+        self.l_args = l_args
+
+
+class Class_Definition(Node):
+    def __init__(self, t_classdef, n_name, l_attr, l_super):
+        super().__init__()
+        assert isinstance(t_classdef, MATLAB_Token)
+        assert t_classdef.kind == "KEYWORD" and \
+            t_classdef.value() == "classdef"
+        assert isinstance(n_name, Name)
+        assert isinstance(l_attr, list)
+        for n_attr in l_attr:
+            assert isinstance(n_attr, Class_Attribute)
+        assert isinstance(l_super, list)
+        for n_super in l_super:
+            assert isinstance(n_super, Name)
+
+        self.t_classdef = t_classdef
+        self.n_name = n_name
+        self.l_super = l_super
+        self.l_attr = l_attr
+
+        self.l_properties = []
+        self.l_events = []
+        self.l_enumerations = []
+        self.l_methods = []
+
+    def add_block(self, n_block):
+        assert isinstance(n_block, Class_Block)
+
+        if n_block.kind() == "properties":
+            self.l_properties.append(n_block)
+        elif n_block.kind() == "methods":
+            self.l_methods.append(n_block)
+        elif n_block.kind() == "events":
+            self.l_events.append(n_block)
+        elif n_block.kind() == "enumeration":
+            self.l_enumerations.append(n_block)
+        else:
+            raise ICE("unexpected block kind %s" % n_block.kind())
 
 
 class Name(Expression):
