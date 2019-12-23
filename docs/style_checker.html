@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <title>
-      MISS_HIT - MATLAB independent, small & safe, high integrity tools
-    </title>
-  </head>
 
-  <body>
-    <h1>MISS_HIT Style Checker</h1>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <title>
+    MISS_HIT - MATLAB independent, small & safe, high integrity tools
+  </title>
+</head>
 
+<body>
+  <header>MISS_HIT Style Checker</header>
+  <main>
     <div class="section">
       MISS_HIT includes a simple style checker
       (<span class="file">mh_style.py</span>). It can detect and
       correct (when the --fix options given) a number of coding style
       issues, most of which are configurable.
     </div>
+    <div class="title">
+      <img src="assets/settings.svg" alt="Configuration" />
+      <h1>Configuration</h1>
+    </div>
 
-    <h2>Configuration</h2>
-
-    <h3>Files</h3>
-
-    <div class="section">
+    <section>
+      <h2>Files</h2>
       <div>
         Options are read from configuration
         files <span class="file">miss_hit.cfg</span>. This behaviour can
@@ -46,8 +48,7 @@
 # Options written like on the commandline
 line_length: 100
 file_length: 2500
-copyright_entity: "Lord Buckethead"
-        </pre>
+copyright_entity: "Lord Buckethead"</pre>
       </div>
 
       <div>
@@ -58,8 +59,7 @@ copyright_entity: "Lord Buckethead"
       <div>
         <pre>
 # Legacy code which had a different coding standard
-line_length: 180
-        </pre>
+line_length: 180</pre>
       </div>
 
       <div>
@@ -67,11 +67,10 @@ line_length: 180
         checked for a line length of 180 (redefined) and a file length
         of 2500 (taken over from the project root).
       </div>
-    </div>
+    </section>
 
-    <h3>Excluding directories from analysis</h3>
-
-    <div class="section">
+    <section>
+      <h2>Excluding directories from analysis</h2>
       <div>
         A special entry "enable" into
         a <span class="file">miss_hit.cfg</span> can be used to enable
@@ -86,8 +85,7 @@ line_length: 180
       <div>
         <pre>
 enable: 0
-line_length: 100
-        </pre>
+line_length: 100</pre>
       </div>
 
       <div>
@@ -98,8 +96,7 @@ line_length: 100
 
       <div>
         <pre>
-enable: 1
-        </pre>
+enable: 1</pre>
       </div>
 
       <div>
@@ -128,14 +125,16 @@ copyright_entity: "Potato Inc."
 
 % We include the delightful miss_hit tools in our repo, but don't want to
 % accidentally check their weird test cases
-exclude_dir: "miss_hit"
-        </pre>
+exclude_dir: "miss_hit"</pre>
       </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/check-square.svg" alt="Justifications" />
+      <h1>Justifications</h1>
     </div>
 
-    <h2>Justifications</h2>
-
-    <div class="section">
+    <section>
       <div>
         Style issues can be justified by placing "mh:ignore_style" into
         a comment or line continuation. The justification applies to all
@@ -152,11 +151,14 @@ x=5; % mh:ignore_style
       <div>
         Justifications that are useless generate a warning.
       </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/edit.svg" alt="Style Rules" />
+      <h1>Style Rules</h1>
     </div>
 
-    <h2>Style Rules</h2>
-
-    <div class="section">
+    <section>
       <div>
         There are three types of rules:
       </div>
@@ -194,11 +196,10 @@ enable_rule: "file_length"
       <div>
         By default all rules are active.
       </div>
-    </div>
+    </section>
 
-    <h3>Mandatory rules</h3>
-
-    <div class="section">
+    <section>
+      <h2>Mandatory rules</h2>
       <div>
         These rules are always active. The technical reason for this is
         that it would be too difficult to autofix issues without
@@ -209,79 +210,77 @@ enable_rule: "file_length"
         is specified.
       </div>
 
-    <!-- HOOK: MANDATORY RULES -->
-    <h4>Trailing newlines at end of file</h4>
-    <div>
-      This mandatory rule makes sure there is a single trailing newline
-      at the end of a file.
-    </div>
+      <!-- HOOK: MANDATORY RULES -->
+      <h4>Trailing newlines at end of file</h4>
+      <div>
+        This mandatory rule makes sure there is a single trailing newline
+        at the end of a file.
+      </div>
 
-    <h4>Consecutive blank lines</h4>
-    <div>
-      This rule allows a maximum of one blank line to separate code blocks.
-      Comments are not considered blank lines.
-    </div>
+      <h4>Consecutive blank lines</h4>
+      <div>
+        This rule allows a maximum of one blank line to separate code blocks.
+        Comments are not considered blank lines.
+      </div>
 
-    <h4>Use of tab</h4>
-    <div>
-      This rule enforces the absence of the tabulation character
-      *everywhere*. When auto-fixing, a tab-width of 4 is used by default,
-      but this can be configured with the options `tab_width`.
-    </div>
+      <h4>Use of tab</h4>
+      <div>
+        This rule enforces the absence of the tabulation character
+        *everywhere*. When auto-fixing, a tab-width of 4 is used by default,
+        but this can be configured with the options `tab_width`.
+      </div>
 
-    <div>
-      Note that the fix replaces the tab everywhere, including in strings
-      literals. This means
-    </div>
+      <div>
+        Note that the fix replaces the tab everywhere, including in strings
+        literals. This means
+      </div>
 
-    <div>
-      <pre>
+      <div>
+        <pre>
 &quot;a&lt;tab&gt;b&quot;
    &quot;a&lt;tab&gt;b&quot;
       </pre>
-    </div>
+      </div>
 
-    <div>
-      might be fixed to
-    </div>
+      <div>
+        might be fixed to
+      </div>
 
-    <div>
-      <pre>
+      <div>
+        <pre>
 &quot;a        b&quot;
    &quot;a     b&quot;
       </pre>
-    </div>
+      </div>
 
-    <div>
-      Which may or may not what you had intended originally. I am not sure
-      if this is a bug or a feature, but either way it would be *painful* to
-      change so I am going to leave this as is.
-    </div>
+      <div>
+        Which may or may not what you had intended originally. I am not sure
+        if this is a bug or a feature, but either way it would be *painful* to
+        change so I am going to leave this as is.
+      </div>
 
-    <div>
-      Configuration parameters:
-      <ul>
-        <li>
-          <b>tab_width</b>: Tab-width, by default 4.
-        </li>
-      </ul>
-    </div>
+      <div>
+        Configuration parameters:
+        <ul>
+          <li>
+            <b>tab_width</b>: Tab-width, by default 4.
+          </li>
+        </ul>
+      </div>
 
-    <h4>Trailing whitespace</h4>
-    <div>
-      This rule enforces that there is no trailing whitespace in your files.
-      You *really* want to do this, even if the MATLAB default editor makes
-      this really hard. The reason is that it minimises conflicts when using
-      modern version control systems.
-    </div>
+      <h4>Trailing whitespace</h4>
+      <div>
+        This rule enforces that there is no trailing whitespace in your files.
+        You *really* want to do this, even if the MATLAB default editor makes
+        this really hard. The reason is that it minimises conflicts when using
+        modern version control systems.
+      </div>
 
-    <!-- END HOOK: MANDATORY RULES -->
-    </div>
+      <!-- END HOOK: MANDATORY RULES -->
+    </section>
 
-    <h3>Autofix rules</h3>
-
-    <div class="section">
-
+    <section>
+      <h2>Autofix rules</h2>
       <div>
         The following rules are automatically fixed
         by <span class="file">mh_style.py</span> when the --fix option
@@ -313,7 +312,7 @@ enable_rule: "file_length"
 
       <div>
         This rule enforces whitespace after square and round brackets,
-        and no whitespace before their closing counterpart.  For
+        and no whitespace before their closing counterpart. For
         example: [foo, bar]
       </div>
 
@@ -340,16 +339,15 @@ enable_rule: "file_length"
         thing on a line and a line continuation.
       </div>
 
-    <!-- HOOK: AUTOFIX RULES -->
-    <!-- END HOOK: AUTOFIX RULES -->
-    </div>
+      <!-- HOOK: AUTOFIX RULES -->
+      <!-- END HOOK: AUTOFIX RULES -->
+    </section>
 
-    <h3>Rules</h3>
-
-    <div class="section">
+    <section>
+      <h2>Rules</h2>
       <div>
-      These rules cannot be auto-fixed because there is no "obvious"
-      fix.
+        These rules cannot be auto-fixed because there is no "obvious"
+        fix.
       </div>
 
       <h4>Copyright notice ("copyright_notice")</h4>
@@ -393,42 +391,46 @@ enable_rule: "file_length"
         be done easily and correctly.
       </div>
 
-    <!-- HOOK: RULES -->
-    <h4>Maximum file length ("file_length")</h4>
-    <div>
-      This is configurable with `file_length`. It is a good idea to keep
-      the length of your files under some limit since it forces your
-      project into avoiding the worst spaghetti code.
-    </div>
+      <!-- HOOK: RULES -->
+      <h4>Maximum file length ("file_length")</h4>
+      <div>
+        This is configurable with `file_length`. It is a good idea to keep
+        the length of your files under some limit since it forces your
+        project into avoiding the worst spaghetti code.
+      </div>
 
-    <div>
-      Configuration parameters:
-      <ul>
-        <li>
-          <b>file_length</b>: Maximum lines in a file, 1000 by default.
-        </li>
-      </ul>
-    </div>
+      <div>
+        Configuration parameters:
+        <ul>
+          <li>
+            <b>file_length</b>: Maximum lines in a file, 1000 by default.
+          </li>
+        </ul>
+      </div>
 
-    <h4>Max characters per line ("line_length")</h4>
-    <div>
-      This is configurable with `line_length`, default is 80. It is a
-      good idea for readability to avoid overly long lines. This can help
-      you avoid extreme levels of nesting and avoids having to scroll
-      around.
-    </div>
+      <h4>Max characters per line ("line_length")</h4>
+      <div>
+        This is configurable with `line_length`, default is 80. It is a
+        good idea for readability to avoid overly long lines. This can help
+        you avoid extreme levels of nesting and avoids having to scroll
+        around.
+      </div>
 
-    <div>
-      Configuration parameters:
-      <ul>
-        <li>
-          <b>line_length</b>: Maximum characters per line, 80 by default.
-        </li>
-      </ul>
-    </div>
+      <div>
+        Configuration parameters:
+        <ul>
+          <li>
+            <b>line_length</b>: Maximum characters per line, 80 by default.
+          </li>
+        </ul>
+      </div>
 
-    <!-- END HOOK: RULES -->
-    </div>
+      <!-- END HOOK: RULES -->
+    </section>
+  </main>
+  <footer>
+    2019
+  </footer>
+</body>
 
-  </body>
 </html>

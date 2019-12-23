@@ -126,6 +126,7 @@ Contributions from the following people and entities are under their
 copyright, with the same license:
 
 * Zenuity AB
+* Alina Boboc
 
 ### Copyright of octave tests
 
@@ -138,3 +139,8 @@ authors. Each file there describes from which file they derive.
 Some of the parser tests include code samples and documentation
 snippets from the publically available MathWorks website. An
 attribution (in comment form) is always included in these cases.
+
+### Note on the documentation assets
+
+The documentation uses [feather icons](https://github.com/feathericons/feather/blob/master/LICENSE)
+which are licensed under the MIT License.
