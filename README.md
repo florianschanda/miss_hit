@@ -56,6 +56,9 @@ difficult features of the MATLAB are fully supported:
 * Classdef blocks (e.g. `foo uint8` is not lexed as command form, but
   correctly as two identifiers).
 
+* Block comments (with all the unspecified weirdness of nesting them
+  or including text on the same line).
+
 The notable missing features can be found in our [lexer issues](https://github.com/florianschanda/miss_hit/issues?q=is%3Aopen+is%3Aissue+label%3A%22component%3A+lexer%22).
 
 ### Parser
