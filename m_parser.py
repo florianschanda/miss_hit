@@ -1285,15 +1285,23 @@ class MATLAB_Parser:
 
         n_body = self.parse_delimited_input()
 
-        self.match("KEYWORD", "catch")
-        t_catch = self.ct
-        if self.peek("NEWLINE"):
+        if self.peek("KEYWORD", "end"):
+            # A missing catch block seems to be an undocumented
+            # extension to MATLAB that Octave also supports. It should
+            # be equivalent to a general catch with an empty body.
+            t_catch = None
+            n_handler = None
             n_ident = None
         else:
-            n_ident = self.parse_identifier(allow_void = False)
-        self.match("NEWLINE")
+            self.match("KEYWORD", "catch")
+            t_catch = self.ct
+            if self.peek("NEWLINE"):
+                n_ident = None
+            else:
+                n_ident = self.parse_identifier(allow_void = False)
+            self.match("NEWLINE")
 
-        n_handler = self.parse_delimited_input()
+            n_handler = self.parse_delimited_input()
 
         self.match("KEYWORD", "end")
         self.match("NEWLINE")

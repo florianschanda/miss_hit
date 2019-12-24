@@ -251,7 +251,8 @@ def dot(fd, parent, annotation, node):
         dot(fd, node, "try", node.n_body)
         if node.n_ident:
             dot(fd, node, "ident", node.n_ident)
-        dot(fd, node, "catch", node.n_handler)
+        if node.n_handler:
+            dot(fd, node, "catch", node.n_handler)
 
     elif isinstance(node, Unary_Operation):
         lbl += " %s" % node.t_op.value()

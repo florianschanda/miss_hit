@@ -633,11 +633,15 @@ class Try_Statement(Statement):
         super().__init__()
         assert isinstance(t_try, MATLAB_Token)
         assert t_try.kind == "KEYWORD" and t_try.value() == "try"
-        assert isinstance(t_catch, MATLAB_Token)
-        assert t_catch.kind == "KEYWORD" and t_catch.value() == "catch"
+        if t_catch is not None:
+            isinstance(t_catch, MATLAB_Token)
+            assert t_catch.kind == "KEYWORD" and t_catch.value() == "catch"
         assert isinstance(n_body, Sequence_Of_Statements)
-        assert isinstance(n_handler, Sequence_Of_Statements)
-        assert n_ident is None or isinstance(n_ident, Identifier)
+        assert n_handler is None or isinstance(n_handler,
+                                               Sequence_Of_Statements)
+        assert n_ident is None or isinstance(n_ident,
+                                             Identifier)
+        assert n_handler is not None or n_ident is None
 
         self.t_try     = t_try
         self.t_catch   = t_catch
