@@ -304,15 +304,15 @@ class MATLAB_Lexer(Token_Generator):
                            if message
                            else "unexpected character %s" % repr(self.cc)))
 
-    def contains_block_open(self, s):
+    def contains_block_open(self, string):
         for c in self.comment_char:
-            if c + "{" in s:
+            if c + "{" in string:
                 return True
         return False
 
-    def contains_block_close(self, s):
+    def contains_block_close(self, string):
         for c in self.comment_char:
-            if c + "}" in s:
+            if c + "}" in string:
                 return True
         return False
 
@@ -358,7 +358,6 @@ class MATLAB_Lexer(Token_Generator):
         # print("Begin lexing @ %u:%u <%s>" % (self.line,
         #                                      col_start,
         #                                      repr(self.cc)))
-
 
         if self.cc == "\0":
             return None
@@ -757,7 +756,7 @@ class MATLAB_Lexer(Token_Generator):
                                 "ignored block comment: no text must appear"
                                 " after the {")
             elif token.raw_text.strip() not in ["%s{" % c
-                                               for c in self.comment_char]:
+                                                for c in self.comment_char]:
                 self.mh.warning(token.location,
                                 "ignored block comment: no text must appear"
                                 " around the block comment marker")
