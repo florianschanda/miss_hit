@@ -33,37 +33,37 @@ def process_rule(lines, rule):
     sections = [s for s in sections if s]
 
     if rule.mandatory:
-        lines.append("    <h4>%s</h4>" % short_name)
+        lines.append("      <h4>%s</h4>" % short_name)
     else:
-        lines.append("    <h4>%s (\"%s\")</h4>" % (short_name,
-                                                   rule.name))
+        lines.append("      <h4>%s (\"%s\")</h4>" % (short_name,
+                                                     rule.name))
 
     for s in sections:
-        lines.append("    <div>")
+        lines.append("      <div>")
         if s[0] == "```":
             gobble = offset(s[1:])
-            lines.append("      <pre>")
+            lines.append("        <pre>")
             for l in s[1:]:
                 lines.append(html.escape(l[gobble:]))
-            lines.append("      </pre>")
+            lines.append("        </pre>")
         else:
             for l in s:
-                lines.append(" " * 6 + html.escape(l.strip()))
-        lines.append("    </div>")
+                lines.append(" " * 8 + html.escape(l.strip()))
+        lines.append("      </div>")
         lines.append("")
 
     if getattr(rule, "parameters", None):
-        lines.append("    <div>")
-        lines.append("      Configuration parameters:")
-        lines.append("      <ul>")
+        lines.append("      <div>")
+        lines.append("        Configuration parameters:")
+        lines.append("        <ul>")
         for param in rule.parameters:
-            lines.append("        <li>")
-            lines.append("          <b>%s</b>: %s" %
+            lines.append("          <li>")
+            lines.append("            <b>%s</b>: %s" %
                          (param,
                           rule.parameters[param]["help"]))
-            lines.append("        </li>")
-        lines.append("      </ul>")
-        lines.append("    </div>")
+            lines.append("          </li>")
+        lines.append("        </ul>")
+        lines.append("      </div>")
         lines.append("")
 
 def process(lines, rules):

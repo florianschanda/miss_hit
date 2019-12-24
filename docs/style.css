@@ -19,6 +19,17 @@ header {
     box-shadow: 0 4px 10px -2px rgba(0,0,0,.2);
 }
 
+footer {
+    padding: 0.5em 0.5em 0.5em 1.4em;
+    color: #444;
+    background-color: white;
+    border-radius: 0.2em;
+    padding: 0.8em;
+    line-height: 1.2;
+    text-align: center;
+    margin-top: 1em;
+}
+
 h1 {
     padding-left: 0.2em;
     text-transform: uppercase;
@@ -83,15 +94,4 @@ section pre {
     background-color: #f6f6f6;
     line-height: normal;
     color: black;
-}
-
-footer {
-    background-color: white;
-    border-radius: 0.2em;
-    padding: 0.8em;
-    box-shadow: 0 2px 10px 0 rgba(0,0,0,.05);
-    line-height: 1.2;
-    color: #444;
-    text-align: center;
-    margin: 0.5em 2em;
 }
