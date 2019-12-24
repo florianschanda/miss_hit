@@ -688,11 +688,12 @@ class MATLAB_Parser:
                 return self.parse_persistent_statement()
             elif self.nt.value() == "parfor":
                 return self.parse_parfor_statement()
+            elif self.nt.value() == "spmd":
+                return self.parse_spmd_statement()
             else:
                 self.mh.error(self.nt.location,
-                              "expected for|if|global|while|return|switch|"
-                              "break|continue|import|try|persistent|parfor,"
-                              " found %s instead" % self.nt.value())
+                              "expected valid statement,"
+                              " found keyword '%s' instead" % self.nt.value())
         elif self.peek("BANG"):
             self.match("BANG")
             t_bang = self.ct
@@ -1336,6 +1337,17 @@ class MATLAB_Parser:
         self.match_eos()
 
         return Try_Statement(t_try, n_body, t_catch, n_ident, n_handler)
+
+    def parse_spmd_statement(self):
+        self.match("KEYWORD", "spmd")
+        t_spmd = self.ct
+        self.match_eos()
+
+        n_body = self.parse_delimited_input()
+        self.match("KEYWORD", "end")
+        self.match_eos()
+
+        return SPMD_Statement(t_spmd, n_body)
 
 
 def sanity_test(mh, filename, show_bt, show_tree):

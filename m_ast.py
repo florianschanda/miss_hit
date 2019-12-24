@@ -667,6 +667,17 @@ class Try_Statement(Statement):
         self.n_handler = n_handler
 
 
+class SPMD_Statement(Statement):
+    def __init__(self, t_spmd, n_body):
+        super().__init__()
+        assert isinstance(t_spmd, MATLAB_Token)
+        assert t_spmd.kind == "KEYWORD" and t_spmd.value() == "spmd"
+        assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_spmd = t_spmd
+        self.n_body = n_body
+
+
 class Literal(Expression):
     pass
 

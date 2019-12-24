@@ -268,6 +268,9 @@ def dot(fd, parent, annotation, node):
         if node.n_handler:
             dot(fd, node, "catch", node.n_handler)
 
+    elif isinstance(node, SPMD_Statement):
+        dot(fd, node, "body", node.n_body)
+
     elif isinstance(node, Unary_Operation):
         lbl += " %s" % node.t_op.value()
         dot(fd, node, "", node.n_expr)
