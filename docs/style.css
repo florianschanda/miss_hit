@@ -14,7 +14,7 @@ header {
     padding: 0.5em 0.5em 0.5em 1.4em;
     background-color: cornflowerblue;
     color: white;
-    font-size: 1.5em;
+    font-size: 150%;
     font-weight: bold;
     box-shadow: 0 4px 10px -2px rgba(0,0,0,.2);
 }
@@ -33,7 +33,7 @@ footer {
 h1 {
     padding-left: 0.2em;
     text-transform: uppercase;
-    font-size: 1.2em;
+    font-size: 120%;
 }
 
 .title {
@@ -51,7 +51,7 @@ h1 {
 h2 {
     color: cornflowerblue;
     margin-block-start: 0;
-    font-size: 1.2em;
+    font-size: 120%;
 }
 
 h4 {
@@ -94,4 +94,5 @@ section pre {
     background-color: #f6f6f6;
     line-height: normal;
     color: black;
+    font-size: 125%;
 }
