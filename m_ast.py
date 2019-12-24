@@ -468,6 +468,23 @@ class General_For_Statement(Statement):
         self.n_body  = n_body
 
 
+class Parallel_For_Statement(Statement):
+    def __init__(self, t_for, n_ident, n_range, n_body, n_workers):
+        super().__init__()
+        assert isinstance(t_for, MATLAB_Token)
+        assert t_for.kind == "KEYWORD" and t_for.value() == "parfor"
+        assert isinstance(n_ident, Identifier)
+        assert isinstance(n_range, Range_Expression)
+        assert isinstance(n_body, Sequence_Of_Statements)
+        assert n_workers is None or isinstance(n_workers, Expression)
+
+        self.t_for   = t_for
+        self.n_ident = n_ident
+        self.n_range = n_range
+        self.n_workers = n_workers
+        self.n_body  = n_body
+
+
 class While_Statement(Statement):
     def __init__(self, t_while, n_guard, n_body):
         super().__init__()

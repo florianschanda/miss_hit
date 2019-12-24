@@ -206,16 +206,30 @@ def dot(fd, parent, annotation, node):
                 dot(fd, node, "case expr", n_expr)
             dot(fd, node, t_kw.value() + " body", n_body)
 
-    # elif isinstance(node, Simple_For_Statement):
-    #     emit("For statement on line %u" % node.t_for.location.line)
-    #     rec(indent + 2, "var: ", node.n_ident)
-    #     rec(indent + 2, "range: ", node.n_range)
-    #     rec(indent + 2, "body: ", node.n_body)
+    elif isinstance(node, Simple_For_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "var", node.n_ident)
+        dot(fd, node, "range", node.n_range)
+        dot(fd, node, "body", node.n_body)
 
-    # elif isinstance(node, While_Statement):
-    #     emit("While statement on line %u" % node.t_while.location.line)
-    #     rec(indent + 2, "guard: ", node.n_guard)
-    #     rec(indent + 2, "body: ", node.n_body)
+    elif isinstance(node, General_For_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "var", node.n_ident)
+        dot(fd, node, "range", node.n_expr)
+        dot(fd, node, "body", node.n_body)
+
+    elif isinstance(node, Parallel_For_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "var", node.n_ident)
+        dot(fd, node, "range", node.n_range)
+        if node.n_workers:
+            dot(fd, node, "workers", node.n_workers)
+        dot(fd, node, "body", node.n_body)
+
+    elif isinstance(node, While_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "guard", node.n_guard)
+        dot(fd, node, "body", node.n_body)
 
     elif isinstance(node, Return_Statement):
         attr.append("shape=diamond")
@@ -263,12 +277,11 @@ def dot(fd, parent, annotation, node):
         dot(fd, node, "", node.n_lhs)
         dot(fd, node, "", node.n_rhs)
 
-    # elif isinstance(node, Range_Expression):
-    #     emit("Range")
-    #     rec(indent + 2, "first: ", node.n_first)
-    #     if node.n_stride:
-    #         rec(indent + 2, "stride: ", node.n_stride)
-    #     rec(indent + 2, "last: ", node.n_last)
+    elif isinstance(node, Range_Expression):
+        dot(fd, node, "first", node.n_first)
+        if node.n_stride:
+            dot(fd, node, "stride", node.n_stride)
+        dot(fd, node, "last", node.n_last)
 
     elif isinstance(node, Matrix_Expression):
         lbl = "%ux%u %s\\n%s" % (len(node.items[0]),

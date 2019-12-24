@@ -686,10 +686,12 @@ class MATLAB_Parser:
                 return self.parse_try_statement()
             elif self.nt.value() == "persistent":
                 return self.parse_persistent_statement()
+            elif self.nt.value() == "parfor":
+                return self.parse_parfor_statement()
             else:
                 self.mh.error(self.nt.location,
                               "expected for|if|global|while|return|switch|"
-                              "break|continue|import|try|persistent,"
+                              "break|continue|import|try|persistent|parfor,"
                               " found %s instead" % self.nt.value())
         elif self.peek("BANG"):
             self.match("BANG")
@@ -1175,6 +1177,37 @@ class MATLAB_Parser:
             return Simple_For_Statement(t_kw, n_ident, n_expr, n_body)
         else:
             return General_For_Statement(t_kw, n_ident, n_expr, n_body)
+
+    def parse_parfor_statement(self):
+        self.match("KEYWORD", "parfor")
+        t_kw = self.ct
+
+        if self.peek("BRA"):
+            # parfor (var = first:last, max_workers)
+            self.match("BRA")
+            n_ident = self.parse_identifier(allow_void=False)
+            self.match("ASSIGNMENT")
+            n_expr = self.parse_range_expression()
+            self.match("COMMA")
+            n_workers = self.parse_expression()
+            self.match("KET")
+        else:
+            n_ident = self.parse_identifier(allow_void=False)
+            self.match("ASSIGNMENT")
+            n_expr = self.parse_range_expression()
+            n_workers = None
+        self.match_eos()
+
+        n_body = self.parse_delimited_input()
+
+        self.match("KEYWORD", "end")
+        self.match_eos()
+
+        if not isinstance(n_expr, Range_Expression):
+            raise ICE("parfor range is not a range")
+        else:
+            return Parallel_For_Statement(t_kw, n_ident,
+                                          n_expr, n_body, n_workers)
 
     def parse_while_statement(self):
         self.match("KEYWORD", "while")
