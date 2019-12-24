@@ -1,4 +1,7 @@
 In odd.m, line 5
 |   wibble a' 'b c  % wibble('a b', 'c')
-|                                 ^ error: expected NEWLINE, found COMMA instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+|                                      ^ lex error: unmatched )
+In odd.m, line 5
+|   wibble a' 'b c  % wibble('a b', 'c')
+|                                      ^ error: expected end of statement, found KET instead
+MISS_HIT Summary: 1 file(s) analysed, 2 error(s)

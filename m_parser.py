@@ -156,6 +156,46 @@ class MATLAB_Parser:
     ##########################################################################
     # Parsing
 
+    def peek_eos(self):
+        return self.peek("SEMICOLON") or \
+            self.peek("COLON") or \
+            self.peek("NEWLINE")
+
+    def match_eos(self, semi = ""):
+        # This matches end-of-statements (COMMA, SEMICOLON, NEWLINE,
+        # EOF). Later for style checking - if semi is ; then it
+        # expects a single semicolon, if "" then the preferred form is
+        # none.
+        assert semi in ("", ";")
+
+        found_semi_before_nl = False
+        found_nl = True
+        found_eos = False
+
+        # Skip any number of semicolons or commas
+        while self.peek("SEMICOLON") or self.peek("COMMA"):
+            if self.peek("SEMICOLON"):
+                found_semi_before_nl = True
+            found_eos = True
+            self.next()
+
+        # Skip any number of semicolons, commas or newlines
+        while self.peek_eos():
+            if self.peek("NEWLINE"):
+                found_nl = True
+            found_eos = True
+            self.next()
+
+        # If we found the end of the file, then this is also an
+        # acceptable end of statement
+        if self.peek_eof():
+            found_eos = True
+
+        if not found_eos:
+            self.mh.error(self.nt.location,
+                          "expected end of statement, found %s instead" %
+                          self.nt.kind)
+
     def parse_identifier(self, allow_void):
         # identifier ::= <IDENTIFIER>
         #
@@ -244,6 +284,8 @@ class MATLAB_Parser:
         else:
             self.parse_script_file()
 
+        self.match_eof()
+
     def parse_script_file(self):
         statements = []
         functions = []
@@ -259,8 +301,6 @@ class MATLAB_Parser:
                 if not self.peek("KEYWORD", "function"):
                     break
                 functions.append(self.parse_function_def())
-
-        self.match_eof()
 
         rv = Script_File(os.path.basename(self.lexer.filename),
                          Sequence_Of_Statements(statements),
@@ -281,8 +321,6 @@ class MATLAB_Parser:
     def parse_function_file(self):
         while self.peek("KEYWORD", "function"):
             self.parse_function_def()
-
-        self.match_eof()
 
     def parse_function_def(self):
         self.match("KEYWORD", "function")
@@ -339,7 +377,7 @@ class MATLAB_Parser:
                         break
                 self.match("KET")
 
-        self.match("NEWLINE")
+        self.match_eos()
 
         body = self.parse_statement_list(permit_eof=True)
         # The end+NL is gobbled by parse_statement_list
@@ -385,7 +423,7 @@ class MATLAB_Parser:
         t_kw = self.ct
 
         attributes = self.parse_class_attribute_list()
-        self.match("NEWLINE")
+        self.match_eos()
 
         rv = Class_Block(t_kw, attributes)
 
@@ -448,11 +486,7 @@ class MATLAB_Parser:
                 self.match("ASSIGNMENT")
                 default_value = self.parse_expression()
 
-            # TODO: Style issue?
-            if self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-
-            self.match("NEWLINE")
+            self.match_eos()
 
             rv.add_property(Class_Property(prop_name,
                                            val_dim,
@@ -461,7 +495,7 @@ class MATLAB_Parser:
                                            default_value))
 
         self.match("KEYWORD", "end")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return rv
 
@@ -474,7 +508,7 @@ class MATLAB_Parser:
         t_kw = self.ct
 
         attributes = self.parse_class_attribute_list()
-        self.match("NEWLINE")
+        self.match_eos()
 
         rv = Class_Block(t_kw, attributes)
 
@@ -482,7 +516,7 @@ class MATLAB_Parser:
             rv.add_method(self.parse_function_def())
 
         self.match("KEYWORD", "end")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return rv
 
@@ -492,7 +526,7 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "enumeration")
         t_kw = self.ct
-        self.match("NEWLINE")
+        self.match_eos()
 
         rv = Class_Block(t_kw, [])
 
@@ -512,19 +546,10 @@ class MATLAB_Parser:
 
             rv.add_enumeration(Class_Enumeration(name, args))
 
-            if self.peek("COMMA"):
-                self.match("COMMA")
-                if self.peek("NEWLINE"):
-                    self.match("NEWLINE")
-            elif self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-                if self.peek("NEWLINE"):
-                    self.match("NEWLINE")
-            else:
-                self.match("NEWLINE")
+            self.match_eos()
 
         self.match("KEYWORD", "end")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return rv
 
@@ -533,16 +558,16 @@ class MATLAB_Parser:
         # https://www.mathworks.com/help/matlab/matlab_oop/events-and-listeners.html
         self.match("KEYWORD", "events")
         t_kw = self.ct
-        self.match("NEWLINE")
+        self.match_eos()
 
         rv = Class_Block(t_kw, [])
 
         while not self.peek("KEYWORD", "end"):
             rv.add_event(self.parse_identifier(allow_void=False))
-            self.match("NEWLINE")
+            self.match_eos()
 
         self.match("KEYWORD", "end")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return rv
 
@@ -574,7 +599,7 @@ class MATLAB_Parser:
                 else:
                     break
 
-        self.match("NEWLINE")
+        self.match_eos()
 
         rv = Class_Definition(t_classdef, class_name, attributes, l_super)
 
@@ -595,7 +620,7 @@ class MATLAB_Parser:
                               " inside classdef")
 
         self.match("KEYWORD", "end")
-        self.match("NEWLINE")
+        self.match_eos()
 
         if self.debug_tree:
             tree_print.dotpr("cls_" + str(rv.n_name) + ".dot", rv)
@@ -618,7 +643,7 @@ class MATLAB_Parser:
             pass
         else:
             self.match("KEYWORD", "end")
-            self.match("NEWLINE")
+            self.match_eos()
 
         return Sequence_Of_Statements(statements)
 
@@ -708,18 +733,7 @@ class MATLAB_Parser:
             else:
                 rv = Naked_Expression_Statement(rv)
 
-            if self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-                if self.peek("NEWLINE"):
-                    self.match("NEWLINE")
-            elif self.peek("COLON"):
-                # TODO: Flag style issue
-                self.match("COLON")
-                if self.peek("NEWLINE"):
-                    self.match("NEWLINE")
-            else:
-                # TODO: Flag style issue
-                self.match("NEWLINE")
+            self.match_eos(";")
 
             return rv
 
@@ -1099,9 +1113,7 @@ class MATLAB_Parser:
         self.match("KEYWORD", "if")
         t_kw = self.ct
         n_expr = self.parse_expression()
-        if self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-        self.match("NEWLINE")
+        self.match_eos()
         n_body = self.parse_delimited_input()
         actions.append((t_kw, n_expr, n_body))
 
@@ -1109,52 +1121,40 @@ class MATLAB_Parser:
             self.match("KEYWORD", "elseif")
             t_kw = self.ct
             n_expr = self.parse_expression()
-            if self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-            self.match("NEWLINE")
+            self.match_eos()
             n_body = self.parse_delimited_input()
             actions.append((t_kw, n_expr, n_body))
 
         if self.peek("KEYWORD", "else"):
             self.match("KEYWORD", "else")
             t_kw = self.ct
-            if self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-            self.match("NEWLINE")
+            self.match_eos()
             n_body = self.parse_delimited_input()
             actions.append((t_kw, None, n_body))
 
         self.match("KEYWORD", "end")
-        if self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return If_Statement(actions)
 
     def parse_return_statement(self):
         self.match("KEYWORD", "return")
         t_kw = self.ct
-        if self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return Return_Statement(t_kw)
 
     def parse_break_statement(self):
         self.match("KEYWORD", "break")
         t_kw = self.ct
-        if self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return Break_Statement(t_kw)
 
     def parse_continue_statement(self):
         self.match("KEYWORD", "continue")
         t_kw = self.ct
-        if self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return Continue_Statement(t_kw)
 
@@ -1164,13 +1164,12 @@ class MATLAB_Parser:
         n_ident = self.parse_identifier(allow_void=False)
         self.match("ASSIGNMENT")
         n_expr = self.parse_expression()
-
-        self.match("NEWLINE")
+        self.match_eos()
 
         n_body = self.parse_delimited_input()
 
         self.match("KEYWORD", "end")
-        self.match("NEWLINE")
+        self.match_eos()
 
         if isinstance(n_expr, Range_Expression):
             return Simple_For_Statement(t_kw, n_ident, n_expr, n_body)
@@ -1182,12 +1181,11 @@ class MATLAB_Parser:
         t_kw = self.ct
 
         n_guard = self.parse_expression()
-        self.match("NEWLINE")
+        self.match_eos()
 
         n_body = self.parse_delimited_input()
         self.match("KEYWORD", "end")
-
-        self.match("NEWLINE")
+        self.match_eos()
 
         return While_Statement(t_kw, n_guard, n_body)
 
@@ -1230,14 +1228,14 @@ class MATLAB_Parser:
         t_switch = self.ct
 
         n_switch_expr = self.parse_expression()
-        self.match("NEWLINE")
+        self.match_eos()
 
         l_options = []
         while True:
             if self.peek("KEYWORD", "otherwise"):
                 self.match("KEYWORD", "otherwise")
                 t_kw = self.ct
-                self.match("NEWLINE")
+                self.match_eos()
                 n_body = self.parse_delimited_input()
                 l_options.append((t_kw, None, n_body))
                 break
@@ -1245,7 +1243,7 @@ class MATLAB_Parser:
                 self.match("KEYWORD", "case")
                 t_kw = self.ct
                 n_expr = self.parse_expression()
-                self.match("NEWLINE")
+                self.match_eos()
                 n_body = self.parse_delimited_input()
                 l_options.append((t_kw, n_expr, n_body))
 
@@ -1253,7 +1251,7 @@ class MATLAB_Parser:
                 break
 
         self.match("KEYWORD", "end")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return Switch_Statement(t_switch, n_switch_expr, l_options)
 
@@ -1272,16 +1270,14 @@ class MATLAB_Parser:
                 self.match("SELECTION")
                 self.match("IDENTIFIER")
                 chain.append(self.ct)
-        if self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return Import_Statement(t_kw, chain)
 
     def parse_try_statement(self):
         self.match("KEYWORD", "try")
         t_try = self.ct
-        self.match("NEWLINE")
+        self.match_eos()
 
         n_body = self.parse_delimited_input()
 
@@ -1295,16 +1291,16 @@ class MATLAB_Parser:
         else:
             self.match("KEYWORD", "catch")
             t_catch = self.ct
-            if self.peek("NEWLINE"):
+            if self.peek_eos():
                 n_ident = None
             else:
                 n_ident = self.parse_identifier(allow_void = False)
-            self.match("NEWLINE")
+            self.match_eos()
 
             n_handler = self.parse_delimited_input()
 
         self.match("KEYWORD", "end")
-        self.match("NEWLINE")
+        self.match_eos()
 
         return Try_Statement(t_try, n_body, t_catch, n_ident, n_handler)
 
