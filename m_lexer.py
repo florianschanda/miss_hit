@@ -227,6 +227,12 @@ class MATLAB_Lexer(Token_Generator):
         #
         # Note that this is highly incomplete right now.
 
+        self.block_comment = 0
+        # We're in a block comment and are ignore almost everything
+        # (except a closing block comment). This is a number because
+        # block comments could be nested, and we use this to keep
+        # track of the level.
+
         # pylint: disable=invalid-name
         self.cc = None
         self.nc = self.text[0] if len(self.text) > 0 else "\0"
@@ -298,6 +304,18 @@ class MATLAB_Lexer(Token_Generator):
                            if message
                            else "unexpected character %s" % repr(self.cc)))
 
+    def contains_block_open(self, s):
+        for c in self.comment_char:
+            if c + "{" in s:
+                return True
+        return False
+
+    def contains_block_close(self, s):
+        for c in self.comment_char:
+            if c + "}" in s:
+                return True
+        return False
+
     def __token(self):
         # If we've been instructed to add an anonymous comma, we do
         # that and nothing else.
@@ -323,9 +341,10 @@ class MATLAB_Lexer(Token_Generator):
                              "\033[32madded comma\033[0m")
             return token
 
-        # First we scan to the next non-whitespace character
+        # First we scan to the next non-whitespace character, unless
+        # we're in block comment mode
         preceeding_ws = False
-        while True:
+        while not self.block_comment:
             self.next()
             if self.cc in (" ", "\t"):
                 preceeding_ws = True
@@ -340,7 +359,22 @@ class MATLAB_Lexer(Token_Generator):
         #                                      col_start,
         #                                      repr(self.cc)))
 
-        if self.command_mode:
+
+        if self.cc == "\0":
+            return None
+
+        elif self.block_comment:
+            if self.cc == "\n":
+                kind = "NEWLINE"
+                self.next()
+            else:
+                kind = "COMMENT"
+                while self.nc:
+                    self.next()
+                    if self.cc == "\n":
+                        break
+
+        elif self.command_mode:
             # Lexing in command mode
             if self.cc in self.comment_char:
                 # Comments go until the end of the line
@@ -571,9 +605,6 @@ class MATLAB_Lexer(Token_Generator):
             elif self.cc == "?":
                 kind = "METACLASS"
 
-            elif self.cc == "\0":
-                return None
-
             else:
                 self.lex_error()
 
@@ -708,6 +739,41 @@ class MATLAB_Lexer(Token_Generator):
             if kind in ("NEWLINE", "COMMA", "SEMICOLON"):
                 self.first_in_statement = True
                 self.command_mode = False
+
+        # Detect block comment starts (and questionable block comments)
+        if token.kind == "COMMENT" and \
+           ((self.block_comment == 0 and
+             token.raw_text[1:2] == "{") or
+            (self.block_comment > 0 and
+             self.contains_block_open(token.raw_text))):
+
+            if not token.first_in_line and self.block_comment == 0:
+                self.mh.warning(token.location,
+                                "ignored block comment: it must not be"
+                                " preceded by program text")
+            elif token.value().strip() != "{" and self.block_comment == 0:
+                self.mh.warning(token.location,
+                                "ignored block comment: no text must appear"
+                                " after the {")
+            elif token.raw_text.strip() not in ["%s{" % c
+                                               for c in self.comment_char]:
+                self.mh.warning(token.location,
+                                "ignored block comment: no text must appear"
+                                " around the block comment marker")
+            else:
+                self.block_comment += 1
+
+        elif self.block_comment and token.kind == "COMMENT":
+            for c in self.comment_char:
+                marker = c + "}"
+                if marker in token.raw_text:
+                    if token.raw_text.strip() == marker:
+                        self.block_comment -= 1
+                    else:
+                        self.mh.warning(token.location,
+                                        "ignored block comment end: no text"
+                                        " must appear around the block comment"
+                                        " marker %s" % marker)
 
         self.last_kind = kind
         self.last_value = raw_text

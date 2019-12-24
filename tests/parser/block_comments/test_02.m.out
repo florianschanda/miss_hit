@@ -1,0 +1,4 @@
+In test_02.m, line 4
+| %{ not valid
+| ^^^^^^^^^^^^ warning: ignored block comment: no text must appear after the {
+MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)

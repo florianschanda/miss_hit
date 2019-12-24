@@ -39,13 +39,30 @@ class Expression(Node):
     pass
 
 
-class Sequence_Of_Statements(Node):
-    def __init__(self, statements):
+class Script_File(Node):
+    def __init__(self, name, n_statements, l_functions):
         super().__init__()
-        assert isinstance(statements, list)
-        for statement in statements:
+        assert isinstance(name, str)
+        assert isinstance(n_statements, Sequence_Of_Statements)
+        assert isinstance(l_functions, list)
+        for n_function in l_functions:
+            assert isinstance(n_function, Function_Definition)
+
+        self.name         = name
+        # Not a node since it comes from the filename
+
+        self.n_statements = n_statements
+        self.l_functions  = l_functions
+
+
+class Sequence_Of_Statements(Node):
+    def __init__(self, l_statements):
+        super().__init__()
+        assert isinstance(l_statements, list)
+        for statement in l_statements:
             assert isinstance(statement, Statement)
-        self.statements = statements
+
+        self.l_statements = l_statements
 
 
 class Statement(Node):

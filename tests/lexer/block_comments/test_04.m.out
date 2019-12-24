@@ -1,0 +1,56 @@
+test_04.m: lexed OK
+In test_04.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test_04.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+|                                     ^ info: NEWLINE
+In test_04.m, line 3
+| disp("foo");
+| ^^^^ info: [SL] IDENTIFIER
+In test_04.m, line 3
+| disp("foo");
+|     ^ info: BRA
+In test_04.m, line 3
+| disp("foo");
+|      ^^^^^ info: STRING
+In test_04.m, line 3
+| disp("foo");
+|           ^ info: KET
+In test_04.m, line 3
+| disp("foo");
+|            ^ info: SEMICOLON
+In test_04.m, line 3
+| disp("foo");
+|             ^ info: [S ] NEWLINE
+In test_04.m, line 4
+| %{
+| ^^ info: [SL] COMMENT
+In test_04.m, line 4
+| %{
+|  ^^ info: COMMENT
+In test_04.m, line 4
+| %{
+|   ^ info: NEWLINE
+In test_04.m, line 5
+|  disp("bar");
+| ^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test_04.m, line 5
+|  disp("bar");
+|              ^ info: NEWLINE
+In test_04.m, line 6
+| %} potato
+| ^^^^^^^^^^ [31mwarning[0m: ignored block comment end: no text must appear around the block comment marker %}
+In test_04.m, line 6
+| %} potato
+| ^^^^^^^^^^ info: [SL] COMMENT
+In test_04.m, line 6
+| %} potato
+|          ^ info: NEWLINE
+In test_04.m, line 7
+| disp("baz");
+| ^^^^^^^^^^^^^ info: [SL] COMMENT
+In test_04.m, line 7
+| disp("baz");
+|             ^ info: NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)

@@ -86,13 +86,13 @@ def rec(indent, prefix, node):
         rec(indent, prefix + "Naked Expression: ", node.n_expr)
 
     elif isinstance(node, Sequence_Of_Statements):
-        if len(node.statements) == 0:
+        if len(node.l_statements) == 0:
             emit("")
-        elif len(node.statements) == 1:
-            rec(indent, prefix, node.statements[0])
+        elif len(node.l_statements) == 1:
+            rec(indent, prefix, node.l_statements[0])
         else:
             emit("Sequence_Of_Statements")
-            for statement in node.statements:
+            for statement in node.l_statements:
                 rec(indent + 2, "", statement)
 
     elif isinstance(node, Unary_Operation):
@@ -165,7 +165,13 @@ def dot(fd, parent, annotation, node):
     lbl = node.__class__.__name__
     attr = []
 
-    if isinstance(node, Function_Definition):
+    if isinstance(node, Script_File):
+        lbl += " " + node.name
+        dot(fd, node, "statements", node.n_statements)
+        for n_function in node.l_functions:
+            dot(fd, node, "function", n_function)
+
+    elif isinstance(node, Function_Definition):
         lbl += " for %s" % str(node.n_name)
 
         # Only show the body if this is the root
@@ -237,7 +243,7 @@ def dot(fd, parent, annotation, node):
                         for t in node.l_chain)
 
     elif isinstance(node, Sequence_Of_Statements):
-        for statement in node.statements:
+        for statement in node.l_statements:
             dot(fd, node, "", statement)
 
     elif isinstance(node, Try_Statement):

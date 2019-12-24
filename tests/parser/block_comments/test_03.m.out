@@ -1,0 +1,4 @@
+In test_03.m, line 3
+| disp("foo"); %{
+|              ^^ warning: ignored block comment: it must not be preceded by program text
+MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)

@@ -24,6 +24,7 @@
 ##                                                                          ##
 ##############################################################################
 
+import os
 import traceback
 import subprocess
 
@@ -261,7 +262,17 @@ class MATLAB_Parser:
 
         self.match_eof()
 
-        return Sequence_Of_Statements(statements)
+        rv = Script_File(os.path.basename(self.lexer.filename),
+                         Sequence_Of_Statements(statements),
+                         functions)
+
+        if self.debug_tree:
+            tree_print.dotpr("scr_" + str(rv.name) + ".dot", rv)
+            subprocess.run(["dot", "-Tpdf",
+                            "scr_" + str(rv.name) + ".dot",
+                            "-oscr_" + str(rv.name) + ".pdf"])
+
+        return rv
 
     def parse_class_file(self):
         self.parse_classdef()
