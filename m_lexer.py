@@ -476,7 +476,8 @@ class MATLAB_Lexer(Token_Generator):
                  self.cc == "." and self.nc.isnumeric():
                 # Its some kind of number
                 kind = "NUMBER"
-                tmp = self.match_re(r"[0-9]*(\.[0-9]+)?([eE][+-]?[0-9]+)?")
+                tmp = self.match_re(r"([0-9]+(\.[0-9]*)?([eE][+-]?[0-9]+)?)|"
+                                    r"(\.[0-9]+([eE][+-]?[0-9]+)?)")
                 self.advance(len(tmp) - 1)
 
                 # We need to make sure we now have something that isn't a

@@ -1,0 +1,74 @@
+numbers.m: lexed OK
+In numbers.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In numbers.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+|                                     ^ info: NEWLINE
+In numbers.m, line 3
+| % numbers
+| ^^^^^^^^^ info: [SL] COMMENT
+In numbers.m, line 3
+| % numbers
+|          ^ info: NEWLINE
+In numbers.m, line 4
+| 0 0. 1. 0.1 .1
+| ^ info: [SL] NUMBER
+In numbers.m, line 4
+| 0 0. 1. 0.1 .1
+|   ^^ info: NUMBER
+In numbers.m, line 4
+| 0 0. 1. 0.1 .1
+|      ^^ info: NUMBER
+In numbers.m, line 4
+| 0 0. 1. 0.1 .1
+|         ^^^ info: NUMBER
+In numbers.m, line 4
+| 0 0. 1. 0.1 .1
+|             ^^ info: NUMBER
+In numbers.m, line 4
+| 0 0. 1. 0.1 .1
+|               ^ info: NEWLINE
+In numbers.m, line 5
+| 1e2 1.e2 .1e2 1.1e2
+| ^^^ info: [SL] NUMBER
+In numbers.m, line 5
+| 1e2 1.e2 .1e2 1.1e2
+|     ^^^^ info: NUMBER
+In numbers.m, line 5
+| 1e2 1.e2 .1e2 1.1e2
+|          ^^^^ info: NUMBER
+In numbers.m, line 5
+| 1e2 1.e2 .1e2 1.1e2
+|               ^^^^^ info: NUMBER
+In numbers.m, line 5
+| 1e2 1.e2 .1e2 1.1e2
+|                    ^ info: NEWLINE
+In numbers.m, line 7
+| % not numbers
+| ^^^^^^^^^^^^^ info: [SL] COMMENT
+In numbers.m, line 7
+| % not numbers
+|              ^ info: NEWLINE
+In numbers.m, line 8
+| .e2
+| ^ info: [SL] SELECTION
+In numbers.m, line 8
+| .e2
+|  ^^ info: IDENTIFIER
+In numbers.m, line 8
+| .e2
+|    ^ info: NEWLINE
+In numbers.m, line 9
+| .
+| ^ info: [SL] SELECTION
+In numbers.m, line 9
+| .
+|  ^ info: NEWLINE
+In numbers.m, line 10
+| e2
+| ^^ info: [SL] IDENTIFIER
+In numbers.m, line 10
+| e2
+|   ^ info: NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
