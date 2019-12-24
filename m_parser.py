@@ -1061,7 +1061,7 @@ class MATLAB_Parser:
             self.match("BRA")
             lambda_args = []
             while not self.peek("KET"):
-                lambda_args.append(self.parse_identifier(allow_void=False))
+                lambda_args.append(self.parse_identifier(allow_void=True))
                 if self.peek("COMMA"):
                     self.match("COMMA")
                 else:
