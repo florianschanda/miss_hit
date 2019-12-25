@@ -1,1 +1,7 @@
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+In invalid_break.m, line 6
+|       break;
+|       ^^^^^ error: break must appear inside loop
+In invalid_break.m, line 9
+|       break;
+|       ^^^^^ error: break must appear inside loop
+MISS_HIT Summary: 1 file(s) analysed, 2 error(s)

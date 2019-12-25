@@ -79,11 +79,18 @@ IGNORED_TOKENS = frozenset(["COMMENT"])
 #
 # 12. Short-circuit OR (||)
 
+
 class MATLAB_Parser:
     def __init__(self, mh, lexer):
         assert isinstance(lexer, Token_Generator)
         self.lexer = lexer
         self.mh = mh
+
+        self.context = []
+
+        self.functions_require_end = False
+        # If true, all functions require an explicit end. Otherwise it
+        # is possible to end a function with EOF instead.
 
         # pylint: disable=invalid-name
         self.ct = None
@@ -93,6 +100,29 @@ class MATLAB_Parser:
         self.debug_tree = False
 
         self.next()
+
+    def push_context(self, kind):
+        assert kind in ("function", "classdef",
+                        "loop", "if", "switch",
+                        "block")
+        self.context.append(kind)
+
+    def pop_context(self):
+        if self.context:
+            self.context.pop()
+        else:
+            raise ICE("context is empty")
+
+    def in_context(self, kind):
+        assert kind in ("function", "classdef",
+                        "loop", "if", "switch",
+                        "block")
+        for k in reversed(self.context):
+            if kind == k:
+                return True
+            elif k in ("function", "classdef"):
+                return False
+        return False
 
     def next(self):
         self.ct = self.nt
@@ -324,6 +354,7 @@ class MATLAB_Parser:
 
     def parse_function_def(self):
         self.match("KEYWORD", "function")
+        self.push_context("function")
         t_fun = self.ct
 
         # Parse returns. Either 'x' or a list '[x, y]'
@@ -379,10 +410,32 @@ class MATLAB_Parser:
 
         self.match_eos()
 
-        body = self.parse_statement_list(permit_eof=True)
-        # The end+NL is gobbled by parse_statement_list
+        l_body = []
+        l_nested = []
 
-        rv = Function_Definition(t_fun, function_name, inputs, returns, body)
+        while not self.peek("KEYWORD", "end") and not self.peek_eof():
+            item = self.parse_statement()
+            if isinstance(item, Function_Definition):
+                l_nested.append(item)
+            else:
+                l_body.append(item)
+
+        if self.peek_eof() and self.functions_require_end:
+            self.mh.error(t_fun.location,
+                          "this function must be terminated with end")
+        elif self.peek_eof():
+            # TODO: style issue
+            pass
+        else:
+            self.match("KEYWORD", "end")
+            self.match_eos()
+
+        rv = Function_Definition(t_fun, function_name,
+                                 inputs, returns,
+                                 Sequence_Of_Statements(l_body),
+                                 l_nested)
+
+        self.pop_context()
 
         if self.debug_tree:
             tree_print.dotpr("fun_" + str(rv.n_name) + ".dot", rv)
@@ -577,6 +630,7 @@ class MATLAB_Parser:
         # https://uk.mathworks.com/help/matlab/matlab_oop/class-components.html
 
         self.match("KEYWORD", "classdef")
+        self.push_context("classdef")
         t_classdef = self.ct
 
         # Class attributes. Ignored for now.
@@ -621,6 +675,7 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "end")
         self.match_eos()
+        self.pop_context()
 
         if self.debug_tree:
             tree_print.dotpr("cls_" + str(rv.n_name) + ".dot", rv)
@@ -629,23 +684,6 @@ class MATLAB_Parser:
                             "-ocls_" + str(rv.n_name) + ".pdf"])
 
         return rv
-
-    def parse_statement_list(self, permit_eof=False):
-        assert isinstance(permit_eof, bool)
-
-        statements = []
-
-        while not (self.peek("KEYWORD", "end") or self.peek_eof()):
-            statements.append(self.parse_statement())
-
-        if permit_eof and self.peek_eof():
-            # TODO: style issue
-            pass
-        else:
-            self.match("KEYWORD", "end")
-            self.match_eos()
-
-        return Sequence_Of_Statements(statements)
 
     def parse_delimited_input(self):
         statements = []
@@ -690,6 +728,13 @@ class MATLAB_Parser:
                 return self.parse_parfor_statement()
             elif self.nt.value() == "spmd":
                 return self.parse_spmd_statement()
+            elif self.nt.value() == "function" and self.in_context("function"):
+                self.functions_require_end = True
+                if self.context[-1] != "function":
+                    self.mh.error(self.nt.location,
+                                  "nested function cannot appear inside"
+                                  " %s context" % self.context[-1])
+                return self.parse_function_def()
             else:
                 self.mh.error(self.nt.location,
                               "expected valid statement,"
@@ -1114,6 +1159,7 @@ class MATLAB_Parser:
         actions = []
 
         self.match("KEYWORD", "if")
+        self.push_context("if")
         t_kw = self.ct
         n_expr = self.parse_expression()
         self.match_eos()
@@ -1137,6 +1183,7 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "end")
         self.match_eos()
+        self.pop_context()
 
         return If_Statement(actions)
 
@@ -1150,6 +1197,12 @@ class MATLAB_Parser:
     def parse_break_statement(self):
         self.match("KEYWORD", "break")
         t_kw = self.ct
+
+        if not self.in_context("loop"):
+            self.mh.error(self.ct.location,
+                          "break must appear inside loop",
+                          fatal = False)
+
         self.match_eos()
 
         return Break_Statement(t_kw)
@@ -1157,12 +1210,19 @@ class MATLAB_Parser:
     def parse_continue_statement(self):
         self.match("KEYWORD", "continue")
         t_kw = self.ct
+
+        if not self.in_context("loop"):
+            self.mh.error(self.ct.location,
+                          "continue must appear inside loop",
+                          fatal = False)
+
         self.match_eos()
 
         return Continue_Statement(t_kw)
 
     def parse_for_statement(self):
         self.match("KEYWORD", "for")
+        self.push_context("loop")
         t_kw = self.ct
         n_ident = self.parse_identifier(allow_void=False)
         self.match("ASSIGNMENT")
@@ -1173,6 +1233,7 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "end")
         self.match_eos()
+        self.pop_context()
 
         if isinstance(n_expr, Range_Expression):
             return Simple_For_Statement(t_kw, n_ident, n_expr, n_body)
@@ -1181,6 +1242,7 @@ class MATLAB_Parser:
 
     def parse_parfor_statement(self):
         self.match("KEYWORD", "parfor")
+        self.push_context("loop")
         t_kw = self.ct
 
         if self.peek("BRA"):
@@ -1203,6 +1265,7 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "end")
         self.match_eos()
+        self.pop_context()
 
         if not isinstance(n_expr, Range_Expression):
             raise ICE("parfor range is not a range")
@@ -1212,6 +1275,7 @@ class MATLAB_Parser:
 
     def parse_while_statement(self):
         self.match("KEYWORD", "while")
+        self.push_context("loop")
         t_kw = self.ct
 
         n_guard = self.parse_expression()
@@ -1220,6 +1284,7 @@ class MATLAB_Parser:
         n_body = self.parse_delimited_input()
         self.match("KEYWORD", "end")
         self.match_eos()
+        self.pop_context()
 
         return While_Statement(t_kw, n_guard, n_body)
 
@@ -1259,6 +1324,7 @@ class MATLAB_Parser:
 
     def parse_switch_statement(self):
         self.match("KEYWORD", "switch")
+        self.push_context("switch")
         t_switch = self.ct
 
         n_switch_expr = self.parse_expression()
@@ -1286,6 +1352,7 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "end")
         self.match_eos()
+        self.pop_context()
 
         return Switch_Statement(t_switch, n_switch_expr, l_options)
 
@@ -1310,6 +1377,7 @@ class MATLAB_Parser:
 
     def parse_try_statement(self):
         self.match("KEYWORD", "try")
+        self.push_context("block")
         t_try = self.ct
         self.match_eos()
 
@@ -1335,17 +1403,20 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "end")
         self.match_eos()
+        self.pop_context()
 
         return Try_Statement(t_try, n_body, t_catch, n_ident, n_handler)
 
     def parse_spmd_statement(self):
         self.match("KEYWORD", "spmd")
+        self.push_context("block")
         t_spmd = self.ct
         self.match_eos()
 
         n_body = self.parse_delimited_input()
         self.match("KEYWORD", "end")
         self.match_eos()
+        self.pop_context()
 
         return SPMD_Statement(t_spmd, n_body)
 

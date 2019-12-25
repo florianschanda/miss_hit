@@ -70,7 +70,7 @@ class Statement(Node):
 
 
 class Function_Definition(Node):
-    def __init__(self, t_fun, n_name, l_inputs, l_outputs, n_body):
+    def __init__(self, t_fun, n_name, l_inputs, l_outputs, n_body, l_nested):
         super().__init__()
         assert isinstance(t_fun, MATLAB_Token)
         assert t_fun.kind == "KEYWORD" and t_fun.value() == "function"
@@ -83,12 +83,16 @@ class Function_Definition(Node):
             assert isinstance(n, Identifier)
         assert isinstance(l_outputs, list)
         assert isinstance(n_body, Sequence_Of_Statements)
+        assert isinstance(l_nested, list)
+        for n in l_nested:
+            assert isinstance(n, Function_Definition)
 
         self.t_fun     = t_fun
         self.n_name    = n_name
         self.l_inputs  = l_inputs
         self.l_outputs = l_outputs
         self.n_body    = n_body
+        self.l_nested  = l_nested
 
 
 class Class_Attribute(Node):

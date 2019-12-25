@@ -151,6 +151,8 @@ def rec(indent, prefix, node):
         for item in node.l_outputs:
             rec(indent + 2, "output: ", item)
         rec(indent + 2, "body: ", node.n_body)
+        for item in node.l_nested:
+            rec(indent + 2, "nested: ", item)
 
     else:
         emit("\033[31;1mTODO\033[0m <" + node.__class__.__name__ + ">")
@@ -181,6 +183,8 @@ def dot(fd, parent, annotation, node):
             for item in node.l_outputs:
                 dot(fd, node, "output ", item)
             dot(fd, node, "body", node.n_body)
+            for item in node.l_nested:
+                dot(fd, node, "nested", item)
 
     elif isinstance(node, Simple_Assignment_Statement):
         dot(fd, node, "target", node.n_lhs)

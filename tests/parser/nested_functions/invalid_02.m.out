@@ -1,0 +1,4 @@
+In invalid_02.m, line 3
+| function invalid_02
+| ^^^^^^^^ error: this function must be terminated with end
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
