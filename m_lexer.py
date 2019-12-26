@@ -185,6 +185,11 @@ class MATLAB_Lexer(Token_Generator):
         # push the opening bracket tokens on this stack, and remove
         # them again when we encounter the relevant closing bracket.
 
+        self.block_stack = []
+        # The lexer must also keep track of any blocks, for example
+        # classdef .. end, or properties .. end. Some blocks (such as
+        # properties) should not be transformed to command-form.
+
         self.add_comma = False
         self.debug_comma = False
         # Sometimes (in matrices) we must add anonymous commas so that
@@ -617,8 +622,31 @@ class MATLAB_Lexer(Token_Generator):
         #                                      self.col,
         #                                      repr(self.cc)))
 
+        # Classify keywords
         if kind == "IDENTIFIER" and raw_text in KEYWORDS:
             kind = "KEYWORD"
+
+        # Keep track of blocks
+        if not self.bracket_stack:
+            if kind == "KEYWORD" and \
+               raw_text in ("classdef", "function",
+                            "for", "if", "parfor", "switch",
+                            "try", "while", "spmd"):
+                self.block_stack.append(raw_text)
+            if kind == "IDENTIFIER" and \
+               "classdef" in self.block_stack and \
+               raw_text in ("properties", "enumeration",
+                            "events", "methods"):
+                kind = "KEYWORD"
+                self.block_stack.append(raw_text)
+                if raw_text in ("properties", "events", "enumeration"):
+                    self.in_special_section = True
+            if kind == "KEYWORD" and raw_text == "end":
+                if self.block_stack:
+                    self.block_stack.pop()
+                self.in_special_section = False
+                # TODO: Silent error if we can't match blocks? Or
+                # complain loudly?
 
         token = MATLAB_Token(kind,
                              raw_text,
@@ -642,20 +670,6 @@ class MATLAB_Lexer(Token_Generator):
         elif kind == "CONTINUATION":
             self.line += 1
             self.first_in_line = True
-
-        # Detect if we're entering or leaving a special section
-        if not self.bracket_stack and \
-           token.first_in_statement and \
-           token.kind == "KEYWORD" and \
-           token.value() in ("properties",
-                             "arguments",
-                             "enumeration",
-                             "events"):
-            self.in_special_section = True
-        elif not self.bracket_stack and \
-             token.kind == "KEYWORD" and \
-             token.value() == "end":
-            self.in_special_section = False
 
         # Detect if we should enter command form. If the next
         # character is not a space, it's never a command.
