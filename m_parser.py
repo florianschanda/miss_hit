@@ -284,17 +284,17 @@ class MATLAB_Parser:
 
         return rv
 
-    def parse_simple_name(self):
+    def parse_simple_name(self, allow_void=False):
         # reference ::= identifier
         #             | reference '.' identifier
 
-        rv = self.parse_identifier(allow_void=False)
+        rv = self.parse_identifier(allow_void=allow_void)
 
         while self.peek("SELECTION"):
             if self.peek("SELECTION"):
                 self.match("SELECTION")
                 tok = self.ct
-                field = self.parse_identifier(allow_void=False)
+                field = self.parse_identifier(allow_void=allow_void)
                 rv = Selection(tok, rv, field)
             else:
                 raise ICE("impossible path (nt.kind = %s)" % self.nt.kind)
@@ -412,7 +412,13 @@ class MATLAB_Parser:
 
         l_body = []
         l_nested = []
+        l_argval = []
 
+        # First, deal with any argument validation blocks
+        while self.peek("KEYWORD", "arguments"):
+            l_argval.append(self.parse_validation_block())
+
+        # Then, process the rest of the function
         while not self.peek("KEYWORD", "end") and not self.peek_eof():
             item = self.parse_statement()
             if isinstance(item, Function_Definition):
@@ -431,7 +437,8 @@ class MATLAB_Parser:
             self.match_eos()
 
         rv = Function_Definition(t_fun, function_name,
-                                 inputs, returns,
+                                 inputs, l_argval,
+                                 returns,
                                  Sequence_Of_Statements(l_body),
                                  l_nested)
 
@@ -467,21 +474,28 @@ class MATLAB_Parser:
 
         return properties
 
-    def parse_class_properties(self):
+    def parse_validation_block(self):
         # See
         # https://uk.mathworks.com/help/matlab/matlab_oop/validate-property-values.html
         # https://uk.mathworks.com/help/matlab/matlab_oop/property-validator-functions.html
+        # https://www.mathworks.com/help/matlab/matlab_prog/function-argument-validation-1.html
 
-        self.match("KEYWORD", "properties")
+        if self.peek("KEYWORD", "arguments"):
+            self.match("KEYWORD", "arguments")
+        else:
+            self.match("KEYWORD", "properties")
         t_kw = self.ct
 
         attributes = self.parse_class_attribute_list()
         self.match_eos()
 
-        rv = Class_Block(t_kw, attributes)
+        rv = Special_Block(t_kw, attributes)
 
         while not self.peek("KEYWORD", "end"):
-            prop_name = self.parse_identifier(allow_void=False)
+            if t_kw.value() == "arguments":
+                prop_name = self.parse_simple_name(allow_void=True)
+            else:
+                prop_name = self.parse_identifier(allow_void=False)
 
             # We might have validation stuff.
 
@@ -499,7 +513,7 @@ class MATLAB_Parser:
                         val_dim.append(self.ct)
                     else:
                         self.mh.error(self.nt.location,
-                                      "property dimension validation may"
+                                      "dimension validation may"
                                       " contain only integral numbers or :")
 
                     if self.peek("COMMA"):
@@ -563,7 +577,7 @@ class MATLAB_Parser:
         attributes = self.parse_class_attribute_list()
         self.match_eos()
 
-        rv = Class_Block(t_kw, attributes)
+        rv = Special_Block(t_kw, attributes)
 
         while self.peek("KEYWORD", "function"):
             rv.add_method(self.parse_function_def())
@@ -581,7 +595,7 @@ class MATLAB_Parser:
         t_kw = self.ct
         self.match_eos()
 
-        rv = Class_Block(t_kw, [])
+        rv = Special_Block(t_kw, [])
 
         while not self.peek("KEYWORD", "end"):
             name = self.parse_identifier(allow_void=False)
@@ -613,7 +627,7 @@ class MATLAB_Parser:
         t_kw = self.ct
         self.match_eos()
 
-        rv = Class_Block(t_kw, [])
+        rv = Special_Block(t_kw, [])
 
         while not self.peek("KEYWORD", "end"):
             rv.add_event(self.parse_identifier(allow_void=False))
@@ -659,7 +673,7 @@ class MATLAB_Parser:
 
         while True:
             if self.peek("KEYWORD", "properties"):
-                rv.add_block(self.parse_class_properties())
+                rv.add_block(self.parse_validation_block())
             elif self.peek("KEYWORD", "methods"):
                 rv.add_block(self.parse_class_methods())
             elif self.peek("KEYWORD", "events"):

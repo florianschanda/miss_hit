@@ -148,6 +148,8 @@ def rec(indent, prefix, node):
         emit("Function definition for %s" % node.n_name)
         for item in node.l_inputs:
             rec(indent + 2, "input: ", item)
+        for item in node.l_validation:
+            rec(indent + 2, "validation: ", item)
         for item in node.l_outputs:
             rec(indent + 2, "output: ", item)
         rec(indent + 2, "body: ", node.n_body)
@@ -180,6 +182,8 @@ def dot(fd, parent, annotation, node):
         if parent is None:
             for item in node.l_inputs:
                 dot(fd, node, "input", item)
+            for item in node.l_validation:
+                dot(fd, node, "validation", item)
             for item in node.l_outputs:
                 dot(fd, node, "output ", item)
             dot(fd, node, "body", node.n_body)
@@ -381,7 +385,7 @@ def dot(fd, parent, annotation, node):
                   node.l_methods):
             dot(fd, node, "block", n)
 
-    elif isinstance(node, Class_Block):
+    elif isinstance(node, Special_Block):
         lbl = node.t_kw.value()
         for n_attr in node.l_attr:
             dot(fd, node, "attr", n_attr)

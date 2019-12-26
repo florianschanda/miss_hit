@@ -1,0 +1,4 @@
+In test_24.m, line 7
+|         propArgs.?matlab.graphics.chart.primitive.Bar
+|                  ^ error: expected IDENTIFIER, found METACLASS instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

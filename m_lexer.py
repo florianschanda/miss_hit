@@ -626,13 +626,15 @@ class MATLAB_Lexer(Token_Generator):
         if kind == "IDENTIFIER" and raw_text in KEYWORDS:
             kind = "KEYWORD"
 
-        # Keep track of blocks
+        # Keep track of blocks, and special sections where
+        # command-form is disabled.
         if not self.bracket_stack:
             if kind == "KEYWORD" and \
                raw_text in ("classdef", "function",
                             "for", "if", "parfor", "switch",
                             "try", "while", "spmd"):
                 self.block_stack.append(raw_text)
+
             if kind == "IDENTIFIER" and \
                "classdef" in self.block_stack and \
                raw_text in ("properties", "enumeration",
@@ -641,6 +643,14 @@ class MATLAB_Lexer(Token_Generator):
                 self.block_stack.append(raw_text)
                 if raw_text in ("properties", "events", "enumeration"):
                     self.in_special_section = True
+            elif kind == "IDENTIFIER" and \
+                 self.block_stack and \
+                 self.block_stack[-1] == "function" and \
+                 raw_text == "arguments":
+                kind = "KEYWORD"
+                self.block_stack.append(raw_text)
+                self.in_special_section = True
+
             if kind == "KEYWORD" and raw_text == "end":
                 if self.block_stack:
                     self.block_stack.pop()

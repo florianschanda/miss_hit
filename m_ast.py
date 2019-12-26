@@ -70,7 +70,9 @@ class Statement(Node):
 
 
 class Function_Definition(Node):
-    def __init__(self, t_fun, n_name, l_inputs, l_outputs, n_body, l_nested):
+    def __init__(self, t_fun, n_name,
+                 l_inputs, l_validation,
+                 l_outputs, n_body, l_nested):
         super().__init__()
         assert isinstance(t_fun, MATLAB_Token)
         assert t_fun.kind == "KEYWORD" and t_fun.value() == "function"
@@ -79,6 +81,9 @@ class Function_Definition(Node):
         for n in l_inputs:
             assert isinstance(n, Identifier), \
                 str(n) + " is %s and not an Identifier" % n.__class__.__name__
+        assert isinstance(l_validation, list)
+        for n in l_validation:
+            assert isinstance(n, Special_Block)
         for n in l_outputs:
             assert isinstance(n, Identifier)
         assert isinstance(l_outputs, list)
@@ -87,12 +92,13 @@ class Function_Definition(Node):
         for n in l_nested:
             assert isinstance(n, Function_Definition)
 
-        self.t_fun     = t_fun
-        self.n_name    = n_name
-        self.l_inputs  = l_inputs
-        self.l_outputs = l_outputs
-        self.n_body    = n_body
-        self.l_nested  = l_nested
+        self.t_fun        = t_fun
+        self.n_name       = n_name
+        self.l_inputs     = l_inputs
+        self.l_validation = l_validation
+        self.l_outputs    = l_outputs
+        self.n_body       = n_body
+        self.l_nested     = l_nested
 
 
 class Class_Attribute(Node):
@@ -109,7 +115,7 @@ class Class_Attribute(Node):
         self.n_value = n_value
 
 
-class Class_Block(Node):
+class Special_Block(Node):
     """ AST for properties, methods, events and enumeration blocks """
     def __init__(self, t_kw, l_attr):
         super().__init__()
@@ -117,7 +123,8 @@ class Class_Block(Node):
         assert t_kw.kind == "KEYWORD" and t_kw.value() in ("properties",
                                                            "methods",
                                                            "events",
-                                                           "enumeration")
+                                                           "enumeration",
+                                                           "arguments")
         assert isinstance(l_attr, list)
         for n_attr in l_attr:
             assert isinstance(n_attr, Class_Attribute)
@@ -131,7 +138,7 @@ class Class_Block(Node):
 
     def add_property(self, n_prop):
         assert isinstance(n_prop, Class_Property)
-        assert self.kind() == "properties"
+        assert self.kind() in ("properties", "arguments")
         self.l_items.append(n_prop)
 
     def add_method(self, n_method):
@@ -156,7 +163,7 @@ class Class_Property(Node):
                  l_dim_constraint, n_class_constraint, l_fun_constraint,
                  n_default_value):
         super().__init__()
-        assert isinstance(n_name, Identifier)
+        assert isinstance(n_name, Name)
         assert isinstance(l_dim_constraint, list)
         assert len(l_dim_constraint) != 1
         for n_dim_constraint in l_dim_constraint:
@@ -215,7 +222,7 @@ class Class_Definition(Node):
         self.l_methods = []
 
     def add_block(self, n_block):
-        assert isinstance(n_block, Class_Block)
+        assert isinstance(n_block, Special_Block)
 
         if n_block.kind() == "properties":
             self.l_properties.append(n_block)
