@@ -1057,7 +1057,13 @@ class MATLAB_Parser:
                    self.peek("C_KET") or
                    self.peek("M_KET")):
             rv.append(self.parse_expression())
-            if self.peek("COMMA"):
+            if self.peek("SEMICOLON"):
+                pass
+            elif self.peek("NEWLINE"):
+                pass
+            elif self.peek("C_KET") or self.peek("M_KET"):
+                pass
+            else:
                 self.match("COMMA")
 
         return rv

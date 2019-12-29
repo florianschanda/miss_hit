@@ -826,64 +826,121 @@ class MATLAB_Lexer(Token_Generator):
                                   "unmatched %s" % token.raw_text,
                                   False)
 
+        ######################################################################
+        # Add commas if we're in matrices or cells
+
         # Determine if whitespace is currently significant (i.e. we're
         # in a matrix).
         ws_is_significant = (self.bracket_stack and
                              self.bracket_stack[-1].kind in ("M_BRA",
                                                              "C_BRA") and
                              self.bracket_stack[-1] != token)
+
+        # Determine if there is whitespace after the current token
         ws_follows = self.nc in (" ", "\t")
+
+        # Determine what the next two characters that follows this
+        # token, after skipping whitespace
+        skip_cont = False
         next_non_ws = None
         after_next_non_ws = None
-        for c in self.text[self.lexpos + 1:]:
-            if next_non_ws is not None:
-                after_next_non_ws = c
-                break
-            elif c in (" ", "\t"):
+        for n, c in enumerate(self.text[self.lexpos + 1:],
+                              self.lexpos + 1):
+            if skip_cont and c == "\n":
+                skip_cont = False
+            elif skip_cont:
                 pass
+            elif c in (" ", "\t") and next_non_ws is None:
+                pass
+            elif self.text[n:n + 3] == "..." and next_non_ws is None:
+                skip_cont = True
+                # Also, continuations count like whitespace for the
+                # purposes of adding commas.
+                ws_follows = True
             elif next_non_ws is None:
                 next_non_ws = c
+            else:
+                after_next_non_ws = c
+                break
 
-        token_relevant = (token.kind in ("NUMBER",
+        # Commas can only meaningfully appear after a set number of
+        # tokens. token_relevant is set to true if have such a token.
+        # TODO: This doesn't deal with continuations yet, and it
+        # probably won't work correctly.
+        token_relevant = (token.kind in ("IDENTIFIER",
+                                         "NUMBER",
                                          "CARRAY",
                                          "STRING",
-                                         "IDENTIFIER",
                                          "KET",
                                          "M_KET",
                                          "C_KET") or
                           (token.kind == "OPERATOR" and
-                           token.value() in ("'", ".'", "~")))
+                           token.value() in ("'", ".'")))
+
+        # Look at the next 2 characters that are not whitespace. Lets
+        # rule out some cases
+        if next_non_ws and after_next_non_ws:
+            if next_non_ws == "." and after_next_non_ws.isdigit():
+                pass
+            elif next_non_ws in r"*/\^<>&|=.:!":
+                token_relevant = False
+            elif next_non_ws == "~" and after_next_non_ws == "=":
+                token_relevant = False
 
         if ws_is_significant and ws_follows and next_non_ws and token_relevant:
-            if next_non_ws in (".", ",", ";", "]", "}",
-                               "*", "^", ":", "<", ">",
-                               "=", "&", "|", "\\", "/",
-                               "\n"):
-                if after_next_non_ws.isdigit():
-                    self.add_comma = True
-                else:
-                    # no comma here
-                    pass
-            elif next_non_ws in ("'", ):
-                # string comes next, so comma here
-                self.add_comma = True
-            elif self.last_kind in ("SELECTION", ):
+            # There is whitespace after our token, and the next thing
+            # looks like it could maybe mean there is a comma here.
+            #
+            # The next thing could be
+            #   NEWLINE      (nothing to do)
+            #   CONTINUATION (ignore for now)
+            #   COMMENT      (nothing to do)
+            #   IDENTIFIER   (entails comma)
+            #   NUMBER       (entails comma)
+            #   CARRAY/'     (carray = comma, transpose = no comma)
+            #   STRING       (entails comma)
+            #   KEYWORD      (syntax error)
+            #   OPERATOR     ruled out, except for:
+            #     unary +-   ?
+            #     '          (impossible, since we have ws)
+            #     ~          ?
+            #   COMMA        (nothing to do)
+            #   COLON        ?
+            #   ( { [        (entails comma)
+            #   ASSIGNMENT   (syntax error)
+            #   SELECTION    (ruled out)
+            #   AT           (entails comma)
+            #   BANG         (syntax error)
+            #   METACLASS    (entails comma)
+
+            if next_non_ws in (",", ";", "\n"):
+                # COMMA
+                # NEWLINE
+                # SEMICOLON
                 pass
-            elif next_non_ws in ("+", "-"):
+            elif next_non_ws in self.comment_char:
+                # COMMENT
+                pass
+            elif next_non_ws.isalnum():
+                # IDENTIFIER, NUMBER
+                self.add_comma = True
+            elif next_non_ws in ("'", '"'):
+                # CARRAY, STRING
+                self.add_comma = True
+            elif next_non_ws in "([{":
+                # BRA, M_BRA, C_BRA
+                self.add_comma = True
+            elif next_non_ws in "@?":
+                # AT, METACLASS
+                self.add_comma = True
+            elif next_non_ws == ".":
+                # .5 (we've ruled out everything else with .)
+                self.add_comma = True
+            elif next_non_ws in "-+~":
                 if after_next_non_ws in ("+", "-", "("):
                     self.add_comma = True
                 elif after_next_non_ws.isalnum():
                     # +6...
-                    self.add_comma = True
-            else:
-                if next_non_ws in ("(", "{", "["):
-                    # [f (foo)] is f, foo
-                    #    TODO: except for function handles?
-                    # [f [foo]] is f, [foo]
-                    # {f {foo}} is f, {foo}
-                    self.add_comma = True
-                elif next_non_ws.isalnum():
-                    # [f f] is [f, f]
                     self.add_comma = True
 
         if self.in_lambda and token.kind == "KET":

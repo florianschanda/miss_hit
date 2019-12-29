@@ -1,0 +1,41 @@
+test6.m: lexed OK
+In test6.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test6.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+|                                     ^ info: NEWLINE
+In test6.m, line 2
+| foo = ['foo'...
+| ^^^ info: [SL] IDENTIFIER
+In test6.m, line 2
+| foo = ['foo'...
+|     ^ info: ASSIGNMENT
+In test6.m, line 2
+| foo = ['foo'...
+|       ^ info: M_BRA
+In test6.m, line 2
+| foo = ['foo'...
+|        ^^^^^ info: CARRAY
+In test6.m, line 2
+| foo = ['foo'<anon,>...
+|             ^^^^^^^ info: [32madded comma[0m
+In test6.m, line 2
+| foo = ['foo'<anon,>...
+|             ^^^^^^^ info: COMMA
+In test6.m, line 2
+| foo = ['foo'...
+|             ^^^^ info: CONTINUATION
+In test6.m, line 3
+|        'bar'];
+|        ^^^^^ info: [ L] CARRAY
+In test6.m, line 3
+|        'bar'];
+|             ^ info: M_KET
+In test6.m, line 3
+|        'bar'];
+|              ^ info: SEMICOLON
+In test6.m, line 3
+|        'bar'];
+|               ^ info: [S ] NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

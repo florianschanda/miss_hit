@@ -1,0 +1,35 @@
+test2.m: lexed OK
+In test2.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test2.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+|                                     ^ info: NEWLINE
+In test2.m, line 3
+| x = [2 >1];
+| ^ info: [SL] IDENTIFIER
+In test2.m, line 3
+| x = [2 >1];
+|   ^ info: ASSIGNMENT
+In test2.m, line 3
+| x = [2 >1];
+|     ^ info: M_BRA
+In test2.m, line 3
+| x = [2 >1];
+|      ^ info: NUMBER
+In test2.m, line 3
+| x = [2 >1];
+|        ^ info: OPERATOR
+In test2.m, line 3
+| x = [2 >1];
+|         ^ info: NUMBER
+In test2.m, line 3
+| x = [2 >1];
+|          ^ info: M_KET
+In test2.m, line 3
+| x = [2 >1];
+|           ^ info: SEMICOLON
+In test2.m, line 3
+| x = [2 >1];
+|            ^ info: [S ] NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

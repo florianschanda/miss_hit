@@ -1,0 +1,170 @@
+test5.m: lexed OK
+In test5.m, line 1
+| % From https://github.com/matlab2tikz/matlab2tikz/wiki
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test5.m, line 1
+| % From https://github.com/matlab2tikz/matlab2tikz/wiki
+|                                                       ^ info: NEWLINE
+In test5.m, line 2
+| m2t = m2t_addAxisOption(m2t, 'at', ...
+| ^^^ info: [SL] IDENTIFIER
+In test5.m, line 2
+| m2t = m2t_addAxisOption(m2t, 'at', ...
+|     ^ info: ASSIGNMENT
+In test5.m, line 2
+| m2t = m2t_addAxisOption(m2t, 'at', ...
+|       ^^^^^^^^^^^^^^^^^ info: IDENTIFIER
+In test5.m, line 2
+| m2t = m2t_addAxisOption(m2t, 'at', ...
+|                        ^ info: BRA
+In test5.m, line 2
+| m2t = m2t_addAxisOption(m2t, 'at', ...
+|                         ^^^ info: IDENTIFIER
+In test5.m, line 2
+| m2t = m2t_addAxisOption(m2t, 'at', ...
+|                            ^ info: COMMA
+In test5.m, line 2
+| m2t = m2t_addAxisOption(m2t, 'at', ...
+|                              ^^^^ info: CARRAY
+In test5.m, line 2
+| m2t = m2t_addAxisOption(m2t, 'at', ...
+|                                  ^ info: COMMA
+In test5.m, line 2
+| m2t = m2t_addAxisOption(m2t, 'at', ...
+|                                    ^^^^ info: CONTINUATION
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                         ^ info: [ L] M_BRA
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                          ^^^^ info: CARRAY
+In test5.m, line 3
+|                         ['{('<anon,> formatDim(pos.x.value, pos.x.unit) ','...
+|                              ^^^^^^^ info: [32madded comma[0m
+In test5.m, line 3
+|                         ['{('<anon,> formatDim(pos.x.value, pos.x.unit) ','...
+|                              ^^^^^^^ info: COMMA
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                               ^^^^^^^^^ info: IDENTIFIER
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                        ^ info: BRA
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                         ^^^ info: IDENTIFIER
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                            ^ info: SELECTION
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                             ^ info: IDENTIFIER
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                              ^ info: SELECTION
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                               ^^^^^ info: IDENTIFIER
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                                    ^ info: COMMA
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                                      ^^^ info: IDENTIFIER
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                                         ^ info: SELECTION
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                                          ^ info: IDENTIFIER
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                                           ^ info: SELECTION
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                                            ^^^^ info: IDENTIFIER
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                                                ^ info: KET
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit)<anon,> ','...
+|                                                                 ^^^^^^^ info: [32madded comma[0m
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit)<anon,> ','...
+|                                                                 ^^^^^^^ info: COMMA
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                                                  ^^^ info: CARRAY
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','<anon,>...
+|                                                                     ^^^^^^^ info: [32madded comma[0m
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','<anon,>...
+|                                                                     ^^^^^^^ info: COMMA
+In test5.m, line 3
+|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
+|                                                                     ^^^^ info: CONTINUATION
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                               ^^^^^^^^^ info: [ L] IDENTIFIER
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                        ^ info: BRA
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                         ^^^ info: IDENTIFIER
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                            ^ info: SELECTION
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                             ^ info: IDENTIFIER
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                              ^ info: SELECTION
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                               ^^^^^ info: IDENTIFIER
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                    ^ info: COMMA
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                      ^^^ info: IDENTIFIER
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                         ^ info: SELECTION
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                          ^ info: IDENTIFIER
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                           ^ info: SELECTION
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                            ^^^^ info: IDENTIFIER
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                                ^ info: KET
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit)<anon,> ')}']);
+|                                                                 ^^^^^^^ info: [32madded comma[0m
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit)<anon,> ')}']);
+|                                                                 ^^^^^^^ info: COMMA
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                                  ^^^^ info: CARRAY
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                                      ^ info: M_KET
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                                       ^ info: KET
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                                        ^ info: SEMICOLON
+In test5.m, line 4
+|                               formatDim(pos.y.value, pos.y.unit) ')}']);
+|                                                                         ^ info: [S ] NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

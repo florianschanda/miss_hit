@@ -1,0 +1,44 @@
+test4.m: lexed OK
+In test4.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test4.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+|                                     ^ info: NEWLINE
+In test4.m, line 3
+| x = [[1]1];
+| ^ info: [SL] IDENTIFIER
+In test4.m, line 3
+| x = [[1]1];
+|   ^ info: ASSIGNMENT
+In test4.m, line 3
+| x = [[1]1];
+|     ^ info: M_BRA
+In test4.m, line 3
+| x = [[1]1];
+|      ^ info: M_BRA
+In test4.m, line 3
+| x = [[1]1];
+|       ^ info: NUMBER
+In test4.m, line 3
+| x = [[1]1];
+|        ^ info: M_KET
+In test4.m, line 3
+| x = [[1]1];
+|         ^ info: NUMBER
+In test4.m, line 3
+| x = [[1]1];
+|          ^ info: M_KET
+In test4.m, line 3
+| x = [[1]1];
+|           ^ info: SEMICOLON
+In test4.m, line 3
+| x = [[1]1];
+|            ^ info: [S ] NEWLINE
+In test4.m, line 4
+| % should be a parse error
+| ^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test4.m, line 4
+| % should be a parse error
+|                          ^ info: NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

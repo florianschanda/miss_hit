@@ -1,0 +1,50 @@
+test.m: lexed OK
+In test.m, line 1
+| % From https://github.com/matlab2tikz/matlab2tikz
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test.m, line 1
+| % From https://github.com/matlab2tikz/matlab2tikz
+|                                                  ^ info: NEWLINE
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+| ^^^ info: [SL] IDENTIFIER
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|     ^ info: ASSIGNMENT
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|       ^ info: M_BRA
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|        ^^^^ info: IDENTIFIER
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|            ^ info: SEMICOLON
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|              ^^^^ info: IDENTIFIER
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|                  ^ info: BRA
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|                   ^^^^^^^^^ info: IDENTIFIER
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|                            ^ info: KET
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|                              ^ info: OPERATOR
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|                               ^ info: NUMBER
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|                                ^ info: M_KET
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|                                 ^ info: SEMICOLON
+In test.m, line 3
+| idx = [true; diff(id_remove) >1];
+|                                  ^ info: [S ] NEWLINE
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -39,12 +39,6 @@ In simple_9.m, line 2
 | [~ data{k}] = potato
 |  ^ info: OPERATOR
 In simple_9.m, line 2
-| [~<anon,> data{k}] = potato
-|   ^^^^^^^ info: [32madded comma[0m
-In simple_9.m, line 2
-| [~<anon,> data{k}] = potato
-|   ^^^^^^^ info: COMMA
-In simple_9.m, line 2
 | [~ data{k}] = potato
 |    ^^^^ info: IDENTIFIER
 In simple_9.m, line 2

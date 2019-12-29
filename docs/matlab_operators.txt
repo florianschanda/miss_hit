@@ -1,33 +1,40 @@
 MATLAB OPERATORS
 ================
 
-+           plus or unary plus
--           minus or unary minus
-*           matrix mult
-/           matrix right division
-\           matrix left division
-^           matrix power
-'           complex conjugate transpose
-<           less than
-   <=       less than or equal
->           greater than
-   >=       greater than or equal
-&           and
-   &&       short-circuit and
-|           or
-   ||       short-circuit or
-~           not
-   ~=       not equal
-.           field/package selection
-   .*       element-wise mult
-   ./       element-wise right division
-   .\       element-wise left division
-   .^       element-wise power
-   .'       transpose
-   .?       field of name-value structure
-=           (assignment)
-   ==       equals
-@           lambda function or function pointer
-?           metaclass
-:           range
-!           (shell escape)
+cim = comma in matrix: this operator can be followed by a comma
+(implicit or explicit).
+
+cbim = comma before in matrix: this operator could be preceeded by a
+comma (implicit or explicit).
+
+            CIM?  CBIM?
++           n     y     plus or unary plus
+-           n     y     minus or unary minus
+*           n     n     matrix mult
+/           n     n     matrix right division
+\           n     n     matrix left division
+^           n     n     matrix power
+'           y     y     complex conjugate transpose / string  (cbim string)
+<           n     n     less than
+   <=       n     n     less than or equal
+>           n     n     greater than
+   >=       n     n     greater than or equal
+&           n     n     and
+   &&       n     n     short-circuit and
+|           n     n     or
+   ||       n     n     short-circuit or
+~           n     y     not
+   ~=       n     n     not equal
+.           n     n     field/package selection
+   .*       n     n     element-wise mult
+   ./       n     n     element-wise right division
+   .\       n     n     element-wise left division
+   .^       n     n     element-wise power
+   .'       y     n     transpose
+   .?       ?     ?     field of name-value structure
+=           n     n     (assignment)
+   ==       n     n     equals
+@           n     n     lambda function or function pointer
+?           n     y     metaclass
+:           n     n     range
+!           n     ?     (shell escape)

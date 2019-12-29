@@ -1,0 +1,3 @@
+% (c) Copyright 2019 Florian Schanda
+foo = ['foo'...
+       'bar'];
