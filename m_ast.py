@@ -23,8 +23,12 @@
 ##                                                                          ##
 ##############################################################################
 
+import subprocess
+
 from m_lexer import MATLAB_Token
 from errors import ICE
+
+import tree_print
 
 NODE_UID = [0]
 
@@ -34,39 +38,77 @@ class Node:
         NODE_UID[0] += 1
         self.uid = NODE_UID[0]
 
+    def debug_parse_tree(self):
+        pass
+
 
 class Expression(Node):
     pass
 
 
-class Script_File(Node):
-    def __init__(self, name, n_statements, l_functions):
+class Compilation_Unit(Node):
+    def __init__(self, name):
         super().__init__()
         assert isinstance(name, str)
+
+        self.name         = name
+        # Not a node since it comes from the filename
+
+
+class Script_File(Compilation_Unit):
+    def __init__(self, name, n_statements, l_functions):
+        super().__init__(name)
         assert isinstance(n_statements, Sequence_Of_Statements)
         assert isinstance(l_functions, list)
         for n_function in l_functions:
             assert isinstance(n_function, Function_Definition)
 
-        self.name         = name
-        # Not a node since it comes from the filename
-
         self.n_statements = n_statements
         self.l_functions  = l_functions
 
+    def debug_parse_tree(self):
+        tree_print.dotpr("scr_" + str(self.name) + ".dot", self.n_statements)
+        subprocess.run(["dot", "-Tpdf",
+                        "scr_" + str(self.name) + ".dot",
+                        "-oscr_" + str(self.name) + ".pdf"])
 
-class Sequence_Of_Statements(Node):
-    def __init__(self, l_statements):
-        super().__init__()
-        assert isinstance(l_statements, list)
-        for statement in l_statements:
-            assert isinstance(statement, Statement)
-
-        self.l_statements = l_statements
+        for n_function in self.l_functions:
+            n_function.debug_parse_tree()
 
 
-class Statement(Node):
-    pass
+class Function_File(Compilation_Unit):
+    def __init__(self, name, l_functions):
+        super().__init__(name)
+        assert isinstance(l_functions, list)
+        for n_function in l_functions:
+            assert isinstance(n_function, Function_Definition)
+
+        self.l_functions = l_functions
+
+    def debug_parse_tree(self):
+        for n_function in self.l_functions:
+            n_function.debug_parse_tree()
+
+
+class Class_File(Compilation_Unit):
+    def __init__(self, name, n_classdef, l_functions):
+        super().__init__(name)
+        assert isinstance(n_classdef, Class_Definition)
+        assert isinstance(l_functions, list)
+        for n_function in l_functions:
+            assert isinstance(n_function, Function_Definition)
+
+        self.n_classdef  = n_classdef
+        self.l_functions = l_functions
+
+    def debug_parse_tree(self):
+        tree_print.dotpr("cls_" + str(self.name) + ".dot", self.n_classdef)
+        subprocess.run(["dot", "-Tpdf",
+                        "cls_" + str(self.name) + ".dot",
+                        "-ocls_" + str(self.name) + ".pdf"])
+
+        for n_function in self.l_functions:
+            n_function.debug_parse_tree()
 
 
 class Function_Definition(Node):
@@ -99,6 +141,29 @@ class Function_Definition(Node):
         self.l_outputs    = l_outputs
         self.n_body       = n_body
         self.l_nested     = l_nested
+
+    def debug_parse_tree(self):
+        tree_print.dotpr("fun_" + str(self.n_name) + ".dot", self)
+        subprocess.run(["dot", "-Tpdf",
+                        "fun_" + str(self.n_name) + ".dot",
+                        "-ofun_" + str(self.n_name) + ".pdf"])
+
+        for n_function in self.l_nested:
+            n_function.debug_parse_tree()
+
+
+class Sequence_Of_Statements(Node):
+    def __init__(self, l_statements):
+        super().__init__()
+        assert isinstance(l_statements, list)
+        for statement in l_statements:
+            assert isinstance(statement, Statement)
+
+        self.l_statements = l_statements
+
+
+class Statement(Node):
+    pass
 
 
 class Class_Attribute(Node):

@@ -89,8 +89,8 @@ class MATLAB_Parser:
         self.context = []
 
         self.functions_require_end = False
-        # If true, all functions require an explicit end. Otherwise it
-        # is possible to end a function with EOF instead.
+        # If true, we have encountered a function with end. This means
+        # all of them must have an end.
 
         # pylint: disable=invalid-name
         self.ct = None
@@ -308,49 +308,74 @@ class MATLAB_Parser:
             self.next()
 
         if self.peek("KEYWORD", "function"):
-            self.parse_function_file()
+            cunit = Function_File(os.path.basename(self.lexer.filename),
+                                  self.parse_function_list())
         elif self.peek("KEYWORD", "classdef"):
-            self.parse_class_file()
+            cunit = self.parse_class_file()
         else:
-            self.parse_script_file()
+            cunit = self.parse_script_file()
+
+        if self.debug_tree:
+            cunit.debug_parse_tree()
 
         self.match_eof()
 
     def parse_script_file(self):
         statements = []
-        functions = []
-
         while not self.peek_eof():
             if self.peek("KEYWORD", "function"):
                 break
             else:
                 statements.append(self.parse_statement())
 
-        if self.peek("KEYWORD", "function"):
-            while not self.peek_eof():
-                if not self.peek("KEYWORD", "function"):
-                    break
-                functions.append(self.parse_function_def())
+        functions = self.parse_function_list()
 
         rv = Script_File(os.path.basename(self.lexer.filename),
                          Sequence_Of_Statements(statements),
                          functions)
 
-        if self.debug_tree:
-            tree_print.dotpr("scr_" + str(rv.name) + ".dot", rv)
-            subprocess.run(["dot", "-Tpdf",
-                            "scr_" + str(rv.name) + ".dot",
-                            "-oscr_" + str(rv.name) + ".pdf"])
-
         return rv
 
     def parse_class_file(self):
-        self.parse_classdef()
-        self.parse_function_file()
+        self.functions_require_end = True
 
-    def parse_function_file(self):
+        n_classdef  = self.parse_classdef()
+        l_functions = self.parse_function_list()
+
+        rv = Class_File(os.path.basename(self.lexer.filename),
+                        n_classdef,
+                        l_functions)
+        return rv
+
+    def parse_function_list(self):
+        l_functions = []
         while self.peek("KEYWORD", "function"):
-            self.parse_function_def()
+            l_functions.append(self.parse_function_def())
+
+        if not self.functions_require_end and l_functions:
+            if len(l_functions) > 1:
+                raise ICE("logic error")
+            l_functions = self.reorder_as_function_list(l_functions[0])
+
+        return l_functions
+
+    def reorder_as_function_list(self, n_fdef):
+        # To deal with the special case where none of the functions
+        # are terminated by end we need to flatten out the list we
+        # have.
+        assert isinstance(n_fdef, Function_Definition)
+        functions = []
+
+        while n_fdef:
+            functions.append(n_fdef)
+            if len(n_fdef.l_nested) == 1:
+                n_fdef = n_fdef.l_nested.pop()
+            elif len(n_fdef.l_nested) > 1:
+                raise ICE("logic error")
+            else:
+                break
+
+        return functions
 
     def parse_function_def(self):
         self.match("KEYWORD", "function")
@@ -433,6 +458,7 @@ class MATLAB_Parser:
             # TODO: style issue
             pass
         else:
+            self.functions_require_end = True
             self.match("KEYWORD", "end")
             self.match_eos()
 
@@ -743,11 +769,10 @@ class MATLAB_Parser:
             elif self.nt.value() == "spmd":
                 return self.parse_spmd_statement()
             elif self.nt.value() == "function" and self.in_context("function"):
-                self.functions_require_end = True
                 if self.context[-1] != "function":
                     self.mh.error(self.nt.location,
                                   "nested function cannot appear inside"
-                                  " %s context" % self.context[-1])
+                                  " %s" % self.context[-1])
                 return self.parse_function_def()
             else:
                 self.mh.error(self.nt.location,
