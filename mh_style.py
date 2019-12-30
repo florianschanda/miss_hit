@@ -700,7 +700,10 @@ def analyze(mh, filename, rule_set, autofix, debug_parse):
 
     # Create lexer
 
-    lexer = MATLAB_Lexer(mh, filename, encoding=encoding)
+    try:
+        lexer = MATLAB_Lexer(mh, filename, encoding=encoding)
+    except UnicodeDecodeError:
+        lexer = MATLAB_Lexer(mh, filename, encoding="utf8")
     if cfg["octave"]:
         lexer.set_octave_mode()
 
