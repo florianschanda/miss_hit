@@ -622,8 +622,11 @@ class MATLAB_Lexer(Token_Generator):
         #                                      self.col,
         #                                      repr(self.cc)))
 
-        # Classify keywords
-        if kind == "IDENTIFIER" and raw_text in KEYWORDS:
+        # Classify keywords, except after selections. That way we
+        # permit structure fields with names like "function".
+        if kind == "IDENTIFIER" and \
+           raw_text in KEYWORDS and \
+           self.last_kind != "SELECTION":
             kind = "KEYWORD"
 
         # Keep track of blocks, and special sections where
