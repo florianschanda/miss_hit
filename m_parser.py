@@ -191,7 +191,7 @@ class MATLAB_Parser:
             self.peek("COLON") or \
             self.peek("NEWLINE")
 
-    def match_eos(self, semi = ""):
+    def match_eos(self, semi = "", allow_nothing = False):
         # This matches end-of-statements (COMMA, SEMICOLON, NEWLINE,
         # EOF). Later for style checking - if semi is ; then it
         # expects a single semicolon, if "" then the preferred form is
@@ -221,7 +221,7 @@ class MATLAB_Parser:
         if self.peek_eof():
             found_eos = True
 
-        if not found_eos:
+        if not found_eos and not allow_nothing:
             self.mh.error(self.nt.location,
                           "expected end of statement, found %s instead" %
                           self.nt.kind)
@@ -1207,7 +1207,7 @@ class MATLAB_Parser:
         self.push_context("if")
         t_kw = self.ct
         n_expr = self.parse_expression()
-        self.match_eos()
+        self.match_eos(allow_nothing=True)
         n_body = self.parse_delimited_input()
         actions.append((t_kw, n_expr, n_body))
 
@@ -1215,14 +1215,14 @@ class MATLAB_Parser:
             self.match("KEYWORD", "elseif")
             t_kw = self.ct
             n_expr = self.parse_expression()
-            self.match_eos()
+            self.match_eos(allow_nothing=True)
             n_body = self.parse_delimited_input()
             actions.append((t_kw, n_expr, n_body))
 
         if self.peek("KEYWORD", "else"):
             self.match("KEYWORD", "else")
             t_kw = self.ct
-            self.match_eos()
+            self.match_eos(allow_nothing=True)
             n_body = self.parse_delimited_input()
             actions.append((t_kw, None, n_body))
 
@@ -1380,7 +1380,7 @@ class MATLAB_Parser:
             if self.peek("KEYWORD", "otherwise"):
                 self.match("KEYWORD", "otherwise")
                 t_kw = self.ct
-                self.match_eos()
+                self.match_eos(allow_nothing=True)
                 n_body = self.parse_delimited_input()
                 l_options.append((t_kw, None, n_body))
                 break
@@ -1388,7 +1388,7 @@ class MATLAB_Parser:
                 self.match("KEYWORD", "case")
                 t_kw = self.ct
                 n_expr = self.parse_expression()
-                self.match_eos()
+                self.match_eos(allow_nothing=True)
                 n_body = self.parse_delimited_input()
                 l_options.append((t_kw, n_expr, n_body))
 
