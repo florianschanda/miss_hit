@@ -635,25 +635,38 @@ class MATLAB_Lexer(Token_Generator):
                             "try", "while", "spmd"):
                 self.block_stack.append(raw_text)
 
-            if kind == "IDENTIFIER" and \
-               self.last_kind != "SELECTION" and \
-               "classdef" in self.block_stack and \
-               raw_text in ("properties", "enumeration",
-                            "events", "methods"):
-                kind = "KEYWORD"
-                self.block_stack.append(raw_text)
-                if raw_text in ("properties", "events", "enumeration"):
-                    self.in_special_section = True
-            elif kind == "IDENTIFIER" and \
-                 self.last_kind != "SELECTION" and \
-                 self.block_stack and \
-                 self.block_stack[-1] == "function" and \
-                 raw_text == "arguments":
-                kind = "KEYWORD"
-                self.block_stack.append(raw_text)
-                self.in_special_section = True
+            if self.block_stack and kind == "IDENTIFIER":
+                extra_kw = set()
+                if self.last_kind == "SELECTION":
+                    # Like with other keywords above, if the
+                    # preceeding token is a field selection we never
+                    # produce keywords.
+                    pass
+                elif self.block_stack[-1] == "classdef":
+                    # Directly inside a classdef, we have 4 extra
+                    # keywords
+                    extra_kw = {"properties", "enumeration",
+                                "events",     "methods"}
+                elif self.block_stack[-1] in ("properties",
+                                              "enumeration",
+                                              "events"):
+                    # In three of the four class blocks, these
+                    # keywords persist
+                    extra_kw = {"properties", "enumeration",
+                                "events",     "methods"}
+                elif self.block_stack[-1] == "function":
+                    # Inside functions we add the arguments block as
+                    # an extra keyword
+                    extra_kw = {"arguments"}
 
-            if kind == "KEYWORD" and raw_text == "end":
+                if raw_text in extra_kw:
+                    kind = "KEYWORD"
+                    self.block_stack.append(raw_text)
+                    if raw_text in ("properties", "events",
+                                    "enumeration", "arguments"):
+                        self.in_special_section = True
+
+            elif kind == "KEYWORD" and raw_text == "end":
                 if self.block_stack:
                     self.block_stack.pop()
                 self.in_special_section = False

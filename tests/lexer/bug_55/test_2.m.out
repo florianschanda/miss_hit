@@ -1,0 +1,77 @@
+In test_2.m, line 1
+| % (c) 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test_2.m, line 1
+| % (c) 2019 Florian Schanda
+|                           ^ info: NEWLINE
+In test_2.m, line 3
+| classdef test_2
+| ^^^^^^^^ info: [SL] KEYWORD
+In test_2.m, line 3
+| classdef test_2
+|          ^^^^^^ info: IDENTIFIER
+In test_2.m, line 3
+| classdef test_2
+|                ^ info: NEWLINE
+In test_2.m, line 5
+|   methods
+|   ^^^^^^^ info: [SL] KEYWORD
+In test_2.m, line 5
+|   methods
+|          ^ info: NEWLINE
+In test_2.m, line 6
+|     function x = properties()
+|     ^^^^^^^^ info: [SL] KEYWORD
+In test_2.m, line 6
+|     function x = properties()
+|              ^ info: IDENTIFIER
+In test_2.m, line 6
+|     function x = properties()
+|                ^ info: ASSIGNMENT
+In test_2.m, line 6
+|     function x = properties()
+|                  ^^^^^^^^^^ info: IDENTIFIER
+In test_2.m, line 6
+|     function x = properties()
+|                            ^ info: BRA
+In test_2.m, line 6
+|     function x = properties()
+|                             ^ info: KET
+In test_2.m, line 6
+|     function x = properties()
+|                              ^ info: NEWLINE
+In test_2.m, line 7
+|        x = 42;
+|        ^ info: [SL] IDENTIFIER
+In test_2.m, line 7
+|        x = 42;
+|          ^ info: ASSIGNMENT
+In test_2.m, line 7
+|        x = 42;
+|            ^^ info: NUMBER
+In test_2.m, line 7
+|        x = 42;
+|              ^ info: SEMICOLON
+In test_2.m, line 7
+|        x = 42;
+|               ^ info: [S ] NEWLINE
+In test_2.m, line 8
+|     end
+|     ^^^ info: [SL] KEYWORD
+In test_2.m, line 8
+|     end
+|        ^ info: NEWLINE
+In test_2.m, line 9
+|   end
+|   ^^^ info: [SL] KEYWORD
+In test_2.m, line 9
+|   end
+|      ^ info: NEWLINE
+In test_2.m, line 11
+| end
+| ^^^ info: [SL] KEYWORD
+In test_2.m, line 11
+| end
+|    ^ info: NEWLINE
+test_2.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

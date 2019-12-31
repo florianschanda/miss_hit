@@ -1,0 +1,47 @@
+In invalid_1.m, line 1
+| % (c) 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In invalid_1.m, line 1
+| % (c) 2019 Florian Schanda
+|                           ^ info: NEWLINE
+In invalid_1.m, line 3
+| classdef invalid_1
+| ^^^^^^^^ info: [SL] KEYWORD
+In invalid_1.m, line 3
+| classdef invalid_1
+|          ^^^^^^^^^ info: IDENTIFIER
+In invalid_1.m, line 3
+| classdef invalid_1
+|                   ^ info: NEWLINE
+In invalid_1.m, line 5
+|   properties
+|   ^^^^^^^^^^ info: [SL] KEYWORD
+In invalid_1.m, line 5
+|   properties
+|             ^ info: NEWLINE
+In invalid_1.m, line 6
+|      x
+|      ^ info: [SL] IDENTIFIER
+In invalid_1.m, line 6
+|      x
+|       ^ info: NEWLINE
+In invalid_1.m, line 7
+|      properties
+|      ^^^^^^^^^^ info: [SL] KEYWORD
+In invalid_1.m, line 7
+|      properties
+|                ^ info: NEWLINE
+In invalid_1.m, line 8
+|   end
+|   ^^^ info: [SL] KEYWORD
+In invalid_1.m, line 8
+|   end
+|      ^ info: NEWLINE
+In invalid_1.m, line 10
+| end
+| ^^^ info: [SL] KEYWORD
+In invalid_1.m, line 10
+| end
+|    ^ info: NEWLINE
+invalid_1.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
