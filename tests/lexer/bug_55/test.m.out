@@ -1,0 +1,86 @@
+In test.m, line 1
+| % (c) 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test.m, line 1
+| % (c) 2019 Florian Schanda
+|                           ^ info: NEWLINE
+In test.m, line 3
+| classdef test
+| ^^^^^^^^ info: [SL] KEYWORD
+In test.m, line 3
+| classdef test
+|          ^^^^ info: IDENTIFIER
+In test.m, line 3
+| classdef test
+|              ^ info: NEWLINE
+In test.m, line 5
+|   methods
+|   ^^^^^^^ info: [SL] KEYWORD
+In test.m, line 5
+|   methods
+|          ^ info: NEWLINE
+In test.m, line 6
+|     function x = foo(tmp)
+|     ^^^^^^^^ info: [SL] KEYWORD
+In test.m, line 6
+|     function x = foo(tmp)
+|              ^ info: IDENTIFIER
+In test.m, line 6
+|     function x = foo(tmp)
+|                ^ info: ASSIGNMENT
+In test.m, line 6
+|     function x = foo(tmp)
+|                  ^^^ info: IDENTIFIER
+In test.m, line 6
+|     function x = foo(tmp)
+|                     ^ info: BRA
+In test.m, line 6
+|     function x = foo(tmp)
+|                      ^^^ info: IDENTIFIER
+In test.m, line 6
+|     function x = foo(tmp)
+|                         ^ info: KET
+In test.m, line 6
+|     function x = foo(tmp)
+|                          ^ info: NEWLINE
+In test.m, line 7
+|       x = tmp.properties;
+|       ^ info: [SL] IDENTIFIER
+In test.m, line 7
+|       x = tmp.properties;
+|         ^ info: ASSIGNMENT
+In test.m, line 7
+|       x = tmp.properties;
+|           ^^^ info: IDENTIFIER
+In test.m, line 7
+|       x = tmp.properties;
+|              ^ info: SELECTION
+In test.m, line 7
+|       x = tmp.properties;
+|               ^^^^^^^^^^ info: IDENTIFIER
+In test.m, line 7
+|       x = tmp.properties;
+|                         ^ info: SEMICOLON
+In test.m, line 7
+|       x = tmp.properties;
+|                          ^ info: [S ] NEWLINE
+In test.m, line 8
+|     end
+|     ^^^ info: [SL] KEYWORD
+In test.m, line 8
+|     end
+|        ^ info: NEWLINE
+In test.m, line 9
+|   end
+|   ^^^ info: [SL] KEYWORD
+In test.m, line 9
+|   end
+|      ^ info: NEWLINE
+In test.m, line 11
+| end
+| ^^^ info: [SL] KEYWORD
+In test.m, line 11
+| end
+|    ^ info: NEWLINE
+test.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

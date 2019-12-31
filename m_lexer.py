@@ -636,6 +636,7 @@ class MATLAB_Lexer(Token_Generator):
                 self.block_stack.append(raw_text)
 
             if kind == "IDENTIFIER" and \
+               self.last_kind != "SELECTION" and \
                "classdef" in self.block_stack and \
                raw_text in ("properties", "enumeration",
                             "events", "methods"):
@@ -644,6 +645,7 @@ class MATLAB_Lexer(Token_Generator):
                 if raw_text in ("properties", "events", "enumeration"):
                     self.in_special_section = True
             elif kind == "IDENTIFIER" and \
+                 self.last_kind != "SELECTION" and \
                  self.block_stack and \
                  self.block_stack[-1] == "function" and \
                  raw_text == "arguments":
