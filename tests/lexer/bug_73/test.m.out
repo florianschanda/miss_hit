@@ -1,0 +1,34 @@
+In test.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test.m, line 1
+| % (c) Copyright 2019 Florian Schanda
+|                                     ^ info: NEWLINE
+In test.m, line 2
+| classdef test
+| ^^^^^^^^ info: [SL] KEYWORD
+In test.m, line 2
+| classdef test
+|          ^^^^ info: IDENTIFIER
+In test.m, line 2
+| classdef test
+|              ^ info: NEWLINE
+In test.m, line 3
+|         %{
+|         ^^ info: [SL] COMMENT
+In test.m, line 3
+|         %{
+|          ^^ info: COMMENT
+In test.m, line 3
+|         %{
+|           ^ info: NEWLINE
+In test.m, line 5
+| foo
+| ^ info: [SL] NEWLINE
+test.m:6:0: info: [SL] COMMENT
+test.m:6:3: info: NEWLINE
+In test.m, line 8
+| end
+| ^ info: [SL] NEWLINE
+test.m: ICE: line is larger than the length of the file test.m
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
