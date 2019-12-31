@@ -353,6 +353,9 @@ class MATLAB_Lexer(Token_Generator):
             else:
                 break
 
+        if self.block_comment:
+            self.next()
+
         t_start = self.lexpos
         col_start = t_start - self.col_offset
         contains_quotes = False
@@ -367,13 +370,10 @@ class MATLAB_Lexer(Token_Generator):
         elif self.block_comment:
             if self.cc == "\n":
                 kind = "NEWLINE"
-                self.next()
             else:
                 kind = "COMMENT"
-                while self.nc:
+                while self.nc not in ("\n", "\0"):
                     self.next()
-                    if self.cc == "\n":
-                        break
 
         elif self.command_mode:
             # Lexing in command mode
@@ -616,7 +616,7 @@ class MATLAB_Lexer(Token_Generator):
         raw_text = self.text[t_start:t_end + 1]
 
         # print("Ended lexing @ %u:%u <%s>" % (self.line,
-        #                                      self.col,
+        #                                      col_end,
         #                                      repr(self.cc)))
 
         # Classify keywords, except after selections. That way we

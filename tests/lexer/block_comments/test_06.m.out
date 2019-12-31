@@ -33,75 +33,75 @@ In test_06.m, line 6
 | ^^ info: [SL] COMMENT
 In test_06.m, line 6
 | %{
-|  ^^ info: COMMENT
-In test_06.m, line 6
-| %{
 |   ^ info: NEWLINE
 In test_06.m, line 7
 |   disp("2");
-| ^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT
 In test_06.m, line 7
 |   disp("2");
 |             ^ info: NEWLINE
 In test_06.m, line 8
 |   %{ potato
-| ^^^^^^^^^^^^ [31mwarning[0m: ignored block comment: no text must appear around the block comment marker
+| ^^^^^^^^^^^ [31mwarning[0m: ignored block comment: no text must appear around the block comment marker
 In test_06.m, line 8
 |   %{ potato
-| ^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^ info: [SL] COMMENT
 In test_06.m, line 8
 |   %{ potato
 |            ^ info: NEWLINE
 In test_06.m, line 9
 |     disp("3");
-| ^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^ info: [SL] COMMENT
 In test_06.m, line 9
 |     disp("3");
 |               ^ info: NEWLINE
 In test_06.m, line 10
 |   %}
-| ^^^^^ info: [SL] COMMENT
+| ^^^^ info: [SL] COMMENT
 In test_06.m, line 10
 |   %}
-|   ^^^^ info: IDENTIFIER
-In test_06.m, line 10
-|   %}
+|     ^ info: NEWLINE
+In test_06.m, line 11
+|   disp("4");
+|   ^^^^ info: [SL] IDENTIFIER
+In test_06.m, line 11
+|   disp("4");
 |       ^ info: BRA
-In test_06.m, line 10
-|   %}
+In test_06.m, line 11
+|   disp("4");
 |        ^^^ info: STRING
-In test_06.m, line 10
-|   %}
+In test_06.m, line 11
+|   disp("4");
 |           ^ info: KET
-In test_06.m, line 10
-|   %}
+In test_06.m, line 11
+|   disp("4");
 |            ^ info: SEMICOLON
-In test_06.m, line 10
-|   %}
+In test_06.m, line 11
+|   disp("4");
 |             ^ info: [S ] NEWLINE
-In test_06.m, line 11
-|   disp("4");
+In test_06.m, line 12
+| %}
 | ^^ info: [SL] COMMENT
-In test_06.m, line 11
-|   disp("4");
+In test_06.m, line 12
+| %}
 |   ^ info: NEWLINE
-In test_06.m, line 12
-| %}
+In test_06.m, line 13
+| disp("5");
 | ^^^^ info: [SL] IDENTIFIER
-In test_06.m, line 12
-| %}
+In test_06.m, line 13
+| disp("5");
 |     ^ info: BRA
-In test_06.m, line 12
-| %}
+In test_06.m, line 13
+| disp("5");
 |      ^^^ info: STRING
-In test_06.m, line 12
-| %}
+In test_06.m, line 13
+| disp("5");
 |         ^ info: KET
-In test_06.m, line 12
-| %}
+In test_06.m, line 13
+| disp("5");
 |          ^ info: SEMICOLON
-In test_06.m, line 12
-| %}
+In test_06.m, line 13
+| disp("5");
 |           ^ info: [S ] NEWLINE
 test_06.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)

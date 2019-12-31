@@ -75,60 +75,60 @@ In test_05.m, line 14
 | ^^ info: [SL] COMMENT
 In test_05.m, line 14
 | %{
-|  ^^ info: COMMENT
-In test_05.m, line 14
-| %{
 |   ^ info: NEWLINE
 In test_05.m, line 15
 |   disp("2");
-| ^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT
 In test_05.m, line 15
 |   disp("2");
 |             ^ info: NEWLINE
 In test_05.m, line 16
 |   %{
-| ^^^^^ info: [SL] COMMENT
+| ^^^^ info: [SL] COMMENT
 In test_05.m, line 16
 |   %{
 |     ^ info: NEWLINE
 In test_05.m, line 17
 |     disp("3");
-| ^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^ info: [SL] COMMENT
 In test_05.m, line 17
 |     disp("3");
 |               ^ info: NEWLINE
 In test_05.m, line 18
 |   %}
-| ^^^^^ info: [SL] COMMENT
+| ^^^^ info: [SL] COMMENT
 In test_05.m, line 18
 |   %}
 |     ^ info: NEWLINE
 In test_05.m, line 19
 |   disp("4");
-| ^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT
 In test_05.m, line 19
 |   disp("4");
 |             ^ info: NEWLINE
 In test_05.m, line 20
 | %}
-| ^^^ info: [SL] COMMENT
+| ^^ info: [SL] COMMENT
 In test_05.m, line 20
 | %}
-| ^^^^ info: IDENTIFIER
-In test_05.m, line 20
-| %}
+|   ^ info: NEWLINE
+In test_05.m, line 21
+| disp("5");
+| ^^^^ info: [SL] IDENTIFIER
+In test_05.m, line 21
+| disp("5");
 |     ^ info: BRA
-In test_05.m, line 20
-| %}
+In test_05.m, line 21
+| disp("5");
 |      ^^^ info: STRING
-In test_05.m, line 20
-| %}
+In test_05.m, line 21
+| disp("5");
 |         ^ info: KET
-In test_05.m, line 20
-| %}
+In test_05.m, line 21
+| disp("5");
 |          ^ info: SEMICOLON
-In test_05.m, line 20
-| %}
+In test_05.m, line 21
+| disp("5");
 |           ^ info: [S ] NEWLINE
 test_05.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

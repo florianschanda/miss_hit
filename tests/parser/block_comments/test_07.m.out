@@ -1,4 +1,4 @@
 In test_07.m, line 10
 |   %} potato
-| ^^^^^^^^^^^^ warning: ignored block comment end: no text must appear around the block comment marker %}
+| ^^^^^^^^^^^ warning: ignored block comment end: no text must appear around the block comment marker %}
 MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)
