@@ -4,8 +4,10 @@ import os
 import sys
 import subprocess
 import multiprocessing
+import argparse
 
 TEST_ROOT = os.getcwd()
+
 
 def execute_style_test(name):
     os.chdir(os.path.join(TEST_ROOT,
@@ -114,7 +116,15 @@ def run_test(test):
           "parser" : execute_parser_test}
     return fn[test["kind"]](test["test"])
 
+
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--single",
+                    action="store_true",
+                    default=False)
+
+    options = ap.parse_args()
+
     # Make sure we're in the right directory
     assert os.path.isfile("../mh_style.py")
     root = os.getcwd()
@@ -126,9 +136,14 @@ def main():
             tests.append({"kind" : kind,
                           "test" : t})
 
-    pool = multiprocessing.Pool()
-    for res in pool.imap_unordered(run_test, tests, 2):
-        print(res)
+    if options.single:
+        for t in tests:
+            print("Running %s" % t)
+            print(run_test(t))
+    else:
+        pool = multiprocessing.Pool()
+        for res in pool.imap_unordered(run_test, tests, 2):
+            print(res)
 
 
 if __name__ == "__main__":
