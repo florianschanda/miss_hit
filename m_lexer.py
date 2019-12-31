@@ -661,13 +661,19 @@ class MATLAB_Lexer(Token_Generator):
                 # TODO: Silent error if we can't match blocks? Or
                 # complain loudly?
 
+        if self.line - 1 < len(self.context_line):
+            ctx_line = self.context_line[self.line - 1]
+        else:
+            raise ICE("line is larger than the length of the file %s" %
+                      self.filename)
+
         token = MATLAB_Token(kind,
                              raw_text,
                              Location(self.filename,
                                       self.line,
                                       col_start,
                                       col_end,
-                                      self.context_line[self.line - 1]),
+                                      ctx_line),
                              self.first_in_line,
                              self.first_in_statement,
                              contains_quotes = contains_quotes)
