@@ -1158,8 +1158,8 @@ def sanity_test(mh, filename):
         print("%s: lexed OK" % filename)
     except Error:
         print("%s: lexed with errors" % filename)
-    except ICE as e:
-        print("%s: ICE: %s" % (filename, e.reason))
+    except ICE as internal_compiler_error:
+        print("%s: ICE: %s" % (filename, internal_compiler_error.reason))
 
 
 def lexer_test_main():
