@@ -877,6 +877,8 @@ class MATLAB_Lexer(Token_Generator):
                                          "KET",
                                          "M_KET",
                                          "C_KET") or
+                          (token.kind == "KEYWORD" and
+                           token.value() == "end") or
                           (token.kind == "OPERATOR" and
                            token.value() in ("'", ".'")))
 
