@@ -1,4 +1,3 @@
-mistakes.m: lexed OK
 In mistakes.m, line 1
 | % From https://www.mathworks.com/help/matlab/matlab_prog/command-vs-function-syntax.html
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -110,4 +109,5 @@ In mistakes.m, line 10
 In mistakes.m, line 10
 | disp "string"        % disp('"string"')
 |                                        ^ info: NEWLINE
+mistakes.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

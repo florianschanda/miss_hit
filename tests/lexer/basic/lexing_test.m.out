@@ -1,4 +1,3 @@
-lexing_test.m: lexed OK
 In lexing_test.m, line 1
 | %
 | ^ info: [SL] COMMENT
@@ -437,9 +436,6 @@ In lexing_test.m, line 52
 |  ^ info: NUMBER
 In lexing_test.m, line 52
 | [1<anon,> +1]
-|   ^^^^^^^ info: [32madded comma[0m
-In lexing_test.m, line 52
-| [1<anon,> +1]
 |   ^^^^^^^ info: COMMA
 In lexing_test.m, line 52
 | [1 +1]
@@ -542,9 +538,6 @@ In lexing_test.m, line 57
 |  ^^^^^ info: CARRAY
 In lexing_test.m, line 57
 | ['foo'<anon,> '1]1' ]'
-|       ^^^^^^^ info: [32madded comma[0m
-In lexing_test.m, line 57
-| ['foo'<anon,> '1]1' ]'
 |       ^^^^^^^ info: COMMA
 In lexing_test.m, line 57
 | ['foo' '1]1' ]'
@@ -585,4 +578,5 @@ In lexing_test.m, line 61
 In lexing_test.m, line 61
 | mkdir __potato?
 |                ^ info: NEWLINE
+lexing_test.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

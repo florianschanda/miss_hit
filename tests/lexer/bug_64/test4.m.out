@@ -1,4 +1,3 @@
-test4.m: lexed OK
 In test4.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -41,4 +40,5 @@ In test4.m, line 4
 In test4.m, line 4
 | % should be a parse error
 |                          ^ info: NEWLINE
+test4.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

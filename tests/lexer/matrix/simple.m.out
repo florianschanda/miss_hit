@@ -1,4 +1,3 @@
-simple.m: lexed OK
 In simple.m, line 1
 | [1+1]    % 2
 | ^ info: [SL] M_BRA
@@ -26,9 +25,6 @@ In simple.m, line 2
 In simple.m, line 2
 | [1 +1]   % [1, 1]
 |  ^ info: NUMBER
-In simple.m, line 2
-| [1<anon,> +1]   % [1, 1]
-|   ^^^^^^^ info: [32madded comma[0m
 In simple.m, line 2
 | [1<anon,> +1]   % [1, 1]
 |   ^^^^^^^ info: COMMA
@@ -89,4 +85,5 @@ In simple.m, line 4
 In simple.m, line 4
 | [1 + 1]  % 2
 |             ^ info: NEWLINE
+simple.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

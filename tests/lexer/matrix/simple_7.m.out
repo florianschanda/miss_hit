@@ -1,13 +1,9 @@
-simple_7.m: lexed OK
 In simple_7.m, line 1
 | [1 2, 3,4]
 | ^ info: [SL] M_BRA
 In simple_7.m, line 1
 | [1 2, 3,4]
 |  ^ info: NUMBER
-In simple_7.m, line 1
-| [1<anon,> 2, 3,4]
-|   ^^^^^^^ info: [32madded comma[0m
 In simple_7.m, line 1
 | [1<anon,> 2, 3,4]
 |   ^^^^^^^ info: COMMA
@@ -40,9 +36,6 @@ In simple_7.m, line 2
 |  ^ info: IDENTIFIER
 In simple_7.m, line 2
 | [a<anon,> .1]
-|   ^^^^^^^ info: [32madded comma[0m
-In simple_7.m, line 2
-| [a<anon,> .1]
 |   ^^^^^^^ info: COMMA
 In simple_7.m, line 2
 | [a .1]
@@ -53,4 +46,5 @@ In simple_7.m, line 2
 In simple_7.m, line 2
 | [a .1]
 |       ^ info: NEWLINE
+simple_7.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

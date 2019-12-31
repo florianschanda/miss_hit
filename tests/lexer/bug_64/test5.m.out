@@ -1,4 +1,3 @@
-test5.m: lexed OK
 In test5.m, line 1
 | % From https://github.com/matlab2tikz/matlab2tikz/wiki
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -38,9 +37,6 @@ In test5.m, line 3
 In test5.m, line 3
 |                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
 |                          ^^^^ info: CARRAY
-In test5.m, line 3
-|                         ['{('<anon,> formatDim(pos.x.value, pos.x.unit) ','...
-|                              ^^^^^^^ info: [32madded comma[0m
 In test5.m, line 3
 |                         ['{('<anon,> formatDim(pos.x.value, pos.x.unit) ','...
 |                              ^^^^^^^ info: COMMA
@@ -88,16 +84,10 @@ In test5.m, line 3
 |                                                                ^ info: KET
 In test5.m, line 3
 |                         ['{(' formatDim(pos.x.value, pos.x.unit)<anon,> ','...
-|                                                                 ^^^^^^^ info: [32madded comma[0m
-In test5.m, line 3
-|                         ['{(' formatDim(pos.x.value, pos.x.unit)<anon,> ','...
 |                                                                 ^^^^^^^ info: COMMA
 In test5.m, line 3
 |                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
 |                                                                  ^^^ info: CARRAY
-In test5.m, line 3
-|                         ['{(' formatDim(pos.x.value, pos.x.unit) ','<anon,>...
-|                                                                     ^^^^^^^ info: [32madded comma[0m
 In test5.m, line 3
 |                         ['{(' formatDim(pos.x.value, pos.x.unit) ','<anon,>...
 |                                                                     ^^^^^^^ info: COMMA
@@ -148,9 +138,6 @@ In test5.m, line 4
 |                                                                ^ info: KET
 In test5.m, line 4
 |                               formatDim(pos.y.value, pos.y.unit)<anon,> ')}']);
-|                                                                 ^^^^^^^ info: [32madded comma[0m
-In test5.m, line 4
-|                               formatDim(pos.y.value, pos.y.unit)<anon,> ')}']);
 |                                                                 ^^^^^^^ info: COMMA
 In test5.m, line 4
 |                               formatDim(pos.y.value, pos.y.unit) ')}']);
@@ -167,4 +154,5 @@ In test5.m, line 4
 In test5.m, line 4
 |                               formatDim(pos.y.value, pos.y.unit) ')}']);
 |                                                                         ^ info: [S ] NEWLINE
+test5.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

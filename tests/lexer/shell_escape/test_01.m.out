@@ -1,4 +1,3 @@
-test_01.m: lexed OK
 In test_01.m, line 1
 | % From https://www.mathworks.com/help/matlab/matlab_external/run-external-commands-scripts-and-programs.html
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -119,4 +118,5 @@ In test_01.m, line 13
 In test_01.m, line 13
 | end
 |    ^ info: NEWLINE
+test_01.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,4 +1,3 @@
-simple_2.m: lexed OK
 In simple_2.m, line 1
 | [(1)+(1)]   % 2
 | ^ info: [SL] M_BRA
@@ -44,9 +43,6 @@ In simple_2.m, line 2
 In simple_2.m, line 2
 | [(1) +(1)]  % [1 1]
 |    ^ info: KET
-In simple_2.m, line 2
-| [(1)<anon,> +(1)]  % [1 1]
-|     ^^^^^^^ info: [32madded comma[0m
 In simple_2.m, line 2
 | [(1)<anon,> +(1)]  % [1 1]
 |     ^^^^^^^ info: COMMA
@@ -137,4 +133,5 @@ In simple_2.m, line 4
 In simple_2.m, line 4
 | [(1) + (1)] % 2
 |                ^ info: NEWLINE
+simple_2.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,4 +1,3 @@
-test6.m: lexed OK
 In test6.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -19,9 +18,6 @@ In test6.m, line 2
 |        ^^^^^ info: CARRAY
 In test6.m, line 2
 | foo = ['foo'<anon,>...
-|             ^^^^^^^ info: [32madded comma[0m
-In test6.m, line 2
-| foo = ['foo'<anon,>...
 |             ^^^^^^^ info: COMMA
 In test6.m, line 2
 | foo = ['foo'...
@@ -38,4 +34,5 @@ In test6.m, line 3
 In test6.m, line 3
 |        'bar'];
 |               ^ info: [S ] NEWLINE
+test6.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,4 +1,4 @@
-In potato.m, line 11
+In potato.m, line 12
 |       properties = x;
 |       ^^^^^^^^^^ error: expected valid statement, found keyword 'properties' instead
 MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

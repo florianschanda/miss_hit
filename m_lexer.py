@@ -341,9 +341,6 @@ class MATLAB_Lexer(Token_Generator):
                                  anonymous = True)
             self.last_kind = "COMMA"
             self.last_value = ","
-            if self.debug_comma:
-                self.mh.info(token.location,
-                             "\033[32madded comma\033[0m")
             return token
 
         # First we scan to the next non-whitespace character, unless
@@ -1161,6 +1158,8 @@ def sanity_test(mh, filename):
         print("%s: lexed OK" % filename)
     except Error:
         print("%s: lexed with errors" % filename)
+    except ICE as e:
+        print("%s: ICE: %s" % (filename, e.reason))
 
 
 def lexer_test_main():

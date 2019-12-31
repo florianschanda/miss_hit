@@ -1,4 +1,3 @@
-numbers.m: lexed OK
 In numbers.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -71,4 +70,5 @@ In numbers.m, line 10
 In numbers.m, line 10
 | e2
 |   ^ info: NEWLINE
+numbers.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

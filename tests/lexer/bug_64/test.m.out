@@ -1,4 +1,3 @@
-test.m: lexed OK
 In test.m, line 1
 | % From https://github.com/matlab2tikz/matlab2tikz
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -47,4 +46,5 @@ In test.m, line 3
 In test.m, line 3
 | idx = [true; diff(id_remove) >1];
 |                                  ^ info: [S ] NEWLINE
+test.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

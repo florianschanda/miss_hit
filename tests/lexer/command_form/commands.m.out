@@ -1,4 +1,3 @@
-commands.m: lexed OK
 In commands.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -71,4 +70,5 @@ In commands.m, line 8
 In commands.m, line 8
 |     bork
 |         ^ info: NEWLINE
+commands.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

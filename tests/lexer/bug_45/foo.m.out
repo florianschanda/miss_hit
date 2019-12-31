@@ -1,4 +1,3 @@
-foo.m: lexed OK
 In foo.m, line 1
 | % (c) Copyright 2019 Zenuity AB
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -148,9 +147,6 @@ In foo.m, line 8
 |          ^ info: OPERATOR
 In foo.m, line 8
 | b1 = [tmp'<anon,> '('];
-|           ^^^^^^^ info: [32madded comma[0m
-In foo.m, line 8
-| b1 = [tmp'<anon,> '('];
 |           ^^^^^^^ info: COMMA
 In foo.m, line 8
 | b1 = [tmp' '('];
@@ -179,9 +175,6 @@ In foo.m, line 9
 In foo.m, line 9
 | b2 = [tmp' '{'];
 |          ^ info: OPERATOR
-In foo.m, line 9
-| b2 = [tmp'<anon,> '{'];
-|           ^^^^^^^ info: [32madded comma[0m
 In foo.m, line 9
 | b2 = [tmp'<anon,> '{'];
 |           ^^^^^^^ info: COMMA
@@ -214,9 +207,6 @@ In foo.m, line 10
 |          ^ info: OPERATOR
 In foo.m, line 10
 | b3 = [tmp'<anon,> '['];
-|           ^^^^^^^ info: [32madded comma[0m
-In foo.m, line 10
-| b3 = [tmp'<anon,> '['];
 |           ^^^^^^^ info: COMMA
 In foo.m, line 10
 | b3 = [tmp' '['];
@@ -245,9 +235,6 @@ In foo.m, line 11
 In foo.m, line 11
 | b4 = [tmp' ')'];
 |          ^ info: OPERATOR
-In foo.m, line 11
-| b4 = [tmp'<anon,> ')'];
-|           ^^^^^^^ info: [32madded comma[0m
 In foo.m, line 11
 | b4 = [tmp'<anon,> ')'];
 |           ^^^^^^^ info: COMMA
@@ -280,9 +267,6 @@ In foo.m, line 12
 |          ^ info: OPERATOR
 In foo.m, line 12
 | b5 = [tmp'<anon,> '}'];
-|           ^^^^^^^ info: [32madded comma[0m
-In foo.m, line 12
-| b5 = [tmp'<anon,> '}'];
 |           ^^^^^^^ info: COMMA
 In foo.m, line 12
 | b5 = [tmp' '}'];
@@ -313,9 +297,6 @@ In foo.m, line 13
 |          ^ info: OPERATOR
 In foo.m, line 13
 | b6 = [tmp'<anon,> ']'];
-|           ^^^^^^^ info: [32madded comma[0m
-In foo.m, line 13
-| b6 = [tmp'<anon,> ']'];
 |           ^^^^^^^ info: COMMA
 In foo.m, line 13
 | b6 = [tmp' ']'];
@@ -329,4 +310,5 @@ In foo.m, line 13
 In foo.m, line 13
 | b6 = [tmp' ']'];
 |                 ^ info: [S ] NEWLINE
+foo.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

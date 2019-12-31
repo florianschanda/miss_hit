@@ -1,4 +1,3 @@
-test_invalid_bracket_1.m: lexed OK
 In test_invalid_bracket_1.m, line 1
 | % (c) Copyright 2019 Zenuity AB
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -26,4 +25,5 @@ In test_invalid_bracket_1.m, line 2
 In test_invalid_bracket_1.m, line 2
 | x = 1 2}
 |         ^ info: NEWLINE
+test_invalid_bracket_1.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

@@ -1,4 +1,3 @@
-details.m: lexed OK
 In details.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -173,4 +172,5 @@ In details.m, line 25
 In details.m, line 25
 | end
 |    ^ info: NEWLINE
+details.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

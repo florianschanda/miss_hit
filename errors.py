@@ -267,18 +267,23 @@ class Message_Handler:
         if msg.location.filename not in self.files:
             raise ICE("attempted to emit message on unknown file")
 
-        # Add message to list
-        messages = self.messages[msg.location.filename]
-        if msg.location.line not in messages:
-            messages[msg.location.line] = [msg]
-        else:
-            messages[msg.location.line].append(msg)
+        if self.sort_messages:
+            # Add message to list
+            messages = self.messages[msg.location.filename]
+            if msg.location.line not in messages:
+                messages[msg.location.line] = [msg]
+            else:
+                messages[msg.location.line].append(msg)
 
-        # Check if a justification applies
-        just = self.messages[msg.location.filename]
-        if msg.location.line in just:
-            for j in just[msg.location.line]:
-                msg.check_justification(j)
+            # Check if a justification applies
+            just = self.messages[msg.location.filename]
+            if msg.location.line in just:
+                for j in just[msg.location.line]:
+                    msg.check_justification(j)
+
+        else:
+            # Otherwise just immediately emit it
+            self.process_message(msg)
 
         # Raise exception for fatal messages
         if msg.fatal:
@@ -290,6 +295,9 @@ class Message_Handler:
 
         if token.location.filename not in self.files:
             raise ICE("attempted to add justification to an unknown file")
+
+        if not self.sort_messages:
+            return
 
         if "mh:ignore_style" in token.value():
             justification = Style_Justification(token)

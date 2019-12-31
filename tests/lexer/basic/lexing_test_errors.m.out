@@ -1,4 +1,3 @@
-lexing_test_errors.m: lexed with errors
 In lexing_test_errors.m, line 1
 | x = This is _not_ ok.
 | ^ info: [SL] IDENTIFIER
@@ -14,4 +13,5 @@ In lexing_test_errors.m, line 1
 In lexing_test_errors.m, line 1
 | x = This is _not_ ok.
 |             ^ [31;1mlex error[0m: unexpected character '_'
+lexing_test_errors.m: lexed with errors
 MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

@@ -1,4 +1,3 @@
-not_commands.m: lexed OK
 In not_commands.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -80,4 +79,5 @@ In not_commands.m, line 7
 In not_commands.m, line 7
 | foo./1
 |       ^ info: NEWLINE
+not_commands.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,4 +1,3 @@
-test_03.m: lexed OK
 In test_03.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
@@ -71,4 +70,5 @@ In test_03.m, line 6
 In test_03.m, line 6
 | disp("baz");
 |             ^ info: [S ] NEWLINE
+test_03.m: lexed OK
 MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)
