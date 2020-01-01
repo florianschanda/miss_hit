@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019, Florian Schanda                         ##
+##              Copyright (C) 2019-2020, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
