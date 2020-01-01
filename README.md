@@ -63,10 +63,13 @@ The notable missing features can be found in our [lexer issues](https://github.c
 
 ### Parser
 
-The parser is incomplete and is work in progress. It is not yet
-useful, but trivial example programs are parsed correctly. There are
-many known bugs. At the moment only a basic AST is created, and *no*
-semantic analysis takes place.
+The parser is mostly complete, but it only parses (no semantic
+analysis). Three of the most starred MATLAB projects on github are
+processed without parse errors (matconvnet, matlab2tikz, MatlabFunc).
+
+I am working on ironing out some of the more obscure bugs before
+moving on to basic semantic analysis (starting with name resolution
+and basic type analysis).
 
 ## Road map
 
