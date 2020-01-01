@@ -377,13 +377,9 @@ class MATLAB_Parser:
 
         return functions
 
-    def parse_function_def(self):
-        self.match("KEYWORD", "function")
-        self.push_context("function")
-        t_fun = self.ct
-
+    def parse_function_signature(self):
         # Parse returns. Either 'x' or a list '[x, y]'
-        returns = []
+        l_outputs = []
         if self.peek("A_BRA"):
             out_brackets = True
             self.match("A_BRA")
@@ -391,7 +387,7 @@ class MATLAB_Parser:
                 self.match("A_KET")
             else:
                 while True:
-                    returns.append(self.parse_identifier(allow_void=True))
+                    l_outputs.append(self.parse_identifier(allow_void=True))
                     if self.peek("COMMA"):
                         self.match("COMMA")
                     else:
@@ -399,34 +395,34 @@ class MATLAB_Parser:
                 self.match("A_KET")
         else:
             out_brackets = False
-            returns.append(self.parse_simple_name())
+            l_outputs.append(self.parse_simple_name())
 
-        if self.peek("BRA") and len(returns) == 1 and not out_brackets:
+        if self.peek("BRA") and len(l_outputs) == 1 and not out_brackets:
             # This is a function that doesn't return anything, so
             # function foo(...
-            function_name = returns[0]
-            returns = []
+            n_name = l_outputs[0]
+            l_outputs = []
 
-        elif self.peek("NEWLINE") and len(returns) == 1 and not out_brackets:
+        elif self.peek("NEWLINE") and len(l_outputs) == 1 and not out_brackets:
             # As above, but without the brackets
-            function_name = returns[0]
-            returns = []
+            n_name = l_outputs[0]
+            l_outputs = []
 
         else:
             # This is a normal function, so something like
             # function [a, b] = potato...
             # function a = potato...
             self.match("ASSIGNMENT")
-            function_name = self.parse_simple_name()
+            n_name = self.parse_simple_name()
 
-        inputs = []
+        l_inputs = []
         if self.peek("BRA"):
             self.match("BRA")
             if self.peek("KET"):
                 self.match("KET")
             else:
                 while True:
-                    inputs.append(self.parse_identifier(allow_void=True))
+                    l_inputs.append(self.parse_identifier(allow_void=True))
                     if self.peek("COMMA"):
                         self.match("COMMA")
                     else:
@@ -434,6 +430,15 @@ class MATLAB_Parser:
                 self.match("KET")
 
         self.match_eos()
+
+        return Function_Signature(n_name, l_inputs, l_outputs)
+
+    def parse_function_def(self):
+        self.match("KEYWORD", "function")
+        self.push_context("function")
+        t_fun = self.ct
+
+        n_sig = self.parse_function_signature()
 
         l_body = []
         l_nested = []
@@ -462,19 +467,12 @@ class MATLAB_Parser:
             self.match("KEYWORD", "end")
             self.match_eos()
 
-        rv = Function_Definition(t_fun, function_name,
-                                 inputs, l_argval,
-                                 returns,
+        rv = Function_Definition(t_fun, n_sig,
+                                 l_argval,
                                  Sequence_Of_Statements(l_body),
                                  l_nested)
 
         self.pop_context()
-
-        if self.debug_tree:
-            tree_print.dotpr("fun_" + str(rv.n_name) + ".dot", rv)
-            subprocess.run(["dot", "-Tpdf",
-                            "fun_" + str(rv.n_name) + ".dot",
-                            "-ofun_" + str(rv.n_name) + ".pdf"])
 
         return rv
 
@@ -594,8 +592,9 @@ class MATLAB_Parser:
 
     def parse_class_methods(self):
         # Using:
-        # https://uk.mathworks.com/help/matlab/matlab_oop/specifying-methods-and-functions.html
-        # https://uk.mathworks.com/help/matlab/matlab_oop/method-attributes.html
+        # https://www.mathworks.com/help/matlab/matlab_oop/specifying-methods-and-functions.html
+        # https://www.mathworks.com/help/matlab/matlab_oop/method-attributes.html
+        # https://www.mathworks.com/help/matlab/matlab_oop/methods-in-separate-files.html
 
         self.match("KEYWORD", "methods")
         t_kw = self.ct
@@ -605,8 +604,11 @@ class MATLAB_Parser:
 
         rv = Special_Block(t_kw, attributes)
 
-        while self.peek("KEYWORD", "function"):
-            rv.add_method(self.parse_function_def())
+        while not self.peek("KEYWORD", "end"):
+            if self.peek("KEYWORD", "function"):
+                rv.add_method(self.parse_function_def())
+            else:
+                rv.add_method(self.parse_function_signature())
 
         self.match("KEYWORD", "end")
         self.match_eos()
@@ -716,12 +718,6 @@ class MATLAB_Parser:
         self.match("KEYWORD", "end")
         self.match_eos()
         self.pop_context()
-
-        if self.debug_tree:
-            tree_print.dotpr("cls_" + str(rv.n_name) + ".dot", rv)
-            subprocess.run(["dot", "-Tpdf",
-                            "cls_" + str(rv.n_name) + ".dot",
-                            "-ocls_" + str(rv.n_name) + ".pdf"])
 
         return rv
 

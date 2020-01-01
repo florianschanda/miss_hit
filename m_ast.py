@@ -110,43 +110,55 @@ class Class_File(Compilation_Unit):
         for n_function in self.l_functions:
             n_function.debug_parse_tree()
 
+        for n_block in self.n_classdef.l_methods:
+            for n_item in n_block.l_items:
+                if isinstance(n_item, Function_Definition):
+                    n_item.debug_parse_tree()
 
-class Function_Definition(Node):
-    def __init__(self, t_fun, n_name,
-                 l_inputs, l_validation,
-                 l_outputs, n_body, l_nested):
+
+class Function_Signature(Node):
+    def __init__(self, n_name, l_inputs, l_outputs):
         super().__init__()
-        assert isinstance(t_fun, MATLAB_Token)
-        assert t_fun.kind == "KEYWORD" and t_fun.value() == "function"
         assert isinstance(n_name, Name)
         assert isinstance(l_inputs, list)
         for n in l_inputs:
             assert isinstance(n, Identifier), \
                 str(n) + " is %s and not an Identifier" % n.__class__.__name__
+        assert isinstance(l_outputs, list)
+        for n in l_outputs:
+            assert isinstance(n, Identifier)
+
+        self.n_name    = n_name
+        self.l_inputs  = l_inputs
+        self.l_outputs = l_outputs
+
+
+class Function_Definition(Node):
+    def __init__(self, t_fun, n_sig,
+                 l_validation, n_body, l_nested):
+        super().__init__()
+        assert isinstance(t_fun, MATLAB_Token)
+        assert t_fun.kind == "KEYWORD" and t_fun.value() == "function"
+        assert isinstance(n_sig, Function_Signature)
         assert isinstance(l_validation, list)
         for n in l_validation:
             assert isinstance(n, Special_Block)
-        for n in l_outputs:
-            assert isinstance(n, Identifier)
-        assert isinstance(l_outputs, list)
         assert isinstance(n_body, Sequence_Of_Statements)
         assert isinstance(l_nested, list)
         for n in l_nested:
             assert isinstance(n, Function_Definition)
 
         self.t_fun        = t_fun
-        self.n_name       = n_name
-        self.l_inputs     = l_inputs
+        self.n_sig        = n_sig
         self.l_validation = l_validation
-        self.l_outputs    = l_outputs
         self.n_body       = n_body
         self.l_nested     = l_nested
 
     def debug_parse_tree(self):
-        tree_print.dotpr("fun_" + str(self.n_name) + ".dot", self)
+        tree_print.dotpr("fun_" + str(self.n_sig.n_name) + ".dot", self)
         subprocess.run(["dot", "-Tpdf",
-                        "fun_" + str(self.n_name) + ".dot",
-                        "-ofun_" + str(self.n_name) + ".pdf"])
+                        "fun_" + str(self.n_sig.n_name) + ".dot",
+                        "-ofun_" + str(self.n_sig.n_name) + ".pdf"])
 
         for n_function in self.l_nested:
             n_function.debug_parse_tree()
@@ -207,7 +219,7 @@ class Special_Block(Node):
         self.l_items.append(n_prop)
 
     def add_method(self, n_method):
-        assert isinstance(n_method, Function_Definition)
+        assert isinstance(n_method, (Function_Definition, Function_Signature))
         assert self.kind() == "methods"
         self.l_items.append(n_method)
 

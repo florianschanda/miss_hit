@@ -1,4 +1,1 @@
-In test1.m, line 9
-|     disp("potato");
-|     ^^^^ error: expected KEYWORD(end), found IDENTIFIER instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

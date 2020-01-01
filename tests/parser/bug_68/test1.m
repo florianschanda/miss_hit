@@ -6,6 +6,8 @@ classdef test1
       disp("cons");
     end
 
-    disp("potato");
+    wibble()
+    potato(x)
+    p = properties()
   end
 end

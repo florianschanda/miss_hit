@@ -144,14 +144,18 @@ def rec(indent, prefix, node):
         emit("Selection of field %s" % node.n_field.t_ident.value())
         rec(indent + 2, "root: ", node.n_root)
 
-    elif isinstance(node, Function_Definition):
-        emit("Function definition for %s" % node.n_name)
+    elif isinstance(node, Function_Signature):
+        emit("Signature for %s" % node.n_name)
         for item in node.l_inputs:
             rec(indent + 2, "input: ", item)
-        for item in node.l_validation:
-            rec(indent + 2, "validation: ", item)
         for item in node.l_outputs:
             rec(indent + 2, "output: ", item)
+
+    elif isinstance(node, Function_Definition):
+        emit("Function definition for %s" % node.n_sig.n_name)
+        rec(indent + 2, "signature: ", node.n_sig)
+        for item in node.l_validation:
+            rec(indent + 2, "validation: ", item)
         rec(indent + 2, "body: ", node.n_body)
         for item in node.l_nested:
             rec(indent + 2, "nested: ", item)
@@ -175,17 +179,21 @@ def dot(fd, parent, annotation, node):
         for n_function in node.l_functions:
             dot(fd, node, "function", n_function)
 
+    elif isinstance(node, Function_Signature):
+        dot(fd, node, "name", node.n_name)
+        for item in node.l_inputs:
+            dot(fd, node, "input", item)
+        for item in node.l_outputs:
+            dot(fd, node, "output ", item)
+
     elif isinstance(node, Function_Definition):
-        lbl += " for %s" % str(node.n_name)
+        lbl += " for %s" % str(node.n_sig.n_name)
 
         # Only show the body if this is the root
         if parent is None:
-            for item in node.l_inputs:
-                dot(fd, node, "input", item)
+            dot(fd, node, "signature", node.n_sig)
             for item in node.l_validation:
                 dot(fd, node, "validation", item)
-            for item in node.l_outputs:
-                dot(fd, node, "output ", item)
             dot(fd, node, "body", node.n_body)
             for item in node.l_nested:
                 dot(fd, node, "nested", item)
