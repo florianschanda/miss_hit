@@ -1,0 +1,4 @@
+In invalid_1.m, line 3
+| function [a, b, ] = potato()
+|                 ^ error: expected IDENTIFIER, found A_KET instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

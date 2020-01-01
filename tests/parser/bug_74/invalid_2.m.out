@@ -1,0 +1,4 @@
+In invalid_2.m, line 3
+| [x,, y, ] = potato()
+|    ^ error: expected IDENTIFIER, found COMMA instead
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
