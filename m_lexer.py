@@ -645,15 +645,19 @@ class MATLAB_Lexer(Token_Generator):
                 elif self.block_stack[-1] == "classdef":
                     # Directly inside a classdef, we have 4 extra
                     # keywords
-                    extra_kw = {"properties", "enumeration",
-                                "events",     "methods"}
+                    extra_kw = {"properties",
+                                "enumeration",
+                                "events",
+                                "methods"}
                 elif self.block_stack[-1] in ("properties",
                                               "enumeration",
                                               "events"):
                     # In three of the four class blocks, these
                     # keywords persist
-                    extra_kw = {"properties", "enumeration",
-                                "events",     "methods"}
+                    extra_kw = {"properties",
+                                "enumeration",
+                                "events",
+                                "methods"}
                 elif self.block_stack[-1] == "function":
                     # Inside functions we add the arguments block as
                     # an extra keyword

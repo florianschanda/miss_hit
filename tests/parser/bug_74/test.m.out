@@ -1,4 +1,1 @@
-In test.m, line 3
-| [x, ] = 42
-|     ^ error: expected IDENTIFIER, found A_KET instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -26,11 +26,9 @@
 
 import os
 import traceback
-import subprocess
 
 from m_lexer import Token_Generator, MATLAB_Lexer, TOKEN_KINDS
 from errors import ICE, Error, Location, Message_Handler
-import tree_print
 
 # pylint: disable=wildcard-import,unused-wildcard-import
 from m_ast import *
@@ -795,6 +793,11 @@ class MATLAB_Parser:
             if self.peek("ASSIGNMENT"):
                 self.match("ASSIGNMENT")
                 t_eq = self.ct
+                if not isinstance(rv, Name):
+                    self.mh.error(t_eq.location,
+                                  "left-hand side of assignment must be a"
+                                  " Name, found %s instead" %
+                                  rv.__class__.__name__)
                 rhs = self.parse_expression()
                 rv = Simple_Assignment_Statement(t_eq, rv, rhs)
 
@@ -824,15 +827,21 @@ class MATLAB_Parser:
         # Assignment
         #   s_assignee_matrix "=" expr           '[<ref>] = <expr>'
         #   m_assignee_matrix "=" reference      '[<ref>, <ref>] = <ref>'
+        #
+        # The list cannot be empty, and there can be an optional
+        # trailing comma. This is not the same as a function return
+        # list, since there cannot be a trailing comma there.
 
         lhs = []
 
         self.match("A_BRA")
+        if self.peek("COMMA"):
+            self.match("COMMA")
         while True:
             lhs.append(self.parse_name(allow_void=True))
             if self.peek("COMMA"):
                 self.match("COMMA")
-            else:
+            if self.peek("A_KET"):
                 break
         self.match("A_KET")
 
@@ -1073,11 +1082,29 @@ class MATLAB_Parser:
     def parse_matrix_row(self):
         rv = []
 
+        first = True
+
         while not (self.peek("SEMICOLON") or
                    self.peek("NEWLINE") or
                    self.peek("C_KET") or
                    self.peek("M_KET")):
+            if first:
+                first = False
+                # Very bad style, but you can start a matrix with a
+                # comma, e.g. [,1,2] which is the same as [1, 2]
+                if self.peek("COMMA"):
+                    self.match("COMMA")
+
+            if (self.peek("SEMICOLON") or
+                self.peek("NEWLINE") or
+                self.peek("C_KET") or
+                self.peek("M_KET")):
+                # Bad style, but you can have a trailing comma in your
+                # matrix, e.g. [1,2,] which is the same as [1, 2]
+                break
+
             rv.append(self.parse_expression())
+
             if self.peek("SEMICOLON"):
                 pass
             elif self.peek("NEWLINE"):
@@ -1093,8 +1120,13 @@ class MATLAB_Parser:
         self.match("M_BRA")
         t_open = self.ct
 
+        # Bad style, but there may be leading semicolons, e.g [;;3]
+        # which is the same as [3].
+        while self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
+
         rows = [self.parse_matrix_row()]
-        if self.peek("SEMICOLON"):
+        while self.peek("SEMICOLON"):
             self.match("SEMICOLON")
         if self.peek("NEWLINE"):
             self.match("NEWLINE")
@@ -1103,7 +1135,7 @@ class MATLAB_Parser:
                    self.peek("NEWLINE") or
                    self.peek("M_KET")):
             rows.append(self.parse_matrix_row())
-            if self.peek("SEMICOLON"):
+            while self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
             if self.peek("NEWLINE"):
                 self.match("NEWLINE")
@@ -1118,8 +1150,13 @@ class MATLAB_Parser:
         self.match("C_BRA")
         t_open = self.ct
 
+        # Bad style, but there may be leading semicolons, e.g {;;3}
+        # which is the same as {3}.
+        while self.peek("SEMICOLON"):
+            self.match("SEMICOLON")
+
         rows = [self.parse_matrix_row()]
-        if self.peek("SEMICOLON"):
+        while self.peek("SEMICOLON"):
             self.match("SEMICOLON")
         if self.peek("NEWLINE"):
             self.match("NEWLINE")
@@ -1128,7 +1165,7 @@ class MATLAB_Parser:
                    self.peek("NEWLINE") or
                    self.peek("C_KET")):
             rows.append(self.parse_matrix_row())
-            if self.peek("SEMICOLON"):
+            while self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
             if self.peek("NEWLINE"):
                 self.match("NEWLINE")
