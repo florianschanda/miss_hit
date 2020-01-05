@@ -51,7 +51,9 @@ difficult features of the MATLAB are fully supported:
 * Distinguishing between matrices and assignment lists
 
 * Command form transformation (e.g. `foo bar (baz)` is lexed as
-  identifier `foo`, char array `bar`, and char array `(baz)`.
+  identifier `foo`, char array `bar`, and char array
+  `(baz)`. Including the insane weirdness like `f) o[[ b` lexing as a
+  single string.
 
 * Classdef blocks (e.g. `foo uint8` is not lexed as command form, but
   correctly as two identifiers).

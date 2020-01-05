@@ -9,21 +9,9 @@ In test.m, line 3
 | ^^^^ info: [SL] IDENTIFIER
 In test.m, line 3
 | disp x(2,N)
-|      ^^^ info: CARRAY
-In test.m, line 3
-| disp x(2,N)
-|         ^ info: COMMA
-In test.m, line 3
-| disp x(2,N)
-|          ^ info: [S ] IDENTIFIER
-In test.m, line 3
-| disp x(2,N)
-|           ^ [31;1mlex error[0m: unmatched )
-In test.m, line 3
-| disp x(2,N)
-|           ^ info: KET
+|      ^^^^^^ info: CARRAY
 In test.m, line 3
 | disp x(2,N)
 |            ^ info: NEWLINE
 test.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

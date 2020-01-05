@@ -420,7 +420,9 @@ class MATLAB_Lexer(Token_Generator):
                 # Everything else in command form is converted into a
                 # string.
                 kind = "CARRAY"
-                while self.nc not in (" ", "\t", "\n", "\0", ",", ";"):
+                local_brackets = 0
+                string_mode = False
+                while True:
                     # We just need to make sure to not eat line
                     # continuatins by accident
                     if self.nc == "." and \
@@ -428,11 +430,53 @@ class MATLAB_Lexer(Token_Generator):
                        self.nnnc == ".":
                         break
 
-                    # We also need to make sure not to eat comments
                     if self.nc in self.comment_char:
+                        # Comments always terminate the string
                         break
+                    elif self.nc in "\n\0":
+                        # Newlines and eof always break too
+                        break
+                    elif (local_brackets == 0 and not string_mode) \
+                         and self.nc in " \t,;":
+                        # If we have "neutral" brackets we stop on
+                        # most things
+                        break
+                    elif self.nc in self.comment_char:
+                        # We also need to make sure not to eat comments
+                        break
+                    elif (local_brackets != 0 or string_mode) and \
+                         self.nc in " \t":
+                        # We normally just keep eating characters,
+                        # except if this was the last non-whitespace
+                        # non-comment character of the line
+                        skip_amount = 0
+                        found_end = False
+                        for c in self.text[self.lexpos + 1:]:
+                            skip_amount += 1
+                            if c in "\n\0" or c in self.comment_char:
+                                found_end = True
+                                break
+                            elif c in " \t":
+                                pass
+                            else:
+                                skip_amount -= 1
+                                break
+                        if found_end:
+                            break
+                        else:
+                            self.advance(skip_amount)
 
                     self.next()
+
+                    # Count opening and closing braces. Note that it
+                    # is intentional that this can be negative, the
+                    # weird behaviour of MATLAB parses f) (o as 'f) (o'
+                    if self.cc in "({[":
+                        local_brackets += 1
+                    elif self.cc in ")}]":
+                        local_brackets -= 1
+                    elif self.cc == "'":
+                        string_mode = not string_mode
 
         else:
             # Ordinary lexing
@@ -729,6 +773,12 @@ class MATLAB_Lexer(Token_Generator):
                     elif c == "(":
                         # Open bracket is always a function call
                         break
+                    elif c == ")":
+                        # This is here for bug-for-bug compatibility
+                        # with MATLAB. cmd )foo is a lex error.
+                        self.advance(n - self.lexpos)
+                        self.lex_error("MATLAB/Octave cannot process command"
+                                       " starting with )")
                     elif c in r"+-*/\^'@?:":
                         # Single-character operators
                         mode = "found_op"
