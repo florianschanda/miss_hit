@@ -1,0 +1,29 @@
+In test2.m, line 1
+| % (c) Copyright 2020 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+In test2.m, line 1
+| % (c) Copyright 2020 Florian Schanda
+|                                     ^ info: NEWLINE
+In test2.m, line 3
+| disp x(2,N]
+| ^^^^ info: [SL] IDENTIFIER
+In test2.m, line 3
+| disp x(2,N]
+|      ^^^ info: CARRAY
+In test2.m, line 3
+| disp x(2,N]
+|         ^ info: COMMA
+In test2.m, line 3
+| disp x(2,N]
+|          ^ info: [S ] IDENTIFIER
+In test2.m, line 3
+| disp x(2,N]
+|           ^ [31;1mlex error[0m: unmatched ]
+In test2.m, line 3
+| disp x(2,N]
+|           ^ info: M_KET
+In test2.m, line 3
+| disp x(2,N]
+|            ^ info: NEWLINE
+test2.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
