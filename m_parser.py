@@ -1298,13 +1298,34 @@ class MATLAB_Parser:
 
         return Continue_Statement(t_kw)
 
+    def parse_for_assignment(self,
+                             allow_brackets=False,
+                             allow_recursion=False):
+        # Apparently it's OK to wrap the loop in arbitrarily nested
+        # brackets, e.g. for ((i = 1:2))
+        #
+        # TODO: Flag bad style
+        #
+        # TODO: In octave we can recurse for the normal for, in MATLAB
+        # we cannot. For parfor we can never recurse.
+        if self.peek("BRA") and allow_brackets:
+            self.match("BRA")
+            n_ident, n_expr = self.parse_for_assignment(allow_recursion,
+                                                        allow_recursion)
+            self.match("KET")
+        else:
+            n_ident = self.parse_identifier(allow_void=False)
+            self.match("ASSIGNMENT")
+            n_expr = self.parse_expression()
+
+        return n_ident, n_expr
+
     def parse_for_statement(self):
         self.match("KEYWORD", "for")
         self.push_context("loop")
         t_kw = self.ct
-        n_ident = self.parse_identifier(allow_void=False)
-        self.match("ASSIGNMENT")
-        n_expr = self.parse_expression()
+
+        n_ident, n_expr = self.parse_for_assignment(allow_brackets=True)
         self.match_eos()
 
         n_body = self.parse_delimited_input()
@@ -1326,16 +1347,15 @@ class MATLAB_Parser:
         if self.peek("BRA"):
             # parfor (var = first:last, max_workers)
             self.match("BRA")
-            n_ident = self.parse_identifier(allow_void=False)
-            self.match("ASSIGNMENT")
-            n_expr = self.parse_range_expression()
-            self.match("COMMA")
-            n_workers = self.parse_expression()
+            n_ident, n_expr = self.parse_for_assignment()
+            if self.peek("COMMA"):
+                self.match("COMMA")
+                n_workers = self.parse_expression()
+            else:
+                n_workers = None
             self.match("KET")
         else:
-            n_ident = self.parse_identifier(allow_void=False)
-            self.match("ASSIGNMENT")
-            n_expr = self.parse_range_expression()
+            n_ident, n_expr = self.parse_for_assignment()
             n_workers = None
         self.match_eos()
 

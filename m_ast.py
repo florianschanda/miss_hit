@@ -28,7 +28,6 @@ import subprocess
 from m_lexer import MATLAB_Token
 from errors import ICE
 
-import tree_print
 
 NODE_UID = [0]
 
@@ -67,7 +66,7 @@ class Script_File(Compilation_Unit):
         self.l_functions  = l_functions
 
     def debug_parse_tree(self):
-        tree_print.dotpr("scr_" + str(self.name) + ".dot", self.n_statements)
+        dotpr("scr_" + str(self.name) + ".dot", self.n_statements)
         subprocess.run(["dot", "-Tpdf",
                         "scr_" + str(self.name) + ".dot",
                         "-oscr_" + str(self.name) + ".pdf"])
@@ -102,7 +101,7 @@ class Class_File(Compilation_Unit):
         self.l_functions = l_functions
 
     def debug_parse_tree(self):
-        tree_print.dotpr("cls_" + str(self.name) + ".dot", self.n_classdef)
+        dotpr("cls_" + str(self.name) + ".dot", self.n_classdef)
         subprocess.run(["dot", "-Tpdf",
                         "cls_" + str(self.name) + ".dot",
                         "-ocls_" + str(self.name) + ".pdf"])
@@ -155,7 +154,7 @@ class Function_Definition(Node):
         self.l_nested     = l_nested
 
     def debug_parse_tree(self):
-        tree_print.dotpr("fun_" + str(self.n_sig.n_name) + ".dot", self)
+        dotpr("fun_" + str(self.n_sig.n_name) + ".dot", self)
         subprocess.run(["dot", "-Tpdf",
                         "fun_" + str(self.n_sig.n_name) + ".dot",
                         "-ofun_" + str(self.n_sig.n_name) + ".pdf"])
@@ -886,3 +885,288 @@ class Metaclass(Expression):
 
     def __str__(self):
         return "?" + str(self.n_name)
+
+
+def dot(fd, parent, annotation, node):
+    lbl = node.__class__.__name__
+    attr = []
+
+    if isinstance(node, Script_File):
+        lbl += " " + node.name
+        dot(fd, node, "statements", node.n_statements)
+        for n_function in node.l_functions:
+            dot(fd, node, "function", n_function)
+
+    elif isinstance(node, Function_Signature):
+        dot(fd, node, "name", node.n_name)
+        for item in node.l_inputs:
+            dot(fd, node, "input", item)
+        for item in node.l_outputs:
+            dot(fd, node, "output ", item)
+
+    elif isinstance(node, Function_Definition):
+        lbl += " for %s" % str(node.n_sig.n_name)
+
+        # Only show the body if this is the root
+        if parent is None:
+            dot(fd, node, "signature", node.n_sig)
+            for item in node.l_validation:
+                dot(fd, node, "validation", item)
+            dot(fd, node, "body", node.n_body)
+            for item in node.l_nested:
+                dot(fd, node, "nested", item)
+
+    elif isinstance(node, Simple_Assignment_Statement):
+        dot(fd, node, "target", node.n_lhs)
+        dot(fd, node, "expression", node.n_rhs)
+
+    elif isinstance(node, Compound_Assignment_Statement):
+        for n, n_lhs in enumerate(node.l_lhs, 1):
+            dot(fd, node, "target %u" % n, n_lhs)
+        dot(fd, node, "expression", node.n_rhs)
+
+    elif isinstance(node, If_Statement):
+        attr.append("shape=diamond")
+        for t_kw, n_expr, n_body in node.actions:
+            if t_kw.value() in ("if", "elseif"):
+                dot(fd, node, t_kw.value() + " guard", n_expr)
+            dot(fd, node, t_kw.value() + " body", n_body)
+
+    elif isinstance(node, Switch_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "switch expr", node.n_expr)
+        for t_kw, n_expr, n_body in node.l_options:
+            if t_kw.value() == "case":
+                dot(fd, node, "case expr", n_expr)
+            dot(fd, node, t_kw.value() + " body", n_body)
+
+    elif isinstance(node, Simple_For_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "var", node.n_ident)
+        dot(fd, node, "range", node.n_range)
+        dot(fd, node, "body", node.n_body)
+
+    elif isinstance(node, General_For_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "var", node.n_ident)
+        dot(fd, node, "range", node.n_expr)
+        dot(fd, node, "body", node.n_body)
+
+    elif isinstance(node, Parallel_For_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "var", node.n_ident)
+        dot(fd, node, "range", node.n_range)
+        if node.n_workers:
+            dot(fd, node, "workers", node.n_workers)
+        dot(fd, node, "body", node.n_body)
+
+    elif isinstance(node, While_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "guard", node.n_guard)
+        dot(fd, node, "body", node.n_body)
+
+    elif isinstance(node, Return_Statement):
+        attr.append("shape=diamond")
+
+    elif isinstance(node, Break_Statement):
+        attr.append("shape=diamond")
+
+    elif isinstance(node, Continue_Statement):
+        attr.append("shape=diamond")
+
+    elif isinstance(node, Naked_Expression_Statement):
+        dot(fd, node, "", node.n_expr)
+
+    elif isinstance(node, Global_Statement):
+        for n_name in node.l_names:
+            dot(fd, node, "", n_name)
+
+    elif isinstance(node, Persistent_Statement):
+        for n_name in node.l_names:
+            dot(fd, node, "", n_name)
+
+    elif isinstance(node, Import_Statement):
+        lbl += "\n"
+        lbl += ".".join(t.value() if t.kind == "IDENTIFIER" else "*"
+                        for t in node.l_chain)
+
+    elif isinstance(node, Sequence_Of_Statements):
+        for statement in node.l_statements:
+            dot(fd, node, "", statement)
+
+    elif isinstance(node, Try_Statement):
+        attr.append("shape=diamond")
+        dot(fd, node, "try", node.n_body)
+        if node.n_ident:
+            dot(fd, node, "ident", node.n_ident)
+        if node.n_handler:
+            dot(fd, node, "catch", node.n_handler)
+
+    elif isinstance(node, SPMD_Statement):
+        dot(fd, node, "body", node.n_body)
+
+    elif isinstance(node, Unary_Operation):
+        lbl += " %s" % node.t_op.value()
+        dot(fd, node, "", node.n_expr)
+
+    elif isinstance(node, Binary_Operation):
+        lbl += " %s" % node.t_op.value().replace("\\", "\\\\")
+        dot(fd, node, "", node.n_lhs)
+        dot(fd, node, "", node.n_rhs)
+
+    elif isinstance(node, Range_Expression):
+        dot(fd, node, "first", node.n_first)
+        if node.n_stride:
+            dot(fd, node, "stride", node.n_stride)
+        dot(fd, node, "last", node.n_last)
+
+    elif isinstance(node, Matrix_Expression):
+        lbl = "%ux%u %s\\n%s" % (len(node.items[0]),
+                                 len(node.items),
+                                 lbl,
+                                 str(node).replace("; ", "\\n"))
+        attr.append("shape=none")
+
+    elif isinstance(node, Cell_Expression):
+        lbl = "%ux%u %s\\n%s" % (len(node.items[0]),
+                                 len(node.items),
+                                 lbl,
+                                 str(node).replace("; ", "\\n"))
+        attr.append("shape=none")
+
+    elif isinstance(node, Reference):
+        lbl += " to %s" % str(node.n_ident)
+        if node.arglist:
+            for arg in node.arglist:
+                dot(fd, node, "arg", arg)
+        else:
+            attr.append("shape=none")
+
+    elif isinstance(node, Cell_Reference):
+        lbl += " to %s" % str(node.n_ident)
+        if node.arglist:
+            for arg in node.arglist:
+                dot(fd, node, "arg", arg)
+        else:
+            attr.append("shape=none")
+
+    elif isinstance(node, String_Literal):
+        lbl += "\\n" + str(node)
+        attr.append("shape=none")
+
+    elif isinstance(node, Char_Array_Literal):
+        lbl += "\\n" + str(node)
+        attr.append("shape=none")
+
+    elif isinstance(node, Number_Literal):
+        lbl += "\\n" + str(node)
+        attr.append("shape=none")
+
+    elif isinstance(node, Identifier):
+        lbl += "\\n" + str(node)
+        attr.append("shape=none")
+
+    elif isinstance(node, Selection):
+        dot(fd, node, "prefix", node.n_prefix)
+        dot(fd, node, "field", node.n_field)
+
+    elif isinstance(node, Dynamic_Selection):
+        dot(fd, node, "prefix", node.n_prefix)
+        dot(fd, node, "field", node.n_field)
+
+    elif isinstance(node, Superclass_Reference):
+        lbl += "\\n" + str(node)
+        attr.append("shape=none")
+
+    elif isinstance(node, Lambda_Function):
+        attr.append("shape=box")
+        for param in node.l_parameters:
+            dot(fd, node, "param", param)
+        dot(fd, node, "body", node.n_body)
+
+    elif isinstance(node, Function_Pointer):
+        attr.append("shape=box")
+        lbl += "\\nto " + str(node.n_name)
+
+    elif isinstance(node, Metaclass):
+        attr.append("shape=none")
+        lbl += " of " + str(node.n_name)
+
+    elif isinstance(node, Function_Call):
+        lbl = "Call to %s" % str(node.n_name)
+        if node.variant != "normal":
+            lbl += " in %s form" % node.variant
+        for n, n_arg in enumerate(node.l_args, 1):
+            dot(fd, node, "arg %u" % n, n_arg)
+
+    elif isinstance(node, Class_Definition):
+        lbl += " of %s" % str(node.n_name)
+        for n_super in node.l_super:
+            dot(fd, node, "super", n_super)
+        for n_attr in node.l_attr:
+            dot(fd, node, "attr", n_attr)
+        for n in (node.l_properties +
+                  node.l_events +
+                  node.l_enumerations +
+                  node.l_methods):
+            dot(fd, node, "block", n)
+
+    elif isinstance(node, Special_Block):
+        lbl = node.t_kw.value()
+        for n_attr in node.l_attr:
+            dot(fd, node, "attr", n_attr)
+        for item in node.l_items:
+            dot(fd, node, "", item)
+
+    elif isinstance(node, Class_Attribute):
+        lbl += " " + str(node.n_name)
+        if node.n_value:
+            dot(fd, node, "value", node.n_value)
+
+    elif isinstance(node, Class_Property):
+        lbl = str(node.n_name)
+        attr.append("shape=none")
+
+        if node.n_default_value:
+            dot(fd, node, "default", node.n_default_value)
+        for n, n_dim in enumerate(node.l_dim_constraint, 1):
+            dot(fd, node, "dim %u" % n, n_dim)
+        if node.n_class_constraint:
+            dot(fd, node, "class", node.n_class_constraint)
+        for n_fun in node.l_fun_constraint:
+            dot(fd, node, "constraint", n_fun)
+
+    elif isinstance(node, Class_Enumeration):
+        lbl = str(node.n_name)
+        attr.append("shape=none")
+
+        for n, n_arg in enumerate(node.l_args, 1):
+            dot(fd, node, "arg %u" % n, n_arg)
+
+    elif isinstance(node, MATLAB_Token):
+        attr.append("shape=box")
+        attr.append("style=filled")
+        attr.append("fillcolor=gray")
+        lbl = node.kind + "\\n" + node.raw_text
+
+    else:
+        lbl = "TODO: " + lbl
+        attr.append("fillcolor=yellow")
+        attr.append("style=filled")
+
+    attr.append("label=\"%s\"" % lbl.replace("\"", "\\\""))
+    fd.write("  %u [%s];\n" % (hash(node), ",".join(attr)))
+
+    if parent:
+        fd.write("  %u -> %s [label=\"%s\"];" % (hash(parent),
+                                                 hash(node),
+                                                 annotation))
+
+
+def dotpr(filename, root_node):
+    assert isinstance(filename, str)
+    assert isinstance(root_node, Node)
+    with open(filename, "w") as fd:
+        fd.write("digraph G {\n")
+        dot(fd, None, "", root_node)
+        fd.write("}\n")
