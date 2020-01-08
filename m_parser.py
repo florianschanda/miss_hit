@@ -1473,7 +1473,7 @@ class MATLAB_Parser:
         self.match("KEYWORD", "try")
         self.push_context("block")
         t_try = self.ct
-        self.match_eos()
+        self.match_eos(allow_nothing=True)
 
         n_body = self.parse_delimited_input()
 
