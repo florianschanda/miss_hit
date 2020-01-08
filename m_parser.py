@@ -186,7 +186,7 @@ class MATLAB_Parser:
 
     def peek_eos(self):
         return self.peek("SEMICOLON") or \
-            self.peek("COLON") or \
+            self.peek("COMMA") or \
             self.peek("NEWLINE")
 
     def match_eos(self, semi = "", allow_nothing = False):
@@ -1410,12 +1410,8 @@ class MATLAB_Parser:
         l_names = []
         while True:
             l_names.append(self.parse_identifier(allow_void=False))
-            if self.peek("NEWLINE"):
-                self.match("NEWLINE")
-                break
-            elif self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-                self.match("NEWLINE")
+            if self.peek_eos():
+                self.match_eos()
                 break
 
         return Persistent_Statement(t_kw, l_names)
