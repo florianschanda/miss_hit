@@ -1,6 +1,6 @@
 In test6.m, line 1
 | % (c) Copyright 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Florian Schanda'
 In test6.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 |                                     ^ info: NEWLINE
@@ -15,16 +15,16 @@ In test6.m, line 2
 |       ^ info: M_BRA
 In test6.m, line 2
 | foo = ['foo'...
-|        ^^^^^ info: CARRAY
+|        ^^^^^ info: CARRAY 'foo'
 In test6.m, line 2
 | foo = ['foo'<anon,>...
 |             ^^^^^^^ info: COMMA
 In test6.m, line 2
 | foo = ['foo'...
-|             ^^^^ info: CONTINUATION
+|             ^^^^ info: CONTINUATION ''
 In test6.m, line 3
 |        'bar'];
-|        ^^^^^ info: [ L] CARRAY
+|        ^^^^^ info: [ L] CARRAY 'bar'
 In test6.m, line 3
 |        'bar'];
 |             ^ info: M_KET

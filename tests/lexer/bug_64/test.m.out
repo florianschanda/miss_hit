@@ -1,6 +1,6 @@
 In test.m, line 1
 | % From https://github.com/matlab2tikz/matlab2tikz
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'From https://github.com/matlab2tikz/matlab2tikz'
 In test.m, line 1
 | % From https://github.com/matlab2tikz/matlab2tikz
 |                                                  ^ info: NEWLINE

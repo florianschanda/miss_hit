@@ -1,6 +1,6 @@
 In test3.m, line 1
 | % (c) Copyright 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Florian Schanda'
 In test3.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 |                                     ^ info: NEWLINE

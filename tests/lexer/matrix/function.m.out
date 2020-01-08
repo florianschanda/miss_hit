@@ -87,7 +87,7 @@ In function.m, line 7
 |   ^ info: M_KET
 In function.m, line 7
 | [a] ...
-|     ^^^^ info: CONTINUATION
+|     ^^^^ info: CONTINUATION ''
 In function.m, line 8
 | == b;
 | ^^ info: [ L] OPERATOR
@@ -111,7 +111,7 @@ In function.m, line 10
 |   ^ info: M_KET
 In function.m, line 10
 | [a] % potato
-|     ^^^^^^^^ info: COMMENT
+|     ^^^^^^^^ info: COMMENT 'potato'
 In function.m, line 10
 | [a] % potato
 |             ^ info: NEWLINE
@@ -126,7 +126,7 @@ In function.m, line 12
 |   ^ info: A_KET
 In function.m, line 12
 | [a] ... potato
-|     ^^^^^^^^^^^ info: CONTINUATION
+|     ^^^^^^^^^^^ info: CONTINUATION 'potato'
 In function.m, line 13
 | = 5;
 | ^ info: [ L] ASSIGNMENT

@@ -1,12 +1,12 @@
 In test_06.m, line 1
 | % (c) Copyright 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Florian Schanda'
 In test_06.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 |                                     ^ info: NEWLINE
 In test_06.m, line 3
 | % Octave: 1 4 5
-| ^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Octave: 1 4 5'
 In test_06.m, line 3
 | % Octave: 1 4 5
 |                ^ info: NEWLINE
@@ -18,7 +18,7 @@ In test_06.m, line 5
 |     ^ info: BRA
 In test_06.m, line 5
 | disp("1");
-|      ^^^ info: STRING
+|      ^^^ info: STRING '1'
 In test_06.m, line 5
 | disp("1");
 |         ^ info: KET
@@ -30,13 +30,13 @@ In test_06.m, line 5
 |           ^ info: [S ] NEWLINE
 In test_06.m, line 6
 | %{
-| ^^ info: [SL] COMMENT
+| ^^ info: [SL] COMMENT '{'
 In test_06.m, line 6
 | %{
 |   ^ info: NEWLINE
 In test_06.m, line 7
 |   disp("2");
-| ^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT 'disp("2");'
 In test_06.m, line 7
 |   disp("2");
 |             ^ info: NEWLINE
@@ -45,19 +45,19 @@ In test_06.m, line 8
 | ^^^^^^^^^^^ [31mwarning[0m: ignored block comment: no text must appear around the block comment marker
 In test_06.m, line 8
 |   %{ potato
-| ^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^ info: [SL] COMMENT '%{ potato'
 In test_06.m, line 8
 |   %{ potato
 |            ^ info: NEWLINE
 In test_06.m, line 9
 |     disp("3");
-| ^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^ info: [SL] COMMENT 'disp("3");'
 In test_06.m, line 9
 |     disp("3");
 |               ^ info: NEWLINE
 In test_06.m, line 10
 |   %}
-| ^^^^ info: [SL] COMMENT
+| ^^^^ info: [SL] COMMENT '%}'
 In test_06.m, line 10
 |   %}
 |     ^ info: NEWLINE
@@ -69,7 +69,7 @@ In test_06.m, line 11
 |       ^ info: BRA
 In test_06.m, line 11
 |   disp("4");
-|        ^^^ info: STRING
+|        ^^^ info: STRING '4'
 In test_06.m, line 11
 |   disp("4");
 |           ^ info: KET
@@ -81,7 +81,7 @@ In test_06.m, line 11
 |             ^ info: [S ] NEWLINE
 In test_06.m, line 12
 | %}
-| ^^ info: [SL] COMMENT
+| ^^ info: [SL] COMMENT '}'
 In test_06.m, line 12
 | %}
 |   ^ info: NEWLINE
@@ -93,7 +93,7 @@ In test_06.m, line 13
 |     ^ info: BRA
 In test_06.m, line 13
 | disp("5");
-|      ^^^ info: STRING
+|      ^^^ info: STRING '5'
 In test_06.m, line 13
 | disp("5");
 |         ^ info: KET

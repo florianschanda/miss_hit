@@ -60,7 +60,7 @@ In test_invalid_assignment_1.m, line 3
 |           ^ info: SEMICOLON
 In test_invalid_assignment_1.m, line 3
 | [a(2)] = 5;  % ok
-|              ^^^^ info: [S ] COMMENT
+|              ^^^^ info: [S ] COMMENT 'ok'
 In test_invalid_assignment_1.m, line 3
 | [a(2)] = 5;  % ok
 |                  ^ info: NEWLINE
@@ -87,7 +87,7 @@ In test_invalid_assignment_1.m, line 4
 |           ^ info: SEMICOLON
 In test_invalid_assignment_1.m, line 4
 | a (2) = 10;  % ok
-|              ^^^^ info: [S ] COMMENT
+|              ^^^^ info: [S ] COMMENT 'ok'
 In test_invalid_assignment_1.m, line 4
 | a (2) = 10;  % ok
 |                  ^ info: NEWLINE
@@ -123,7 +123,7 @@ In test_invalid_assignment_1.m, line 5
 |             ^ info: SEMICOLON
 In test_invalid_assignment_1.m, line 5
 | [a (2)] = 12; % not ok
-|               ^^^^^^^^ info: [S ] COMMENT
+|               ^^^^^^^^ info: [S ] COMMENT 'not ok'
 In test_invalid_assignment_1.m, line 5
 | [a (2)] = 12; % not ok
 |                       ^ info: NEWLINE

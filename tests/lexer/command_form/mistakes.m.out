@@ -1,6 +1,6 @@
 In mistakes.m, line 1
 | % From https://www.mathworks.com/help/matlab/matlab_prog/command-vs-function-syntax.html
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'From https://www.mathworks.com/help/matlab/matlab_prog/command-vs-function-syntax.html'
 In mistakes.m, line 1
 | % From https://www.mathworks.com/help/matlab/matlab_prog/command-vs-function-syntax.html
 |                                                                                         ^ info: NEWLINE
@@ -12,7 +12,7 @@ In mistakes.m, line 3
 |      ^^^^^^^^ info: CARRAY
 In mistakes.m, line 3
 | open filename        % open('filename')
-|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT "open('filename')"
 In mistakes.m, line 3
 | open filename        % open('filename')
 |                                        ^ info: NEWLINE
@@ -27,7 +27,7 @@ In mistakes.m, line 4
 |           ^ info: CARRAY
 In mistakes.m, line 4
 | isequal A B          % isequal('A', 'B')
-|                      ^^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                      ^^^^^^^^^^^^^^^^^^^ info: COMMENT "isequal('A', 'B')"
 In mistakes.m, line 4
 | isequal A B          % isequal('A', 'B')
 |                                         ^ info: NEWLINE
@@ -42,7 +42,7 @@ In mistakes.m, line 5
 |                 ^^^^ info: CARRAY
 In mistakes.m, line 5
 | strcmp class(A) int8 % strcmp('class(A)', 'int8')
-|                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT "strcmp('class(A)', 'int8')"
 In mistakes.m, line 5
 | strcmp class(A) int8 % strcmp('class(A)', 'int8')
 |                                                  ^ info: NEWLINE
@@ -54,7 +54,7 @@ In mistakes.m, line 6
 |    ^^^^^^^^^^ info: CARRAY
 In mistakes.m, line 6
 | cd matlabroot        % cd('matlabroot')
-|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT "cd('matlabroot')"
 In mistakes.m, line 6
 | cd matlabroot        % cd('matlabroot')
 |                                        ^ info: NEWLINE
@@ -66,7 +66,7 @@ In mistakes.m, line 7
 |           ^^^ info: CARRAY
 In mistakes.m, line 7
 | isnumeric 500        % isnumeric('500')
-|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT "isnumeric('500')"
 In mistakes.m, line 7
 | isnumeric 500        % isnumeric('500')
 |                                        ^ info: NEWLINE
@@ -78,7 +78,7 @@ In mistakes.m, line 8
 |       ^^^^^ info: CARRAY
 In mistakes.m, line 8
 | round 3.499          % round('3.499')
-|                      ^^^^^^^^^^^^^^^^ info: COMMENT
+|                      ^^^^^^^^^^^^^^^^ info: COMMENT "round('3.499')"
 In mistakes.m, line 8
 | round 3.499          % round('3.499')
 |                                      ^ info: NEWLINE
@@ -93,7 +93,7 @@ In mistakes.m, line 9
 |            ^^^^^ info: CARRAY
 In mistakes.m, line 9
 | disp hello world     % disp('hello','world')
-|                      ^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                      ^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT "disp('hello','world')"
 In mistakes.m, line 9
 | disp hello world     % disp('hello','world')
 |                                             ^ info: NEWLINE
@@ -105,7 +105,7 @@ In mistakes.m, line 10
 |      ^^^^^^^^ info: CARRAY
 In mistakes.m, line 10
 | disp "string"        % disp('"string"')
-|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                      ^^^^^^^^^^^^^^^^^^ info: COMMENT 'disp(\'"string"\')'
 In mistakes.m, line 10
 | disp "string"        % disp('"string"')
 |                                        ^ info: NEWLINE

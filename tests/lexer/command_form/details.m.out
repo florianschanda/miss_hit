@@ -1,6 +1,6 @@
 In details.m, line 1
 | % (c) Copyright 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Florian Schanda'
 In details.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 |                                     ^ info: NEWLINE
@@ -30,7 +30,7 @@ In details.m, line 4
 |            ^ info: CARRAY
 In details.m, line 4
 |   wibble a b  % wibble('a', 'b')
-|               ^^^^^^^^^^^^^^^^^^ info: COMMENT
+|               ^^^^^^^^^^^^^^^^^^ info: COMMENT "wibble('a', 'b')"
 In details.m, line 4
 |   wibble a b  % wibble('a', 'b')
 |                                 ^ info: NEWLINE
@@ -42,13 +42,13 @@ In details.m, line 6
 |          ^ info: CARRAY
 In details.m, line 6
 |   wibble a...
-|           ^^^^ info: CONTINUATION
+|           ^^^^ info: CONTINUATION ''
 In details.m, line 7
 |          b % ditto
 |          ^ info: [ L] CARRAY
 In details.m, line 7
 |          b % ditto
-|            ^^^^^^^ info: COMMENT
+|            ^^^^^^^ info: COMMENT 'ditto'
 In details.m, line 7
 |          b % ditto
 |                   ^ info: NEWLINE
@@ -60,13 +60,13 @@ In details.m, line 9
 |          ^ info: CARRAY
 In details.m, line 9
 |   wibble a....
-|           ^^^^^ info: CONTINUATION
+|           ^^^^^ info: CONTINUATION '.'
 In details.m, line 10
 |          b % ditto
 |          ^ info: [ L] CARRAY
 In details.m, line 10
 |          b % ditto
-|            ^^^^^^^ info: COMMENT
+|            ^^^^^^^ info: COMMENT 'ditto'
 In details.m, line 10
 |          b % ditto
 |                   ^ info: NEWLINE
@@ -81,7 +81,7 @@ In details.m, line 12
 |               ^^ info: CARRAY
 In details.m, line 12
 |   wible "a    b" % wibble ('"a', 'b"')
-|                  ^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                  ^^^^^^^^^^^^^^^^^^^^^ info: COMMENT 'wibble (\'"a\', \'b"\')'
 In details.m, line 12
 |   wible "a    b" % wibble ('"a', 'b"')
 |                                       ^ info: NEWLINE
@@ -90,13 +90,13 @@ In details.m, line 14
 |   ^^^^^^ info: [SL] IDENTIFIER
 In details.m, line 14
 |   wibble 'a b' c % wibble('a b', 'c')
-|          ^^^^^ info: CARRAY
+|          ^^^^^ info: CARRAY 'a b'
 In details.m, line 14
 |   wibble 'a b' c % wibble('a b', 'c')
 |                ^ info: CARRAY
 In details.m, line 14
 |   wibble 'a b' c % wibble('a b', 'c')
-|                  ^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                  ^^^^^^^^^^^^^^^^^^^^ info: COMMENT "wibble('a b', 'c')"
 In details.m, line 14
 |   wibble 'a b' c % wibble('a b', 'c')
 |                                      ^ info: NEWLINE
@@ -111,7 +111,7 @@ In details.m, line 16
 |            ^ info: CARRAY
 In details.m, line 16
 |   wibble a b %c % wibble('a', 'b')
-|              ^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+|              ^^^^^^^^^^^^^^^^^^^^^ info: COMMENT "c % wibble('a', 'b')"
 In details.m, line 16
 |   wibble a b %c % wibble('a', 'b')
 |                                   ^ info: NEWLINE
@@ -126,7 +126,7 @@ In details.m, line 18
 |            ^ info: CARRAY
 In details.m, line 18
 |   wibble a b% wibble('a', 'b')
-|             ^^^^^^^^^^^^^^^^^^ info: COMMENT
+|             ^^^^^^^^^^^^^^^^^^ info: COMMENT "wibble('a', 'b')"
 In details.m, line 18
 |   wibble a b% wibble('a', 'b')
 |                               ^ info: NEWLINE
@@ -135,19 +135,19 @@ In details.m, line 20
 |   ^^^^^^ info: [SL] IDENTIFIER
 In details.m, line 20
 |   wibble 'a' ...
-|          ^^^ info: CARRAY
+|          ^^^ info: CARRAY 'a'
 In details.m, line 20
 |   wibble 'a' ...
-|              ^^^^ info: CONTINUATION
+|              ^^^^ info: CONTINUATION ''
 In details.m, line 21
 |          ...
-|          ^^^^ info: [ L] CONTINUATION
+|          ^^^^ info: [ L] CONTINUATION ''
 In details.m, line 22
 |          b % c  % wibble('a', 'b')
 |          ^ info: [ L] CARRAY
 In details.m, line 22
 |          b % c  % wibble('a', 'b')
-|            ^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+|            ^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT "c  % wibble('a', 'b')"
 In details.m, line 22
 |          b % c  % wibble('a', 'b')
 |                                   ^ info: NEWLINE
@@ -162,7 +162,7 @@ In details.m, line 24
 |                    ^ info: CARRAY
 In details.m, line 24
 |   wibble ../.././a b % wibble('../.././a', 'b')
-|                      ^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                      ^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT "wibble('../.././a', 'b')"
 In details.m, line 24
 |   wibble ../.././a b % wibble('../.././a', 'b')
 |                                                ^ info: NEWLINE

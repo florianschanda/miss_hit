@@ -1,12 +1,12 @@
 In numbers.m, line 1
 | % (c) Copyright 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Florian Schanda'
 In numbers.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 |                                     ^ info: NEWLINE
 In numbers.m, line 3
 | % numbers
-| ^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^ info: [SL] COMMENT 'numbers'
 In numbers.m, line 3
 | % numbers
 |          ^ info: NEWLINE
@@ -45,7 +45,7 @@ In numbers.m, line 5
 |                    ^ info: NEWLINE
 In numbers.m, line 7
 | % not numbers
-| ^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^ info: [SL] COMMENT 'not numbers'
 In numbers.m, line 7
 | % not numbers
 |              ^ info: NEWLINE

@@ -18,7 +18,7 @@ In simple_5.m, line 1
 |      ^ info: M_KET
 In simple_5.m, line 1
 | [1++1]   % 2
-|          ^^^ info: COMMENT
+|          ^^^ info: COMMENT '2'
 In simple_5.m, line 1
 | [1++1]   % 2
 |             ^ info: NEWLINE
@@ -45,7 +45,7 @@ In simple_5.m, line 2
 |        ^ info: M_KET
 In simple_5.m, line 2
 | [1 ++ 1] % [1, 1]
-|          ^^^^^^^^ info: COMMENT
+|          ^^^^^^^^ info: COMMENT '[1, 1]'
 In simple_5.m, line 2
 | [1 ++ 1] % [1, 1]
 |                  ^ info: NEWLINE
@@ -69,7 +69,7 @@ In simple_5.m, line 3
 |       ^ info: M_KET
 In simple_5.m, line 3
 | [1++ 1]  % 2
-|          ^^^ info: COMMENT
+|          ^^^ info: COMMENT '2'
 In simple_5.m, line 3
 | [1++ 1]  % 2
 |             ^ info: NEWLINE
@@ -96,7 +96,7 @@ In simple_5.m, line 4
 |       ^ info: M_KET
 In simple_5.m, line 4
 | [1 ++1]  % [1, 1]
-|          ^^^^^^^^ info: COMMENT
+|          ^^^^^^^^ info: COMMENT '[1, 1]'
 In simple_5.m, line 4
 | [1 ++1]  % [1, 1]
 |                  ^ info: NEWLINE

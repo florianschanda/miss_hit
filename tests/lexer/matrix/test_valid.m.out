@@ -1,6 +1,6 @@
 In test_valid.m, line 1
 | % (c) Copyright 2019 Zenuity AB
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Zenuity AB'
 In test_valid.m, line 1
 | % (c) Copyright 2019 Zenuity AB
 |                                ^ info: NEWLINE
@@ -87,7 +87,7 @@ In test_valid.m, line 7
 |            ^ info: SEMICOLON
 In test_valid.m, line 7
 |     x = [1]; % x == 1
-|              ^^^^^^^^ info: [S ] COMMENT
+|              ^^^^^^^^ info: [S ] COMMENT 'x == 1'
 In test_valid.m, line 7
 |     x = [1]; % x == 1
 |                      ^ info: NEWLINE
@@ -132,7 +132,7 @@ In test_valid.m, line 10
 |                    ^ info: NUMBER
 In test_valid.m, line 10
 |     x = [1, 2 -3 + 4    % 1 2 1
-|                         ^^^^^^^ info: COMMENT
+|                         ^^^^^^^ info: COMMENT '1 2 1'
 In test_valid.m, line 10
 |     x = [1, 2 -3 + 4    % 1 2 1
 |                                ^ info: NEWLINE
@@ -153,7 +153,7 @@ In test_valid.m, line 11
 |                  ^^ info: NUMBER
 In test_valid.m, line 11
 |         0.1 +.1i .2     % .1 .1i .2
-|                         ^^^^^^^^^^^ info: COMMENT
+|                         ^^^^^^^^^^^ info: COMMENT '.1 .1i .2'
 In test_valid.m, line 11
 |         0.1 +.1i .2     % .1 .1i .2
 |                                    ^ info: NEWLINE
@@ -198,7 +198,7 @@ In test_valid.m, line 12
 |                     ^ info: SEMICOLON
 In test_valid.m, line 12
 |         a (3) b(3);];   % a 3 b(3)
-|                         ^^^^^^^^^^ info: [S ] COMMENT
+|                         ^^^^^^^^^^ info: [S ] COMMENT 'a 3 b(3)'
 In test_valid.m, line 12
 |         a (3) b(3);];   % a 3 b(3)
 |                                   ^ info: NEWLINE
@@ -252,7 +252,7 @@ In test_valid.m, line 17
 |         ^ info: KET
 In test_valid.m, line 17
 |     b (2)    % 10
-|              ^^^^ info: COMMENT
+|              ^^^^ info: COMMENT '10'
 In test_valid.m, line 17
 |     b (2)    % 10
 |                  ^ info: NEWLINE
@@ -276,7 +276,7 @@ In test_valid.m, line 18
 |          ^ info: M_KET
 In test_valid.m, line 18
 |     [b(2)]   % 10
-|              ^^^^ info: COMMENT
+|              ^^^^ info: COMMENT '10'
 In test_valid.m, line 18
 |     [b(2)]   % 10
 |                  ^ info: NEWLINE
@@ -303,7 +303,7 @@ In test_valid.m, line 19
 |           ^ info: M_KET
 In test_valid.m, line 19
 |     [b (2)]  % [4 10 6 2]
-|              ^^^^^^^^^^^^ info: COMMENT
+|              ^^^^^^^^^^^^ info: COMMENT '[4 10 6 2]'
 In test_valid.m, line 19
 |     [b (2)]  % [4 10 6 2]
 |                          ^ info: NEWLINE

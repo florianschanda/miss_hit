@@ -1,6 +1,6 @@
 In test5.m, line 1
 | % From https://github.com/matlab2tikz/matlab2tikz/wiki
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'From https://github.com/matlab2tikz/matlab2tikz/wiki'
 In test5.m, line 1
 | % From https://github.com/matlab2tikz/matlab2tikz/wiki
 |                                                       ^ info: NEWLINE
@@ -24,19 +24,19 @@ In test5.m, line 2
 |                            ^ info: COMMA
 In test5.m, line 2
 | m2t = m2t_addAxisOption(m2t, 'at', ...
-|                              ^^^^ info: CARRAY
+|                              ^^^^ info: CARRAY 'at'
 In test5.m, line 2
 | m2t = m2t_addAxisOption(m2t, 'at', ...
 |                                  ^ info: COMMA
 In test5.m, line 2
 | m2t = m2t_addAxisOption(m2t, 'at', ...
-|                                    ^^^^ info: CONTINUATION
+|                                    ^^^^ info: CONTINUATION ''
 In test5.m, line 3
 |                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
 |                         ^ info: [ L] M_BRA
 In test5.m, line 3
 |                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
-|                          ^^^^ info: CARRAY
+|                          ^^^^ info: CARRAY '{('
 In test5.m, line 3
 |                         ['{('<anon,> formatDim(pos.x.value, pos.x.unit) ','...
 |                              ^^^^^^^ info: COMMA
@@ -87,13 +87,13 @@ In test5.m, line 3
 |                                                                 ^^^^^^^ info: COMMA
 In test5.m, line 3
 |                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
-|                                                                  ^^^ info: CARRAY
+|                                                                  ^^^ info: CARRAY ','
 In test5.m, line 3
 |                         ['{(' formatDim(pos.x.value, pos.x.unit) ','<anon,>...
 |                                                                     ^^^^^^^ info: COMMA
 In test5.m, line 3
 |                         ['{(' formatDim(pos.x.value, pos.x.unit) ','...
-|                                                                     ^^^^ info: CONTINUATION
+|                                                                     ^^^^ info: CONTINUATION ''
 In test5.m, line 4
 |                               formatDim(pos.y.value, pos.y.unit) ')}']);
 |                               ^^^^^^^^^ info: [ L] IDENTIFIER
@@ -141,7 +141,7 @@ In test5.m, line 4
 |                                                                 ^^^^^^^ info: COMMA
 In test5.m, line 4
 |                               formatDim(pos.y.value, pos.y.unit) ')}']);
-|                                                                  ^^^^ info: CARRAY
+|                                                                  ^^^^ info: CARRAY ')}'
 In test5.m, line 4
 |                               formatDim(pos.y.value, pos.y.unit) ')}']);
 |                                                                      ^ info: M_KET

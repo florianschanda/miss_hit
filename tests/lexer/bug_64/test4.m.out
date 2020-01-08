@@ -1,6 +1,6 @@
 In test4.m, line 1
 | % (c) Copyright 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Florian Schanda'
 In test4.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 |                                     ^ info: NEWLINE
@@ -36,7 +36,7 @@ In test4.m, line 3
 |            ^ info: [S ] NEWLINE
 In test4.m, line 4
 | % should be a parse error
-| ^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'should be a parse error'
 In test4.m, line 4
 | % should be a parse error
 |                          ^ info: NEWLINE

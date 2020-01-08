@@ -1,54 +1,54 @@
 In test_05.m, line 1
 | % (c) Copyright 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Florian Schanda'
 In test_05.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 |                                     ^ info: NEWLINE
 In test_05.m, line 3
 | % Curiously neither the MATLAB documentation nor Octave explicitly say
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Curiously neither the MATLAB documentation nor Octave explicitly say'
 In test_05.m, line 3
 | % Curiously neither the MATLAB documentation nor Octave explicitly say
 |                                                                       ^ info: NEWLINE
 In test_05.m, line 4
 | % what happens if you nest these.
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'what happens if you nest these.'
 In test_05.m, line 4
 | % what happens if you nest these.
 |                                  ^ info: NEWLINE
 In test_05.m, line 5
 | %
-| ^ info: [SL] COMMENT
+| ^ info: [SL] COMMENT ''
 In test_05.m, line 5
 | %
 |  ^ info: NEWLINE
 In test_05.m, line 6
 | % Octave says "between matching ‘#{’ and ‘#}’ or ‘%{’ and ‘%}’
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Octave says "between matching ‘#{’ and ‘#}’ or ‘%{’ and ‘%}’'
 In test_05.m, line 6
 | % Octave says "between matching ‘#{’ and ‘#}’ or ‘%{’ and ‘%}’
 |                                                               ^ info: NEWLINE
 In test_05.m, line 7
 | % markers." so that does imply some support for nesting.
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'markers." so that does imply some support for nesting.'
 In test_05.m, line 7
 | % markers." so that does imply some support for nesting.
 |                                                         ^ info: NEWLINE
 In test_05.m, line 9
 | % Actual behaviour:
-| ^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Actual behaviour:'
 In test_05.m, line 9
 | % Actual behaviour:
 |                    ^ info: NEWLINE
 In test_05.m, line 10
 | %    MATLAB: <TODO>
-| ^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'MATLAB: <TODO>'
 In test_05.m, line 10
 | %    MATLAB: <TODO>
 |                    ^ info: NEWLINE
 In test_05.m, line 11
 | %    Octave: 1 5
-| ^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Octave: 1 5'
 In test_05.m, line 11
 | %    Octave: 1 5
 |                 ^ info: NEWLINE
@@ -60,7 +60,7 @@ In test_05.m, line 13
 |     ^ info: BRA
 In test_05.m, line 13
 | disp("1");
-|      ^^^ info: STRING
+|      ^^^ info: STRING '1'
 In test_05.m, line 13
 | disp("1");
 |         ^ info: KET
@@ -72,43 +72,43 @@ In test_05.m, line 13
 |           ^ info: [S ] NEWLINE
 In test_05.m, line 14
 | %{
-| ^^ info: [SL] COMMENT
+| ^^ info: [SL] COMMENT '{'
 In test_05.m, line 14
 | %{
 |   ^ info: NEWLINE
 In test_05.m, line 15
 |   disp("2");
-| ^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT 'disp("2");'
 In test_05.m, line 15
 |   disp("2");
 |             ^ info: NEWLINE
 In test_05.m, line 16
 |   %{
-| ^^^^ info: [SL] COMMENT
+| ^^^^ info: [SL] COMMENT '%{'
 In test_05.m, line 16
 |   %{
 |     ^ info: NEWLINE
 In test_05.m, line 17
 |     disp("3");
-| ^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^ info: [SL] COMMENT 'disp("3");'
 In test_05.m, line 17
 |     disp("3");
 |               ^ info: NEWLINE
 In test_05.m, line 18
 |   %}
-| ^^^^ info: [SL] COMMENT
+| ^^^^ info: [SL] COMMENT '%}'
 In test_05.m, line 18
 |   %}
 |     ^ info: NEWLINE
 In test_05.m, line 19
 |   disp("4");
-| ^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT 'disp("4");'
 In test_05.m, line 19
 |   disp("4");
 |             ^ info: NEWLINE
 In test_05.m, line 20
 | %}
-| ^^ info: [SL] COMMENT
+| ^^ info: [SL] COMMENT '}'
 In test_05.m, line 20
 | %}
 |   ^ info: NEWLINE
@@ -120,7 +120,7 @@ In test_05.m, line 21
 |     ^ info: BRA
 In test_05.m, line 21
 | disp("5");
-|      ^^^ info: STRING
+|      ^^^ info: STRING '5'
 In test_05.m, line 21
 | disp("5");
 |         ^ info: KET

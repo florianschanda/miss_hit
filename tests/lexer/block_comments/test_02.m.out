@@ -1,6 +1,6 @@
 In test_02.m, line 1
 | % (c) Copyright 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Florian Schanda'
 In test_02.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 |                                     ^ info: NEWLINE
@@ -12,7 +12,7 @@ In test_02.m, line 3
 |     ^ info: BRA
 In test_02.m, line 3
 | disp("foo");
-|      ^^^^^ info: STRING
+|      ^^^^^ info: STRING 'foo'
 In test_02.m, line 3
 | disp("foo");
 |           ^ info: KET
@@ -27,7 +27,7 @@ In test_02.m, line 4
 | ^^^^^^^^^^^^ [31mwarning[0m: ignored block comment: no text must appear after the {
 In test_02.m, line 4
 | %{ not valid
-| ^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT '{ not valid'
 In test_02.m, line 4
 | %{ not valid
 |             ^ info: NEWLINE
@@ -39,7 +39,7 @@ In test_02.m, line 5
 |      ^ info: BRA
 In test_02.m, line 5
 |  disp("bar");
-|       ^^^^^ info: STRING
+|       ^^^^^ info: STRING 'bar'
 In test_02.m, line 5
 |  disp("bar");
 |            ^ info: KET
@@ -51,7 +51,7 @@ In test_02.m, line 5
 |              ^ info: [S ] NEWLINE
 In test_02.m, line 6
 | %}
-| ^^ info: [SL] COMMENT
+| ^^ info: [SL] COMMENT '}'
 In test_02.m, line 6
 | %}
 |   ^ info: NEWLINE
@@ -63,7 +63,7 @@ In test_02.m, line 7
 |     ^ info: BRA
 In test_02.m, line 7
 | disp("baz");
-|      ^^^^^ info: STRING
+|      ^^^^^ info: STRING 'baz'
 In test_02.m, line 7
 | disp("baz");
 |           ^ info: KET

@@ -1264,6 +1264,8 @@ def sanity_test(mh, filename):
                 else:
                     txt = ""
                 txt += tok.kind
+                if tok.value is not None and tok.value != tok.raw_text:
+                    txt += " " + repr(tok.value)
                 mh.info(tok.location, txt)
         print("%s: lexed OK" % filename)
     except Error:

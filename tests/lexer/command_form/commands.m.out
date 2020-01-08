@@ -1,6 +1,6 @@
 In commands.m, line 1
 | % (c) Copyright 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Florian Schanda'
 In commands.m, line 1
 | % (c) Copyright 2019 Florian Schanda
 |                                     ^ info: NEWLINE
@@ -51,7 +51,7 @@ In commands.m, line 6
 |     ^^^ info: CARRAY
 In commands.m, line 6
 | foo bar %baz
-|         ^^^^ info: COMMENT
+|         ^^^^ info: COMMENT 'baz'
 In commands.m, line 6
 | foo bar %baz
 |             ^ info: NEWLINE
@@ -63,7 +63,7 @@ In commands.m, line 7
 |     ^^^ info: CARRAY
 In commands.m, line 7
 | foo bar...baz
-|        ^^^^^^^ info: CONTINUATION
+|        ^^^^^^^ info: CONTINUATION 'baz'
 In commands.m, line 8
 |     bork
 |     ^^^^ info: [ L] CARRAY

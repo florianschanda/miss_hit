@@ -1,31 +1,31 @@
 In lexing_test.m, line 1
 | %
-| ^ info: [SL] COMMENT
+| ^ info: [SL] COMMENT ''
 In lexing_test.m, line 1
 | %
 |  ^ info: NEWLINE
 In lexing_test.m, line 2
 | % This is a comment, and then a newline
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'This is a comment, and then a newline'
 In lexing_test.m, line 2
 | % This is a comment, and then a newline
 |                                        ^ info: NEWLINE
 In lexing_test.m, line 4
 | % This is a continuation
-| ^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'This is a continuation'
 In lexing_test.m, line 4
 | % This is a continuation
 |                         ^ info: NEWLINE
 In lexing_test.m, line 5
 | ...
-| ^^^^ info: [SL] CONTINUATION
+| ^^^^ info: [SL] CONTINUATION ''
 In lexing_test.m, line 6
 | ...   This is really a `comment'
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [ L] CONTINUATION
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [ L] CONTINUATION "This is really a `comment'"
 lexing_test.m:7:0: info: [ L] NEWLINE
 In lexing_test.m, line 8
 | % Identifier
-| ^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT 'Identifier'
 In lexing_test.m, line 8
 | % Identifier
 |             ^ info: NEWLINE
@@ -55,7 +55,7 @@ In lexing_test.m, line 12
 |       ^ info: NEWLINE
 In lexing_test.m, line 14
 | % Number
-| ^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^ info: [SL] COMMENT 'Number'
 In lexing_test.m, line 14
 | % Number
 |         ^ info: NEWLINE
@@ -91,7 +91,7 @@ In lexing_test.m, line 18
 |       ^ info: NEWLINE
 In lexing_test.m, line 20
 | % Keyword
-| ^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^ info: [SL] COMMENT 'Keyword'
 In lexing_test.m, line 20
 | % Keyword
 |          ^ info: NEWLINE
@@ -163,7 +163,7 @@ In lexing_test.m, line 22
 |                                                            ^ info: NEWLINE
 In lexing_test.m, line 24
 | % Simple operators
-| ^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Simple operators'
 In lexing_test.m, line 24
 | % Simple operators
 |                   ^ info: NEWLINE
@@ -247,7 +247,7 @@ In lexing_test.m, line 28
 |               ^ info: NEWLINE
 In lexing_test.m, line 30
 | % The transpose operator is special, since lexing is context sensitive
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'The transpose operator is special, since lexing is context sensitive'
 In lexing_test.m, line 30
 | % The transpose operator is special, since lexing is context sensitive
 |                                                                       ^ info: NEWLINE
@@ -274,13 +274,13 @@ In lexing_test.m, line 32
 |         ^ info: NEWLINE
 In lexing_test.m, line 34
 | % In a ' string '' is the single quote
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT "In a ' string '' is the single quote"
 In lexing_test.m, line 34
 | % In a ' string '' is the single quote
 |                                       ^ info: NEWLINE
 In lexing_test.m, line 35
 | 'potato'''
-| ^^^^^^^^^^ info: [SL] CARRAY
+| ^^^^^^^^^^ info: [SL] CARRAY "potato''"
 In lexing_test.m, line 35
 | 'potato'''
 |           ^ info: NEWLINE
@@ -295,7 +295,7 @@ In lexing_test.m, line 36
 |   ^ info: COMMA
 In lexing_test.m, line 36
 | [a, '''', b, ''',']
-|     ^^^^ info: CARRAY
+|     ^^^^ info: CARRAY "''"
 In lexing_test.m, line 36
 | [a, '''', b, ''',']
 |         ^ info: COMMA
@@ -307,7 +307,7 @@ In lexing_test.m, line 36
 |            ^ info: COMMA
 In lexing_test.m, line 36
 | [a, '''', b, ''',']
-|              ^^^^^ info: CARRAY
+|              ^^^^^ info: CARRAY "'',"
 In lexing_test.m, line 36
 | [a, '''', b, ''',']
 |                   ^ info: M_KET
@@ -316,7 +316,7 @@ In lexing_test.m, line 36
 |                    ^ info: NEWLINE
 In lexing_test.m, line 38
 | % Punctiation
-| ^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^ info: [SL] COMMENT 'Punctiation'
 In lexing_test.m, line 38
 | % Punctiation
 |              ^ info: NEWLINE
@@ -370,13 +370,13 @@ In lexing_test.m, line 41
 |  ^ info: METACLASS
 In lexing_test.m, line 41
 | @?!
-|   ^ info: BANG
+|   ^ info: BANG ''
 In lexing_test.m, line 41
 | @?!
 |    ^ info: NEWLINE
 In lexing_test.m, line 43
 | % Assignment
-| ^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^ info: [SL] COMMENT 'Assignment'
 In lexing_test.m, line 43
 | % Assignment
 |             ^ info: NEWLINE
@@ -388,25 +388,25 @@ In lexing_test.m, line 44
 |  ^ info: NEWLINE
 In lexing_test.m, line 46
 | % Strings, again the single quote is super special
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Strings, again the single quote is super special'
 In lexing_test.m, line 46
 | % Strings, again the single quote is super special
 |                                                   ^ info: NEWLINE
 In lexing_test.m, line 47
 | 'potato'
-| ^^^^^^^^ info: [SL] CARRAY
+| ^^^^^^^^ info: [SL] CARRAY 'potato'
 In lexing_test.m, line 47
 | 'potato'
 |         ^ info: NEWLINE
 In lexing_test.m, line 48
 | ''
-| ^^ info: [SL] CARRAY
+| ^^ info: [SL] CARRAY ''
 In lexing_test.m, line 48
 | ''
 |   ^ info: NEWLINE
 In lexing_test.m, line 50
 | % Some fun constructs that will make you really appreciate the language
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Some fun constructs that will make you really appreciate the language'
 In lexing_test.m, line 50
 | % Some fun constructs that will make you really appreciate the language
 |                                                                        ^ info: NEWLINE
@@ -535,13 +535,13 @@ In lexing_test.m, line 57
 | ^ info: [SL] M_BRA
 In lexing_test.m, line 57
 | ['foo' '1]1' ]'
-|  ^^^^^ info: CARRAY
+|  ^^^^^ info: CARRAY 'foo'
 In lexing_test.m, line 57
 | ['foo'<anon,> '1]1' ]'
 |       ^^^^^^^ info: COMMA
 In lexing_test.m, line 57
 | ['foo' '1]1' ]'
-|        ^^^^^ info: CARRAY
+|        ^^^^^ info: CARRAY '1]1'
 In lexing_test.m, line 57
 | ['foo' '1]1' ]'
 |              ^ info: M_KET
@@ -553,7 +553,7 @@ In lexing_test.m, line 57
 |                ^ info: NEWLINE
 In lexing_test.m, line 59
 | % cd is weird and needs special care
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'cd is weird and needs special care'
 In lexing_test.m, line 59
 | % cd is weird and needs special care
 |                                     ^ info: NEWLINE
@@ -565,7 +565,7 @@ In lexing_test.m, line 60
 |    ^^^^^^^^^^^ info: CARRAY
 In lexing_test.m, line 60
 | cd ../foo/_bar % potato?
-|                ^^^^^^^^^ info: COMMENT
+|                ^^^^^^^^^ info: COMMENT 'potato?'
 In lexing_test.m, line 60
 | cd ../foo/_bar % potato?
 |                         ^ info: NEWLINE

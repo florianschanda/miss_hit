@@ -1,6 +1,6 @@
 In mixed.m, line 1
 | % (c) 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) 2019 Florian Schanda'
 In mixed.m, line 1
 | % (c) 2019 Florian Schanda
 |                           ^ info: NEWLINE
@@ -21,7 +21,7 @@ In mixed.m, line 2
 |             ^ info: [S ] IDENTIFIER
 In mixed.m, line 2
 | wibble a b, c            % the comma marks the end of the command
-|                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+|                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT 'the comma marks the end of the command'
 In mixed.m, line 2
 | wibble a b, c            % the comma marks the end of the command
 |                                                                  ^ info: NEWLINE
@@ -48,7 +48,7 @@ In mixed.m, line 3
 |                      ^ info: CARRAY
 In mixed.m, line 3
 | wibble a b, wibble b c   % two commands
-|                          ^^^^^^^^^^^^^^ info: COMMENT
+|                          ^^^^^^^^^^^^^^ info: COMMENT 'two commands'
 In mixed.m, line 3
 | wibble a b, wibble b c   % two commands
 |                                        ^ info: NEWLINE
@@ -69,7 +69,7 @@ In mixed.m, line 4
 |             ^ info: [S ] IDENTIFIER
 In mixed.m, line 4
 | wibble a b; c            % semicolon ends
-|                          ^^^^^^^^^^^^^^^^ info: COMMENT
+|                          ^^^^^^^^^^^^^^^^ info: COMMENT 'semicolon ends'
 In mixed.m, line 4
 | wibble a b; c            % semicolon ends
 |                                          ^ info: NEWLINE
@@ -96,7 +96,7 @@ In mixed.m, line 5
 |                      ^ info: CARRAY
 In mixed.m, line 5
 | wibble a b; wibble b c   % two commands
-|                          ^^^^^^^^^^^^^^ info: COMMENT
+|                          ^^^^^^^^^^^^^^ info: COMMENT 'two commands'
 In mixed.m, line 5
 | wibble a b; wibble b c   % two commands
 |                                        ^ info: NEWLINE

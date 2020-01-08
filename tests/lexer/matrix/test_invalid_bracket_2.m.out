@@ -1,6 +1,6 @@
 In test_invalid_bracket_2.m, line 1
 | % (c) Copyright 2019 Zenuity AB
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2019 Zenuity AB'
 In test_invalid_bracket_2.m, line 1
 | % (c) Copyright 2019 Zenuity AB
 |                                ^ info: NEWLINE

@@ -1,36 +1,36 @@
 In test_01.m, line 1
 | % From https://www.mathworks.com/help/matlab/matlab_external/run-external-commands-scripts-and-programs.html
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'From https://www.mathworks.com/help/matlab/matlab_external/run-external-commands-scripts-and-programs.html'
 In test_01.m, line 1
 | % From https://www.mathworks.com/help/matlab/matlab_external/run-external-commands-scripts-and-programs.html
 |                                                                                                             ^ info: NEWLINE
 In test_01.m, line 2
 | % From https://www.mathworks.com/help/matlab/matlab_external/shell-escape-functions.html
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'From https://www.mathworks.com/help/matlab/matlab_external/shell-escape-functions.html'
 In test_01.m, line 2
 | % From https://www.mathworks.com/help/matlab/matlab_external/shell-escape-functions.html
 |                                                                                         ^ info: NEWLINE
 In test_01.m, line 4
 | !vi yearlystats.m
-| ^^^^^^^^^^^^^^^^^ info: [SL] BANG
+| ^^^^^^^^^^^^^^^^^ info: [SL] BANG 'vi yearlystats.m'
 In test_01.m, line 4
 | !vi yearlystats.m
 |                  ^ info: NEWLINE
 In test_01.m, line 5
 | !excel.exe &
-| ^^^^^^^^^^^^ info: [SL] BANG
+| ^^^^^^^^^^^^ info: [SL] BANG 'excel.exe &'
 In test_01.m, line 5
 | !excel.exe &
 |             ^ info: NEWLINE
 In test_01.m, line 6
 | !dir &
-| ^^^^^^ info: [SL] BANG
+| ^^^^^^ info: [SL] BANG 'dir &'
 In test_01.m, line 6
 | !dir &
 |       ^ info: NEWLINE
 In test_01.m, line 7
 | !echo $PATH
-| ^^^^^^^^^^^ info: [SL] BANG
+| ^^^^^^^^^^^ info: [SL] BANG 'echo $PATH'
 In test_01.m, line 7
 | !echo $PATH
 |            ^ info: NEWLINE
@@ -99,7 +99,7 @@ In test_01.m, line 10
 |                       ^ info: NEWLINE
 In test_01.m, line 11
 |   !gareqn
-|   ^^^^^^^ info: [SL] BANG
+|   ^^^^^^^ info: [SL] BANG 'gareqn'
 In test_01.m, line 11
 |   !gareqn
 |          ^ info: NEWLINE
