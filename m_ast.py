@@ -407,7 +407,7 @@ class Superclass_Reference(Name):
         super().__init__()
         assert isinstance(t_at, MATLAB_Token)
         assert t_at.kind == "AT"
-        assert isinstance(n_prefix, Identifier)
+        assert isinstance(n_prefix, Name)
         assert isinstance(n_reference, Name)
 
         self.t_at = t_at
@@ -1075,8 +1075,9 @@ def dot(fd, parent, annotation, node):
         dot(fd, node, "field", node.n_field)
 
     elif isinstance(node, Superclass_Reference):
-        lbl += "\\n" + str(node)
         attr.append("shape=none")
+        dot(fd, node, "prefix", node.n_prefix)
+        dot(fd, node, "reference", node.n_reference)
 
     elif isinstance(node, Lambda_Function):
         attr.append("shape=box")

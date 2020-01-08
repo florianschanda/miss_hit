@@ -1,4 +1,1 @@
-In cat.m, line 6
-|             self.meow@potato.kitten;
-|                      ^ error: expected end of statement, found AT instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

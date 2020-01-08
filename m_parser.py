@@ -93,10 +93,12 @@ class MATLAB_Parser:
         # pylint: disable=invalid-name
         self.ct = None
         self.nt = None
+        self.nnt = None
         # pylint: enable=invalid-name
 
         self.debug_tree = False
 
+        self.next()
         self.next()
 
     def push_context(self, kind):
@@ -124,19 +126,20 @@ class MATLAB_Parser:
 
     def next(self):
         self.ct = self.nt
-        self.nt = self.lexer.token()
+        self.nt = self.nnt
+        self.nnt = self.lexer.token()
 
-        while self.nt:
+        while self.nnt:
             # Skip comments and continuations
-            while self.nt and self.nt.kind in ("COMMENT", "CONTINUATION"):
-                self.nt = self.lexer.token()
+            while self.nnt and self.nnt.kind in ("COMMENT", "CONTINUATION"):
+                self.nnt = self.lexer.token()
 
             # Join new-lines
-            if (self.nt and
-                self.ct and
-                self.nt.kind == "NEWLINE" and
-                self.ct.kind == "NEWLINE"):
-                self.nt = self.lexer.token()
+            if (self.nnt and
+                self.nt and
+                self.nnt.kind == "NEWLINE" and
+                self.nt.kind == "NEWLINE"):
+                self.nnt = self.lexer.token()
             else:
                 break
 
@@ -175,6 +178,16 @@ class MATLAB_Parser:
                 return True
             else:
                 return self.nt.value == value
+        else:
+            return False
+
+    def peek2(self, kind, value=None):
+        assert kind in TOKEN_KINDS
+        if self.nnt and self.nnt.kind == kind:
+            if value is None:
+                return True
+            else:
+                return self.nnt.value == value
         else:
             return False
 
@@ -240,47 +253,68 @@ class MATLAB_Parser:
             return Identifier(self.ct)
 
     def parse_name(self, allow_void):
-        # reference ::= identifier
-        #             | identifier '@' reference
-        #             | reference '.' identifier
-        #             | reference '.' '(' expression ')'
-        #             | reference '(' expression_list ')'
-        #             | reference '{' expression_list '}'
+        # superclass_ref ::= simple_name '@' function_reference
+        #
+        # simple_name ::= identifier
+        #               | simple_name '.' identifier
+        #
+        # function_reference ::= simple_name
+        #                      | simple_name '(' expression_list ')'
+        #
+        # name ::= superclass_ref
+        #        | simple_name
+        #        | name '.' identifier
+        #        | name '.' '(' expression ')'
+        #        | name '(' expression_list ')'
+        #        | name '{' expression_list '}'
+        #
+        # Note that we can only resolve the ambiguity between
+        # metaclass, simplename or any of the others late (but we can
+        # always resolve it).
+        #
+        # expression_list ::= <>
+        #                   | expression { ',' expression }
 
-        rv = self.parse_identifier(allow_void)
+        # First we parse as much as possible as a simple name.
+        rv = self.parse_simple_name(allow_void)
+
+        # Then we can see if we have a superclass reference. What
+        # follows are pretty different parse rules for the two cases.
 
         if self.peek("AT"):
             self.match("AT")
             t_at = self.ct
             at_prefix = rv
-            rv = self.parse_identifier(allow_void=False)
+            at_suffix = self.parse_simple_name()
+            if self.peek("BRA"):
+                at_suffix = Reference(at_suffix, self.parse_argument_list())
+
+            return Superclass_Reference(t_at, at_prefix, at_suffix)
+
         else:
-            t_at = None
+            while (self.peek("SELECTION") or
+                   self.peek("BRA") or
+                   self.peek("C_BRA")):
+                if self.peek("SELECTION"):
+                    self.match("SELECTION")
+                    tok = self.ct
 
-        while self.peek("SELECTION") or self.peek("BRA") or self.peek("C_BRA"):
-            if self.peek("SELECTION"):
-                self.match("SELECTION")
-                tok = self.ct
-
-                if self.peek("BRA"):
-                    self.match("BRA")
-                    dyn_field = self.parse_expression()
-                    self.match("KET")
-                    rv = Dynamic_Selection(tok, rv, dyn_field)
+                    if self.peek("BRA"):
+                        self.match("BRA")
+                        dyn_field = self.parse_expression()
+                        self.match("KET")
+                        rv = Dynamic_Selection(tok, rv, dyn_field)
+                    else:
+                        field = self.parse_identifier(allow_void=False)
+                        rv = Selection(tok, rv, field)
+                elif self.peek("BRA"):
+                    rv = Reference(rv, self.parse_argument_list())
+                elif self.peek("C_BRA"):
+                    rv = Cell_Reference(rv, self.parse_cell_argument_list())
                 else:
-                    field = self.parse_identifier(allow_void=False)
-                    rv = Selection(tok, rv, field)
-            elif self.peek("BRA"):
-                rv = Reference(rv, self.parse_argument_list())
-            elif self.peek("C_BRA"):
-                rv = Cell_Reference(rv, self.parse_cell_argument_list())
-            else:
-                raise ICE("impossible path (nt.kind = %s)" % self.nt.kind)
+                    raise ICE("impossible path (nt.kind = %s)" % self.nt.kind)
 
-        if t_at:
-            rv = Superclass_Reference(t_at, at_prefix, rv)
-
-        return rv
+            return rv
 
     def parse_simple_name(self, allow_void=False):
         # reference ::= identifier
@@ -288,7 +322,9 @@ class MATLAB_Parser:
 
         rv = self.parse_identifier(allow_void=allow_void)
 
-        while self.peek("SELECTION"):
+        # We need to lookahead 2 here to avoid parsing dynamic fields
+
+        while self.peek("SELECTION") and not self.peek2("BRA"):
             if self.peek("SELECTION"):
                 self.match("SELECTION")
                 tok = self.ct
