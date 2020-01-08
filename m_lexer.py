@@ -783,9 +783,16 @@ class MATLAB_Lexer(Token_Generator):
                         # Single-character operators
                         mode = "found_op"
                     elif c in r"<>&|~.=":
-                        # Single or multi-char operators. We need to
-                        # lookahead by 1 here.
-                        if n + 1 < len(self.text):
+                        if c == "." and self.text[n:n + 3] == "...":
+                            # This could also be a continuation, in
+                            # which case we can stop. Continuations
+                            # are allowed IN command form, but can
+                            # never start a command form.
+                            break
+                        elif n + 1 < len(self.text):
+                            # Single or multi-char operators. We need to
+                            # lookahead by 1 here.
+
                             # pylint: disable=invalid-name
                             nc = self.text[n + 1]
                             # pylint: enable=invalid-name

@@ -1,7 +1,1 @@
-In regression.m, line 5
-|     (foo, bar);
-|              ^ lex error: unmatched )
-In regression.m, line 5
-|     (foo, bar);
-|              ^ error: expected end of statement, found KET instead
-MISS_HIT Summary: 1 file(s) analysed, 2 error(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
