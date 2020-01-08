@@ -96,6 +96,7 @@ class MATLAB_Token:
                  location,
                  first_in_line,
                  first_in_statement,
+                 value = None,
                  anonymous = False,
                  contains_quotes = False):
         assert kind in TOKEN_KINDS
@@ -115,34 +116,35 @@ class MATLAB_Token:
         self.anonymous          = anonymous
         self.contains_quotes    = contains_quotes
 
+        if value is None:
+            if self.kind in TOKENS_WITH_IMPLICIT_VALUE:
+                self.value = None
+            elif self.kind == "CONTINUATION":
+                self.value = self.raw_text[3:].strip()
+            elif self.kind == "COMMENT":
+                self.value = self.raw_text[1:].strip()
+            elif self.kind in ("CARRAY", "STRING"):
+                if self.contains_quotes:
+                    self.value = self.raw_text[1:-1]
+                else:
+                    self.value = self.raw_text
+            elif self.kind == "BANG":
+                self.value = self.raw_text[1:]
+            else:
+                self.value = self.raw_text
+        else:
+            self.value = value
+
         # Not part of parsing, but some fix suggestions can be added
         self.fix = {}
 
-    def value(self):
-        if self.kind in TOKENS_WITH_IMPLICIT_VALUE:
-            return None
-        elif self.kind == "CONTINUATION":
-            return self.raw_text[3:].strip()
-        elif self.kind == "COMMENT":
-            return self.raw_text[1:].strip()
-        elif self.kind in ("CARRAY", "STRING"):
-            if self.contains_quotes:
-                return self.raw_text[1:-1]
-            else:
-                return self.raw_text
-        elif self.kind == "BANG":
-            return self.raw_text[1:]
-        else:
-            return self.raw_text
-
     def __repr__(self):
-        val = self.value()
         star = "*" if self.anonymous else ""
 
-        if val is None or self.kind == "NEWLINE":
+        if self.value is None or self.kind == "NEWLINE":
             return "Token%s(%s)" % (star, self.kind)
         else:
-            return "Token%s(%s, <<%s>>)" % (star, self.kind, val)
+            return "Token%s(%s, <<%s>>)" % (star, self.kind, self.value)
 
 
 class Token_Generator(metaclass=ABCMeta):
@@ -356,6 +358,9 @@ class MATLAB_Lexer(Token_Generator):
         if self.block_comment:
             self.next()
 
+        kind = None
+        value = None
+
         t_start = self.lexpos
         col_start = t_start - self.col_offset
         contains_quotes = False
@@ -395,18 +400,6 @@ class MATLAB_Lexer(Token_Generator):
             elif self.cc == ",":
                 kind = "COMMA"
 
-            elif self.cc == "'":
-                kind = "CARRAY"
-                contains_quotes = True
-                while True:
-                    self.next()
-                    if self.cc == "'" and self.nc == "'":
-                        self.next()
-                    elif self.cc == "'":
-                        break
-                    elif self.cc in ("\n", "\0"):
-                        self.lex_error()
-
             elif self.cc == "." and \
                  self.nc == "." and \
                  self.nnc == ".":
@@ -418,65 +411,105 @@ class MATLAB_Lexer(Token_Generator):
 
             else:
                 # Everything else in command form is converted into a
-                # string.
+                # string. Strings behave in a weird way. They can be
+                # interleaved and joined into text, e.g. "foo'bar'" is
+                # actually "foobar", but "foo 'bar'" is two strings:
+                # "foo" and "bar". This only works with single
+                # quotes. Continuations and comments outside strings
+                # terminate the token and mismatches are lex
+                # errors. Except for brackets which can be mismatched.
                 kind = "CARRAY"
+                value = ""
                 local_brackets = 0
+                # The brackets are not really matched, but counted. If
+                # there is an imbalance of opening brackets to closing
+                # brackets then spaces, commas and semicolons do not
+                # terminate the current token.
                 string_mode = False
-                while True:
-                    # We just need to make sure to not eat line
-                    # continuatins by accident
-                    if self.nc == "." and \
-                       self.nnc == "." and \
-                       self.nnnc == ".":
-                        break
+                open_quote_location = None
+                # Keep track if we're inside a single quoted string.
 
-                    if self.nc in self.comment_char:
-                        # Comments always terminate the string
-                        break
-                    elif self.nc in "\n\0":
-                        # Newlines and eof always break too
-                        break
-                    elif (local_brackets == 0 and not string_mode) \
-                         and self.nc in " \t,;":
-                        # If we have "neutral" brackets we stop on
-                        # most things
-                        break
-                    elif self.nc in self.comment_char:
-                        # We also need to make sure not to eat comments
-                        break
-                    elif (local_brackets != 0 or string_mode) and \
-                         self.nc in " \t":
-                        # We normally just keep eating characters,
-                        # except if this was the last non-whitespace
-                        # non-comment character of the line
-                        skip_amount = 0
-                        found_end = False
-                        for c in self.text[self.lexpos + 1:]:
-                            skip_amount += 1
-                            if c in "\n\0" or c in self.comment_char:
-                                found_end = True
-                                break
-                            elif c in " \t":
-                                pass
-                            else:
-                                skip_amount -= 1
-                                break
-                        if found_end:
+                if self.cc == "'":
+                    string_mode = True
+                else:
+                    value += self.cc
+
+                while True:
+                    if string_mode:
+                        if self.nc == "'" and self.nnc == "'":
+                            # Double single quotes are escaped to
+                            # single quotes. We skip one extra
+                            # character ahead.
+                            value += "'"
+                            self.next()
+
+                        elif self.nc == "'":
+                            # Leave string mode
+                            string_mode = False
+                            open_quote_location = None
+
+                        elif self.nc in "\0\n":
+                            # A newline (or EOF) is a lex error if
+                            # we're stil in a string.
+                            self.mh.lex_error(open_quote_location,
+                                              "this command form string is not"
+                                              " terminated properly",
+                                              fatal=False)
                             break
+
                         else:
-                            self.advance(skip_amount)
+                            # Anything else just adds to the overall
+                            # string. There is not bracket matching
+                            # weirdness or continuations in these
+                            # strings.
+                            value += self.nc
+
+                    else:
+                        # Count opening and closing braces. Note that it
+                        # is intentional that this can be negative, the
+                        # weird behaviour of MATLAB parses f) (o as 'f) (o'
+                        if self.cc in "({[":
+                            local_brackets += 1
+                        elif self.cc in ")}]":
+                            local_brackets -= 1
+
+                        # We're not in string mode.
+                        if self.nc == "." and \
+                           self.nnc == "." and \
+                           self.nnnc == ".":
+                            # We just need to make sure to not eat
+                            # line continuatins by accident.
+                            break
+
+                        elif self.nc in self.comment_char:
+                            # Comments always terminate the string.
+                            break
+
+                        elif self.nc in "\n\0":
+                            # Newlines and eof always break too
+                            break
+
+                        elif local_brackets == 0 and self.nc in " \t,;":
+                            # If we have "neutral" brackets we stop on
+                            # most things
+                            break
+
+                        elif self.nc == "'":
+                            # Transition to string mode
+                            string_mode = True
+                            open_quote_location = \
+                                Location(self.filename,
+                                         self.line,
+                                         self.lexpos + 1 - self.col_offset,
+                                         self.lexpos + 1 - self.col_offset,
+                                         self.context_line[self.line - 1])
+
+                        else:
+                            # Otherwise, this must be part of our
+                            # string, so add the character.
+                            value += self.nc
 
                     self.next()
-
-                    # Count opening and closing braces. Note that it
-                    # is intentional that this can be negative, the
-                    # weird behaviour of MATLAB parses f) (o as 'f) (o'
-                    if self.cc in "({[":
-                        local_brackets += 1
-                    elif self.cc in ")}]":
-                        local_brackets -= 1
-                    elif self.cc == "'":
-                        string_mode = not string_mode
 
         else:
             # Ordinary lexing
@@ -736,6 +769,7 @@ class MATLAB_Lexer(Token_Generator):
                                       ctx_line),
                              self.first_in_line,
                              self.first_in_statement,
+                             value = value,
                              contains_quotes = contains_quotes)
         self.first_in_line = False
         self.first_in_statement = False
@@ -858,7 +892,7 @@ class MATLAB_Lexer(Token_Generator):
                 self.mh.warning(token.location,
                                 "ignored block comment: it must not be"
                                 " preceded by program text")
-            elif token.value().strip() != "{" and self.block_comment == 0:
+            elif token.value.strip() != "{" and self.block_comment == 0:
                 self.mh.warning(token.location,
                                 "ignored block comment: no text must appear"
                                 " after the {")
@@ -957,9 +991,9 @@ class MATLAB_Lexer(Token_Generator):
                                          "M_KET",
                                          "C_KET") or
                           (token.kind == "KEYWORD" and
-                           token.value() == "end") or
+                           token.value == "end") or
                           (token.kind == "OPERATOR" and
-                           token.value() in ("'", ".'")))
+                           token.value in ("'", ".'")))
 
         # Look at the next 2 characters that are not whitespace. Lets
         # rule out some cases
@@ -1224,12 +1258,12 @@ def sanity_test(mh, filename):
                 break
             else:
                 if tok.first_in_statement or tok.first_in_line:
-                    txt = "[%s%s] %s" % (
+                    txt = "[%s%s] " % (
                         "S" if tok.first_in_statement else " ",
-                        "L" if tok.first_in_line else " ",
-                        tok.kind)
+                        "L" if tok.first_in_line else " ")
                 else:
-                    txt = tok.kind
+                    txt = ""
+                txt += tok.kind
                 mh.info(tok.location, txt)
         print("%s: lexed OK" % filename)
     except Error:

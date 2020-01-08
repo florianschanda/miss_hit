@@ -299,7 +299,7 @@ class Message_Handler:
         if not self.sort_messages:
             return
 
-        if "mh:ignore_style" in token.value():
+        if "mh:ignore_style" in token.value:
             justification = Style_Justification(token)
         else:
             self.warning(token.location,

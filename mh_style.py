@@ -409,13 +409,13 @@ def stage_3_analysis(mh, cfg, tbuf):
 
         # Recognize justifications
         if token.kind in ("COMMENT", "CONTINUATION"):
-            if "mh:ignore_style" in token.value():
+            if "mh:ignore_style" in token.value:
                 mh.register_justification(token)
 
         # Corresponds to the old CodeChecker CopyrightCheck rule
         if in_copyright_notice:
             if token.kind == "COMMENT":
-                match = re.search(COPYRIGHT_REGEX, token.value())
+                match = re.search(COPYRIGHT_REGEX, token.value)
                 if match:
                     # We have a sane copyright string
                     copyright_token = token
@@ -427,15 +427,15 @@ def stage_3_analysis(mh, cfg, tbuf):
                     # We might find something that could look like a
                     # copyright, but is not quite right
                     for org in cfg["copyright_entity"]:
-                        if org.lower() in token.value().lower():
+                        if org.lower() in token.value.lower():
                             copyright_token = token
                             break
                     for substr in ("(c)", "copyright"):
-                        if substr in token.value().lower():
+                        if substr in token.value.lower():
                             copyright_token = token
                             break
 
-                copyright_notice.append(token.value())
+                copyright_notice.append(token.value)
 
             else:
                 # Once we get a non-comment token, the header has
@@ -546,16 +546,16 @@ def stage_3_analysis(mh, cfg, tbuf):
                     elif tbuf.tokens[i].kind == "COMMA" and len(brackets) == 0:
                         break
                     elif tbuf.tokens[i].kind == "IDENTIFIER" and parens == 0:
-                        if tbuf.tokens[i].value() in BUILTIN_FUNCTIONS:
+                        if tbuf.tokens[i].value in BUILTIN_FUNCTIONS:
                             badness.append(tbuf.tokens[i])
                     elif tbuf.tokens[i].kind == "KEYWORD" and \
-                         tbuf.tokens[i].value() == "for":
+                         tbuf.tokens[i].value == "for":
                         # If we find a for, then we're in a for loop. We
                         # special case i and j since they are so damn
                         # common.
                         badness = [t
                                    for t in badness
-                                   if t.value() not in ("i", "j")]
+                                   if t.value not in ("i", "j")]
                 for tok in badness:
                     mh.style_issue(tok.location,
                                    "redefinition of builtin function is a"
@@ -584,7 +584,7 @@ def stage_3_analysis(mh, cfg, tbuf):
 
         # Corresponds to the old CodeChecker KeywordWhitespace rule
         elif (token.kind in ("KEYWORD", "IDENTIFIER") and
-              token.value() in WORDS_WITH_WS):
+              token.value in WORDS_WITH_WS):
             if config.active(cfg, "whitespace_keywords") and \
                next_in_line and ws_after == 0:
                 mh.style_issue(token.location,

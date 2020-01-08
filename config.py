@@ -112,10 +112,10 @@ class Config_Parser:
             self.mh.error(self.ct.location,
                           "expected %s, found %s instead" % (kind,
                                                              self.ct.kind))
-        elif value and self.ct.value() != value:
+        elif value and self.ct.value != value:
             self.mh.error(self.ct.location,
                           "expected %s(%s), found %s(%s) instead" %
-                          (kind, value, self.ct.kind, self.ct.value()))
+                          (kind, value, self.ct.kind, self.ct.value))
 
     def match_eof(self):
         self.next()
@@ -129,7 +129,7 @@ class Config_Parser:
             if value is None:
                 return True
             else:
-                return self.nt.value() == value
+                return self.nt.value == value
         else:
             return False
 
@@ -140,13 +140,13 @@ class Config_Parser:
             else:
                 self.match("IDENTIFIER")
                 t_key = self.ct
-                key = self.ct.value()
+                key = self.ct.value
                 value = None
                 self.match("COLON")
 
                 if key == "enable_rule":
                     self.match("STRING")
-                    value = self.ct.value()
+                    value = self.ct.value
                     if value not in STYLE_RULES:
                         self.mh.error(self.ct.location,
                                       "unknown rule")
@@ -159,15 +159,15 @@ class Config_Parser:
                 elif isinstance(cfg[key], int):
                     self.match("NUMBER")
                     try:
-                        value = int(self.ct.value())
+                        value = int(self.ct.value)
                     except ValueError:
                         self.mh.error(self.ct.location,
                                       "%s option requires an integer" % key)
 
                 elif isinstance(cfg[key], bool):
                     self.match("NUMBER")
-                    if self.ct.value() in ("0", "1"):
-                        value = self.ct.value() == "1"
+                    if self.ct.value in ("0", "1"):
+                        value = self.ct.value == "1"
                     else:
                         self.mh.error(self.ct.location,
                                       "boolean option %s requires 0 or 1" %
@@ -175,7 +175,7 @@ class Config_Parser:
 
                 elif isinstance(cfg[key], set):
                     self.match("STRING")
-                    value = self.ct.value()
+                    value = self.ct.value
 
                     if key == "exclude_dir":
                         if os.path.basename(value) != value or \

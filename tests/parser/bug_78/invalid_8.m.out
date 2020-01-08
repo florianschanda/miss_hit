@@ -1,1 +1,4 @@
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+In invalid_8.m, line 4
+| disp foo'''''bar
+|         ^ lex error: this command form string is not terminated properly
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

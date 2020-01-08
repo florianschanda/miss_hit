@@ -156,10 +156,10 @@ class MATLAB_Parser:
                               "expected %s, found %s instead" % (kind,
                                                                  self.ct.kind))
 
-        elif value and self.ct.value() != value:
+        elif value and self.ct.value != value:
             self.mh.error(self.ct.location,
                           "expected %s(%s), found %s(%s) instead" %
-                          (kind, value, self.ct.kind, self.ct.value()))
+                          (kind, value, self.ct.kind, self.ct.value))
 
     def match_eof(self):
         self.next()
@@ -174,7 +174,7 @@ class MATLAB_Parser:
             if value is None:
                 return True
             else:
-                return self.nt.value() == value
+                return self.nt.value == value
         else:
             return False
 
@@ -514,7 +514,7 @@ class MATLAB_Parser:
         rv = Special_Block(t_kw, attributes)
 
         while not self.peek("KEYWORD", "end"):
-            if t_kw.value() == "arguments":
+            if t_kw.value == "arguments":
                 prop_name = self.parse_simple_name(allow_void=True)
             else:
                 prop_name = self.parse_identifier(allow_void=False)
@@ -723,12 +723,12 @@ class MATLAB_Parser:
         statements = []
 
         while True:
-            if self.peek("KEYWORD") and self.nt.value() in ("end",
-                                                            "catch",
-                                                            "case",
-                                                            "otherwise",
-                                                            "else",
-                                                            "elseif"):
+            if self.peek("KEYWORD") and self.nt.value in ("end",
+                                                          "catch",
+                                                          "case",
+                                                          "otherwise",
+                                                          "else",
+                                                          "elseif"):
                 break
             statements.append(self.parse_statement())
 
@@ -736,33 +736,33 @@ class MATLAB_Parser:
 
     def parse_statement(self):
         if self.peek("KEYWORD"):
-            if self.nt.value() == "for":
+            if self.nt.value == "for":
                 return self.parse_for_statement()
-            elif self.nt.value() == "if":
+            elif self.nt.value == "if":
                 return self.parse_if_statement()
-            elif self.nt.value() == "global":
+            elif self.nt.value == "global":
                 return self.parse_global_statement()
-            elif self.nt.value() == "while":
+            elif self.nt.value == "while":
                 return self.parse_while_statement()
-            elif self.nt.value() == "return":
+            elif self.nt.value == "return":
                 return self.parse_return_statement()
-            elif self.nt.value() == "switch":
+            elif self.nt.value == "switch":
                 return self.parse_switch_statement()
-            elif self.nt.value() == "break":
+            elif self.nt.value == "break":
                 return self.parse_break_statement()
-            elif self.nt.value() == "continue":
+            elif self.nt.value == "continue":
                 return self.parse_continue_statement()
-            elif self.nt.value() == "import":
+            elif self.nt.value == "import":
                 return self.parse_import_statement()
-            elif self.nt.value() == "try":
+            elif self.nt.value == "try":
                 return self.parse_try_statement()
-            elif self.nt.value() == "persistent":
+            elif self.nt.value == "persistent":
                 return self.parse_persistent_statement()
-            elif self.nt.value() == "parfor":
+            elif self.nt.value == "parfor":
                 return self.parse_parfor_statement()
-            elif self.nt.value() == "spmd":
+            elif self.nt.value == "spmd":
                 return self.parse_spmd_statement()
-            elif self.nt.value() == "function" and self.in_context("function"):
+            elif self.nt.value == "function" and self.in_context("function"):
                 if self.context[-1] != "function":
                     self.mh.error(self.nt.location,
                                   "nested function cannot appear inside"
@@ -771,7 +771,7 @@ class MATLAB_Parser:
             else:
                 self.mh.error(self.nt.location,
                               "expected valid statement,"
-                              " found keyword '%s' instead" % self.nt.value())
+                              " found keyword '%s' instead" % self.nt.value)
         elif self.peek("BANG"):
             self.match("BANG")
             t_bang = self.ct
@@ -936,14 +936,14 @@ class MATLAB_Parser:
         # TODO: Is this also true for MATLAB?
         rv = self.parse_precedence_1()
 
-        while self.peek("OPERATOR") and self.nt.value() in ("^", ".^",
-                                                            "'", ".'"):
+        while self.peek("OPERATOR") and self.nt.value in ("^", ".^",
+                                                          "'", ".'"):
             self.match("OPERATOR")
             t_op = self.ct
-            if t_op.value() in ("^", ".^"):
+            if t_op.value in ("^", ".^"):
                 unary_chain = []
                 while self.peek("OPERATOR") and \
-                      self.nt.value() in ("-", "+", "~"):
+                      self.nt.value in ("-", "+", "~"):
                     self.match("OPERATOR")
                     unary_chain.append(self.ct)
                 rhs = self.parse_precedence_1()
@@ -961,7 +961,7 @@ class MATLAB_Parser:
 
     # 4. Unary plus (+), unary minus (-), logical negation (~)
     def parse_precedence_4(self):
-        if self.peek("OPERATOR") and self.nt.value() in ("+", "-", "~"):
+        if self.peek("OPERATOR") and self.nt.value in ("+", "-", "~"):
             self.match("OPERATOR")
             t_op = self.ct
             rhs = self.parse_precedence_4()
@@ -975,9 +975,9 @@ class MATLAB_Parser:
     def parse_precedence_5(self):
         rv = self.parse_precedence_4()
 
-        while self.peek("OPERATOR") and self.nt.value() in ("*", ".*",
-                                                            "/", "./",
-                                                            "\\", ".\\"):
+        while self.peek("OPERATOR") and self.nt.value in ("*", ".*",
+                                                          "/", "./",
+                                                          "\\", ".\\"):
             self.match("OPERATOR")
             t_op = self.ct
             rhs = self.parse_precedence_4()
@@ -989,7 +989,7 @@ class MATLAB_Parser:
     def parse_precedence_6(self):
         rv = self.parse_precedence_5()
 
-        while self.peek("OPERATOR") and self.nt.value() in ("+", "-"):
+        while self.peek("OPERATOR") and self.nt.value in ("+", "-"):
             self.match("OPERATOR")
             t_op = self.ct
             rhs = self.parse_precedence_5()
@@ -1021,9 +1021,9 @@ class MATLAB_Parser:
     def parse_precedence_8(self):
         rv = self.parse_range_expression()
 
-        while self.peek("OPERATOR") and self.nt.value() in ("<", "<=",
-                                                            ">", ">=",
-                                                            "==", "~="):
+        while self.peek("OPERATOR") and self.nt.value in ("<", "<=",
+                                                          ">", ">=",
+                                                          "==", "~="):
             self.match("OPERATOR")
             t_op = self.ct
             rhs = self.parse_range_expression()

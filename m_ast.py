@@ -137,7 +137,7 @@ class Function_Definition(Node):
                  l_validation, n_body, l_nested):
         super().__init__()
         assert isinstance(t_fun, MATLAB_Token)
-        assert t_fun.kind == "KEYWORD" and t_fun.value() == "function"
+        assert t_fun.kind == "KEYWORD" and t_fun.value == "function"
         assert isinstance(n_sig, Function_Signature)
         assert isinstance(l_validation, list)
         for n in l_validation:
@@ -196,11 +196,11 @@ class Special_Block(Node):
     def __init__(self, t_kw, l_attr):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value() in ("properties",
-                                                           "methods",
-                                                           "events",
-                                                           "enumeration",
-                                                           "arguments")
+        assert t_kw.kind == "KEYWORD" and t_kw.value in ("properties",
+                                                         "methods",
+                                                         "events",
+                                                         "enumeration",
+                                                         "arguments")
         assert isinstance(l_attr, list)
         for n_attr in l_attr:
             assert isinstance(n_attr, Class_Attribute)
@@ -210,7 +210,7 @@ class Special_Block(Node):
         self.l_items = []
 
     def kind(self):
-        return self.t_kw.value()
+        return self.t_kw.value
 
     def add_property(self, n_prop):
         assert isinstance(n_prop, Class_Property)
@@ -278,7 +278,7 @@ class Class_Definition(Node):
         super().__init__()
         assert isinstance(t_classdef, MATLAB_Token)
         assert t_classdef.kind == "KEYWORD" and \
-            t_classdef.value() == "classdef"
+            t_classdef.value == "classdef"
         assert isinstance(n_name, Name)
         assert isinstance(l_attr, list)
         for n_attr in l_attr:
@@ -357,8 +357,8 @@ class Identifier(Name):
         super().__init__()
         assert isinstance(t_ident, MATLAB_Token)
         assert t_ident.kind == "IDENTIFIER" or \
-            (t_ident.kind == "OPERATOR" and t_ident.value() == "~") or \
-            (t_ident.kind == "KEYWORD" and t_ident.value() == "end") or \
+            (t_ident.kind == "OPERATOR" and t_ident.value == "~") or \
+            (t_ident.kind == "KEYWORD" and t_ident.value == "end") or \
             t_ident.kind == "BANG"
 
         self.t_ident = t_ident
@@ -367,7 +367,7 @@ class Identifier(Name):
         if self.t_ident.kind == "BANG":
             return "system"
         else:
-            return self.t_ident.value()
+            return self.t_ident.value
 
 
 class Selection(Name):
@@ -529,7 +529,7 @@ class Simple_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_range, n_body):
         super().__init__()
         assert isinstance(t_for, MATLAB_Token)
-        assert t_for.kind == "KEYWORD" and t_for.value() == "for"
+        assert t_for.kind == "KEYWORD" and t_for.value == "for"
         assert isinstance(n_ident, Identifier)
         assert isinstance(n_range, Range_Expression)
         assert isinstance(n_body, Sequence_Of_Statements)
@@ -544,7 +544,7 @@ class General_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_expr, n_body):
         super().__init__()
         assert isinstance(t_for, MATLAB_Token)
-        assert t_for.kind == "KEYWORD" and t_for.value() == "for"
+        assert t_for.kind == "KEYWORD" and t_for.value == "for"
         assert isinstance(n_ident, Identifier)
         assert isinstance(n_expr, Expression)
         assert isinstance(n_body, Sequence_Of_Statements)
@@ -559,7 +559,7 @@ class Parallel_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_range, n_body, n_workers):
         super().__init__()
         assert isinstance(t_for, MATLAB_Token)
-        assert t_for.kind == "KEYWORD" and t_for.value() == "parfor"
+        assert t_for.kind == "KEYWORD" and t_for.value == "parfor"
         assert isinstance(n_ident, Identifier)
         assert isinstance(n_range, Range_Expression)
         assert isinstance(n_body, Sequence_Of_Statements)
@@ -576,7 +576,7 @@ class While_Statement(Statement):
     def __init__(self, t_while, n_guard, n_body):
         super().__init__()
         assert isinstance(t_while, MATLAB_Token)
-        assert t_while.kind == "KEYWORD" and t_while.value() == "while"
+        assert t_while.kind == "KEYWORD" and t_while.value == "while"
         assert isinstance(n_guard, Expression)
         assert isinstance(n_body, Sequence_Of_Statements)
 
@@ -594,21 +594,21 @@ class If_Statement(Statement):
             assert isinstance(action, tuple) and len(action) == 3
             t_kw, n_expr, n_body = action
             assert isinstance(t_kw, MATLAB_Token)
-            assert t_kw.kind == "KEYWORD" and t_kw.value() in ("if",
-                                                               "elseif",
-                                                               "else")
+            assert t_kw.kind == "KEYWORD" and t_kw.value in ("if",
+                                                             "elseif",
+                                                             "else")
             assert n_expr is None or isinstance(n_expr, Expression)
             assert isinstance(n_body, Sequence_Of_Statements)
 
         self.actions = actions
-        self.has_else = actions[-1][0].value() == "else"
+        self.has_else = actions[-1][0].value == "else"
 
 
 class Switch_Statement(Statement):
     def __init__(self, t_kw, n_switch_expr, l_options):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value() == "switch"
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "switch"
         assert isinstance(n_switch_expr, Expression)
         assert isinstance(l_options, list)
         assert len(l_options) >= 1
@@ -616,7 +616,7 @@ class Switch_Statement(Statement):
             assert isinstance(option, tuple) and len(option) == 3
             t_kw, n_expr, n_body = option
             assert isinstance(t_kw, MATLAB_Token)
-            assert t_kw.kind == "KEYWORD" and t_kw.value() in ("case",
+            assert t_kw.kind == "KEYWORD" and t_kw.value in ("case",
                                                                "otherwise")
             assert n_expr is None or isinstance(n_expr, Expression)
             assert isinstance(n_body, Sequence_Of_Statements)
@@ -624,7 +624,7 @@ class Switch_Statement(Statement):
         self.t_kw = t_kw
         self.n_expr = n_switch_expr
         self.l_options = l_options
-        self.has_otherwise = l_options[-1][0].value() == "otherwise"
+        self.has_otherwise = l_options[-1][0].value == "otherwise"
 
 
 class Simple_Assignment_Statement(Statement):
@@ -668,7 +668,7 @@ class Return_Statement(Statement):
     def __init__(self, t_kw):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value() == "return"
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "return"
 
         self.t_kw = t_kw
 
@@ -677,7 +677,7 @@ class Break_Statement(Statement):
     def __init__(self, t_kw):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value() == "break"
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "break"
 
         self.t_kw = t_kw
 
@@ -686,7 +686,7 @@ class Continue_Statement(Statement):
     def __init__(self, t_kw):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value() == "continue"
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "continue"
 
         self.t_kw = t_kw
 
@@ -695,7 +695,7 @@ class Global_Statement(Statement):
     def __init__(self, t_kw, l_names):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value() == "global"
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "global"
         assert isinstance(l_names, list)
         for n_name in l_names:
             assert isinstance(n_name, Identifier)
@@ -708,7 +708,7 @@ class Persistent_Statement(Statement):
     def __init__(self, t_kw, l_names):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value() == "persistent"
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "persistent"
         assert isinstance(l_names, list)
         for n_name in l_names:
             assert isinstance(n_name, Identifier)
@@ -721,12 +721,12 @@ class Import_Statement(Statement):
     def __init__(self, t_kw, l_chain):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value() == "import"
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "import"
         assert isinstance(l_chain, list)
         for t_item in l_chain:
             assert isinstance(t_item, MATLAB_Token)
             assert t_item.kind == "IDENTIFIER" or \
-                (t_item.kind == "OPERATOR" and t_item.value() == ".*")
+                (t_item.kind == "OPERATOR" and t_item.value == ".*")
 
         self.t_kw    = t_kw
         self.l_chain = l_chain
@@ -736,10 +736,10 @@ class Try_Statement(Statement):
     def __init__(self, t_try, n_body, t_catch, n_ident, n_handler):
         super().__init__()
         assert isinstance(t_try, MATLAB_Token)
-        assert t_try.kind == "KEYWORD" and t_try.value() == "try"
+        assert t_try.kind == "KEYWORD" and t_try.value == "try"
         if t_catch is not None:
             isinstance(t_catch, MATLAB_Token)
-            assert t_catch.kind == "KEYWORD" and t_catch.value() == "catch"
+            assert t_catch.kind == "KEYWORD" and t_catch.value == "catch"
         assert isinstance(n_body, Sequence_Of_Statements)
         assert n_handler is None or isinstance(n_handler,
                                                Sequence_Of_Statements)
@@ -758,7 +758,7 @@ class SPMD_Statement(Statement):
     def __init__(self, t_spmd, n_body):
         super().__init__()
         assert isinstance(t_spmd, MATLAB_Token)
-        assert t_spmd.kind == "KEYWORD" and t_spmd.value() == "spmd"
+        assert t_spmd.kind == "KEYWORD" and t_spmd.value == "spmd"
         assert isinstance(n_body, Sequence_Of_Statements)
 
         self.t_spmd = t_spmd
@@ -778,7 +778,7 @@ class Number_Literal(Literal):
         self.t_value = t_value
 
     def __str__(self):
-        return self.t_value.value()
+        return self.t_value.value
 
 
 class Char_Array_Literal(Literal):
@@ -790,7 +790,7 @@ class Char_Array_Literal(Literal):
         self.t_string = t_string
 
     def __str__(self):
-        return "'" + self.t_string.value() + "'"
+        return "'" + self.t_string.value + "'"
 
 
 class String_Literal(Literal):
@@ -802,7 +802,7 @@ class String_Literal(Literal):
         self.t_string = t_string
 
     def __str__(self):
-        return '"' + self.t_string.value() + '"'
+        return '"' + self.t_string.value + '"'
 
 
 class Unary_Operation(Expression):
@@ -811,7 +811,7 @@ class Unary_Operation(Expression):
         assert 1 <= precedence <= 12
         assert isinstance(t_op, MATLAB_Token)
         assert t_op.kind == "OPERATOR"
-        assert t_op.value() in ("+", "-", "~", ".'", "'")
+        assert t_op.value in ("+", "-", "~", ".'", "'")
         assert isinstance(n_expr, Expression)
 
         self.precedence = precedence
@@ -819,7 +819,7 @@ class Unary_Operation(Expression):
         self.n_expr = n_expr
 
     def __str__(self):
-        return "%s%s" % (self.t_op.value(), self.n_expr)
+        return "%s%s" % (self.t_op.value, self.n_expr)
 
 
 class Binary_Operation(Expression):
@@ -837,7 +837,7 @@ class Binary_Operation(Expression):
         self.n_rhs = n_rhs
 
     def __str__(self):
-        return "(%s %s %s)" % (self.n_lhs, self.t_op.value(), self.n_rhs)
+        return "(%s %s %s)" % (self.n_lhs, self.t_op.value, self.n_rhs)
 
 
 class Lambda_Function(Expression):
@@ -928,17 +928,17 @@ def dot(fd, parent, annotation, node):
     elif isinstance(node, If_Statement):
         attr.append("shape=diamond")
         for t_kw, n_expr, n_body in node.actions:
-            if t_kw.value() in ("if", "elseif"):
-                dot(fd, node, t_kw.value() + " guard", n_expr)
-            dot(fd, node, t_kw.value() + " body", n_body)
+            if t_kw.value in ("if", "elseif"):
+                dot(fd, node, t_kw.value + " guard", n_expr)
+            dot(fd, node, t_kw.value + " body", n_body)
 
     elif isinstance(node, Switch_Statement):
         attr.append("shape=diamond")
         dot(fd, node, "switch expr", node.n_expr)
         for t_kw, n_expr, n_body in node.l_options:
-            if t_kw.value() == "case":
+            if t_kw.value == "case":
                 dot(fd, node, "case expr", n_expr)
-            dot(fd, node, t_kw.value() + " body", n_body)
+            dot(fd, node, t_kw.value + " body", n_body)
 
     elif isinstance(node, Simple_For_Statement):
         attr.append("shape=diamond")
@@ -987,7 +987,7 @@ def dot(fd, parent, annotation, node):
 
     elif isinstance(node, Import_Statement):
         lbl += "\n"
-        lbl += ".".join(t.value() if t.kind == "IDENTIFIER" else "*"
+        lbl += ".".join(t.value if t.kind == "IDENTIFIER" else "*"
                         for t in node.l_chain)
 
     elif isinstance(node, Sequence_Of_Statements):
@@ -1006,11 +1006,11 @@ def dot(fd, parent, annotation, node):
         dot(fd, node, "body", node.n_body)
 
     elif isinstance(node, Unary_Operation):
-        lbl += " %s" % node.t_op.value()
+        lbl += " %s" % node.t_op.value
         dot(fd, node, "", node.n_expr)
 
     elif isinstance(node, Binary_Operation):
-        lbl += " %s" % node.t_op.value().replace("\\", "\\\\")
+        lbl += " %s" % node.t_op.value.replace("\\", "\\\\")
         dot(fd, node, "", node.n_lhs)
         dot(fd, node, "", node.n_rhs)
 
@@ -1112,7 +1112,7 @@ def dot(fd, parent, annotation, node):
             dot(fd, node, "block", n)
 
     elif isinstance(node, Special_Block):
-        lbl = node.t_kw.value()
+        lbl = node.t_kw.value
         for n_attr in node.l_attr:
             dot(fd, node, "attr", n_attr)
         for item in node.l_items:
