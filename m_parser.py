@@ -858,7 +858,7 @@ class MATLAB_Parser:
             #
             # I believe that this can't be an expression, it basically
             # has to be a function call. Needs to be checked.
-            rhs = self.parse_name(allow_void=False)
+            rhs = self.parse_expression()
 
         if self.peek("SEMICOLON"):
             self.match("SEMICOLON")
