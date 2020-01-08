@@ -608,7 +608,8 @@ class MATLAB_Lexer(Token_Generator):
                 elif self.last_kind == "OPERATOR" and self.last_value == "'":
                     kind = "OPERATOR"
                 elif self.last_kind in ("BRA", "M_BRA", "C_BRA", "COMMA",
-                                        "ASSIGNMENT", "OPERATOR", "SEMICOLON"):
+                                        "ASSIGNMENT", "OPERATOR", "SEMICOLON",
+                                        "COLON"):
                     kind = "CARRAY"
                     contains_quotes = True
                 else:
