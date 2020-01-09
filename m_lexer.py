@@ -1223,7 +1223,7 @@ class Token_Buffer(Token_Generator):
                     amount = 0
                 fd.write("\n" * amount)
             elif token.kind == "CONTINUATION":
-                fd.write(token.raw_text)
+                fd.write(token.raw_text.rstrip() + "\n")
             else:
                 fd.write(token.raw_text.rstrip())
 

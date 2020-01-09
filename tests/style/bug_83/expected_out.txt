@@ -1,0 +1,20 @@
+=== PLAIN MODE ===
+In test.m, line 1
+| % Example provided by Niklas Nylen   
+|                                   ^^^^ style: trailing whitespace [fixed]
+In test.m, line 1
+| % Example provided by Niklas Nylen   
+|                                      ^ style: No copyright notice found in header
+In test.m, line 3
+| function testfile() 
+|                    ^^ style: trailing whitespace [fixed]
+In test.m, line 4
+| x = y + ...   
+|            ^^^^ style: trailing whitespace [fixed]
+In test.m, line 5
+|  z;  
+|    ^^^ style: trailing whitespace [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
