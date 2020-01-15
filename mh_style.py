@@ -329,7 +329,7 @@ def build_default_config(rule_set):
 ##############################################################################
 
 
-WORDS_WITH_WS = frozenset([
+KEYWORDS_WITH_WS = frozenset([
     "case",
     "catch",
     "classdef",
@@ -343,7 +343,7 @@ WORDS_WITH_WS = frozenset([
     "switch",
     "while",
 
-    # These are not keywords, but we treat them like it.
+    # These are not keywords all the time, but we treat them like it.
     "properties",
     "methods",
     "events",
@@ -583,8 +583,8 @@ def stage_3_analysis(mh, cfg, tbuf):
                 token.fix["ensure_trim_before"] = True
 
         # Corresponds to the old CodeChecker KeywordWhitespace rule
-        elif (token.kind in ("KEYWORD", "IDENTIFIER") and
-              token.value in WORDS_WITH_WS):
+        elif (token.kind == "KEYWORD" and
+              token.value in KEYWORDS_WITH_WS):
             if config.active(cfg, "whitespace_keywords") and \
                next_in_line and ws_after == 0:
                 mh.style_issue(token.location,

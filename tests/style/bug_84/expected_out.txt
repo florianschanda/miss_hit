@@ -1,0 +1,11 @@
+=== PLAIN MODE ===
+In test.m, line 7
+| x.methods.foo = 'foo';
+|   ^^^^^^^ style: redefinition of builtin function is a very naughty thing to do
+In test.m, line 9
+| x.properties.f1 = 4;
+|   ^^^^^^^^^^ style: redefinition of builtin function is a very naughty thing to do
+MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
