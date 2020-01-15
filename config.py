@@ -29,7 +29,7 @@ from copy import deepcopy
 from m_lexer import MATLAB_Lexer
 from errors import ICE, Error, Location
 
-CONFIG_FILENAME = "miss_hit.cfg"
+CONFIG_FILENAMES = ["miss_hit.cfg", ".miss_hit"]
 
 BASE_CONFIG = {
     "enable"           : True,
@@ -222,7 +222,7 @@ def load_config(mh, cfg_file, cfg):
         mh.summary_and_exit()
 
 
-def register_tree(dirname):
+def register_tree(mh, dirname):
     assert isinstance(dirname, str)
     assert os.path.isdir(dirname)
     assert dirname == os.path.abspath(dirname)
@@ -242,11 +242,21 @@ def register_tree(dirname):
             register_parent(parent, find_roots)
             CONFIG_TREE[parent]["children"].add(dirname)
 
+        config_name = None
+        for filename in CONFIG_FILENAMES:
+            if os.path.isfile(os.path.join(dirname, filename)):
+                if config_name is None:
+                    config_name = filename
+                else:
+                    mh.register_file("directory " + os.path.relpath(dirname))
+                    mh.error(Location("directory " + os.path.relpath(dirname)),
+                             "cannot have both a %s and %s config file" %
+                             (config_name, filename))
+
         CONFIG_TREE[dirname] = {
             "children"   : set(),
             "subtree"    : False,
-            "has_config" : os.path.isfile(os.path.join(dirname,
-                                                       CONFIG_FILENAME)),
+            "has_config" : config_name,
             "root"       : is_root,
             "parent"     : None if is_root else parent
         }
@@ -324,7 +334,7 @@ def build_config_tree(mh, defaults, cmdline_options):
         # Otherwise we process any config file
         elif CONFIG_TREE[node]["has_config"] and parse_config:
             load_config(mh,
-                        os.path.join(node, CONFIG_FILENAME),
+                        os.path.join(node, CONFIG_TREE[node]["has_config"]),
                         CONFIG_TREE[node]["config"])
             merge_command_line(CONFIG_TREE[node]["config"])
 

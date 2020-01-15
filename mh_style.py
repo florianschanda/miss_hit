@@ -804,7 +804,8 @@ def main():
     ap.add_argument("--ignore-config",
                     action="store_true",
                     default=False,
-                    help="Ignore all %s files." % config.CONFIG_FILENAME)
+                    help=("Ignore all %s files." %
+                          " or ".join(config.CONFIG_FILENAMES)))
     ap.add_argument('--html',
                     default=None,
                     help="Write report to given file as HTML")
@@ -869,16 +870,20 @@ def main():
     mh.html         = options.html is not None
     # mh.sort_messages = False
 
-    for item in options.files:
-        if os.path.isdir(item):
-            config.register_tree(os.path.abspath(item))
-        elif os.path.isfile(item):
-            config.register_tree(os.path.dirname(os.path.abspath(item)))
-        else:
-            ap.error("%s is neither a file nor directory" % item)
-    config.build_config_tree(mh,
-                             build_default_config(rule_set),
-                             options)
+    try:
+        for item in options.files:
+            if os.path.isdir(item):
+                config.register_tree(mh, os.path.abspath(item))
+            elif os.path.isfile(item):
+                config.register_tree(mh,
+                                     os.path.dirname(os.path.abspath(item)))
+            else:
+                ap.error("%s is neither a file nor directory" % item)
+        config.build_config_tree(mh,
+                                 build_default_config(rule_set),
+                                 options)
+    except Error:
+        mh.summary_and_exit()
 
     for item in options.files:
         if os.path.isdir(item):
