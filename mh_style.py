@@ -788,15 +788,6 @@ def main():
                     metavar="FILE|DIR",
                     nargs="*",
                     help="MATLAB files or directories to analyze")
-    ap.add_argument("--brief",
-                    action="store_true",
-                    default=False,
-                    help="Don't show line-context on messages")
-    ap.add_argument("--no-style",
-                    action="store_true",
-                    default=False,
-                    help=("Don't show any style message, only show warnings "
-                          "and errors."))
     ap.add_argument("--fix",
                     action="store_true",
                     default=False,
@@ -806,10 +797,23 @@ def main():
                     default=False,
                     help=("Ignore all %s files." %
                           " or ".join(config.CONFIG_FILENAMES)))
-    ap.add_argument('--html',
+
+    # Output options
+    ap.add_argument("--brief",
+                    action="store_true",
+                    default=False,
+                    help="Don't show line-context on messages")
+    ap.add_argument("--html",
                     default=None,
                     help="Write report to given file as HTML")
-    ap.add_argument('--debug-parse',
+    ap.add_argument("--no-style",
+                    action="store_true",
+                    default=False,
+                    help=("Don't show any style message, only show warnings "
+                          "and errors."))
+
+    # Debug options
+    ap.add_argument("--debug-parse",
                     default=False,
                     action="store_true",
                     help=("Attempt to parse. Note: This is highly incomplete"
