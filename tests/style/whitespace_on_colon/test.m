@@ -16,3 +16,4 @@ for i = 1 : 2
 A(m,:)
 A(:,n)
 x = j : i : k
+end

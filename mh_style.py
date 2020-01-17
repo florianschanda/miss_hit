@@ -666,10 +666,9 @@ def stage_3_analysis(mh, cfg, tbuf):
                                    "operators")
 
 
-def analyze(mh, filename, rule_set, autofix, debug_parse):
+def analyze(mh, filename, rule_set, autofix):
     assert isinstance(filename, str)
     assert isinstance(autofix, bool)
-    assert isinstance(debug_parse, bool)
 
     encoding = "cp1252"
 
@@ -762,17 +761,22 @@ def analyze(mh, filename, rule_set, autofix, debug_parse):
     # pylint: disable=unused-variable
     try:
         parser = MATLAB_Parser(mh, tbuf)
-        if debug_parse:
-            parser.parse_file()
+        parser.parse_file()
+        parse_errors = False
     except Error:
-        pass
+        parse_errors = True
     # pylint: enable=unused-variable
 
     # Re-write the file, with issues fixed
 
     if autofix:
-        with open(filename, "w", encoding=encoding) as fd:
-            tbuf.replay(fd)
+        if parse_errors:
+            mh.error(Location(filename),
+                     "file is not auto-fixed because it contains parse errors",
+                     fatal=False)
+        else:
+            with open(filename, "w", encoding=encoding) as fd:
+                tbuf.replay(fd)
 
     # Emit messages
 
@@ -811,13 +815,6 @@ def main():
                     default=False,
                     help=("Don't show any style message, only show warnings "
                           "and errors."))
-
-    # Debug options
-    ap.add_argument("--debug-parse",
-                    default=False,
-                    action="store_true",
-                    help=("Attempt to parse. Note: This is highly incomplete"
-                          " and is expected to not work."))
 
     language_option = ap.add_argument_group("Language options")
     language_option.add_argument("--octave",
@@ -898,14 +895,12 @@ def main():
                         analyze(mh,
                                 os.path.normpath(os.path.join(path, f)),
                                 rule_set,
-                                options.fix,
-                                options.debug_parse)
+                                options.fix)
         else:
             analyze(mh,
                     os.path.normpath(item),
                     rule_set,
-                    options.fix,
-                    options.debug_parse)
+                    options.fix)
 
     mh.summary_and_exit()
 
