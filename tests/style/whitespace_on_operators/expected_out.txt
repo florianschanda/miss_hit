@@ -1,0 +1,20 @@
+=== PLAIN MODE ===
+In codechecker_tests.m, line 44
+|         -var1 > 2, single(-0.0625));
+|         ^ style: continuations should not start with operators
+In codechecker_tests.m, line 48
+|                  -foo.bar.wibble(potato, ...
+|                  ^ style: continuations should not start with operators
+In codechecker_tests.m, line 72
+| single( -1)
+|       ^ style: ( must not be followed by whitespace [fixed]
+In codechecker_tests.m, line 74
+| single( - 1)
+|       ^ style: ( must not be followed by whitespace [fixed]
+In codechecker_tests.m, line 76
+| foo =~ var
+|     ^ style: = must be succeeded by whitespace [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
