@@ -32,6 +32,14 @@ from errors import ICE
 NODE_UID = [0]
 
 
+class AST_Visitor:
+    def visit(self, node, n_parent):
+        pass
+
+    def visit_end(self, node, n_parent):
+        pass
+
+
 class Node:
     def __init__(self):
         NODE_UID[0] += 1
@@ -39,6 +47,32 @@ class Node:
 
     def debug_parse_tree(self):
         pass
+
+    def _visit(self, parent, function):
+        # This function must not be overwritten
+        assert parent is None or isinstance(parent, Node)
+        assert isinstance(function, AST_Visitor)
+        function.visit(self, parent)
+
+    def _visit_end(self, parent, function):
+        # This function must not be overwritten
+        assert parent is None or isinstance(parent, Node)
+        assert isinstance(function, AST_Visitor)
+        function.visit_end(self, parent)
+
+    def _visit_list(self, the_list, function):
+        # This function must not be overwritten
+        for the_node in the_list:
+            the_node.visit(self, function)
+
+    def visit(self, parent, function):
+        # This function should be over-written by each node to
+        # implement the visitor pattern.
+        self._visit(parent, function)
+        self._visit_end(parent, function)
+
+    def pp_node(self):
+        self.visit(None, Text_Visitor())
 
 
 class Expression(Node):
@@ -74,6 +108,12 @@ class Script_File(Compilation_Unit):
         for n_function in self.l_functions:
             n_function.debug_parse_tree()
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_statements.visit(self, function)
+        self._visit_list(self.l_functions, function)
+        self._visit_end(parent, function)
+
 
 class Function_File(Compilation_Unit):
     def __init__(self, name, l_functions):
@@ -87,6 +127,11 @@ class Function_File(Compilation_Unit):
     def debug_parse_tree(self):
         for n_function in self.l_functions:
             n_function.debug_parse_tree()
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self._visit_list(self.l_functions, function)
+        self._visit_end(parent, function)
 
 
 class Class_File(Compilation_Unit):
@@ -114,6 +159,12 @@ class Class_File(Compilation_Unit):
                 if isinstance(n_item, Function_Definition):
                     n_item.debug_parse_tree()
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_classdef.visit(self, function)
+        self._visit_list(self.l_functions, function)
+        self._visit_end(parent, function)
+
 
 class Function_Signature(Node):
     def __init__(self, n_name, l_inputs, l_outputs):
@@ -130,6 +181,13 @@ class Function_Signature(Node):
         self.n_name    = n_name
         self.l_inputs  = l_inputs
         self.l_outputs = l_outputs
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_name.visit(self, function)
+        self._visit_list(self.l_inputs, function)
+        self._visit_list(self.l_outputs, function)
+        self._visit_end(parent, function)
 
 
 class Function_Definition(Node):
@@ -162,6 +220,14 @@ class Function_Definition(Node):
         for n_function in self.l_nested:
             n_function.debug_parse_tree()
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_sig.visit(self, function)
+        self._visit_list(self.l_validation, function)
+        self.n_body.visit(self, function)
+        self._visit_list(self.l_nested, function)
+        self._visit_end(parent, function)
+
 
 class Sequence_Of_Statements(Node):
     def __init__(self, l_statements):
@@ -171,6 +237,11 @@ class Sequence_Of_Statements(Node):
             assert isinstance(statement, Statement)
 
         self.l_statements = l_statements
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self._visit_list(self.l_statements, function)
+        self._visit_end(parent, function)
 
 
 class Statement(Node):
@@ -190,6 +261,13 @@ class Class_Attribute(Node):
         self.n_name = n_name
         self.n_value = n_value
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_name.visit(self, function)
+        if self.n_value:
+            self.n_value.visit(self, function)
+        self._visit_end(parent, function)
+
 
 class Special_Block(Node):
     """ AST for properties, methods, events and enumeration blocks """
@@ -208,6 +286,12 @@ class Special_Block(Node):
         self.t_kw = t_kw
         self.l_attr = l_attr
         self.l_items = []
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self._visit_list(self.l_attr, function)
+        self._visit_list(self.l_items, function)
+        self._visit_end(parent, function)
 
     def kind(self):
         return self.t_kw.value
@@ -259,6 +343,16 @@ class Class_Property(Node):
         self.l_fun_constraint   = l_fun_constraint
         self.n_default_value    = n_default_value
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_name.visit(self, function)
+        if self.n_class_constraint:
+            self.n_class_constraint.visit(self, function)
+        self._visit_list(self.l_fun_constraint, function)
+        if self.n_default_value:
+            self.n_default_value.visit(self, function)
+        self._visit_end(parent, function)
+
 
 class Class_Enumeration(Node):
     """ AST for enumeration literal/constructors inside classdefs """
@@ -271,6 +365,12 @@ class Class_Enumeration(Node):
 
         self.n_name = n_name
         self.l_args = l_args
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_name.visit(self, function)
+        self._visit_list(self.l_args, function)
+        self._visit_end(parent, function)
 
 
 class Class_Definition(Node):
@@ -296,6 +396,17 @@ class Class_Definition(Node):
         self.l_events = []
         self.l_enumerations = []
         self.l_methods = []
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_name.visit(self, function)
+        self._visit_list(self.l_super, function)
+        self._visit_list(self.l_attr, function)
+        self._visit_list(self.l_properties, function)
+        self._visit_list(self.l_events, function)
+        self._visit_list(self.l_enumerations, function)
+        self._visit_list(self.l_methods, function)
+        self._visit_end(parent, function)
 
     def add_block(self, n_block):
         assert isinstance(n_block, Special_Block)
@@ -325,11 +436,17 @@ class Reference(Name):
             assert isinstance(arg, Expression)
 
         self.n_ident = n_ident
-        self.arglist = arglist
+        self.l_args = arglist
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_ident.visit(self, function)
+        self._visit_list(self.l_args, function)
+        self._visit_end(parent, function)
 
     def __str__(self):
-        if self.arglist:
-            return "%s(%s)" % (self.n_ident, ", ".join(map(str, self.arglist)))
+        if self.l_args:
+            return "%s(%s)" % (self.n_ident, ", ".join(map(str, self.l_args)))
         else:
             return str(self.n_ident)
 
@@ -343,11 +460,17 @@ class Cell_Reference(Name):
             assert isinstance(arg, Expression)
 
         self.n_ident = n_ident
-        self.arglist = arglist
+        self.l_args = arglist
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_ident.visit(self, function)
+        self._visit_list(self.l_args, function)
+        self._visit_end(parent, function)
 
     def __str__(self):
-        if self.arglist:
-            return "%s{%s}" % (self.n_ident, ", ".join(map(str, self.arglist)))
+        if self.l_args:
+            return "%s{%s}" % (self.n_ident, ", ".join(map(str, self.l_args)))
         else:
             return str(self.n_ident)
 
@@ -382,6 +505,12 @@ class Selection(Name):
         self.n_prefix    = n_prefix
         self.n_field     = n_field
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_prefix.visit(self, function)
+        self.n_field.visit(self, function)
+        self._visit_end(parent, function)
+
     def __str__(self):
         return "%s.%s" % (self.n_prefix, self.n_field)
 
@@ -398,6 +527,12 @@ class Dynamic_Selection(Name):
         self.n_prefix    = n_prefix
         self.n_field     = n_field
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_prefix.visit(self, function)
+        self.n_field.visit(self, function)
+        self._visit_end(parent, function)
+
     def __str__(self):
         return "%s.(%s)" % (self.n_prefix, self.n_field)
 
@@ -413,6 +548,12 @@ class Superclass_Reference(Name):
         self.t_at = t_at
         self.n_prefix = n_prefix
         self.n_reference = n_reference
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_prefix.visit(self, function)
+        self.n_reference.visit(self, function)
+        self._visit_end(parent, function)
 
     def __str__(self):
         return "%s@%s" % (self.n_prefix, self.n_reference)
@@ -445,6 +586,14 @@ class Range_Expression(Expression):
         else:
             self.n_stride = n_stride
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_first.visit(self, function)
+        if self.n_stride:
+            self.n_stride.visit(self, function)
+        self.n_last.visit(self, function)
+        self._visit_end(parent, function)
+
     def __str__(self):
         if self.n_stride:
             return "%s:%s:%s" % (self.n_first, self.n_stride, self.n_last)
@@ -453,6 +602,8 @@ class Range_Expression(Expression):
 
 
 class Matrix_Expression(Expression):
+    # TODO: Separate out matrix rows in the tree
+
     def __init__(self, t_open, t_close, items):
         super().__init__()
         assert isinstance(t_open, MATLAB_Token)
@@ -466,6 +617,13 @@ class Matrix_Expression(Expression):
         self.t_open  = t_open
         self.t_close = t_close
         self.items   = items
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        for row in self.items:
+            for n_item in row:
+                n_item.visit(parent, function)
+        self._visit_end(parent, function)
 
     def __str__(self):
         rows = []
@@ -475,6 +633,8 @@ class Matrix_Expression(Expression):
 
 
 class Cell_Expression(Expression):
+    # TODO: Separate out cell rows like we should do for matrix rows
+
     def __init__(self, t_open, t_close, items):
         super().__init__()
         assert isinstance(t_open, MATLAB_Token)
@@ -488,6 +648,13 @@ class Cell_Expression(Expression):
         self.t_open  = t_open
         self.t_close = t_close
         self.items   = items
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        for row in self.items:
+            for n_item in row:
+                n_item.visit(parent, function)
+        self._visit_end(parent, function)
 
     def __str__(self):
         rows = []
@@ -514,6 +681,12 @@ class Function_Call(Expression):
         self.n_name = n_name
         self.l_args = l_args
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_name.visit(parent, function)
+        self._visit_list(self.l_args, function)
+        self._visit_end(parent, function)
+
     def __str__(self):
         if self.variant == "normal":
             return "%s(%s)" % (self.n_name,
@@ -539,6 +712,13 @@ class Simple_For_Statement(Statement):
         self.n_range = n_range
         self.n_body  = n_body
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_ident.visit(parent, function)
+        self.n_range.visit(parent, function)
+        self.n_body.visit(parent, function)
+        self._visit_end(parent, function)
+
 
 class General_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_expr, n_body):
@@ -554,6 +734,13 @@ class General_For_Statement(Statement):
         self.n_expr = n_expr
         self.n_body  = n_body
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_ident.visit(parent, function)
+        self.n_expr.visit(parent, function)
+        self.n_body.visit(parent, function)
+        self._visit_end(parent, function)
+
 
 class Parallel_For_Statement(Statement):
     def __init__(self, t_for, n_ident, n_range, n_body, n_workers):
@@ -565,11 +752,20 @@ class Parallel_For_Statement(Statement):
         assert isinstance(n_body, Sequence_Of_Statements)
         assert n_workers is None or isinstance(n_workers, Expression)
 
-        self.t_for   = t_for
-        self.n_ident = n_ident
-        self.n_range = n_range
+        self.t_for     = t_for
+        self.n_ident   = n_ident
+        self.n_range   = n_range
         self.n_workers = n_workers
-        self.n_body  = n_body
+        self.n_body    = n_body
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_ident.visit(parent, function)
+        self.n_range.visit(parent, function)
+        if self.n_workers:
+            self.n_workers.visit(parent, function)
+        self.n_body.visit(parent, function)
+        self._visit_end(parent, function)
 
 
 class While_Statement(Statement):
@@ -583,6 +779,12 @@ class While_Statement(Statement):
         self.t_while = t_while
         self.n_guard = n_guard
         self.n_body  = n_body
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_guard.visit(parent, function)
+        self.n_body.visit(parent, function)
+        self._visit_end(parent, function)
 
 
 class If_Statement(Statement):
@@ -602,6 +804,14 @@ class If_Statement(Statement):
 
         self.actions = actions
         self.has_else = actions[-1][0].value == "else"
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        for _, n_expr, n_body in self.actions:
+            if n_expr:
+                n_expr.visit(parent, function)
+            n_body.visit(parent, function)
+        self._visit_end(parent, function)
 
 
 class Switch_Statement(Statement):
@@ -626,6 +836,15 @@ class Switch_Statement(Statement):
         self.l_options = l_options
         self.has_otherwise = l_options[-1][0].value == "otherwise"
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_expr.visit(parent, function)
+        for _, n_expr, n_body in self.l_options:
+            if n_expr:
+                n_expr.visit(parent, function)
+            n_body.visit(parent, function)
+        self._visit_end(parent, function)
+
 
 class Simple_Assignment_Statement(Statement):
     def __init__(self, t_eq, n_lhs, n_rhs):
@@ -638,6 +857,12 @@ class Simple_Assignment_Statement(Statement):
         self.t_eq  = t_eq
         self.n_lhs = n_lhs
         self.n_rhs = n_rhs
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_lhs.visit(parent, function)
+        self.n_rhs.visit(parent, function)
+        self._visit_end(parent, function)
 
 
 class Compound_Assignment_Statement(Statement):
@@ -655,6 +880,12 @@ class Compound_Assignment_Statement(Statement):
         self.l_lhs = l_lhs
         self.n_rhs = n_rhs
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self._visit_list(self.l_lhs, function)
+        self.n_rhs.visit(parent, function)
+        self._visit_end(parent, function)
+
 
 class Naked_Expression_Statement(Statement):
     def __init__(self, n_expr):
@@ -662,6 +893,11 @@ class Naked_Expression_Statement(Statement):
         assert isinstance(n_expr, Expression)
 
         self.n_expr = n_expr
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_expr.visit(parent, function)
+        self._visit_end(parent, function)
 
 
 class Return_Statement(Statement):
@@ -703,6 +939,11 @@ class Global_Statement(Statement):
         self.t_kw    = t_kw
         self.l_names = l_names
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self._visit_list(self.l_names, function)
+        self._visit_end(parent, function)
+
 
 class Persistent_Statement(Statement):
     def __init__(self, t_kw, l_names):
@@ -715,6 +956,11 @@ class Persistent_Statement(Statement):
 
         self.t_kw    = t_kw
         self.l_names = l_names
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self._visit_list(self.l_names, function)
+        self._visit_end(parent, function)
 
 
 class Import_Statement(Statement):
@@ -753,6 +999,15 @@ class Try_Statement(Statement):
         self.n_ident   = n_ident
         self.n_handler = n_handler
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_body.visit(parent, function)
+        if self.n_ident:
+            self.n_ident.visit(parent, function)
+        if self.n_handler:
+            self.n_handler.visit(parent, function)
+        self._visit_end(parent, function)
+
 
 class SPMD_Statement(Statement):
     def __init__(self, t_spmd, n_body):
@@ -763,6 +1018,11 @@ class SPMD_Statement(Statement):
 
         self.t_spmd = t_spmd
         self.n_body = n_body
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_body.visit(parent, function)
+        self._visit_end(parent, function)
 
 
 class Literal(Expression):
@@ -818,6 +1078,11 @@ class Unary_Operation(Expression):
         self.t_op   = t_op
         self.n_expr = n_expr
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_expr.visit(parent, function)
+        self._visit_end(parent, function)
+
     def __str__(self):
         return "%s%s" % (self.t_op.value, self.n_expr)
 
@@ -835,6 +1100,12 @@ class Binary_Operation(Expression):
         self.t_op  = t_op
         self.n_lhs = n_lhs
         self.n_rhs = n_rhs
+
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_lhs.visit(parent, function)
+        self.n_rhs.visit(parent, function)
+        self._visit_end(parent, function)
 
     def __str__(self):
         return "(%s %s %s)" % (self.n_lhs, self.t_op.value, self.n_rhs)
@@ -854,6 +1125,12 @@ class Lambda_Function(Expression):
         self.l_parameters = l_parameters
         self.n_body       = n_body
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self._visit_list(self.l_parameters, function)
+        self.n_body.visit(parent, function)
+        self._visit_end(parent, function)
+
     def __str__(self):
         return "@(%s) %s" % (",".join(map(str, self.l_parameters)),
                              str(self.n_body))
@@ -869,6 +1146,11 @@ class Function_Pointer(Expression):
         self.t_at   = t_at
         self.n_name = n_name
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_name.visit(parent, function)
+        self._visit_end(parent, function)
+
     def __str__(self):
         return "@" + str(self.n_name)
 
@@ -883,9 +1165,39 @@ class Metaclass(Expression):
         self.t_mc   = t_mc
         self.n_name = n_name
 
+    def visit(self, parent, function):
+        self._visit(parent, function)
+        self.n_name.visit(parent, function)
+        self._visit_end(parent, function)
+
     def __str__(self):
         return "?" + str(self.n_name)
 
+
+###################################################################
+# Debug output: Text
+###################################################################
+
+class Text_Visitor(AST_Visitor):
+    def __init__(self):
+        super().__init__()
+        self.indent = 0
+
+    def write(self, string):
+        assert isinstance(string, str)
+        print(" " * (self.indent * 2) + string)
+
+    def visit(self, node, n_parent):
+        self.write(node.__class__.__name__)
+        self.indent += 1
+
+    def visit_end(self, node, n_parent):
+        self.indent -= 1
+
+
+###################################################################
+# Debug output: Graphviz
+###################################################################
 
 def dot(fd, parent, annotation, node):
     lbl = node.__class__.__name__
@@ -1036,16 +1348,16 @@ def dot(fd, parent, annotation, node):
 
     elif isinstance(node, Reference):
         lbl += " to %s" % str(node.n_ident)
-        if node.arglist:
-            for arg in node.arglist:
+        if node.l_args:
+            for arg in node.l_args:
                 dot(fd, node, "arg", arg)
         else:
             attr.append("shape=none")
 
     elif isinstance(node, Cell_Reference):
         lbl += " to %s" % str(node.n_ident)
-        if node.arglist:
-            for arg in node.arglist:
+        if node.l_args:
+            for arg in node.l_args:
                 dot(fd, node, "arg", arg)
         else:
             attr.append("shape=none")

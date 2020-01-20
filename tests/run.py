@@ -98,6 +98,7 @@ def execute_parser_test(name):
         r = subprocess.run([sys.executable,
                             "../../../m_parser.py",
                             "--no-tb",
+                            "--tree",
                             f],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT,

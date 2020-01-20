@@ -354,6 +354,8 @@ class MATLAB_Parser:
 
         self.match_eof()
 
+        return cunit
+
     def parse_script_file(self):
         statements = []
         while not self.peek_eof():
@@ -1551,12 +1553,17 @@ class MATLAB_Parser:
         return SPMD_Statement(t_spmd, n_body)
 
 
-def sanity_test(mh, filename, show_bt, show_tree):
+def sanity_test(mh, filename, show_bt, show_tree, show_dot):
     try:
         mh.register_file(filename)
         parser = MATLAB_Parser(mh, MATLAB_Lexer(mh, filename))
-        parser.debug_tree = show_tree
-        parser.parse_file()
+        parser.debug_tree = show_dot
+        tree = parser.parse_file()
+        if show_tree:
+            print("-" * 70)
+            print("--  Parse tree for %s" % os.path.basename(filename))
+            tree.pp_node()
+            print("-" * 70)
     except Error:
         if show_bt:
             traceback.print_exc()
@@ -1574,6 +1581,10 @@ def parser_test_main():
     ap.add_argument("--tree",
                     action="store_true",
                     default=False,
+                    help="Print text-based parse tree")
+    ap.add_argument("--dot",
+                    action="store_true",
+                    default=False,
                     help="Create parse tree with graphviz for each function")
     options = ap.parse_args()
 
@@ -1581,7 +1592,10 @@ def parser_test_main():
     mh.sort_messages = False
     mh.colour = False
 
-    sanity_test(mh, options.file, not options.no_tb, options.tree)
+    sanity_test(mh, options.file,
+                not options.no_tb,
+                options.tree,
+                options.dot)
 
     mh.summary_and_exit()
 
