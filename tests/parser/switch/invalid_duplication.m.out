@@ -1,1 +1,31 @@
+----------------------------------------------------------------------
+--  Parse tree for invalid_duplication.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Switch_Statement
+      Expression: Identifier <potato>
+      Case_Expression: Number_Literal <1>
+      Case_Body: Sequence_Of_Statements
+        Statements: Simple_Assignment_Statement
+          LHS: Identifier <x>
+          RHS: Number_Literal <1>
+      Case_Expression: Number_Literal <2>
+      Case_Body: Sequence_Of_Statements
+        Statements: Simple_Assignment_Statement
+          LHS: Identifier <x>
+          RHS: Number_Literal <2>
+      Case_Expression: Number_Literal <1>
+      Case_Body: Sequence_Of_Statements
+        Statements: Simple_Assignment_Statement
+          LHS: Identifier <x>
+          RHS: Number_Literal <3>
+      Case_Expression: Cell_Expression
+        Items: Number_Literal <2>
+        Items: Number_Literal <3>
+        Items: Number_Literal <4>
+      Case_Body: Sequence_Of_Statements
+        Statements: Simple_Assignment_Statement
+          LHS: Identifier <x>
+          RHS: Number_Literal <4>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

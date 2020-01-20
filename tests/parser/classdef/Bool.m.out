@@ -1,1 +1,28 @@
+----------------------------------------------------------------------
+--  Parse tree for Bool.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <Bool>
+    Superclasses: Identifier <logical>
+    Enumerations: Enumeration Special_Block
+      Items: Class_Enumeration
+        Name: Identifier <No>
+        Arguments: Number_Literal <0>
+      Items: Class_Enumeration
+        Name: Identifier <Yes>
+        Arguments: Number_Literal <1>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <Bool>
+          Inputs: Identifier <val>
+          Outputs: Identifier <obj>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Superclass_Reference
+              Prefix: Identifier <obj>
+              Reference: Reference
+                Name: Identifier <logical>
+                Arguments: Identifier <val>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

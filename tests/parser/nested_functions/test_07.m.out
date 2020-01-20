@@ -1,1 +1,36 @@
+----------------------------------------------------------------------
+--  Parse tree for test_07.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_07>
+      Inputs: Identifier <a>
+      Inputs: Identifier <b>
+      Inputs: Identifier <c>
+      Outputs: Identifier <p>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <p>
+        RHS: Function_Pointer
+          Name: Identifier <parabola>
+    Nested: Function_Definition
+      Signature: Function_Signature
+        Name: Identifier <parabola>
+        Inputs: Identifier <x>
+        Outputs: Identifier <y>
+      Body: Sequence_Of_Statements
+        Statements: Simple_Assignment_Statement
+          LHS: Identifier <y>
+          RHS: Binary_Operation +
+            LHS: Binary_Operation +
+              LHS: Binary_Operation *
+                LHS: Identifier <a>
+                RHS: Binary_Operation .^
+                  LHS: Identifier <x>
+                  RHS: Number_Literal <2>
+              RHS: Binary_Operation *
+                LHS: Identifier <b>
+                RHS: Identifier <x>
+            RHS: Identifier <c>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

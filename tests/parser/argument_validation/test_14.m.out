@@ -1,1 +1,24 @@
+----------------------------------------------------------------------
+--  Parse tree for test_14.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_14>
+      Inputs: Identifier <a>
+      Inputs: Identifier <b>
+      Inputs: Identifier <varargin>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Name: Identifier <a>
+        Class: Identifier <uint32>
+      Items: Class_Property
+        Name: Identifier <b>
+        Class: Identifier <uint32>
+    Validation: Arguments Special_Block
+      Attributes: Class_Attribute
+        Name: Identifier <Repeating>
+      Items: Class_Property
+        Name: Identifier <varargin>
+    Body: Sequence_Of_Statements
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

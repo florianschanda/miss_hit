@@ -1,4 +1,21 @@
 In test_06.m, line 8
 |   %{ potato
 | ^^^^^^^^^^^ warning: ignored block comment: no text must appear around the block comment marker
+----------------------------------------------------------------------
+--  Parse tree for test_06.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: String_Literal "1"
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: String_Literal "4"
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: String_Literal "5"
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)

@@ -1,1 +1,18 @@
+----------------------------------------------------------------------
+--  Parse tree for SpeedEnum.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <SpeedEnum>
+    Superclasses: Identifier <int32>
+    Enumerations: Enumeration Special_Block
+      Items: Class_Enumeration
+        Name: Identifier <Full>
+        Arguments: Number_Literal <100>
+      Items: Class_Enumeration
+        Name: Identifier <Half>
+        Arguments: Number_Literal <50>
+      Items: Class_Enumeration
+        Name: Identifier <Stop>
+        Arguments: Number_Literal <0>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

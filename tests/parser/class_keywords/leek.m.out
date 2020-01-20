@@ -1,1 +1,12 @@
+----------------------------------------------------------------------
+--  Parse tree for leek.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <leek>
+    Properties: Properties Special_Block
+      Items: Class_Property
+        Name: Identifier <x>
+      Items: Class_Property
+        Name: Identifier <y>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

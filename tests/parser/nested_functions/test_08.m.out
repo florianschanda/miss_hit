@@ -1,1 +1,61 @@
+----------------------------------------------------------------------
+--  Parse tree for test_08.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_08>
+      Inputs: Identifier <x>
+      Inputs: Identifier <y>
+    Body: Sequence_Of_Statements
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <B>
+          Arguments: Identifier <x>
+          Arguments: Identifier <y>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <D>
+          Arguments: Identifier <y>
+    Nested: Function_Definition
+      Signature: Function_Signature
+        Name: Identifier <B>
+        Inputs: Identifier <x>
+        Inputs: Identifier <y>
+      Body: Sequence_Of_Statements
+        Statements: Naked_Expression_Statement
+          Expression: Reference
+            Name: Identifier <C>
+            Arguments: Identifier <x>
+        Statements: Naked_Expression_Statement
+          Expression: Reference
+            Name: Identifier <D>
+            Arguments: Identifier <y>
+      Nested: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <C>
+          Inputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <D>
+              Arguments: Identifier <x>
+    Nested: Function_Definition
+      Signature: Function_Signature
+        Name: Identifier <D>
+        Inputs: Identifier <x>
+      Body: Sequence_Of_Statements
+        Statements: Naked_Expression_Statement
+          Expression: Reference
+            Name: Identifier <E>
+            Arguments: Identifier <x>
+      Nested: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <E>
+          Inputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: Identifier <x>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

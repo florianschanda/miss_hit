@@ -1,1 +1,12 @@
+----------------------------------------------------------------------
+--  Parse tree for regression4.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Compound_Assignment_Statement
+      LHS: Identifier <x>
+      LHS: Identifier <y>
+      RHS: Reference
+        Name: Identifier <size>
+        Arguments: Number_Literal <1>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

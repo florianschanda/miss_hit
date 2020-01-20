@@ -1,1 +1,82 @@
+----------------------------------------------------------------------
+--  Parse tree for colons.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <colons>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <z>
+        RHS: Reference
+          Name: Identifier <cell>
+          Arguments: Number_Literal <1>
+          Arguments: Number_Literal <2>
+          Arguments: Number_Literal <3>
+          Arguments: Number_Literal <0>
+          Arguments: Number_Literal <5>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Cell_Expression
+              Items: Number_Literal <1>
+              Items: Cell_Reference
+                Name: Identifier <z>
+                Arguments: Reshape
+              Items: Number_Literal <2>
+            RHS: Cell_Expression
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Cell_Expression
+              Items: Number_Literal <1>
+              Items: Cell_Reference
+                Name: Identifier <z>
+                Arguments: Reshape
+              Items: Number_Literal <2>
+            RHS: Cell_Expression
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Cell_Expression
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+              Items: Cell_Reference
+                Name: Identifier <z>
+                Arguments: Reshape
+              Items: Number_Literal <3>
+              Items: Number_Literal <4>
+            RHS: Cell_Expression
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+              Items: Number_Literal <3>
+              Items: Number_Literal <4>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Cell_Expression
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+              Items: Number_Literal <5>
+              Items: Cell_Reference
+                Name: Identifier <z>
+                Arguments: Reshape
+              Items: Number_Literal <6>
+              Items: Number_Literal <3>
+              Items: Number_Literal <4>
+            RHS: Cell_Expression
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+              Items: Number_Literal <5>
+              Items: Number_Literal <6>
+              Items: Number_Literal <3>
+              Items: Number_Literal <4>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,1 +1,16 @@
+----------------------------------------------------------------------
+--  Parse tree for invalid_modification.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Switch_Statement
+      Expression: Identifier <potato>
+      Case_Expression: Number_Literal <1>
+      Case_Body: Sequence_Of_Statements
+        Statements: Simple_Assignment_Statement
+          LHS: Identifier <x>
+          RHS: Number_Literal <1>
+        Statements: Simple_Assignment_Statement
+          LHS: Identifier <potato>
+          RHS: Number_Literal <8>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

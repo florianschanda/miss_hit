@@ -1,1 +1,28 @@
+----------------------------------------------------------------------
+--  Parse tree for afun.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <afun>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <af_in_cell>
+        RHS: Cell_Expression
+          Items: Lambda_Function
+            Parameters: Identifier <x>
+            Body: Matrix_Expression
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Reference
+              Name: Cell_Reference
+                Name: Identifier <af_in_cell>
+                Arguments: Number_Literal <1>
+            RHS: Matrix_Expression
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,1 +1,21 @@
+----------------------------------------------------------------------
+--  Parse tree for basic.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <MyClass>
+    Superclasses: Identifier <handle>
+    Events: Events Special_Block
+      Items: Identifier <StateChange>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <upDateUI>
+          Inputs: Identifier <obj>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <notify>
+              Arguments: Identifier <obj>
+              Arguments: Char_Array_Literal 'StateChange'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

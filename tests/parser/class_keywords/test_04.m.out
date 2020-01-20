@@ -1,1 +1,17 @@
+----------------------------------------------------------------------
+--  Parse tree for test_04.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_04>
+      Outputs: Identifier <r>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <l>
+        RHS: Identifier <leek>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <properties>
+          Arguments: Identifier <l>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

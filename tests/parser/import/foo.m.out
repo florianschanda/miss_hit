@@ -1,1 +1,13 @@
+----------------------------------------------------------------------
+--  Parse tree for foo.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <foo>
+    Body: Sequence_Of_Statements
+      Statements: Import_Statement for PackageName.ClassName
+      Statements: Import_Statement for PackageName.FunctionName
+      Statements: Import_Statement for PackageName.ClassName.staticMethodName
+      Statements: Import_Statement for PackageName.*
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

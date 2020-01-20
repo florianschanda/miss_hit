@@ -1,1 +1,18 @@
+----------------------------------------------------------------------
+--  Parse tree for foo.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <foo>
+      Inputs: Identifier <y>
+      Outputs: Identifier <x>
+    Body: Sequence_Of_Statements
+      Statements: Global_Statement
+        Names: Identifier <z>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <x>
+        RHS: Binary_Operation +
+          LHS: Identifier <y>
+          RHS: Identifier <z>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

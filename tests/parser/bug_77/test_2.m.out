@@ -1,1 +1,16 @@
+----------------------------------------------------------------------
+--  Parse tree for test_2.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Parallel_For_Statement
+      Identifier: Identifier <i>
+      Range: Range_Expression
+        First: Number_Literal <1>
+        Last: Number_Literal <5>
+      Body: Sequence_Of_Statements
+        Statements: Naked_Expression_Statement
+          Expression: Reference
+            Name: Identifier <disp>
+            Arguments: Identifier <i>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,1 +1,50 @@
+----------------------------------------------------------------------
+--  Parse tree for test_05.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_05>
+      Inputs: Identifier <x>
+      Inputs: Identifier <y>
+      Inputs: Identifier <maxval>
+      Inputs: Identifier <minval>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <x>
+        Class: Identifier <double>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <y>
+        Class: Identifier <double>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <maxval>
+        Class: Identifier <double>
+        Default: Reference
+          Name: Identifier <max>
+          Arguments: Reference
+            Name: Identifier <max>
+            Arguments: Identifier <x>
+          Arguments: Reference
+            Name: Identifier <max>
+            Arguments: Identifier <y>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <minval>
+        Class: Identifier <double>
+        Default: Reference
+          Name: Identifier <min>
+          Arguments: Reference
+            Name: Identifier <min>
+            Arguments: Identifier <x>
+          Arguments: Reference
+            Name: Identifier <min>
+            Arguments: Identifier <y>
+    Body: Sequence_Of_Statements
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

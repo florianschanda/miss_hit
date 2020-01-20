@@ -1,1 +1,20 @@
+----------------------------------------------------------------------
+--  Parse tree for foo.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <potato>
+      RHS: Reference
+        Name: Identifier <foo>
+        Arguments: Number_Literal <12>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <foo>
+      Inputs: Identifier <x>
+      Outputs: Identifier <y>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <y>
+        RHS: Identifier <x>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

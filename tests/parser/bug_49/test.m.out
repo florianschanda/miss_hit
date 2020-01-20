@@ -1,1 +1,32 @@
+----------------------------------------------------------------------
+--  Parse tree for test.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test>
+      Inputs: Identifier <potato>
+    Body: Sequence_Of_Statements
+      Statements: If_Statement
+        If_Expression: Binary_Operation >
+          LHS: Identifier <potato>
+          RHS: Number_Literal <3>
+        If_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: String_Literal "yes"
+        Elseif_Expression: Binary_Operation <
+          LHS: Identifier <potato>
+          RHS: Number_Literal <3>
+        Elseif_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: String_Literal "no"
+        Else_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: String_Literal "why do this"
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

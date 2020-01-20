@@ -1,1 +1,16 @@
+----------------------------------------------------------------------
+--  Parse tree for invalid_07.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <invalid_07>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <kitten>
+        RHS: Number_Literal <42>
+      Statements: Naked_Expression_Statement
+        Expression: Binary_Operation +
+          LHS: Identifier <potato>
+          RHS: Identifier <kitten>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

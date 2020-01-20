@@ -1,1 +1,29 @@
+----------------------------------------------------------------------
+--  Parse tree for test_15.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_15>
+      Inputs: Identifier <NameValueArgs>
+      Outputs: Identifier <result>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Name: Selection
+          Prefix: Identifier <NameValueArgs>
+          Field: Identifier <Name1>
+      Items: Class_Property
+        Name: Selection
+          Prefix: Identifier <NameValueArgs>
+          Field: Identifier <Name2>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <result>
+        RHS: Binary_Operation *
+          LHS: Selection
+            Prefix: Identifier <NameValueArgs>
+            Field: Identifier <Name1>
+          RHS: Selection
+            Prefix: Identifier <NameValueArgs>
+            Field: Identifier <Name2>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

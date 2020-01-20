@@ -1,1 +1,29 @@
+----------------------------------------------------------------------
+--  Parse tree for test_02.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_02>
+      Inputs: Identifier <A>
+      Inputs: Identifier <B>
+      Inputs: Identifier <C>
+      Outputs: Identifier <out>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <A>
+        Class: Identifier <string>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <B>
+        Class: Identifier <double>
+      Items: Class_Property
+        Dimension 1 constraint: 2
+        Dimension 2 constraint: 2
+        Name: Identifier <C>
+        Class: Identifier <cell>
+    Body: Sequence_Of_Statements
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

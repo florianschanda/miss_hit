@@ -1,1 +1,108 @@
+----------------------------------------------------------------------
+--  Parse tree for cells.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_01>
+      Outputs: Identifier <myCell>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <myCell>
+        RHS: Cell_Expression
+          Items: Number_Literal <1>
+          Items: Number_Literal <2>
+          Items: Number_Literal <3>
+          Items: Char_Array_Literal 'text'
+          Items: Reference
+            Name: Identifier <rand>
+            Arguments: Number_Literal <5>
+            Arguments: Number_Literal <10>
+            Arguments: Number_Literal <2>
+          Items: Cell_Expression
+            Items: Number_Literal <11>
+            Items: Number_Literal <22>
+            Items: Number_Literal <33>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_02>
+      Outputs: Identifier <C>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <C>
+        RHS: Cell_Expression
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_03>
+      Outputs: Identifier <C>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <C>
+        RHS: Cell_Expression
+          Items: Number_Literal <1>
+          Items: Number_Literal <2>
+          Items: Number_Literal <3>
+      Statements: Simple_Assignment_Statement
+        LHS: Cell_Reference
+          Name: Identifier <C>
+          Arguments: Number_Literal <4>
+          Arguments: Number_Literal <4>
+        RHS: Number_Literal <44>
+      Statements: Simple_Assignment_Statement
+        LHS: Cell_Reference
+          Name: Identifier <C>
+          Arguments: Number_Literal <5>
+          Arguments: Number_Literal <5>
+        RHS: Matrix_Expression
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_04>
+      Outputs: Identifier <C4>
+      Outputs: Identifier <C5>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <C1>
+        RHS: Cell_Expression
+          Items: Number_Literal <1>
+          Items: Number_Literal <2>
+          Items: Number_Literal <3>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <C2>
+        RHS: Cell_Expression
+          Items: Char_Array_Literal 'A'
+          Items: Char_Array_Literal 'B'
+          Items: Char_Array_Literal 'C'
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <C3>
+        RHS: Cell_Expression
+          Items: Number_Literal <10>
+          Items: Number_Literal <20>
+          Items: Number_Literal <30>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <C4>
+        RHS: Matrix_Expression
+          Items: Identifier <C1>
+          Items: Identifier <C2>
+          Items: Identifier <C3>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <C5>
+        RHS: Cell_Expression
+          Items: Identifier <C1>
+          Items: Identifier <C2>
+          Items: Identifier <C3>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_05>
+      Outputs: Identifier <A>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <A>
+        RHS: Matrix_Expression
+          Items: Number_Literal <100>
+          Items: Cell_Expression
+            Items: Reference
+              Name: Identifier <uint8>
+              Arguments: Number_Literal <200>
+            Items: Number_Literal <300>
+          Items: Char_Array_Literal 'MATLAB'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

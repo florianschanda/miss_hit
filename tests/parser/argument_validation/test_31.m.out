@@ -1,1 +1,70 @@
+----------------------------------------------------------------------
+--  Parse tree for test_31.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_31>
+      Inputs: Identifier <a>
+      Inputs: Identifier <b>
+      Inputs: Identifier <c>
+      Inputs: Identifier <namedargs>
+      Outputs: Identifier <result>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <a>
+        Class: Identifier <double>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <b>
+        Class: Identifier <double>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <c>
+        Class: Identifier <double>
+        Default: Number_Literal <1>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Selection
+          Prefix: Identifier <namedargs>
+          Field: Identifier <Format>
+        Class: Identifier <char>
+    Body: Sequence_Of_Statements
+      Statements: Switch_Statement
+        Expression: Identifier <nargin>
+        Case_Expression: Number_Literal <2>
+        Case_Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <result>
+            RHS: Binary_Operation +
+              LHS: Identifier <a>
+              RHS: Identifier <b>
+        Case_Expression: Number_Literal <3>
+        Case_Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <result>
+            RHS: Binary_Operation +
+              LHS: Binary_Operation ^
+                LHS: Identifier <a>
+                RHS: Identifier <c>
+              RHS: Binary_Operation ^
+                LHS: Identifier <b>
+                RHS: Identifier <c>
+      Statements: If_Statement
+        If_Expression: Reference
+          Name: Identifier <isfield>
+          Arguments: Identifier <namedargs>
+          Arguments: Char_Array_Literal 'Format'
+        If_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <format>
+              Arguments: Selection
+                Prefix: Identifier <namedargs>
+                Field: Identifier <Format>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

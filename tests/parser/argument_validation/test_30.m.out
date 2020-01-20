@@ -1,1 +1,96 @@
+----------------------------------------------------------------------
+--  Parse tree for test_30.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_30>
+      Inputs: Identifier <a>
+      Inputs: Identifier <b>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Name: Identifier <a>
+        Functions: Reference
+          Name: Identifier <mustBeA>
+          Arguments: Identifier <a>
+          Arguments: Char_Array_Literal 'double'
+        Functions: Reference
+          Name: Identifier <mustBeDims>
+          Arguments: Identifier <a>
+          Arguments: Number_Literal <2>
+      Items: Class_Property
+        Name: Identifier <b>
+        Functions: Reference
+          Name: Identifier <mustBeSize>
+          Arguments: Identifier <b>
+          Arguments: Matrix_Expression
+            Items: Number_Literal <5>
+            Items: Number_Literal <3>
+    Body: Sequence_Of_Statements
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <mustBeA>
+      Inputs: Identifier <input>
+      Inputs: Identifier <className>
+    Body: Sequence_Of_Statements
+      Statements: If_Statement
+        If_Expression: Unary_Operation ~
+          Expression: Reference
+            Name: Identifier <isa>
+            Arguments: Identifier <input>
+            Arguments: Identifier <className>
+        If_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <error>
+              Arguments: Char_Array_Literal 'Input must be of class double.'
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <mustBeSize>
+      Inputs: Identifier <input>
+      Inputs: Identifier <sizeDims>
+    Body: Sequence_Of_Statements
+      Statements: If_Statement
+        If_Expression: Unary_Operation ~
+          Expression: Reference
+            Name: Identifier <isequal>
+            Arguments: Reference
+              Name: Identifier <size>
+              Arguments: Identifier <input>
+            Arguments: Identifier <sizeDims>
+        If_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <error>
+              Arguments: Matrix_Expression
+                Items: Char_Array_Literal 'Input must be of size '
+                Items: Reference
+                  Name: Identifier <num2str>
+                  Arguments: Identifier <sizeDims>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <mustBeDims>
+      Inputs: Identifier <input>
+      Inputs: Identifier <numDims>
+    Body: Sequence_Of_Statements
+      Statements: If_Statement
+        If_Expression: Unary_Operation ~
+          Expression: Reference
+            Name: Identifier <isequal>
+            Arguments: Reference
+              Name: Identifier <length>
+              Arguments: Reference
+                Name: Identifier <size>
+                Arguments: Identifier <input>
+            Arguments: Identifier <numDims>
+        If_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <error>
+              Arguments: Matrix_Expression
+                Items: Char_Array_Literal 'Input must have '
+                Items: Reference
+                  Name: Identifier <num2str>
+                  Arguments: Identifier <numDims>
+                Items: Char_Array_Literal ' dimensions.'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

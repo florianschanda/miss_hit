@@ -1,1 +1,19 @@
+----------------------------------------------------------------------
+--  Parse tree for test.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <test>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <foo>
+          Inputs: Identifier <tmp>
+          Outputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Selection
+              Prefix: Identifier <tmp>
+              Field: Identifier <properties>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

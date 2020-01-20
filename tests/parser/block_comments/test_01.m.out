@@ -1,1 +1,14 @@
+----------------------------------------------------------------------
+--  Parse tree for test_01.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: String_Literal "foo"
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: String_Literal "baz"
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

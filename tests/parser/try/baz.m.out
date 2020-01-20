@@ -1,1 +1,22 @@
+----------------------------------------------------------------------
+--  Parse tree for baz.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <baz>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <x>
+        RHS: Number_Literal <5>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <y>
+        RHS: Number_Literal <0>
+      Statements: Try_Statement
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <z>
+            RHS: Binary_Operation /
+              LHS: Identifier <x>
+              RHS: Identifier <y>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

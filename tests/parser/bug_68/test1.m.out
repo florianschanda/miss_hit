@@ -1,1 +1,25 @@
+----------------------------------------------------------------------
+--  Parse tree for test1.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <test1>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <test1>
+          Outputs: Identifier <obj>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: String_Literal "cons"
+      Items: Function_Signature
+        Name: Identifier <wibble>
+      Items: Function_Signature
+        Name: Identifier <potato>
+        Inputs: Identifier <x>
+      Items: Function_Signature
+        Name: Identifier <properties>
+        Outputs: Identifier <p>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

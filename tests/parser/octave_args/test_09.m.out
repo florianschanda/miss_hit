@@ -1,1 +1,58 @@
+----------------------------------------------------------------------
+--  Parse tree for test_09.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <f>
+      Inputs: Identifier <a>
+      Inputs: Identifier <b>
+      Inputs: Identifier <c>
+      Inputs: Identifier <d>
+      Inputs: Identifier <e>
+      Outputs: Identifier <x>
+      Outputs: Identifier <y>
+      Outputs: Identifier <z>
+    Body: Sequence_Of_Statements
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Identifier <nargin>
+            RHS: Number_Literal <4>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Identifier <nargout>
+            RHS: Number_Literal <2>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <x>
+        RHS: Identifier <a>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <y>
+        RHS: Identifier <b>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test>
+    Body: Sequence_Of_Statements
+      Statements: Compound_Assignment_Statement
+        LHS: Identifier <s>
+        LHS: Identifier <t>
+        RHS: Reference
+          Name: Identifier <f>
+          Arguments: Number_Literal <1>
+          Arguments: Number_Literal <2>
+          Arguments: Number_Literal <3>
+          Arguments: Number_Literal <4>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Matrix_Expression
+              Items: Identifier <s>
+              Items: Identifier <t>
+            RHS: Matrix_Expression
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

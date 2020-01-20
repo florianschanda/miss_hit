@@ -1052,7 +1052,7 @@ class MATLAB_Parser:
         elif len(points) == 2:
             return Range_Expression(points[0], points[1])
         else:
-            return Range_Expression(points[0], points[1], points[2])
+            return Range_Expression(points[0], points[2], points[1])
 
     # 8. Less than (<), less than or equal to (<=), greater than (>),
     #    greater than or equal to (>=), equal to (==), not equal to (~=)

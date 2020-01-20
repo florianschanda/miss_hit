@@ -33,10 +33,10 @@ NODE_UID = [0]
 
 
 class AST_Visitor:
-    def visit(self, node, n_parent):
+    def visit(self, node, n_parent, relation):
         pass
 
-    def visit_end(self, node, n_parent):
+    def visit_end(self, node, n_parent, relation):
         pass
 
 
@@ -48,31 +48,33 @@ class Node:
     def debug_parse_tree(self):
         pass
 
-    def _visit(self, parent, function):
+    def _visit(self, parent, function, relation):
         # This function must not be overwritten
         assert parent is None or isinstance(parent, Node)
         assert isinstance(function, AST_Visitor)
-        function.visit(self, parent)
+        assert isinstance(relation, str)
+        function.visit(self, parent, relation)
 
-    def _visit_end(self, parent, function):
+    def _visit_end(self, parent, function, relation):
         # This function must not be overwritten
         assert parent is None or isinstance(parent, Node)
         assert isinstance(function, AST_Visitor)
-        function.visit_end(self, parent)
+        assert isinstance(relation, str)
+        function.visit_end(self, parent, relation)
 
-    def _visit_list(self, the_list, function):
+    def _visit_list(self, the_list, function, relation):
         # This function must not be overwritten
         for the_node in the_list:
-            the_node.visit(self, function)
+            the_node.visit(self, function, relation)
 
-    def visit(self, parent, function):
+    def visit(self, parent, function, relation):
         # This function should be over-written by each node to
         # implement the visitor pattern.
-        self._visit(parent, function)
-        self._visit_end(parent, function)
+        self._visit(parent, function, relation)
+        self._visit_end(parent, function, relation)
 
     def pp_node(self):
-        self.visit(None, Text_Visitor())
+        self.visit(None, Text_Visitor(), "Root")
 
 
 class Expression(Node):
@@ -108,11 +110,11 @@ class Script_File(Compilation_Unit):
         for n_function in self.l_functions:
             n_function.debug_parse_tree()
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_statements.visit(self, function)
-        self._visit_list(self.l_functions, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_statements.visit(self, function, "Statements")
+        self._visit_list(self.l_functions, function, "Functions")
+        self._visit_end(parent, function, relation)
 
 
 class Function_File(Compilation_Unit):
@@ -128,10 +130,10 @@ class Function_File(Compilation_Unit):
         for n_function in self.l_functions:
             n_function.debug_parse_tree()
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self._visit_list(self.l_functions, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_functions, function, "Functions")
+        self._visit_end(parent, function, relation)
 
 
 class Class_File(Compilation_Unit):
@@ -159,11 +161,11 @@ class Class_File(Compilation_Unit):
                 if isinstance(n_item, Function_Definition):
                     n_item.debug_parse_tree()
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_classdef.visit(self, function)
-        self._visit_list(self.l_functions, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_classdef.visit(self, function, "Classdef")
+        self._visit_list(self.l_functions, function, "Functions")
+        self._visit_end(parent, function, relation)
 
 
 class Function_Signature(Node):
@@ -182,12 +184,12 @@ class Function_Signature(Node):
         self.l_inputs  = l_inputs
         self.l_outputs = l_outputs
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_name.visit(self, function)
-        self._visit_list(self.l_inputs, function)
-        self._visit_list(self.l_outputs, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_name.visit(self, function, "Name")
+        self._visit_list(self.l_inputs, function, "Inputs")
+        self._visit_list(self.l_outputs, function, "Outputs")
+        self._visit_end(parent, function, relation)
 
 
 class Function_Definition(Node):
@@ -220,13 +222,13 @@ class Function_Definition(Node):
         for n_function in self.l_nested:
             n_function.debug_parse_tree()
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_sig.visit(self, function)
-        self._visit_list(self.l_validation, function)
-        self.n_body.visit(self, function)
-        self._visit_list(self.l_nested, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_sig.visit(self, function, "Signature")
+        self._visit_list(self.l_validation, function, "Validation")
+        self.n_body.visit(self, function, "Body")
+        self._visit_list(self.l_nested, function, "Nested")
+        self._visit_end(parent, function, relation)
 
 
 class Sequence_Of_Statements(Node):
@@ -238,10 +240,10 @@ class Sequence_Of_Statements(Node):
 
         self.l_statements = l_statements
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self._visit_list(self.l_statements, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_statements, function, "Statements")
+        self._visit_end(parent, function, relation)
 
 
 class Statement(Node):
@@ -261,12 +263,12 @@ class Class_Attribute(Node):
         self.n_name = n_name
         self.n_value = n_value
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_name.visit(self, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_name.visit(self, function, "Name")
         if self.n_value:
-            self.n_value.visit(self, function)
-        self._visit_end(parent, function)
+            self.n_value.visit(self, function, "Value")
+        self._visit_end(parent, function, relation)
 
 
 class Special_Block(Node):
@@ -287,11 +289,11 @@ class Special_Block(Node):
         self.l_attr = l_attr
         self.l_items = []
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self._visit_list(self.l_attr, function)
-        self._visit_list(self.l_items, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_attr, function, "Attributes")
+        self._visit_list(self.l_items, function, "Items")
+        self._visit_end(parent, function, relation)
 
     def kind(self):
         return self.t_kw.value
@@ -343,15 +345,15 @@ class Class_Property(Node):
         self.l_fun_constraint   = l_fun_constraint
         self.n_default_value    = n_default_value
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_name.visit(self, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_name.visit(self, function, "Name")
         if self.n_class_constraint:
-            self.n_class_constraint.visit(self, function)
-        self._visit_list(self.l_fun_constraint, function)
+            self.n_class_constraint.visit(self, function, "Class")
+        self._visit_list(self.l_fun_constraint, function, "Functions")
         if self.n_default_value:
-            self.n_default_value.visit(self, function)
-        self._visit_end(parent, function)
+            self.n_default_value.visit(self, function, "Default")
+        self._visit_end(parent, function, relation)
 
 
 class Class_Enumeration(Node):
@@ -366,11 +368,11 @@ class Class_Enumeration(Node):
         self.n_name = n_name
         self.l_args = l_args
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_name.visit(self, function)
-        self._visit_list(self.l_args, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_name.visit(self, function, "Name")
+        self._visit_list(self.l_args, function, "Arguments")
+        self._visit_end(parent, function, relation)
 
 
 class Class_Definition(Node):
@@ -397,16 +399,16 @@ class Class_Definition(Node):
         self.l_enumerations = []
         self.l_methods = []
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_name.visit(self, function)
-        self._visit_list(self.l_super, function)
-        self._visit_list(self.l_attr, function)
-        self._visit_list(self.l_properties, function)
-        self._visit_list(self.l_events, function)
-        self._visit_list(self.l_enumerations, function)
-        self._visit_list(self.l_methods, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_name.visit(self, function, "Name")
+        self._visit_list(self.l_super, function, "Superclasses")
+        self._visit_list(self.l_attr, function, "Attributes")
+        self._visit_list(self.l_properties, function, "Properties")
+        self._visit_list(self.l_events, function, "Events")
+        self._visit_list(self.l_enumerations, function, "Enumerations")
+        self._visit_list(self.l_methods, function, "Methods")
+        self._visit_end(parent, function, relation)
 
     def add_block(self, n_block):
         assert isinstance(n_block, Special_Block)
@@ -438,11 +440,11 @@ class Reference(Name):
         self.n_ident = n_ident
         self.l_args = arglist
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_ident.visit(self, function)
-        self._visit_list(self.l_args, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_ident.visit(self, function, "Name")
+        self._visit_list(self.l_args, function, "Arguments")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         if self.l_args:
@@ -462,11 +464,11 @@ class Cell_Reference(Name):
         self.n_ident = n_ident
         self.l_args = arglist
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_ident.visit(self, function)
-        self._visit_list(self.l_args, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_ident.visit(self, function, "Name")
+        self._visit_list(self.l_args, function, "Arguments")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         if self.l_args:
@@ -505,11 +507,11 @@ class Selection(Name):
         self.n_prefix    = n_prefix
         self.n_field     = n_field
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_prefix.visit(self, function)
-        self.n_field.visit(self, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_prefix.visit(self, function, "Prefix")
+        self.n_field.visit(self, function, "Field")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         return "%s.%s" % (self.n_prefix, self.n_field)
@@ -527,11 +529,11 @@ class Dynamic_Selection(Name):
         self.n_prefix    = n_prefix
         self.n_field     = n_field
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_prefix.visit(self, function)
-        self.n_field.visit(self, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_prefix.visit(self, function, "Prefix")
+        self.n_field.visit(self, function, "Field")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         return "%s.(%s)" % (self.n_prefix, self.n_field)
@@ -549,11 +551,11 @@ class Superclass_Reference(Name):
         self.n_prefix = n_prefix
         self.n_reference = n_reference
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_prefix.visit(self, function)
-        self.n_reference.visit(self, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_prefix.visit(self, function, "Prefix")
+        self.n_reference.visit(self, function, "Reference")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         return "%s@%s" % (self.n_prefix, self.n_reference)
@@ -586,13 +588,13 @@ class Range_Expression(Expression):
         else:
             self.n_stride = n_stride
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_first.visit(self, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_first.visit(self, function, "First")
         if self.n_stride:
-            self.n_stride.visit(self, function)
-        self.n_last.visit(self, function)
-        self._visit_end(parent, function)
+            self.n_stride.visit(self, function, "Stride")
+        self.n_last.visit(self, function, "Last")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         if self.n_stride:
@@ -618,12 +620,12 @@ class Matrix_Expression(Expression):
         self.t_close = t_close
         self.items   = items
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
         for row in self.items:
             for n_item in row:
-                n_item.visit(parent, function)
-        self._visit_end(parent, function)
+                n_item.visit(parent, function, "Items")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         rows = []
@@ -649,12 +651,12 @@ class Cell_Expression(Expression):
         self.t_close = t_close
         self.items   = items
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
         for row in self.items:
             for n_item in row:
-                n_item.visit(parent, function)
-        self._visit_end(parent, function)
+                n_item.visit(parent, function, "Items")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         rows = []
@@ -681,11 +683,12 @@ class Function_Call(Expression):
         self.n_name = n_name
         self.l_args = l_args
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_name.visit(parent, function)
-        self._visit_list(self.l_args, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        if self.variant != "escape":
+            self.n_name.visit(parent, function, "Name")
+        self._visit_list(self.l_args, function, "Arguments")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         if self.variant == "normal":
@@ -712,12 +715,12 @@ class Simple_For_Statement(Statement):
         self.n_range = n_range
         self.n_body  = n_body
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_ident.visit(parent, function)
-        self.n_range.visit(parent, function)
-        self.n_body.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_ident.visit(parent, function, "Identifier")
+        self.n_range.visit(parent, function, "Range")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
 
 
 class General_For_Statement(Statement):
@@ -734,12 +737,12 @@ class General_For_Statement(Statement):
         self.n_expr = n_expr
         self.n_body  = n_body
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_ident.visit(parent, function)
-        self.n_expr.visit(parent, function)
-        self.n_body.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_ident.visit(parent, function, "Identifier")
+        self.n_expr.visit(parent, function, "Expression")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
 
 
 class Parallel_For_Statement(Statement):
@@ -758,14 +761,14 @@ class Parallel_For_Statement(Statement):
         self.n_workers = n_workers
         self.n_body    = n_body
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_ident.visit(parent, function)
-        self.n_range.visit(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_ident.visit(parent, function, "Identifier")
+        self.n_range.visit(parent, function, "Range")
         if self.n_workers:
-            self.n_workers.visit(parent, function)
-        self.n_body.visit(parent, function)
-        self._visit_end(parent, function)
+            self.n_workers.visit(parent, function, "Workers")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
 
 
 class While_Statement(Statement):
@@ -780,11 +783,11 @@ class While_Statement(Statement):
         self.n_guard = n_guard
         self.n_body  = n_body
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_guard.visit(parent, function)
-        self.n_body.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_guard.visit(parent, function, "Guard")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
 
 
 class If_Statement(Statement):
@@ -805,13 +808,15 @@ class If_Statement(Statement):
         self.actions = actions
         self.has_else = actions[-1][0].value == "else"
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        for _, n_expr, n_body in self.actions:
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        for t_kw, n_expr, n_body in self.actions:
             if n_expr:
-                n_expr.visit(parent, function)
-            n_body.visit(parent, function)
-        self._visit_end(parent, function)
+                n_expr.visit(parent, function,
+                             t_kw.value.capitalize() + "_Expression")
+            n_body.visit(parent, function,
+                         t_kw.value.capitalize() + "_Body")
+        self._visit_end(parent, function, relation)
 
 
 class Switch_Statement(Statement):
@@ -827,7 +832,7 @@ class Switch_Statement(Statement):
             t_kw, n_expr, n_body = option
             assert isinstance(t_kw, MATLAB_Token)
             assert t_kw.kind == "KEYWORD" and t_kw.value in ("case",
-                                                               "otherwise")
+                                                             "otherwise")
             assert n_expr is None or isinstance(n_expr, Expression)
             assert isinstance(n_body, Sequence_Of_Statements)
 
@@ -836,14 +841,16 @@ class Switch_Statement(Statement):
         self.l_options = l_options
         self.has_otherwise = l_options[-1][0].value == "otherwise"
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_expr.visit(parent, function)
-        for _, n_expr, n_body in self.l_options:
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_expr.visit(parent, function, "Expression")
+        for t_kw, n_expr, n_body in self.l_options:
             if n_expr:
-                n_expr.visit(parent, function)
-            n_body.visit(parent, function)
-        self._visit_end(parent, function)
+                n_expr.visit(parent, function,
+                             t_kw.value.capitalize() + "_Expression")
+            n_body.visit(parent, function,
+                         t_kw.value.capitalize() + "_Body")
+        self._visit_end(parent, function, relation)
 
 
 class Simple_Assignment_Statement(Statement):
@@ -858,11 +865,11 @@ class Simple_Assignment_Statement(Statement):
         self.n_lhs = n_lhs
         self.n_rhs = n_rhs
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_lhs.visit(parent, function)
-        self.n_rhs.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_lhs.visit(parent, function, "LHS")
+        self.n_rhs.visit(parent, function, "RHS")
+        self._visit_end(parent, function, relation)
 
 
 class Compound_Assignment_Statement(Statement):
@@ -880,11 +887,11 @@ class Compound_Assignment_Statement(Statement):
         self.l_lhs = l_lhs
         self.n_rhs = n_rhs
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self._visit_list(self.l_lhs, function)
-        self.n_rhs.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_lhs, function, "LHS")
+        self.n_rhs.visit(parent, function, "RHS")
+        self._visit_end(parent, function, relation)
 
 
 class Naked_Expression_Statement(Statement):
@@ -894,10 +901,10 @@ class Naked_Expression_Statement(Statement):
 
         self.n_expr = n_expr
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_expr.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_expr.visit(parent, function, "Expression")
+        self._visit_end(parent, function, relation)
 
 
 class Return_Statement(Statement):
@@ -939,10 +946,10 @@ class Global_Statement(Statement):
         self.t_kw    = t_kw
         self.l_names = l_names
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self._visit_list(self.l_names, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_names, function, "Names")
+        self._visit_end(parent, function, relation)
 
 
 class Persistent_Statement(Statement):
@@ -957,10 +964,10 @@ class Persistent_Statement(Statement):
         self.t_kw    = t_kw
         self.l_names = l_names
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self._visit_list(self.l_names, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_names, function, "Names")
+        self._visit_end(parent, function, relation)
 
 
 class Import_Statement(Statement):
@@ -976,6 +983,10 @@ class Import_Statement(Statement):
 
         self.t_kw    = t_kw
         self.l_chain = l_chain
+
+    def get_chain_strings(self):
+        return [t.value if t.kind == "IDENTIFIER" else "*"
+                for t in self.l_chain]
 
 
 class Try_Statement(Statement):
@@ -999,14 +1010,14 @@ class Try_Statement(Statement):
         self.n_ident   = n_ident
         self.n_handler = n_handler
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_body.visit(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_body.visit(parent, function, "Body")
         if self.n_ident:
-            self.n_ident.visit(parent, function)
+            self.n_ident.visit(parent, function, "Identifier")
         if self.n_handler:
-            self.n_handler.visit(parent, function)
-        self._visit_end(parent, function)
+            self.n_handler.visit(parent, function, "Handler")
+        self._visit_end(parent, function, relation)
 
 
 class SPMD_Statement(Statement):
@@ -1019,10 +1030,10 @@ class SPMD_Statement(Statement):
         self.t_spmd = t_spmd
         self.n_body = n_body
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_body.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
 
 
 class Literal(Expression):
@@ -1078,10 +1089,10 @@ class Unary_Operation(Expression):
         self.t_op   = t_op
         self.n_expr = n_expr
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_expr.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_expr.visit(parent, function, "Expression")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         return "%s%s" % (self.t_op.value, self.n_expr)
@@ -1101,11 +1112,11 @@ class Binary_Operation(Expression):
         self.n_lhs = n_lhs
         self.n_rhs = n_rhs
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_lhs.visit(parent, function)
-        self.n_rhs.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_lhs.visit(parent, function, "LHS")
+        self.n_rhs.visit(parent, function, "RHS")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         return "(%s %s %s)" % (self.n_lhs, self.t_op.value, self.n_rhs)
@@ -1125,11 +1136,11 @@ class Lambda_Function(Expression):
         self.l_parameters = l_parameters
         self.n_body       = n_body
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self._visit_list(self.l_parameters, function)
-        self.n_body.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_parameters, function, "Parameters")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         return "@(%s) %s" % (",".join(map(str, self.l_parameters)),
@@ -1146,10 +1157,10 @@ class Function_Pointer(Expression):
         self.t_at   = t_at
         self.n_name = n_name
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_name.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_name.visit(parent, function, "Name")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         return "@" + str(self.n_name)
@@ -1165,10 +1176,10 @@ class Metaclass(Expression):
         self.t_mc   = t_mc
         self.n_name = n_name
 
-    def visit(self, parent, function):
-        self._visit(parent, function)
-        self.n_name.visit(parent, function)
-        self._visit_end(parent, function)
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_name.visit(parent, function, "Name")
+        self._visit_end(parent, function, relation)
 
     def __str__(self):
         return "?" + str(self.n_name)
@@ -1187,11 +1198,64 @@ class Text_Visitor(AST_Visitor):
         assert isinstance(string, str)
         print(" " * (self.indent * 2) + string)
 
-    def visit(self, node, n_parent):
-        self.write(node.__class__.__name__)
+    def write_head(self, string, relation):
+        if relation:
+            self.write(relation + ": " + string)
+        else:
+            self.write(string)
         self.indent += 1
 
-    def visit_end(self, node, n_parent):
+    def visit(self, node, n_parent, relation):
+        if isinstance(node, Special_Block):
+            self.write_head(node.t_kw.value.capitalize() + " " +
+                            node.__class__.__name__,
+                            relation)
+        elif isinstance(node, Class_Property):
+            self.write_head(node.__class__.__name__,
+                            relation)
+            for dim, t_cons in enumerate(node.l_dim_constraint, 1):
+                if t_cons.kind == "COLON":
+                    self.write("Dimension %u constraint: %s" %
+                               (dim, t_cons.kind))
+                else:
+                    self.write("Dimension %u constraint: %s" %
+                               (dim, t_cons.value))
+        elif isinstance(node, Function_Call):
+            self.write_head(node.variant.capitalize() + " form " +
+                            node.__class__.__name__,
+                            relation)
+        elif isinstance(node, Identifier):
+            self.write_head(node.__class__.__name__ +
+                            " <" + node.t_ident.value + ">",
+                            relation)
+        elif isinstance(node, Number_Literal):
+            self.write_head(node.__class__.__name__ +
+                            " <" + node.t_value.value + ">",
+                            relation)
+        elif isinstance(node, Char_Array_Literal):
+            self.write_head(node.__class__.__name__ +
+                            " '" + node.t_string.value + "'",
+                            relation)
+        elif isinstance(node, String_Literal):
+            self.write_head(node.__class__.__name__ +
+                            " \"" + node.t_string.value + "\"",
+                            relation)
+        elif isinstance(node, Unary_Operation):
+            self.write_head(node.__class__.__name__ + " " + node.t_op.value,
+                            relation)
+        elif isinstance(node, Binary_Operation):
+            self.write_head(node.__class__.__name__ + " " + node.t_op.value,
+                            relation)
+        elif isinstance(node, Import_Statement):
+            self.write_head(node.__class__.__name__ +
+                            " for " +
+                            ".".join(node.get_chain_strings()),
+                            relation)
+        else:
+            self.write_head(node.__class__.__name__,
+                            relation)
+
+    def visit_end(self, node, n_parent, relation):
         self.indent -= 1
 
 

@@ -1,1 +1,11 @@
+----------------------------------------------------------------------
+--  Parse tree for potato.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <potato>
+    Properties: Properties Special_Block
+      Items: Class_Property
+        Name: Identifier <x>
+        Class: Identifier <uint8>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,1 +1,53 @@
+----------------------------------------------------------------------
+--  Parse tree for octave.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Matrix_Expression
+        Items: Number_Literal <0>
+        Items: Identifier <i>
+        Items: Binary_Operation +
+          LHS: Number_Literal <1>
+          RHS: Identifier <i>
+        Items: Number_Literal <2>
+        Items: Number_Literal <3i>
+        Items: Binary_Operation +
+          LHS: Number_Literal <3>
+          RHS: Number_Literal <4i>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Matrix_Expression
+        Items: Number_Literal <1>
+        Items: Unary_Operation -
+          Expression: Number_Literal <1>
+        Items: Identifier <i>
+        Items: Unary_Operation -
+          Expression: Identifier <i>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Identifier <i>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <assert>
+        Arguments: Binary_Operation *
+          LHS: Number_Literal <3>
+          RHS: Unary_Operation .'
+            Expression: Unary_Operation '
+              Expression: Number_Literal <4i>
+        Arguments: Binary_Operation -
+          LHS: Number_Literal <0>
+          RHS: Number_Literal <12i>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <assert>
+        Arguments: Binary_Operation *
+          LHS: Number_Literal <3>
+          RHS: Unary_Operation .'
+            Expression: Unary_Operation .'
+              Expression: Number_Literal <4i>
+        Arguments: Binary_Operation +
+          LHS: Number_Literal <0>
+          RHS: Number_Literal <12i>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

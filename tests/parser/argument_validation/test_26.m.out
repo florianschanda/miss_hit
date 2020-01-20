@@ -1,1 +1,26 @@
+----------------------------------------------------------------------
+--  Parse tree for test_26.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_26>
+      Inputs: Identifier <a>
+      Inputs: Identifier <b>
+      Inputs: Identifier <c>
+      Outputs: Identifier <c>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Name: Identifier <a>
+        Class: Identifier <uint32>
+      Items: Class_Property
+        Name: Identifier <b>
+        Class: Identifier <uint32>
+      Items: Class_Property
+        Name: Identifier <c>
+        Class: Identifier <uint32>
+        Default: Binary_Operation .*
+          LHS: Identifier <a>
+          RHS: Identifier <b>
+    Body: Sequence_Of_Statements
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

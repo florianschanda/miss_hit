@@ -1,1 +1,14 @@
+----------------------------------------------------------------------
+--  Parse tree for test_07.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_07>
+      Inputs: Identifier <~>
+      Outputs: Identifier <c>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Name: Identifier <~>
+    Body: Sequence_Of_Statements
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

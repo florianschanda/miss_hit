@@ -1,1 +1,43 @@
+----------------------------------------------------------------------
+--  Parse tree for test_18.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_17>
+        Arguments: Number_Literal <4>
+        Arguments: Number_Literal <5>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_17>
+        Arguments: Number_Literal <4>
+        Arguments: Number_Literal <5>
+        Arguments: String_Literal "LineStyle"
+        Arguments: String_Literal ":"
+        Arguments: String_Literal "LineWidth"
+        Arguments: Number_Literal <2>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_17>
+        Arguments: Number_Literal <4>
+        Arguments: Number_Literal <5>
+        Arguments: String_Literal "LineWidth"
+        Arguments: Number_Literal <2>
+        Arguments: String_Literal "LineStyle"
+        Arguments: String_Literal ":"
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_17>
+        Arguments: Number_Literal <4>
+        Arguments: Number_Literal <5>
+        Arguments: String_Literal "LineStyle"
+        Arguments: String_Literal ":"
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_17>
+        Arguments: Number_Literal <4>
+        Arguments: Number_Literal <5>
+        Arguments: String_Literal "LineWidth"
+        Arguments: Number_Literal <2>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

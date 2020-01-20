@@ -1,1 +1,45 @@
+----------------------------------------------------------------------
+--  Parse tree for test_12.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_12>
+      Inputs: Identifier <x>
+      Inputs: Identifier <y>
+    Validation: Arguments Special_Block
+      Attributes: Class_Attribute
+        Name: Identifier <Repeating>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <x>
+        Class: Identifier <double>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <y>
+        Class: Identifier <double>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <z>
+        RHS: Reference
+          Name: Identifier <reshape>
+          Arguments: Matrix_Expression
+            Items: Identifier <x>
+            Items: Identifier <y>
+          Arguments: Number_Literal <1>
+          Arguments: Matrix_Expression
+      Statements: If_Statement
+        If_Expression: Unary_Operation ~
+          Expression: Reference
+            Name: Identifier <isempty>
+            Arguments: Identifier <z>
+        If_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <plot>
+              Arguments: Cell_Reference
+                Name: Identifier <z>
+                Arguments: Reshape
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

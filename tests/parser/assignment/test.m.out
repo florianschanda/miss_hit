@@ -1,1 +1,45 @@
+----------------------------------------------------------------------
+--  Parse tree for test.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_01>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Reference
+          Name: Identifier <a>
+          Arguments: Range_Expression
+            First: Number_Literal <1>
+            Stride: Number_Literal <2>
+            Last: Number_Literal <3>
+          Arguments: Range_Expression
+            First: Number_Literal <1>
+            Last: Number_Literal <3>
+        RHS: Number_Literal <2>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_02>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Reference
+          Name: Identifier <a>
+          Arguments: Range_Expression
+            First: Number_Literal <1>
+            Stride: Number_Literal <2>
+            Last: Number_Literal <3>
+          Arguments: Range_Expression
+            First: Number_Literal <1>
+            Last: Number_Literal <3>
+        RHS: Number_Literal <2>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_03>
+    Body: Sequence_Of_Statements
+      Statements: Compound_Assignment_Statement
+        LHS: Identifier <a>
+        LHS: Identifier <b>
+        RHS: Reference
+          Name: Identifier <size>
+          Arguments: Number_Literal <1>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

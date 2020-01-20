@@ -1,1 +1,20 @@
+----------------------------------------------------------------------
+--  Parse tree for test_08.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <c>
+      RHS: Identifier <test_07>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <d>
+      RHS: Reference
+        Name: Identifier <test_07>
+        Arguments: Number_Literal <2>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <e>
+      RHS: Reference
+        Name: Identifier <test_09>
+        Arguments: Number_Literal <2>
+        Arguments: Number_Literal <3>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

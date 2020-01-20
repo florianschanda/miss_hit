@@ -1,1 +1,16 @@
+----------------------------------------------------------------------
+--  Parse tree for invalid_06.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <invalid_06>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <kitten>
+        RHS: Number_Literal <42>
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <potato>
+          Arguments: Char_Array_Literal '+kitten'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

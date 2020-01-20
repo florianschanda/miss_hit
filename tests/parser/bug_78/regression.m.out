@@ -1,1 +1,17 @@
+----------------------------------------------------------------------
+--  Parse tree for regression.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <foo>
+      RHS: Number_Literal <1>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <bar>
+      RHS: Number_Literal <2>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <d2>
+        Arguments: Identifier <foo>
+        Arguments: Identifier <bar>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

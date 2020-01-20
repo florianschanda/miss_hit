@@ -1,1 +1,49 @@
+----------------------------------------------------------------------
+--  Parse tree for test_06.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_06>
+    Body: Sequence_Of_Statements
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <wibble>
+          Arguments: Char_Array_Literal 'a'
+          Arguments: Char_Array_Literal 'b'
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <wibble>
+          Arguments: Char_Array_Literal 'a'
+          Arguments: Char_Array_Literal 'b'
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <wibble>
+          Arguments: Char_Array_Literal 'a'
+          Arguments: Char_Array_Literal 'b'
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <wible>
+          Arguments: Char_Array_Literal '"a'
+          Arguments: Char_Array_Literal 'b"'
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <wibble>
+          Arguments: Char_Array_Literal 'a b'
+          Arguments: Char_Array_Literal 'c'
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <wibble>
+          Arguments: Char_Array_Literal 'a'
+          Arguments: Char_Array_Literal 'b'
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <wibble>
+          Arguments: Char_Array_Literal 'a'
+          Arguments: Char_Array_Literal 'b'
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <wibble>
+          Arguments: Char_Array_Literal '../.././a'
+          Arguments: Char_Array_Literal 'b'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,1 +1,63 @@
+----------------------------------------------------------------------
+--  Parse tree for test_04.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_04>
+      Inputs: Identifier <x>
+      Inputs: Identifier <v>
+      Inputs: Identifier <method>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <x>
+        Functions: Identifier <mustBeNumeric>
+        Functions: Identifier <mustBeReal>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <v>
+        Functions: Identifier <mustBeNumeric>
+        Functions: Identifier <mustBeReal>
+        Functions: Reference
+          Name: Identifier <mustBeEqualSize>
+          Arguments: Identifier <v>
+          Arguments: Identifier <x>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <method>
+        Class: Identifier <char>
+        Functions: Reference
+          Name: Identifier <mustBeMember>
+          Arguments: Identifier <method>
+          Arguments: Cell_Expression
+            Items: Char_Array_Literal 'linear'
+            Items: Char_Array_Literal 'cubic'
+            Items: Char_Array_Literal 'spline'
+        Default: Char_Array_Literal 'linear'
+    Body: Sequence_Of_Statements
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <mustBeEqualSize>
+      Inputs: Identifier <a>
+      Inputs: Identifier <b>
+    Body: Sequence_Of_Statements
+      Statements: If_Statement
+        If_Expression: Unary_Operation ~
+          Expression: Reference
+            Name: Identifier <isequal>
+            Arguments: Reference
+              Name: Identifier <size>
+              Arguments: Identifier <a>
+            Arguments: Reference
+              Name: Identifier <size>
+              Arguments: Identifier <b>
+        If_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <error>
+              Arguments: Char_Array_Literal 'Size of first input must equal size of second input'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

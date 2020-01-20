@@ -1,1 +1,36 @@
+----------------------------------------------------------------------
+--  Parse tree for test.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Matrix_Expression
+        Items: Number_Literal <1>
+        Items: Number_Literal <2>
+        Items: Number_Literal <3>
+    Statements: Simple_Assignment_Statement
+      LHS: Reference
+        Name: Identifier <x>
+        Arguments: Matrix_Expression
+          Items: Binary_Operation -
+            LHS: Identifier <end>
+            RHS: Number_Literal <1>
+          Items: Identifier <end>
+      RHS: Reference
+        Name: Identifier <x>
+        Arguments: Matrix_Expression
+          Items: Identifier <end>
+          Items: Binary_Operation -
+            LHS: Identifier <end>
+            RHS: Number_Literal <1>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <assert>
+        Arguments: Binary_Operation ==
+          LHS: Identifier <x>
+          RHS: Matrix_Expression
+            Items: Number_Literal <1>
+            Items: Number_Literal <3>
+            Items: Number_Literal <2>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

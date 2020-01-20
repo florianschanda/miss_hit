@@ -1,1 +1,26 @@
+----------------------------------------------------------------------
+--  Parse tree for test_01.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_01>
+    Body: Sequence_Of_Statements
+      Statements: SPMD_Statement
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <INP>
+            RHS: Reference
+              Name: Identifier <load>
+              Arguments: Matrix_Expression
+                Items: Char_Array_Literal 'somedatafile'
+                Items: Reference
+                  Name: Identifier <num2str>
+                  Arguments: Identifier <labindex>
+                Items: Char_Array_Literal '.mat'
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <RES>
+            RHS: Reference
+              Name: Identifier <somefun>
+              Arguments: Identifier <INP>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

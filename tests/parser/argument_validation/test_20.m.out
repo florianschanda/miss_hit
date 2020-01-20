@@ -1,1 +1,49 @@
+----------------------------------------------------------------------
+--  Parse tree for test_20.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_19>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Last: Number_Literal <5>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Last: Number_Literal <5>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_19>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Last: Number_Literal <5>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Last: Number_Literal <5>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Last: Number_Literal <10>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Stride: Number_Literal <100>
+          Last: Number_Literal <1000>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_19>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Last: Number_Literal <5>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Last: Number_Literal <5>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Last: Number_Literal <10>
+        Arguments: Range_Expression
+          First: Number_Literal <1>
+          Stride: Number_Literal <100>
+          Last: Number_Literal <1000>
+        Arguments: String_Literal "PlotType"
+        Arguments: String_Literal "log"
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

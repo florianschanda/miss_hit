@@ -1,1 +1,18 @@
+----------------------------------------------------------------------
+--  Parse tree for test_11.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Compound_Assignment_Statement
+      LHS: Identifier <xCell>
+      LHS: Identifier <yCell>
+      LHS: Identifier <optionCell>
+      RHS: Reference
+        Name: Identifier <fRepeat>
+        Arguments: Number_Literal <1>
+        Arguments: Number_Literal <2>
+        Arguments: String_Literal "linear"
+        Arguments: Number_Literal <3>
+        Arguments: Number_Literal <4>
+        Arguments: String_Literal "cubic"
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

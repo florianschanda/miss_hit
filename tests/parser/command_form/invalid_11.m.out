@@ -1,1 +1,30 @@
+----------------------------------------------------------------------
+--  Parse tree for invalid_11.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <invalid_11>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <x>
+        RHS: Lambda_Function
+          Parameters: Identifier <arg>
+          Body: Identifier <arg>
+      Statements: Naked_Expression_Statement
+        Expression: Binary_Operation +
+          LHS: Identifier <x>
+          RHS: Number_Literal <1>
+      Statements: Naked_Expression_Statement
+        Expression: Binary_Operation +
+          LHS: Identifier <x>
+          RHS: Number_Literal <1>
+      Statements: Naked_Expression_Statement
+        Expression: Binary_Operation +
+          LHS: Identifier <x>
+          RHS: Number_Literal <1>
+      Statements: Naked_Expression_Statement
+        Expression: Command form Function_Call
+          Name: Identifier <x>
+          Arguments: Char_Array_Literal '+1'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

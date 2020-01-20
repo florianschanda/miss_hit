@@ -1,1 +1,34 @@
+----------------------------------------------------------------------
+--  Parse tree for test_23.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Matrix_Expression
+        Items: Number_Literal <1>
+        Items: Number_Literal <2>
+        Items: Number_Literal <3>
+        Items: Number_Literal <4>
+        Items: Number_Literal <5>
+        Items: Number_Literal <6>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <y>
+      RHS: Binary_Operation .^
+        LHS: Identifier <x>
+        RHS: Number_Literal <2>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_22>
+        Arguments: Identifier <x>
+        Arguments: Identifier <y>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <test_22>
+        Arguments: Identifier <x>
+        Arguments: Identifier <y>
+        Arguments: Char_Array_Literal 'FaceColor'
+        Arguments: Char_Array_Literal 'magenta'
+        Arguments: Char_Array_Literal 'BarLayout'
+        Arguments: Char_Array_Literal 'grouped'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

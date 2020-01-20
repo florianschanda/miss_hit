@@ -1,1 +1,34 @@
+----------------------------------------------------------------------
+--  Parse tree for subclass.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <subclass>
+    Superclasses: Identifier <MySuperClass>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <MySub>
+          Inputs: Identifier <arg1>
+          Inputs: Identifier <arg2>
+          Outputs: Identifier <obj>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <obj>
+            RHS: Superclass_Reference
+              Prefix: Identifier <obj>
+              Reference: Reference
+                Name: Identifier <MySuperClass>
+                Arguments: Identifier <SuperClassArguments>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <disp>
+          Inputs: Identifier <obj>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Superclass_Reference
+              Prefix: Identifier <disp>
+              Reference: Reference
+                Name: Identifier <MySuperClass>
+                Arguments: Identifier <obj>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

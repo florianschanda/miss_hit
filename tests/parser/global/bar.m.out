@@ -1,1 +1,15 @@
+----------------------------------------------------------------------
+--  Parse tree for bar.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <bar>
+      Inputs: Identifier <x>
+    Body: Sequence_Of_Statements
+      Statements: Global_Statement
+        Names: Identifier <z>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <z>
+        RHS: Identifier <x>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

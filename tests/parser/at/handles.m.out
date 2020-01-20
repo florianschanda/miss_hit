@@ -1,1 +1,28 @@
+----------------------------------------------------------------------
+--  Parse tree for handles.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <handles>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <x>
+        RHS: Function_Pointer
+          Name: Identifier <false>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <y>
+        RHS: Lambda_Function
+          Parameters: Identifier <a>
+          Body: Binary_Operation +
+            LHS: Number_Literal <1>
+            RHS: Identifier <a>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <z>
+        RHS: Lambda_Function
+          Parameters: Identifier <a>
+          Parameters: Identifier <b>
+          Body: Binary_Operation +
+            LHS: Identifier <a>
+            RHS: Identifier <b>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,1 +1,42 @@
+----------------------------------------------------------------------
+--  Parse tree for test_08.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <f>
+      Inputs: Identifier <varargin>
+      Outputs: Identifier <varargout>
+    Body: Sequence_Of_Statements
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Identifier <nargin>
+            RHS: Number_Literal <1>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Identifier <nargout>
+            RHS: Number_Literal <1>
+      Statements: Simple_Assignment_Statement
+        LHS: Cell_Reference
+          Name: Identifier <varargout>
+          Arguments: Number_Literal <1>
+        RHS: Cell_Reference
+          Name: Identifier <varargin>
+          Arguments: Number_Literal <1>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test>
+    Body: Sequence_Of_Statements
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <assert>
+          Arguments: Binary_Operation ==
+            LHS: Reference
+              Name: Identifier <f>
+              Arguments: Number_Literal <1>
+            RHS: Number_Literal <1>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

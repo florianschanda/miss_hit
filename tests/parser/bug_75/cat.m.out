@@ -1,1 +1,28 @@
+----------------------------------------------------------------------
+--  Parse tree for cat.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <cat>
+    Superclasses: Selection
+      Prefix: Identifier <potato>
+      Field: Identifier <kitten>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <meow>
+          Inputs: Identifier <self>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Superclass_Reference
+              Prefix: Selection
+                Prefix: Identifier <self>
+                Field: Identifier <meow>
+              Reference: Selection
+                Prefix: Identifier <potato>
+                Field: Identifier <kitten>
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: String_Literal "*destory stuff*"
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

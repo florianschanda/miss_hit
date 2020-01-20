@@ -1,1 +1,17 @@
+----------------------------------------------------------------------
+--  Parse tree for test_03.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_03>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <x>
+        RHS: Binary_Operation +
+          LHS: Binary_Operation ^
+            LHS: Number_Literal <2>
+            RHS: Unary_Operation -
+              Expression: Number_Literal <2>
+          RHS: Number_Literal <1>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

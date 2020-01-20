@@ -1,1 +1,16 @@
+----------------------------------------------------------------------
+--  Parse tree for simple.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <addOne>
+      Inputs: Identifier <x>
+      Outputs: Identifier <result>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <result>
+        RHS: Binary_Operation +
+          LHS: Identifier <x>
+          RHS: Number_Literal <1>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

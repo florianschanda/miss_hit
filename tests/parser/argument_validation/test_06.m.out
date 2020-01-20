@@ -1,1 +1,36 @@
+----------------------------------------------------------------------
+--  Parse tree for test_06.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Number_Literal <1.0>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <y>
+      RHS: Number_Literal <1.0>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <minval>
+      RHS: Number_Literal <0.0>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <maxval>
+      RHS: Number_Literal <5.0>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <myFunction>
+        Arguments: Identifier <x>
+        Arguments: Identifier <y>
+        Arguments: Identifier <maxval>
+        Arguments: Identifier <minval>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <myFunction>
+        Arguments: Identifier <x>
+        Arguments: Identifier <y>
+        Arguments: Identifier <maxval>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <myFunction>
+        Arguments: Identifier <x>
+        Arguments: Identifier <y>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

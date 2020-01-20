@@ -1,1 +1,52 @@
+----------------------------------------------------------------------
+--  Parse tree for valid.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_01>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Selection
+          Prefix: Identifier <foo>
+          Field: Identifier <x>
+        RHS: Number_Literal <0>
+      Statements: Simple_Assignment_Statement
+        LHS: Selection
+          Prefix: Identifier <foo>
+          Field: Identifier <y>
+        RHS: Number_Literal <0>
+      Statements: Simple_Assignment_Statement
+        LHS: Dynamic_Selection
+          Prefix: Identifier <foo>
+          Field: Char_Array_Literal 'x'
+        RHS: Number_Literal <42>
+      Statements: Simple_Assignment_Statement
+        LHS: Dynamic_Selection
+          Prefix: Identifier <foo>
+          Field: Char_Array_Literal 'x'
+        RHS: Number_Literal <42>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_02>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Selection
+          Prefix: Identifier <foo>
+          Field: Identifier <x>
+        RHS: Number_Literal <0>
+      Statements: Simple_Assignment_Statement
+        LHS: Selection
+          Prefix: Identifier <foo>
+          Field: Identifier <y>
+        RHS: Number_Literal <0>
+      Statements: Compound_Assignment_Statement
+        LHS: Dynamic_Selection
+          Prefix: Identifier <foo>
+          Field: Char_Array_Literal 'x'
+        LHS: Dynamic_Selection
+          Prefix: Identifier <foo>
+          Field: Char_Array_Literal 'y'
+        RHS: Reference
+          Name: Identifier <potato>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

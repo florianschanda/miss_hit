@@ -1,1 +1,59 @@
+----------------------------------------------------------------------
+--  Parse tree for SyntaxColors.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <SyntaxColors>
+    Properties: Properties Special_Block
+      Items: Class_Property
+        Name: Identifier <R>
+      Items: Class_Property
+        Name: Identifier <G>
+      Items: Class_Property
+        Name: Identifier <B>
+    Enumerations: Enumeration Special_Block
+      Items: Class_Enumeration
+        Name: Identifier <Error>
+        Arguments: Number_Literal <1>
+        Arguments: Number_Literal <0>
+        Arguments: Number_Literal <0>
+      Items: Class_Enumeration
+        Name: Identifier <Comment>
+        Arguments: Number_Literal <0>
+        Arguments: Number_Literal <1>
+        Arguments: Number_Literal <0>
+      Items: Class_Enumeration
+        Name: Identifier <Keyword>
+        Arguments: Number_Literal <0>
+        Arguments: Number_Literal <0>
+        Arguments: Number_Literal <1>
+      Items: Class_Enumeration
+        Name: Identifier <String>
+        Arguments: Number_Literal <1>
+        Arguments: Number_Literal <0>
+        Arguments: Number_Literal <1>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <SyntaxColors>
+          Inputs: Identifier <r>
+          Inputs: Identifier <g>
+          Inputs: Identifier <b>
+          Outputs: Identifier <c>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Selection
+              Prefix: Identifier <c>
+              Field: Identifier <R>
+            RHS: Identifier <r>
+          Statements: Simple_Assignment_Statement
+            LHS: Selection
+              Prefix: Identifier <c>
+              Field: Identifier <G>
+            RHS: Identifier <g>
+          Statements: Simple_Assignment_Statement
+            LHS: Selection
+              Prefix: Identifier <c>
+              Field: Identifier <B>
+            RHS: Identifier <b>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

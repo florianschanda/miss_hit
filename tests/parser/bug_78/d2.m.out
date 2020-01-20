@@ -1,1 +1,19 @@
+----------------------------------------------------------------------
+--  Parse tree for d2.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <d2>
+      Inputs: Identifier <s1>
+      Inputs: Identifier <s2>
+    Body: Sequence_Of_Statements
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <disp>
+          Arguments: Identifier <s1>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <disp>
+          Arguments: Identifier <s2>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

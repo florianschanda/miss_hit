@@ -1,1 +1,17 @@
+----------------------------------------------------------------------
+--  Parse tree for kitten.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <kitten>
+      Inputs: Identifier <x>
+      Outputs: Identifier <r>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <properties>
+        RHS: Identifier <x>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <r>
+        RHS: Identifier <properties>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

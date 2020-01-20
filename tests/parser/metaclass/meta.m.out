@@ -1,1 +1,35 @@
+----------------------------------------------------------------------
+--  Parse tree for meta.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_01>
+      Outputs: Identifier <a>
+      Outputs: Identifier <b>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <a>
+        RHS: Metaclass
+          Name: Identifier <potato>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <b>
+        RHS: Reference
+          Name: Selection
+            Prefix: Selection
+              Prefix: Identifier <meta>
+              Field: Identifier <class>
+            Field: Identifier <fromName>
+          Arguments: Char_Array_Literal 'potato'
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_02>
+      Outputs: Identifier <mc>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <mc>
+        RHS: Metaclass
+          Name: Selection
+            Prefix: Identifier <meta>
+            Field: Identifier <class>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

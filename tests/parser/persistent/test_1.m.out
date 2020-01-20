@@ -1,1 +1,24 @@
+----------------------------------------------------------------------
+--  Parse tree for test_1.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <myFun>
+    Body: Sequence_Of_Statements
+      Statements: Persistent_Statement
+        Names: Identifier <n>
+      Statements: If_Statement
+        If_Expression: Reference
+          Name: Identifier <isempty>
+          Arguments: Identifier <n>
+        If_Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <n>
+            RHS: Number_Literal <0>
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <n>
+        RHS: Binary_Operation +
+          LHS: Identifier <n>
+          RHS: Number_Literal <1>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1,1 +1,42 @@
+----------------------------------------------------------------------
+--  Parse tree for test4.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <tmp>
+      RHS: Reference
+        Name: Identifier <test>
+        Arguments: Number_Literal <12>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test>
+      Inputs: Identifier <potato>
+      Outputs: Identifier <x>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <x>
+        RHS: Binary_Operation +
+          LHS: Reference
+            Name: Identifier <foo>
+          RHS: Number_Literal <1>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <foo>
+      Outputs: Identifier <y>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <y>
+        RHS: Binary_Operation +
+          LHS: Number_Literal <12>
+          RHS: Reference
+            Name: Identifier <bar>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <bar>
+      Outputs: Identifier <z>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <z>
+        RHS: Number_Literal <1>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

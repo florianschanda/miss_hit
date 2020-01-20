@@ -1,1 +1,21 @@
+----------------------------------------------------------------------
+--  Parse tree for test.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Lambda_Function
+        Parameters: Identifier <~>
+        Body: Number_Literal <5>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <y>
+      RHS: Reference
+        Name: Identifier <x>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <assert>
+        Arguments: Binary_Operation ==
+          LHS: Identifier <y>
+          RHS: Number_Literal <5>
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

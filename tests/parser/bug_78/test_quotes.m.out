@@ -1,1 +1,36 @@
+----------------------------------------------------------------------
+--  Parse tree for test_quotes.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Naked_Expression_Statement
+      Expression: Command form Function_Call
+        Name: Identifier <disp>
+        Arguments: Char_Array_Literal 'foobar'
+    Statements: Naked_Expression_Statement
+      Expression: Command form Function_Call
+        Name: Identifier <disp>
+        Arguments: Char_Array_Literal 'foobar'
+    Statements: Naked_Expression_Statement
+      Expression: Command form Function_Call
+        Name: Identifier <disp>
+        Arguments: Char_Array_Literal 'foo'bar'
+    Statements: Naked_Expression_Statement
+      Expression: Command form Function_Call
+        Name: Identifier <disp>
+        Arguments: Char_Array_Literal 'foo%bar'
+    Statements: Naked_Expression_Statement
+      Expression: Command form Function_Call
+        Name: Identifier <disp>
+        Arguments: Char_Array_Literal '"foo"'
+    Statements: Naked_Expression_Statement
+      Expression: Command form Function_Call
+        Name: Identifier <d2>
+        Arguments: Char_Array_Literal 'f'
+        Arguments: Char_Array_Literal ')f foo    '
+    Statements: Naked_Expression_Statement
+      Expression: Command form Function_Call
+        Name: Identifier <d2>
+        Arguments: Char_Array_Literal 'f'
+        Arguments: Char_Array_Literal ')f f'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

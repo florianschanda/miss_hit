@@ -1,1 +1,35 @@
+----------------------------------------------------------------------
+--  Parse tree for simple.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <simple>
+    Body: Sequence_Of_Statements
+      Statements: Switch_Statement
+        Expression: Identifier <n>
+        Case_Expression: Unary_Operation -
+          Expression: Number_Literal <1>
+        Case_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: Char_Array_Literal 'negative one'
+        Case_Expression: Number_Literal <0>
+        Case_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: Char_Array_Literal 'zero'
+        Case_Expression: Number_Literal <1>
+        Case_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: Char_Array_Literal 'positive one'
+        Otherwise_Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: Char_Array_Literal 'other value'
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

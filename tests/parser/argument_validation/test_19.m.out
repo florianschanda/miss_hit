@@ -1,1 +1,73 @@
+----------------------------------------------------------------------
+--  Parse tree for test_19.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_19>
+      Inputs: Identifier <x>
+      Inputs: Identifier <y>
+      Inputs: Identifier <scale>
+    Validation: Arguments Special_Block
+      Attributes: Class_Attribute
+        Name: Identifier <Repeating>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <x>
+        Class: Identifier <double>
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: COLON
+        Name: Identifier <y>
+        Class: Identifier <double>
+    Validation: Arguments Special_Block
+      Items: Class_Property
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Selection
+          Prefix: Identifier <scale>
+          Field: Identifier <PlotType>
+        Class: Identifier <string>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <z>
+        RHS: Reference
+          Name: Identifier <reshape>
+          Arguments: Matrix_Expression
+            Items: Identifier <x>
+            Items: Identifier <y>
+          Arguments: Number_Literal <1>
+          Arguments: Matrix_Expression
+      Statements: If_Statement
+        If_Expression: Reference
+          Name: Identifier <isfield>
+          Arguments: Identifier <scale>
+          Arguments: String_Literal "PlotType"
+        If_Body: Sequence_Of_Statements
+          Statements: If_Statement
+            If_Expression: Binary_Operation ==
+              LHS: Selection
+                Prefix: Identifier <scale>
+                Field: Identifier <PlotType>
+              RHS: String_Literal "lin"
+            If_Body: Sequence_Of_Statements
+              Statements: Naked_Expression_Statement
+                Expression: Reference
+                  Name: Identifier <plot>
+                  Arguments: Cell_Reference
+                    Name: Identifier <z>
+                    Arguments: Reshape
+            Elseif_Expression: Binary_Operation ==
+              LHS: Selection
+                Prefix: Identifier <scale>
+                Field: Identifier <PlotType>
+              RHS: String_Literal "log"
+            Elseif_Body: Sequence_Of_Statements
+              Statements: Naked_Expression_Statement
+                Expression: Reference
+                  Name: Identifier <loglog>
+                  Arguments: Cell_Reference
+                    Name: Identifier <z>
+                    Arguments: Reshape
+----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
