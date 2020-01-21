@@ -871,14 +871,23 @@ class MATLAB_Parser:
         # list, since there cannot be a trailing comma there.
 
         lhs = []
+        require_comma = False
 
         self.match("A_BRA")
         if self.peek("COMMA"):
             self.match("COMMA")
         while True:
+            # There is a special case we need to take care of with
+            # ~. There is a MATLAB bug/weirdness with [~ x], which is
+            # parsed like [~x], but [x y] is OK for some reason. See
+            # issue #70. Hence we enforce commas after any ~.
+            if self.peek("OPERATOR", "~"):
+                require_comma = True
             lhs.append(self.parse_name(allow_void=True))
-            if self.peek("COMMA"):
+            if (self.peek("COMMA") or require_comma) and \
+               not self.peek("A_KET"):
                 self.match("COMMA")
+                require_comma = False
             if self.peek("A_KET"):
                 break
         self.match("A_KET")
