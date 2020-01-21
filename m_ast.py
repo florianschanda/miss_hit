@@ -73,8 +73,8 @@ class Node:
         self._visit(parent, function, relation)
         self._visit_end(parent, function, relation)
 
-    def pp_node(self):
-        self.visit(None, Text_Visitor(), "Root")
+    def pp_node(self, fd=None):
+        self.visit(None, Text_Visitor(fd), "Root")
 
 
 class Expression(Node):
@@ -1198,13 +1198,18 @@ class Metaclass(Expression):
 ###################################################################
 
 class Text_Visitor(AST_Visitor):
-    def __init__(self):
+    def __init__(self, fd):
         super().__init__()
         self.indent = 0
+        self.fd = fd
 
     def write(self, string):
         assert isinstance(string, str)
-        print(" " * (self.indent * 2) + string)
+        txt = " " * (self.indent * 2) + string
+        if self.fd:
+            self.fd.write(txt + "\n")
+        else:
+            print(txt)
 
     def write_head(self, string, relation):
         if relation:

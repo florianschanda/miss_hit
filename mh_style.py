@@ -704,7 +704,7 @@ def stage_3_analysis(mh, cfg, tbuf):
                         token.fix["ensure_ws_after"] = True
 
 
-def analyze(mh, filename, rule_set, autofix):
+def analyze(mh, filename, rule_set, autofix, fd_tree):
     assert isinstance(filename, str)
     assert isinstance(autofix, bool)
 
@@ -795,6 +795,10 @@ def analyze(mh, filename, rule_set, autofix):
     try:
         parser = MATLAB_Parser(mh, tbuf)
         parse_tree = parser.parse_file()
+        if fd_tree:
+            fd_tree.write("-- Parse tree for %s\n" % filename)
+            parse_tree.pp_node(fd_tree)
+            fd_tree.write("\n\n")
     except Error:
         parse_tree = None
 
@@ -855,6 +859,12 @@ def main():
                     help=("Don't show any style message, only show warnings "
                           "and errors."))
 
+    # Debug options
+    ap.add_argument("--debug-dump-tree",
+                    default=None,
+                    metavar="FILE",
+                    help="Dump text-based parse tree to given file")
+
     language_option = ap.add_argument_group("Language options")
     language_option.add_argument("--octave",
                                  default=False,
@@ -910,6 +920,11 @@ def main():
     mh.html         = options.html is not None
     # mh.sort_messages = False
 
+    if options.debug_dump_tree:
+        fd_tree = open(options.debug_dump_tree, "w")
+    else:
+        fd_tree = None
+
     try:
         for item in options.files:
             if os.path.isdir(item):
@@ -934,14 +949,19 @@ def main():
                         analyze(mh,
                                 os.path.normpath(os.path.join(path, f)),
                                 rule_set,
-                                options.fix)
+                                options.fix,
+                                fd_tree)
         else:
             analyze(mh,
                     os.path.normpath(item),
                     rule_set,
-                    options.fix)
+                    options.fix,
+                    fd_tree)
 
     mh.summary_and_exit()
+
+    if options.debug_dump_tree:
+        close(fd_tree)
 
 
 def ice_handler():
