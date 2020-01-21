@@ -2,29 +2,29 @@
 
 %% These should be OK
 
-var - 1 + 2
+x = var - 1 + 2
 
-single(-1)
+x = single(-1)
 
 foo = ~var
 
-var * 123
+x = var * 123
 
 b = ~(var1 || ~var2 & var3) & var4 == false
 
-((a * 3) <= 1) && ((single(1 + 1) - (1^3 + 4))/5 ~= (1/3))
+x = ((a * 3) <= 1) && ((single(1 + 1) - (1^3 + 4)) / 5 ~= (1 / 3))
 
-a < -Eps
+x = a < -Eps
 
-b > -another2Variable
+x = b > -another2Variable
 
 [~, a] = foo(b)
 
 [b, ~] = foo(b)
 
-a < ~b
+x = a < ~b
 
-a < ...
+x = a < ...
 -b
 
 a = [-5, var, 4, -1, -4; ...
@@ -51,40 +51,40 @@ kitten = min(foo.bar.BAZ, ...
 var = 3e-4;
 
 for i = 10:-1:-10
-    [0 -1 -1 0]
+    x = [0 -1 -1 0]
 end
 
-a .* b ./ c
-a.^b
-a^b
+x = a .* b ./ c
+x = a.^b
+x = a^b
 
 import PackageName.*;
 
-'STRING1-STRING2*STRING3'
-'STRING1-STR""ING2*STRING3'
-"STRING1-STRING2*STRING3"
-"STRING1-STR''ING2*STRING3"
+x = 'STRING1-STRING2*STRING3'
+x = 'STRING1-STR""ING2*STRING3'
+x = "STRING1-STRING2*STRING3"
+x = "STRING1-STR''ING2*STRING3"
 
 %% These should not be OK for a variety of reasons
 
-var-1
+x = var - 1
 
-single(-1)
+x = single(-1)
 
-single(- 1)
+x = single(-1)
 
-foo = ~ var
+foo = ~var
 
-var*123
+x = var * 123
 
-var *( 123)
+x = var * (123)
 
-a ~=3
+x = a ~= 3
 
-a.*b
+x = a .* b
 
-a .^ b
+x = a .^ b
 
-a ^ b
+x = a ^ b
 
 import PackageName.* ;

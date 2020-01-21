@@ -4,8 +4,11 @@ In test.m, line 2
 |           ^^^^^^^^^^^^^^ style: comment must be preceeded by whitespace [fixed]
 In test.m, line 3
 | y = a + b +... Another comment
+|           ^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test.m, line 3
+| y = a + b +... Another comment
 |            ^^^^^^^^^^^^^^^^^^^^ style: continuation must be preceeded by whitespace [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)

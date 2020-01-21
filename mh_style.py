@@ -665,6 +665,44 @@ def stage_3_analysis(mh, cfg, tbuf):
                                    "continuations should not start with "
                                    "operators")
 
+        elif token.kind == "OPERATOR":
+            if not config.active(cfg, "operator_whitespace"):
+                pass
+            elif token.fix.get("unary_operator", False):
+                if (prev_in_line and ws_before > 0) and \
+                   token.value in (".'", "'"):
+                    mh.style_issue(token.location,
+                                   "suffix operator must not be preceeded by"
+                                   " whitespace",
+                                   True)
+                    token.fix["ensure_trim_before"] = True
+                elif (next_in_line and ws_after > 0) and \
+                     token.value not in (".'", "'"):
+                    mh.style_issue(token.location,
+                                   "unary operator must not be followed by"
+                                   " whitespace",
+                                   True)
+                    token.fix["ensure_trim_after"] = True
+            elif token.fix.get("binary_operator", False):
+                if token.value in (".^", "^"):
+                    if (prev_in_line and ws_before > 0) or \
+                       (next_in_line and ws_after > 0):
+                        mh.style_issue(token.location,
+                                       "power binary operator"
+                                       " must not be surrounded by whitespace",
+                                       True)
+                        token.fix["ensure_ws_before"] = False
+                        token.fix["ensure_ws_after"] = False
+                else:
+                    if (prev_in_line and ws_before == 0) or \
+                       (next_in_line and ws_after == 0):
+                        mh.style_issue(token.location,
+                                       "non power binary operator"
+                                       " must be surrounded by whitespace",
+                                       True)
+                        token.fix["ensure_ws_before"] = True
+                        token.fix["ensure_ws_after"] = True
+
 
 def analyze(mh, filename, rule_set, autofix):
     assert isinstance(filename, str)
@@ -752,25 +790,26 @@ def analyze(mh, filename, rule_set, autofix):
         # If there are lex errors, we can stop here
         return
 
+    # Create parse tree
+
+    try:
+        parser = MATLAB_Parser(mh, tbuf)
+        parse_tree = parser.parse_file()
+    except Error:
+        parse_tree = None
+
     # Stage 3 - rules around individual tokens
 
     stage_3_analysis(mh, cfg, tbuf)
 
-    # Stage 4 - parsing
+    # Stage 4 - rules involving the parse tree
 
-    # pylint: disable=unused-variable
-    try:
-        parser = MATLAB_Parser(mh, tbuf)
-        parser.parse_file()
-        parse_errors = False
-    except Error:
-        parse_errors = True
-    # pylint: enable=unused-variable
+    # TODO
 
     # Re-write the file, with issues fixed
 
     if autofix:
-        if parse_errors:
+        if not parse_tree:
             mh.error(Location(filename),
                      "file is not auto-fixed because it contains parse errors",
                      fatal=False)

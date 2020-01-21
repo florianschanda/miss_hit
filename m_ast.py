@@ -1089,6 +1089,10 @@ class Unary_Operation(Expression):
         self.t_op   = t_op
         self.n_expr = n_expr
 
+        # To support the style checker we flag that this operator is
+        # unary.
+        self.t_op.fix["unary_operator"] = True
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_expr.visit(parent, function, "Expression")
@@ -1111,6 +1115,10 @@ class Binary_Operation(Expression):
         self.t_op  = t_op
         self.n_lhs = n_lhs
         self.n_rhs = n_rhs
+
+        # To support the style checker we flag that this operator is
+        # unary.
+        self.t_op.fix["binary_operator"] = True
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)

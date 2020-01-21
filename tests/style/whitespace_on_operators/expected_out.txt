@@ -1,20 +1,56 @@
 === PLAIN MODE ===
+In codechecker_tests.m, line 15
+| x = ((a * 3) <= 1) && ((single(1 + 1) - (1^3 + 4))/5 ~= (1/3))
+|                                                   ^ style: non power binary operator must be surrounded by whitespace [fixed]
+In codechecker_tests.m, line 15
+| x = ((a * 3) <= 1) && ((single(1 + 1) - (1^3 + 4))/5 ~= (1/3))
+|                                                           ^ style: non power binary operator must be surrounded by whitespace [fixed]
 In codechecker_tests.m, line 44
 |         -var1 > 2, single(-0.0625));
 |         ^ style: continuations should not start with operators
 In codechecker_tests.m, line 48
 |                  -foo.bar.wibble(potato, ...
 |                  ^ style: continuations should not start with operators
+In codechecker_tests.m, line 70
+| x = var-1
+|        ^ style: non power binary operator must be surrounded by whitespace [fixed]
 In codechecker_tests.m, line 72
-| single( -1)
-|       ^ style: ( must not be followed by whitespace [fixed]
+| x = single( -1)
+|           ^ style: ( must not be followed by whitespace [fixed]
 In codechecker_tests.m, line 74
-| single( - 1)
-|       ^ style: ( must not be followed by whitespace [fixed]
+| x = single( - 1)
+|           ^ style: ( must not be followed by whitespace [fixed]
+In codechecker_tests.m, line 74
+| x = single( - 1)
+|             ^ style: unary operator must not be followed by whitespace [fixed]
 In codechecker_tests.m, line 76
 | foo =~ var
 |     ^ style: = must be succeeded by whitespace [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
+In codechecker_tests.m, line 76
+| foo =~ var
+|      ^ style: unary operator must not be followed by whitespace [fixed]
+In codechecker_tests.m, line 78
+| x = var*123
+|        ^ style: non power binary operator must be surrounded by whitespace [fixed]
+In codechecker_tests.m, line 80
+| x = var *( 123)
+|         ^ style: non power binary operator must be surrounded by whitespace [fixed]
+In codechecker_tests.m, line 80
+| x = var *( 123)
+|          ^ style: ( must not be followed by whitespace [fixed]
+In codechecker_tests.m, line 82
+| x = a ~=3
+|       ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+In codechecker_tests.m, line 84
+| x = a.*b
+|      ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+In codechecker_tests.m, line 86
+| x = a .^ b
+|       ^^ style: power binary operator must not be surrounded by whitespace [fixed]
+In codechecker_tests.m, line 88
+| x = a ^ b
+|       ^ style: power binary operator must not be surrounded by whitespace [fixed]
+MISS_HIT Summary: 2 file(s) analysed, 17 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
+MISS_HIT Summary: 2 file(s) analysed, 17 style issue(s)

@@ -346,6 +346,21 @@ enable_rule: "file_length"
         thing on a line and a line continuation.
       </div>
 
+      <h4>Whitespace around operators ("operator_whitespace")</h4>
+
+      <div>
+        This rule makes sure binary operators (except for the power
+        operators) are surrounded by whitespace, and unary operators
+        are not followed by whitespace. Like so:
+      </div>
+
+      <div>
+        <pre>
+x = -foo + bar;
+y = x^2;
+        </pre>
+      </div>
+
       <!-- HOOK: AUTOFIX RULES -->
       <!-- END HOOK: AUTOFIX RULES -->
     </section>

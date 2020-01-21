@@ -64,6 +64,8 @@ STYLE_RULES = {
                                  " comment."),
     "operator_after_continuation" : ("Complains about operators after"
                                      " a line continuation."),
+    "operator_whitespace" : ("Enfore whitespace around unary and binary"
+                             " operators."),
     "eol_comma" : ("Ensures lines do not end with a comma."),
     "builtin_shadow" : ("Checks that assignments do not overwrite builtin"
                         " functions such as true, false, or pi."),

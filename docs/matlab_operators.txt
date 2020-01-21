@@ -7,34 +7,34 @@ cim = comma in matrix: this operator can be followed by a comma
 cbim = comma before in matrix: this operator could be preceeded by a
 comma (implicit or explicit).
 
-            CIM?  CBIM?
-+           n     y     plus or unary plus
--           n     y     minus or unary minus
-*           n     n     matrix mult
-/           n     n     matrix right division
-\           n     n     matrix left division
-^           n     n     matrix power
-'           y     y     complex conjugate transpose / string  (cbim string)
-<           n     n     less than
-   <=       n     n     less than or equal
->           n     n     greater than
-   >=       n     n     greater than or equal
-&           n     n     and
-   &&       n     n     short-circuit and
-|           n     n     or
-   ||       n     n     short-circuit or
-~           n     y     not
-   ~=       n     n     not equal
-.           n     n     field/package selection
-   .*       n     n     element-wise mult
-   ./       n     n     element-wise right division
-   .\       n     n     element-wise left division
-   .^       n     n     element-wise power
-   .'       y     n     transpose
-   .?       ?     ?     field of name-value structure
-=           n     n     (assignment)
-   ==       n     n     equals
-@           n     n     lambda function or function pointer
-?           n     y     metaclass
-:           n     n     range
-!           n     ?     (shell escape)
+TOKEN             CIM?  CBIM?
+OPERATOR   +           n     y     plus or unary plus
+OPERATOR   -           n     y     minus or unary minus
+OPERATOR   *           n     n     matrix mult
+OPERATOR   /           n     n     matrix right division
+OPERATOR   \           n     n     matrix left division
+OPERATOR   ^           n     n     matrix power
+OPERATOR   '           y     y     complex conjugate transpose / string  (cbim string)
+OPERATOR   <           n     n     less than
+OPERATOR      <=       n     n     less than or equal
+OPERATOR   >           n     n     greater than
+OPERATOR      >=       n     n     greater than or equal
+OPERATOR   &           n     n     and
+OPERATOR      &&       n     n     short-circuit and
+OPERATOR   |           n     n     or
+OPERATOR      ||       n     n     short-circuit or
+OPERATOR   ~           n     y     not
+OPERATOR      ~=       n     n     not equal
+SELECTION  .           n     n     field/package selection
+OPERATOR      .*       n     n     element-wise mult
+OPERATOR      ./       n     n     element-wise right division
+OPERATOR      .\       n     n     element-wise left division
+OPERATOR      .^       n     n     element-wise power
+OPERATOR      .'       y     n     transpose
+<TODO>        .?       ?     ?     field of name-value structure
+ASSIGNMENT =           n     n     (assignment)
+OPERATOR      ==       n     n     equals
+AT         @           n     n     lambda function or function pointer
+METACLASS  ?           n     y     metaclass
+COLON      :           n     n     range
+BANG       !           n     ?     (shell escape)
