@@ -1,6 +1,8 @@
+% (c) Copyright 2019-2020 Zenuity AB
+
 classdef miss_hit < handle
 
-    properties (Constant, Access=private)
+    properties (Constant, Access = private)
 
         here = fileparts(mfilename('fullpath'));
 
@@ -35,7 +37,8 @@ classdef miss_hit < handle
         function lastCommit()
             % Run miss_hit on files changed in the last commit.
 
-            files = git_retrieve_files('git --no-pager diff HEAD^ HEAD --name-only');
+            files = git_retrieve_files( ...
+                      'git --no-pager diff HEAD^ HEAD --name-only');
             miss_hit.run(files);
 
         end
@@ -63,12 +66,13 @@ classdef miss_hit < handle
 
     end
 
-    methods (Static, Access=private)
+    methods (Static, Access = private)
 
         function run(file_or_folder)
 
-            AssertFileOrFolder = @(f) assert(ischar(f) && (isfolder(f) || isfile(f)), ...
-                'Not a file or folder.');
+            AssertFileOrFolder = @(f) ...
+                assert(ischar(f) && (isfolder(f) || isfile(f)), ...
+                       'Not a file or folder.');
 
             if iscell(file_or_folder)
                 cellfun(AssertFileOrFolder, file_or_folder);
@@ -80,7 +84,8 @@ classdef miss_hit < handle
             % Do the auto-fixes
             python_command = strjoin({ ...
                 'cd', miss_hit.here, '&&', ...
-                'python3', 'mh_style.py', file_or_folder, '--fix', '--no-style'});
+                'python3', 'mh_style.py', file_or_folder, ...
+                '--fix', '--no-style'});
             system(python_command, '-echo');
 
             % Generate report for remaining issues.
