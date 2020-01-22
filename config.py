@@ -224,7 +224,7 @@ def load_config(mh, cfg_file, cfg):
         mh.summary_and_exit()
 
 
-def register_tree(mh, dirname):
+def register_tree(mh, dirname, options):
     assert isinstance(dirname, str)
     assert os.path.isdir(dirname)
     assert dirname == os.path.abspath(dirname)
@@ -245,15 +245,18 @@ def register_tree(mh, dirname):
             CONFIG_TREE[parent]["children"].add(dirname)
 
         config_name = None
-        for filename in CONFIG_FILENAMES:
-            if os.path.isfile(os.path.join(dirname, filename)):
-                if config_name is None:
-                    config_name = filename
-                else:
-                    mh.register_file("directory " + os.path.relpath(dirname))
-                    mh.error(Location("directory " + os.path.relpath(dirname)),
-                             "cannot have both a %s and %s config file" %
-                             (config_name, filename))
+        if not options.ignore_config:
+            for filename in CONFIG_FILENAMES:
+                if os.path.isfile(os.path.join(dirname, filename)):
+                    if config_name is None:
+                        config_name = filename
+                    else:
+                        mh.register_file("directory " +
+                                         os.path.relpath(dirname))
+                        mh.error(Location("directory " +
+                                          os.path.relpath(dirname)),
+                                 "cannot have both a %s and %s config file" %
+                                 (config_name, filename))
 
         CONFIG_TREE[dirname] = {
             "children"   : set(),

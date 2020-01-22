@@ -928,10 +928,11 @@ def main():
     try:
         for item in options.files:
             if os.path.isdir(item):
-                config.register_tree(mh, os.path.abspath(item))
+                config.register_tree(mh, os.path.abspath(item), options)
             elif os.path.isfile(item):
                 config.register_tree(mh,
-                                     os.path.dirname(os.path.abspath(item)))
+                                     os.path.dirname(os.path.abspath(item)),
+                                     options)
             else:
                 ap.error("%s is neither a file nor directory" % item)
         config.build_config_tree(mh,
@@ -961,7 +962,7 @@ def main():
     mh.summary_and_exit()
 
     if options.debug_dump_tree:
-        close(fd_tree)
+        fd_tree.close()
 
 
 def ice_handler():
