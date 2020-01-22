@@ -36,7 +36,8 @@ cd C:\potato
 ```
 
 So, we need to have special rules to detect command form. Thankfully
-this got a bit easier in a recent MATLAB release and is documented.
+this got a bit easier in a recent MATLAB release and
+[it is documented](https://uk.mathworks.com/help/matlab/matlab_prog/command-vs-function-syntax.html).
 
 ### Command form bracketing
 
@@ -152,7 +153,7 @@ The rules as to when a `'` introduces a string are complex and depend
 on the *previously lexed token* and *whitespace before this
 token*. The following rules are given in order of precedence:
 
-If there is preceeding whitespace or we're the first token on the
+If there is preceding whitespace or we're the first token on the
 current line then we're always a CARRAY:
 ```
 'foo'
@@ -246,16 +247,20 @@ operation) but is not `.NUMBER`, or the next two characters are not
 comma. In order of precedence, based on the next non-whitespace
 character:
 
-* `,`, `;`, newline: no comma
-* `%` (and `#` for octave): no comma
-* any alphanumeric character: add comma
-* `'` or `"`: add comma
-* any opening bracket: add comma
-* `@` or `?`: add comma
-* `.` (it must be a number literal): add comma
-* `-` or `+` or `~` and the character after is also `+` or `-` or `(`: add comma
-* `-` or `+` or `~` and the character after is alphanumeric: add comma
-* no comma otherwise
+No comma in these situations:
+* `,`, `;`, newline
+* `%` (and `#` for octave)
+
+Add an anonymous comma in these situations:
+* any alphanumeric character
+* `'` or `"`
+* any opening bracket
+* `@` or `?`
+* `.` (it must be a number literal)
+* `-` or `+` or `~` and the character after is also `+` or `-` or `(`
+* `-` or `+` or `~` and the character after is alphanumeric
+
+Do not add a comma otherwise.
 
 ### Lambda functions
 
@@ -282,7 +287,7 @@ find the first non-whitespace character following the closing `]`. If
 it is a `=` then we deal with an assignment target, if not then it
 must be a matrix.
 
-This lookahead is not easy, since strings can appear legitimately. For
+This look-ahead is not easy, since strings can appear legitimately. For
 example:
 ```
 [x.('fo)o')] = 10;
