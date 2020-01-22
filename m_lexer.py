@@ -44,7 +44,7 @@ from m_language import KEYWORDS
 # do with context).
 #
 # Specifically as to why we avoided using PLY: The single quote
-# character and command form fucks up everything. The kind of tricks
+# character and command form mess up everything. The kind of tricks
 # the technical report above employes cannot be reasonably used in
 # PLY. How to do this well is an open question. I am not sure this
 # lexer is an example of "well".
@@ -53,8 +53,8 @@ from m_language import KEYWORDS
 # TR is that we've based this on a newer MATLAB version. For example
 # issues such as [1.1.1] no longer exist which simplified the design
 # somewhat. We've also got a more complete set of features supported
-# (i.e. every single horrific MATLAB 2017b+ feature should be
-# working).
+# (i.e. every single MATLAB 2019b+ feature should be working, except
+# for the .? construct).
 #
 # The whole concept of a separate lexing phase is put to an extreme
 # test in MATLAB. It would be "easier" if the lexer can parser could
@@ -227,8 +227,6 @@ class MATLAB_Lexer(Token_Generator):
         self.comment_char = frozenset("%")
         # Characters that start a line comment. MATLAB only uses %,
         # and Octave uses either.
-        #
-        # TODO: This should be configurable (see #44).
 
         self.in_special_section = False
         # Some keywords (properties, attributes, etc.) introduce a
@@ -572,8 +570,9 @@ class MATLAB_Lexer(Token_Generator):
                     r"(\.[0-9]+([eE][+-]?[0-9]+)?[iIjJ]?)")
                 self.advance(len(tmp) - 1)
 
-                # We need to make sure we now have something that isn't a
-                # number to stop stupidity like 1.1.1
+                # We need to make sure we now have something that
+                # isn't a number to stop any stupidity such as "1.1.1"
+                # lexing as "1.1" and ".1"
                 if self.nc.isnumeric() or \
                    self.nc == "." and self.nnc.isnumeric():
                     self.lex_error()
@@ -602,15 +601,14 @@ class MATLAB_Lexer(Token_Generator):
                 self.next()
 
             elif self.cc == "'":
-                # This is either a single-quoted string or the transpose
-                # operation. If we had preceeding whitespace, it is never
-                # transpose. Otherwise it depends on bracket nesting level
-                # and/or the previous token. At this point I'd like to
-                # express a heartfelt THANK YOU to the MATLAB language
-                # designers for this feature. If you need more ideas, wny
-                # not permit unicode (including LTR, skin-tone modifiers
-                # and homonyms for space) in MATLAB variable names as
-                # well? Seriously, what is wrong with you people?
+                # This is either a single-quoted string or the
+                # transpose operation. If we had preceeding
+                # whitespace, it is never transpose. Otherwise it
+                # depends on bracket nesting level and/or the previous
+                # token. At this point I'd like to express a heartfelt
+                # THANK YOU to the MATLAB (R) language designers for
+                # this feature. If you need more ideas, wny not permit
+                # unicode in MATLAB (R) variable names as well?
                 kind = None
                 if preceeding_ws or self.first_in_line:
                     kind = "CARRAY"
@@ -823,7 +821,8 @@ class MATLAB_Lexer(Token_Generator):
                         break
                     elif c == ")":
                         # This is here for bug-for-bug compatibility
-                        # with MATLAB. cmd )foo is a lex error.
+                        # with MATLAB (R). "cmd )foo" is a lex error,
+                        # and we do the same here.
                         self.advance(n - self.lexpos)
                         self.lex_error("MATLAB/Octave cannot process command"
                                        " starting with )")
@@ -878,7 +877,7 @@ class MATLAB_Lexer(Token_Generator):
                     # We found an operator after a whitespace. Now we
                     # need to check if this character is also a space,
                     # in which case we do not have a
-                    # command. Otherwise, it's a command
+                    # command. Otherwise, it's a command.
                     if c in (" ", "\t"):
                         break
                     else:
