@@ -1,15 +1,16 @@
 # MATLAB Independent, Small & Safe, High Integrity Tools
 
-Let's face it: MATLAB (R) and Octave are probably the worst
-programming language ever invented that aren't weird on purpose
-(e.g. Malbolge). They are the only languages I know of where the
-lexing is context sensitive with potentially unlimited lookahead and
-pretty much every single feature appears to be conceived to make the
-task of writing analysis tools for MATLAB (R) / Octave programs as
-difficult and error-prone as possible. In my opinion JavaScript and
-PHP compare favourably from an analysis point of view, since that has
-at least published language grammar and semantics; a task which The
-MathWorks has not undertaken so far.
+Let's face it: MATLAB (R) and Octave are probably the one of the
+[most confusing languages](https://github.com/florianschanda/miss_hit/blob/master/HORRORS.md)
+ever invented that aren't weird on purpose (e.g. Malbolge). They are
+the only languages I know of where the lexing is context sensitive
+with potentially unlimited lookahead and pretty much every single
+feature appears to be conceived to make the task of writing analysis
+tools for MATLAB (R) / Octave programs as difficult and error-prone as
+possible. In my opinion JavaScript and PHP compare favourably from an
+analysis point of view, since that has at least published language
+grammar and semantics; a task which The MathWorks has not undertaken
+so far.
 
 MATLAB (R) for all its faults it is however a pretty good prototyping
 tool, and is pervasive in many engineering disciplines. However it
