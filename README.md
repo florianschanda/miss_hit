@@ -3,18 +3,19 @@
 Let's face it: MATLAB (R) and Octave are probably the worst
 programming language ever invented that aren't weird on purpose
 (e.g. Malbolge). They are the only languages I know of where the
-lexing is context sensitive and pretty much every single feature is
-conceived to make the task of writing MATLAB (R) / Octave programs, or
-analysis tools as difficult and error-prone as possible. In my opinion
-JavaScript compares favourably, since that has at least published
-language grammar and semantics; a task which The MathWorks has refused
-to undertake for at least 20 years.
+lexing is context sensitive with potentially unlimited lookahead and
+pretty much every single feature appears to be conceived to make the
+task of writing analysis tools for MATLAB (R) / Octave programs as
+difficult and error-prone as possible. In my opinion JavaScript and
+PHP compare favourably from an analysis point of view, since that has
+at least published language grammar and semantics; a task which The
+MathWorks has not undertaken so far.
 
 MATLAB (R) for all its faults it is however a pretty good prototyping
-tool, and is pervasive in engineering disciplines. However it should
-never be used for anything real, ever. But as we all know, prototypes
-make it into production all the time, so now you're now stuck in a
-living hell of legacy code.
+tool, and is pervasive in many engineering disciplines. However it
+should never be used for anything approaching production, ever. But as
+we all know, prototypes make it into production all the time, so now
+you're now stuck.
 
 If this is you, then this tool suite is for you.
 
@@ -34,7 +35,7 @@ information and a user manual.
 ### Lexer
 
 The Lexer is more or less complete and works correctly. The following
-difficult features of the MATLAB are fully supported:
+difficult features/bugs of the MATLAB (R) are fully supported:
 
 * Adding anonymous commas in matrices, so that the parser will always
   see a comma-separated row and does not have to care about
@@ -52,7 +53,7 @@ difficult features of the MATLAB are fully supported:
 
 * Command form transformation (e.g. `foo bar (baz)` is lexed as
   identifier `foo`, char array `bar`, and char array
-  `(baz)`. Including the insane weirdness like `f) o[[ b` lexing as a
+  `(baz)`. Including the bugs/weirdness like `f) o[[ b` lexing as a
   single string. Including the really bizarre stuff like `f''] %`
   lexing as `f] ` (with a trailing space).
 
@@ -67,8 +68,9 @@ The notable missing features can be found in our [lexer issues](https://github.c
 ### Parser
 
 The parser is mostly complete, but it only parses (no semantic
-analysis). Three of the most starred MATLAB projects on github are
-processed without parse errors (matconvnet, matlab2tikz, MatlabFunc).
+analysis). Three of the most starred projects on github using MATLAB
+(R) or Octave are processed without parse errors (matconvnet,
+matlab2tikz, MatlabFunc).
 
 I am working on ironing out some of the more obscure bugs before
 moving on to basic semantic analysis (starting with name resolution
@@ -81,7 +83,7 @@ on being sufficiently similar by many philosophers). Progress will not
 be amazingly fast. Things I intend to publish, not necessarily in this
 order:
 
-* A grammar for a subset of the language accepted by MATLAB (R) or GNU
+* A grammar for a subset of the language accepted by MATLAB (R) or
   Octave. The MATLAB (R) code generator requires a subset anyway, so
   most people are used to the idea of subsets already.
 
@@ -94,20 +96,19 @@ order:
   too.
 
 * A style checker in the tradition of simple lint tools (checks
-  indentation, naming schemes, white space). This tool would also
-  enforce the "safe" subset by virtue of refusing to parse offensive
-  constructs such as [1+ + +1]
+  indentation, naming schemes, white space).
 
 * A data-flow analysis tool to detect e.g. unused or uninitalised
   variables.
 
-* A code generator (intended targets C and SPARK) which doesn't
-  suck. If you want an example of what sucks, just look at what MATLAB
-  (R) does with mod(a, b), and then you know why this is needed.
+* A code generator (intended targets C and SPARK) that precisely
+  follows the documented semi-formal semantics.
 
 * A VC generation tool (either under-approximate BMC or deductive).
 
-* A qualification pack.
+* A qualification pack that maps the semi-formal semantics we decided
+  to any specific MATLAB (R) version, demonstrating that the semantics
+  are precisely correct or a safe over-approximation.
 
 ## Correctness
 
@@ -128,8 +129,8 @@ compiler for use in your safety critical project.
 
 ## Copyright
 
-Most of this work is (C) Florian Schanda and is licensed under the GNU
-GPL version 3 as described in LICENSE.
+The vast majority of this work is (C) Florian Schanda and is licensed
+under the GNU GPL version 3 as described in LICENSE.
 
 Contributions from the following people and entities are under their
 copyright, with the same license:
@@ -151,5 +152,6 @@ attribution (in comment form) is always included in these cases.
 
 ### Note on the documentation assets
 
-The documentation uses [feather icons](https://github.com/feathericons/feather/blob/master/LICENSE)
+The documentation uses
+[feather icons](https://github.com/feathericons/feather/blob/master/LICENSE)
 which are licensed under the MIT License.
