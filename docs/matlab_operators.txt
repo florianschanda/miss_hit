@@ -7,7 +7,7 @@ cim = comma in matrix: this operator can be followed by a comma
 cbim = comma before in matrix: this operator could be preceeded by a
 comma (implicit or explicit).
 
-TOKEN             CIM?  CBIM?
+TOKEN                  CIM?  CBIM?
 OPERATOR   +           n     y     plus or unary plus
 OPERATOR   -           n     y     minus or unary minus
 OPERATOR   *           n     n     matrix mult
