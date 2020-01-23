@@ -1,3 +1,21 @@
+In test_01.m, line 3
+| function test_01(x);
+|                   ^ style: end this with just a newline
+In test_01.m, line 4
+|   if x > 0;
+|          ^ style: end this with just a newline
+In test_01.m, line 5
+|     disp(x),
+|            ^ style: end statement with a semicolon instead of comma
+In test_01.m, line 7
+|     disp(-x)
+|            ^ style: end statement with a semicolon
+In test_01.m, line 8
+|   end;
+|   ^^^ style: end this with just a newline
+In test_01.m, line 9
+| end,
+|    ^ style: end statement with a semicolon instead of comma
 ----------------------------------------------------------------------
 --  Parse tree for test_01.m
 Root: Function_File
@@ -22,4 +40,4 @@ Root: Function_File
               Arguments: Unary_Operation -
                 Expression: Identifier <x>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 6 style issue(s)

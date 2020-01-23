@@ -1,3 +1,15 @@
+In invalid_10.m, line 5
+|   x + 1  % ok, 6
+|       ^ style: end statement with a semicolon
+In invalid_10.m, line 6
+|   x+ 1   % ok, 6
+|      ^ style: end statement with a semicolon
+In invalid_10.m, line 7
+|   x+1    % ok, 6
+|     ^ style: end statement with a semicolon
+In invalid_10.m, line 8
+|   x +1   % fail, because command syntax and x is not a function
+|     ^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for invalid_10.m
 Root: Function_File
@@ -25,4 +37,4 @@ Root: Function_File
           Name: Identifier <x>
           Arguments: Char_Array_Literal '+1'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

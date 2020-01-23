@@ -1,3 +1,9 @@
+In test_01.m, line 16
+|     foo kitten % kitten
+|         ^^^^^^ style: end statement with a semicolon
+In test_01.m, line 17
+|     foo +kitten % +kitten
+|         ^^^^^^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for test_01.m
 Root: Function_File
@@ -41,4 +47,4 @@ Root: Function_File
           Name: Identifier <foo>
           Arguments: Char_Array_Literal '+kitten'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)

@@ -1,0 +1,32 @@
+% (c) Copyright 2020 Zenuity AB
+
+% **OK syntax:**:
+
+if x == 3 && ...
+   y > 7 || ...
+   ~z
+    do_something();
+end
+aVar = 3;
+function out = foo(in)
+end
+
+% **NOK syntax:**:
+
+function [output1, output2, output3,...
+          output4, output5, output6, output7, output8] =...
+         test_LineEndings(input1, input2,    ...
+                          input3) %#codegen
+    aVar = 3,;
+    out = foo(in);
+    % potato
+    ;
+    ,
+    if input1 > input2 output1=0, else output2=1; end
+    if input1 > input2;
+        output1=0
+    else;
+        output2=1 ...
+                    ,
+    end;
+end

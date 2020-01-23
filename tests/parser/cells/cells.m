@@ -6,18 +6,18 @@
 function myCell = test_01()
 
   myCell = {1, 2, 3;
-            'text', rand(5,10,2), {11; 22; 33}}
+            'text', rand(5,10,2), {11; 22; 33}};
 
 end
 
 function C = test_02()
-  C = {}
+  C = {};
 end
 
 function C = test_03()
   C = {1, 2, 3};
   C{4, 4} = 44;
-  C{5,5} = []
+  C{5,5} = [];
 end
 
 function [C4, C5] = test_04()
@@ -31,7 +31,7 @@ function [C4, C5] = test_04()
   %   'A'     'B'     'C'
   %   [10]    [20]    [30]
 
-  C5 = {C1; C2; C3}
+  C5 = {C1; C2; C3};
   % C5 =
   %   {1x3 cell}
   %   {1x3 cell}

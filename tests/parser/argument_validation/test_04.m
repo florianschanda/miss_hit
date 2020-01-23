@@ -14,6 +14,6 @@ end
 function mustBeEqualSize(a,b)
     % Test if a and b have equal size
     if ~isequal(size(a),size(b))
-        error('Size of first input must equal size of second input')
+        error('Size of first input must equal size of second input');
     end
 end

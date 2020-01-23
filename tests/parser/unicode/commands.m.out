@@ -1,3 +1,9 @@
+In commands.m, line 1
+| debugprint 🥔
+|            ^ style: end statement with a semicolon
+In commands.m, line 2
+| debugprint '🥔'
+|            ^^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for commands.m
 Root: Script_File
@@ -11,4 +17,4 @@ Root: Script_File
         Name: Identifier <debugprint>
         Arguments: Char_Array_Literal '🥔'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)

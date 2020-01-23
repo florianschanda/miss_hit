@@ -468,8 +468,10 @@ def stage_3_analysis(mh, cfg, tbuf):
                     mh.style_issue(token.location,
                                    "No copyright notice found in header")
 
-        # Corresponds to the old CodeChecker CommaLineEndings and
-        # CommaWhitespace rules
+        # Corresponds to the old CodeChecker CommaWhitespace
+        # rule. CommaLineEndings is now folded into the new
+        # end_of_statements rule, which is much more strict and
+        # complete.
         if token.kind == "COMMA":
             if config.active(cfg, "whitespace_comma"):
                 token.fix["ensure_trim_before"] = True
@@ -481,10 +483,6 @@ def stage_3_analysis(mh, cfg, tbuf):
                                    "comma cannot be preceeded by whitespace "
                                    "and must be followed by whitespace",
                                    True)
-
-            if config.active(cfg, "eol_comma") and last_code_in_line:
-                mh.style_issue(token.location,
-                               "lines must not end with a comma")
 
         elif token.kind == "COLON":
             if config.active(cfg, "whitespace_colon"):
@@ -793,7 +791,7 @@ def analyze(mh, filename, rule_set, autofix, fd_tree):
     # Create parse tree
 
     try:
-        parser = MATLAB_Parser(mh, tbuf)
+        parser = MATLAB_Parser(mh, tbuf, cfg)
         parse_tree = parser.parse_file()
         if fd_tree:
             fd_tree.write("-- Parse tree for %s\n" % filename)

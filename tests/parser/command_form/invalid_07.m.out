@@ -1,3 +1,6 @@
+In invalid_07.m, line 5
+|     potato + kitten % var, but unknwon
+|              ^^^^^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for invalid_07.m
 Root: Function_File
@@ -13,4 +16,4 @@ Root: Function_File
           LHS: Identifier <potato>
           RHS: Identifier <kitten>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

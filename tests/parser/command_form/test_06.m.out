@@ -1,3 +1,27 @@
+In test_06.m, line 4
+|   wibble a b  % wibble('a', 'b')
+|            ^ style: end statement with a semicolon
+In test_06.m, line 7
+|          b % ditto
+|          ^ style: end statement with a semicolon
+In test_06.m, line 10
+|          b % ditto
+|          ^ style: end statement with a semicolon
+In test_06.m, line 12
+|   wible "a    b" % wibble ('"a', 'b"')
+|               ^^ style: end statement with a semicolon
+In test_06.m, line 14
+|   wibble 'a b' c % wibble('a b', 'c')
+|                ^ style: end statement with a semicolon
+In test_06.m, line 16
+|   wibble a b %c % wibble('a', 'b')
+|            ^ style: end statement with a semicolon
+In test_06.m, line 20
+|          b % c  % wibble('a', 'b')
+|          ^ style: end statement with a semicolon
+In test_06.m, line 22
+|   wibble ../.././a b % wibble('../.././a', 'b')
+|                    ^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for test_06.m
 Root: Function_File
@@ -46,4 +70,4 @@ Root: Function_File
           Arguments: Char_Array_Literal '../.././a'
           Arguments: Char_Array_Literal 'b'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 8 style issue(s)

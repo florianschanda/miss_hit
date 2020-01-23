@@ -1,6 +1,9 @@
 === PLAIN MODE ===
 In fail_1.m, line 4
 | potato 
+| ^^^^^^ style: end statement with a semicolon
+In fail_1.m, line 4
+| potato 
 |       ^^ style: trailing whitespace [fixed]
 fail_1.m:7: style: whitespace on blank line [fixed]
 In fail_1.m, line 8
@@ -9,7 +12,7 @@ In fail_1.m, line 8
 In fail_1.m, line 9
 | ... 
 |    ^^ style: trailing whitespace [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)

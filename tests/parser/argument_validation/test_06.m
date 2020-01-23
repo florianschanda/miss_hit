@@ -5,6 +5,6 @@ y = 1.0;
 minval = 0.0;
 maxval = 5.0;
 
-myFunction(x,y,maxval,minval)
-myFunction(x,y,maxval)
-myFunction(x,y)
+myFunction(x,y,maxval,minval);
+myFunction(x,y,maxval);
+myFunction(x,y);

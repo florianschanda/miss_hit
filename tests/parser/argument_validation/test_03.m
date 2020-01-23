@@ -8,7 +8,7 @@ function test_03(a,b,c)
     end
 
     % Function code
-    disp(class(a))
-    disp(class(b))
-    disp(class(c))
+    disp(class(a));
+    disp(class(b));
+    disp(class(c));
 end

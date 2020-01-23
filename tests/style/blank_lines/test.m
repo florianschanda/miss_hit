@@ -1,10 +1,10 @@
 % (c) Copyright 2019 Florian Schanda
 
-ok
+ok;
 
 
-not ok
+not ok;
 
 
 
-really not ok
+really not ok;

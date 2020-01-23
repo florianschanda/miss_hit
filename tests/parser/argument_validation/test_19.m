@@ -11,9 +11,9 @@ function test_19(x,y,scale)
     z = reshape([x;y],1,[]);
     if isfield(scale,"PlotType")
         if scale.PlotType == "lin"
-            plot(z{:})
+            plot(z{:});
         elseif scale.PlotType =="log"
-            loglog(z{:})
+            loglog(z{:});
         end
     end
 end

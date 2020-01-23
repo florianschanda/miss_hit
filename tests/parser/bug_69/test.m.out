@@ -1,3 +1,15 @@
+In test.m, line 4
+| if x == 0 x = 1; else x = 2; end
+|         ^ style: end statement with a newline
+In test.m, line 4
+| if x == 0 x = 1; else x = 2; end
+|                ^ style: end statement with a newline
+In test.m, line 4
+| if x == 0 x = 1; else x = 2; end
+|                  ^^^^ style: end statement with a newline
+In test.m, line 4
+| if x == 0 x = 1; else x = 2; end
+|                            ^ style: end statement with a newline
 ----------------------------------------------------------------------
 --  Parse tree for test.m
 Root: Script_File
@@ -18,4 +30,4 @@ Root: Script_File
           LHS: Identifier <x>
           RHS: Number_Literal <2>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

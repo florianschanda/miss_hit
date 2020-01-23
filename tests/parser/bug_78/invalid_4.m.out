@@ -1,3 +1,6 @@
+In invalid_4.m, line 3
+| disp foo bar     % 'foo' 'bar'
+|          ^^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for invalid_4.m
 Root: Script_File
@@ -8,4 +11,4 @@ Root: Script_File
         Arguments: Char_Array_Literal 'foo'
         Arguments: Char_Array_Literal 'bar'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

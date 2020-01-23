@@ -66,7 +66,7 @@ STYLE_RULES = {
                                      " a line continuation."),
     "operator_whitespace" : ("Enfore whitespace around unary and binary"
                              " operators."),
-    "eol_comma" : ("Ensures lines do not end with a comma."),
+    "end_of_statements" : ("Ensures consistent ending of statements."),
     "builtin_shadow" : ("Checks that assignments do not overwrite builtin"
                         " functions such as true, false, or pi."),
 }

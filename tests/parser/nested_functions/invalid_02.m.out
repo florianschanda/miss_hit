@@ -1,4 +1,7 @@
+In invalid_02.m, line 4
+|   potato
+|   ^^^^^^ style: end statement with a semicolon
 In invalid_02.m, line 3
 | function invalid_02
 | ^^^^^^^^ error: this function must be terminated with end
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s), 1 error(s)

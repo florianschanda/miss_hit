@@ -5,5 +5,5 @@ function myFun()
     if isempty(n)
         n = 0;
     end
-    n = n+1
+    n = n+1;
 end

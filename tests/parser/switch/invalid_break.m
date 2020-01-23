@@ -3,8 +3,8 @@
 switch potato
    case 1
       x = 1;
-      break;
+      break
    case 2
       x = 2;
-      break;
+      break
 end

@@ -4,6 +4,9 @@ In on/test.m, line 1
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^ style: Copyright notice not in right format
 In on/test.m, line 4
 |   disp foo#bar
+|        ^^^ style: end statement with a semicolon
+In on/test.m, line 4
+|   disp foo#bar
 |           ^^^^ style: comment body must be separated with whitespace from the starting # [fixed]
 In on/test.m, line 4
 |   disp foo#bar
@@ -11,7 +14,7 @@ In on/test.m, line 4
 In off/test.m, line 5
 |    # This is a comment
 |    ^ lex error: unexpected character '#'
-MISS_HIT Summary: 2 file(s) analysed, 3 style issue(s), 1 error(s)
+MISS_HIT Summary: 2 file(s) analysed, 4 style issue(s), 1 error(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 3 style issue(s), 1 error(s)
+MISS_HIT Summary: 2 file(s) analysed, 4 style issue(s), 1 error(s)

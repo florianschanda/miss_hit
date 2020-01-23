@@ -1,6 +1,9 @@
 In invalid_9.m, line 4
 | disp foo'
 |         ^ lex error: this command form string is not terminated properly
+In invalid_9.m, line 4
+| disp foo'
+|      ^^^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for invalid_9.m
 Root: Script_File
@@ -10,4 +13,4 @@ Root: Script_File
         Name: Identifier <disp>
         Arguments: Char_Array_Literal 'foo'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s), 1 error(s)

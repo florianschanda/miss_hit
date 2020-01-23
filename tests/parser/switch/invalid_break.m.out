@@ -1,8 +1,8 @@
 In invalid_break.m, line 6
-|       break;
+|       break
 |       ^^^^^ error: break must appear inside loop
 In invalid_break.m, line 9
-|       break;
+|       break
 |       ^^^^^ error: break must appear inside loop
 ----------------------------------------------------------------------
 --  Parse tree for invalid_break.m

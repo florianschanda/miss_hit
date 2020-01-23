@@ -1,4 +1,7 @@
 === PLAIN MODE ===
+In test.m, line 8
+| fprintf('%s', 'astring')
+|                        ^ style: end statement with a semicolon
 In test.m, line 12
 | %Potato
 | ^^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]
@@ -26,7 +29,7 @@ In test.m, line 19
 In test.m, line 20
 | %    #ok
 | ^^^^^^^^ style: MATLAB pragma must not contain whitespace between % and the pragma [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 10 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 10 style issue(s)

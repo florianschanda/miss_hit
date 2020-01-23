@@ -394,13 +394,14 @@ y = x^2;
         </ul>
       </div>
 
-      <h4>Comma line endings ("eol_comma")</h4>
+      <h4>Comma line endings ("end_of_statements")</h4>
 
       <div>
-        This rule complains about any line that ends in a comma. If you
-        have a ; at the end of each statement it really helps you
-        pretend that your using a real programming language, and so this
-        rule is quite helpful for sanity.
+        This rule bans commas as statement terminators and generally
+        tries to enforce a consistent way of terminating things with
+        semicolons. Some exceptions exists, such as guard expressions
+        (e.g. the expression after an if); or the terminating end for
+        such blocks.
       </div>
 
       <h4>Shadowing of built-in functions ("builtin_shadow")</h4>

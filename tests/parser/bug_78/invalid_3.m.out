@@ -1,3 +1,6 @@
+In invalid_3.m, line 3
+| disp f] o[ b   % 'f] o[' 'b'
+|            ^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for invalid_3.m
 Root: Script_File
@@ -8,4 +11,4 @@ Root: Script_File
         Arguments: Char_Array_Literal 'f] o['
         Arguments: Char_Array_Literal 'b'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

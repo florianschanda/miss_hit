@@ -1,3 +1,24 @@
+In test_quotes.m, line 3
+| disp 'foo'bar    % 'foobar'
+|      ^^^^^^^^ style: end statement with a semicolon
+In test_quotes.m, line 4
+| disp foo''bar    % 'foobar'
+|      ^^^^^^^^ style: end statement with a semicolon
+In test_quotes.m, line 5
+| disp foo''''bar  % 'foo'bar'
+|      ^^^^^^^^^^ style: end statement with a semicolon
+In test_quotes.m, line 6
+| disp foo'%'bar   % 'foo%bar'
+|      ^^^^^^^^^ style: end statement with a semicolon
+In test_quotes.m, line 7
+| disp "foo"       % '"foo"'
+|      ^^^^^ style: end statement with a semicolon
+In test_quotes.m, line 8
+| d2 f )f 'foo'    % 'f' ')f foo    '
+|      ^^^^^^^^^^^^ style: end statement with a semicolon
+In test_quotes.m, line 9
+| d2 f )f 'f'%f    % 'f' ')f f'
+|      ^^^^^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for test_quotes.m
 Root: Script_File
@@ -33,4 +54,4 @@ Root: Script_File
         Arguments: Char_Array_Literal 'f'
         Arguments: Char_Array_Literal ')f f'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 7 style issue(s)

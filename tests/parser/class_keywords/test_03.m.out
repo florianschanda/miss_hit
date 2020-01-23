@@ -1,3 +1,6 @@
+In test_03.m, line 4
+|   properties leek
+|              ^^^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for test_03.m
 Root: Function_File
@@ -11,4 +14,4 @@ Root: Function_File
           Name: Identifier <properties>
           Arguments: Char_Array_Literal 'leek'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

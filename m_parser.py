@@ -29,6 +29,7 @@ import traceback
 
 from m_lexer import Token_Generator, MATLAB_Lexer, TOKEN_KINDS
 from errors import ICE, Error, Location, Message_Handler
+import config
 
 # pylint: disable=wildcard-import,unused-wildcard-import
 from m_ast import *
@@ -79,10 +80,13 @@ IGNORED_TOKENS = frozenset(["COMMENT"])
 
 
 class MATLAB_Parser:
-    def __init__(self, mh, lexer):
+    def __init__(self, mh, lexer, cfg):
+        assert isinstance(mh, Message_Handler)
         assert isinstance(lexer, Token_Generator)
+        assert isinstance(cfg, dict)
         self.lexer = lexer
         self.mh = mh
+        self.cfg = cfg
 
         self.context = []
 
@@ -210,22 +214,63 @@ class MATLAB_Parser:
         assert semi in ("", ";")
 
         found_semi_before_nl = False
-        found_nl = True
+        found_nl = False
         found_eos = False
 
+        ending_token = self.ct
+
         # Skip any number of semicolons or commas
+        terminator_count = 0
         while self.peek("SEMICOLON") or self.peek("COMMA"):
+            terminator_count += 1
             if self.peek("SEMICOLON"):
                 found_semi_before_nl = True
+            elif self.peek("COMMA") and \
+                 config.active(self.cfg, "end_of_statements"):
+                self.mh.style_issue(self.nt.location,
+                                    "end statement with a semicolon"
+                                    " instead of comma",
+                                    False)
+
+            if config.active(self.cfg, "end_of_statements") and \
+               terminator_count > 1:
+                self.mh.style_issue(self.nt.location,
+                                    "use only one statement terminator",
+                                    False)
+
             found_eos = True
             self.next()
+
+        if config.active(self.cfg, "end_of_statements"):
+            if semi and not found_semi_before_nl and not found_eos:
+                self.mh.style_issue(ending_token.location,
+                                    "end statement with a semicolon",
+                                    False)
+            elif not semi and found_semi_before_nl:
+                self.mh.style_issue(ending_token.location,
+                                    "end this with just a newline",
+                                    False)
 
         # Skip any number of semicolons, commas or newlines
         while self.peek_eos():
             if self.peek("NEWLINE"):
                 found_nl = True
+            elif config.active(self.cfg, "end_of_statements"):
+                self.mh.style_issue(self.nt.location,
+                                    "trailing statement terminator after"
+                                    " newline",
+                                    False)
+
             found_eos = True
             self.next()
+
+        if config.active(self.cfg, "end_of_statements") and \
+           not found_nl:
+            self.mh.style_issue(self.ct.location
+                                if found_eos
+                                else ending_token.location,
+                                "end statement with a newline",
+                                False)
 
         # If we found the end of the file, then this is also an
         # acceptable end of statement
@@ -907,13 +952,7 @@ class MATLAB_Parser:
             # has to be a function call. Needs to be checked.
             rhs = self.parse_expression()
 
-        if self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-            if self.peek("NEWLINE"):
-                self.match("NEWLINE")
-        else:
-            # TODO: Flag style issue
-            self.match("NEWLINE")
+        self.match_eos(";")
 
         if len(lhs) == 1:
             return Simple_Assignment_Statement(t_eq, lhs[0], rhs)
@@ -1565,7 +1604,9 @@ class MATLAB_Parser:
 def sanity_test(mh, filename, show_bt, show_tree, show_dot):
     try:
         mh.register_file(filename)
-        parser = MATLAB_Parser(mh, MATLAB_Lexer(mh, filename))
+        parser = MATLAB_Parser(mh,
+                               MATLAB_Lexer(mh, filename),
+                               config.BASE_CONFIG)
         parser.debug_tree = show_dot
         tree = parser.parse_file()
         if show_tree:

@@ -1,3 +1,15 @@
+In invalid_11.m, line 5
+|   x + 1  %
+|       ^ style: end statement with a semicolon
+In invalid_11.m, line 6
+|   x+ 1   %
+|      ^ style: end statement with a semicolon
+In invalid_11.m, line 7
+|   x+1    % all fail because function handle + 1 doesn't work
+|     ^ style: end statement with a semicolon
+In invalid_11.m, line 8
+|   x +1   % fail, because you can't use lambda function in command form
+|     ^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for invalid_11.m
 Root: Function_File
@@ -27,4 +39,4 @@ Root: Function_File
           Name: Identifier <x>
           Arguments: Char_Array_Literal '+1'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

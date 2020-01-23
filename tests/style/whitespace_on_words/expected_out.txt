@@ -2,7 +2,10 @@
 In test.m, line 3
 | if(not_ok)
 | ^^ style: keyword must be succeeded by whitespace [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+In test.m, line 4
+|     return;
+|     ^^^^^^ style: end this with just a newline
+MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)

@@ -15,7 +15,7 @@ classdef Prop
    methods
      function obj = set.Password(obj,pw)
        if numel(pw) < 7
-         error('Password must have at least 7 characters')
+         error('Password must have at least 7 characters');
        else
          obj.Password = pw;
        end

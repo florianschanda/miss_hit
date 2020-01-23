@@ -6,17 +6,17 @@ function logData(fname,n)
 
     if isempty(logTime)
         logTime = currTime;
-        disp('Logging initial value.')
-        dlmwrite(fname,n)
+        disp('Logging initial value.');
+        dlmwrite(fname,n);
         return
     end
 
     dt = currTime - logTime;
     if dt > seconds(3)
-        disp('Logging.')
-        dlmwrite(fname,n,'-append')
+        disp('Logging.');
+        dlmwrite(fname,n,'-append');
         logTime = currTime;
     else
-      disp(['Not logging. ' num2str(seconds(dt)) ' sec since last log.'])
+        disp(['Not logging. ' num2str(seconds(dt)) ' sec since last log.']);
     end
 end

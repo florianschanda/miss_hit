@@ -1,3 +1,6 @@
+In invalid_08.m, line 5
+|   bar
+|   ^^^ style: end statement with a semicolon
 ----------------------------------------------------------------------
 --  Parse tree for invalid_08.m
 Root: Function_File
@@ -11,4 +14,4 @@ Root: Function_File
           Arguments: Char_Array_Literal '../'
           Arguments: Char_Array_Literal 'bar'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

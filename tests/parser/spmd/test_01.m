@@ -3,6 +3,6 @@
 function test_01()
   spmd
     INP = load(['somedatafile' num2str(labindex) '.mat']);
-    RES = somefun(INP)
+    RES = somefun(INP);
   end
 end

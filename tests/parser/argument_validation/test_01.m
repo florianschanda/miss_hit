@@ -6,5 +6,5 @@ function r = test_01(x, y)
     y (1, 1) single
   end
 
-  r = 0.5 * x + 0.5 * y
+  r = 0.5 * x + 0.5 * y;
 end

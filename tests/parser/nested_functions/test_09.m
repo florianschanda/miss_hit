@@ -2,11 +2,11 @@
 
 function test_09
 
-  X = [];
-  nestedfx
+    X = [];
+    nestedfx;
 
-  function nestedfx
-    makeX
-  end
+    function nestedfx
+        makeX;
+    end
 
 end

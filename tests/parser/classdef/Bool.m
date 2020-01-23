@@ -7,7 +7,7 @@ classdef Bool < logical
    end
    methods
      function obj = Bool(val)
-       obj@logical(val)
+       obj@logical(val);
      end
    end
 end
