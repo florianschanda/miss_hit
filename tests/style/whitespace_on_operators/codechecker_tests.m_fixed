@@ -83,8 +83,8 @@ x = a ~= 3
 
 x = a .* b
 
-x = a .^ b
+x = a.^b
 
-x = a ^ b
+x = a^b
 
 import PackageName.* ;

@@ -689,8 +689,8 @@ def stage_3_analysis(mh, cfg, tbuf):
                                        "power binary operator"
                                        " must not be surrounded by whitespace",
                                        True)
-                        token.fix["ensure_ws_before"] = False
-                        token.fix["ensure_ws_after"] = False
+                        token.fix["ensure_trim_before"] = True
+                        token.fix["ensure_trim_after"] = True
                 else:
                     if (prev_in_line and ws_before == 0) or \
                        (next_in_line and ws_after == 0):

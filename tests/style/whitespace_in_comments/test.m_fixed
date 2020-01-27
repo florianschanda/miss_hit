@@ -5,7 +5,7 @@
 %%% Potato
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %#codegen
-fprintf('%s', 'astring')
+fprintf('%s', 'astring');
 %#ok<potato>
 
 % The following things are NOT OK

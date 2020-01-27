@@ -1212,8 +1212,19 @@ class Token_Buffer(Token_Generator):
 
     #     set_last_in_line()
 
+    def autofix(self, token):
+        if token.fix.get("change_to_semicolon", False):
+            token.kind = "SEMICOLON"
+            token.raw_text = ";"
+            token.value = ";"
+            token.fix["ensure_trim_before"] = True
+
+        return token
+
     def replay(self, fd):
-        real_tokens = [t for t in self.tokens if not t.anonymous]
+        real_tokens = [self.autofix(t)
+                       for t in self.tokens
+                       if not t.anonymous and not t.fix.get("delete", False)]
 
         for n, token in enumerate(real_tokens):
             if n + 1 < len(real_tokens):
@@ -1240,6 +1251,9 @@ class Token_Buffer(Token_Generator):
                 fd.write(token.raw_text.rstrip() + "\n")
             else:
                 fd.write(token.raw_text.rstrip())
+
+            if token.fix.get("add_semicolon_after", False):
+                fd.write(";")
 
             if next_in_line and next_in_line.kind != "NEWLINE":
                 gap = (next_in_line.location.col_start -

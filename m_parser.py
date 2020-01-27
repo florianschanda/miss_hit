@@ -218,6 +218,12 @@ class MATLAB_Parser:
         found_eos = False
 
         ending_token = self.ct
+        # The last token of the previous thing. We might need it later
+        # to attach error messages or to record autofix instructions.
+
+        eos_token = None
+        # The first comma or semicolon. We might need it later for
+        # autofixing.
 
         # Skip any number of semicolons or commas
         terminator_count = 0
@@ -237,8 +243,17 @@ class MATLAB_Parser:
                 self.mh.style_issue(self.nt.location,
                                     "use only one statement terminator",
                                     False)
+                self.nt.fix["delete"] = True
 
             found_eos = True
+            if not eos_token:
+                eos_token = self.nt
+                if config.active(self.cfg, "end_of_statements"):
+                    if semi and eos_token.kind == "COMMA":
+                        eos_token.fix["change_to_semicolon"] = True
+                    elif not semi:
+                        eos_token.fix["delete"] = True
+
             self.next()
 
         if config.active(self.cfg, "end_of_statements"):
@@ -246,6 +261,7 @@ class MATLAB_Parser:
                 self.mh.style_issue(ending_token.location,
                                     "end statement with a semicolon",
                                     False)
+                ending_token.fix["add_semicolon_after"] = True
             elif not semi and found_semi_before_nl:
                 self.mh.style_issue(ending_token.location,
                                     "end this with just a newline",
@@ -254,12 +270,15 @@ class MATLAB_Parser:
         # Skip any number of semicolons, commas or newlines
         while self.peek_eos():
             if self.peek("NEWLINE"):
+                if found_nl:
+                    self.nt.fix["delete"] = True
                 found_nl = True
             elif config.active(self.cfg, "end_of_statements"):
                 self.mh.style_issue(self.nt.location,
                                     "trailing statement terminator after"
                                     " newline",
                                     False)
+                self.nt.fix["delete"] = True
 
             found_eos = True
             self.next()
@@ -271,6 +290,10 @@ class MATLAB_Parser:
                                 else ending_token.location,
                                 "end statement with a newline",
                                 False)
+            if eos_token:
+                eos_token.fix["add_newline"] = True
+            else:
+                ending_token.fix["add_newline"] = True
 
         # If we found the end of the file, then this is also an
         # acceptable end of statement
