@@ -4,9 +4,9 @@ Root: Class_File
   Classdef: Class_Definition
     Name: Identifier <leek>
     Properties: Properties Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <x>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <y>
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -7,11 +7,11 @@ Root: Function_File
       Inputs: Identifier <NameValueArgs>
       Outputs: Identifier <result>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Selection
           Prefix: Identifier <NameValueArgs>
           Field: Identifier <Name1>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Selection
           Prefix: Identifier <NameValueArgs>
           Field: Identifier <Name2>

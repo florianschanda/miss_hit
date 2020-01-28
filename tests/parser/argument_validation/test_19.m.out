@@ -8,20 +8,20 @@ Root: Function_File
       Inputs: Identifier <y>
       Inputs: Identifier <scale>
     Validation: Arguments Special_Block
-      Attributes: Class_Attribute
+      Attributes: Name_Value_Pair
         Name: Identifier <Repeating>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: COLON
         Name: Identifier <x>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: COLON
         Name: Identifier <y>
         Class: Identifier <double>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Selection

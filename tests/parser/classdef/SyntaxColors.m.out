@@ -4,11 +4,11 @@ Root: Class_File
   Classdef: Class_Definition
     Name: Identifier <SyntaxColors>
     Properties: Properties Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <R>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <G>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <B>
     Enumerations: Enumeration Special_Block
       Items: Class_Enumeration

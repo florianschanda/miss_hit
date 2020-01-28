@@ -8,14 +8,14 @@ Root: Function_File
       Inputs: Identifier <y>
       Outputs: Identifier <r>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Identifier <x>
         Class: Identifier <single>
         Functions: Identifier <mustBePositive>
         Functions: Identifier <mustBeFinite>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Identifier <y>

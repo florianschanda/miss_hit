@@ -4,24 +4,24 @@ Root: Class_File
   Classdef: Class_Definition
     Name: Identifier <Prop>
     Properties: Properties Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <Prop1>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <Prop2>
         Default: Char_Array_Literal 'some text'
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <Prop3>
         Default: Reference
           Name: Identifier <sin>
           Arguments: Binary_Operation /
             LHS: Identifier <pi>
             RHS: Number_Literal <12>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <Prop4>
         Default: Selection
           Prefix: Identifier <containers>
           Field: Identifier <Map>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Identifier <Prop5>
@@ -29,12 +29,12 @@ Root: Class_File
         Functions: Identifier <mustBePositive>
         Default: Number_Literal <1>
     Properties: Properties Special_Block
-      Attributes: Class_Attribute
+      Attributes: Name_Value_Pair
         Name: Identifier <Access>
         Value: Identifier <private>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <Salary>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <Password>
     Methods: Methods Special_Block
       Items: Function_Definition

@@ -4,7 +4,7 @@ Root: Class_File
   Classdef: Class_Definition
     Name: Identifier <potato>
     Properties: Properties Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <x>
         Class: Identifier <uint8>
 ----------------------------------------------------------------------

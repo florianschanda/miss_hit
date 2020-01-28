@@ -9,17 +9,17 @@ Root: Function_File
       Inputs: Identifier <maxval>
       Inputs: Identifier <minval>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: COLON
         Name: Identifier <x>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: COLON
         Name: Identifier <y>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Identifier <maxval>
@@ -32,7 +32,7 @@ Root: Function_File
           Arguments: Reference
             Name: Identifier <max>
             Arguments: Identifier <y>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Identifier <minval>

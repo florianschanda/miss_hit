@@ -8,13 +8,13 @@ Root: Function_File
       Inputs: Identifier <v>
       Inputs: Identifier <method>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: COLON
         Name: Identifier <x>
         Functions: Identifier <mustBeNumeric>
         Functions: Identifier <mustBeReal>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: COLON
         Name: Identifier <v>
@@ -24,7 +24,7 @@ Root: Function_File
           Name: Identifier <mustBeEqualSize>
           Arguments: Identifier <v>
           Arguments: Identifier <x>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: COLON
         Name: Identifier <method>

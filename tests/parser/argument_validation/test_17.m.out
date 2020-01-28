@@ -8,13 +8,13 @@ Root: Function_File
       Inputs: Identifier <height>
       Inputs: Identifier <options>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <width>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <height>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Selection
@@ -22,7 +22,7 @@ Root: Function_File
           Field: Identifier <LineStyle>
         Class: Identifier <string>
         Default: String_Literal "-"
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Selection

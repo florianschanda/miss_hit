@@ -9,17 +9,17 @@ Root: Function_File
       Inputs: Identifier <C>
       Outputs: Identifier <out>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Identifier <A>
         Class: Identifier <string>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: COLON
         Name: Identifier <B>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 2
         Dimension 2 constraint: 2
         Name: Identifier <C>

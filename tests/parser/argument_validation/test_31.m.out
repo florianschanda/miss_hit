@@ -10,23 +10,23 @@ Root: Function_File
       Inputs: Identifier <namedargs>
       Outputs: Identifier <result>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Identifier <a>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Identifier <b>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Identifier <c>
         Class: Identifier <double>
         Default: Number_Literal <1>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: COLON
         Name: Selection

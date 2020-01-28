@@ -7,7 +7,7 @@ Root: Function_File
       Inputs: Identifier <a>
       Inputs: Identifier <b>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <a>
         Functions: Reference
           Name: Identifier <mustBeA>
@@ -17,7 +17,7 @@ Root: Function_File
           Name: Identifier <mustBeDims>
           Arguments: Identifier <a>
           Arguments: Number_Literal <2>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <b>
         Functions: Reference
           Name: Identifier <mustBeSize>

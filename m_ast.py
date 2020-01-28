@@ -41,6 +41,7 @@ class AST_Visitor:
 
 
 class Node:
+    """ Root class for AST. Everything is a Node. """
     def __init__(self):
         NODE_UID[0] += 1
         self.uid = NODE_UID[0]
@@ -77,7 +78,43 @@ class Node:
         self.visit(None, Text_Visitor(fd), "Root")
 
 
+##############################################################################
+# Some top-level groupings
+##############################################################################
+
+
+class Entity(Node):
+    """ Not needed yet - but will become the special nodes we store
+        information about symbols.
+    """
+    pass
+
+
 class Expression(Node):
+    pass
+
+
+class Name(Expression):
+    pass
+
+
+class Literal(Expression):
+    pass
+
+
+class Definition(Node):
+    pass
+
+
+class Statement(Node):
+    pass
+
+
+class Simple_Statement(Statement):
+    pass
+
+
+class Compound_Statement(Statement):
     pass
 
 
@@ -88,6 +125,11 @@ class Compilation_Unit(Node):
 
         self.name         = name
         # Not a node since it comes from the filename
+
+
+##############################################################################
+# Compilation units
+##############################################################################
 
 
 class Script_File(Compilation_Unit):
@@ -168,31 +210,62 @@ class Class_File(Compilation_Unit):
         self._visit_end(parent, function, relation)
 
 
-class Function_Signature(Node):
-    def __init__(self, n_name, l_inputs, l_outputs):
-        super().__init__()
-        assert isinstance(n_name, Name)
-        assert isinstance(l_inputs, list)
-        for n in l_inputs:
-            assert isinstance(n, Identifier), \
-                str(n) + " is %s and not an Identifier" % n.__class__.__name__
-        assert isinstance(l_outputs, list)
-        for n in l_outputs:
-            assert isinstance(n, Identifier)
+##############################################################################
+# Definitions
+##############################################################################
 
-        self.n_name    = n_name
-        self.l_inputs  = l_inputs
-        self.l_outputs = l_outputs
+
+class Class_Definition(Definition):
+    def __init__(self, t_classdef, n_name, l_attr, l_super):
+        super().__init__()
+        assert isinstance(t_classdef, MATLAB_Token)
+        assert t_classdef.kind == "KEYWORD" and \
+            t_classdef.value == "classdef"
+        assert isinstance(n_name, Name)
+        assert isinstance(l_attr, list)
+        for n_attr in l_attr:
+            assert isinstance(n_attr, Name_Value_Pair)
+        assert isinstance(l_super, list)
+        for n_super in l_super:
+            assert isinstance(n_super, Name)
+
+        self.t_classdef = t_classdef
+        self.n_name = n_name
+        self.l_super = l_super
+        self.l_attr = l_attr
+
+        self.l_properties = []
+        self.l_events = []
+        self.l_enumerations = []
+        self.l_methods = []
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_name.visit(self, function, "Name")
-        self._visit_list(self.l_inputs, function, "Inputs")
-        self._visit_list(self.l_outputs, function, "Outputs")
+        self._visit_list(self.l_super, function, "Superclasses")
+        self._visit_list(self.l_attr, function, "Attributes")
+        self._visit_list(self.l_properties, function, "Properties")
+        self._visit_list(self.l_events, function, "Events")
+        self._visit_list(self.l_enumerations, function, "Enumerations")
+        self._visit_list(self.l_methods, function, "Methods")
         self._visit_end(parent, function, relation)
 
+    def add_block(self, n_block):
+        assert isinstance(n_block, Special_Block)
 
-class Function_Definition(Node):
+        if n_block.kind() == "properties":
+            self.l_properties.append(n_block)
+        elif n_block.kind() == "methods":
+            self.l_methods.append(n_block)
+        elif n_block.kind() == "events":
+            self.l_events.append(n_block)
+        elif n_block.kind() == "enumeration":
+            self.l_enumerations.append(n_block)
+        else:
+            raise ICE("unexpected block kind %s" % n_block.kind())
+
+
+class Function_Definition(Definition):
     def __init__(self, t_fun, n_sig,
                  l_validation, n_body, l_nested):
         super().__init__()
@@ -231,6 +304,35 @@ class Function_Definition(Node):
         self._visit_end(parent, function, relation)
 
 
+##############################################################################
+# Nodes
+##############################################################################
+
+
+class Function_Signature(Node):
+    def __init__(self, n_name, l_inputs, l_outputs):
+        super().__init__()
+        assert isinstance(n_name, Name)
+        assert isinstance(l_inputs, list)
+        for n in l_inputs:
+            assert isinstance(n, Identifier), \
+                str(n) + " is %s and not an Identifier" % n.__class__.__name__
+        assert isinstance(l_outputs, list)
+        for n in l_outputs:
+            assert isinstance(n, Identifier)
+
+        self.n_name    = n_name
+        self.l_inputs  = l_inputs
+        self.l_outputs = l_outputs
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_name.visit(self, function, "Name")
+        self._visit_list(self.l_inputs, function, "Inputs")
+        self._visit_list(self.l_outputs, function, "Outputs")
+        self._visit_end(parent, function, relation)
+
+
 class Sequence_Of_Statements(Node):
     def __init__(self, l_statements):
         super().__init__()
@@ -246,11 +348,7 @@ class Sequence_Of_Statements(Node):
         self._visit_end(parent, function, relation)
 
 
-class Statement(Node):
-    pass
-
-
-class Class_Attribute(Node):
+class Name_Value_Pair(Node):
     """ AST for items of the various attribute lists inside classdefs
 
     For example (Access = protected)
@@ -283,7 +381,7 @@ class Special_Block(Node):
                                                          "arguments")
         assert isinstance(l_attr, list)
         for n_attr in l_attr:
-            assert isinstance(n_attr, Class_Attribute)
+            assert isinstance(n_attr, Name_Value_Pair)
 
         self.t_kw = t_kw
         self.l_attr = l_attr
@@ -298,10 +396,10 @@ class Special_Block(Node):
     def kind(self):
         return self.t_kw.value
 
-    def add_property(self, n_prop):
-        assert isinstance(n_prop, Class_Property)
+    def add_constraint(self, n_cons):
+        assert isinstance(n_cons, Entity_Constraints)
         assert self.kind() in ("properties", "arguments")
-        self.l_items.append(n_prop)
+        self.l_items.append(n_cons)
 
     def add_method(self, n_method):
         assert isinstance(n_method, (Function_Definition, Function_Signature))
@@ -319,8 +417,10 @@ class Special_Block(Node):
         self.l_items.append(n_event)
 
 
-class Class_Property(Node):
-    """ AST for a class property (inside a properties block """
+class Entity_Constraints(Node):
+    """ AST for a class property or argument validation found inside
+        a properties or arguments block.
+    """
     def __init__(self, n_name,
                  l_dim_constraint, n_class_constraint, l_fun_constraint,
                  n_default_value):
@@ -375,58 +475,9 @@ class Class_Enumeration(Node):
         self._visit_end(parent, function, relation)
 
 
-class Class_Definition(Node):
-    def __init__(self, t_classdef, n_name, l_attr, l_super):
-        super().__init__()
-        assert isinstance(t_classdef, MATLAB_Token)
-        assert t_classdef.kind == "KEYWORD" and \
-            t_classdef.value == "classdef"
-        assert isinstance(n_name, Name)
-        assert isinstance(l_attr, list)
-        for n_attr in l_attr:
-            assert isinstance(n_attr, Class_Attribute)
-        assert isinstance(l_super, list)
-        for n_super in l_super:
-            assert isinstance(n_super, Name)
-
-        self.t_classdef = t_classdef
-        self.n_name = n_name
-        self.l_super = l_super
-        self.l_attr = l_attr
-
-        self.l_properties = []
-        self.l_events = []
-        self.l_enumerations = []
-        self.l_methods = []
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_name.visit(self, function, "Name")
-        self._visit_list(self.l_super, function, "Superclasses")
-        self._visit_list(self.l_attr, function, "Attributes")
-        self._visit_list(self.l_properties, function, "Properties")
-        self._visit_list(self.l_events, function, "Events")
-        self._visit_list(self.l_enumerations, function, "Enumerations")
-        self._visit_list(self.l_methods, function, "Methods")
-        self._visit_end(parent, function, relation)
-
-    def add_block(self, n_block):
-        assert isinstance(n_block, Special_Block)
-
-        if n_block.kind() == "properties":
-            self.l_properties.append(n_block)
-        elif n_block.kind() == "methods":
-            self.l_methods.append(n_block)
-        elif n_block.kind() == "events":
-            self.l_events.append(n_block)
-        elif n_block.kind() == "enumeration":
-            self.l_enumerations.append(n_block)
-        else:
-            raise ICE("unexpected block kind %s" % n_block.kind())
-
-
-class Name(Expression):
-    pass
+##############################################################################
+# Names
+##############################################################################
 
 
 class Reference(Name):
@@ -559,6 +610,397 @@ class Superclass_Reference(Name):
 
     def __str__(self):
         return "%s@%s" % (self.n_prefix, self.n_reference)
+
+
+##############################################################################
+# Compound Statements
+##############################################################################
+
+
+class Simple_For_Statement(Compound_Statement):
+    def __init__(self, t_for, n_ident, n_range, n_body):
+        super().__init__()
+        assert isinstance(t_for, MATLAB_Token)
+        assert t_for.kind == "KEYWORD" and t_for.value == "for"
+        assert isinstance(n_ident, Identifier)
+        assert isinstance(n_range, Range_Expression)
+        assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_for   = t_for
+        self.n_ident = n_ident
+        self.n_range = n_range
+        self.n_body  = n_body
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_ident.visit(parent, function, "Identifier")
+        self.n_range.visit(parent, function, "Range")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
+
+
+class General_For_Statement(Compound_Statement):
+    def __init__(self, t_for, n_ident, n_expr, n_body):
+        super().__init__()
+        assert isinstance(t_for, MATLAB_Token)
+        assert t_for.kind == "KEYWORD" and t_for.value == "for"
+        assert isinstance(n_ident, Identifier)
+        assert isinstance(n_expr, Expression)
+        assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_for   = t_for
+        self.n_ident = n_ident
+        self.n_expr = n_expr
+        self.n_body  = n_body
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_ident.visit(parent, function, "Identifier")
+        self.n_expr.visit(parent, function, "Expression")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
+
+
+class Parallel_For_Statement(Compound_Statement):
+    def __init__(self, t_for, n_ident, n_range, n_body, n_workers):
+        super().__init__()
+        assert isinstance(t_for, MATLAB_Token)
+        assert t_for.kind == "KEYWORD" and t_for.value == "parfor"
+        assert isinstance(n_ident, Identifier)
+        assert isinstance(n_range, Range_Expression)
+        assert isinstance(n_body, Sequence_Of_Statements)
+        assert n_workers is None or isinstance(n_workers, Expression)
+
+        self.t_for     = t_for
+        self.n_ident   = n_ident
+        self.n_range   = n_range
+        self.n_workers = n_workers
+        self.n_body    = n_body
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_ident.visit(parent, function, "Identifier")
+        self.n_range.visit(parent, function, "Range")
+        if self.n_workers:
+            self.n_workers.visit(parent, function, "Workers")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
+
+
+class While_Statement(Compound_Statement):
+    def __init__(self, t_while, n_guard, n_body):
+        super().__init__()
+        assert isinstance(t_while, MATLAB_Token)
+        assert t_while.kind == "KEYWORD" and t_while.value == "while"
+        assert isinstance(n_guard, Expression)
+        assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_while = t_while
+        self.n_guard = n_guard
+        self.n_body  = n_body
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_guard.visit(parent, function, "Guard")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
+
+
+class If_Statement(Compound_Statement):
+    def __init__(self, actions):
+        super().__init__()
+        assert isinstance(actions, list)
+        assert len(actions) >= 1
+        for action in actions:
+            assert isinstance(action, tuple) and len(action) == 3
+            t_kw, n_expr, n_body = action
+            assert isinstance(t_kw, MATLAB_Token)
+            assert t_kw.kind == "KEYWORD" and t_kw.value in ("if",
+                                                             "elseif",
+                                                             "else")
+            assert n_expr is None or isinstance(n_expr, Expression)
+            assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.actions = actions
+        self.has_else = actions[-1][0].value == "else"
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        for t_kw, n_expr, n_body in self.actions:
+            if n_expr:
+                n_expr.visit(parent, function,
+                             t_kw.value.capitalize() + "_Expression")
+            n_body.visit(parent, function,
+                         t_kw.value.capitalize() + "_Body")
+        self._visit_end(parent, function, relation)
+
+
+class Switch_Statement(Compound_Statement):
+    def __init__(self, t_kw, n_switch_expr, l_options):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "switch"
+        assert isinstance(n_switch_expr, Expression)
+        assert isinstance(l_options, list)
+        assert len(l_options) >= 1
+        for option in l_options:
+            assert isinstance(option, tuple) and len(option) == 3
+            t_kw, n_expr, n_body = option
+            assert isinstance(t_kw, MATLAB_Token)
+            assert t_kw.kind == "KEYWORD" and t_kw.value in ("case",
+                                                             "otherwise")
+            assert n_expr is None or isinstance(n_expr, Expression)
+            assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_kw = t_kw
+        self.n_expr = n_switch_expr
+        self.l_options = l_options
+        self.has_otherwise = l_options[-1][0].value == "otherwise"
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_expr.visit(parent, function, "Expression")
+        for t_kw, n_expr, n_body in self.l_options:
+            if n_expr:
+                n_expr.visit(parent, function,
+                             t_kw.value.capitalize() + "_Expression")
+            n_body.visit(parent, function,
+                         t_kw.value.capitalize() + "_Body")
+        self._visit_end(parent, function, relation)
+
+
+class Try_Statement(Compound_Statement):
+    def __init__(self, t_try, n_body, t_catch, n_ident, n_handler):
+        super().__init__()
+        assert isinstance(t_try, MATLAB_Token)
+        assert t_try.kind == "KEYWORD" and t_try.value == "try"
+        if t_catch is not None:
+            isinstance(t_catch, MATLAB_Token)
+            assert t_catch.kind == "KEYWORD" and t_catch.value == "catch"
+        assert isinstance(n_body, Sequence_Of_Statements)
+        assert n_handler is None or isinstance(n_handler,
+                                               Sequence_Of_Statements)
+        assert n_ident is None or isinstance(n_ident,
+                                             Identifier)
+        assert n_handler is not None or n_ident is None
+
+        self.t_try     = t_try
+        self.t_catch   = t_catch
+        self.n_body    = n_body
+        self.n_ident   = n_ident
+        self.n_handler = n_handler
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_body.visit(parent, function, "Body")
+        if self.n_ident:
+            self.n_ident.visit(parent, function, "Identifier")
+        if self.n_handler:
+            self.n_handler.visit(parent, function, "Handler")
+        self._visit_end(parent, function, relation)
+
+
+class SPMD_Statement(Compound_Statement):
+    def __init__(self, t_spmd, n_body):
+        super().__init__()
+        assert isinstance(t_spmd, MATLAB_Token)
+        assert t_spmd.kind == "KEYWORD" and t_spmd.value == "spmd"
+        assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_spmd = t_spmd
+        self.n_body = n_body
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
+
+
+##############################################################################
+# Simple Statements
+##############################################################################
+
+
+class Simple_Assignment_Statement(Simple_Statement):
+    def __init__(self, t_eq, n_lhs, n_rhs):
+        super().__init__()
+        assert isinstance(t_eq, MATLAB_Token)
+        assert t_eq.kind == "ASSIGNMENT"
+        assert isinstance(n_lhs, Name)
+        assert isinstance(n_rhs, Expression)
+
+        self.t_eq  = t_eq
+        self.n_lhs = n_lhs
+        self.n_rhs = n_rhs
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_lhs.visit(parent, function, "LHS")
+        self.n_rhs.visit(parent, function, "RHS")
+        self._visit_end(parent, function, relation)
+
+
+class Compound_Assignment_Statement(Simple_Statement):
+    def __init__(self, t_eq, l_lhs, n_rhs):
+        super().__init__()
+        assert isinstance(t_eq, MATLAB_Token)
+        assert t_eq.kind == "ASSIGNMENT"
+        assert isinstance(l_lhs, list)
+        assert len(l_lhs) >= 2
+        for n_lhs in l_lhs:
+            assert isinstance(n_lhs, Name)
+        assert isinstance(n_rhs, Expression)
+
+        self.t_eq  = t_eq
+        self.l_lhs = l_lhs
+        self.n_rhs = n_rhs
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_lhs, function, "LHS")
+        self.n_rhs.visit(parent, function, "RHS")
+        self._visit_end(parent, function, relation)
+
+
+class Naked_Expression_Statement(Simple_Statement):
+    def __init__(self, n_expr):
+        super().__init__()
+        assert isinstance(n_expr, Expression)
+
+        self.n_expr = n_expr
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_expr.visit(parent, function, "Expression")
+        self._visit_end(parent, function, relation)
+
+
+class Return_Statement(Simple_Statement):
+    def __init__(self, t_kw):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "return"
+
+        self.t_kw = t_kw
+
+
+class Break_Statement(Simple_Statement):
+    def __init__(self, t_kw):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "break"
+
+        self.t_kw = t_kw
+
+
+class Continue_Statement(Simple_Statement):
+    def __init__(self, t_kw):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "continue"
+
+        self.t_kw = t_kw
+
+
+class Global_Statement(Simple_Statement):
+    def __init__(self, t_kw, l_names):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "global"
+        assert isinstance(l_names, list)
+        for n_name in l_names:
+            assert isinstance(n_name, Identifier)
+
+        self.t_kw    = t_kw
+        self.l_names = l_names
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_names, function, "Names")
+        self._visit_end(parent, function, relation)
+
+
+class Persistent_Statement(Simple_Statement):
+    def __init__(self, t_kw, l_names):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "persistent"
+        assert isinstance(l_names, list)
+        for n_name in l_names:
+            assert isinstance(n_name, Identifier)
+
+        self.t_kw    = t_kw
+        self.l_names = l_names
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_names, function, "Names")
+        self._visit_end(parent, function, relation)
+
+
+class Import_Statement(Simple_Statement):
+    def __init__(self, t_kw, l_chain):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD" and t_kw.value == "import"
+        assert isinstance(l_chain, list)
+        for t_item in l_chain:
+            assert isinstance(t_item, MATLAB_Token)
+            assert t_item.kind == "IDENTIFIER" or \
+                (t_item.kind == "OPERATOR" and t_item.value == ".*")
+
+        self.t_kw    = t_kw
+        self.l_chain = l_chain
+
+    def get_chain_strings(self):
+        return [t.value if t.kind == "IDENTIFIER" else "*"
+                for t in self.l_chain]
+
+
+##############################################################################
+# Literals
+##############################################################################
+
+
+class Number_Literal(Literal):
+    def __init__(self, t_value):
+        super().__init__()
+        assert isinstance(t_value, MATLAB_Token)
+        assert t_value.kind == "NUMBER"
+
+        self.t_value = t_value
+
+    def __str__(self):
+        return self.t_value.value
+
+
+class Char_Array_Literal(Literal):
+    def __init__(self, t_string):
+        super().__init__()
+        assert isinstance(t_string, MATLAB_Token)
+        assert t_string.kind in ("CARRAY", "BANG")
+
+        self.t_string = t_string
+
+    def __str__(self):
+        return "'" + self.t_string.value + "'"
+
+
+class String_Literal(Literal):
+    def __init__(self, t_string):
+        super().__init__()
+        assert isinstance(t_string, MATLAB_Token)
+        assert t_string.kind == "STRING"
+
+        self.t_string = t_string
+
+    def __str__(self):
+        return '"' + self.t_string.value + '"'
+
+
+##############################################################################
+# Expressions
+##############################################################################
 
 
 class Reshape(Expression):
@@ -699,381 +1141,6 @@ class Function_Call(Expression):
                               " ".join(map(str, self.l_args)))
         else:
             return "!%s" % str(self.l_args[0])
-
-
-class Simple_For_Statement(Statement):
-    def __init__(self, t_for, n_ident, n_range, n_body):
-        super().__init__()
-        assert isinstance(t_for, MATLAB_Token)
-        assert t_for.kind == "KEYWORD" and t_for.value == "for"
-        assert isinstance(n_ident, Identifier)
-        assert isinstance(n_range, Range_Expression)
-        assert isinstance(n_body, Sequence_Of_Statements)
-
-        self.t_for   = t_for
-        self.n_ident = n_ident
-        self.n_range = n_range
-        self.n_body  = n_body
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_ident.visit(parent, function, "Identifier")
-        self.n_range.visit(parent, function, "Range")
-        self.n_body.visit(parent, function, "Body")
-        self._visit_end(parent, function, relation)
-
-
-class General_For_Statement(Statement):
-    def __init__(self, t_for, n_ident, n_expr, n_body):
-        super().__init__()
-        assert isinstance(t_for, MATLAB_Token)
-        assert t_for.kind == "KEYWORD" and t_for.value == "for"
-        assert isinstance(n_ident, Identifier)
-        assert isinstance(n_expr, Expression)
-        assert isinstance(n_body, Sequence_Of_Statements)
-
-        self.t_for   = t_for
-        self.n_ident = n_ident
-        self.n_expr = n_expr
-        self.n_body  = n_body
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_ident.visit(parent, function, "Identifier")
-        self.n_expr.visit(parent, function, "Expression")
-        self.n_body.visit(parent, function, "Body")
-        self._visit_end(parent, function, relation)
-
-
-class Parallel_For_Statement(Statement):
-    def __init__(self, t_for, n_ident, n_range, n_body, n_workers):
-        super().__init__()
-        assert isinstance(t_for, MATLAB_Token)
-        assert t_for.kind == "KEYWORD" and t_for.value == "parfor"
-        assert isinstance(n_ident, Identifier)
-        assert isinstance(n_range, Range_Expression)
-        assert isinstance(n_body, Sequence_Of_Statements)
-        assert n_workers is None or isinstance(n_workers, Expression)
-
-        self.t_for     = t_for
-        self.n_ident   = n_ident
-        self.n_range   = n_range
-        self.n_workers = n_workers
-        self.n_body    = n_body
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_ident.visit(parent, function, "Identifier")
-        self.n_range.visit(parent, function, "Range")
-        if self.n_workers:
-            self.n_workers.visit(parent, function, "Workers")
-        self.n_body.visit(parent, function, "Body")
-        self._visit_end(parent, function, relation)
-
-
-class While_Statement(Statement):
-    def __init__(self, t_while, n_guard, n_body):
-        super().__init__()
-        assert isinstance(t_while, MATLAB_Token)
-        assert t_while.kind == "KEYWORD" and t_while.value == "while"
-        assert isinstance(n_guard, Expression)
-        assert isinstance(n_body, Sequence_Of_Statements)
-
-        self.t_while = t_while
-        self.n_guard = n_guard
-        self.n_body  = n_body
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_guard.visit(parent, function, "Guard")
-        self.n_body.visit(parent, function, "Body")
-        self._visit_end(parent, function, relation)
-
-
-class If_Statement(Statement):
-    def __init__(self, actions):
-        super().__init__()
-        assert isinstance(actions, list)
-        assert len(actions) >= 1
-        for action in actions:
-            assert isinstance(action, tuple) and len(action) == 3
-            t_kw, n_expr, n_body = action
-            assert isinstance(t_kw, MATLAB_Token)
-            assert t_kw.kind == "KEYWORD" and t_kw.value in ("if",
-                                                             "elseif",
-                                                             "else")
-            assert n_expr is None or isinstance(n_expr, Expression)
-            assert isinstance(n_body, Sequence_Of_Statements)
-
-        self.actions = actions
-        self.has_else = actions[-1][0].value == "else"
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        for t_kw, n_expr, n_body in self.actions:
-            if n_expr:
-                n_expr.visit(parent, function,
-                             t_kw.value.capitalize() + "_Expression")
-            n_body.visit(parent, function,
-                         t_kw.value.capitalize() + "_Body")
-        self._visit_end(parent, function, relation)
-
-
-class Switch_Statement(Statement):
-    def __init__(self, t_kw, n_switch_expr, l_options):
-        super().__init__()
-        assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value == "switch"
-        assert isinstance(n_switch_expr, Expression)
-        assert isinstance(l_options, list)
-        assert len(l_options) >= 1
-        for option in l_options:
-            assert isinstance(option, tuple) and len(option) == 3
-            t_kw, n_expr, n_body = option
-            assert isinstance(t_kw, MATLAB_Token)
-            assert t_kw.kind == "KEYWORD" and t_kw.value in ("case",
-                                                             "otherwise")
-            assert n_expr is None or isinstance(n_expr, Expression)
-            assert isinstance(n_body, Sequence_Of_Statements)
-
-        self.t_kw = t_kw
-        self.n_expr = n_switch_expr
-        self.l_options = l_options
-        self.has_otherwise = l_options[-1][0].value == "otherwise"
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_expr.visit(parent, function, "Expression")
-        for t_kw, n_expr, n_body in self.l_options:
-            if n_expr:
-                n_expr.visit(parent, function,
-                             t_kw.value.capitalize() + "_Expression")
-            n_body.visit(parent, function,
-                         t_kw.value.capitalize() + "_Body")
-        self._visit_end(parent, function, relation)
-
-
-class Simple_Assignment_Statement(Statement):
-    def __init__(self, t_eq, n_lhs, n_rhs):
-        super().__init__()
-        assert isinstance(t_eq, MATLAB_Token)
-        assert t_eq.kind == "ASSIGNMENT"
-        assert isinstance(n_lhs, Name)
-        assert isinstance(n_rhs, Expression)
-
-        self.t_eq  = t_eq
-        self.n_lhs = n_lhs
-        self.n_rhs = n_rhs
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_lhs.visit(parent, function, "LHS")
-        self.n_rhs.visit(parent, function, "RHS")
-        self._visit_end(parent, function, relation)
-
-
-class Compound_Assignment_Statement(Statement):
-    def __init__(self, t_eq, l_lhs, n_rhs):
-        super().__init__()
-        assert isinstance(t_eq, MATLAB_Token)
-        assert t_eq.kind == "ASSIGNMENT"
-        assert isinstance(l_lhs, list)
-        assert len(l_lhs) >= 2
-        for n_lhs in l_lhs:
-            assert isinstance(n_lhs, Name)
-        assert isinstance(n_rhs, Expression)
-
-        self.t_eq  = t_eq
-        self.l_lhs = l_lhs
-        self.n_rhs = n_rhs
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self._visit_list(self.l_lhs, function, "LHS")
-        self.n_rhs.visit(parent, function, "RHS")
-        self._visit_end(parent, function, relation)
-
-
-class Naked_Expression_Statement(Statement):
-    def __init__(self, n_expr):
-        super().__init__()
-        assert isinstance(n_expr, Expression)
-
-        self.n_expr = n_expr
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_expr.visit(parent, function, "Expression")
-        self._visit_end(parent, function, relation)
-
-
-class Return_Statement(Statement):
-    def __init__(self, t_kw):
-        super().__init__()
-        assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value == "return"
-
-        self.t_kw = t_kw
-
-
-class Break_Statement(Statement):
-    def __init__(self, t_kw):
-        super().__init__()
-        assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value == "break"
-
-        self.t_kw = t_kw
-
-
-class Continue_Statement(Statement):
-    def __init__(self, t_kw):
-        super().__init__()
-        assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value == "continue"
-
-        self.t_kw = t_kw
-
-
-class Global_Statement(Statement):
-    def __init__(self, t_kw, l_names):
-        super().__init__()
-        assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value == "global"
-        assert isinstance(l_names, list)
-        for n_name in l_names:
-            assert isinstance(n_name, Identifier)
-
-        self.t_kw    = t_kw
-        self.l_names = l_names
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self._visit_list(self.l_names, function, "Names")
-        self._visit_end(parent, function, relation)
-
-
-class Persistent_Statement(Statement):
-    def __init__(self, t_kw, l_names):
-        super().__init__()
-        assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value == "persistent"
-        assert isinstance(l_names, list)
-        for n_name in l_names:
-            assert isinstance(n_name, Identifier)
-
-        self.t_kw    = t_kw
-        self.l_names = l_names
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self._visit_list(self.l_names, function, "Names")
-        self._visit_end(parent, function, relation)
-
-
-class Import_Statement(Statement):
-    def __init__(self, t_kw, l_chain):
-        super().__init__()
-        assert isinstance(t_kw, MATLAB_Token)
-        assert t_kw.kind == "KEYWORD" and t_kw.value == "import"
-        assert isinstance(l_chain, list)
-        for t_item in l_chain:
-            assert isinstance(t_item, MATLAB_Token)
-            assert t_item.kind == "IDENTIFIER" or \
-                (t_item.kind == "OPERATOR" and t_item.value == ".*")
-
-        self.t_kw    = t_kw
-        self.l_chain = l_chain
-
-    def get_chain_strings(self):
-        return [t.value if t.kind == "IDENTIFIER" else "*"
-                for t in self.l_chain]
-
-
-class Try_Statement(Statement):
-    def __init__(self, t_try, n_body, t_catch, n_ident, n_handler):
-        super().__init__()
-        assert isinstance(t_try, MATLAB_Token)
-        assert t_try.kind == "KEYWORD" and t_try.value == "try"
-        if t_catch is not None:
-            isinstance(t_catch, MATLAB_Token)
-            assert t_catch.kind == "KEYWORD" and t_catch.value == "catch"
-        assert isinstance(n_body, Sequence_Of_Statements)
-        assert n_handler is None or isinstance(n_handler,
-                                               Sequence_Of_Statements)
-        assert n_ident is None or isinstance(n_ident,
-                                             Identifier)
-        assert n_handler is not None or n_ident is None
-
-        self.t_try     = t_try
-        self.t_catch   = t_catch
-        self.n_body    = n_body
-        self.n_ident   = n_ident
-        self.n_handler = n_handler
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_body.visit(parent, function, "Body")
-        if self.n_ident:
-            self.n_ident.visit(parent, function, "Identifier")
-        if self.n_handler:
-            self.n_handler.visit(parent, function, "Handler")
-        self._visit_end(parent, function, relation)
-
-
-class SPMD_Statement(Statement):
-    def __init__(self, t_spmd, n_body):
-        super().__init__()
-        assert isinstance(t_spmd, MATLAB_Token)
-        assert t_spmd.kind == "KEYWORD" and t_spmd.value == "spmd"
-        assert isinstance(n_body, Sequence_Of_Statements)
-
-        self.t_spmd = t_spmd
-        self.n_body = n_body
-
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self.n_body.visit(parent, function, "Body")
-        self._visit_end(parent, function, relation)
-
-
-class Literal(Expression):
-    pass
-
-
-class Number_Literal(Literal):
-    def __init__(self, t_value):
-        super().__init__()
-        assert isinstance(t_value, MATLAB_Token)
-        assert t_value.kind == "NUMBER"
-
-        self.t_value = t_value
-
-    def __str__(self):
-        return self.t_value.value
-
-
-class Char_Array_Literal(Literal):
-    def __init__(self, t_string):
-        super().__init__()
-        assert isinstance(t_string, MATLAB_Token)
-        assert t_string.kind in ("CARRAY", "BANG")
-
-        self.t_string = t_string
-
-    def __str__(self):
-        return "'" + self.t_string.value + "'"
-
-
-class String_Literal(Literal):
-    def __init__(self, t_string):
-        super().__init__()
-        assert isinstance(t_string, MATLAB_Token)
-        assert t_string.kind == "STRING"
-
-        self.t_string = t_string
-
-    def __str__(self):
-        return '"' + self.t_string.value + '"'
 
 
 class Unary_Operation(Expression):
@@ -1223,7 +1290,7 @@ class Text_Visitor(AST_Visitor):
             self.write_head(node.t_kw.value.capitalize() + " " +
                             node.__class__.__name__,
                             relation)
-        elif isinstance(node, Class_Property):
+        elif isinstance(node, Entity_Constraints):
             self.write_head(node.__class__.__name__,
                             relation)
             for dim, t_cons in enumerate(node.l_dim_constraint, 1):
@@ -1508,12 +1575,12 @@ def dot(fd, parent, annotation, node):
         for item in node.l_items:
             dot(fd, node, "", item)
 
-    elif isinstance(node, Class_Attribute):
+    elif isinstance(node, Name_Value_Pair):
         lbl += " " + str(node.n_name)
         if node.n_value:
             dot(fd, node, "value", node.n_value)
 
-    elif isinstance(node, Class_Property):
+    elif isinstance(node, Entity_Constraints):
         lbl = str(node.n_name)
         attr.append("shape=none")
 

@@ -11,15 +11,15 @@ Root: Function_File
       Outputs: Identifier <yCell>
       Outputs: Identifier <optionCell>
     Validation: Arguments Special_Block
-      Attributes: Class_Attribute
+      Attributes: Name_Value_Pair
         Name: Identifier <Repeating>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <x>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <y>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <option>
         Functions: Reference
           Name: Identifier <mustBeMember>

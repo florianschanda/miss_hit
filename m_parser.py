@@ -290,10 +290,13 @@ class MATLAB_Parser:
                                 else ending_token.location,
                                 "end statement with a newline",
                                 False)
+
+            # pylint: disable=simplifiable-if-statement
             if eos_token:
                 eos_token.fix["add_newline"] = True
             else:
                 ending_token.fix["add_newline"] = True
+            # pylint: enable=simplifiable-if-statement
 
         # If we found the end of the file, then this is also an
         # acceptable end of statement
@@ -580,7 +583,7 @@ class MATLAB_Parser:
 
         return rv
 
-    def parse_class_attribute_list(self):
+    def parse_name_value_pair_list(self):
         properties = []
 
         if self.peek("BRA"):
@@ -590,9 +593,9 @@ class MATLAB_Parser:
                 if self.peek("ASSIGNMENT"):
                     self.match("ASSIGNMENT")
                     n_value = self.parse_expression()
-                    properties.append(Class_Attribute(n_name, n_value))
+                    properties.append(Name_Value_Pair(n_name, n_value))
                 else:
-                    properties.append(Class_Attribute(n_name))
+                    properties.append(Name_Value_Pair(n_name))
 
                 if self.peek("COMMA"):
                     self.match("COMMA")
@@ -614,7 +617,7 @@ class MATLAB_Parser:
             self.match("KEYWORD", "properties")
         t_kw = self.ct
 
-        attributes = self.parse_class_attribute_list()
+        attributes = self.parse_name_value_pair_list()
         self.match_eos()
 
         rv = Special_Block(t_kw, attributes)
@@ -683,11 +686,11 @@ class MATLAB_Parser:
 
             self.match_eos()
 
-            rv.add_property(Class_Property(prop_name,
-                                           val_dim,
-                                           val_cls,
-                                           val_fun,
-                                           default_value))
+            rv.add_constraint(Entity_Constraints(prop_name,
+                                                 val_dim,
+                                                 val_cls,
+                                                 val_fun,
+                                                 default_value))
 
         self.match("KEYWORD", "end")
         self.match_eos()
@@ -703,7 +706,7 @@ class MATLAB_Parser:
         self.match("KEYWORD", "methods")
         t_kw = self.ct
 
-        attributes = self.parse_class_attribute_list()
+        attributes = self.parse_name_value_pair_list()
         self.match_eos()
 
         rv = Special_Block(t_kw, attributes)
@@ -780,7 +783,7 @@ class MATLAB_Parser:
         t_classdef = self.ct
 
         # Class attributes. Ignored for now.
-        attributes = self.parse_class_attribute_list()
+        attributes = self.parse_name_value_pair_list()
 
         # Class name
         class_name = self.parse_identifier(allow_void=False)

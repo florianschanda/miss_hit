@@ -7,12 +7,12 @@ Root: Function_File
       Inputs: Identifier <a>
       Inputs: Identifier <b>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: COLON
         Dimension 2 constraint: COLON
         Name: Identifier <a>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 5
         Dimension 2 constraint: 3
         Name: Identifier <b>

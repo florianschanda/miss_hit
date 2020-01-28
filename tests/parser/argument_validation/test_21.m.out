@@ -9,13 +9,13 @@ Root: Function_File
       Inputs: Identifier <lineOptions>
       Inputs: Identifier <fillOptions>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <width>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <height>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Selection
@@ -23,7 +23,7 @@ Root: Function_File
           Field: Identifier <LineStyle>
         Class: Identifier <string>
         Default: String_Literal "-"
-      Items: Class_Property
+      Items: Entity_Constraints
         Dimension 1 constraint: 1
         Dimension 2 constraint: 1
         Name: Selection
@@ -31,12 +31,12 @@ Root: Function_File
           Field: Identifier <LineWidth>
         Functions: Identifier <mustBeNumeric>
         Default: Number_Literal <1>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Selection
           Prefix: Identifier <fillOptions>
           Field: Identifier <Color>
         Class: Identifier <string>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Selection
           Prefix: Identifier <fillOptions>
           Field: Identifier <Pattern>

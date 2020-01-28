@@ -4,9 +4,9 @@ Root: Class_File
   Classdef: Class_Definition
     Name: Identifier <potato>
     Properties: Properties Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <x>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <y>
     Methods: Methods Special_Block
       Items: Function_Definition

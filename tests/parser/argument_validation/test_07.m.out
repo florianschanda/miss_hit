@@ -7,7 +7,7 @@ Root: Function_File
       Inputs: Identifier <~>
       Outputs: Identifier <c>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <~>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------

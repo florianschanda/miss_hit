@@ -8,13 +8,13 @@ Root: Function_File
       Inputs: Identifier <b>
       Inputs: Identifier <c>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <a>
         Class: Identifier <double>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <b>
         Class: Identifier <char>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <c>
         Class: Identifier <SpeedEnum>
     Body: Sequence_Of_Statements

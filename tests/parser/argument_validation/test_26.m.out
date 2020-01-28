@@ -9,13 +9,13 @@ Root: Function_File
       Inputs: Identifier <c>
       Outputs: Identifier <c>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <a>
         Class: Identifier <uint32>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <b>
         Class: Identifier <uint32>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <c>
         Class: Identifier <uint32>
         Default: Binary_Operation .*

@@ -8,16 +8,16 @@ Root: Function_File
       Inputs: Identifier <b>
       Inputs: Identifier <varargin>
     Validation: Arguments Special_Block
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <a>
         Class: Identifier <uint32>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <b>
         Class: Identifier <uint32>
     Validation: Arguments Special_Block
-      Attributes: Class_Attribute
+      Attributes: Name_Value_Pair
         Name: Identifier <Repeating>
-      Items: Class_Property
+      Items: Entity_Constraints
         Name: Identifier <varargin>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
