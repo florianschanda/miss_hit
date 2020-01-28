@@ -3,17 +3,19 @@
 Root: Script_File
   Statements: Sequence_Of_Statements
     Statements: Switch_Statement
-      Expression: Identifier <choice>
-      Case_Expression: Number_Literal <1>
-      Case_Body: Sequence_Of_Statements
-        Statements: Simple_Assignment_Statement
-          LHS: Identifier <x>
-          RHS: Range_Expression
-            First: Unary_Operation -
-              Expression: Identifier <pi>
-            Stride: Number_Literal <0.01>
-            Last: Identifier <pi>
-      Case_Expression: Number_Literal <2>
-      Case_Body: Sequence_Of_Statements
+      Guard: Identifier <choice>
+      Action: Case Action
+        Guard: Number_Literal <1>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Range_Expression
+              First: Unary_Operation -
+                Expression: Identifier <pi>
+              Stride: Number_Literal <0.01>
+              Last: Identifier <pi>
+      Action: Case Action
+        Guard: Number_Literal <2>
+        Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

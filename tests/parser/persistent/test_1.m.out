@@ -8,13 +8,14 @@ Root: Function_File
       Statements: Persistent_Statement
         Names: Identifier <n>
       Statements: If_Statement
-        If_Expression: Reference
-          Name: Identifier <isempty>
-          Arguments: Identifier <n>
-        If_Body: Sequence_Of_Statements
-          Statements: Simple_Assignment_Statement
-            LHS: Identifier <n>
-            RHS: Number_Literal <0>
+        Action: If Action
+          Guard: Reference
+            Name: Identifier <isempty>
+            Arguments: Identifier <n>
+          Body: Sequence_Of_Statements
+            Statements: Simple_Assignment_Statement
+              LHS: Identifier <n>
+              RHS: Number_Literal <0>
       Statements: Simple_Assignment_Statement
         LHS: Identifier <n>
         RHS: Binary_Operation +

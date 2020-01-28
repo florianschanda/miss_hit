@@ -64,14 +64,16 @@ Root: Function_File
           Name: Identifier <assert>
           Arguments: Binary_Operation ==
             LHS: Matrix_Expression
-              Items: Identifier <s>
-              Items: Identifier <t>
-              Items: Identifier <u>
-              Items: Identifier <v>
+              Rows: Row
+                Items: Identifier <s>
+                Items: Identifier <t>
+                Items: Identifier <u>
+                Items: Identifier <v>
             RHS: Matrix_Expression
-              Items: Number_Literal <1>
-              Items: Number_Literal <2>
-              Items: Number_Literal <3>
-              Items: Number_Literal <4>
+              Rows: Row
+                Items: Number_Literal <1>
+                Items: Number_Literal <2>
+                Items: Number_Literal <3>
+                Items: Number_Literal <4>
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

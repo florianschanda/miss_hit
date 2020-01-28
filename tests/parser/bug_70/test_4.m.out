@@ -8,7 +8,8 @@ Root: Script_File
     Statements: Simple_Assignment_Statement
       LHS: Identifier <foo>
       RHS: Matrix_Expression
-        Items: Unary_Operation ~
-          Expression: Identifier <x>
+        Rows: Row
+          Items: Unary_Operation ~
+            Expression: Identifier <x>
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

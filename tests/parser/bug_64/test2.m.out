@@ -5,8 +5,9 @@ Root: Script_File
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Items: Binary_Operation >
-          LHS: Number_Literal <2>
-          RHS: Number_Literal <1>
+        Rows: Row
+          Items: Binary_Operation >
+            LHS: Number_Literal <2>
+            RHS: Number_Literal <1>
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -23,8 +23,9 @@ Root: Function_File
           Name: Identifier <mustBeSize>
           Arguments: Identifier <b>
           Arguments: Matrix_Expression
-            Items: Number_Literal <5>
-            Items: Number_Literal <3>
+            Rows: Row
+              Items: Number_Literal <5>
+              Items: Number_Literal <3>
     Body: Sequence_Of_Statements
   Functions: Function_Definition
     Signature: Function_Signature
@@ -33,16 +34,17 @@ Root: Function_File
       Inputs: Identifier <className>
     Body: Sequence_Of_Statements
       Statements: If_Statement
-        If_Expression: Unary_Operation ~
-          Expression: Reference
-            Name: Identifier <isa>
-            Arguments: Identifier <input>
-            Arguments: Identifier <className>
-        If_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
+        Action: If Action
+          Guard: Unary_Operation ~
             Expression: Reference
-              Name: Identifier <error>
-              Arguments: Char_Array_Literal 'Input must be of class double.'
+              Name: Identifier <isa>
+              Arguments: Identifier <input>
+              Arguments: Identifier <className>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <error>
+                Arguments: Char_Array_Literal 'Input must be of class double.'
   Functions: Function_Definition
     Signature: Function_Signature
       Name: Identifier <mustBeSize>
@@ -50,22 +52,24 @@ Root: Function_File
       Inputs: Identifier <sizeDims>
     Body: Sequence_Of_Statements
       Statements: If_Statement
-        If_Expression: Unary_Operation ~
-          Expression: Reference
-            Name: Identifier <isequal>
-            Arguments: Reference
-              Name: Identifier <size>
-              Arguments: Identifier <input>
-            Arguments: Identifier <sizeDims>
-        If_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
+        Action: If Action
+          Guard: Unary_Operation ~
             Expression: Reference
-              Name: Identifier <error>
-              Arguments: Matrix_Expression
-                Items: Char_Array_Literal 'Input must be of size '
-                Items: Reference
-                  Name: Identifier <num2str>
-                  Arguments: Identifier <sizeDims>
+              Name: Identifier <isequal>
+              Arguments: Reference
+                Name: Identifier <size>
+                Arguments: Identifier <input>
+              Arguments: Identifier <sizeDims>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <error>
+                Arguments: Matrix_Expression
+                  Rows: Row
+                    Items: Char_Array_Literal 'Input must be of size '
+                    Items: Reference
+                      Name: Identifier <num2str>
+                      Arguments: Identifier <sizeDims>
   Functions: Function_Definition
     Signature: Function_Signature
       Name: Identifier <mustBeDims>
@@ -73,24 +77,26 @@ Root: Function_File
       Inputs: Identifier <numDims>
     Body: Sequence_Of_Statements
       Statements: If_Statement
-        If_Expression: Unary_Operation ~
-          Expression: Reference
-            Name: Identifier <isequal>
-            Arguments: Reference
-              Name: Identifier <length>
-              Arguments: Reference
-                Name: Identifier <size>
-                Arguments: Identifier <input>
-            Arguments: Identifier <numDims>
-        If_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
+        Action: If Action
+          Guard: Unary_Operation ~
             Expression: Reference
-              Name: Identifier <error>
-              Arguments: Matrix_Expression
-                Items: Char_Array_Literal 'Input must have '
-                Items: Reference
-                  Name: Identifier <num2str>
-                  Arguments: Identifier <numDims>
-                Items: Char_Array_Literal ' dimensions.'
+              Name: Identifier <isequal>
+              Arguments: Reference
+                Name: Identifier <length>
+                Arguments: Reference
+                  Name: Identifier <size>
+                  Arguments: Identifier <input>
+              Arguments: Identifier <numDims>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <error>
+                Arguments: Matrix_Expression
+                  Rows: Row
+                    Items: Char_Array_Literal 'Input must have '
+                    Items: Reference
+                      Name: Identifier <num2str>
+                      Arguments: Identifier <numDims>
+                    Items: Char_Array_Literal ' dimensions.'
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

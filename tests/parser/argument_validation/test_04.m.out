@@ -33,9 +33,10 @@ Root: Function_File
           Name: Identifier <mustBeMember>
           Arguments: Identifier <method>
           Arguments: Cell_Expression
-            Items: Char_Array_Literal 'linear'
-            Items: Char_Array_Literal 'cubic'
-            Items: Char_Array_Literal 'spline'
+            Rows: Row
+              Items: Char_Array_Literal 'linear'
+              Items: Char_Array_Literal 'cubic'
+              Items: Char_Array_Literal 'spline'
         Default: Char_Array_Literal 'linear'
     Body: Sequence_Of_Statements
   Functions: Function_Definition
@@ -45,19 +46,20 @@ Root: Function_File
       Inputs: Identifier <b>
     Body: Sequence_Of_Statements
       Statements: If_Statement
-        If_Expression: Unary_Operation ~
-          Expression: Reference
-            Name: Identifier <isequal>
-            Arguments: Reference
-              Name: Identifier <size>
-              Arguments: Identifier <a>
-            Arguments: Reference
-              Name: Identifier <size>
-              Arguments: Identifier <b>
-        If_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
+        Action: If Action
+          Guard: Unary_Operation ~
             Expression: Reference
-              Name: Identifier <error>
-              Arguments: Char_Array_Literal 'Size of first input must equal size of second input'
+              Name: Identifier <isequal>
+              Arguments: Reference
+                Name: Identifier <size>
+                Arguments: Identifier <a>
+              Arguments: Reference
+                Name: Identifier <size>
+                Arguments: Identifier <b>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <error>
+                Arguments: Char_Array_Literal 'Size of first input must equal size of second input'
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

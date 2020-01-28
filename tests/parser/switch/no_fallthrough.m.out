@@ -6,20 +6,23 @@ Root: Script_File
       LHS: Identifier <result>
       RHS: Number_Literal <52>
     Statements: Switch_Statement
-      Expression: Identifier <result>
-      Case_Expression: Number_Literal <52>
-      Case_Body: Sequence_Of_Statements
-        Statements: Naked_Expression_Statement
-          Expression: Reference
-            Name: Identifier <disp>
-            Arguments: Char_Array_Literal 'result is 52'
-      Case_Expression: Cell_Expression
-        Items: Number_Literal <52>
-        Items: Number_Literal <78>
-      Case_Body: Sequence_Of_Statements
-        Statements: Naked_Expression_Statement
-          Expression: Reference
-            Name: Identifier <disp>
-            Arguments: Char_Array_Literal 'result is 52 or 78'
+      Guard: Identifier <result>
+      Action: Case Action
+        Guard: Number_Literal <52>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: Char_Array_Literal 'result is 52'
+      Action: Case Action
+        Guard: Cell_Expression
+          Rows: Row
+            Items: Number_Literal <52>
+            Items: Number_Literal <78>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: Char_Array_Literal 'result is 52 or 78'
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

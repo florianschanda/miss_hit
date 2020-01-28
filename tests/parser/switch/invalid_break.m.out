@@ -9,18 +9,20 @@ In invalid_break.m, line 9
 Root: Script_File
   Statements: Sequence_Of_Statements
     Statements: Switch_Statement
-      Expression: Identifier <potato>
-      Case_Expression: Number_Literal <1>
-      Case_Body: Sequence_Of_Statements
-        Statements: Simple_Assignment_Statement
-          LHS: Identifier <x>
-          RHS: Number_Literal <1>
-        Statements: Break_Statement
-      Case_Expression: Number_Literal <2>
-      Case_Body: Sequence_Of_Statements
-        Statements: Simple_Assignment_Statement
-          LHS: Identifier <x>
-          RHS: Number_Literal <2>
-        Statements: Break_Statement
+      Guard: Identifier <potato>
+      Action: Case Action
+        Guard: Number_Literal <1>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <1>
+          Statements: Break_Statement
+      Action: Case Action
+        Guard: Number_Literal <2>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <2>
+          Statements: Break_Statement
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, 2 error(s)

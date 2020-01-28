@@ -25,21 +25,24 @@ Root: Function_File
         RHS: Reference
           Name: Identifier <reshape>
           Arguments: Matrix_Expression
-            Items: Identifier <x>
-            Items: Identifier <y>
+            Rows: Row
+              Items: Identifier <x>
+            Rows: Row
+              Items: Identifier <y>
           Arguments: Number_Literal <1>
           Arguments: Matrix_Expression
       Statements: If_Statement
-        If_Expression: Unary_Operation ~
-          Expression: Reference
-            Name: Identifier <isempty>
-            Arguments: Identifier <z>
-        If_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
+        Action: If Action
+          Guard: Unary_Operation ~
             Expression: Reference
-              Name: Identifier <plot>
-              Arguments: Cell_Reference
-                Name: Identifier <z>
-                Arguments: Reshape
+              Name: Identifier <isempty>
+              Arguments: Identifier <z>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <plot>
+                Arguments: Cell_Reference
+                  Name: Identifier <z>
+                  Arguments: Reshape
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

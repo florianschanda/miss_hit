@@ -5,11 +5,13 @@ Root: Script_File
     Statements: Simple_Assignment_Statement
       LHS: Identifier <idx>
       RHS: Matrix_Expression
-        Items: Identifier <true>
-        Items: Binary_Operation >
-          LHS: Reference
-            Name: Identifier <diff>
-            Arguments: Identifier <id_remove>
-          RHS: Number_Literal <1>
+        Rows: Row
+          Items: Identifier <true>
+        Rows: Row
+          Items: Binary_Operation >
+            LHS: Reference
+              Name: Identifier <diff>
+              Arguments: Identifier <id_remove>
+            RHS: Number_Literal <1>
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

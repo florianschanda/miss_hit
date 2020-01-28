@@ -3,33 +3,37 @@
 Root: Script_File
   Statements: Sequence_Of_Statements
     Statements: Switch_Statement
-      Expression: Identifier <plottype>
-      Case_Expression: Char_Array_Literal 'bar'
-      Case_Body: Sequence_Of_Statements
-        Statements: Naked_Expression_Statement
-          Expression: Reference
-            Name: Identifier <bar>
-            Arguments: Identifier <x>
-        Statements: Naked_Expression_Statement
-          Expression: Reference
-            Name: Identifier <title>
-            Arguments: Char_Array_Literal 'Bar Graph'
-      Case_Expression: Cell_Expression
-        Items: Char_Array_Literal 'pie'
-        Items: Char_Array_Literal 'pie3'
-      Case_Body: Sequence_Of_Statements
-        Statements: Naked_Expression_Statement
-          Expression: Reference
-            Name: Identifier <pie3>
-            Arguments: Identifier <x>
-        Statements: Naked_Expression_Statement
-          Expression: Reference
-            Name: Identifier <title>
-            Arguments: Char_Array_Literal 'Pie Chart'
-      Otherwise_Body: Sequence_Of_Statements
-        Statements: Naked_Expression_Statement
-          Expression: Reference
-            Name: Identifier <warning>
-            Arguments: Char_Array_Literal 'Unexpected plot type. No plot created.'
+      Guard: Identifier <plottype>
+      Action: Case Action
+        Guard: Char_Array_Literal 'bar'
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <bar>
+              Arguments: Identifier <x>
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <title>
+              Arguments: Char_Array_Literal 'Bar Graph'
+      Action: Case Action
+        Guard: Cell_Expression
+          Rows: Row
+            Items: Char_Array_Literal 'pie'
+            Items: Char_Array_Literal 'pie3'
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <pie3>
+              Arguments: Identifier <x>
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <title>
+              Arguments: Char_Array_Literal 'Pie Chart'
+      Action: Otherwise Action
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <warning>
+              Arguments: Char_Array_Literal 'Unexpected plot type. No plot created.'
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

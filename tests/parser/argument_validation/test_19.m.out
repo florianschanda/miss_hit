@@ -34,40 +34,45 @@ Root: Function_File
         RHS: Reference
           Name: Identifier <reshape>
           Arguments: Matrix_Expression
-            Items: Identifier <x>
-            Items: Identifier <y>
+            Rows: Row
+              Items: Identifier <x>
+            Rows: Row
+              Items: Identifier <y>
           Arguments: Number_Literal <1>
           Arguments: Matrix_Expression
       Statements: If_Statement
-        If_Expression: Reference
-          Name: Identifier <isfield>
-          Arguments: Identifier <scale>
-          Arguments: String_Literal "PlotType"
-        If_Body: Sequence_Of_Statements
-          Statements: If_Statement
-            If_Expression: Binary_Operation ==
-              LHS: Selection
-                Prefix: Identifier <scale>
-                Field: Identifier <PlotType>
-              RHS: String_Literal "lin"
-            If_Body: Sequence_Of_Statements
-              Statements: Naked_Expression_Statement
-                Expression: Reference
-                  Name: Identifier <plot>
-                  Arguments: Cell_Reference
-                    Name: Identifier <z>
-                    Arguments: Reshape
-            Elseif_Expression: Binary_Operation ==
-              LHS: Selection
-                Prefix: Identifier <scale>
-                Field: Identifier <PlotType>
-              RHS: String_Literal "log"
-            Elseif_Body: Sequence_Of_Statements
-              Statements: Naked_Expression_Statement
-                Expression: Reference
-                  Name: Identifier <loglog>
-                  Arguments: Cell_Reference
-                    Name: Identifier <z>
-                    Arguments: Reshape
+        Action: If Action
+          Guard: Reference
+            Name: Identifier <isfield>
+            Arguments: Identifier <scale>
+            Arguments: String_Literal "PlotType"
+          Body: Sequence_Of_Statements
+            Statements: If_Statement
+              Action: If Action
+                Guard: Binary_Operation ==
+                  LHS: Selection
+                    Prefix: Identifier <scale>
+                    Field: Identifier <PlotType>
+                  RHS: String_Literal "lin"
+                Body: Sequence_Of_Statements
+                  Statements: Naked_Expression_Statement
+                    Expression: Reference
+                      Name: Identifier <plot>
+                      Arguments: Cell_Reference
+                        Name: Identifier <z>
+                        Arguments: Reshape
+              Action: Elseif Action
+                Guard: Binary_Operation ==
+                  LHS: Selection
+                    Prefix: Identifier <scale>
+                    Field: Identifier <PlotType>
+                  RHS: String_Literal "log"
+                Body: Sequence_Of_Statements
+                  Statements: Naked_Expression_Statement
+                    Expression: Reference
+                      Name: Identifier <loglog>
+                      Arguments: Cell_Reference
+                        Name: Identifier <z>
+                        Arguments: Reshape
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

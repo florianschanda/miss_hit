@@ -25,13 +25,14 @@ Root: Function_File
         Names: Identifier <y>
         Names: Identifier <z>
       Statements: If_Statement
-        If_Expression: Reference
-          Name: Identifier <isempty>
-          Arguments: Identifier <y>
-        If_Body: Sequence_Of_Statements
-          Statements: Simple_Assignment_Statement
-            LHS: Identifier <y>
-            RHS: Number_Literal <42>
+        Action: If Action
+          Guard: Reference
+            Name: Identifier <isempty>
+            Arguments: Identifier <y>
+          Body: Sequence_Of_Statements
+            Statements: Simple_Assignment_Statement
+              LHS: Identifier <y>
+              RHS: Number_Literal <42>
       Statements: Simple_Assignment_Statement
         LHS: Identifier <x>
         RHS: Identifier <y>

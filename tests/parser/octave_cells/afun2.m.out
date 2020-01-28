@@ -8,21 +8,23 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <a>
         RHS: Cell_Expression
-          Items: Number_Literal <1>
-          Items: Function_Pointer
-            Name: Identifier <sin>
-          Items: Number_Literal <2>
-          Items: Function_Pointer
-            Name: Identifier <cos>
+          Rows: Row
+            Items: Number_Literal <1>
+            Items: Function_Pointer
+              Name: Identifier <sin>
+            Items: Number_Literal <2>
+            Items: Function_Pointer
+              Name: Identifier <cos>
       Statements: Simple_Assignment_Statement
         LHS: Identifier <b>
         RHS: Cell_Expression
-          Items: Number_Literal <1>
-          Items: Function_Pointer
-            Name: Identifier <sin>
-          Items: Number_Literal <2>
-          Items: Function_Pointer
-            Name: Identifier <cos>
+          Rows: Row
+            Items: Number_Literal <1>
+            Items: Function_Pointer
+              Name: Identifier <sin>
+            Items: Number_Literal <2>
+            Items: Function_Pointer
+              Name: Identifier <cos>
       Statements: Naked_Expression_Statement
         Expression: Reference
           Name: Identifier <assert>

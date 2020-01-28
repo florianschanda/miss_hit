@@ -6,30 +6,34 @@ Root: Function_File
       Name: Identifier <simple>
     Body: Sequence_Of_Statements
       Statements: Switch_Statement
-        Expression: Identifier <n>
-        Case_Expression: Unary_Operation -
-          Expression: Number_Literal <1>
-        Case_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <disp>
-              Arguments: Char_Array_Literal 'negative one'
-        Case_Expression: Number_Literal <0>
-        Case_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <disp>
-              Arguments: Char_Array_Literal 'zero'
-        Case_Expression: Number_Literal <1>
-        Case_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <disp>
-              Arguments: Char_Array_Literal 'positive one'
-        Otherwise_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <disp>
-              Arguments: Char_Array_Literal 'other value'
+        Guard: Identifier <n>
+        Action: Case Action
+          Guard: Unary_Operation -
+            Expression: Number_Literal <1>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Char_Array_Literal 'negative one'
+        Action: Case Action
+          Guard: Number_Literal <0>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Char_Array_Literal 'zero'
+        Action: Case Action
+          Guard: Number_Literal <1>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Char_Array_Literal 'positive one'
+        Action: Otherwise Action
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Char_Array_Literal 'other value'
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -13,59 +13,63 @@ Root: Function_File
         LHS: Identifier <currTime>
         RHS: Identifier <datetime>
       Statements: If_Statement
-        If_Expression: Reference
-          Name: Identifier <isempty>
-          Arguments: Identifier <logTime>
-        If_Body: Sequence_Of_Statements
-          Statements: Simple_Assignment_Statement
-            LHS: Identifier <logTime>
-            RHS: Identifier <currTime>
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <disp>
-              Arguments: Char_Array_Literal 'Logging initial value.'
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <dlmwrite>
-              Arguments: Identifier <fname>
-              Arguments: Identifier <n>
-          Statements: Return_Statement
+        Action: If Action
+          Guard: Reference
+            Name: Identifier <isempty>
+            Arguments: Identifier <logTime>
+          Body: Sequence_Of_Statements
+            Statements: Simple_Assignment_Statement
+              LHS: Identifier <logTime>
+              RHS: Identifier <currTime>
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Char_Array_Literal 'Logging initial value.'
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <dlmwrite>
+                Arguments: Identifier <fname>
+                Arguments: Identifier <n>
+            Statements: Return_Statement
       Statements: Simple_Assignment_Statement
         LHS: Identifier <dt>
         RHS: Binary_Operation -
           LHS: Identifier <currTime>
           RHS: Identifier <logTime>
       Statements: If_Statement
-        If_Expression: Binary_Operation >
-          LHS: Identifier <dt>
-          RHS: Reference
-            Name: Identifier <seconds>
-            Arguments: Number_Literal <3>
-        If_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <disp>
-              Arguments: Char_Array_Literal 'Logging.'
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <dlmwrite>
-              Arguments: Identifier <fname>
-              Arguments: Identifier <n>
-              Arguments: Char_Array_Literal '-append'
-          Statements: Simple_Assignment_Statement
-            LHS: Identifier <logTime>
-            RHS: Identifier <currTime>
-        Else_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <disp>
-              Arguments: Matrix_Expression
-                Items: Char_Array_Literal 'Not logging. '
-                Items: Reference
-                  Name: Identifier <num2str>
-                  Arguments: Reference
-                    Name: Identifier <seconds>
-                    Arguments: Identifier <dt>
-                Items: Char_Array_Literal ' sec since last log.'
+        Action: If Action
+          Guard: Binary_Operation >
+            LHS: Identifier <dt>
+            RHS: Reference
+              Name: Identifier <seconds>
+              Arguments: Number_Literal <3>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Char_Array_Literal 'Logging.'
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <dlmwrite>
+                Arguments: Identifier <fname>
+                Arguments: Identifier <n>
+                Arguments: Char_Array_Literal '-append'
+            Statements: Simple_Assignment_Statement
+              LHS: Identifier <logTime>
+              RHS: Identifier <currTime>
+        Action: Else Action
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Matrix_Expression
+                  Rows: Row
+                    Items: Char_Array_Literal 'Not logging. '
+                    Items: Reference
+                      Name: Identifier <num2str>
+                      Arguments: Reference
+                        Name: Identifier <seconds>
+                        Arguments: Identifier <dt>
+                    Items: Char_Array_Literal ' sec since last log.'
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

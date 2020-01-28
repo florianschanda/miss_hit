@@ -12,11 +12,12 @@ Root: Function_File
             RHS: Reference
               Name: Identifier <load>
               Arguments: Matrix_Expression
-                Items: Char_Array_Literal 'somedatafile'
-                Items: Reference
-                  Name: Identifier <num2str>
-                  Arguments: Identifier <labindex>
-                Items: Char_Array_Literal '.mat'
+                Rows: Row
+                  Items: Char_Array_Literal 'somedatafile'
+                  Items: Reference
+                    Name: Identifier <num2str>
+                    Arguments: Identifier <labindex>
+                  Items: Char_Array_Literal '.mat'
           Statements: Simple_Assignment_Statement
             LHS: Identifier <RES>
             RHS: Reference

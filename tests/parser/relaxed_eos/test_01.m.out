@@ -25,19 +25,21 @@ Root: Function_File
       Inputs: Identifier <x>
     Body: Sequence_Of_Statements
       Statements: If_Statement
-        If_Expression: Binary_Operation >
-          LHS: Identifier <x>
-          RHS: Number_Literal <0>
-        If_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <disp>
-              Arguments: Identifier <x>
-        Else_Body: Sequence_Of_Statements
-          Statements: Naked_Expression_Statement
-            Expression: Reference
-              Name: Identifier <disp>
-              Arguments: Unary_Operation -
-                Expression: Identifier <x>
+        Action: If Action
+          Guard: Binary_Operation >
+            LHS: Identifier <x>
+            RHS: Number_Literal <0>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Identifier <x>
+        Action: Else Action
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Unary_Operation -
+                  Expression: Identifier <x>
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, 6 style issue(s)

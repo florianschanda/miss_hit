@@ -18,16 +18,18 @@ Root: Script_File
       LHS: Identifier <x>
       RHS: Number_Literal <0>
     Statements: If_Statement
-      If_Expression: Binary_Operation ==
-        LHS: Identifier <x>
-        RHS: Number_Literal <0>
-      If_Body: Sequence_Of_Statements
-        Statements: Simple_Assignment_Statement
+      Action: If Action
+        Guard: Binary_Operation ==
           LHS: Identifier <x>
-          RHS: Number_Literal <1>
-      Else_Body: Sequence_Of_Statements
-        Statements: Simple_Assignment_Statement
-          LHS: Identifier <x>
-          RHS: Number_Literal <2>
+          RHS: Number_Literal <0>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <1>
+      Action: Else Action
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <2>
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

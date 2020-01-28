@@ -21,39 +21,49 @@ Root: Script_File
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Items: Number_Literal <3>
+        Rows: Row
+          Items: Number_Literal <3>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <y>
       RHS: Matrix_Expression
-        Items: Number_Literal <4>
+        Rows: Row
+          Items: Number_Literal <4>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <z>
       RHS: Matrix_Expression
-        Items: Number_Literal <5>
+        Rows: Row
+          Items: Number_Literal <5>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Items: Number_Literal <6>
+        Rows: Row
+          Items: Number_Literal <6>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <y>
       RHS: Matrix_Expression
-        Items: Number_Literal <7>
+        Rows: Row
+          Items: Number_Literal <7>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <z>
       RHS: Matrix_Expression
-        Items: Number_Literal <8>
+        Rows: Row
+          Items: Number_Literal <8>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Items: Number_Literal <9>
+        Rows: Row
+          Items: Number_Literal <9>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <y>
       RHS: Matrix_Expression
-        Items: Number_Literal <10>
+        Rows: Row
+          Items: Number_Literal <10>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <z>
       RHS: Matrix_Expression
-        Items: Number_Literal <11>
-        Items: Number_Literal <12>
+        Rows: Row
+          Items: Number_Literal <11>
+        Rows: Row
+          Items: Number_Literal <12>
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

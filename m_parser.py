@@ -1226,7 +1226,7 @@ class MATLAB_Parser:
             else:
                 self.match("COMMA")
 
-        return rv
+        return Row(rv)
 
     def parse_matrix(self):
         self.match("M_BRA")
@@ -1237,20 +1237,23 @@ class MATLAB_Parser:
         while self.peek("SEMICOLON"):
             self.match("SEMICOLON")
 
-        rows = [self.parse_matrix_row()]
-        while self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-        if self.peek("NEWLINE"):
-            self.match("NEWLINE")
-
-        while not (self.peek("SEMICOLON") or
-                   self.peek("NEWLINE") or
-                   self.peek("M_KET")):
-            rows.append(self.parse_matrix_row())
+        if self.peek("M_KET"):
+            rows = []
+        else:
+            rows = [self.parse_matrix_row()]
             while self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
             if self.peek("NEWLINE"):
                 self.match("NEWLINE")
+
+            while not (self.peek("SEMICOLON") or
+                       self.peek("NEWLINE") or
+                       self.peek("M_KET")):
+                rows.append(self.parse_matrix_row())
+                while self.peek("SEMICOLON"):
+                    self.match("SEMICOLON")
+                if self.peek("NEWLINE"):
+                    self.match("NEWLINE")
 
         self.match("M_KET")
         t_close = self.ct
@@ -1267,20 +1270,23 @@ class MATLAB_Parser:
         while self.peek("SEMICOLON"):
             self.match("SEMICOLON")
 
-        rows = [self.parse_matrix_row()]
-        while self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-        if self.peek("NEWLINE"):
-            self.match("NEWLINE")
-
-        while not (self.peek("SEMICOLON") or
-                   self.peek("NEWLINE") or
-                   self.peek("C_KET")):
-            rows.append(self.parse_matrix_row())
+        if self.peek("C_KET"):
+            rows = []
+        else:
+            rows = [self.parse_matrix_row()]
             while self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
             if self.peek("NEWLINE"):
                 self.match("NEWLINE")
+
+            while not (self.peek("SEMICOLON") or
+                       self.peek("NEWLINE") or
+                       self.peek("C_KET")):
+                rows.append(self.parse_matrix_row())
+                while self.peek("SEMICOLON"):
+                    self.match("SEMICOLON")
+                if self.peek("NEWLINE"):
+                    self.match("NEWLINE")
 
         self.match("C_KET")
         t_close = self.ct
@@ -1354,7 +1360,7 @@ class MATLAB_Parser:
         n_expr = self.parse_expression()
         self.match_eos(allow_nothing=True)
         n_body = self.parse_delimited_input()
-        actions.append((t_kw, n_expr, n_body))
+        actions.append(Action(t_kw, n_expr, n_body))
 
         while self.peek("KEYWORD", "elseif"):
             self.match("KEYWORD", "elseif")
@@ -1362,14 +1368,14 @@ class MATLAB_Parser:
             n_expr = self.parse_expression()
             self.match_eos(allow_nothing=True)
             n_body = self.parse_delimited_input()
-            actions.append((t_kw, n_expr, n_body))
+            actions.append(Action(t_kw, n_expr, n_body))
 
         if self.peek("KEYWORD", "else"):
             self.match("KEYWORD", "else")
             t_kw = self.ct
             self.match_eos(allow_nothing=True)
             n_body = self.parse_delimited_input()
-            actions.append((t_kw, None, n_body))
+            actions.append(Action(t_kw, None, n_body))
 
         self.match("KEYWORD", "end")
         self.match_eos()
@@ -1543,7 +1549,7 @@ class MATLAB_Parser:
                 t_kw = self.ct
                 self.match_eos(allow_nothing=True)
                 n_body = self.parse_delimited_input()
-                l_options.append((t_kw, None, n_body))
+                l_options.append(Action(t_kw, None, n_body))
                 break
             else:
                 self.match("KEYWORD", "case")
@@ -1551,7 +1557,7 @@ class MATLAB_Parser:
                 n_expr = self.parse_expression()
                 self.match_eos(allow_nothing=True)
                 n_body = self.parse_delimited_input()
-                l_options.append((t_kw, n_expr, n_body))
+                l_options.append(Action(t_kw, n_expr, n_body))
 
             if self.peek("KEYWORD", "end"):
                 break

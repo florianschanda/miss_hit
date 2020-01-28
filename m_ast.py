@@ -45,6 +45,11 @@ class Node:
     def __init__(self):
         NODE_UID[0] += 1
         self.uid = NODE_UID[0]
+        self.n_parent = None
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, Node)
+        self.n_parent = n_parent
 
     def debug_parse_tree(self):
         pass
@@ -107,7 +112,9 @@ class Definition(Node):
 
 
 class Statement(Node):
-    pass
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, Sequence_Of_Statements)
+        super().set_parent(n_parent)
 
 
 class Simple_Statement(Statement):
@@ -126,6 +133,9 @@ class Compilation_Unit(Node):
         self.name         = name
         # Not a node since it comes from the filename
 
+    def set_parent(self, n_parent):
+        raise ICE("compilation unit cannot have a parent")
+
 
 ##############################################################################
 # Compilation units
@@ -141,7 +151,13 @@ class Script_File(Compilation_Unit):
             assert isinstance(n_function, Function_Definition)
 
         self.n_statements = n_statements
-        self.l_functions  = l_functions
+        self.n_statements.set_parent(self)
+        # The main body of the script file
+
+        self.l_functions = l_functions
+        for n_function in self.l_functions:
+            n_function.set_parent(self)
+        # Auxiliary functions the script may define.
 
     def debug_parse_tree(self):
         dotpr("scr_" + str(self.name) + ".dot", self.n_statements)
@@ -163,10 +179,15 @@ class Function_File(Compilation_Unit):
     def __init__(self, name, l_functions):
         super().__init__(name)
         assert isinstance(l_functions, list)
+        assert len(l_functions) >= 1
         for n_function in l_functions:
             assert isinstance(n_function, Function_Definition)
 
         self.l_functions = l_functions
+        for n_function in self.l_functions:
+            n_function.set_parent(self)
+        # The list of functions we define. The first one is the entry
+        # point, the others are auxiliary (but not nested) functions.
 
     def debug_parse_tree(self):
         for n_function in self.l_functions:
@@ -186,8 +207,15 @@ class Class_File(Compilation_Unit):
         for n_function in l_functions:
             assert isinstance(n_function, Function_Definition)
 
-        self.n_classdef  = n_classdef
+        self.n_classdef = n_classdef
+        self.n_classdef.set_parent(self)
+        # The single class definition for this unit
+
         self.l_functions = l_functions
+        for n_function in self.l_functions:
+            n_function.set_parent(self)
+        # Auxiliary (but not nested) functions that can appear after
+        # the class definition.
 
     def debug_parse_tree(self):
         dotpr("cls_" + str(self.name) + ".dot", self.n_classdef)
@@ -230,14 +258,31 @@ class Class_Definition(Definition):
             assert isinstance(n_super, Name)
 
         self.t_classdef = t_classdef
+        # Token for the classdef
+
         self.n_name = n_name
+        self.n_name.set_parent(self)
+        # (Simple dotted) name of the class
+
         self.l_super = l_super
+        for n_superclass in self.l_super:
+            n_superclass.set_parent(self)
+        # Optional list of superclasses
+
         self.l_attr = l_attr
+        for n_attr in self.l_attr:
+            n_attr.set_parent(self)
+        # Optional list of class attributes
 
         self.l_properties = []
         self.l_events = []
         self.l_enumerations = []
         self.l_methods = []
+        # List of special class blocks
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, Class_File)
+        super().set_parent(n_parent)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -264,6 +309,8 @@ class Class_Definition(Definition):
         else:
             raise ICE("unexpected block kind %s" % n_block.kind())
 
+        n_block.set_parent(self)
+
 
 class Function_Definition(Definition):
     def __init__(self, t_fun, n_sig,
@@ -280,11 +327,33 @@ class Function_Definition(Definition):
         for n in l_nested:
             assert isinstance(n, Function_Definition)
 
-        self.t_fun        = t_fun
-        self.n_sig        = n_sig
+        self.t_fun = t_fun
+        # The 'function' token
+
+        self.n_sig = n_sig
+        self.n_sig.set_parent(self)
+        # The function signature i.e. name, inputs, and outputs
+
         self.l_validation = l_validation
-        self.n_body       = n_body
-        self.l_nested     = l_nested
+        for n_block in self.l_validation:
+            n_block.set_parent(self)
+        # Optional list of function argument validation blocks (new in
+        # MATLAB 2019b).
+
+        self.n_body = n_body
+        self.n_body.set_parent(self)
+        # Function body
+
+        self.l_nested = l_nested
+        for n_fdef in self.l_nested:
+            n_fdef.set_parent(self)
+        # Optional list of nested functions
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, (Compilation_Unit,
+                                     Special_Block,
+                                     Function_Definition))
+        super().set_parent(n_parent)
 
     def debug_parse_tree(self):
         dotpr("fun_" + str(self.n_sig.n_name) + ".dot", self)
@@ -321,9 +390,27 @@ class Function_Signature(Node):
         for n in l_outputs:
             assert isinstance(n, Identifier)
 
-        self.n_name    = n_name
+        self.n_name = n_name
+        self.n_name.set_parent(self)
+        # (Simple dotted) name of the function
+
         self.l_inputs  = l_inputs
+        for n_input in self.l_inputs:
+            n_input.set_parent(self)
+        # List of inputs
+
         self.l_outputs = l_outputs
+        for n_output in self.l_outputs:
+            n_output.set_parent(self)
+        # List of outputs
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, (Function_Definition,
+                                     Special_Block))
+        # Signatures can also appear naked in class method blocks, in
+        # which case they are forward declarations for separately
+        # implemented functions.
+        super().set_parent(n_parent)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -341,6 +428,16 @@ class Sequence_Of_Statements(Node):
             assert isinstance(statement, Statement)
 
         self.l_statements = l_statements
+        for n_statement in self.l_statements:
+            n_statement.set_parent(self)
+        # The list of statements
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, (Compound_Statement,
+                                     Script_File,
+                                     Action,
+                                     Function_Definition))
+        super().set_parent(n_parent)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -359,7 +456,20 @@ class Name_Value_Pair(Node):
         assert n_value is None or isinstance(n_value, Expression)
 
         self.n_name = n_name
+        self.n_name.set_parent(self)
+        # The name
+
         self.n_value = n_value
+        if self.n_value:
+            self.n_value.set_parent(self)
+        # The (optional) value
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, (Special_Block,
+                                     Class_Definition))
+        # Usually appears on the special blocks, but can also appear
+        # directly on a classdef.
+        super().set_parent(n_parent)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -370,7 +480,9 @@ class Name_Value_Pair(Node):
 
 
 class Special_Block(Node):
-    """ AST for properties, methods, events and enumeration blocks """
+    """ AST for properties, methods, events, enumeration and argument
+        validation blocks.
+    """
     def __init__(self, t_kw, l_attr):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
@@ -384,8 +496,22 @@ class Special_Block(Node):
             assert isinstance(n_attr, Name_Value_Pair)
 
         self.t_kw = t_kw
+        # The token (which we also use to distinguish between the 5
+        # different kinds of special block).
+
         self.l_attr = l_attr
+        for n_attr in self.l_attr:
+            n_attr.set_parent(self)
+        # An optional list of attributes that applies to all items in
+        # the block.
+
         self.l_items = []
+        # List of items in this block
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, (Class_Definition,
+                                     Function_Definition))
+        super().set_parent(n_parent)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -400,21 +526,25 @@ class Special_Block(Node):
         assert isinstance(n_cons, Entity_Constraints)
         assert self.kind() in ("properties", "arguments")
         self.l_items.append(n_cons)
+        n_cons.set_parent(self)
 
     def add_method(self, n_method):
         assert isinstance(n_method, (Function_Definition, Function_Signature))
         assert self.kind() == "methods"
         self.l_items.append(n_method)
+        n_method.set_parent(self)
 
     def add_enumeration(self, n_enum):
         assert isinstance(n_enum, Class_Enumeration)
         assert self.kind() == "enumeration"
         self.l_items.append(n_enum)
+        n_enum.set_parent(self)
 
     def add_event(self, n_event):
         assert isinstance(n_event, Identifier)
         assert self.kind() == "events"
         self.l_items.append(n_event)
+        n_event.set_parent(self)
 
 
 class Entity_Constraints(Node):
@@ -439,11 +569,35 @@ class Entity_Constraints(Node):
         assert n_default_value is None or isinstance(n_default_value,
                                                      Expression)
 
-        self.n_name             = n_name
-        self.l_dim_constraint   = l_dim_constraint
+        self.n_name = n_name
+        self.n_name.set_parent(self)
+        # The entity name we refer to
+
+        self.l_dim_constraint = l_dim_constraint
+        # List of optional dimension constraints. Must either be 0 or
+        # more than 2. These are number/colon tokens and not
+        # expressions.
+
         self.n_class_constraint = n_class_constraint
-        self.l_fun_constraint   = l_fun_constraint
-        self.n_default_value    = n_default_value
+        if self.n_class_constraint:
+            self.n_class_constraint.set_parent(self)
+        # An optional class name our entity must fit
+
+        self.l_fun_constraint = l_fun_constraint
+        for n_fun_constraint in self.l_fun_constraint:
+            n_fun_constraint.set_parent(self)
+        # An optional list of functional constraints our entity must
+        # meet.
+
+        self.n_default_value = n_default_value
+        if self.n_default_value:
+            self.n_default_value.set_parent(self)
+        # An optional default value expression
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, Special_Block)
+        assert n_parent.kind() in ("properties", "arguments")
+        super().set_parent(n_parent)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -466,12 +620,91 @@ class Class_Enumeration(Node):
             assert isinstance(n_arg, Expression)
 
         self.n_name = n_name
+        self.n_name.set_parent(self)
+        # Name to introduce enumeration literal
+
         self.l_args = l_args
+        for n_arg in self.l_args:
+            n_arg.set_parent(self)
+        # Parameters for class constructor to build this literal
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, Special_Block)
+        assert n_parent.kind() == "enumeration"
+        super().set_parent(n_parent)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_name.visit(self, function, "Name")
         self._visit_list(self.l_args, function, "Arguments")
+        self._visit_end(parent, function, relation)
+
+
+class Action(Node):
+    """ AST node for actions in if or switch statements. """
+    def __init__(self, t_kw, n_expr, n_body):
+        super().__init__()
+        assert isinstance(t_kw, MATLAB_Token)
+        assert t_kw.kind == "KEYWORD"
+        assert t_kw.value in ("if", "elseif", "else", "case", "otherwise")
+        if t_kw.value in ("else", "otherwise"):
+            assert n_expr is None
+        else:
+            assert isinstance(n_expr, Expression)
+        assert isinstance(n_body, Sequence_Of_Statements)
+
+        self.t_kw = t_kw
+        # The token to classify this action
+
+        self.n_expr = n_expr
+        if self.n_expr:
+            self.n_expr.set_parent(self)
+        # An optional guard
+
+        self.n_body = n_body
+        self.n_body.set_parent(self)
+
+    def kind(self):
+        return self.t_kw.value
+
+    def set_parent(self, n_parent):
+        if self.kind() in ("if", "elseif", "else"):
+            assert isinstance(n_parent, If_Statement)
+        else:
+            assert isinstance(n_parent, Switch_Statement)
+        super().set_parent(n_parent)
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        if self.n_expr:
+            self.n_expr.visit(parent, function, "Guard")
+        self.n_body.visit(parent, function, "Body")
+        self._visit_end(parent, function, relation)
+
+
+class Row(Node):
+    """ AST for matrix or cell array rows. """
+    def __init__(self, l_items):
+        super().__init__()
+        assert isinstance(l_items, list)
+        # assert len(l_items) >= 1
+        # TODO: Investigate if this empty rows should be pruned
+        for n_item in l_items:
+            assert isinstance(n_item, Expression)
+
+        self.l_items = l_items
+        for n_item in self.l_items:
+            n_item.set_parent(self)
+        # Members of this row
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, (Matrix_Expression,
+                                     Cell_Expression))
+        super().set_parent(n_parent)
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_items, function, "Items")
         self._visit_end(parent, function, relation)
 
 
@@ -481,6 +714,10 @@ class Class_Enumeration(Node):
 
 
 class Reference(Name):
+    """ Proto AST for identifier + brackets. Could be an array reference
+        or a function call. Will be re-written later to Array_Index (TODO)
+        or Function_Call by semantic analysis.
+    """
     def __init__(self, n_ident, arglist):
         super().__init__()
         assert isinstance(n_ident, Name)
@@ -489,7 +726,13 @@ class Reference(Name):
             assert isinstance(arg, Expression)
 
         self.n_ident = n_ident
+        self.n_ident.set_parent(self)
+        # An identifier
+
         self.l_args = arglist
+        for n_arg in self.l_args:
+            n_arg.set_parent(self)
+        # A list of parameters or indices
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -513,7 +756,13 @@ class Cell_Reference(Name):
             assert isinstance(arg, Expression)
 
         self.n_ident = n_ident
+        self.n_ident.set_parent(self)
+        # An identifier
+
         self.l_args = arglist
+        for n_arg in self.l_args:
+            n_arg.set_parent(self)
+        # A list of indices
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -538,6 +787,7 @@ class Identifier(Name):
             t_ident.kind == "BANG"
 
         self.t_ident = t_ident
+        # The token
 
     def __str__(self):
         if self.t_ident.kind == "BANG":
@@ -555,8 +805,15 @@ class Selection(Name):
         assert isinstance(n_field, Identifier)
 
         self.t_selection = t_selection
-        self.n_prefix    = n_prefix
-        self.n_field     = n_field
+        # The . token
+
+        self.n_prefix = n_prefix
+        self.n_prefix.set_parent(self)
+        # The stuff befor the .
+
+        self.n_field = n_field
+        self.n_field.set_parent(self)
+        # The stuff after the .
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -577,8 +834,15 @@ class Dynamic_Selection(Name):
         assert isinstance(n_field, Expression)
 
         self.t_selection = t_selection
-        self.n_prefix    = n_prefix
-        self.n_field     = n_field
+        # The token for .
+
+        self.n_prefix = n_prefix
+        self.n_prefix.set_parent(self)
+        # The stuff befor the .
+
+        self.n_field = n_field
+        self.n_field.set_parent(self)
+        # The stuff in the brackets after the .
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -599,8 +863,15 @@ class Superclass_Reference(Name):
         assert isinstance(n_reference, Name)
 
         self.t_at = t_at
+        # The token for @
+
         self.n_prefix = n_prefix
+        self.n_prefix.set_parent(self)
+        # Stuff before the @
+
         self.n_reference = n_reference
+        self.n_reference.set_parent(self)
+        # Stuff after the @
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -617,19 +888,40 @@ class Superclass_Reference(Name):
 ##############################################################################
 
 
-class Simple_For_Statement(Compound_Statement):
-    def __init__(self, t_for, n_ident, n_range, n_body):
+class For_Loop_Statement(Compound_Statement):
+    def __init__(self, t_for, n_ident, n_body):
         super().__init__()
         assert isinstance(t_for, MATLAB_Token)
-        assert t_for.kind == "KEYWORD" and t_for.value == "for"
+        assert t_for.kind == "KEYWORD" and t_for.value in ("for",
+                                                           "parfor")
         assert isinstance(n_ident, Identifier)
-        assert isinstance(n_range, Range_Expression)
         assert isinstance(n_body, Sequence_Of_Statements)
 
-        self.t_for   = t_for
+        self.t_for = t_for
+        # The token for the for or parfor
+
         self.n_ident = n_ident
+        self.n_ident.set_parent(self)
+        # The name of the iterator
+
+        self.n_body = n_body
+        self.n_body.set_parent(self)
+        # The body for the loop
+
+    def visit(self, parent, function, relation):
+        raise ICE("reached visit procedure for abstract base class for"
+                  " for-loops")
+
+
+class Simple_For_Statement(For_Loop_Statement):
+    def __init__(self, t_for, n_ident, n_range, n_body):
+        super().__init__(t_for, n_ident, n_body)
+        assert t_for.kind == "KEYWORD" and t_for.value == "for"
+        assert isinstance(n_range, Range_Expression)
+
         self.n_range = n_range
-        self.n_body  = n_body
+        self.n_range.set_parent(self)
+        # The range expression for the loop bounds
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -639,19 +931,16 @@ class Simple_For_Statement(Compound_Statement):
         self._visit_end(parent, function, relation)
 
 
-class General_For_Statement(Compound_Statement):
+class General_For_Statement(For_Loop_Statement):
     def __init__(self, t_for, n_ident, n_expr, n_body):
-        super().__init__()
-        assert isinstance(t_for, MATLAB_Token)
+        super().__init__(t_for, n_ident, n_body)
         assert t_for.kind == "KEYWORD" and t_for.value == "for"
-        assert isinstance(n_ident, Identifier)
         assert isinstance(n_expr, Expression)
-        assert isinstance(n_body, Sequence_Of_Statements)
 
-        self.t_for   = t_for
-        self.n_ident = n_ident
         self.n_expr = n_expr
-        self.n_body  = n_body
+        self.n_expr.set_parent(self)
+        # An expression returning some kind of matrix which defines
+        # our loop bounds
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -661,21 +950,21 @@ class General_For_Statement(Compound_Statement):
         self._visit_end(parent, function, relation)
 
 
-class Parallel_For_Statement(Compound_Statement):
+class Parallel_For_Statement(For_Loop_Statement):
     def __init__(self, t_for, n_ident, n_range, n_body, n_workers):
-        super().__init__()
-        assert isinstance(t_for, MATLAB_Token)
+        super().__init__(t_for, n_ident, n_body)
         assert t_for.kind == "KEYWORD" and t_for.value == "parfor"
-        assert isinstance(n_ident, Identifier)
         assert isinstance(n_range, Range_Expression)
-        assert isinstance(n_body, Sequence_Of_Statements)
         assert n_workers is None or isinstance(n_workers, Expression)
 
-        self.t_for     = t_for
-        self.n_ident   = n_ident
-        self.n_range   = n_range
+        self.n_range = n_range
+        self.n_range.set_parent(self)
+        # The range expression for the loop bounds
+
         self.n_workers = n_workers
-        self.n_body    = n_body
+        if self.n_workers:
+            self.n_workers.set_parent(self)
+        # An optional indication of how work is distributed.
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -696,8 +985,15 @@ class While_Statement(Compound_Statement):
         assert isinstance(n_body, Sequence_Of_Statements)
 
         self.t_while = t_while
+        # The token for while
+
         self.n_guard = n_guard
-        self.n_body  = n_body
+        self.n_guard.set_parent(self)
+        # The guard expression
+
+        self.n_body = n_body
+        self.n_body.set_parent(self)
+        # The loop body
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -707,65 +1003,70 @@ class While_Statement(Compound_Statement):
 
 
 class If_Statement(Compound_Statement):
-    def __init__(self, actions):
+    def __init__(self, l_actions):
         super().__init__()
-        assert isinstance(actions, list)
-        assert len(actions) >= 1
-        for action in actions:
-            assert isinstance(action, tuple) and len(action) == 3
-            t_kw, n_expr, n_body = action
-            assert isinstance(t_kw, MATLAB_Token)
-            assert t_kw.kind == "KEYWORD" and t_kw.value in ("if",
-                                                             "elseif",
-                                                             "else")
-            assert n_expr is None or isinstance(n_expr, Expression)
-            assert isinstance(n_body, Sequence_Of_Statements)
+        assert isinstance(l_actions, list)
+        assert len(l_actions) >= 1
+        for action_id, n_action in enumerate(l_actions, 1):
+            assert isinstance(n_action, Action)
+            if action_id == 1:
+                assert n_action.kind() == "if"
+            elif action_id == len(l_actions):
+                assert n_action.kind() in ("elseif", "else")
+            else:
+                assert n_action.kind() == "elseif"
 
-        self.actions = actions
-        self.has_else = actions[-1][0].value == "else"
+        self.l_actions = l_actions
+        for n_actions in self.l_actions:
+            n_actions.set_parent(self)
+        # List of actions. Starts with an if actions, is followed by
+        # zero or more elseif actions, and is terminated by up to one
+        # else action.
+
+        self.has_else = self.l_actions[-1].kind() == "else"
+        # Cache if we have an else part or not.
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        for t_kw, n_expr, n_body in self.actions:
-            if n_expr:
-                n_expr.visit(parent, function,
-                             t_kw.value.capitalize() + "_Expression")
-            n_body.visit(parent, function,
-                         t_kw.value.capitalize() + "_Body")
+        self._visit_list(self.l_actions, function, "Action")
         self._visit_end(parent, function, relation)
 
 
 class Switch_Statement(Compound_Statement):
-    def __init__(self, t_kw, n_switch_expr, l_options):
+    def __init__(self, t_kw, n_switch_expr, l_actions):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
         assert t_kw.kind == "KEYWORD" and t_kw.value == "switch"
         assert isinstance(n_switch_expr, Expression)
-        assert isinstance(l_options, list)
-        assert len(l_options) >= 1
-        for option in l_options:
-            assert isinstance(option, tuple) and len(option) == 3
-            t_kw, n_expr, n_body = option
-            assert isinstance(t_kw, MATLAB_Token)
-            assert t_kw.kind == "KEYWORD" and t_kw.value in ("case",
-                                                             "otherwise")
-            assert n_expr is None or isinstance(n_expr, Expression)
-            assert isinstance(n_body, Sequence_Of_Statements)
+        assert isinstance(l_actions, list)
+        assert len(l_actions) >= 1
+        for action_id, n_action in enumerate(l_actions, 1):
+            assert isinstance(n_action, Action)
+            if action_id == len(l_actions):
+                assert n_action.kind() in ("case", "otherwise")
+            else:
+                assert n_action.kind() == "case"
 
         self.t_kw = t_kw
+        # The token for 'switch'
+
         self.n_expr = n_switch_expr
-        self.l_options = l_options
-        self.has_otherwise = l_options[-1][0].value == "otherwise"
+        self.n_expr.set_parent(self)
+        # The expression in the switch statement itself
+
+        self.l_actions = l_actions
+        for n_action in self.l_actions:
+            n_action.set_parent(self)
+        # List of actions. Must be at least one. Case actions followed
+        # by up to one otherwise action.
+
+        self.has_otherwise = self.l_actions[-1].kind() == "otherwise"
+        # Cache if we have an otherwise or not.
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_expr.visit(parent, function, "Expression")
-        for t_kw, n_expr, n_body in self.l_options:
-            if n_expr:
-                n_expr.visit(parent, function,
-                             t_kw.value.capitalize() + "_Expression")
-            n_body.visit(parent, function,
-                         t_kw.value.capitalize() + "_Body")
+        self.n_expr.visit(parent, function, "Guard")
+        self._visit_list(self.l_actions, function, "Action")
         self._visit_end(parent, function, relation)
 
 
@@ -784,11 +1085,25 @@ class Try_Statement(Compound_Statement):
                                              Identifier)
         assert n_handler is not None or n_ident is None
 
-        self.t_try     = t_try
-        self.t_catch   = t_catch
-        self.n_body    = n_body
-        self.n_ident   = n_ident
+        self.t_try   = t_try
+        self.t_catch = t_catch
+        # Tokens for the try and catch part
+
+        self.n_ident = n_ident
+        if self.n_ident:
+            self.n_ident.set_parent(self)
+        # An optional identifier that names the caught exception.
+
+        self.n_body = n_body
+        self.n_body.set_parent(self)
+        # The body of the try block
+
         self.n_handler = n_handler
+        if self.n_handler:
+            self.n_handler.set_parent(self)
+        # An optional body for the catch block. If absent then the
+        # semantics are to catch and ignore any exceptions, and resume
+        # execution with the statement following this block.
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -808,7 +1123,11 @@ class SPMD_Statement(Compound_Statement):
         assert isinstance(n_body, Sequence_Of_Statements)
 
         self.t_spmd = t_spmd
+        # The token for the spmd keyword
+
         self.n_body = n_body
+        self.n_body.set_parent(self)
+        # The body
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -829,9 +1148,16 @@ class Simple_Assignment_Statement(Simple_Statement):
         assert isinstance(n_lhs, Name)
         assert isinstance(n_rhs, Expression)
 
-        self.t_eq  = t_eq
+        self.t_eq = t_eq
+        # The token for the =
+
         self.n_lhs = n_lhs
+        self.n_lhs.set_parent(self)
+        # The target name of the assignment
+
         self.n_rhs = n_rhs
+        self.n_rhs.set_parent(self)
+        # The expression to assign
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -851,9 +1177,20 @@ class Compound_Assignment_Statement(Simple_Statement):
             assert isinstance(n_lhs, Name)
         assert isinstance(n_rhs, Expression)
 
-        self.t_eq  = t_eq
+        self.t_eq = t_eq
+        # The token for the =
+
         self.l_lhs = l_lhs
+        for n_target in self.l_lhs:
+            n_target.set_parent(self)
+        # The list of assignment targets. At least 2 (other forms are
+        # re-written on the fly to Simple_Assignment_Statement.
+
         self.n_rhs = n_rhs
+        self.n_rhs.set_parent(self)
+        # The expression to assign. Must be a function call that
+        # returns multiple outputs. We can't check it now (during
+        # parsing), it will be checked during semantic analysis.
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -868,6 +1205,8 @@ class Naked_Expression_Statement(Simple_Statement):
         assert isinstance(n_expr, Expression)
 
         self.n_expr = n_expr
+        self.n_expr.set_parent(self)
+        # The expression
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -882,6 +1221,7 @@ class Return_Statement(Simple_Statement):
         assert t_kw.kind == "KEYWORD" and t_kw.value == "return"
 
         self.t_kw = t_kw
+        # The token for return
 
 
 class Break_Statement(Simple_Statement):
@@ -891,6 +1231,7 @@ class Break_Statement(Simple_Statement):
         assert t_kw.kind == "KEYWORD" and t_kw.value == "break"
 
         self.t_kw = t_kw
+        # The token for break
 
 
 class Continue_Statement(Simple_Statement):
@@ -900,6 +1241,7 @@ class Continue_Statement(Simple_Statement):
         assert t_kw.kind == "KEYWORD" and t_kw.value == "continue"
 
         self.t_kw = t_kw
+        # The token for continue
 
 
 class Global_Statement(Simple_Statement):
@@ -911,8 +1253,12 @@ class Global_Statement(Simple_Statement):
         for n_name in l_names:
             assert isinstance(n_name, Identifier)
 
-        self.t_kw    = t_kw
+        self.t_kw = t_kw
+        # The token for global
+
         self.l_names = l_names
+        for n_name in self.l_names:
+            n_name.set_parent(self)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -929,8 +1275,13 @@ class Persistent_Statement(Simple_Statement):
         for n_name in l_names:
             assert isinstance(n_name, Identifier)
 
-        self.t_kw    = t_kw
+        self.t_kw = t_kw
+        # The token for persistent
+
         self.l_names = l_names
+        for n_name in self.l_names:
+            n_name.set_parent(self)
+        # List of identifiers to make persistent
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -949,8 +1300,12 @@ class Import_Statement(Simple_Statement):
             assert t_item.kind == "IDENTIFIER" or \
                 (t_item.kind == "OPERATOR" and t_item.value == ".*")
 
-        self.t_kw    = t_kw
+        self.t_kw = t_kw
+        # The token for import
+
         self.l_chain = l_chain
+        # The tokens for the namespace to import. Will be identifiers,
+        # followed by an optional operator (.*).
 
     def get_chain_strings(self):
         return [t.value if t.kind == "IDENTIFIER" else "*"
@@ -969,6 +1324,7 @@ class Number_Literal(Literal):
         assert t_value.kind == "NUMBER"
 
         self.t_value = t_value
+        # The token for the number literal
 
     def __str__(self):
         return self.t_value.value
@@ -981,6 +1337,9 @@ class Char_Array_Literal(Literal):
         assert t_string.kind in ("CARRAY", "BANG")
 
         self.t_string = t_string
+        # The token for the char array literal. It can also be a bang
+        # token so we can use it as a char array argument to system()
+        # when re-writing ! directives to a function call to system.
 
     def __str__(self):
         return "'" + self.t_string.value + "'"
@@ -993,6 +1352,7 @@ class String_Literal(Literal):
         assert t_string.kind == "STRING"
 
         self.t_string = t_string
+        # The token for the string literal.
 
     def __str__(self):
         return '"' + self.t_string.value + '"'
@@ -1010,6 +1370,14 @@ class Reshape(Expression):
         assert t_colon.kind == "COLON"
 
         self.t_colon = t_colon
+        # The token for :
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, (Reference,
+                                     Cell_Reference))
+        # This can only appear in very specific situations. it is not
+        # to be confused by a Range_Expression.
+        super().set_parent(n_parent)
 
     def __str__(self):
         return ":"
@@ -1023,12 +1391,18 @@ class Range_Expression(Expression):
         assert n_stride is None or isinstance(n_stride, Expression)
 
         self.n_first = n_first
+        self.n_first.set_parent(self)
+        # The inclusive lower bound
+
         self.n_last = n_last
-        if n_stride is None:
-            # TODO, replace with a stride of 1 of the appropriate type
-            self.n_stride = None
-        else:
-            self.n_stride = n_stride
+        self.n_last.set_parent(self)
+        # The inclusive upper bound
+
+        self.n_stride = n_stride
+        if self.n_stride:
+            self.n_stride.set_parent(self)
+        # The (optional) stride. It doesn't have to neatly divide the
+        # range.
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -1046,65 +1420,55 @@ class Range_Expression(Expression):
 
 
 class Matrix_Expression(Expression):
-    # TODO: Separate out matrix rows in the tree
-
-    def __init__(self, t_open, t_close, items):
+    def __init__(self, t_open, t_close, l_rows):
         super().__init__()
         assert isinstance(t_open, MATLAB_Token)
+        assert t_open.kind == "M_BRA"
         assert isinstance(t_close, MATLAB_Token)
-        assert isinstance(items, list)
-        for row in items:
-            assert isinstance(row, list)
-            for item in row:
-                assert isinstance(item, Expression)
+        assert t_close.kind == "M_KET"
+        assert isinstance(l_rows, list)
+        for n_row in l_rows:
+            assert isinstance(n_row, Row)
 
         self.t_open  = t_open
         self.t_close = t_close
-        self.items   = items
+        # The tokens for [ and ]
+
+        self.l_rows = l_rows
+        for n_row in self.l_rows:
+            n_row.set_parent(self)
+        # Matrix rows
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        for row in self.items:
-            for n_item in row:
-                n_item.visit(parent, function, "Items")
+        self._visit_list(self.l_rows, function, "Rows")
         self._visit_end(parent, function, relation)
-
-    def __str__(self):
-        rows = []
-        for row in self.items:
-            rows.append(", ".join(str(item) for item in row))
-        return "[" + "; ".join(rows) + "]"
 
 
 class Cell_Expression(Expression):
-    # TODO: Separate out cell rows like we should do for matrix rows
-
-    def __init__(self, t_open, t_close, items):
+    def __init__(self, t_open, t_close, l_rows):
         super().__init__()
         assert isinstance(t_open, MATLAB_Token)
+        assert t_open.kind == "C_BRA"
         assert isinstance(t_close, MATLAB_Token)
-        assert isinstance(items, list)
-        for row in items:
-            assert isinstance(row, list)
-            for item in row:
-                assert isinstance(item, Expression)
+        assert t_close.kind == "C_KET"
+        assert isinstance(l_rows, list)
+        for n_row in l_rows:
+            assert isinstance(n_row, Row)
 
         self.t_open  = t_open
         self.t_close = t_close
-        self.items   = items
+        # The tokens for { and }
+
+        self.l_rows = l_rows
+        for n_row in self.l_rows:
+            n_row.set_parent(self)
+        # Cell rows
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        for row in self.items:
-            for n_item in row:
-                n_item.visit(parent, function, "Items")
+        self._visit_list(self.l_rows, function, "Rows")
         self._visit_end(parent, function, relation)
-
-    def __str__(self):
-        rows = []
-        for row in self.items:
-            rows.append(", ".join(str(item) for item in row))
-        return "{" + "; ".join(rows) + "}"
 
 
 class Function_Call(Expression):
@@ -1122,8 +1486,20 @@ class Function_Call(Expression):
             assert len(l_args) == 1
 
         self.variant = variant
+        # The kind of function call we have. Can be normal, command
+        # form, or a shell escape.
+
         self.n_name = n_name
+        self.n_name.set_parent(self)
+        # Name of the called function. For escapes this is the whole
+        # bang identifier. Semantic analysis will assign the correct
+        # entity however.
+
         self.l_args = l_args
+        for n_arg in self.l_args:
+            n_arg.set_parent(self)
+        # List of parameters. Char literals for command form or shell
+        # escapes, expressions otherwise.
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -1144,6 +1520,9 @@ class Function_Call(Expression):
 
 
 class Unary_Operation(Expression):
+    """ AST for unary operations. While most of them are prefix,
+        in MATLAB we have some postfix operators.
+    """
     def __init__(self, precedence, t_op, n_expr):
         super().__init__()
         assert 1 <= precedence <= 12
@@ -1153,8 +1532,15 @@ class Unary_Operation(Expression):
         assert isinstance(n_expr, Expression)
 
         self.precedence = precedence
-        self.t_op   = t_op
+        # Numeric precedence to determine if brackets are necessary or
+        # not.
+
+        self.t_op = t_op
+        # The token for the operator symbol
+
         self.n_expr = n_expr
+        self.n_expr.set_parent(self)
+        # The expression
 
         # To support the style checker we flag that this operator is
         # unary.
@@ -1166,7 +1552,12 @@ class Unary_Operation(Expression):
         self._visit_end(parent, function, relation)
 
     def __str__(self):
-        return "%s%s" % (self.t_op.value, self.n_expr)
+        if self.t_op.value in (".'", "'"):
+            # Postfix
+            return "%s%s" % (self.n_expr, self.t_op.value)
+        else:
+            # Prefix
+            return "%s%s" % (self.t_op.value, self.n_expr)
 
 
 class Binary_Operation(Expression):
@@ -1179,9 +1570,19 @@ class Binary_Operation(Expression):
         assert isinstance(n_rhs, Expression)
 
         self.precedence = precedence
-        self.t_op  = t_op
+        # Numeric precedence to determine if brackets are necessary or
+        # not.
+
+        self.t_op = t_op
+        # The token for the operator symbol
+
         self.n_lhs = n_lhs
+        self.n_lhs.set_parent(self)
+        # The left-hand expression
+
         self.n_rhs = n_rhs
+        self.n_rhs.set_parent(self)
+        # The right-hand expression
 
         # To support the style checker we flag that this operator is
         # unary.
@@ -1207,9 +1608,17 @@ class Lambda_Function(Expression):
             assert isinstance(param, Identifier)
         assert isinstance(n_body, Expression)
 
-        self.t_at         = t_at
+        self.t_at = t_at
+        # The token for @
+
         self.l_parameters = l_parameters
-        self.n_body       = n_body
+        for n_param in self.l_parameters:
+            n_param.set_parent(self)
+        # Names for the parameters for our lambda function
+
+        self.n_body = n_body
+        self.n_body.set_parent(self)
+        # The expression
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -1229,8 +1638,12 @@ class Function_Pointer(Expression):
         assert t_at.kind == "AT"
         assert isinstance(n_name, Name)
 
-        self.t_at   = t_at
+        self.t_at = t_at
+        # The token for @
+
         self.n_name = n_name
+        self.n_name.set_parent(self)
+        # The (simple dotted) name of the function we point to
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -1248,8 +1661,12 @@ class Metaclass(Expression):
         assert t_mc.kind == "METACLASS"
         assert isinstance(n_name, Name)
 
-        self.t_mc   = t_mc
+        self.t_mc = t_mc
+        # The token for ?
+
         self.n_name = n_name
+        self.n_name.set_parent(self)
+        # The (simple dotted) name of a class
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -1302,6 +1719,10 @@ class Text_Visitor(AST_Visitor):
                                (dim, t_cons.value))
         elif isinstance(node, Function_Call):
             self.write_head(node.variant.capitalize() + " form " +
+                            node.__class__.__name__,
+                            relation)
+        elif isinstance(node, Action):
+            self.write_head(node.kind().capitalize() + " " +
                             node.__class__.__name__,
                             relation)
         elif isinstance(node, Identifier):

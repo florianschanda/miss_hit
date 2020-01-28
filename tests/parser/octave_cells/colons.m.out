@@ -19,64 +19,82 @@ Root: Function_File
           Name: Identifier <assert>
           Arguments: Binary_Operation ==
             LHS: Cell_Expression
-              Items: Number_Literal <1>
-              Items: Cell_Reference
-                Name: Identifier <z>
-                Arguments: Reshape
-              Items: Number_Literal <2>
+              Rows: Row
+                Items: Number_Literal <1>
+                Items: Cell_Reference
+                  Name: Identifier <z>
+                  Arguments: Reshape
+                Items: Number_Literal <2>
             RHS: Cell_Expression
-              Items: Number_Literal <1>
-              Items: Number_Literal <2>
+              Rows: Row
+                Items: Number_Literal <1>
+                Items: Number_Literal <2>
       Statements: Naked_Expression_Statement
         Expression: Reference
           Name: Identifier <assert>
           Arguments: Binary_Operation ==
             LHS: Cell_Expression
-              Items: Number_Literal <1>
-              Items: Cell_Reference
-                Name: Identifier <z>
-                Arguments: Reshape
-              Items: Number_Literal <2>
+              Rows: Row
+                Items: Number_Literal <1>
+              Rows: Row
+                Items: Cell_Reference
+                  Name: Identifier <z>
+                  Arguments: Reshape
+              Rows: Row
+                Items: Number_Literal <2>
             RHS: Cell_Expression
-              Items: Number_Literal <1>
-              Items: Number_Literal <2>
+              Rows: Row
+                Items: Number_Literal <1>
+              Rows: Row
+                Items: Number_Literal <2>
       Statements: Naked_Expression_Statement
         Expression: Reference
           Name: Identifier <assert>
           Arguments: Binary_Operation ==
             LHS: Cell_Expression
-              Items: Number_Literal <1>
-              Items: Number_Literal <2>
-              Items: Cell_Reference
-                Name: Identifier <z>
-                Arguments: Reshape
-              Items: Number_Literal <3>
-              Items: Number_Literal <4>
+              Rows: Row
+                Items: Number_Literal <1>
+                Items: Number_Literal <2>
+              Rows: Row
+                Items: Cell_Reference
+                  Name: Identifier <z>
+                  Arguments: Reshape
+              Rows: Row
+                Items: Number_Literal <3>
+                Items: Number_Literal <4>
             RHS: Cell_Expression
-              Items: Number_Literal <1>
-              Items: Number_Literal <2>
-              Items: Number_Literal <3>
-              Items: Number_Literal <4>
+              Rows: Row
+                Items: Number_Literal <1>
+                Items: Number_Literal <2>
+              Rows: Row
+                Items: Number_Literal <3>
+                Items: Number_Literal <4>
       Statements: Naked_Expression_Statement
         Expression: Reference
           Name: Identifier <assert>
           Arguments: Binary_Operation ==
             LHS: Cell_Expression
-              Items: Number_Literal <1>
-              Items: Number_Literal <2>
-              Items: Number_Literal <5>
-              Items: Cell_Reference
-                Name: Identifier <z>
-                Arguments: Reshape
-              Items: Number_Literal <6>
-              Items: Number_Literal <3>
-              Items: Number_Literal <4>
+              Rows: Row
+                Items: Number_Literal <1>
+                Items: Number_Literal <2>
+              Rows: Row
+                Items: Number_Literal <5>
+                Items: Cell_Reference
+                  Name: Identifier <z>
+                  Arguments: Reshape
+                Items: Number_Literal <6>
+              Rows: Row
+                Items: Number_Literal <3>
+                Items: Number_Literal <4>
             RHS: Cell_Expression
-              Items: Number_Literal <1>
-              Items: Number_Literal <2>
-              Items: Number_Literal <5>
-              Items: Number_Literal <6>
-              Items: Number_Literal <3>
-              Items: Number_Literal <4>
+              Rows: Row
+                Items: Number_Literal <1>
+                Items: Number_Literal <2>
+              Rows: Row
+                Items: Number_Literal <5>
+                Items: Number_Literal <6>
+              Rows: Row
+                Items: Number_Literal <3>
+                Items: Number_Literal <4>
 ----------------------------------------------------------------------
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

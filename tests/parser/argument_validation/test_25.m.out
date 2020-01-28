@@ -5,12 +5,14 @@ Root: Script_File
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Items: Number_Literal <1>
-        Items: Number_Literal <2>
-        Items: Number_Literal <3>
-        Items: Number_Literal <4>
-        Items: Number_Literal <5>
-        Items: Number_Literal <6>
+        Rows: Row
+          Items: Number_Literal <1>
+          Items: Number_Literal <2>
+          Items: Number_Literal <3>
+        Rows: Row
+          Items: Number_Literal <4>
+          Items: Number_Literal <5>
+          Items: Number_Literal <6>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <y>
       RHS: Binary_Operation .^
