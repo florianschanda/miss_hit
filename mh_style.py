@@ -78,7 +78,7 @@ class Style_Rule_Line(Style_Rule):
 class Rule_File_Length(Style_Rule_File):
     """Maximum file length
 
-    This is configurable with `file_length`. It is a good idea to keep
+    This is configurable with 'file_length'. It is a good idea to keep
     the length of your files under some limit since it forces your
     project into avoiding the worst spaghetti code.
 
@@ -131,7 +131,7 @@ class Rule_File_EOF_Lines(Style_Rule_File):
 class Rule_Line_Length(Style_Rule_Line):
     """Max characters per line
 
-    This is configurable with `line_length`, default is 80. It is a
+    This is configurable with 'line_length', default is 80. It is a
     good idea for readability to avoid overly long lines. This can help
     you avoid extreme levels of nesting and avoids having to scroll
     around.
@@ -194,7 +194,7 @@ class Rule_Line_Tabs(Style_Rule_Line):
 
     This rule enforces the absence of the tabulation character
     *everywhere*. When auto-fixing, a tab-width of 4 is used by default,
-    but this can be configured with the options `tab_width`.
+    but this can be configured with the options 'tab_width'.
 
     Note that the fix replaces the tab everywhere, including in strings
     literals. This means
