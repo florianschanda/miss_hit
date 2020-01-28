@@ -1,0 +1,8 @@
+=== PLAIN MODE ===
+In foo.m, line 5
+|         x; % potato
+|         ^ style: end this with just a newline
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
