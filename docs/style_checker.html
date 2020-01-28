@@ -46,12 +46,13 @@
       </div>
 
       <div>
-        <pre>
+<pre>
 # Options written like on the
 # commandline
 line_length: 100
 file_length: 2500
-copyright_entity: "Lord Buckethead"</pre>
+copyright_entity: "Lord Buckethead"
+</pre>
       </div>
 
       <div>
@@ -60,10 +61,11 @@ copyright_entity: "Lord Buckethead"</pre>
       </div>
 
       <div>
-        <pre>
+<pre>
 # Legacy code which had a different
 # coding standard
-line_length: 180</pre>
+line_length: 180
+</pre>
       </div>
 
       <div>
@@ -87,9 +89,10 @@ line_length: 180</pre>
       </div>
 
       <div>
-        <pre>
+<pre>
 enable: 0
-line_length: 100</pre>
+line_length: 100
+</pre>
       </div>
 
       <div>
@@ -99,8 +102,9 @@ line_length: 100</pre>
       </div>
 
       <div>
-        <pre>
-enable: 1</pre>
+<pre>
+enable: 1
+</pre>
       </div>
 
       <div>
@@ -122,7 +126,7 @@ enable: 1</pre>
       </div>
 
       <div>
-        <pre>
+<pre>
 file_length: 1000
 line_length: 120
 copyright_entity: "Potato Inc."
@@ -131,7 +135,8 @@ copyright_entity: "Potato Inc."
 # miss_hit tools in our repo,
 # but don't want to accidentally
 # check their weird test cases
-exclude_dir: "miss_hit"</pre>
+exclude_dir: "miss_hit"
+</pre>
       </div>
     </section>
 
@@ -148,12 +153,12 @@ exclude_dir: "miss_hit"</pre>
       </div>
 
       <div>
-        <pre>
+<pre>
 % we normally get a message
 % about no whitespace
 % surrounding the =
 x=5; % mh:ignore_style
-        </pre>
+</pre>
       </div>
 
       <div>
@@ -194,10 +199,10 @@ x=5; % mh:ignore_style
       </div>
 
       <div>
-        <pre>
+<pre>
 suppress_rule: "builtin_shadow"
 enable_rule: "file_length"
-        </pre>
+</pre>
       </div>
 
       <div>
@@ -243,10 +248,10 @@ enable_rule: "file_length"
       </div>
 
       <div>
-        <pre>
+<pre>
 &quot;a&lt;tab&gt;b&quot;
    &quot;a&lt;tab&gt;b&quot;
-        </pre>
+</pre>
       </div>
 
       <div>
@@ -254,10 +259,10 @@ enable_rule: "file_length"
       </div>
 
       <div>
-        <pre>
+<pre>
 &quot;a        b&quot;
    &quot;a     b&quot;
-        </pre>
+</pre>
       </div>
 
       <div>
@@ -355,10 +360,37 @@ enable_rule: "file_length"
       </div>
 
       <div>
-        <pre>
+<pre>
 x = -foo + bar;
 y = x^2;
-        </pre>
+</pre>
+      </div>
+
+      <h4>Consistent semicolons ("end_of_statements")</h4>
+
+      <div>
+        This rule enforces consistent statement terminators. It
+        effectively bans commas and requires semicolons + newline at
+        the end of most statements. The exceptions are things like
+        `return` or the end of compound statements such as `if`.
+      </div>
+
+      <div>
+<pre>
+x = y, y = z;   % commas not allowed
+x = y; y = z;;  % newline required, and spurious semicolon
+if foo;         % useless semicolon
+   disp hello   % missing semicolon
+end;            % useless semicolon
+</pre>
+      </div>
+
+      <div>
+        All of these issues can be auto-fixed, except for inserting
+        newlines. (This is due to a technical limitation in how code
+        can be changed right now. Once we
+        have <a href="https://github.com/florianschanda/miss_hit/issues/14">support
+        for correcting indentation</a> then we can also add newlines.)
       </div>
 
       <!-- HOOK: AUTOFIX RULES -->
@@ -453,7 +485,7 @@ y = x^2;
   </main>
 
   <footer>
-    &copy; 2019 Florian Schanda<br>
+    &copy; 2019-2020 Florian Schanda<br>
     MISS_HIT is licensed under the GPLv3
   </footer>
 </body>

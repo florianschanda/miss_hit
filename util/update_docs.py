@@ -42,10 +42,10 @@ def process_rule(lines, rule):
         lines.append("      <div>")
         if s[0] == "```":
             gobble = offset(s[1:])
-            lines.append("        <pre>")
+            lines.append("<pre>")
             for l in s[1:]:
                 lines.append(html.escape(l[gobble:]))
-            lines.append("        </pre>")
+            lines.append("</pre>")
         else:
             for l in s:
                 lines.append(" " * 8 + html.escape(l.strip()))
