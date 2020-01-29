@@ -40,4 +40,7 @@ Root: Function_File
           LHS: Identifier <foo>
           RHS: Identifier <kitten>
 ----------------------------------------------------------------------
+In test_02.m, line 10
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

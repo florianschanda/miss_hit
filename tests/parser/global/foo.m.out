@@ -15,4 +15,10 @@ Root: Function_File
           LHS: Identifier <y>
           RHS: Identifier <z>
 ----------------------------------------------------------------------
+In foo.m, line 1
+| function x = foo (y)
+|            ^ info: this token is not linked to the ast
+In foo.m, line 4
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -32,4 +32,28 @@ Root: Function_File
             Prefix: Identifier <meta>
             Field: Identifier <class>
 ----------------------------------------------------------------------
+In meta.m, line 4
+| function [a, b] = test_01()
+|          ^ info: this token is not linked to the ast
+In meta.m, line 4
+| function [a, b] = test_01()
+|               ^ info: this token is not linked to the ast
+In meta.m, line 4
+| function [a, b] = test_01()
+|                 ^ info: this token is not linked to the ast
+In meta.m, line 7
+| end
+| ^^^ info: this token is not linked to the ast
+In meta.m, line 9
+| function [mc] = test_02()
+|          ^ info: this token is not linked to the ast
+In meta.m, line 9
+| function [mc] = test_02()
+|             ^ info: this token is not linked to the ast
+In meta.m, line 9
+| function [mc] = test_02()
+|               ^ info: this token is not linked to the ast
+In meta.m, line 11
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -14,4 +14,7 @@ Root: Script_File
         Arguments: Identifier <foo>
         Arguments: Identifier <bar>
 ----------------------------------------------------------------------
+In regression.m, line 6
+| d2 ...
+|    ^^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -13,4 +13,13 @@ Root: Script_File
             Name: Identifier <disp>
             Arguments: Identifier <i>
 ----------------------------------------------------------------------
+In test_1.m, line 3
+| for (i = 1:5)
+|        ^ info: this token is not linked to the ast
+In test_1.m, line 3
+| for (i = 1:5)
+|           ^ info: this token is not linked to the ast
+In test_1.m, line 5
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

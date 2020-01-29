@@ -28,4 +28,10 @@ Root: Function_File
           Name: Identifier <f>
           Arguments: Number_Literal <1>
 ----------------------------------------------------------------------
+In test_02.m, line 8
+| end
+| ^^^ info: this token is not linked to the ast
+In test_02.m, line 12
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -27,4 +27,13 @@ Root: Function_File
                 RHS: Number_Literal <1>
             RHS: Number_Literal <4>
 ----------------------------------------------------------------------
+In indexing.m, line 4
+|     assert (b{(a. b1 + 1)} == 4);
+|              ^ info: this token is not linked to the ast
+In indexing.m, line 4
+|     assert (b{(a. b1 + 1)} == 4);
+|                          ^ info: this token is not linked to the ast
+In indexing.m, line 5
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

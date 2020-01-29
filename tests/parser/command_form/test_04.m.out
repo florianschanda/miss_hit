@@ -13,4 +13,7 @@ Root: Function_File
           Name: Identifier <cd>
           Arguments: Char_Array_Literal 'foo'
 ----------------------------------------------------------------------
+In test_04.m, line 5
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

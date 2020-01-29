@@ -10,4 +10,7 @@ Root: Function_File
           Name: Identifier <disp>
           Arguments: String_Literal "hello world"
 ----------------------------------------------------------------------
+In noargs.m, line 5
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

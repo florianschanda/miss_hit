@@ -20,4 +20,10 @@ Root: Function_File
           LHS: Identifier <x>
           RHS: Number_Literal <5>
 ----------------------------------------------------------------------
+In test_03.m, line 8
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_03.m, line 11
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

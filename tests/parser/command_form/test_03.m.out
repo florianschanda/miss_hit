@@ -37,4 +37,7 @@ Root: Function_File
           LHS: Identifier <potato>
           RHS: Identifier <kitten>
 ----------------------------------------------------------------------
+In test_03.m, line 9
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

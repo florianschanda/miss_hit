@@ -14,4 +14,10 @@ Root: Function_File
         LHS: Identifier <r>
         RHS: Identifier <properties>
 ----------------------------------------------------------------------
+In test_01.m, line 3
+| function r = test_01(x)
+|            ^ info: this token is not linked to the ast
+In test_01.m, line 6
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

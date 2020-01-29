@@ -9,4 +9,10 @@ Root: Script_File
         Name: Identifier <size>
         Arguments: Number_Literal <1>
 ----------------------------------------------------------------------
+In test_3.m, line 4
+| [~, foo] = size(1);
+| ^ info: this token is not linked to the ast
+In test_3.m, line 4
+| [~, foo] = size(1);
+|        ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

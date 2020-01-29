@@ -24,4 +24,10 @@ Root: Function_File
       Statements: Naked_Expression_Statement
         Expression: Identifier <f>
 ----------------------------------------------------------------------
+In test_01.m, line 8
+| end
+| ^^^ info: this token is not linked to the ast
+In test_01.m, line 12
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

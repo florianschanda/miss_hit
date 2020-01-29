@@ -78,4 +78,52 @@ Root: Class_File
               Prefix: Identifier <obj>
               Field: Identifier <PropName>
 ----------------------------------------------------------------------
+In Prop.m, line 6
+|       Prop2 = 'some text'
+|             ^ info: this token is not linked to the ast
+In Prop.m, line 7
+|       Prop3 = sin(pi/12)
+|             ^ info: this token is not linked to the ast
+In Prop.m, line 8
+|       Prop4 = containers.Map
+|             ^ info: this token is not linked to the ast
+In Prop.m, line 9
+|       Prop5 (1,1) double {mustBePositive} = 1
+|                          ^ info: this token is not linked to the ast
+In Prop.m, line 9
+|       Prop5 (1,1) double {mustBePositive} = 1
+|                                         ^ info: this token is not linked to the ast
+In Prop.m, line 9
+|       Prop5 (1,1) double {mustBePositive} = 1
+|                                           ^ info: this token is not linked to the ast
+In Prop.m, line 10
+|    end
+|    ^^^ info: this token is not linked to the ast
+In Prop.m, line 11
+|    properties (Access = private)
+|                       ^ info: this token is not linked to the ast
+In Prop.m, line 14
+|    end
+|    ^^^ info: this token is not linked to the ast
+In Prop.m, line 16
+|      function obj = set.Password(obj,pw)
+|                   ^ info: this token is not linked to the ast
+In Prop.m, line 21
+|        end
+|        ^^^ info: this token is not linked to the ast
+In Prop.m, line 22
+|      end
+|      ^^^ info: this token is not linked to the ast
+In Prop.m, line 23
+|      function o = getPropValue(obj,PropName)
+|                 ^ info: this token is not linked to the ast
+In Prop.m, line 25
+|      end
+|      ^^^ info: this token is not linked to the ast
+In Prop.m, line 26
+|    end
+|    ^^^ info: this token is not linked to the ast
+In Prop.m, line 27
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

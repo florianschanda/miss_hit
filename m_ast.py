@@ -118,8 +118,17 @@ class MATLAB_Token:
         else:
             self.value = value
 
-        # Not part of parsing, but some fix suggestions can be added
+        # A free-form dictionary where we can record autofix
+        # requirements.
         self.fix = {}
+
+        # A link back to the AST so that we can identify to which node
+        # tokens nominally belong.
+        self.ast_link = None
+
+    def set_ast(self, node):
+        assert isinstance(node, Node)
+        self.ast_link = node
 
     def __repr__(self):
         star = "*" if self.anonymous else ""
@@ -236,7 +245,7 @@ class Compilation_Unit(Node):
         super().__init__()
         assert isinstance(name, str)
 
-        self.name         = name
+        self.name = name
         # Not a node since it comes from the filename
 
     def set_parent(self, n_parent):
@@ -364,6 +373,7 @@ class Class_Definition(Definition):
             assert isinstance(n_super, Name)
 
         self.t_classdef = t_classdef
+        self.t_classdef.set_ast(self)
         # Token for the classdef
 
         self.n_name = n_name
@@ -434,6 +444,7 @@ class Function_Definition(Definition):
             assert isinstance(n, Function_Definition)
 
         self.t_fun = t_fun
+        self.t_fun.set_ast(self)
         # The 'function' token
 
         self.n_sig = n_sig
@@ -602,6 +613,7 @@ class Special_Block(Node):
             assert isinstance(n_attr, Name_Value_Pair)
 
         self.t_kw = t_kw
+        self.t_kw.set_ast(self)
         # The token (which we also use to distinguish between the 5
         # different kinds of special block).
 
@@ -680,6 +692,8 @@ class Entity_Constraints(Node):
         # The entity name we refer to
 
         self.l_dim_constraint = l_dim_constraint
+        for t_dim_constraint in self.l_dim_constraint:
+            t_dim_constraint.set_ast(self)
         # List of optional dimension constraints. Must either be 0 or
         # more than 2. These are number/colon tokens and not
         # expressions.
@@ -760,6 +774,7 @@ class Action(Node):
         assert isinstance(n_body, Sequence_Of_Statements)
 
         self.t_kw = t_kw
+        self.t_kw.set_ast(self)
         # The token to classify this action
 
         self.n_expr = n_expr
@@ -893,6 +908,7 @@ class Identifier(Name):
             t_ident.kind == "BANG"
 
         self.t_ident = t_ident
+        self.t_ident.set_ast(self)
         # The token
 
     def __str__(self):
@@ -911,6 +927,7 @@ class Selection(Name):
         assert isinstance(n_field, Identifier)
 
         self.t_selection = t_selection
+        self.t_selection.set_ast(self)
         # The . token
 
         self.n_prefix = n_prefix
@@ -940,6 +957,7 @@ class Dynamic_Selection(Name):
         assert isinstance(n_field, Expression)
 
         self.t_selection = t_selection
+        self.t_selection.set_ast(self)
         # The token for .
 
         self.n_prefix = n_prefix
@@ -969,6 +987,7 @@ class Superclass_Reference(Name):
         assert isinstance(n_reference, Name)
 
         self.t_at = t_at
+        self.t_at.set_ast(self)
         # The token for @
 
         self.n_prefix = n_prefix
@@ -1004,6 +1023,7 @@ class For_Loop_Statement(Compound_Statement):
         assert isinstance(n_body, Sequence_Of_Statements)
 
         self.t_for = t_for
+        self.t_for.set_ast(self)
         # The token for the for or parfor
 
         self.n_ident = n_ident
@@ -1091,6 +1111,7 @@ class While_Statement(Compound_Statement):
         assert isinstance(n_body, Sequence_Of_Statements)
 
         self.t_while = t_while
+        self.t_while.set_ast(self)
         # The token for while
 
         self.n_guard = n_guard
@@ -1154,6 +1175,7 @@ class Switch_Statement(Compound_Statement):
                 assert n_action.kind() == "case"
 
         self.t_kw = t_kw
+        self.t_kw.set_ast(self)
         # The token for 'switch'
 
         self.n_expr = n_switch_expr
@@ -1191,9 +1213,14 @@ class Try_Statement(Compound_Statement):
                                              Identifier)
         assert n_handler is not None or n_ident is None
 
-        self.t_try   = t_try
+        self.t_try = t_try
+        self.t_try.set_ast(self)
+        # The token for try
+
         self.t_catch = t_catch
-        # Tokens for the try and catch part
+        if self.t_catch:
+            self.t_catch.set_ast(self)
+        # The optional token for catch
 
         self.n_ident = n_ident
         if self.n_ident:
@@ -1229,6 +1256,7 @@ class SPMD_Statement(Compound_Statement):
         assert isinstance(n_body, Sequence_Of_Statements)
 
         self.t_spmd = t_spmd
+        self.t_spmd.set_ast(self)
         # The token for the spmd keyword
 
         self.n_body = n_body
@@ -1255,6 +1283,7 @@ class Simple_Assignment_Statement(Simple_Statement):
         assert isinstance(n_rhs, Expression)
 
         self.t_eq = t_eq
+        self.t_eq.set_ast(self)
         # The token for the =
 
         self.n_lhs = n_lhs
@@ -1284,6 +1313,7 @@ class Compound_Assignment_Statement(Simple_Statement):
         assert isinstance(n_rhs, Expression)
 
         self.t_eq = t_eq
+        self.t_eq.set_ast(self)
         # The token for the =
 
         self.l_lhs = l_lhs
@@ -1327,6 +1357,7 @@ class Return_Statement(Simple_Statement):
         assert t_kw.kind == "KEYWORD" and t_kw.value == "return"
 
         self.t_kw = t_kw
+        self.t_kw.set_ast(self)
         # The token for return
 
 
@@ -1337,6 +1368,7 @@ class Break_Statement(Simple_Statement):
         assert t_kw.kind == "KEYWORD" and t_kw.value == "break"
 
         self.t_kw = t_kw
+        self.t_kw.set_ast(self)
         # The token for break
 
 
@@ -1347,6 +1379,7 @@ class Continue_Statement(Simple_Statement):
         assert t_kw.kind == "KEYWORD" and t_kw.value == "continue"
 
         self.t_kw = t_kw
+        self.t_kw.set_ast(self)
         # The token for continue
 
 
@@ -1360,6 +1393,7 @@ class Global_Statement(Simple_Statement):
             assert isinstance(n_name, Identifier)
 
         self.t_kw = t_kw
+        self.t_kw.set_ast(self)
         # The token for global
 
         self.l_names = l_names
@@ -1382,6 +1416,7 @@ class Persistent_Statement(Simple_Statement):
             assert isinstance(n_name, Identifier)
 
         self.t_kw = t_kw
+        self.t_kw.set_ast(self)
         # The token for persistent
 
         self.l_names = l_names
@@ -1407,9 +1442,12 @@ class Import_Statement(Simple_Statement):
                 (t_item.kind == "OPERATOR" and t_item.value == ".*")
 
         self.t_kw = t_kw
+        self.t_kw.set_ast(self)
         # The token for import
 
         self.l_chain = l_chain
+        for t_item in self.l_chain:
+            t_item.set_ast(self)
         # The tokens for the namespace to import. Will be identifiers,
         # followed by an optional operator (.*).
 
@@ -1430,6 +1468,7 @@ class Number_Literal(Literal):
         assert t_value.kind == "NUMBER"
 
         self.t_value = t_value
+        self.t_value.set_ast(self)
         # The token for the number literal
 
     def __str__(self):
@@ -1443,6 +1482,7 @@ class Char_Array_Literal(Literal):
         assert t_string.kind in ("CARRAY", "BANG")
 
         self.t_string = t_string
+        self.t_string.set_ast(self)
         # The token for the char array literal. It can also be a bang
         # token so we can use it as a char array argument to system()
         # when re-writing ! directives to a function call to system.
@@ -1458,6 +1498,7 @@ class String_Literal(Literal):
         assert t_string.kind == "STRING"
 
         self.t_string = t_string
+        self.t_string.set_ast(self)
         # The token for the string literal.
 
     def __str__(self):
@@ -1476,6 +1517,7 @@ class Reshape(Expression):
         assert t_colon.kind == "COLON"
 
         self.t_colon = t_colon
+        self.t_colon.set_ast(self)
         # The token for :
 
     def set_parent(self, n_parent):
@@ -1536,8 +1578,10 @@ class Matrix_Expression(Expression):
         for n_row in l_rows:
             assert isinstance(n_row, Row)
 
-        self.t_open  = t_open
+        self.t_open = t_open
+        self.t_open.set_ast(self)
         self.t_close = t_close
+        self.t_close.set_ast(self)
         # The tokens for [ and ]
 
         self.l_rows = l_rows
@@ -1562,8 +1606,10 @@ class Cell_Expression(Expression):
         for n_row in l_rows:
             assert isinstance(n_row, Row)
 
-        self.t_open  = t_open
+        self.t_open = t_open
+        self.t_open.set_ast(self)
         self.t_close = t_close
+        self.t_close.set_ast(self)
         # The tokens for { and }
 
         self.l_rows = l_rows
@@ -1642,6 +1688,7 @@ class Unary_Operation(Expression):
         # not.
 
         self.t_op = t_op
+        self.t_op.set_ast(self)
         # The token for the operator symbol
 
         self.n_expr = n_expr
@@ -1680,6 +1727,7 @@ class Binary_Operation(Expression):
         # not.
 
         self.t_op = t_op
+        self.t_op.set_ast(self)
         # The token for the operator symbol
 
         self.n_lhs = n_lhs
@@ -1715,6 +1763,7 @@ class Lambda_Function(Expression):
         assert isinstance(n_body, Expression)
 
         self.t_at = t_at
+        self.t_at.set_ast(self)
         # The token for @
 
         self.l_parameters = l_parameters
@@ -1745,6 +1794,7 @@ class Function_Pointer(Expression):
         assert isinstance(n_name, Name)
 
         self.t_at = t_at
+        self.t_at.set_ast(self)
         # The token for @
 
         self.n_name = n_name
@@ -1768,6 +1818,7 @@ class Metaclass(Expression):
         assert isinstance(n_name, Name)
 
         self.t_mc = t_mc
+        self.t_mc.set_ast(self)
         # The token for ?
 
         self.n_name = n_name

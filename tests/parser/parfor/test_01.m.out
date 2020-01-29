@@ -17,4 +17,16 @@ Root: Function_File
               Name: Identifier <disp>
               Arguments: Identifier <i>
 ----------------------------------------------------------------------
+In test_01.m, line 4
+|   parfor i = 1:x
+|            ^ info: this token is not linked to the ast
+In test_01.m, line 4
+|   parfor i = 1:x
+|               ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|   end
+|   ^^^ info: this token is not linked to the ast
+In test_01.m, line 7
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

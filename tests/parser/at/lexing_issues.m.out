@@ -72,4 +72,7 @@ Root: Function_File
                 LHS: Identifier <x>
                 RHS: Number_Literal <1>
 ----------------------------------------------------------------------
+In lexing_issues.m, line 14
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

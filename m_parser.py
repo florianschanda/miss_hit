@@ -27,7 +27,7 @@
 import os
 import traceback
 
-from m_lexer import Token_Generator, MATLAB_Lexer
+from m_lexer import Token_Generator, MATLAB_Lexer, Token_Buffer
 from errors import ICE, Error, Location, Message_Handler
 import config
 
@@ -1641,8 +1641,10 @@ class MATLAB_Parser:
 def sanity_test(mh, filename, show_bt, show_tree, show_dot):
     try:
         mh.register_file(filename)
+        lexer = MATLAB_Lexer(mh, filename)
+        tbuf = Token_Buffer(lexer)
         parser = MATLAB_Parser(mh,
-                               MATLAB_Lexer(mh, filename),
+                               tbuf,
                                config.BASE_CONFIG)
         parser.debug_tree = show_dot
         tree = parser.parse_file()
@@ -1651,6 +1653,17 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot):
             print("--  Parse tree for %s" % os.path.basename(filename))
             tree.pp_node()
             print("-" * 70)
+
+        for token in tbuf.tokens:
+            if token.kind in ("NEWLINE",
+                              "COMMENT",
+                              "BRA", "KET",
+                              "COMMA", "SEMICOLON"):
+                pass
+            elif token.ast_link is None:
+                mh.info(token.location,
+                        "this token is not linked to the ast")
+
     except Error:
         if show_bt:
             traceback.print_exc()

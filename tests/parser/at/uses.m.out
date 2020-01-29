@@ -147,4 +147,34 @@ Root: Function_File
                   RHS: Identifier <y>
                 RHS: Number_Literal <10>
 ----------------------------------------------------------------------
+In uses.m, line 5
+| end
+| ^^^ info: this token is not linked to the ast
+In uses.m, line 10
+| end
+| ^^^ info: this token is not linked to the ast
+In uses.m, line 20
+|     x = f{1}(x);
+|          ^ info: this token is not linked to the ast
+In uses.m, line 20
+|     x = f{1}(x);
+|            ^ info: this token is not linked to the ast
+In uses.m, line 21
+|     y = f{2}(y);
+|          ^ info: this token is not linked to the ast
+In uses.m, line 21
+|     y = f{2}(y);
+|            ^ info: this token is not linked to the ast
+In uses.m, line 22
+|     z = f{3}(x,y);
+|          ^ info: this token is not linked to the ast
+In uses.m, line 22
+|     z = f{3}(x,y);
+|            ^ info: this token is not linked to the ast
+In uses.m, line 23
+| end
+| ^^^ info: this token is not linked to the ast
+In uses.m, line 29
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

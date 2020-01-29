@@ -12,4 +12,7 @@ Root: Function_File
         LHS: Identifier <z>
         RHS: Identifier <x>
 ----------------------------------------------------------------------
+In bar.m, line 4
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

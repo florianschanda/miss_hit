@@ -12,4 +12,7 @@ Root: Function_File
             LHS: Identifier <foo>
             RHS: Number_Literal <3>
 ----------------------------------------------------------------------
+In test.m, line 5
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

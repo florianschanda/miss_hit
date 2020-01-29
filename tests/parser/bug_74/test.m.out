@@ -66,4 +66,28 @@ Root: Script_File
         Rows: Row
           Items: Number_Literal <12>
 ----------------------------------------------------------------------
+In test.m, line 3
+| [x, ] = 42;
+| ^ info: this token is not linked to the ast
+In test.m, line 3
+| [x, ] = 42;
+|     ^ info: this token is not linked to the ast
+In test.m, line 4
+| [x, y, ] = potato();
+| ^ info: this token is not linked to the ast
+In test.m, line 4
+| [x, y, ] = potato();
+|        ^ info: this token is not linked to the ast
+In test.m, line 5
+| [, x, y] = potato();
+| ^ info: this token is not linked to the ast
+In test.m, line 5
+| [, x, y] = potato();
+|        ^ info: this token is not linked to the ast
+In test.m, line 6
+| [,x,]    = 5;
+| ^ info: this token is not linked to the ast
+In test.m, line 6
+| [,x,]    = 5;
+|     ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

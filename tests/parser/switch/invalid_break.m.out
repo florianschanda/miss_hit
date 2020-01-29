@@ -25,4 +25,7 @@ Root: Script_File
             RHS: Number_Literal <2>
           Statements: Break_Statement
 ----------------------------------------------------------------------
+In invalid_break.m, line 10
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 2 error(s)

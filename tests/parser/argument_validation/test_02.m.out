@@ -26,4 +26,13 @@ Root: Function_File
         Class: Identifier <cell>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
+In test_02.m, line 3
+| function out = test_02(A, B, C)
+|              ^ info: this token is not linked to the ast
+In test_02.m, line 8
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_02.m, line 11
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

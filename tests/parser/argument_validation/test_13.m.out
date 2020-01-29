@@ -30,4 +30,10 @@ Root: Script_File
         Arguments: Identifier <x2>
         Arguments: Identifier <y2>
 ----------------------------------------------------------------------
+In test_13.m, line 3
+| x1 = 1:10;
+|       ^ info: this token is not linked to the ast
+In test_13.m, line 5
+| x2 = 0:5;
+|       ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

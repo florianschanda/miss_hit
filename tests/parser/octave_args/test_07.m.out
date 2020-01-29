@@ -35,4 +35,19 @@ Root: Function_File
               Name: Identifier <f>
             RHS: Number_Literal <2>
 ----------------------------------------------------------------------
+In test_07.m, line 5
+| function [x, varargout] = f (varargin)
+|          ^ info: this token is not linked to the ast
+In test_07.m, line 5
+| function [x, varargout] = f (varargin)
+|                       ^ info: this token is not linked to the ast
+In test_07.m, line 5
+| function [x, varargout] = f (varargin)
+|                         ^ info: this token is not linked to the ast
+In test_07.m, line 9
+| end
+| ^^^ info: this token is not linked to the ast
+In test_07.m, line 13
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

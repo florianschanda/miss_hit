@@ -26,4 +26,19 @@ Root: Function_File
       Statements: Naked_Expression_Statement
         Expression: Identifier <f>
 ----------------------------------------------------------------------
+In test_05.m, line 5
+| function [varargout] = f (varargin)
+|          ^ info: this token is not linked to the ast
+In test_05.m, line 5
+| function [varargout] = f (varargin)
+|                    ^ info: this token is not linked to the ast
+In test_05.m, line 5
+| function [varargout] = f (varargin)
+|                      ^ info: this token is not linked to the ast
+In test_05.m, line 8
+| end
+| ^^^ info: this token is not linked to the ast
+In test_05.m, line 12
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

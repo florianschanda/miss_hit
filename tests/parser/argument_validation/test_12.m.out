@@ -45,4 +45,19 @@ Root: Function_File
                   Name: Identifier <z>
                   Arguments: Reshape
 ----------------------------------------------------------------------
+In test_12.m, line 7
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_12.m, line 15
+|         plot(z{:});
+|               ^ info: this token is not linked to the ast
+In test_12.m, line 15
+|         plot(z{:});
+|                 ^ info: this token is not linked to the ast
+In test_12.m, line 16
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_12.m, line 17
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

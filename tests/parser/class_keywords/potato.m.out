@@ -31,4 +31,25 @@ Root: Class_File
             LHS: Identifier <p>
             RHS: Number_Literal <123>
 ----------------------------------------------------------------------
+In potato.m, line 7
+|   end
+|   ^^^ info: this token is not linked to the ast
+In potato.m, line 11
+|     function r = foo(self)
+|                ^ info: this token is not linked to the ast
+In potato.m, line 14
+|     end
+|     ^^^ info: this token is not linked to the ast
+In potato.m, line 17
+|     function p = properties(self)
+|                ^ info: this token is not linked to the ast
+In potato.m, line 19
+|     end
+|     ^^^ info: this token is not linked to the ast
+In potato.m, line 20
+|   end
+|   ^^^ info: this token is not linked to the ast
+In potato.m, line 21
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

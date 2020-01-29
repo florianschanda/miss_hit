@@ -70,4 +70,22 @@ Root: Function_File
                   Prefix: Identifier <namedargs>
                   Field: Identifier <Format>
 ----------------------------------------------------------------------
+In test_31.m, line 3
+| function result = test_31(a, b, c, namedargs)
+|                 ^ info: this token is not linked to the ast
+In test_31.m, line 7
+|         c (1,1) double = 1
+|                        ^ info: this token is not linked to the ast
+In test_31.m, line 9
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_31.m, line 17
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_31.m, line 20
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_31.m, line 21
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

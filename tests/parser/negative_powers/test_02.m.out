@@ -17,4 +17,7 @@ Root: Function_File
             Expression: Unary_Operation -
               Expression: Number_Literal <2>
 ----------------------------------------------------------------------
+In test_02.m, line 6
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

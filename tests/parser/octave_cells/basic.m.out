@@ -86,4 +86,7 @@ Root: Function_File
                 Items: Number_Literal <3>
                 Items: Number_Literal <4>
 ----------------------------------------------------------------------
+In basic.m, line 12
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

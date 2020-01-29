@@ -23,4 +23,10 @@ Root: Function_File
             LHS: Identifier <z>
             RHS: Number_Literal <1>
 ----------------------------------------------------------------------
+In foo.m, line 10
+|     end
+|     ^^^ info: this token is not linked to the ast
+In foo.m, line 11
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

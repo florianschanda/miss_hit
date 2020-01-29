@@ -58,4 +58,19 @@ Root: Function_File
               Name: Identifier <disp>
               Arguments: Identifier <x>
 ----------------------------------------------------------------------
+In test_08.m, line 13
+|         end
+|         ^^^ info: this token is not linked to the ast
+In test_08.m, line 14
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_08.m, line 21
+|         end
+|         ^^^ info: this token is not linked to the ast
+In test_08.m, line 22
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_08.m, line 23
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

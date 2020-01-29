@@ -33,4 +33,16 @@ Root: Function_File
                 RHS: Identifier <x>
             RHS: Identifier <c>
 ----------------------------------------------------------------------
+In test_07.m, line 3
+| function p = test_07(a,b,c)
+|            ^ info: this token is not linked to the ast
+In test_07.m, line 6
+|     function y = parabola(x)
+|                ^ info: this token is not linked to the ast
+In test_07.m, line 8
+|     end
+|     ^^^ info: this token is not linked to the ast
+In test_07.m, line 10
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

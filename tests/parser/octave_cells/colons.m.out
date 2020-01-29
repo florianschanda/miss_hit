@@ -97,4 +97,31 @@ Root: Function_File
                 Items: Number_Literal <3>
                 Items: Number_Literal <4>
 ----------------------------------------------------------------------
+In colons.m, line 4
+|     assert ({1, z{:}, 2} == {1, 2});
+|                  ^ info: this token is not linked to the ast
+In colons.m, line 4
+|     assert ({1, z{:}, 2} == {1, 2});
+|                    ^ info: this token is not linked to the ast
+In colons.m, line 5
+|     assert ({1; z{:}; 2} == {1; 2});
+|                  ^ info: this token is not linked to the ast
+In colons.m, line 5
+|     assert ({1; z{:}; 2} == {1; 2});
+|                    ^ info: this token is not linked to the ast
+In colons.m, line 6
+|     assert ({1 2; z{:}; 3 4} == {1, 2; 3 4});
+|                    ^ info: this token is not linked to the ast
+In colons.m, line 6
+|     assert ({1 2; z{:}; 3 4} == {1, 2; 3 4});
+|                      ^ info: this token is not linked to the ast
+In colons.m, line 7
+|     assert ({1 2; 5 z{:} 6; 3 4} == {1, 2; 5 6; 3 4});
+|                      ^ info: this token is not linked to the ast
+In colons.m, line 7
+|     assert ({1 2; 5 z{:} 6; 3 4} == {1, 2; 5 6; 3 4});
+|                        ^ info: this token is not linked to the ast
+In colons.m, line 8
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

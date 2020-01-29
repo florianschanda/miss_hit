@@ -35,4 +35,16 @@ Root: Script_File
         Arguments: Char_Array_Literal ']foo '
         Arguments: Char_Array_Literal 'baz'
 ----------------------------------------------------------------------
+In test_continuations.m, line 3
+| d2 foo...bar
+|       ^^^^^^^ info: this token is not linked to the ast
+In test_continuations.m, line 7
+| d2 foo ...bar
+|        ^^^^^^^ info: this token is not linked to the ast
+In test_continuations.m, line 11
+| d2 ]foo...bar
+|        ^^^^^^^ info: this token is not linked to the ast
+In test_continuations.m, line 15
+| d2 ]foo ...bar
+|         ^^^^^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

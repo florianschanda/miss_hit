@@ -122,4 +122,52 @@ Root: Function_File
                 Items: Number_Literal <300>
             Items: Char_Array_Literal 'MATLAB'
 ----------------------------------------------------------------------
+In cells.m, line 6
+| function myCell = test_01()
+|                 ^ info: this token is not linked to the ast
+In cells.m, line 11
+| end
+| ^^^ info: this token is not linked to the ast
+In cells.m, line 13
+| function C = test_02()
+|            ^ info: this token is not linked to the ast
+In cells.m, line 15
+| end
+| ^^^ info: this token is not linked to the ast
+In cells.m, line 17
+| function C = test_03()
+|            ^ info: this token is not linked to the ast
+In cells.m, line 19
+|   C{4, 4} = 44;
+|    ^ info: this token is not linked to the ast
+In cells.m, line 19
+|   C{4, 4} = 44;
+|         ^ info: this token is not linked to the ast
+In cells.m, line 20
+|   C{5,5} = [];
+|    ^ info: this token is not linked to the ast
+In cells.m, line 20
+|   C{5,5} = [];
+|        ^ info: this token is not linked to the ast
+In cells.m, line 21
+| end
+| ^^^ info: this token is not linked to the ast
+In cells.m, line 23
+| function [C4, C5] = test_04()
+|          ^ info: this token is not linked to the ast
+In cells.m, line 23
+| function [C4, C5] = test_04()
+|                 ^ info: this token is not linked to the ast
+In cells.m, line 23
+| function [C4, C5] = test_04()
+|                   ^ info: this token is not linked to the ast
+In cells.m, line 39
+| end
+| ^^^ info: this token is not linked to the ast
+In cells.m, line 41
+| function A = test_05()
+|            ^ info: this token is not linked to the ast
+In cells.m, line 44
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

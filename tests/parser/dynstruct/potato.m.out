@@ -14,4 +14,16 @@ Root: Function_File
         LHS: Identifier <y>
         RHS: Number_Literal <2>
 ----------------------------------------------------------------------
+In potato.m, line 1
+| function [x, y] = potato()
+|          ^ info: this token is not linked to the ast
+In potato.m, line 1
+| function [x, y] = potato()
+|               ^ info: this token is not linked to the ast
+In potato.m, line 1
+| function [x, y] = potato()
+|                 ^ info: this token is not linked to the ast
+In potato.m, line 4
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

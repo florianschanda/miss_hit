@@ -31,4 +31,19 @@ Root: Function_File
             LHS: Number_Literal <0.5>
             RHS: Identifier <y>
 ----------------------------------------------------------------------
+In test_01.m, line 3
+| function r = test_01(x, y)
+|            ^ info: this token is not linked to the ast
+In test_01.m, line 5
+|     x (1, 1) single {mustBePositive, mustBeFinite}
+|                     ^ info: this token is not linked to the ast
+In test_01.m, line 5
+|     x (1, 1) single {mustBePositive, mustBeFinite}
+|                                                  ^ info: this token is not linked to the ast
+In test_01.m, line 7
+|   end
+|   ^^^ info: this token is not linked to the ast
+In test_01.m, line 10
+| end
+| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
