@@ -27,7 +27,7 @@
 import os
 import traceback
 
-from m_lexer import Token_Generator, MATLAB_Lexer, TOKEN_KINDS
+from m_lexer import Token_Generator, MATLAB_Lexer
 from errors import ICE, Error, Location, Message_Handler
 import config
 

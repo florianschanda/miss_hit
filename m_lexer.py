@@ -29,6 +29,7 @@ from abc import ABCMeta, abstractmethod
 
 from errors import Location, Error, Message_Handler, ICE
 from m_language import KEYWORDS
+from m_ast import MATLAB_Token
 
 # The 1999 technical report "The Design and Implementation of a Parser
 # and Scanner for the MATLAB Language in the MATCH Compiler" is a key
@@ -62,102 +63,6 @@ from m_language import KEYWORDS
 # would also make debugging much more difficult. By keeping them
 # separate we can look at the whole token stream and the parser can be
 # a more traditional parser.
-
-TOKEN_KINDS = frozenset([
-    "NEWLINE",
-    "CONTINUATION",
-    "COMMENT",
-    "IDENTIFIER",
-    "NUMBER",
-    "CARRAY",          # 'foo' character array
-    "STRING",          # "foo" string class literal
-    "KEYWORD",
-    "OPERATOR",
-    "COMMA",
-    "SEMICOLON",
-    "COLON",
-    "BRA", "KET",      # ( )
-    "C_BRA", "C_KET",  # { }
-    "M_BRA", "M_KET",  # [ ] for matrices
-    "A_BRA", "A_KET",  # [ ] for assignment targets
-    "ASSIGNMENT",
-    "SELECTION",
-    "AT",
-    "BANG",
-    "METACLASS",
-])
-
-TOKENS_WITH_IMPLICIT_VALUE = frozenset([
-    "COMMA",
-    "SEMICOLON",
-    "COLON",
-    "BRA", "KET",      # ( )
-    "C_BRA", "C_KET",  # { }
-    "M_BRA", "M_KET",  # [ ] for matrices
-    "A_BRA", "A_KET",  # [ ] for assignment targets
-    "ASSIGNMENT",
-    "SELECTION",
-    "AT",
-    "METACLASS"
-])
-
-
-class MATLAB_Token:
-    def __init__(self,
-                 kind,
-                 raw_text,
-                 location,
-                 first_in_line,
-                 first_in_statement,
-                 value = None,
-                 anonymous = False,
-                 contains_quotes = False):
-        assert kind in TOKEN_KINDS
-        assert isinstance(raw_text, str)
-        assert isinstance(location, Location)
-        assert isinstance(first_in_line, bool)
-        assert isinstance(first_in_statement, bool)
-        assert isinstance(anonymous, bool)
-        assert isinstance(contains_quotes, bool)
-        assert not contains_quotes or kind in ("STRING", "CARRAY")
-
-        self.kind               = kind
-        self.raw_text           = raw_text
-        self.location           = location
-        self.first_in_line      = first_in_line
-        self.first_in_statement = first_in_statement
-        self.anonymous          = anonymous
-        self.contains_quotes    = contains_quotes
-
-        if value is None:
-            if self.kind in TOKENS_WITH_IMPLICIT_VALUE:
-                self.value = None
-            elif self.kind == "CONTINUATION":
-                self.value = self.raw_text[3:].strip()
-            elif self.kind == "COMMENT":
-                self.value = self.raw_text[1:].strip()
-            elif self.kind in ("CARRAY", "STRING"):
-                if self.contains_quotes:
-                    self.value = self.raw_text[1:-1]
-                else:
-                    self.value = self.raw_text
-            elif self.kind == "BANG":
-                self.value = self.raw_text[1:]
-            else:
-                self.value = self.raw_text
-        else:
-            self.value = value
-
-        # Not part of parsing, but some fix suggestions can be added
-        self.fix = {}
-
-    def __repr__(self):
-        star = "*" if self.anonymous else ""
-
-        if self.value is None or self.kind == "NEWLINE":
-            return "Token%s(%s)" % (star, self.kind)
-        else:
-            return "Token%s(%s, <<%s>>)" % (star, self.kind, self.value)
 
 
 class Token_Generator(metaclass=ABCMeta):

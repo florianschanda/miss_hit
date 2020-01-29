@@ -25,8 +25,114 @@
 
 import subprocess
 
-from m_lexer import MATLAB_Token
-from errors import ICE
+from errors import ICE, Location
+
+
+##############################################################################
+# Lexical tokens
+##############################################################################
+
+
+TOKEN_KINDS = frozenset([
+    "NEWLINE",
+    "CONTINUATION",
+    "COMMENT",
+    "IDENTIFIER",
+    "NUMBER",
+    "CARRAY",          # 'foo' character array
+    "STRING",          # "foo" string class literal
+    "KEYWORD",
+    "OPERATOR",
+    "COMMA",
+    "SEMICOLON",
+    "COLON",
+    "BRA", "KET",      # ( )
+    "C_BRA", "C_KET",  # { }
+    "M_BRA", "M_KET",  # [ ] for matrices
+    "A_BRA", "A_KET",  # [ ] for assignment targets
+    "ASSIGNMENT",
+    "SELECTION",
+    "AT",
+    "BANG",
+    "METACLASS",
+])
+
+TOKENS_WITH_IMPLICIT_VALUE = frozenset([
+    "COMMA",
+    "SEMICOLON",
+    "COLON",
+    "BRA", "KET",      # ( )
+    "C_BRA", "C_KET",  # { }
+    "M_BRA", "M_KET",  # [ ] for matrices
+    "A_BRA", "A_KET",  # [ ] for assignment targets
+    "ASSIGNMENT",
+    "SELECTION",
+    "AT",
+    "METACLASS"
+])
+
+
+class MATLAB_Token:
+    def __init__(self,
+                 kind,
+                 raw_text,
+                 location,
+                 first_in_line,
+                 first_in_statement,
+                 value = None,
+                 anonymous = False,
+                 contains_quotes = False):
+        assert kind in TOKEN_KINDS
+        assert isinstance(raw_text, str)
+        assert isinstance(location, Location)
+        assert isinstance(first_in_line, bool)
+        assert isinstance(first_in_statement, bool)
+        assert isinstance(anonymous, bool)
+        assert isinstance(contains_quotes, bool)
+        assert not contains_quotes or kind in ("STRING", "CARRAY")
+
+        self.kind               = kind
+        self.raw_text           = raw_text
+        self.location           = location
+        self.first_in_line      = first_in_line
+        self.first_in_statement = first_in_statement
+        self.anonymous          = anonymous
+        self.contains_quotes    = contains_quotes
+
+        if value is None:
+            if self.kind in TOKENS_WITH_IMPLICIT_VALUE:
+                self.value = None
+            elif self.kind == "CONTINUATION":
+                self.value = self.raw_text[3:].strip()
+            elif self.kind == "COMMENT":
+                self.value = self.raw_text[1:].strip()
+            elif self.kind in ("CARRAY", "STRING"):
+                if self.contains_quotes:
+                    self.value = self.raw_text[1:-1]
+                else:
+                    self.value = self.raw_text
+            elif self.kind == "BANG":
+                self.value = self.raw_text[1:]
+            else:
+                self.value = self.raw_text
+        else:
+            self.value = value
+
+        # Not part of parsing, but some fix suggestions can be added
+        self.fix = {}
+
+    def __repr__(self):
+        star = "*" if self.anonymous else ""
+
+        if self.value is None or self.kind == "NEWLINE":
+            return "Token%s(%s)" % (star, self.kind)
+        else:
+            return "Token%s(%s, <<%s>>)" % (star, self.kind, self.value)
+
+
+##############################################################################
+# AST
+##############################################################################
 
 
 NODE_UID = [0]
