@@ -436,6 +436,42 @@ end;            % useless semicolon
         be done easily and correctly.
       </div>
 
+      <h4>Naming scheme for classes ("naming_classes")</h4>
+
+      <div>
+        This rule enforces a consistent naming for all user-defined
+        classes.
+      </div>
+
+      <div>
+        Configuration parameters:
+        <ul>
+          <li>
+            <b>regex_class_name</b>: A regular expression that every
+            class must match. By default is is:
+            <pre>([A-Z]+|[A-Z][a-z]*)(_([A-Z]+|[A-Z][a-z]*|[0-9]+))*</pre>
+            This regular expression encodes the "Ada" naming scheme
+            which is in my opinion probably the most descriptive and
+            consistent naming scheme. It requires underscore-separated
+            acronyms or capitalised words. Good class names under this
+            scheme are:
+            <ul>
+              <li>Kitten_Class</li>
+              <li>LASER</li>
+              <li>OS_Monitor</li>
+            </ul>
+            Bad names are:
+            <ul>
+              <li>PotatoFarmer (no underscore)</li>
+              <li>hamster_Monitor (not capitalised)</li>
+              <li>LASERActuator (no underscore)</li>
+              <li>Sharks_ (trailing underscore)</li>
+              <li>Bad__Name (double underscore)</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
       <!-- HOOK: RULES -->
       <h4>Maximum file length ("file_length")</h4>
       <div>

@@ -40,6 +40,7 @@ from m_language_builtins import BUILTIN_FUNCTIONS
 from m_lexer import MATLAB_Lexer, Token_Buffer
 from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
 import config
+import config_files
 from m_parser import MATLAB_Parser
 
 # pylint: disable=wildcard-import,unused-wildcard-import
@@ -710,7 +711,7 @@ def analyze(mh, filename, rule_set, autofix, fd_tree):
 
     # Get config first, since we might want to skip this file
 
-    cfg = config.get_config(filename)
+    cfg = config_files.get_config(filename)
     rule_lib = build_library(cfg, rule_set)
 
     if not cfg["enable"]:
@@ -793,6 +794,7 @@ def analyze(mh, filename, rule_set, autofix, fd_tree):
     try:
         parser = MATLAB_Parser(mh, tbuf, cfg)
         parse_tree = parser.parse_file()
+        parse_tree.sty_check_naming(mh, cfg)
         if fd_tree:
             fd_tree.write("-- Parse tree for %s\n" % filename)
             parse_tree.pp_node(fd_tree)
@@ -841,7 +843,7 @@ def main():
                     action="store_true",
                     default=False,
                     help=("Ignore all %s files." %
-                          " or ".join(config.CONFIG_FILENAMES)))
+                          " or ".join(config_files.CONFIG_FILENAMES)))
 
     # Output options
     ap.add_argument("--brief",
@@ -926,16 +928,19 @@ def main():
     try:
         for item in options.files:
             if os.path.isdir(item):
-                config.register_tree(mh, os.path.abspath(item), options)
+                config_files.register_tree(mh,
+                                           os.path.abspath(item),
+                                           options)
             elif os.path.isfile(item):
-                config.register_tree(mh,
-                                     os.path.dirname(os.path.abspath(item)),
-                                     options)
+                config_files.register_tree(
+                    mh,
+                    os.path.dirname(os.path.abspath(item)),
+                    options)
             else:
                 ap.error("%s is neither a file nor directory" % item)
-        config.build_config_tree(mh,
-                                 build_default_config(rule_set),
-                                 options)
+        config_files.build_config_tree(mh,
+                                       build_default_config(rule_set),
+                                       options)
     except Error:
         mh.summary_and_exit()
 

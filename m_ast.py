@@ -24,7 +24,9 @@
 ##############################################################################
 
 import subprocess
+import re
 
+import config
 from errors import ICE, Location
 
 
@@ -215,7 +217,8 @@ class Expression(Node):
 
 
 class Name(Expression):
-    pass
+    def is_simple_dotted_name(self):
+        return False
 
 
 class Literal(Expression):
@@ -241,6 +244,7 @@ class Compound_Statement(Statement):
 
 
 class Compilation_Unit(Node):
+    # pylint: disable=unused-argument
     def __init__(self, name):
         super().__init__()
         assert isinstance(name, str)
@@ -250,6 +254,9 @@ class Compilation_Unit(Node):
 
     def set_parent(self, n_parent):
         raise ICE("compilation unit cannot have a parent")
+
+    def sty_check_naming(self, mh, cfg):
+        raise ICE("compilation unit root implements no checks")
 
 
 ##############################################################################
@@ -289,6 +296,10 @@ class Script_File(Compilation_Unit):
         self._visit_list(self.l_functions, function, "Functions")
         self._visit_end(parent, function, relation)
 
+    def sty_check_naming(self, mh, cfg):
+        for n_function in self.l_functions:
+            n_function.sty_check_naming(mh, cfg)
+
 
 class Function_File(Compilation_Unit):
     def __init__(self, name, l_functions):
@@ -312,6 +323,10 @@ class Function_File(Compilation_Unit):
         self._visit(parent, function, relation)
         self._visit_list(self.l_functions, function, "Functions")
         self._visit_end(parent, function, relation)
+
+    def sty_check_naming(self, mh, cfg):
+        for n_function in self.l_functions:
+            n_function.sty_check_naming(mh, cfg)
 
 
 class Class_File(Compilation_Unit):
@@ -352,6 +367,10 @@ class Class_File(Compilation_Unit):
         self._visit_list(self.l_functions, function, "Functions")
         self._visit_end(parent, function, relation)
 
+    def sty_check_naming(self, mh, cfg):
+        self.n_classdef.sty_check_naming(mh, cfg)
+        for n_function in self.l_functions:
+            n_function.sty_check_naming(mh, cfg)
 
 ##############################################################################
 # Definitions
@@ -364,7 +383,7 @@ class Class_Definition(Definition):
         assert isinstance(t_classdef, MATLAB_Token)
         assert t_classdef.kind == "KEYWORD" and \
             t_classdef.value == "classdef"
-        assert isinstance(n_name, Name)
+        assert isinstance(n_name, Identifier)
         assert isinstance(l_attr, list)
         for n_attr in l_attr:
             assert isinstance(n_attr, Name_Value_Pair)
@@ -378,7 +397,8 @@ class Class_Definition(Definition):
 
         self.n_name = n_name
         self.n_name.set_parent(self)
-        # (Simple dotted) name of the class
+        # Name of the class. Always a simple identifier, not even dots
+        # are allowed here.
 
         self.l_super = l_super
         for n_superclass in self.l_super:
@@ -426,6 +446,13 @@ class Class_Definition(Definition):
             raise ICE("unexpected block kind %s" % n_block.kind())
 
         n_block.set_parent(self)
+
+    def sty_check_naming(self, mh, cfg):
+        if config.active(cfg, "naming_classes"):
+            self.n_name.sty_check_naming(mh, cfg, "class")
+        for n_block in self.l_methods:
+            for n_function in n_block.l_items:
+                n_function.sty_check_naming(mh, cfg)
 
 
 class Function_Definition(Definition):
@@ -488,6 +515,10 @@ class Function_Definition(Definition):
         self.n_body.visit(self, function, "Body")
         self._visit_list(self.l_nested, function, "Nested")
         self._visit_end(parent, function, relation)
+
+    def sty_check_naming(self, mh, cfg):
+        for n_function in self.l_nested:
+            n_function.sty_check_naming(mh, cfg)
 
 
 ##############################################################################
@@ -917,6 +948,15 @@ class Identifier(Name):
         else:
             return self.t_ident.value
 
+    def is_simple_dotted_name(self):
+        return self.t_ident.kind == "IDENTIFIER"
+
+    def sty_check_naming(self, mh, cfg, kind):
+        regex = cfg["regex_" + kind + "_name"]
+        if not re.match("^(" + regex + ")$", self.t_ident.value):
+            mh.style_issue(self.t_ident.location,
+                           "violates naming scheme for %s" % kind)
+
 
 class Selection(Name):
     def __init__(self, t_selection, n_prefix, n_field):
@@ -946,6 +986,9 @@ class Selection(Name):
 
     def __str__(self):
         return "%s.%s" % (self.n_prefix, self.n_field)
+
+    def is_simple_dotted_name(self):
+        return self.n_prefix.is_simple_dotted_name()
 
 
 class Dynamic_Selection(Name):

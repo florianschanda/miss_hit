@@ -1,0 +1,8 @@
+=== PLAIN MODE ===
+In miss_hit.cfg, line 1
+| regex_class_name: "foo(bar"
+|                       ^ error: missing ), unterminated subpattern
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

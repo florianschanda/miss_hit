@@ -27,9 +27,9 @@
 import re
 from abc import ABCMeta, abstractmethod
 
+import m_ast
 from errors import Location, Error, Message_Handler, ICE
 from m_language import KEYWORDS
-from m_ast import MATLAB_Token
 
 # The 1999 technical report "The Design and Implementation of a Parser
 # and Scanner for the MATLAB Language in the MATCH Compiler" is a key
@@ -247,16 +247,16 @@ class MATLAB_Lexer(Token_Generator):
             fake_line = self.context_line[self.line - 1]
             fake_col = self.lexpos - self.col_offset + 1
             fake_line = fake_line[:fake_col] + "<anon,>" + fake_line[fake_col:]
-            token = MATLAB_Token("COMMA",
-                                 ",",
-                                 Location(self.filename,
-                                          self.line,
-                                          fake_col,
-                                          fake_col + 6,
-                                          fake_line),
-                                 False,
-                                 False,
-                                 anonymous = True)
+            token = m_ast.MATLAB_Token("COMMA",
+                                       ",",
+                                       Location(self.filename,
+                                                self.line,
+                                                fake_col,
+                                                fake_col + 6,
+                                                fake_line),
+                                       False,
+                                       False,
+                                       anonymous = True)
             self.last_kind = "COMMA"
             self.last_value = ","
             return token
@@ -679,17 +679,17 @@ class MATLAB_Lexer(Token_Generator):
             raise ICE("line is larger than the length of the file %s" %
                       self.filename)
 
-        token = MATLAB_Token(kind,
-                             raw_text,
-                             Location(self.filename,
-                                      self.line,
-                                      col_start,
-                                      col_end,
-                                      ctx_line),
-                             self.first_in_line,
-                             self.first_in_statement,
-                             value = value,
-                             contains_quotes = contains_quotes)
+        token = m_ast.MATLAB_Token(kind,
+                                   raw_text,
+                                   Location(self.filename,
+                                            self.line,
+                                            col_start,
+                                            col_end,
+                                            ctx_line),
+                                   self.first_in_line,
+                                   self.first_in_statement,
+                                   value = value,
+                                   contains_quotes = contains_quotes)
         self.first_in_line = False
         self.first_in_statement = False
 

@@ -1,0 +1,8 @@
+=== PLAIN MODE ===
+In +A/+Very/badClass.m, line 3
+| classdef badClass
+|          ^^^^^^^^ style: violates naming scheme for class
+MISS_HIT Summary: 3 file(s) analysed, 1 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 3 file(s) analysed, 1 style issue(s)

@@ -1,0 +1,5 @@
+=== PLAIN MODE ===
+MISS_HIT Summary: 3 file(s) analysed, everything seemes fine
+
+=== HTML MODE ===
+MISS_HIT Summary: 3 file(s) analysed, everything seemes fine
