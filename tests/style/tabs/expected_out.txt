@@ -10,13 +10,13 @@ In test.m, line 8
 |                   ^ style: tab is not allowed [fixed]
 In test.m, line 12
 |  "a b"
-|  ^^^^^ style: end statement with a semicolon
+|  ^^^^^ style: end statement with a semicolon [fixed]
 In test.m, line 12
 |  "a b"
 |    ^ style: tab is not allowed [fixed]
 In test.m, line 13
 | "a  b"
-| ^^^^^^ style: end statement with a semicolon
+| ^^^^^^ style: end statement with a semicolon [fixed]
 In test.m, line 13
 | "a b"
 |   ^ style: tab is not allowed [fixed]

@@ -1,7 +1,7 @@
 === PLAIN MODE ===
 In test.m, line 4
 | cd fail
-|    ^^^^ style: end statement with a semicolon
+|    ^^^^ style: end statement with a semicolon [fixed]
 MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
 
 === HTML MODE ===

@@ -236,13 +236,14 @@ class MATLAB_Parser:
                 self.mh.style_issue(self.nt.location,
                                     "end statement with a semicolon"
                                     " instead of comma",
-                                    False)
+                                    True)
+                self.nt.fix["change_to_semicolon"] = True
 
             if config.active(self.cfg, "end_of_statements") and \
                terminator_count > 1:
                 self.mh.style_issue(self.nt.location,
                                     "use only one statement terminator",
-                                    False)
+                                    True)
                 self.nt.fix["delete"] = True
 
             found_eos = True
@@ -260,7 +261,7 @@ class MATLAB_Parser:
             if semi and not found_semi_before_nl and not found_eos:
                 self.mh.style_issue(ending_token.location,
                                     "end statement with a semicolon",
-                                    False)
+                                    True)
                 ending_token.fix["add_semicolon_after"] = True
             elif not semi and found_semi_before_nl:
                 self.mh.style_issue(ending_token.location,
@@ -277,7 +278,7 @@ class MATLAB_Parser:
                 self.mh.style_issue(self.nt.location,
                                     "trailing statement terminator after"
                                     " newline",
-                                    False)
+                                    True)
                 self.nt.fix["delete"] = True
 
             found_eos = True
@@ -307,6 +308,10 @@ class MATLAB_Parser:
             self.mh.error(self.nt.location,
                           "expected end of statement, found %s instead" %
                           self.nt.kind)
+        elif not found_nl and eos_token and not allow_nothing:
+            # Workaround for #92 until we can add newlines and indent
+            # correctly.
+            eos_token.fix["delete"] = False
 
     def parse_identifier(self, allow_void):
         # identifier ::= <IDENTIFIER>

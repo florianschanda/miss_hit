@@ -1,13 +1,13 @@
 === PLAIN MODE ===
 In test.m, line 5
 |         x, y, z
-|          ^ style: end statement with a semicolon instead of comma
+|          ^ style: end statement with a semicolon instead of comma [fixed]
 In test.m, line 5
 |         x, y, z
 |          ^ style: end statement with a newline
 In test.m, line 5
 |         x, y, z
-|             ^ style: end statement with a semicolon instead of comma
+|             ^ style: end statement with a semicolon instead of comma [fixed]
 In test.m, line 5
 |         x, y, z
 |             ^ style: end statement with a newline

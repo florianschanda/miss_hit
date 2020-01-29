@@ -4,16 +4,16 @@ In test.m, line 3
 | ^ style: ( must not be followed by whitespace [fixed]
 In test.m, line 3
 | ( 1 + 1 ) % not ok
-|         ^ style: end statement with a semicolon
+|         ^ style: end statement with a semicolon [fixed]
 In test.m, line 3
 | ( 1 + 1 ) % not ok
 |         ^ style: ) must not be preceeded by whitespace [fixed]
 In test.m, line 4
 | (1 + 1)   % ok
-|       ^ style: end statement with a semicolon
+|       ^ style: end statement with a semicolon [fixed]
 In test.m, line 6
 |    42)
-|      ^ style: end statement with a semicolon
+|      ^ style: end statement with a semicolon [fixed]
 MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
 
 === HTML MODE ===

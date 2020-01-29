@@ -4,7 +4,7 @@ In test.m, line 4
 | ^^^^^ style: redefinition of builtin function is a very naughty thing to do
 In test.m, line 6
 | x = pi, [true] = 42; % bad
-|       ^ style: end statement with a semicolon instead of comma
+|       ^ style: end statement with a semicolon instead of comma [fixed]
 In test.m, line 6
 | x = pi, [true] = 42; % bad
 |       ^ style: end statement with a newline

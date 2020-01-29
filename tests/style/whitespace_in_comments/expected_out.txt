@@ -1,7 +1,7 @@
 === PLAIN MODE ===
 In test.m, line 8
 | fprintf('%s', 'astring')
-|                        ^ style: end statement with a semicolon
+|                        ^ style: end statement with a semicolon [fixed]
 In test.m, line 12
 | %Potato
 | ^^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]

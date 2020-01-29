@@ -2,7 +2,7 @@
 
 classdef test
     properties
-        x  y  z
-        a  b  c
+        x; y; z
+        a; b; c
     end
 end

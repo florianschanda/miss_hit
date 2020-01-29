@@ -1,7 +1,7 @@
 === PLAIN MODE ===
 In fail_1.m, line 4
 | potato 
-| ^^^^^^ style: end statement with a semicolon
+| ^^^^^^ style: end statement with a semicolon [fixed]
 In fail_1.m, line 4
 | potato 
 |       ^^ style: trailing whitespace [fixed]

@@ -13,19 +13,19 @@ In other.m, line 17
 |                                                         ^^^^ style: continuation must be preceeded by whitespace [fixed]
 In other.m, line 20
 |     aVar = 3,;
-|             ^ style: end statement with a semicolon instead of comma
+|             ^ style: end statement with a semicolon instead of comma [fixed]
 In other.m, line 20
 |     aVar = 3,;
 |             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In other.m, line 20
 |     aVar = 3,;
-|              ^ style: use only one statement terminator
+|              ^ style: use only one statement terminator [fixed]
 In other.m, line 23
 |     ;
-|     ^ style: trailing statement terminator after newline
+|     ^ style: trailing statement terminator after newline [fixed]
 In other.m, line 24
 |     ,
-|     ^ style: trailing statement terminator after newline
+|     ^ style: trailing statement terminator after newline [fixed]
 In other.m, line 25
 |     if input1 > input2 output1=0, else output2=1; end
 |                 ^^^^^^ style: end statement with a newline
@@ -34,7 +34,7 @@ In other.m, line 25
 |                               ^ style: = must be preceeded by whitespace [fixed]
 In other.m, line 25
 |     if input1 > input2 output1=0, else output2=1; end
-|                                 ^ style: end statement with a semicolon instead of comma
+|                                 ^ style: end statement with a semicolon instead of comma [fixed]
 In other.m, line 25
 |     if input1 > input2 output1=0, else output2=1; end
 |                                 ^ style: end statement with a newline
@@ -55,7 +55,7 @@ In other.m, line 27
 |                ^ style: = must be preceeded by whitespace [fixed]
 In other.m, line 27
 |         output1=0
-|                 ^ style: end statement with a semicolon
+|                 ^ style: end statement with a semicolon [fixed]
 In other.m, line 28
 |     else;
 |     ^^^^ style: end this with just a newline
@@ -64,31 +64,31 @@ In other.m, line 29
 |                ^ style: = must be preceeded by whitespace [fixed]
 In other.m, line 30
 |                     ,
-|                     ^ style: end statement with a semicolon instead of comma
+|                     ^ style: end statement with a semicolon instead of comma [fixed]
 In other.m, line 31
 |     end;
 |     ^^^ style: end this with just a newline
 In test.m, line 3
 | foo = 1,
-|        ^ style: end statement with a semicolon instead of comma
+|        ^ style: end statement with a semicolon instead of comma [fixed]
 In test.m, line 5
 | potato = 2, 
-|           ^ style: end statement with a semicolon instead of comma
+|           ^ style: end statement with a semicolon instead of comma [fixed]
 In test.m, line 5
 | potato = 2, 
 |            ^^ style: trailing whitespace [fixed]
 In test.m, line 6
 | kitten = 3,     % comment
-|           ^ style: end statement with a semicolon instead of comma
+|           ^ style: end statement with a semicolon instead of comma [fixed]
 In test.m, line 7
 | baz = 4, bar = 5;
-|        ^ style: end statement with a semicolon instead of comma
+|        ^ style: end statement with a semicolon instead of comma [fixed]
 In test.m, line 7
 | baz = 4, bar = 5;
 |        ^ style: end statement with a newline
 In test.m, line 8
 | spoon
-| ^^^^^ style: end statement with a semicolon
+| ^^^^^ style: end statement with a semicolon [fixed]
 MISS_HIT Summary: 2 file(s) analysed, 30 style issue(s)
 
 === HTML MODE ===
