@@ -1140,13 +1140,20 @@ class MATLAB_Parser:
     def parse_precedence_8(self):
         rv = self.parse_range_expression()
 
+        chain_length = 1
         while self.peek("OPERATOR") and self.nt.value in ("<", "<=",
                                                           ">", ">=",
                                                           "==", "~="):
+            chain_length += 1
             self.match("OPERATOR")
             t_op = self.ct
             rhs = self.parse_range_expression()
             rv = Binary_Operation(8, t_op, rv, rhs)
+
+            if chain_length > 2:
+                self.mh.warning(t_op.location,
+                                "chained relation does not work the"
+                                " way you think it does")
 
         return rv
 
