@@ -24,6 +24,7 @@
 ##                                                                          ##
 ##############################################################################
 
+import os
 import re
 from abc import ABCMeta, abstractmethod
 
@@ -69,6 +70,8 @@ class Token_Generator(metaclass=ABCMeta):
     def __init__(self, filename):
         assert isinstance(filename, str)
         self.filename = filename
+        self.in_class_directory = os.path.basename(
+            os.path.dirname(os.path.abspath(filename))).startswith("@")
 
     @abstractmethod
     def token(self):

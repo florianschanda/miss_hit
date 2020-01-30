@@ -413,14 +413,16 @@ class MATLAB_Parser:
 
     def parse_file(self):
         # This is the top-level parse function. First we need to
-        # figure out exactly what kind of file we're dealing with.
+        # figure out exactly what kind of file we're dealing
+        # with. This also hilariously depends on the file name.
         while self.peek("NEWLINE"):
             self.next()
 
         if self.peek("KEYWORD", "function"):
             cunit = Function_File(os.path.basename(self.lexer.filename),
-                                  self.parse_function_list())
-        elif self.peek("KEYWORD", "classdef"):
+                                  self.parse_function_list(),
+                                  self.lexer.in_class_directory)
+        elif self.peek("KEYWORD", "classdef") or self.lexer.in_class_directory:
             cunit = self.parse_class_file()
         else:
             cunit = self.parse_script_file()

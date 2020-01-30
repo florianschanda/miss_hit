@@ -1,4 +1,7 @@
 === PLAIN MODE ===
+In other.m, line 11
+| function out = foo(in)
+|                ^^^ style: violates naming scheme for function
 In other.m, line 16
 | function [output1, output2, output3,...
 |                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
@@ -11,6 +14,9 @@ In other.m, line 17
 In other.m, line 17
 |           output4, output5, output6, output7, output8] =...
 |                                                         ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In other.m, line 18
+|          test_LineEndings(input1, input2,    ...
+|          ^^^^^^^^^^^^^^^^ style: violates naming scheme for function
 In other.m, line 20
 |     aVar = 3,;
 |             ^ style: end statement with a semicolon instead of comma [fixed]
@@ -89,7 +95,7 @@ In test.m, line 7
 In test.m, line 8
 | spoon
 | ^^^^^ style: end statement with a semicolon [fixed]
-MISS_HIT Summary: 2 file(s) analysed, 30 style issue(s)
+MISS_HIT Summary: 2 file(s) analysed, 32 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 30 style issue(s)
+MISS_HIT Summary: 2 file(s) analysed, 32 style issue(s)

@@ -302,18 +302,23 @@ class Script_File(Compilation_Unit):
 
 
 class Function_File(Compilation_Unit):
-    def __init__(self, name, l_functions):
+    def __init__(self, name, l_functions, is_separate):
         super().__init__(name)
         assert isinstance(l_functions, list)
         assert len(l_functions) >= 1
         for n_function in l_functions:
             assert isinstance(n_function, Function_Definition)
+        assert isinstance(is_separate, bool)
 
         self.l_functions = l_functions
         for n_function in self.l_functions:
             n_function.set_parent(self)
         # The list of functions we define. The first one is the entry
         # point, the others are auxiliary (but not nested) functions.
+
+        self.is_separate = is_separate
+        # If true, then this compilation unit resides in a @ directory
+        # for classes.
 
     def debug_parse_tree(self):
         for n_function in self.l_functions:
@@ -517,8 +522,21 @@ class Function_Definition(Definition):
         self._visit_end(parent, function, relation)
 
     def sty_check_naming(self, mh, cfg):
+        self.n_sig.sty_check_naming(mh, cfg)
         for n_function in self.l_nested:
             n_function.sty_check_naming(mh, cfg)
+
+    def is_class_method(self):
+        # We're a class method in two scenarios:
+        #
+        # 1. We're directly in a class
+        #
+        # 2. We're the first function in a function file that is in a
+        #    @ directory
+        return isinstance(self.n_parent, Special_Block) or \
+            (isinstance(self.n_parent, Function_File) and
+             self.n_parent.is_separate and
+             self.n_parent.l_functions[0] == self)
 
 
 ##############################################################################
@@ -566,6 +584,51 @@ class Function_Signature(Node):
         self._visit_list(self.l_inputs, function, "Inputs")
         self._visit_list(self.l_outputs, function, "Outputs")
         self._visit_end(parent, function, relation)
+
+    def sty_check_naming(self, mh, cfg):
+        # We need to work out what we are. Options are:
+        # 1. Ordinary function
+        # 2. Nested function
+        # 3. Class method (separate or otherwise)
+        # 4. Naked signature in class as forward declaration
+
+        if not config.active(cfg, "naming_functions"):
+            return
+
+        n_fdef = self.n_parent
+
+        if isinstance(n_fdef, Special_Block):
+            # This is case 4: naked signature. Check as if it's
+            # method.
+            if not isinstance(self.n_name, Identifier):
+                raise ICE("forward declaration with %s node as name" %
+                          self.n_name.__class__.__name__)
+            self.n_name.sty_check_naming(mh, cfg, "method")
+
+        elif isinstance(n_fdef.n_parent, Function_Definition):
+            # This is case 2: nested function
+            if not isinstance(self.n_name, Identifier):
+                raise ICE("nested function with %s node as name" %
+                          self.n_name.__class__.__name__)
+            self.n_name.sty_check_naming(mh, cfg, "nested")
+
+        elif n_fdef.is_class_method():
+            # This is case 3: class method. This is the only case we
+            # can have a dotted name.
+            if isinstance(self.n_name, Identifier):
+                self.n_name.sty_check_naming(mh, cfg, "method")
+            elif not isinstance(self.n_name, Selection):
+                raise ICE("class method with %s node as name" %
+                          self.n_name.__class__.__name__)
+            else:
+                self.n_name.n_field.sty_check_naming(mh, cfg, "method")
+
+        else:
+            # The remaining case is 1: normal function
+            if not isinstance(self.n_name, Identifier):
+                raise ICE("ordinary function with %s node as name" %
+                          self.n_name.__class__.__name__)
+            self.n_name.sty_check_naming(mh, cfg, "function")
 
 
 class Sequence_Of_Statements(Node):

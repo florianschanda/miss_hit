@@ -1,5 +1,11 @@
 === PLAIN MODE ===
-MISS_HIT Summary: 3 file(s) analysed, everything seemes fine
+In test.m, line 3
+| function Good_Function()
+|          ^^^^^^^^^^^^^ style: violates naming scheme for function
+In test.m, line 9
+| function bad_function()
+|          ^^^^^^^^^^^^ style: violates naming scheme for function
+MISS_HIT Summary: 3 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 3 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 3 file(s) analysed, 2 style issue(s)

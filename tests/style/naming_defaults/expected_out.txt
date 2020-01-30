@@ -1,8 +1,26 @@
 === PLAIN MODE ===
+In test.m, line 6
+| function badFunction()
+|          ^^^^^^^^^^^ style: violates naming scheme for function
+In test.m, line 9
+| function bad_function()
+|          ^^^^^^^^^^^^ style: violates naming scheme for function
 In +A/+Very/badClass.m, line 3
 | classdef badClass
 |          ^^^^^^^^ style: violates naming scheme for class
-MISS_HIT Summary: 3 file(s) analysed, 1 style issue(s)
+In @Potato/Potato.m, line 7
+|         badName(self)
+|         ^^^^^^^ style: violates naming scheme for method
+In @Potato/Potato.m, line 8
+|         ALSO_BAD(self)
+|         ^^^^^^^^ style: violates naming scheme for method
+In @Potato/badName.m, line 3
+| function badName(self)
+|          ^^^^^^^ style: violates naming scheme for method
+In @Potato/badName.m, line 14
+| function bad_name()
+|          ^^^^^^^^ style: violates naming scheme for function
+MISS_HIT Summary: 7 file(s) analysed, 7 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 3 file(s) analysed, 1 style issue(s)
+MISS_HIT Summary: 7 file(s) analysed, 7 style issue(s)

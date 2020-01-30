@@ -472,6 +472,35 @@ end;            % useless semicolon
         </ul>
       </div>
 
+      <h4>Naming scheme for functions ("naming_functions")</h4>
+
+      <div>
+        This rule enforces a consistent naming for all user-defined
+        functions and methods.
+      </div>
+
+      <div>
+        Configuration parameters:
+        <ul>
+          <li>
+            <b>regex_function_name</b>: A regular expression that
+            every ordinary function must match. The default is the
+            same as it is for classes. (See above.)
+          </li>
+          <li>
+            <b>regex_nested_name</b>: A regular expression that every
+            nested function must match. The default is the same as it
+            is for classes. (See above.)
+          </li>
+          <li>
+            <b>regex_method_name</b>: A regular expression that
+            every class method must match. The default is
+            <pre>[a-z]+(_[a-z]+)*</pre> This is all lower-case,
+            underscore separated names.
+          </li>
+        </ul>
+      </div>
+
       <!-- HOOK: RULES -->
       <h4>Maximum file length ("file_length")</h4>
       <div>
