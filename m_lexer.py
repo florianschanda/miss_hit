@@ -141,8 +141,7 @@ class MATLAB_Lexer(Token_Generator):
 
         self.config_file_mode = False
         # We abuse this lexer to parse our config files. If this is
-        # set, we don't do command_mode at all, because quite frankly
-        # this concept is idiotic.
+        # set, we don't do command_mode at all.
 
         self.octave_mode = False
         # If set to true, also deal with Octave's extensions to
@@ -511,9 +510,9 @@ class MATLAB_Lexer(Token_Generator):
                 # whitespace, it is never transpose. Otherwise it
                 # depends on bracket nesting level and/or the previous
                 # token. At this point I'd like to express a heartfelt
-                # THANK YOU to the MATLAB (R) language designers for
-                # this feature. If you need more ideas, wny not permit
-                # unicode in MATLAB (R) variable names as well?
+                # THANK YOU to the language designers for this
+                # feature. If you need more ideas, wny not permit
+                # unicode in variable names as well?
                 kind = None
                 if preceeding_ws or self.first_in_line:
                     kind = "CARRAY"
