@@ -1,0 +1,9 @@
+=== PLAIN MODE ===
+test.m:3: style: file should end with a new line [fixed]
+In test.m, line 3
+| disp potato
+|      ^^^^^^ style: end statement with a semicolon [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)

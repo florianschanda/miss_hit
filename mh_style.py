@@ -66,7 +66,7 @@ class Style_Rule_File(Style_Rule):
         super().__init__(name, False)
 
     @abstractmethod
-    def apply(self, mh, cfg, filename, lines):
+    def apply(self, mh, cfg, filename, full_text, lines):
         pass
 
 
@@ -100,7 +100,7 @@ class Rule_File_Length(Style_Rule_File):
     def __init__(self):
         super().__init__("file_length")
 
-    def apply(self, mh, cfg, filename, lines):
+    def apply(self, mh, cfg, filename, full_text, lines):
         if len(lines) > cfg["file_length"]:
             mh.style_issue(Location(filename,
                                     len(lines)),
@@ -121,11 +121,16 @@ class Rule_File_EOF_Lines(Style_Rule_File):
         self.mandatory = True
         self.autofix = True
 
-    def apply(self, mh, cfg, filename, lines):
+    def apply(self, mh, cfg, filename, full_text, lines):
         if len(lines) >= 2 and lines[-1] == "":
             mh.style_issue(Location(filename,
                                     len(lines)),
                            "trailing blank lines at end of file",
+                           self.autofix)
+        elif len(full_text) and full_text[-1] != "\n":
+            mh.style_issue(Location(filename,
+                                    len(lines)),
+                           "file should end with a new line",
                            self.autofix)
 
 
@@ -751,7 +756,7 @@ def analyze(mh, filename, rule_set, autofix, fd_tree):
     # Stage 1 - rules around the file itself
 
     for rule in rule_lib["on_file"]:
-        rule.apply(mh, cfg, lexer.filename, lexer.context_line)
+        rule.apply(mh, cfg, lexer.filename, lexer.text, lexer.context_line)
 
     # Stage 2 - rules around raw text lines
 
