@@ -537,6 +537,84 @@ end;            % useless semicolon
 
       <!-- END HOOK: RULES -->
     </section>
+
+    <div class="title">
+      <img src="assets/alert-triangle.svg" alt="Triangle with exclamation mark" />
+      <h1>Semantic warnings</h1>
+    </div>
+
+    <section>
+      <div>
+        The style checker parses the program, and as such some
+        lint-style warnings are generated about suspicious
+        constructs. These cannot be suppressed or justified.
+      </div>
+    </section>
+
+    <section>
+      <h2>Incomplete block comments</h2>
+      <div>
+        Block comments are special comments that span multiple
+        lines. The documentation states that they must appear on their
+        own line without any other text surrounding them, otherwise
+        the behaviour is left undefined.
+
+        The MISS_HIT lexer warns about all comments that may be block
+        comments, for example:
+<pre>
+disp 1;
+%{
+disp 2; %{
+disp 3;
+%}
+disp 4;
+%}
+disp 5;
+</pre>
+        The second block comment is not actually a block comment
+        (creating the first warning). The third comment closes the
+        first comment; but the last one does not close the second,
+        since it's not a block comment (creating the second warning).
+
+        The output of this code is 1, 4, 5 which is maybe not what you
+        would expect.
+      </div>
+    </section>
+
+    <section>
+      <h2>Chaining relational operators</h2>
+      <div>
+        It is possible to chain operators, e.g. 1 + 2 + 3 which
+        performs as expected. However it is also possible to chain
+        relational operators, which does not work as expected:
+      </div>
+
+      <div>
+<pre>
+lower = 5;
+upper = 20;
+if lower &lt; var &lt; upper
+   disp('var is in bounds');
+else
+   disp('error: var is not in bounds');
+end
+</pre>
+      </div>
+
+      <div>
+        This condition always evaluates to true. Lets say var is
+        100. Chained operators are evaluated left-to-right, lower &lt;
+        var will evaluate to 1, which in turn means 1 &lt; upper is
+        always true.
+      </div>
+
+      <div>
+        MISS_HIT emits a warning on all chained relations.
+      </div>
+
+    </section>
+
+
   </main>
 
   <footer>
