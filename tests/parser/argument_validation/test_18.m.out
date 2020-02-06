@@ -42,97 +42,16 @@ Root: Script_File
 ----------------------------------------------------------------------
 In test_18.m, line 3
 | test_17(4,5);
-|        ^ info: this token is not linked to the ast
-In test_18.m, line 3
-| test_17(4,5);
-|          ^ info: this token is not linked to the ast
-In test_18.m, line 3
-| test_17(4,5);
-|            ^ info: this token is not linked to the ast
-In test_18.m, line 3
-| test_17(4,5);
 |             ^ info: this token is not linked to the ast
 In test_18.m, line 4
 | test_17(4,5,"LineStyle",":","LineWidth",2);
-|        ^ info: this token is not linked to the ast
-In test_18.m, line 4
-| test_17(4,5,"LineStyle",":","LineWidth",2);
-|          ^ info: this token is not linked to the ast
-In test_18.m, line 4
-| test_17(4,5,"LineStyle",":","LineWidth",2);
-|            ^ info: this token is not linked to the ast
-In test_18.m, line 4
-| test_17(4,5,"LineStyle",":","LineWidth",2);
-|                        ^ info: this token is not linked to the ast
-In test_18.m, line 4
-| test_17(4,5,"LineStyle",":","LineWidth",2);
-|                            ^ info: this token is not linked to the ast
-In test_18.m, line 4
-| test_17(4,5,"LineStyle",":","LineWidth",2);
-|                                        ^ info: this token is not linked to the ast
-In test_18.m, line 4
-| test_17(4,5,"LineStyle",":","LineWidth",2);
-|                                          ^ info: this token is not linked to the ast
-In test_18.m, line 4
-| test_17(4,5,"LineStyle",":","LineWidth",2);
 |                                           ^ info: this token is not linked to the ast
 In test_18.m, line 5
 | test_17(4,5,"LineWidth",2,"LineStyle",":");
-|        ^ info: this token is not linked to the ast
-In test_18.m, line 5
-| test_17(4,5,"LineWidth",2,"LineStyle",":");
-|          ^ info: this token is not linked to the ast
-In test_18.m, line 5
-| test_17(4,5,"LineWidth",2,"LineStyle",":");
-|            ^ info: this token is not linked to the ast
-In test_18.m, line 5
-| test_17(4,5,"LineWidth",2,"LineStyle",":");
-|                        ^ info: this token is not linked to the ast
-In test_18.m, line 5
-| test_17(4,5,"LineWidth",2,"LineStyle",":");
-|                          ^ info: this token is not linked to the ast
-In test_18.m, line 5
-| test_17(4,5,"LineWidth",2,"LineStyle",":");
-|                                      ^ info: this token is not linked to the ast
-In test_18.m, line 5
-| test_17(4,5,"LineWidth",2,"LineStyle",":");
-|                                          ^ info: this token is not linked to the ast
-In test_18.m, line 5
-| test_17(4,5,"LineWidth",2,"LineStyle",":");
 |                                           ^ info: this token is not linked to the ast
-In test_18.m, line 6
-| test_17(4,5,"LineStyle",":");
-|        ^ info: this token is not linked to the ast
-In test_18.m, line 6
-| test_17(4,5,"LineStyle",":");
-|          ^ info: this token is not linked to the ast
-In test_18.m, line 6
-| test_17(4,5,"LineStyle",":");
-|            ^ info: this token is not linked to the ast
-In test_18.m, line 6
-| test_17(4,5,"LineStyle",":");
-|                        ^ info: this token is not linked to the ast
-In test_18.m, line 6
-| test_17(4,5,"LineStyle",":");
-|                            ^ info: this token is not linked to the ast
 In test_18.m, line 6
 | test_17(4,5,"LineStyle",":");
 |                             ^ info: this token is not linked to the ast
-In test_18.m, line 7
-| test_17(4,5,"LineWidth",2);
-|        ^ info: this token is not linked to the ast
-In test_18.m, line 7
-| test_17(4,5,"LineWidth",2);
-|          ^ info: this token is not linked to the ast
-In test_18.m, line 7
-| test_17(4,5,"LineWidth",2);
-|            ^ info: this token is not linked to the ast
-In test_18.m, line 7
-| test_17(4,5,"LineWidth",2);
-|                        ^ info: this token is not linked to the ast
-In test_18.m, line 7
-| test_17(4,5,"LineWidth",2);
-|                          ^ info: this token is not linked to the ast
 In test_18.m, line 7
 | test_17(4,5,"LineWidth",2);
 |                           ^ info: this token is not linked to the ast

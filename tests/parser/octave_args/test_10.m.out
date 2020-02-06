@@ -93,18 +93,6 @@ In test_10.m, line 5
 |                                   ^ info: this token is not linked to the ast
 In test_10.m, line 6
 |   assert (nargin == 3);
-|          ^ info: this token is not linked to the ast
-In test_10.m, line 6
-|   assert (nargin == 3);
-|                      ^ info: this token is not linked to the ast
-In test_10.m, line 6
-|   assert (nargin == 3);
-|                       ^ info: this token is not linked to the ast
-In test_10.m, line 7
-|   assert (nargout == 4);
-|          ^ info: this token is not linked to the ast
-In test_10.m, line 7
-|   assert (nargout == 4);
 |                       ^ info: this token is not linked to the ast
 In test_10.m, line 7
 |   assert (nargout == 4);
@@ -189,22 +177,7 @@ In test_10.m, line 15
 |             ^ info: this token is not linked to the ast
 In test_10.m, line 15
 |  [s, t, u, v] = f (1, 2, 3);
-|                   ^ info: this token is not linked to the ast
-In test_10.m, line 15
-|  [s, t, u, v] = f (1, 2, 3);
-|                     ^ info: this token is not linked to the ast
-In test_10.m, line 15
-|  [s, t, u, v] = f (1, 2, 3);
-|                        ^ info: this token is not linked to the ast
-In test_10.m, line 15
-|  [s, t, u, v] = f (1, 2, 3);
-|                           ^ info: this token is not linked to the ast
-In test_10.m, line 15
-|  [s, t, u, v] = f (1, 2, 3);
 |                            ^ info: this token is not linked to the ast
-In test_10.m, line 16
-|  assert ([s t u v] == [1 2 3 4]);
-|         ^ info: this token is not linked to the ast
 In test_10.m, line 16
 |  assert ([s<anon,> t u v] == [1 2 3 4]);
 |            ^^^^^^^ info: this token is not linked to the ast
@@ -223,9 +196,6 @@ In test_10.m, line 16
 In test_10.m, line 16
 |  assert ([s t u v] == [1 2 3<anon,> 4]);
 |                             ^^^^^^^ info: this token is not linked to the ast
-In test_10.m, line 16
-|  assert ([s t u v] == [1 2 3 4]);
-|                                ^ info: this token is not linked to the ast
 In test_10.m, line 16
 |  assert ([s t u v] == [1 2 3 4]);
 |                                 ^ info: this token is not linked to the ast

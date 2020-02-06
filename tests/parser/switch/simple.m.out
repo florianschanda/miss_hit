@@ -44,37 +44,13 @@ In simple.m, line 3
 |                 ^ info: this token is not linked to the ast
 In simple.m, line 6
 |             disp('negative one');
-|                 ^ info: this token is not linked to the ast
-In simple.m, line 6
-|             disp('negative one');
-|                                ^ info: this token is not linked to the ast
-In simple.m, line 6
-|             disp('negative one');
 |                                 ^ info: this token is not linked to the ast
-In simple.m, line 8
-|             disp('zero');
-|                 ^ info: this token is not linked to the ast
-In simple.m, line 8
-|             disp('zero');
-|                        ^ info: this token is not linked to the ast
 In simple.m, line 8
 |             disp('zero');
 |                         ^ info: this token is not linked to the ast
 In simple.m, line 10
 |             disp('positive one');
-|                 ^ info: this token is not linked to the ast
-In simple.m, line 10
-|             disp('positive one');
-|                                ^ info: this token is not linked to the ast
-In simple.m, line 10
-|             disp('positive one');
 |                                 ^ info: this token is not linked to the ast
-In simple.m, line 12
-|             disp('other value');
-|                 ^ info: this token is not linked to the ast
-In simple.m, line 12
-|             disp('other value');
-|                               ^ info: this token is not linked to the ast
 In simple.m, line 12
 |             disp('other value');
 |                                ^ info: this token is not linked to the ast

@@ -29,19 +29,7 @@ In test.m, line 3
 |           ^ info: this token is not linked to the ast
 In test.m, line 4
 | y = x();
-|      ^ info: this token is not linked to the ast
-In test.m, line 4
-| y = x();
-|       ^ info: this token is not linked to the ast
-In test.m, line 4
-| y = x();
 |        ^ info: this token is not linked to the ast
-In test.m, line 5
-| assert(y == 5);
-|       ^ info: this token is not linked to the ast
-In test.m, line 5
-| assert(y == 5);
-|              ^ info: this token is not linked to the ast
 In test.m, line 5
 | assert(y == 5);
 |               ^ info: this token is not linked to the ast

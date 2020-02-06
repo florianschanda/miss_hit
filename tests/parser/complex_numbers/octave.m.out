@@ -87,24 +87,6 @@ In octave.m, line 5
 |      ^ info: this token is not linked to the ast
 In octave.m, line 6
 | assert (3*4i'.', 0 - 12i);
-|        ^ info: this token is not linked to the ast
-In octave.m, line 6
-| assert (3*4i'.', 0 - 12i);
-|                ^ info: this token is not linked to the ast
-In octave.m, line 6
-| assert (3*4i'.', 0 - 12i);
-|                         ^ info: this token is not linked to the ast
-In octave.m, line 6
-| assert (3*4i'.', 0 - 12i);
-|                          ^ info: this token is not linked to the ast
-In octave.m, line 7
-| assert (3*4i.'.', 0 + 12i);
-|        ^ info: this token is not linked to the ast
-In octave.m, line 7
-| assert (3*4i.'.', 0 + 12i);
-|                 ^ info: this token is not linked to the ast
-In octave.m, line 7
-| assert (3*4i.'.', 0 + 12i);
 |                          ^ info: this token is not linked to the ast
 In octave.m, line 7
 | assert (3*4i.'.', 0 + 12i);

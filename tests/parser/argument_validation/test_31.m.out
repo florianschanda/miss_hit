@@ -139,21 +139,6 @@ In test_31.m, line 16
 In test_31.m, line 17
 |     end
 |     ^^^ info: this token is not linked to the ast
-In test_31.m, line 18
-|     if isfield(namedargs,'Format')
-|               ^ info: this token is not linked to the ast
-In test_31.m, line 18
-|     if isfield(namedargs,'Format')
-|                         ^ info: this token is not linked to the ast
-In test_31.m, line 18
-|     if isfield(namedargs,'Format')
-|                                  ^ info: this token is not linked to the ast
-In test_31.m, line 19
-|         format(namedargs.Format);
-|               ^ info: this token is not linked to the ast
-In test_31.m, line 19
-|         format(namedargs.Format);
-|                                ^ info: this token is not linked to the ast
 In test_31.m, line 19
 |         format(namedargs.Format);
 |                                 ^ info: this token is not linked to the ast

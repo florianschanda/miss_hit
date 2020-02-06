@@ -28,12 +28,6 @@ In test_3.m, line 7
 In test_3.m, line 7
 | function myFun()
 |                ^ info: this token is not linked to the ast
-In test_3.m, line 9
-|     if isempty(n)
-|               ^ info: this token is not linked to the ast
-In test_3.m, line 9
-|     if isempty(n)
-|                 ^ info: this token is not linked to the ast
 In test_3.m, line 10
 |         n = 0;
 |              ^ info: this token is not linked to the ast

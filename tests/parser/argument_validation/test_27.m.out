@@ -30,46 +30,13 @@ Root: Script_File
 ----------------------------------------------------------------------
 In test_27.m, line 3
 | c = test_26(1.8,1.5);
-|            ^ info: this token is not linked to the ast
-In test_27.m, line 3
-| c = test_26(1.8,1.5);
-|                ^ info: this token is not linked to the ast
-In test_27.m, line 3
-| c = test_26(1.8,1.5);
-|                    ^ info: this token is not linked to the ast
-In test_27.m, line 3
-| c = test_26(1.8,1.5);
 |                     ^ info: this token is not linked to the ast
 In test_27.m, line 4
 | assert(c == 4);
-|       ^ info: this token is not linked to the ast
-In test_27.m, line 4
-| assert(c == 4);
-|              ^ info: this token is not linked to the ast
-In test_27.m, line 4
-| assert(c == 4);
 |               ^ info: this token is not linked to the ast
-In test_27.m, line 6
-| c = test_26(1.8,1.5,25);
-|            ^ info: this token is not linked to the ast
-In test_27.m, line 6
-| c = test_26(1.8,1.5,25);
-|                ^ info: this token is not linked to the ast
-In test_27.m, line 6
-| c = test_26(1.8,1.5,25);
-|                    ^ info: this token is not linked to the ast
-In test_27.m, line 6
-| c = test_26(1.8,1.5,25);
-|                       ^ info: this token is not linked to the ast
 In test_27.m, line 6
 | c = test_26(1.8,1.5,25);
 |                        ^ info: this token is not linked to the ast
-In test_27.m, line 7
-| assert(c == 25);
-|       ^ info: this token is not linked to the ast
-In test_27.m, line 7
-| assert(c == 25);
-|               ^ info: this token is not linked to the ast
 In test_27.m, line 7
 | assert(c == 25);
 |                ^ info: this token is not linked to the ast

@@ -38,12 +38,6 @@ In test_13.m, line 3
 |          ^ info: this token is not linked to the ast
 In test_13.m, line 4
 | y1 = sin(x1);
-|         ^ info: this token is not linked to the ast
-In test_13.m, line 4
-| y1 = sin(x1);
-|            ^ info: this token is not linked to the ast
-In test_13.m, line 4
-| y1 = sin(x1);
 |             ^ info: this token is not linked to the ast
 In test_13.m, line 5
 | x2 = 0:5;
@@ -53,28 +47,7 @@ In test_13.m, line 5
 |         ^ info: this token is not linked to the ast
 In test_13.m, line 6
 | y2 = sin(x2);
-|         ^ info: this token is not linked to the ast
-In test_13.m, line 6
-| y2 = sin(x2);
-|            ^ info: this token is not linked to the ast
-In test_13.m, line 6
-| y2 = sin(x2);
 |             ^ info: this token is not linked to the ast
-In test_13.m, line 7
-| test_12(x1,y1,x2,y2);
-|        ^ info: this token is not linked to the ast
-In test_13.m, line 7
-| test_12(x1,y1,x2,y2);
-|           ^ info: this token is not linked to the ast
-In test_13.m, line 7
-| test_12(x1,y1,x2,y2);
-|              ^ info: this token is not linked to the ast
-In test_13.m, line 7
-| test_12(x1,y1,x2,y2);
-|                 ^ info: this token is not linked to the ast
-In test_13.m, line 7
-| test_12(x1,y1,x2,y2);
-|                    ^ info: this token is not linked to the ast
 In test_13.m, line 7
 | test_12(x1,y1,x2,y2);
 |                     ^ info: this token is not linked to the ast

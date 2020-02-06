@@ -38,19 +38,7 @@ Root: Script_File
 ----------------------------------------------------------------------
 In multiple.m, line 5
 |         bar(x);
-|            ^ info: this token is not linked to the ast
-In multiple.m, line 5
-|         bar(x);
-|              ^ info: this token is not linked to the ast
-In multiple.m, line 5
-|         bar(x);
 |               ^ info: this token is not linked to the ast
-In multiple.m, line 6
-|         title('Bar Graph');
-|              ^ info: this token is not linked to the ast
-In multiple.m, line 6
-|         title('Bar Graph');
-|                          ^ info: this token is not linked to the ast
 In multiple.m, line 6
 |         title('Bar Graph');
 |                           ^ info: this token is not linked to the ast
@@ -59,28 +47,10 @@ In multiple.m, line 7
 |                ^ info: this token is not linked to the ast
 In multiple.m, line 8
 |         pie3(x);
-|             ^ info: this token is not linked to the ast
-In multiple.m, line 8
-|         pie3(x);
-|               ^ info: this token is not linked to the ast
-In multiple.m, line 8
-|         pie3(x);
 |                ^ info: this token is not linked to the ast
-In multiple.m, line 9
-|         title('Pie Chart');
-|              ^ info: this token is not linked to the ast
-In multiple.m, line 9
-|         title('Pie Chart');
-|                          ^ info: this token is not linked to the ast
 In multiple.m, line 9
 |         title('Pie Chart');
 |                           ^ info: this token is not linked to the ast
-In multiple.m, line 11
-|         warning('Unexpected plot type. No plot created.');
-|                ^ info: this token is not linked to the ast
-In multiple.m, line 11
-|         warning('Unexpected plot type. No plot created.');
-|                                                         ^ info: this token is not linked to the ast
 In multiple.m, line 11
 |         warning('Unexpected plot type. No plot created.');
 |                                                          ^ info: this token is not linked to the ast

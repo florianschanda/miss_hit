@@ -112,15 +112,6 @@ In test_04.m, line 6
 |                                          ^ info: this token is not linked to the ast
 In test_04.m, line 6
 |         v (1,:) {mustBeNumeric,mustBeReal,mustBeEqualSize(v,x)}
-|                                                          ^ info: this token is not linked to the ast
-In test_04.m, line 6
-|         v (1,:) {mustBeNumeric,mustBeReal,mustBeEqualSize(v,x)}
-|                                                            ^ info: this token is not linked to the ast
-In test_04.m, line 6
-|         v (1,:) {mustBeNumeric,mustBeReal,mustBeEqualSize(v,x)}
-|                                                              ^ info: this token is not linked to the ast
-In test_04.m, line 6
-|         v (1,:) {mustBeNumeric,mustBeReal,mustBeEqualSize(v,x)}
 |                                                               ^ info: this token is not linked to the ast
 In test_04.m, line 7
 |         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
@@ -136,19 +127,10 @@ In test_04.m, line 7
 |                           ^ info: this token is not linked to the ast
 In test_04.m, line 7
 |         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
-|                                        ^ info: this token is not linked to the ast
-In test_04.m, line 7
-|         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
-|                                               ^ info: this token is not linked to the ast
-In test_04.m, line 7
-|         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
 |                                                         ^ info: this token is not linked to the ast
 In test_04.m, line 7
 |         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
 |                                                                 ^ info: this token is not linked to the ast
-In test_04.m, line 7
-|         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
-|                                                                           ^ info: this token is not linked to the ast
 In test_04.m, line 7
 |         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
 |                                                                            ^ info: this token is not linked to the ast
@@ -170,33 +152,6 @@ In test_04.m, line 14
 In test_04.m, line 14
 | function mustBeEqualSize(a,b)
 |                             ^ info: this token is not linked to the ast
-In test_04.m, line 16
-|     if ~isequal(size(a),size(b))
-|                ^ info: this token is not linked to the ast
-In test_04.m, line 16
-|     if ~isequal(size(a),size(b))
-|                     ^ info: this token is not linked to the ast
-In test_04.m, line 16
-|     if ~isequal(size(a),size(b))
-|                       ^ info: this token is not linked to the ast
-In test_04.m, line 16
-|     if ~isequal(size(a),size(b))
-|                        ^ info: this token is not linked to the ast
-In test_04.m, line 16
-|     if ~isequal(size(a),size(b))
-|                             ^ info: this token is not linked to the ast
-In test_04.m, line 16
-|     if ~isequal(size(a),size(b))
-|                               ^ info: this token is not linked to the ast
-In test_04.m, line 16
-|     if ~isequal(size(a),size(b))
-|                                ^ info: this token is not linked to the ast
-In test_04.m, line 17
-|         error('Size of first input must equal size of second input');
-|              ^ info: this token is not linked to the ast
-In test_04.m, line 17
-|         error('Size of first input must equal size of second input');
-|                                                                    ^ info: this token is not linked to the ast
 In test_04.m, line 17
 |         error('Size of first input must equal size of second input');
 |                                                                     ^ info: this token is not linked to the ast

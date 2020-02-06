@@ -22,22 +22,7 @@ In test_08.m, line 3
 |            ^ info: this token is not linked to the ast
 In test_08.m, line 4
 | d = test_07(2);
-|            ^ info: this token is not linked to the ast
-In test_08.m, line 4
-| d = test_07(2);
-|              ^ info: this token is not linked to the ast
-In test_08.m, line 4
-| d = test_07(2);
 |               ^ info: this token is not linked to the ast
-In test_08.m, line 5
-| e = test_09(2, 3);
-|            ^ info: this token is not linked to the ast
-In test_08.m, line 5
-| e = test_09(2, 3);
-|              ^ info: this token is not linked to the ast
-In test_08.m, line 5
-| e = test_09(2, 3);
-|                 ^ info: this token is not linked to the ast
 In test_08.m, line 5
 | e = test_09(2, 3);
 |                  ^ info: this token is not linked to the ast

@@ -29,12 +29,6 @@ In test_03.m, line 5
 |            ^ info: this token is not linked to the ast
 In test_03.m, line 6
 | pause(1+1);
-|      ^ info: this token is not linked to the ast
-In test_03.m, line 6
-| pause(1+1);
-|          ^ info: this token is not linked to the ast
-In test_03.m, line 6
-| pause(1+1);
 |           ^ info: this token is not linked to the ast
 In test_03.m, line 7
 | disp potato;

@@ -39,12 +39,6 @@ In cat.m, line 6
 |                                    ^ info: this token is not linked to the ast
 In cat.m, line 7
 |             disp("*destory stuff*");
-|                 ^ info: this token is not linked to the ast
-In cat.m, line 7
-|             disp("*destory stuff*");
-|                                   ^ info: this token is not linked to the ast
-In cat.m, line 7
-|             disp("*destory stuff*");
 |                                    ^ info: this token is not linked to the ast
 In cat.m, line 8
 |         end

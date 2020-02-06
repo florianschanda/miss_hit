@@ -27,31 +27,7 @@ In debugprint.m, line 1
 |                      ^ info: this token is not linked to the ast
 In debugprint.m, line 2
 |     fprintf("string: <%s>\n", s);
-|            ^ info: this token is not linked to the ast
-In debugprint.m, line 2
-|     fprintf("string: <%s>\n", s);
-|                             ^ info: this token is not linked to the ast
-In debugprint.m, line 2
-|     fprintf("string: <%s>\n", s);
-|                                ^ info: this token is not linked to the ast
-In debugprint.m, line 2
-|     fprintf("string: <%s>\n", s);
 |                                 ^ info: this token is not linked to the ast
-In debugprint.m, line 3
-|     fprintf("length: %u\n", length(s));
-|            ^ info: this token is not linked to the ast
-In debugprint.m, line 3
-|     fprintf("length: %u\n", length(s));
-|                           ^ info: this token is not linked to the ast
-In debugprint.m, line 3
-|     fprintf("length: %u\n", length(s));
-|                                   ^ info: this token is not linked to the ast
-In debugprint.m, line 3
-|     fprintf("length: %u\n", length(s));
-|                                     ^ info: this token is not linked to the ast
-In debugprint.m, line 3
-|     fprintf("length: %u\n", length(s));
-|                                      ^ info: this token is not linked to the ast
 In debugprint.m, line 3
 |     fprintf("length: %u\n", length(s));
 |                                       ^ info: this token is not linked to the ast

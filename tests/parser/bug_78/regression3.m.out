@@ -18,19 +18,7 @@ Root: Script_File
 ----------------------------------------------------------------------
 In regression3.m, line 3
 | try(disp(5));
-|         ^ info: this token is not linked to the ast
-In regression3.m, line 3
-| try(disp(5));
-|           ^ info: this token is not linked to the ast
-In regression3.m, line 3
-| try(disp(5));
 |             ^ info: this token is not linked to the ast
-In regression3.m, line 4
-|     disp(6);
-|         ^ info: this token is not linked to the ast
-In regression3.m, line 4
-|     disp(6);
-|           ^ info: this token is not linked to the ast
 In regression3.m, line 4
 |     disp(6);
 |            ^ info: this token is not linked to the ast

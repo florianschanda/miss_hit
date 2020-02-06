@@ -933,21 +933,26 @@ class Reference(Name):
         or a function call. Will be re-written later to Array_Index (TODO)
         or Function_Call by semantic analysis.
     """
-    def __init__(self, n_ident, arglist):
+    def __init__(self, n_ident):
         super().__init__()
         assert isinstance(n_ident, Name)
-        assert isinstance(arglist, list)
-        for arg in arglist:
-            assert isinstance(arg, Expression)
 
         self.n_ident = n_ident
         self.n_ident.set_parent(self)
         # An identifier
 
-        self.l_args = arglist
+        self.l_args = None
+        # A list of parameters or indices. This is set later so that
+        # separating tokens can be correctly attached.
+
+    def set_arguments(self, l_args):
+        assert isinstance(l_args, list)
+        for n_arg in l_args:
+            assert isinstance(n_arg, Expression)
+
+        self.l_args = l_args
         for n_arg in self.l_args:
             n_arg.set_parent(self)
-        # A list of parameters or indices
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)

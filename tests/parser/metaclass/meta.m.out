@@ -55,12 +55,6 @@ In meta.m, line 5
 |              ^ info: this token is not linked to the ast
 In meta.m, line 6
 |   b = meta.class.fromName('potato');
-|                          ^ info: this token is not linked to the ast
-In meta.m, line 6
-|   b = meta.class.fromName('potato');
-|                                   ^ info: this token is not linked to the ast
-In meta.m, line 6
-|   b = meta.class.fromName('potato');
 |                                    ^ info: this token is not linked to the ast
 In meta.m, line 7
 | end

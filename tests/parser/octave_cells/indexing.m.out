@@ -50,16 +50,10 @@ In indexing.m, line 3
 |                    ^ info: this token is not linked to the ast
 In indexing.m, line 4
 |     assert (b{(a. b1 + 1)} == 4);
-|            ^ info: this token is not linked to the ast
-In indexing.m, line 4
-|     assert (b{(a. b1 + 1)} == 4);
 |              ^ info: this token is not linked to the ast
 In indexing.m, line 4
 |     assert (b{(a. b1 + 1)} == 4);
 |                          ^ info: this token is not linked to the ast
-In indexing.m, line 4
-|     assert (b{(a. b1 + 1)} == 4);
-|                                ^ info: this token is not linked to the ast
 In indexing.m, line 4
 |     assert (b{(a. b1 + 1)} == 4);
 |                                 ^ info: this token is not linked to the ast

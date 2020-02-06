@@ -145,18 +145,6 @@ In cells.m, line 9
 |                   ^ info: this token is not linked to the ast
 In cells.m, line 9
 |             'text', rand(5,10,2), {11; 22; 33}};
-|                         ^ info: this token is not linked to the ast
-In cells.m, line 9
-|             'text', rand(5,10,2), {11; 22; 33}};
-|                           ^ info: this token is not linked to the ast
-In cells.m, line 9
-|             'text', rand(5,10,2), {11; 22; 33}};
-|                              ^ info: this token is not linked to the ast
-In cells.m, line 9
-|             'text', rand(5,10,2), {11; 22; 33}};
-|                                ^ info: this token is not linked to the ast
-In cells.m, line 9
-|             'text', rand(5,10,2), {11; 22; 33}};
 |                                 ^ info: this token is not linked to the ast
 In cells.m, line 9
 |             'text', rand(5,10,2), {11; 22; 33}};
@@ -308,12 +296,6 @@ In cells.m, line 41
 In cells.m, line 42
 |   A = [100, {uint8(200), 300}, 'MATLAB'];
 |           ^ info: this token is not linked to the ast
-In cells.m, line 42
-|   A = [100, {uint8(200), 300}, 'MATLAB'];
-|                   ^ info: this token is not linked to the ast
-In cells.m, line 42
-|   A = [100, {uint8(200), 300}, 'MATLAB'];
-|                       ^ info: this token is not linked to the ast
 In cells.m, line 42
 |   A = [100, {uint8(200), 300}, 'MATLAB'];
 |                        ^ info: this token is not linked to the ast

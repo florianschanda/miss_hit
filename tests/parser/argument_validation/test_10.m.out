@@ -77,16 +77,7 @@ In test_10.m, line 7
 |                ^ info: this token is not linked to the ast
 In test_10.m, line 7
 |         option {mustBeMember(option,["linear","cubic"])}
-|                             ^ info: this token is not linked to the ast
-In test_10.m, line 7
-|         option {mustBeMember(option,["linear","cubic"])}
-|                                    ^ info: this token is not linked to the ast
-In test_10.m, line 7
-|         option {mustBeMember(option,["linear","cubic"])}
 |                                              ^ info: this token is not linked to the ast
-In test_10.m, line 7
-|         option {mustBeMember(option,["linear","cubic"])}
-|                                                       ^ info: this token is not linked to the ast
 In test_10.m, line 7
 |         option {mustBeMember(option,["linear","cubic"])}
 |                                                        ^ info: this token is not linked to the ast

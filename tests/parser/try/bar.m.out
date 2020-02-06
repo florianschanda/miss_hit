@@ -42,12 +42,6 @@ In bar.m, line 7
 |                  ^ info: this token is not linked to the ast
 In bar.m, line 9
 |         rethrow(ME);
-|                ^ info: this token is not linked to the ast
-In bar.m, line 9
-|         rethrow(ME);
-|                   ^ info: this token is not linked to the ast
-In bar.m, line 9
-|         rethrow(ME);
 |                    ^ info: this token is not linked to the ast
 In bar.m, line 10
 |     end

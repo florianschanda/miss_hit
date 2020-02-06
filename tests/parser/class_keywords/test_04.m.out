@@ -23,12 +23,6 @@ In test_04.m, line 3
 In test_04.m, line 4
 |   l = leek;
 |           ^ info: this token is not linked to the ast
-In test_04.m, line 5
-|   properties(l)
-|             ^ info: this token is not linked to the ast
-In test_04.m, line 5
-|   properties(l)
-|               ^ info: this token is not linked to the ast
 In test_04.m, line 6
 | end
 | ^^^ info: this token is not linked to the ast

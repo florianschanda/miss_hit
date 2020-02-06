@@ -83,40 +83,16 @@ In test_12.m, line 7
 |     ^^^ info: this token is not linked to the ast
 In test_12.m, line 11
 |     z = reshape([x;y],1,[]);
-|                ^ info: this token is not linked to the ast
-In test_12.m, line 11
-|     z = reshape([x;y],1,[]);
 |                   ^ info: this token is not linked to the ast
 In test_12.m, line 11
 |     z = reshape([x;y],1,[]);
-|                      ^ info: this token is not linked to the ast
-In test_12.m, line 11
-|     z = reshape([x;y],1,[]);
-|                        ^ info: this token is not linked to the ast
-In test_12.m, line 11
-|     z = reshape([x;y],1,[]);
-|                           ^ info: this token is not linked to the ast
-In test_12.m, line 11
-|     z = reshape([x;y],1,[]);
 |                            ^ info: this token is not linked to the ast
-In test_12.m, line 14
-|     if ~isempty(z)
-|                ^ info: this token is not linked to the ast
-In test_12.m, line 14
-|     if ~isempty(z)
-|                  ^ info: this token is not linked to the ast
-In test_12.m, line 15
-|         plot(z{:});
-|             ^ info: this token is not linked to the ast
 In test_12.m, line 15
 |         plot(z{:});
 |               ^ info: this token is not linked to the ast
 In test_12.m, line 15
 |         plot(z{:});
 |                 ^ info: this token is not linked to the ast
-In test_12.m, line 15
-|         plot(z{:});
-|                  ^ info: this token is not linked to the ast
 In test_12.m, line 15
 |         plot(z{:});
 |                   ^ info: this token is not linked to the ast

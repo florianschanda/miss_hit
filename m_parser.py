@@ -363,7 +363,8 @@ class MATLAB_Parser:
             at_prefix = rv
             at_suffix = self.parse_simple_name()
             if self.peek("BRA"):
-                at_suffix = Reference(at_suffix, self.parse_argument_list())
+                at_suffix = Reference(at_suffix)
+                at_suffix.set_arguments(self.parse_argument_list(at_suffix))
 
             return Superclass_Reference(t_at, at_prefix, at_suffix)
 
@@ -384,7 +385,8 @@ class MATLAB_Parser:
                         field = self.parse_identifier(allow_void=False)
                         rv = Selection(tok, rv, field)
                 elif self.peek("BRA"):
-                    rv = Reference(rv, self.parse_argument_list())
+                    rv = Reference(rv)
+                    rv.set_arguments(self.parse_argument_list(rv))
                 elif self.peek("C_BRA"):
                     rv = Cell_Reference(rv, self.parse_cell_argument_list())
                 else:
@@ -1332,24 +1334,29 @@ class MATLAB_Parser:
             name = self.parse_simple_name()
             return Function_Pointer(t_at, name)
 
-    def parse_argument_list(self):
+    def parse_argument_list(self, n_ast):
+        assert isinstance(n_ast, Node)
         # arglist ::= '(' ')'
         #           | '(' expression { ',' expression } '}'
         #
         # Note: This list can be empty
         args = []
         self.match("BRA")
+        self.ct.set_ast(n_ast)
         if self.peek("KET"):
             self.match("KET")
+            self.ct.set_ast(n_ast)
             return args
 
         while True:
             args.append(self.parse_expression())
             if self.peek("COMMA"):
                 self.match("COMMA")
+                self.ct.set_ast(n_ast)
             elif self.peek("KET"):
                 break
         self.match("KET")
+        self.ct.set_ast(n_ast)
         return args
 
     def parse_cell_argument_list(self):

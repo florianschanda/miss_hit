@@ -123,12 +123,6 @@ In valid.m, line 13
 |                       ^ info: this token is not linked to the ast
 In valid.m, line 13
 |   [foo.('x') foo.('y')] = potato();
-|                                 ^ info: this token is not linked to the ast
-In valid.m, line 13
-|   [foo.('x') foo.('y')] = potato();
-|                                  ^ info: this token is not linked to the ast
-In valid.m, line 13
-|   [foo.('x') foo.('y')] = potato();
 |                                   ^ info: this token is not linked to the ast
 In valid.m, line 14
 | end

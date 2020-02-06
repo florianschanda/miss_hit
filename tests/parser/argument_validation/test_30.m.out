@@ -113,25 +113,7 @@ In test_30.m, line 5
 |           ^ info: this token is not linked to the ast
 In test_30.m, line 5
 |         a {mustBeA(a,'double'), mustBeDims(a,2)}
-|                   ^ info: this token is not linked to the ast
-In test_30.m, line 5
-|         a {mustBeA(a,'double'), mustBeDims(a,2)}
-|                     ^ info: this token is not linked to the ast
-In test_30.m, line 5
-|         a {mustBeA(a,'double'), mustBeDims(a,2)}
-|                              ^ info: this token is not linked to the ast
-In test_30.m, line 5
-|         a {mustBeA(a,'double'), mustBeDims(a,2)}
 |                               ^ info: this token is not linked to the ast
-In test_30.m, line 5
-|         a {mustBeA(a,'double'), mustBeDims(a,2)}
-|                                           ^ info: this token is not linked to the ast
-In test_30.m, line 5
-|         a {mustBeA(a,'double'), mustBeDims(a,2)}
-|                                             ^ info: this token is not linked to the ast
-In test_30.m, line 5
-|         a {mustBeA(a,'double'), mustBeDims(a,2)}
-|                                               ^ info: this token is not linked to the ast
 In test_30.m, line 5
 |         a {mustBeA(a,'double'), mustBeDims(a,2)}
 |                                                ^ info: this token is not linked to the ast
@@ -140,16 +122,7 @@ In test_30.m, line 6
 |           ^ info: this token is not linked to the ast
 In test_30.m, line 6
 |         b {mustBeSize(b,[5,3])}
-|                      ^ info: this token is not linked to the ast
-In test_30.m, line 6
-|         b {mustBeSize(b,[5,3])}
-|                        ^ info: this token is not linked to the ast
-In test_30.m, line 6
-|         b {mustBeSize(b,[5,3])}
 |                           ^ info: this token is not linked to the ast
-In test_30.m, line 6
-|         b {mustBeSize(b,[5,3])}
-|                              ^ info: this token is not linked to the ast
 In test_30.m, line 6
 |         b {mustBeSize(b,[5,3])}
 |                               ^ info: this token is not linked to the ast
@@ -168,21 +141,6 @@ In test_30.m, line 13
 In test_30.m, line 13
 | function mustBeA(input,className)
 |                                 ^ info: this token is not linked to the ast
-In test_30.m, line 15
-|     if ~isa(input,className)
-|            ^ info: this token is not linked to the ast
-In test_30.m, line 15
-|     if ~isa(input,className)
-|                  ^ info: this token is not linked to the ast
-In test_30.m, line 15
-|     if ~isa(input,className)
-|                            ^ info: this token is not linked to the ast
-In test_30.m, line 16
-|         error('Input must be of class double.');
-|              ^ info: this token is not linked to the ast
-In test_30.m, line 16
-|         error('Input must be of class double.');
-|                                               ^ info: this token is not linked to the ast
 In test_30.m, line 16
 |         error('Input must be of class double.');
 |                                                ^ info: this token is not linked to the ast
@@ -201,36 +159,9 @@ In test_30.m, line 20
 In test_30.m, line 20
 | function mustBeSize(input,sizeDims)
 |                                   ^ info: this token is not linked to the ast
-In test_30.m, line 22
-|     if ~isequal(size(input),sizeDims)
-|                ^ info: this token is not linked to the ast
-In test_30.m, line 22
-|     if ~isequal(size(input),sizeDims)
-|                     ^ info: this token is not linked to the ast
-In test_30.m, line 22
-|     if ~isequal(size(input),sizeDims)
-|                           ^ info: this token is not linked to the ast
-In test_30.m, line 22
-|     if ~isequal(size(input),sizeDims)
-|                            ^ info: this token is not linked to the ast
-In test_30.m, line 22
-|     if ~isequal(size(input),sizeDims)
-|                                     ^ info: this token is not linked to the ast
-In test_30.m, line 23
-|         error(['Input must be of size ',num2str(sizeDims)]);
-|              ^ info: this token is not linked to the ast
 In test_30.m, line 23
 |         error(['Input must be of size ',num2str(sizeDims)]);
 |                                        ^ info: this token is not linked to the ast
-In test_30.m, line 23
-|         error(['Input must be of size ',num2str(sizeDims)]);
-|                                                ^ info: this token is not linked to the ast
-In test_30.m, line 23
-|         error(['Input must be of size ',num2str(sizeDims)]);
-|                                                         ^ info: this token is not linked to the ast
-In test_30.m, line 23
-|         error(['Input must be of size ',num2str(sizeDims)]);
-|                                                           ^ info: this token is not linked to the ast
 In test_30.m, line 23
 |         error(['Input must be of size ',num2str(sizeDims)]);
 |                                                            ^ info: this token is not linked to the ast
@@ -249,45 +180,12 @@ In test_30.m, line 27
 In test_30.m, line 27
 | function mustBeDims(input,numDims)
 |                                  ^ info: this token is not linked to the ast
-In test_30.m, line 29
-|     if ~isequal(length(size(input)),numDims)
-|                ^ info: this token is not linked to the ast
-In test_30.m, line 29
-|     if ~isequal(length(size(input)),numDims)
-|                       ^ info: this token is not linked to the ast
-In test_30.m, line 29
-|     if ~isequal(length(size(input)),numDims)
-|                            ^ info: this token is not linked to the ast
-In test_30.m, line 29
-|     if ~isequal(length(size(input)),numDims)
-|                                  ^ info: this token is not linked to the ast
-In test_30.m, line 29
-|     if ~isequal(length(size(input)),numDims)
-|                                   ^ info: this token is not linked to the ast
-In test_30.m, line 29
-|     if ~isequal(length(size(input)),numDims)
-|                                    ^ info: this token is not linked to the ast
-In test_30.m, line 29
-|     if ~isequal(length(size(input)),numDims)
-|                                            ^ info: this token is not linked to the ast
-In test_30.m, line 30
-|         error(['Input must have ',num2str(numDims),' dimensions.']);
-|              ^ info: this token is not linked to the ast
 In test_30.m, line 30
 |         error(['Input must have ',num2str(numDims),' dimensions.']);
 |                                  ^ info: this token is not linked to the ast
-In test_30.m, line 30
-|         error(['Input must have ',num2str(numDims),' dimensions.']);
-|                                          ^ info: this token is not linked to the ast
-In test_30.m, line 30
-|         error(['Input must have ',num2str(numDims),' dimensions.']);
-|                                                  ^ info: this token is not linked to the ast
 In test_30.m, line 30
 |         error(['Input must have ',num2str(numDims),' dimensions.']);
 |                                                   ^ info: this token is not linked to the ast
-In test_30.m, line 30
-|         error(['Input must have ',num2str(numDims),' dimensions.']);
-|                                                                   ^ info: this token is not linked to the ast
 In test_30.m, line 30
 |         error(['Input must have ',num2str(numDims),' dimensions.']);
 |                                                                    ^ info: this token is not linked to the ast

@@ -55,34 +55,16 @@ In test.m, line 4
 |                ^ info: this token is not linked to the ast
 In test.m, line 5
 |     disp("yes");
-|         ^ info: this token is not linked to the ast
-In test.m, line 5
-|     disp("yes");
-|               ^ info: this token is not linked to the ast
-In test.m, line 5
-|     disp("yes");
 |                ^ info: this token is not linked to the ast
 In test.m, line 6
 |   elseif potato < 3;
 |                    ^ info: this token is not linked to the ast
 In test.m, line 7
 |     disp("no");
-|         ^ info: this token is not linked to the ast
-In test.m, line 7
-|     disp("no");
-|              ^ info: this token is not linked to the ast
-In test.m, line 7
-|     disp("no");
 |               ^ info: this token is not linked to the ast
 In test.m, line 8
 |   else;
 |       ^ info: this token is not linked to the ast
-In test.m, line 9
-|     disp("why do this");
-|         ^ info: this token is not linked to the ast
-In test.m, line 9
-|     disp("why do this");
-|                       ^ info: this token is not linked to the ast
 In test.m, line 9
 |     disp("why do this");
 |                        ^ info: this token is not linked to the ast

@@ -19,12 +19,6 @@ Root: Script_File
 ----------------------------------------------------------------------
 In foo.m, line 1
 | potato = foo(12);
-|             ^ info: this token is not linked to the ast
-In foo.m, line 1
-| potato = foo(12);
-|                ^ info: this token is not linked to the ast
-In foo.m, line 1
-| potato = foo(12);
 |                 ^ info: this token is not linked to the ast
 In foo.m, line 3
 | function y = foo(x)

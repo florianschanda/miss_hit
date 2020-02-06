@@ -48,12 +48,6 @@ In subclass.m, line 5
 |                                       ^ info: this token is not linked to the ast
 In subclass.m, line 6
 |             obj = obj@MySuperClass(SuperClassArguments);
-|                                   ^ info: this token is not linked to the ast
-In subclass.m, line 6
-|             obj = obj@MySuperClass(SuperClassArguments);
-|                                                       ^ info: this token is not linked to the ast
-In subclass.m, line 6
-|             obj = obj@MySuperClass(SuperClassArguments);
 |                                                        ^ info: this token is not linked to the ast
 In subclass.m, line 7
 |         end
@@ -64,12 +58,6 @@ In subclass.m, line 9
 In subclass.m, line 9
 |         function disp(obj)
 |                          ^ info: this token is not linked to the ast
-In subclass.m, line 10
-|             disp@MySuperClass(obj);
-|                              ^ info: this token is not linked to the ast
-In subclass.m, line 10
-|             disp@MySuperClass(obj);
-|                                  ^ info: this token is not linked to the ast
 In subclass.m, line 10
 |             disp@MySuperClass(obj);
 |                                   ^ info: this token is not linked to the ast

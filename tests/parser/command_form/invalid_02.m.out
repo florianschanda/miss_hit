@@ -27,12 +27,6 @@ In invalid_02.m, line 4
 |                ^ info: this token is not linked to the ast
 In invalid_02.m, line 6
 |     foo(kitten); % 12
-|        ^ info: this token is not linked to the ast
-In invalid_02.m, line 6
-|     foo(kitten); % 12
-|               ^ info: this token is not linked to the ast
-In invalid_02.m, line 6
-|     foo(kitten); % 12
 |                ^ info: this token is not linked to the ast
 In invalid_02.m, line 7
 |     foo = kitten; % semantic error (redef of foo after use)

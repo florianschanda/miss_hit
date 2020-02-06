@@ -58,18 +58,6 @@ In test_01.m, line 4
 |                ^ info: this token is not linked to the ast
 In test_01.m, line 6
 |     foo(kitten); % 12
-|        ^ info: this token is not linked to the ast
-In test_01.m, line 6
-|     foo(kitten); % 12
-|               ^ info: this token is not linked to the ast
-In test_01.m, line 6
-|     foo(kitten); % 12
-|                ^ info: this token is not linked to the ast
-In test_01.m, line 8
-|     foo (kitten); % 12
-|         ^ info: this token is not linked to the ast
-In test_01.m, line 8
-|     foo (kitten); % 12
 |                ^ info: this token is not linked to the ast
 In test_01.m, line 8
 |     foo (kitten); % 12

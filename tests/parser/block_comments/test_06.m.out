@@ -20,28 +20,10 @@ Root: Script_File
 ----------------------------------------------------------------------
 In test_06.m, line 5
 | disp("1");
-|     ^ info: this token is not linked to the ast
-In test_06.m, line 5
-| disp("1");
-|         ^ info: this token is not linked to the ast
-In test_06.m, line 5
-| disp("1");
 |          ^ info: this token is not linked to the ast
 In test_06.m, line 11
 |   disp("4");
-|       ^ info: this token is not linked to the ast
-In test_06.m, line 11
-|   disp("4");
-|           ^ info: this token is not linked to the ast
-In test_06.m, line 11
-|   disp("4");
 |            ^ info: this token is not linked to the ast
-In test_06.m, line 13
-| disp("5");
-|     ^ info: this token is not linked to the ast
-In test_06.m, line 13
-| disp("5");
-|         ^ info: this token is not linked to the ast
 In test_06.m, line 13
 | disp("5");
 |          ^ info: this token is not linked to the ast

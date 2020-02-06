@@ -30,22 +30,10 @@ In no_fallthrough.m, line 3
 |            ^ info: this token is not linked to the ast
 In no_fallthrough.m, line 7
 |         disp('result is 52');
-|             ^ info: this token is not linked to the ast
-In no_fallthrough.m, line 7
-|         disp('result is 52');
-|                            ^ info: this token is not linked to the ast
-In no_fallthrough.m, line 7
-|         disp('result is 52');
 |                             ^ info: this token is not linked to the ast
 In no_fallthrough.m, line 8
 |     case {52, 78}
 |             ^ info: this token is not linked to the ast
-In no_fallthrough.m, line 9
-|         disp('result is 52 or 78');
-|             ^ info: this token is not linked to the ast
-In no_fallthrough.m, line 9
-|         disp('result is 52 or 78');
-|                                  ^ info: this token is not linked to the ast
 In no_fallthrough.m, line 9
 |         disp('result is 52 or 78');
 |                                   ^ info: this token is not linked to the ast

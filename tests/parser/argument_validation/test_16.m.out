@@ -19,28 +19,7 @@ Root: Script_File
 ----------------------------------------------------------------------
 In test_16.m, line 3
 | r = test_15('Name1',3,'Name2',7);
-|            ^ info: this token is not linked to the ast
-In test_16.m, line 3
-| r = test_15('Name1',3,'Name2',7);
-|                    ^ info: this token is not linked to the ast
-In test_16.m, line 3
-| r = test_15('Name1',3,'Name2',7);
-|                      ^ info: this token is not linked to the ast
-In test_16.m, line 3
-| r = test_15('Name1',3,'Name2',7);
-|                              ^ info: this token is not linked to the ast
-In test_16.m, line 3
-| r = test_15('Name1',3,'Name2',7);
-|                                ^ info: this token is not linked to the ast
-In test_16.m, line 3
-| r = test_15('Name1',3,'Name2',7);
 |                                 ^ info: this token is not linked to the ast
-In test_16.m, line 4
-| assert (r == 21);
-|        ^ info: this token is not linked to the ast
-In test_16.m, line 4
-| assert (r == 21);
-|                ^ info: this token is not linked to the ast
 In test_16.m, line 4
 | assert (r == 21);
 |                 ^ info: this token is not linked to the ast

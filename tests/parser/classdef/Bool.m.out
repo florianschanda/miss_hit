@@ -54,12 +54,6 @@ In Bool.m, line 9
 |                             ^ info: this token is not linked to the ast
 In Bool.m, line 10
 |        obj@logical(val);
-|                   ^ info: this token is not linked to the ast
-In Bool.m, line 10
-|        obj@logical(val);
-|                       ^ info: this token is not linked to the ast
-In Bool.m, line 10
-|        obj@logical(val);
 |                        ^ info: this token is not linked to the ast
 In Bool.m, line 11
 |      end

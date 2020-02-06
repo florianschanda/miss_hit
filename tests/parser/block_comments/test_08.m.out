@@ -15,11 +15,5 @@ Root: Script_File
 ----------------------------------------------------------------------
 In test_08.m, line 5
 | disp("1");
-|     ^ info: this token is not linked to the ast
-In test_08.m, line 5
-| disp("1");
-|         ^ info: this token is not linked to the ast
-In test_08.m, line 5
-| disp("1");
 |          ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 2 warning(s)

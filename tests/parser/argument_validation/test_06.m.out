@@ -47,46 +47,10 @@ In test_06.m, line 6
 |             ^ info: this token is not linked to the ast
 In test_06.m, line 8
 | myFunction(x,y,maxval,minval);
-|           ^ info: this token is not linked to the ast
-In test_06.m, line 8
-| myFunction(x,y,maxval,minval);
-|             ^ info: this token is not linked to the ast
-In test_06.m, line 8
-| myFunction(x,y,maxval,minval);
-|               ^ info: this token is not linked to the ast
-In test_06.m, line 8
-| myFunction(x,y,maxval,minval);
-|                      ^ info: this token is not linked to the ast
-In test_06.m, line 8
-| myFunction(x,y,maxval,minval);
-|                             ^ info: this token is not linked to the ast
-In test_06.m, line 8
-| myFunction(x,y,maxval,minval);
 |                              ^ info: this token is not linked to the ast
 In test_06.m, line 9
 | myFunction(x,y,maxval);
-|           ^ info: this token is not linked to the ast
-In test_06.m, line 9
-| myFunction(x,y,maxval);
-|             ^ info: this token is not linked to the ast
-In test_06.m, line 9
-| myFunction(x,y,maxval);
-|               ^ info: this token is not linked to the ast
-In test_06.m, line 9
-| myFunction(x,y,maxval);
-|                      ^ info: this token is not linked to the ast
-In test_06.m, line 9
-| myFunction(x,y,maxval);
 |                       ^ info: this token is not linked to the ast
-In test_06.m, line 10
-| myFunction(x,y);
-|           ^ info: this token is not linked to the ast
-In test_06.m, line 10
-| myFunction(x,y);
-|             ^ info: this token is not linked to the ast
-In test_06.m, line 10
-| myFunction(x,y);
-|               ^ info: this token is not linked to the ast
 In test_06.m, line 10
 | myFunction(x,y);
 |                ^ info: this token is not linked to the ast

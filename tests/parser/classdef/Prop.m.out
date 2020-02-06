@@ -84,12 +84,6 @@ In Prop.m, line 6
 In Prop.m, line 7
 |       Prop3 = sin(pi/12)
 |             ^ info: this token is not linked to the ast
-In Prop.m, line 7
-|       Prop3 = sin(pi/12)
-|                  ^ info: this token is not linked to the ast
-In Prop.m, line 7
-|       Prop3 = sin(pi/12)
-|                        ^ info: this token is not linked to the ast
 In Prop.m, line 8
 |       Prop4 = containers.Map
 |             ^ info: this token is not linked to the ast
@@ -138,18 +132,6 @@ In Prop.m, line 16
 In Prop.m, line 16
 |      function obj = set.Password(obj,pw)
 |                                        ^ info: this token is not linked to the ast
-In Prop.m, line 17
-|        if numel(pw) < 7
-|                ^ info: this token is not linked to the ast
-In Prop.m, line 17
-|        if numel(pw) < 7
-|                   ^ info: this token is not linked to the ast
-In Prop.m, line 18
-|          error('Password must have at least 7 characters');
-|               ^ info: this token is not linked to the ast
-In Prop.m, line 18
-|          error('Password must have at least 7 characters');
-|                                                          ^ info: this token is not linked to the ast
 In Prop.m, line 18
 |          error('Password must have at least 7 characters');
 |                                                           ^ info: this token is not linked to the ast

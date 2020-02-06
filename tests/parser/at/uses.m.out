@@ -161,22 +161,10 @@ In uses.m, line 4
 |            ^ info: this token is not linked to the ast
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
-|                       ^ info: this token is not linked to the ast
-In uses.m, line 4
-|     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
 |                         ^ info: this token is not linked to the ast
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
 |                           ^ info: this token is not linked to the ast
-In uses.m, line 4
-|     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
-|                                             ^ info: this token is not linked to the ast
-In uses.m, line 4
-|     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
-|                                               ^ info: this token is not linked to the ast
-In uses.m, line 4
-|     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
-|                                                 ^ info: this token is not linked to the ast
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
 |                                                   ^ info: this token is not linked to the ast
@@ -197,19 +185,7 @@ In uses.m, line 8
 |           ^ info: this token is not linked to the ast
 In uses.m, line 8
 |     t = @() datestr(now);
-|                    ^ info: this token is not linked to the ast
-In uses.m, line 8
-|     t = @() datestr(now);
-|                        ^ info: this token is not linked to the ast
-In uses.m, line 8
-|     t = @() datestr(now);
 |                         ^ info: this token is not linked to the ast
-In uses.m, line 9
-|     d = t();
-|          ^ info: this token is not linked to the ast
-In uses.m, line 9
-|     d = t();
-|           ^ info: this token is not linked to the ast
 In uses.m, line 9
 |     d = t();
 |            ^ info: this token is not linked to the ast
@@ -290,12 +266,6 @@ In uses.m, line 20
 |            ^ info: this token is not linked to the ast
 In uses.m, line 20
 |     x = f{1}(x);
-|             ^ info: this token is not linked to the ast
-In uses.m, line 20
-|     x = f{1}(x);
-|               ^ info: this token is not linked to the ast
-In uses.m, line 20
-|     x = f{1}(x);
 |                ^ info: this token is not linked to the ast
 In uses.m, line 21
 |     y = f{2}(y);
@@ -305,12 +275,6 @@ In uses.m, line 21
 |            ^ info: this token is not linked to the ast
 In uses.m, line 21
 |     y = f{2}(y);
-|             ^ info: this token is not linked to the ast
-In uses.m, line 21
-|     y = f{2}(y);
-|               ^ info: this token is not linked to the ast
-In uses.m, line 21
-|     y = f{2}(y);
 |                ^ info: this token is not linked to the ast
 In uses.m, line 22
 |     z = f{3}(x,y);
@@ -318,15 +282,6 @@ In uses.m, line 22
 In uses.m, line 22
 |     z = f{3}(x,y);
 |            ^ info: this token is not linked to the ast
-In uses.m, line 22
-|     z = f{3}(x,y);
-|             ^ info: this token is not linked to the ast
-In uses.m, line 22
-|     z = f{3}(x,y);
-|               ^ info: this token is not linked to the ast
-In uses.m, line 22
-|     z = f{3}(x,y);
-|                 ^ info: this token is not linked to the ast
 In uses.m, line 22
 |     z = f{3}(x,y);
 |                  ^ info: this token is not linked to the ast

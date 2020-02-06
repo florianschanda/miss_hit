@@ -32,18 +32,6 @@ In test_01.m, line 5
 |             ^ info: this token is not linked to the ast
 In test_01.m, line 6
 |   assert (nargin == 0);
-|          ^ info: this token is not linked to the ast
-In test_01.m, line 6
-|   assert (nargin == 0);
-|                      ^ info: this token is not linked to the ast
-In test_01.m, line 6
-|   assert (nargin == 0);
-|                       ^ info: this token is not linked to the ast
-In test_01.m, line 7
-|   assert (nargout == 0);
-|          ^ info: this token is not linked to the ast
-In test_01.m, line 7
-|   assert (nargout == 0);
 |                       ^ info: this token is not linked to the ast
 In test_01.m, line 7
 |   assert (nargout == 0);

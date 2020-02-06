@@ -26,12 +26,6 @@ In foo.m, line 3
 |                   ^ info: this token is not linked to the ast
 In foo.m, line 4
 |     disp(s);
-|         ^ info: this token is not linked to the ast
-In foo.m, line 4
-|     disp(s);
-|           ^ info: this token is not linked to the ast
-In foo.m, line 4
-|     disp(s);
 |            ^ info: this token is not linked to the ast
 In foo.m, line 5
 |     x = s;

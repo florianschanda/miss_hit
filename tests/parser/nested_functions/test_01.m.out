@@ -22,22 +22,10 @@ Root: Function_File
 ----------------------------------------------------------------------
 In test_01.m, line 4
 |     disp('This is the parent function');
-|         ^ info: this token is not linked to the ast
-In test_01.m, line 4
-|     disp('This is the parent function');
-|                                       ^ info: this token is not linked to the ast
-In test_01.m, line 4
-|     disp('This is the parent function');
 |                                        ^ info: this token is not linked to the ast
 In test_01.m, line 5
 |     nestedfx;
 |             ^ info: this token is not linked to the ast
-In test_01.m, line 8
-|         disp('This is the nested function');
-|             ^ info: this token is not linked to the ast
-In test_01.m, line 8
-|         disp('This is the nested function');
-|                                           ^ info: this token is not linked to the ast
 In test_01.m, line 8
 |         disp('This is the nested function');
 |                                            ^ info: this token is not linked to the ast

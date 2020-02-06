@@ -33,12 +33,6 @@ In test1.m, line 5
 |                          ^ info: this token is not linked to the ast
 In test1.m, line 6
 |       disp("cons");
-|           ^ info: this token is not linked to the ast
-In test1.m, line 6
-|       disp("cons");
-|                  ^ info: this token is not linked to the ast
-In test1.m, line 6
-|       disp("cons");
 |                   ^ info: this token is not linked to the ast
 In test1.m, line 7
 |     end

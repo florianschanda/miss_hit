@@ -92,27 +92,6 @@ In test_05.m, line 7
 In test_05.m, line 7
 |         maxval (1,1) double = max(max(x),max(y))
 |                             ^ info: this token is not linked to the ast
-In test_05.m, line 7
-|         maxval (1,1) double = max(max(x),max(y))
-|                                  ^ info: this token is not linked to the ast
-In test_05.m, line 7
-|         maxval (1,1) double = max(max(x),max(y))
-|                                      ^ info: this token is not linked to the ast
-In test_05.m, line 7
-|         maxval (1,1) double = max(max(x),max(y))
-|                                        ^ info: this token is not linked to the ast
-In test_05.m, line 7
-|         maxval (1,1) double = max(max(x),max(y))
-|                                         ^ info: this token is not linked to the ast
-In test_05.m, line 7
-|         maxval (1,1) double = max(max(x),max(y))
-|                                             ^ info: this token is not linked to the ast
-In test_05.m, line 7
-|         maxval (1,1) double = max(max(x),max(y))
-|                                               ^ info: this token is not linked to the ast
-In test_05.m, line 7
-|         maxval (1,1) double = max(max(x),max(y))
-|                                                ^ info: this token is not linked to the ast
 In test_05.m, line 8
 |         minval (1,1) double = min(min(x),min(y))
 |                ^ info: this token is not linked to the ast
@@ -125,27 +104,6 @@ In test_05.m, line 8
 In test_05.m, line 8
 |         minval (1,1) double = min(min(x),min(y))
 |                             ^ info: this token is not linked to the ast
-In test_05.m, line 8
-|         minval (1,1) double = min(min(x),min(y))
-|                                  ^ info: this token is not linked to the ast
-In test_05.m, line 8
-|         minval (1,1) double = min(min(x),min(y))
-|                                      ^ info: this token is not linked to the ast
-In test_05.m, line 8
-|         minval (1,1) double = min(min(x),min(y))
-|                                        ^ info: this token is not linked to the ast
-In test_05.m, line 8
-|         minval (1,1) double = min(min(x),min(y))
-|                                         ^ info: this token is not linked to the ast
-In test_05.m, line 8
-|         minval (1,1) double = min(min(x),min(y))
-|                                             ^ info: this token is not linked to the ast
-In test_05.m, line 8
-|         minval (1,1) double = min(min(x),min(y))
-|                                               ^ info: this token is not linked to the ast
-In test_05.m, line 8
-|         minval (1,1) double = min(min(x),min(y))
-|                                                ^ info: this token is not linked to the ast
 In test_05.m, line 9
 |     end
 |     ^^^ info: this token is not linked to the ast

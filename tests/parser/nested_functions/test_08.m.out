@@ -69,22 +69,7 @@ In test_08.m, line 3
 |                      ^ info: this token is not linked to the ast
 In test_08.m, line 4
 |     B(x,y);
-|      ^ info: this token is not linked to the ast
-In test_08.m, line 4
-|     B(x,y);
-|        ^ info: this token is not linked to the ast
-In test_08.m, line 4
-|     B(x,y);
-|          ^ info: this token is not linked to the ast
-In test_08.m, line 4
-|     B(x,y);
 |           ^ info: this token is not linked to the ast
-In test_08.m, line 5
-|     D(y);
-|      ^ info: this token is not linked to the ast
-In test_08.m, line 5
-|     D(y);
-|        ^ info: this token is not linked to the ast
 In test_08.m, line 5
 |     D(y);
 |         ^ info: this token is not linked to the ast
@@ -99,19 +84,7 @@ In test_08.m, line 7
 |                   ^ info: this token is not linked to the ast
 In test_08.m, line 8
 |         C(x);
-|          ^ info: this token is not linked to the ast
-In test_08.m, line 8
-|         C(x);
-|            ^ info: this token is not linked to the ast
-In test_08.m, line 8
-|         C(x);
 |             ^ info: this token is not linked to the ast
-In test_08.m, line 9
-|         D(y);
-|          ^ info: this token is not linked to the ast
-In test_08.m, line 9
-|         D(y);
-|            ^ info: this token is not linked to the ast
 In test_08.m, line 9
 |         D(y);
 |             ^ info: this token is not linked to the ast
@@ -121,12 +94,6 @@ In test_08.m, line 11
 In test_08.m, line 11
 |         function C(x)           % Nested in B
 |                     ^ info: this token is not linked to the ast
-In test_08.m, line 12
-|             D(x);
-|              ^ info: this token is not linked to the ast
-In test_08.m, line 12
-|             D(x);
-|                ^ info: this token is not linked to the ast
 In test_08.m, line 12
 |             D(x);
 |                 ^ info: this token is not linked to the ast
@@ -144,12 +111,6 @@ In test_08.m, line 16
 |                 ^ info: this token is not linked to the ast
 In test_08.m, line 17
 |         E(x);
-|          ^ info: this token is not linked to the ast
-In test_08.m, line 17
-|         E(x);
-|            ^ info: this token is not linked to the ast
-In test_08.m, line 17
-|         E(x);
 |             ^ info: this token is not linked to the ast
 In test_08.m, line 19
 |         function E(x)           % Nested in D
@@ -157,12 +118,6 @@ In test_08.m, line 19
 In test_08.m, line 19
 |         function E(x)           % Nested in D
 |                     ^ info: this token is not linked to the ast
-In test_08.m, line 20
-|             disp(x);
-|                 ^ info: this token is not linked to the ast
-In test_08.m, line 20
-|             disp(x);
-|                   ^ info: this token is not linked to the ast
 In test_08.m, line 20
 |             disp(x);
 |                    ^ info: this token is not linked to the ast

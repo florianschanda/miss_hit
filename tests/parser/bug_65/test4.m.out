@@ -41,12 +41,6 @@ Root: Script_File
 ----------------------------------------------------------------------
 In test4.m, line 3
 | tmp = test(12);
-|           ^ info: this token is not linked to the ast
-In test4.m, line 3
-| tmp = test(12);
-|              ^ info: this token is not linked to the ast
-In test4.m, line 3
-| tmp = test(12);
 |               ^ info: this token is not linked to the ast
 In test4.m, line 5
 | function x = test(potato)
@@ -57,12 +51,6 @@ In test4.m, line 5
 In test4.m, line 5
 | function x = test(potato)
 |                         ^ info: this token is not linked to the ast
-In test4.m, line 6
-|    x = foo() + 1;
-|           ^ info: this token is not linked to the ast
-In test4.m, line 6
-|    x = foo() + 1;
-|            ^ info: this token is not linked to the ast
 In test4.m, line 6
 |    x = foo() + 1;
 |                 ^ info: this token is not linked to the ast
@@ -78,12 +66,6 @@ In test4.m, line 9
 In test4.m, line 9
 | function y = foo()
 |                  ^ info: this token is not linked to the ast
-In test4.m, line 10
-|    y = 12 + bar();
-|                ^ info: this token is not linked to the ast
-In test4.m, line 10
-|    y = 12 + bar();
-|                 ^ info: this token is not linked to the ast
 In test4.m, line 10
 |    y = 12 + bar();
 |                  ^ info: this token is not linked to the ast

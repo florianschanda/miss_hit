@@ -13,19 +13,7 @@ Root: Script_File
 ----------------------------------------------------------------------
 In test_01.m, line 3
 | disp("foo");
-|     ^ info: this token is not linked to the ast
-In test_01.m, line 3
-| disp("foo");
-|           ^ info: this token is not linked to the ast
-In test_01.m, line 3
-| disp("foo");
 |            ^ info: this token is not linked to the ast
-In test_01.m, line 7
-| disp("baz");
-|     ^ info: this token is not linked to the ast
-In test_01.m, line 7
-| disp("baz");
-|           ^ info: this token is not linked to the ast
 In test_01.m, line 7
 | disp("baz");
 |            ^ info: this token is not linked to the ast

@@ -56,18 +56,6 @@ In test_01.m, line 4
 |           ^ info: this token is not linked to the ast
 In test_01.m, line 5
 |     disp(x),
-|         ^ info: this token is not linked to the ast
-In test_01.m, line 5
-|     disp(x),
-|           ^ info: this token is not linked to the ast
-In test_01.m, line 5
-|     disp(x),
-|            ^ info: this token is not linked to the ast
-In test_01.m, line 7
-|     disp(-x)
-|         ^ info: this token is not linked to the ast
-In test_01.m, line 7
-|     disp(-x)
 |            ^ info: this token is not linked to the ast
 In test_01.m, line 8
 |   end;

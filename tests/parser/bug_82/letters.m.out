@@ -25,13 +25,7 @@ In letters.m, line 3
 |                      ^ info: this token is not linked to the ast
 In letters.m, line 4
 |   l = char('A':'Z');
-|           ^ info: this token is not linked to the ast
-In letters.m, line 4
-|   l = char('A':'Z');
 |               ^ info: this token is not linked to the ast
-In letters.m, line 4
-|   l = char('A':'Z');
-|                   ^ info: this token is not linked to the ast
 In letters.m, line 4
 |   l = char('A':'Z');
 |                    ^ info: this token is not linked to the ast

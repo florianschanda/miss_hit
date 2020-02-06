@@ -18,12 +18,6 @@ In noargs.m, line 3
 |                 ^ info: this token is not linked to the ast
 In noargs.m, line 4
 |   disp("hello world");
-|       ^ info: this token is not linked to the ast
-In noargs.m, line 4
-|   disp("hello world");
-|                     ^ info: this token is not linked to the ast
-In noargs.m, line 4
-|   disp("hello world");
 |                      ^ info: this token is not linked to the ast
 In noargs.m, line 5
 | end

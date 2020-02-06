@@ -27,49 +27,10 @@ Root: Script_File
 ----------------------------------------------------------------------
 In test_32.m, line 3
 | result = test_31(3,4);
-|                 ^ info: this token is not linked to the ast
-In test_32.m, line 3
-| result = test_31(3,4);
-|                   ^ info: this token is not linked to the ast
-In test_32.m, line 3
-| result = test_31(3,4);
-|                     ^ info: this token is not linked to the ast
-In test_32.m, line 3
-| result = test_31(3,4);
 |                      ^ info: this token is not linked to the ast
 In test_32.m, line 4
 | result = test_31(3,4,7.62);
-|                 ^ info: this token is not linked to the ast
-In test_32.m, line 4
-| result = test_31(3,4,7.62);
-|                   ^ info: this token is not linked to the ast
-In test_32.m, line 4
-| result = test_31(3,4,7.62);
-|                     ^ info: this token is not linked to the ast
-In test_32.m, line 4
-| result = test_31(3,4,7.62);
-|                          ^ info: this token is not linked to the ast
-In test_32.m, line 4
-| result = test_31(3,4,7.62);
 |                           ^ info: this token is not linked to the ast
-In test_32.m, line 5
-| result = test_31(3,4,7.62,'Format','bank');
-|                 ^ info: this token is not linked to the ast
-In test_32.m, line 5
-| result = test_31(3,4,7.62,'Format','bank');
-|                   ^ info: this token is not linked to the ast
-In test_32.m, line 5
-| result = test_31(3,4,7.62,'Format','bank');
-|                     ^ info: this token is not linked to the ast
-In test_32.m, line 5
-| result = test_31(3,4,7.62,'Format','bank');
-|                          ^ info: this token is not linked to the ast
-In test_32.m, line 5
-| result = test_31(3,4,7.62,'Format','bank');
-|                                   ^ info: this token is not linked to the ast
-In test_32.m, line 5
-| result = test_31(3,4,7.62,'Format','bank');
-|                                          ^ info: this token is not linked to the ast
 In test_32.m, line 5
 | result = test_31(3,4,7.62,'Format','bank');
 |                                           ^ info: this token is not linked to the ast

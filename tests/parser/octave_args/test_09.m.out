@@ -92,18 +92,6 @@ In test_09.m, line 8
 |                                      ^ info: this token is not linked to the ast
 In test_09.m, line 9
 |   assert (nargin == 4);
-|          ^ info: this token is not linked to the ast
-In test_09.m, line 9
-|   assert (nargin == 4);
-|                      ^ info: this token is not linked to the ast
-In test_09.m, line 9
-|   assert (nargin == 4);
-|                       ^ info: this token is not linked to the ast
-In test_09.m, line 10
-|   assert (nargout == 2);
-|          ^ info: this token is not linked to the ast
-In test_09.m, line 10
-|   assert (nargout == 2);
 |                       ^ info: this token is not linked to the ast
 In test_09.m, line 10
 |   assert (nargout == 2);
@@ -134,34 +122,13 @@ In test_09.m, line 16
 |       ^ info: this token is not linked to the ast
 In test_09.m, line 16
 |  [s, t] = f (1, 2, 3, 4);
-|             ^ info: this token is not linked to the ast
-In test_09.m, line 16
-|  [s, t] = f (1, 2, 3, 4);
-|               ^ info: this token is not linked to the ast
-In test_09.m, line 16
-|  [s, t] = f (1, 2, 3, 4);
-|                  ^ info: this token is not linked to the ast
-In test_09.m, line 16
-|  [s, t] = f (1, 2, 3, 4);
-|                     ^ info: this token is not linked to the ast
-In test_09.m, line 16
-|  [s, t] = f (1, 2, 3, 4);
-|                        ^ info: this token is not linked to the ast
-In test_09.m, line 16
-|  [s, t] = f (1, 2, 3, 4);
 |                         ^ info: this token is not linked to the ast
-In test_09.m, line 17
-|  assert ([s t] == [1 2]);
-|         ^ info: this token is not linked to the ast
 In test_09.m, line 17
 |  assert ([s<anon,> t] == [1 2]);
 |            ^^^^^^^ info: this token is not linked to the ast
 In test_09.m, line 17
 |  assert ([s t] == [1<anon,> 2]);
 |                     ^^^^^^^ info: this token is not linked to the ast
-In test_09.m, line 17
-|  assert ([s t] == [1 2]);
-|                        ^ info: this token is not linked to the ast
 In test_09.m, line 17
 |  assert ([s t] == [1 2]);
 |                         ^ info: this token is not linked to the ast
