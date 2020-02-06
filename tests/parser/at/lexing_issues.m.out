@@ -82,12 +82,6 @@ In lexing_issues.m, line 4
 |     x = 10;
 |           ^ info: this token is not linked to the ast
 In lexing_issues.m, line 5
-|     a = {(x) 2};    % {x, 2}
-|          ^ info: this token is not linked to the ast
-In lexing_issues.m, line 5
-|     a = {(x) 2};    % {x, 2}
-|            ^ info: this token is not linked to the ast
-In lexing_issues.m, line 5
 |     a = {(x)<anon,> 2};    % {x, 2}
 |             ^^^^^^^ info: this token is not linked to the ast
 In lexing_issues.m, line 5

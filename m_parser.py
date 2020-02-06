@@ -1011,8 +1011,12 @@ class MATLAB_Parser:
 
         elif self.peek("BRA"):
             self.match("BRA")
+            t_open = self.ct
             expr = self.parse_expression()
             self.match("KET")
+            t_close = self.ct
+            t_open.set_ast(expr)
+            t_close.set_ast(expr)
             return expr
 
         elif self.peek("M_BRA"):

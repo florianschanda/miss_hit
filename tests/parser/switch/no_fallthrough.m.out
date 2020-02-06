@@ -28,12 +28,6 @@ Root: Script_File
 In no_fallthrough.m, line 3
 | result = 52;
 |            ^ info: this token is not linked to the ast
-In no_fallthrough.m, line 5
-| switch(result)
-|       ^ info: this token is not linked to the ast
-In no_fallthrough.m, line 5
-| switch(result)
-|              ^ info: this token is not linked to the ast
 In no_fallthrough.m, line 7
 |         disp('result is 52');
 |             ^ info: this token is not linked to the ast

@@ -49,12 +49,6 @@ In test_01.m, line 4
 |             ^ info: this token is not linked to the ast
 In test_01.m, line 5
 |   b = 10 ^ (-4);
-|            ^ info: this token is not linked to the ast
-In test_01.m, line 5
-|   b = 10 ^ (-4);
-|               ^ info: this token is not linked to the ast
-In test_01.m, line 5
-|   b = 10 ^ (-4);
 |                ^ info: this token is not linked to the ast
 In test_01.m, line 7
 |   x = 10 ^ +4;   % x == a

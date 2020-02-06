@@ -161,9 +161,6 @@ In uses.m, line 4
 |            ^ info: this token is not linked to the ast
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
-|              ^ info: this token is not linked to the ast
-In uses.m, line 4
-|     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
 |                       ^ info: this token is not linked to the ast
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
@@ -173,12 +170,6 @@ In uses.m, line 4
 |                           ^ info: this token is not linked to the ast
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
-|                             ^ info: this token is not linked to the ast
-In uses.m, line 4
-|     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
-|                                            ^ info: this token is not linked to the ast
-In uses.m, line 4
-|     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
 |                                             ^ info: this token is not linked to the ast
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
@@ -186,9 +177,6 @@ In uses.m, line 4
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
 |                                                 ^ info: this token is not linked to the ast
-In uses.m, line 4
-|     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
-|                                                  ^ info: this token is not linked to the ast
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
 |                                                   ^ info: this token is not linked to the ast
@@ -272,12 +260,6 @@ In uses.m, line 16
 |             ^ info: this token is not linked to the ast
 In uses.m, line 16
 |     f = {@(x) (x.^2);
-|               ^ info: this token is not linked to the ast
-In uses.m, line 16
-|     f = {@(x) (x.^2);
-|                    ^ info: this token is not linked to the ast
-In uses.m, line 16
-|     f = {@(x) (x.^2);
 |                     ^ info: this token is not linked to the ast
 In uses.m, line 17
 |          @(y) (y + 10);
@@ -285,12 +267,6 @@ In uses.m, line 17
 In uses.m, line 17
 |          @(y) (y + 10);
 |             ^ info: this token is not linked to the ast
-In uses.m, line 17
-|          @(y) (y + 10);
-|               ^ info: this token is not linked to the ast
-In uses.m, line 17
-|          @(y) (y + 10);
-|                      ^ info: this token is not linked to the ast
 In uses.m, line 17
 |          @(y) (y + 10);
 |                       ^ info: this token is not linked to the ast
@@ -303,12 +279,6 @@ In uses.m, line 18
 In uses.m, line 18
 |          @(x,y) (x.^2 + y + 10)};
 |               ^ info: this token is not linked to the ast
-In uses.m, line 18
-|          @(x,y) (x.^2 + y + 10)};
-|                 ^ info: this token is not linked to the ast
-In uses.m, line 18
-|          @(x,y) (x.^2 + y + 10)};
-|                               ^ info: this token is not linked to the ast
 In uses.m, line 18
 |          @(x,y) (x.^2 + y + 10)};
 |                                 ^ info: this token is not linked to the ast
