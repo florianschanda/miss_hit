@@ -39,31 +39,4 @@ Root: Script_File
         LHS: Identifier <z>
         RHS: Number_Literal <1>
 ----------------------------------------------------------------------
-In test.m, line 5
-| function x = test(potato)
-|            ^ info: this token is not linked to the ast
-In test.m, line 5
-| function x = test(potato)
-|                  ^ info: this token is not linked to the ast
-In test.m, line 5
-| function x = test(potato)
-|                         ^ info: this token is not linked to the ast
-In test.m, line 8
-| function y = foo()
-|            ^ info: this token is not linked to the ast
-In test.m, line 8
-| function y = foo()
-|                 ^ info: this token is not linked to the ast
-In test.m, line 8
-| function y = foo()
-|                  ^ info: this token is not linked to the ast
-In test.m, line 11
-| function z = bar()
-|            ^ info: this token is not linked to the ast
-In test.m, line 11
-| function z = bar()
-|                 ^ info: this token is not linked to the ast
-In test.m, line 11
-| function z = bar()
-|                  ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

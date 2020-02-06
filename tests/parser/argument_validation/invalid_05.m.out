@@ -23,21 +23,6 @@ Root: Function_File
         Class: Identifier <uint32>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
-In invalid_05.m, line 8
-| function c = invalid_05(a,b,c)
-|            ^ info: this token is not linked to the ast
-In invalid_05.m, line 8
-| function c = invalid_05(a,b,c)
-|                        ^ info: this token is not linked to the ast
-In invalid_05.m, line 8
-| function c = invalid_05(a,b,c)
-|                          ^ info: this token is not linked to the ast
-In invalid_05.m, line 8
-| function c = invalid_05(a,b,c)
-|                            ^ info: this token is not linked to the ast
-In invalid_05.m, line 8
-| function c = invalid_05(a,b,c)
-|                              ^ info: this token is not linked to the ast
 In invalid_05.m, line 10
 |         a uint32 = b * c
 |                  ^ info: this token is not linked to the ast

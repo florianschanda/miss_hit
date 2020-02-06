@@ -14,15 +14,6 @@ Root: Function_File
             First: Char_Array_Literal 'A'
             Last: Char_Array_Literal 'Z'
 ----------------------------------------------------------------------
-In letters.m, line 3
-| function l = letters()
-|            ^ info: this token is not linked to the ast
-In letters.m, line 3
-| function l = letters()
-|                     ^ info: this token is not linked to the ast
-In letters.m, line 3
-| function l = letters()
-|                      ^ info: this token is not linked to the ast
 In letters.m, line 4
 |   l = char('A':'Z');
 |               ^ info: this token is not linked to the ast

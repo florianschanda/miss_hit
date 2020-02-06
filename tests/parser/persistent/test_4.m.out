@@ -18,10 +18,4 @@ Root: Function_File
       Statements: Persistent_Statement
         Names: Identifier <x>
 ----------------------------------------------------------------------
-In test_4.m, line 8
-| function myfunA(x)
-|                ^ info: this token is not linked to the ast
-In test_4.m, line 8
-| function myfunA(x)
-|                  ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -26,21 +26,6 @@ Root: Function_File
         Class: Identifier <cell>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
-In test_02.m, line 3
-| function out = test_02(A, B, C)
-|              ^ info: this token is not linked to the ast
-In test_02.m, line 3
-| function out = test_02(A, B, C)
-|                       ^ info: this token is not linked to the ast
-In test_02.m, line 3
-| function out = test_02(A, B, C)
-|                         ^ info: this token is not linked to the ast
-In test_02.m, line 3
-| function out = test_02(A, B, C)
-|                            ^ info: this token is not linked to the ast
-In test_02.m, line 3
-| function out = test_02(A, B, C)
-|                               ^ info: this token is not linked to the ast
 In test_02.m, line 5
 |         A (1,1) string
 |           ^ info: this token is not linked to the ast

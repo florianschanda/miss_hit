@@ -97,12 +97,6 @@ Root: Function_File
                 Items: Number_Literal <3>
                 Items: Number_Literal <4>
 ----------------------------------------------------------------------
-In colons.m, line 2
-| function colons()
-|                ^ info: this token is not linked to the ast
-In colons.m, line 2
-| function colons()
-|                 ^ info: this token is not linked to the ast
 In colons.m, line 4
 |     assert ({1, z{:}, 2} == {1, 2});
 |               ^ info: this token is not linked to the ast

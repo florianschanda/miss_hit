@@ -57,45 +57,6 @@ Root: Function_File
                 Items: Number_Literal <1>
                 Items: Number_Literal <2>
 ----------------------------------------------------------------------
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|          ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|            ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|               ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|                  ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|                    ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|                        ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|                          ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|                             ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|                                ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|                                   ^ info: this token is not linked to the ast
-In test_09.m, line 8
-| function [x, y, z] = f (a, b, c, d, e)
-|                                      ^ info: this token is not linked to the ast
-In test_09.m, line 15
-| function test()
-|              ^ info: this token is not linked to the ast
-In test_09.m, line 15
-| function test()
-|               ^ info: this token is not linked to the ast
 In test_09.m, line 16
 |  [s, t] = f (1, 2, 3, 4);
 |  ^ info: this token is not linked to the ast

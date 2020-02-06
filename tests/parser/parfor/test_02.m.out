@@ -18,12 +18,6 @@ Root: Function_File
               Name: Identifier <disp>
               Arguments: Identifier <i>
 ----------------------------------------------------------------------
-In test_02.m, line 3
-| function test_02(x)
-|                 ^ info: this token is not linked to the ast
-In test_02.m, line 3
-| function test_02(x)
-|                   ^ info: this token is not linked to the ast
 In test_02.m, line 4
 |   parfor (i = 1:x, 8)
 |                ^ info: this token is not linked to the ast

@@ -86,12 +86,6 @@ Root: Function_File
                 Items: Number_Literal <3>
                 Items: Number_Literal <4>
 ----------------------------------------------------------------------
-In basic.m, line 2
-| function basic()
-|               ^ info: this token is not linked to the ast
-In basic.m, line 2
-| function basic()
-|                ^ info: this token is not linked to the ast
 In basic.m, line 4
 |     x = {1<anon,> 2 {3 4}};
 |           ^^^^^^^ info: this token is not linked to the ast

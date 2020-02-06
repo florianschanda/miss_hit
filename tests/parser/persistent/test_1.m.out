@@ -22,10 +22,4 @@ Root: Function_File
           LHS: Identifier <n>
           RHS: Number_Literal <1>
 ----------------------------------------------------------------------
-In test_1.m, line 3
-| function myFun()
-|               ^ info: this token is not linked to the ast
-In test_1.m, line 3
-| function myFun()
-|                ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -22,13 +22,4 @@ Root: Class_File
             LHS: Identifier <r>
             RHS: Identifier <properties>
 ----------------------------------------------------------------------
-In invalid_01.m, line 10
-|     function r = foo(self)
-|                ^ info: this token is not linked to the ast
-In invalid_01.m, line 10
-|     function r = foo(self)
-|                     ^ info: this token is not linked to the ast
-In invalid_01.m, line 10
-|     function r = foo(self)
-|                          ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

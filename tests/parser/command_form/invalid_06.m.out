@@ -16,10 +16,4 @@ Root: Function_File
           Name: Identifier <potato>
           Arguments: Char_Array_Literal '+kitten'
 ----------------------------------------------------------------------
-In invalid_06.m, line 3
-| function invalid_06()
-|                    ^ info: this token is not linked to the ast
-In invalid_06.m, line 3
-| function invalid_06()
-|                     ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

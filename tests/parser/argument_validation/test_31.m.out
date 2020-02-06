@@ -70,24 +70,6 @@ Root: Function_File
                   Prefix: Identifier <namedargs>
                   Field: Identifier <Format>
 ----------------------------------------------------------------------
-In test_31.m, line 3
-| function result = test_31(a, b, c, namedargs)
-|                 ^ info: this token is not linked to the ast
-In test_31.m, line 3
-| function result = test_31(a, b, c, namedargs)
-|                          ^ info: this token is not linked to the ast
-In test_31.m, line 3
-| function result = test_31(a, b, c, namedargs)
-|                            ^ info: this token is not linked to the ast
-In test_31.m, line 3
-| function result = test_31(a, b, c, namedargs)
-|                               ^ info: this token is not linked to the ast
-In test_31.m, line 3
-| function result = test_31(a, b, c, namedargs)
-|                                  ^ info: this token is not linked to the ast
-In test_31.m, line 3
-| function result = test_31(a, b, c, namedargs)
-|                                             ^ info: this token is not linked to the ast
 In test_31.m, line 5
 |         a (1,1) double
 |           ^ info: this token is not linked to the ast

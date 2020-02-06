@@ -21,10 +21,4 @@ Root: Class_File
 In basic.m, line 3
 | classdef MyClass < handle
 |                  ^ info: this token is not linked to the ast
-In basic.m, line 9
-|       function upDateUI(obj)
-|                        ^ info: this token is not linked to the ast
-In basic.m, line 9
-|       function upDateUI(obj)
-|                            ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

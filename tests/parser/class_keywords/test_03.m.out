@@ -14,7 +14,4 @@ Root: Function_File
           Name: Identifier <properties>
           Arguments: Char_Array_Literal 'leek'
 ----------------------------------------------------------------------
-In test_03.m, line 3
-| function r = test_03
-|            ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

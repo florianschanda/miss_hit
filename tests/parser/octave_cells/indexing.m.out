@@ -27,12 +27,6 @@ Root: Function_File
                 RHS: Number_Literal <1>
             RHS: Number_Literal <4>
 ----------------------------------------------------------------------
-In indexing.m, line 2
-| function indexing()
-|                  ^ info: this token is not linked to the ast
-In indexing.m, line 2
-| function indexing()
-|                   ^ info: this token is not linked to the ast
 In indexing.m, line 3
 |     b = {1<anon,> 2 3 4 5};
 |           ^^^^^^^ info: this token is not linked to the ast

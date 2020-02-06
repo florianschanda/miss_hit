@@ -122,15 +122,6 @@ Root: Function_File
                 Items: Number_Literal <300>
             Items: Char_Array_Literal 'MATLAB'
 ----------------------------------------------------------------------
-In cells.m, line 6
-| function myCell = test_01()
-|                 ^ info: this token is not linked to the ast
-In cells.m, line 6
-| function myCell = test_01()
-|                          ^ info: this token is not linked to the ast
-In cells.m, line 6
-| function myCell = test_01()
-|                           ^ info: this token is not linked to the ast
 In cells.m, line 8
 |   myCell = {1, 2, 3;
 |              ^ info: this token is not linked to the ast
@@ -152,24 +143,6 @@ In cells.m, line 9
 In cells.m, line 9
 |             'text', rand(5,10,2), {11; 22; 33}};
 |                                          ^ info: this token is not linked to the ast
-In cells.m, line 13
-| function C = test_02()
-|            ^ info: this token is not linked to the ast
-In cells.m, line 13
-| function C = test_02()
-|                     ^ info: this token is not linked to the ast
-In cells.m, line 13
-| function C = test_02()
-|                      ^ info: this token is not linked to the ast
-In cells.m, line 17
-| function C = test_03()
-|            ^ info: this token is not linked to the ast
-In cells.m, line 17
-| function C = test_03()
-|                     ^ info: this token is not linked to the ast
-In cells.m, line 17
-| function C = test_03()
-|                      ^ info: this token is not linked to the ast
 In cells.m, line 18
 |   C = {1, 2, 3};
 |         ^ info: this token is not linked to the ast
@@ -194,24 +167,6 @@ In cells.m, line 20
 In cells.m, line 20
 |   C{5,5} = [];
 |        ^ info: this token is not linked to the ast
-In cells.m, line 23
-| function [C4, C5] = test_04()
-|          ^ info: this token is not linked to the ast
-In cells.m, line 23
-| function [C4, C5] = test_04()
-|             ^ info: this token is not linked to the ast
-In cells.m, line 23
-| function [C4, C5] = test_04()
-|                 ^ info: this token is not linked to the ast
-In cells.m, line 23
-| function [C4, C5] = test_04()
-|                   ^ info: this token is not linked to the ast
-In cells.m, line 23
-| function [C4, C5] = test_04()
-|                            ^ info: this token is not linked to the ast
-In cells.m, line 23
-| function [C4, C5] = test_04()
-|                             ^ info: this token is not linked to the ast
 In cells.m, line 24
 |   C1 = {1, 2, 3};
 |          ^ info: this token is not linked to the ast
@@ -242,15 +197,6 @@ In cells.m, line 34
 In cells.m, line 34
 |   C5 = {C1; C2; C3};
 |               ^ info: this token is not linked to the ast
-In cells.m, line 41
-| function A = test_05()
-|            ^ info: this token is not linked to the ast
-In cells.m, line 41
-| function A = test_05()
-|                     ^ info: this token is not linked to the ast
-In cells.m, line 41
-| function A = test_05()
-|                      ^ info: this token is not linked to the ast
 In cells.m, line 42
 |   A = [100, {uint8(200), 300}, 'MATLAB'];
 |           ^ info: this token is not linked to the ast

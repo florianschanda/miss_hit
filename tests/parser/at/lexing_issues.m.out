@@ -72,12 +72,6 @@ Root: Function_File
                 LHS: Identifier <x>
                 RHS: Number_Literal <1>
 ----------------------------------------------------------------------
-In lexing_issues.m, line 3
-| function lexing_issues()
-|                       ^ info: this token is not linked to the ast
-In lexing_issues.m, line 3
-| function lexing_issues()
-|                        ^ info: this token is not linked to the ast
 In lexing_issues.m, line 5
 |     a = {(x)<anon,> 2};    % {x, 2}
 |             ^^^^^^^ info: this token is not linked to the ast

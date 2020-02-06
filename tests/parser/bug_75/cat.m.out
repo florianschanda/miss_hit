@@ -28,10 +28,4 @@ Root: Class_File
 In cat.m, line 2
 | classdef cat < potato.kitten
 |              ^ info: this token is not linked to the ast
-In cat.m, line 4
-|         function meow(self)
-|                      ^ info: this token is not linked to the ast
-In cat.m, line 4
-|         function meow(self)
-|                           ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

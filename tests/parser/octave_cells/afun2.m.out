@@ -32,12 +32,6 @@ Root: Function_File
             LHS: Identifier <a>
             RHS: Identifier <b>
 ----------------------------------------------------------------------
-In afun2.m, line 2
-| function afun2()
-|               ^ info: this token is not linked to the ast
-In afun2.m, line 2
-| function afun2()
-|                ^ info: this token is not linked to the ast
 In afun2.m, line 3
 |     a = {1, @sin, 2, @cos};
 |           ^ info: this token is not linked to the ast

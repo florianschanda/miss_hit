@@ -47,21 +47,6 @@ Root: Function_File
             Arguments: Identifier <y>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
-In test_05.m, line 3
-| function test_05(x,y,maxval,minval)
-|                 ^ info: this token is not linked to the ast
-In test_05.m, line 3
-| function test_05(x,y,maxval,minval)
-|                   ^ info: this token is not linked to the ast
-In test_05.m, line 3
-| function test_05(x,y,maxval,minval)
-|                     ^ info: this token is not linked to the ast
-In test_05.m, line 3
-| function test_05(x,y,maxval,minval)
-|                            ^ info: this token is not linked to the ast
-In test_05.m, line 3
-| function test_05(x,y,maxval,minval)
-|                                   ^ info: this token is not linked to the ast
 In test_05.m, line 5
 |         x (1,:) double
 |           ^ info: this token is not linked to the ast

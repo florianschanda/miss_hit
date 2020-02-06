@@ -42,21 +42,6 @@ Root: Function_File
           Field: Identifier <Pattern>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
-In test_21.m, line 3
-| function myRectangle(width,height,lineOptions,fillOptions)
-|                     ^ info: this token is not linked to the ast
-In test_21.m, line 3
-| function myRectangle(width,height,lineOptions,fillOptions)
-|                           ^ info: this token is not linked to the ast
-In test_21.m, line 3
-| function myRectangle(width,height,lineOptions,fillOptions)
-|                                  ^ info: this token is not linked to the ast
-In test_21.m, line 3
-| function myRectangle(width,height,lineOptions,fillOptions)
-|                                              ^ info: this token is not linked to the ast
-In test_21.m, line 3
-| function myRectangle(width,height,lineOptions,fillOptions)
-|                                                          ^ info: this token is not linked to the ast
 In test_21.m, line 7
 |         lineOptions.LineStyle (1,1) string = "-"
 |                               ^ info: this token is not linked to the ast

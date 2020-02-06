@@ -45,10 +45,4 @@ Root: Function_File
           Name: Identifier <wibble>
           Arguments: Char_Array_Literal '[a 1 b c '
 ----------------------------------------------------------------------
-In odd.m, line 3
-| function odd()
-|             ^ info: this token is not linked to the ast
-In odd.m, line 3
-| function odd()
-|              ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)

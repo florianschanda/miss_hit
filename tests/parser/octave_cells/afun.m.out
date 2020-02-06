@@ -28,12 +28,6 @@ Root: Function_File
                 Items: Number_Literal <1>
                 Items: Number_Literal <2>
 ----------------------------------------------------------------------
-In afun.m, line 2
-| function afun()
-|              ^ info: this token is not linked to the ast
-In afun.m, line 2
-| function afun()
-|               ^ info: this token is not linked to the ast
 In afun.m, line 3
 |     af_in_cell = {@(x) [1 2]};
 |                    ^ info: this token is not linked to the ast

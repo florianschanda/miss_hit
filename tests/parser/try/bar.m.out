@@ -25,10 +25,4 @@ Root: Function_File
               Name: Identifier <rethrow>
               Arguments: Identifier <ME>
 ----------------------------------------------------------------------
-In bar.m, line 3
-| function bar()
-|             ^ info: this token is not linked to the ast
-In bar.m, line 3
-| function bar()
-|              ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

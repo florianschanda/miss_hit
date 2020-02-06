@@ -16,13 +16,4 @@ Root: Function_File
           Name: Identifier <disp>
           Arguments: Identifier <s2>
 ----------------------------------------------------------------------
-In d2.m, line 1
-| function d2(s1, s2)
-|            ^ info: this token is not linked to the ast
-In d2.m, line 1
-| function d2(s1, s2)
-|               ^ info: this token is not linked to the ast
-In d2.m, line 1
-| function d2(s1, s2)
-|                   ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

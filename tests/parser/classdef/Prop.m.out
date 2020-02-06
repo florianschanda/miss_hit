@@ -114,30 +114,6 @@ In Prop.m, line 11
 In Prop.m, line 11
 |    properties (Access = private)
 |                                ^ info: this token is not linked to the ast
-In Prop.m, line 16
-|      function obj = set.Password(obj,pw)
-|                   ^ info: this token is not linked to the ast
-In Prop.m, line 16
-|      function obj = set.Password(obj,pw)
-|                                 ^ info: this token is not linked to the ast
-In Prop.m, line 16
-|      function obj = set.Password(obj,pw)
-|                                     ^ info: this token is not linked to the ast
-In Prop.m, line 16
-|      function obj = set.Password(obj,pw)
-|                                        ^ info: this token is not linked to the ast
-In Prop.m, line 23
-|      function o = getPropValue(obj,PropName)
-|                 ^ info: this token is not linked to the ast
-In Prop.m, line 23
-|      function o = getPropValue(obj,PropName)
-|                               ^ info: this token is not linked to the ast
-In Prop.m, line 23
-|      function o = getPropValue(obj,PropName)
-|                                   ^ info: this token is not linked to the ast
-In Prop.m, line 23
-|      function o = getPropValue(obj,PropName)
-|                                            ^ info: this token is not linked to the ast
 In Prop.m, line 24
 |        o = obj.(PropName);
 |                ^ info: this token is not linked to the ast

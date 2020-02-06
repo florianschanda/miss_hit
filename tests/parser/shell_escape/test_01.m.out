@@ -9,10 +9,4 @@ Root: Function_File
         Expression: Escape form Function_Call
           Arguments: Char_Array_Literal 'echo foo bar'
 ----------------------------------------------------------------------
-In test_01.m, line 3
-| function test_01()
-|                 ^ info: this token is not linked to the ast
-In test_01.m, line 3
-| function test_01()
-|                  ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

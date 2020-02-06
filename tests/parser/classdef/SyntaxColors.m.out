@@ -56,21 +56,6 @@ Root: Class_File
               Field: Identifier <B>
             RHS: Identifier <b>
 ----------------------------------------------------------------------
-In SyntaxColors.m, line 10
-|       function c = SyntaxColors(r, g, b)
-|                  ^ info: this token is not linked to the ast
-In SyntaxColors.m, line 10
-|       function c = SyntaxColors(r, g, b)
-|                                ^ info: this token is not linked to the ast
-In SyntaxColors.m, line 10
-|       function c = SyntaxColors(r, g, b)
-|                                  ^ info: this token is not linked to the ast
-In SyntaxColors.m, line 10
-|       function c = SyntaxColors(r, g, b)
-|                                     ^ info: this token is not linked to the ast
-In SyntaxColors.m, line 10
-|       function c = SyntaxColors(r, g, b)
-|                                        ^ info: this token is not linked to the ast
 In SyntaxColors.m, line 17
 |       Error   (1, 0, 0)
 |               ^ info: this token is not linked to the ast

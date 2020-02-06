@@ -39,33 +39,6 @@ Root: Function_File
         LHS: Identifier <optionCell>
         RHS: Identifier <option>
 ----------------------------------------------------------------------
-In test_10.m, line 3
-| function [xCell,yCell,optionCell] = test_10(x,y,option)
-|          ^ info: this token is not linked to the ast
-In test_10.m, line 3
-| function [xCell,yCell,optionCell] = test_10(x,y,option)
-|                ^ info: this token is not linked to the ast
-In test_10.m, line 3
-| function [xCell,yCell,optionCell] = test_10(x,y,option)
-|                      ^ info: this token is not linked to the ast
-In test_10.m, line 3
-| function [xCell,yCell,optionCell] = test_10(x,y,option)
-|                                 ^ info: this token is not linked to the ast
-In test_10.m, line 3
-| function [xCell,yCell,optionCell] = test_10(x,y,option)
-|                                   ^ info: this token is not linked to the ast
-In test_10.m, line 3
-| function [xCell,yCell,optionCell] = test_10(x,y,option)
-|                                            ^ info: this token is not linked to the ast
-In test_10.m, line 3
-| function [xCell,yCell,optionCell] = test_10(x,y,option)
-|                                              ^ info: this token is not linked to the ast
-In test_10.m, line 3
-| function [xCell,yCell,optionCell] = test_10(x,y,option)
-|                                                ^ info: this token is not linked to the ast
-In test_10.m, line 3
-| function [xCell,yCell,optionCell] = test_10(x,y,option)
-|                                                       ^ info: this token is not linked to the ast
 In test_10.m, line 4
 |     arguments (Repeating)
 |               ^ info: this token is not linked to the ast

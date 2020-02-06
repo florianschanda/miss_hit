@@ -76,21 +76,6 @@ Root: Function_File
                 Items: Number_Literal <3>
                 Items: Number_Literal <4>
 ----------------------------------------------------------------------
-In test_10.m, line 5
-| function [varargout] = f (varargin)
-|          ^ info: this token is not linked to the ast
-In test_10.m, line 5
-| function [varargout] = f (varargin)
-|                    ^ info: this token is not linked to the ast
-In test_10.m, line 5
-| function [varargout] = f (varargin)
-|                      ^ info: this token is not linked to the ast
-In test_10.m, line 5
-| function [varargout] = f (varargin)
-|                          ^ info: this token is not linked to the ast
-In test_10.m, line 5
-| function [varargout] = f (varargin)
-|                                   ^ info: this token is not linked to the ast
 In test_10.m, line 8
 |   varargout{1} = varargin{1};
 |            ^ info: this token is not linked to the ast
@@ -133,12 +118,6 @@ In test_10.m, line 11
 In test_10.m, line 11
 |   varargout{4} = 4;
 |              ^ info: this token is not linked to the ast
-In test_10.m, line 14
-| function test()
-|              ^ info: this token is not linked to the ast
-In test_10.m, line 14
-| function test()
-|               ^ info: this token is not linked to the ast
 In test_10.m, line 15
 |  [s, t, u, v] = f (1, 2, 3);
 |  ^ info: this token is not linked to the ast

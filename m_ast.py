@@ -544,30 +544,42 @@ class Function_Definition(Definition):
 
 
 class Function_Signature(Node):
-    def __init__(self, n_name, l_inputs, l_outputs):
+    def __init__(self):
         super().__init__()
+
+        self.n_name = None
+        # (Simple dotted) name of the function
+
+        self.l_inputs = None
+        # List of inputs
+
+        self.l_outputs = None
+        # List of outputs
+
+    def set_name(self, n_name):
         assert isinstance(n_name, Name)
+
+        self.n_name = n_name
+        self.n_name.set_parent(self)
+
+    def set_inputs(self, l_inputs):
         assert isinstance(l_inputs, list)
         for n in l_inputs:
             assert isinstance(n, Identifier), \
                 str(n) + " is %s and not an Identifier" % n.__class__.__name__
-        assert isinstance(l_outputs, list)
-        for n in l_outputs:
-            assert isinstance(n, Identifier)
-
-        self.n_name = n_name
-        self.n_name.set_parent(self)
-        # (Simple dotted) name of the function
 
         self.l_inputs  = l_inputs
         for n_input in self.l_inputs:
             n_input.set_parent(self)
-        # List of inputs
+
+    def set_outputs(self, l_outputs):
+        assert isinstance(l_outputs, list)
+        for n in l_outputs:
+            assert isinstance(n, Identifier)
 
         self.l_outputs = l_outputs
         for n_output in self.l_outputs:
             n_output.set_parent(self)
-        # List of outputs
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Function_Definition,

@@ -36,10 +36,4 @@ Root: Function_File
                 Name: Identifier <disp>
                 Arguments: Char_Array_Literal 'other value'
 ----------------------------------------------------------------------
-In simple.m, line 3
-| function simple()
-|                ^ info: this token is not linked to the ast
-In simple.m, line 3
-| function simple()
-|                 ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

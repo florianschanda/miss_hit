@@ -24,12 +24,6 @@ Root: Function_File
               Name: Identifier <somefun>
               Arguments: Identifier <INP>
 ----------------------------------------------------------------------
-In test_01.m, line 3
-| function test_01()
-|                 ^ info: this token is not linked to the ast
-In test_01.m, line 3
-| function test_01()
-|                  ^ info: this token is not linked to the ast
 In test_01.m, line 5
 |     INP = load(['somedatafile'<anon,> num2str(labindex) '.mat']);
 |                               ^^^^^^^ info: this token is not linked to the ast

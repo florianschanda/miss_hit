@@ -39,12 +39,6 @@ Root: Function_File
           Name: Identifier <x>
           Arguments: Char_Array_Literal '+1'
 ----------------------------------------------------------------------
-In invalid_11.m, line 3
-| function invalid_11()
-|                    ^ info: this token is not linked to the ast
-In invalid_11.m, line 3
-| function invalid_11()
-|                     ^ info: this token is not linked to the ast
 In invalid_11.m, line 4
 |   x = @(arg) arg;
 |        ^ info: this token is not linked to the ast

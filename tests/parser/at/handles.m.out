@@ -25,12 +25,6 @@ Root: Function_File
             LHS: Identifier <a>
             RHS: Identifier <b>
 ----------------------------------------------------------------------
-In handles.m, line 3
-| function handles()
-|                 ^ info: this token is not linked to the ast
-In handles.m, line 3
-| function handles()
-|                  ^ info: this token is not linked to the ast
 In handles.m, line 6
 |     y = @(a) 1 + a;
 |          ^ info: this token is not linked to the ast

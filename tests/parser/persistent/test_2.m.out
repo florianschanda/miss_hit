@@ -72,15 +72,6 @@ Root: Function_File
                         Arguments: Identifier <dt>
                     Items: Char_Array_Literal ' sec since last log.'
 ----------------------------------------------------------------------
-In test_2.m, line 3
-| function logData(fname,n)
-|                 ^ info: this token is not linked to the ast
-In test_2.m, line 3
-| function logData(fname,n)
-|                       ^ info: this token is not linked to the ast
-In test_2.m, line 3
-| function logData(fname,n)
-|                         ^ info: this token is not linked to the ast
 In test_2.m, line 20
 |         disp(['Not logging. '<anon,> num2str(seconds(dt)) ' sec since last log.']);
 |                              ^^^^^^^ info: this token is not linked to the ast

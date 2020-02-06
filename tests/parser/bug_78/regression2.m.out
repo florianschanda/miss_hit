@@ -37,7 +37,4 @@ Root: Function_File
         LHS: Identifier <x>
         RHS: Identifier <y>
 ----------------------------------------------------------------------
-In regression2.m, line 3
-| function x = regression2
-|            ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)

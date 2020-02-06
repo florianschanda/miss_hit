@@ -502,21 +502,28 @@ class MATLAB_Parser:
         return functions
 
     def parse_function_signature(self):
+        rv = Function_Signature()
+
         # Parse returns. Either 'x' or a list '[x, y]'
         l_outputs = []
         if self.peek("A_BRA"):
             out_brackets = True
             self.match("A_BRA")
+            self.ct.set_ast(rv)
             if self.peek("A_KET"):
                 self.match("A_KET")
+                self.ct.set_ast(rv)
             else:
                 while True:
                     l_outputs.append(self.parse_identifier(allow_void=True))
                     if self.peek("COMMA"):
                         self.match("COMMA")
+                        self.ct.set_ast(rv)
                     else:
                         break
                 self.match("A_KET")
+                self.ct.set_ast(rv)
+
         else:
             out_brackets = False
             l_outputs.append(self.parse_simple_name())
@@ -537,23 +544,30 @@ class MATLAB_Parser:
             # function [a, b] = potato...
             # function a = potato...
             self.match("ASSIGNMENT")
+            self.ct.set_ast(rv)
             n_name = self.parse_simple_name()
 
         l_inputs = []
         if self.peek("BRA"):
             self.match("BRA")
+            self.ct.set_ast(rv)
             if self.peek("KET"):
                 self.match("KET")
+                self.ct.set_ast(rv)
             else:
                 while True:
                     l_inputs.append(self.parse_identifier(allow_void=True))
                     if self.peek("COMMA"):
                         self.match("COMMA")
+                        self.ct.set_ast(rv)
                     else:
                         break
                 self.match("KET")
+                self.ct.set_ast(rv)
 
-        rv = Function_Signature(n_name, l_inputs, l_outputs)
+        rv.set_name(n_name)
+        rv.set_inputs(l_inputs)
+        rv.set_outputs(l_outputs)
         self.match_eos(rv)
         return rv
 

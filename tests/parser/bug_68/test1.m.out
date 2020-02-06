@@ -22,34 +22,4 @@ Root: Class_File
         Name: Identifier <properties>
         Outputs: Identifier <p>
 ----------------------------------------------------------------------
-In test1.m, line 5
-|     function obj = test1()
-|                  ^ info: this token is not linked to the ast
-In test1.m, line 5
-|     function obj = test1()
-|                         ^ info: this token is not linked to the ast
-In test1.m, line 5
-|     function obj = test1()
-|                          ^ info: this token is not linked to the ast
-In test1.m, line 9
-|     wibble()
-|           ^ info: this token is not linked to the ast
-In test1.m, line 9
-|     wibble()
-|            ^ info: this token is not linked to the ast
-In test1.m, line 10
-|     potato(x)
-|           ^ info: this token is not linked to the ast
-In test1.m, line 10
-|     potato(x)
-|             ^ info: this token is not linked to the ast
-In test1.m, line 11
-|     p = properties()
-|       ^ info: this token is not linked to the ast
-In test1.m, line 11
-|     p = properties()
-|                   ^ info: this token is not linked to the ast
-In test1.m, line 11
-|     p = properties()
-|                    ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

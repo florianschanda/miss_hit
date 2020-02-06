@@ -13,13 +13,4 @@ Root: Function_File
           LHS: Identifier <x>
           RHS: Number_Literal <1>
 ----------------------------------------------------------------------
-In simple.m, line 1
-| function result = addOne(x)
-|                 ^ info: this token is not linked to the ast
-In simple.m, line 1
-| function result = addOne(x)
-|                         ^ info: this token is not linked to the ast
-In simple.m, line 1
-| function result = addOne(x)
-|                           ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
