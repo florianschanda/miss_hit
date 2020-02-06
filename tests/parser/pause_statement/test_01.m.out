@@ -13,4 +13,13 @@ Root: Script_File
         Name: Identifier <disp>
         Arguments: Char_Array_Literal 'potato'
 ----------------------------------------------------------------------
+In test_01.m, line 3
+| disp potato;
+|            ^ info: this token is not linked to the ast
+In test_01.m, line 4
+| pause;
+|      ^ info: this token is not linked to the ast
+In test_01.m, line 5
+| disp potato;
+|            ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

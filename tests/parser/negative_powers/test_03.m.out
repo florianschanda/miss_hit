@@ -14,6 +14,15 @@ Root: Function_File
               Expression: Number_Literal <2>
           RHS: Number_Literal <1>
 ----------------------------------------------------------------------
+In test_03.m, line 3
+| function test_03()
+|                 ^ info: this token is not linked to the ast
+In test_03.m, line 3
+| function test_03()
+|                  ^ info: this token is not linked to the ast
+In test_03.m, line 4
+|   x = 2 ^ -2 + 1;  % (2 ^ -2) + 1
+|                 ^ info: this token is not linked to the ast
 In test_03.m, line 5
 | end
 | ^^^ info: this token is not linked to the ast

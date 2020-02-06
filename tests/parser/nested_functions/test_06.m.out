@@ -22,9 +22,18 @@ Root: Function_File
             LHS: Identifier <x>
             RHS: Number_Literal <1>
 ----------------------------------------------------------------------
+In test_06.m, line 4
+|     x = 5;
+|          ^ info: this token is not linked to the ast
+In test_06.m, line 5
+|     z = nestfun;
+|                ^ info: this token is not linked to the ast
 In test_06.m, line 7
 |     function y = nestfun
 |                ^ info: this token is not linked to the ast
+In test_06.m, line 8
+|         y = x + 1;
+|                  ^ info: this token is not linked to the ast
 In test_06.m, line 9
 |     end
 |     ^^^ info: this token is not linked to the ast

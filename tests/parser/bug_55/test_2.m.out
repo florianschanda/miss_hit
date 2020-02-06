@@ -16,6 +16,15 @@ Root: Class_File
 In test_2.m, line 6
 |     function x = properties()
 |                ^ info: this token is not linked to the ast
+In test_2.m, line 6
+|     function x = properties()
+|                            ^ info: this token is not linked to the ast
+In test_2.m, line 6
+|     function x = properties()
+|                             ^ info: this token is not linked to the ast
+In test_2.m, line 7
+|        x = 42;
+|              ^ info: this token is not linked to the ast
 In test_2.m, line 8
 |     end
 |     ^^^ info: this token is not linked to the ast

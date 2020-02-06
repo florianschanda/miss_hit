@@ -12,6 +12,15 @@ Root: Function_File
             LHS: Identifier <foo>
             RHS: Number_Literal <3>
 ----------------------------------------------------------------------
+In test.m, line 3
+| function test()
+|              ^ info: this token is not linked to the ast
+In test.m, line 3
+| function test()
+|               ^ info: this token is not linked to the ast
+In test.m, line 4
+|   A = foo.^3';
+|              ^ info: this token is not linked to the ast
 In test.m, line 5
 | end
 | ^^^ info: this token is not linked to the ast

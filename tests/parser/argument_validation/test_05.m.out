@@ -47,12 +47,105 @@ Root: Function_File
             Arguments: Identifier <y>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
+In test_05.m, line 3
+| function test_05(x,y,maxval,minval)
+|                 ^ info: this token is not linked to the ast
+In test_05.m, line 3
+| function test_05(x,y,maxval,minval)
+|                   ^ info: this token is not linked to the ast
+In test_05.m, line 3
+| function test_05(x,y,maxval,minval)
+|                     ^ info: this token is not linked to the ast
+In test_05.m, line 3
+| function test_05(x,y,maxval,minval)
+|                            ^ info: this token is not linked to the ast
+In test_05.m, line 3
+| function test_05(x,y,maxval,minval)
+|                                   ^ info: this token is not linked to the ast
+In test_05.m, line 5
+|         x (1,:) double
+|           ^ info: this token is not linked to the ast
+In test_05.m, line 5
+|         x (1,:) double
+|             ^ info: this token is not linked to the ast
+In test_05.m, line 5
+|         x (1,:) double
+|               ^ info: this token is not linked to the ast
+In test_05.m, line 6
+|         y (1,:) double
+|           ^ info: this token is not linked to the ast
+In test_05.m, line 6
+|         y (1,:) double
+|             ^ info: this token is not linked to the ast
+In test_05.m, line 6
+|         y (1,:) double
+|               ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                  ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                    ^ info: this token is not linked to the ast
 In test_05.m, line 7
 |         maxval (1,1) double = max(max(x),max(y))
 |                             ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                                  ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                                      ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                                        ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                                         ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                                             ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                                               ^ info: this token is not linked to the ast
+In test_05.m, line 7
+|         maxval (1,1) double = max(max(x),max(y))
+|                                                ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                  ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                    ^ info: this token is not linked to the ast
 In test_05.m, line 8
 |         minval (1,1) double = min(min(x),min(y))
 |                             ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                                  ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                                      ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                                        ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                                         ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                                             ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                                               ^ info: this token is not linked to the ast
+In test_05.m, line 8
+|         minval (1,1) double = min(min(x),min(y))
+|                                                ^ info: this token is not linked to the ast
 In test_05.m, line 9
 |     end
 |     ^^^ info: this token is not linked to the ast

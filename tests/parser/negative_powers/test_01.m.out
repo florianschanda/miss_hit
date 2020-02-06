@@ -38,6 +38,33 @@ Root: Function_File
                 Expression: Unary_Operation +
                   Expression: Number_Literal <4>
 ----------------------------------------------------------------------
+In test_01.m, line 3
+| function test_01()
+|                 ^ info: this token is not linked to the ast
+In test_01.m, line 3
+| function test_01()
+|                  ^ info: this token is not linked to the ast
+In test_01.m, line 4
+|   a = 10 ^ 4;
+|             ^ info: this token is not linked to the ast
+In test_01.m, line 5
+|   b = 10 ^ (-4);
+|            ^ info: this token is not linked to the ast
+In test_01.m, line 5
+|   b = 10 ^ (-4);
+|               ^ info: this token is not linked to the ast
+In test_01.m, line 5
+|   b = 10 ^ (-4);
+|                ^ info: this token is not linked to the ast
+In test_01.m, line 7
+|   x = 10 ^ +4;   % x == a
+|              ^ info: this token is not linked to the ast
+In test_01.m, line 8
+|   y = 10 ^ -4;   % x == b
+|              ^ info: this token is not linked to the ast
+In test_01.m, line 9
+|   z = 10 ^ -+-+4;  % z == a
+|                 ^ info: this token is not linked to the ast
 In test_01.m, line 10
 | end
 | ^^^ info: this token is not linked to the ast

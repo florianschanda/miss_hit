@@ -19,6 +19,21 @@ Root: Function_File
               LHS: Identifier <x>
               RHS: Identifier <y>
 ----------------------------------------------------------------------
+In baz.m, line 6
+| function baz()
+|             ^ info: this token is not linked to the ast
+In baz.m, line 6
+| function baz()
+|              ^ info: this token is not linked to the ast
+In baz.m, line 7
+|     x = 5;
+|          ^ info: this token is not linked to the ast
+In baz.m, line 8
+|     y = 0;
+|          ^ info: this token is not linked to the ast
+In baz.m, line 10
+|         z = x / y;
+|                  ^ info: this token is not linked to the ast
 In baz.m, line 11
 |     end
 |     ^^^ info: this token is not linked to the ast

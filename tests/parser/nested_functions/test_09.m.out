@@ -17,6 +17,15 @@ Root: Function_File
         Statements: Naked_Expression_Statement
           Expression: Identifier <makeX>
 ----------------------------------------------------------------------
+In test_09.m, line 5
+|     X = [];
+|           ^ info: this token is not linked to the ast
+In test_09.m, line 6
+|     nestedfx;
+|             ^ info: this token is not linked to the ast
+In test_09.m, line 9
+|         makeX;
+|              ^ info: this token is not linked to the ast
 In test_09.m, line 10
 |     end
 |     ^^^ info: this token is not linked to the ast

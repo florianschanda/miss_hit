@@ -14,9 +14,12 @@ Root: Function_File
           Arguments: Char_Array_Literal '../'
           Arguments: Char_Array_Literal 'bar'
 ----------------------------------------------------------------------
-In invalid_08.m, line 4
-|   cd ../...
-|         ^^^^ info: this token is not linked to the ast
+In invalid_08.m, line 3
+| function invalid_08()
+|                    ^ info: this token is not linked to the ast
+In invalid_08.m, line 3
+| function invalid_08()
+|                     ^ info: this token is not linked to the ast
 In invalid_08.m, line 7
 | end
 | ^^^ info: this token is not linked to the ast

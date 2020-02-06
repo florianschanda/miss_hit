@@ -11,4 +11,16 @@ Root: Script_File
           Prefix: Identifier <c>
           Field: Identifier <meow>
 ----------------------------------------------------------------------
+In test.m, line 3
+| c = cat;
+|        ^ info: this token is not linked to the ast
+In test.m, line 4
+| c.meow();
+|       ^ info: this token is not linked to the ast
+In test.m, line 4
+| c.meow();
+|        ^ info: this token is not linked to the ast
+In test.m, line 4
+| c.meow();
+|         ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

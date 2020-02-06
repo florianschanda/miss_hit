@@ -19,10 +19,25 @@ In potato.m, line 3
 |          ^ info: this token is not linked to the ast
 In potato.m, line 3
 | function [a, b] = potato()
+|            ^ info: this token is not linked to the ast
+In potato.m, line 3
+| function [a, b] = potato()
 |               ^ info: this token is not linked to the ast
 In potato.m, line 3
 | function [a, b] = potato()
 |                 ^ info: this token is not linked to the ast
+In potato.m, line 3
+| function [a, b] = potato()
+|                         ^ info: this token is not linked to the ast
+In potato.m, line 3
+| function [a, b] = potato()
+|                          ^ info: this token is not linked to the ast
+In potato.m, line 4
+|    a = 1;
+|         ^ info: this token is not linked to the ast
+In potato.m, line 5
+|    b = 2;
+|         ^ info: this token is not linked to the ast
 In potato.m, line 6
 | end
 | ^^^ info: this token is not linked to the ast

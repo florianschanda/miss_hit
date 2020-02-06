@@ -22,9 +22,27 @@ Root: Function_File
           LHS: Identifier <n>
           RHS: Number_Literal <1>
 ----------------------------------------------------------------------
+In test_1.m, line 3
+| function myFun()
+|               ^ info: this token is not linked to the ast
+In test_1.m, line 3
+| function myFun()
+|                ^ info: this token is not linked to the ast
+In test_1.m, line 5
+|     if isempty(n)
+|               ^ info: this token is not linked to the ast
+In test_1.m, line 5
+|     if isempty(n)
+|                 ^ info: this token is not linked to the ast
+In test_1.m, line 6
+|         n = 0;
+|              ^ info: this token is not linked to the ast
 In test_1.m, line 7
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test_1.m, line 8
+|     n = n+1;
+|            ^ info: this token is not linked to the ast
 In test_1.m, line 9
 | end
 | ^^^ info: this token is not linked to the ast

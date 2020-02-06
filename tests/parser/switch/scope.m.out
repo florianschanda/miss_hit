@@ -24,6 +24,9 @@ In scope.m, line 5
 In scope.m, line 5
 |       x = -pi:0.01:pi;
 |                   ^ info: this token is not linked to the ast
+In scope.m, line 5
+|       x = -pi:0.01:pi;
+|                      ^ info: this token is not linked to the ast
 In scope.m, line 8
 | end
 | ^^^ info: this token is not linked to the ast

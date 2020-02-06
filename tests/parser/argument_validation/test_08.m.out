@@ -17,4 +17,28 @@ Root: Script_File
         Arguments: Number_Literal <2>
         Arguments: Number_Literal <3>
 ----------------------------------------------------------------------
+In test_08.m, line 3
+| c = test_07;
+|            ^ info: this token is not linked to the ast
+In test_08.m, line 4
+| d = test_07(2);
+|            ^ info: this token is not linked to the ast
+In test_08.m, line 4
+| d = test_07(2);
+|              ^ info: this token is not linked to the ast
+In test_08.m, line 4
+| d = test_07(2);
+|               ^ info: this token is not linked to the ast
+In test_08.m, line 5
+| e = test_09(2, 3);
+|            ^ info: this token is not linked to the ast
+In test_08.m, line 5
+| e = test_09(2, 3);
+|              ^ info: this token is not linked to the ast
+In test_08.m, line 5
+| e = test_09(2, 3);
+|                 ^ info: this token is not linked to the ast
+In test_08.m, line 5
+| e = test_09(2, 3);
+|                  ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

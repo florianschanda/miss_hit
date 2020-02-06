@@ -26,6 +26,18 @@ Root: Function_File
 In test_26.m, line 3
 | function c = test_26(a, b,c)
 |            ^ info: this token is not linked to the ast
+In test_26.m, line 3
+| function c = test_26(a, b,c)
+|                     ^ info: this token is not linked to the ast
+In test_26.m, line 3
+| function c = test_26(a, b,c)
+|                       ^ info: this token is not linked to the ast
+In test_26.m, line 3
+| function c = test_26(a, b,c)
+|                          ^ info: this token is not linked to the ast
+In test_26.m, line 3
+| function c = test_26(a, b,c)
+|                            ^ info: this token is not linked to the ast
 In test_26.m, line 7
 |         c uint32 = a .* b
 |                  ^ info: this token is not linked to the ast

@@ -75,24 +75,114 @@ Root: Function_File
                         Name: Identifier <z>
                         Arguments: Reshape
 ----------------------------------------------------------------------
+In test_19.m, line 3
+| function test_19(x,y,scale)
+|                 ^ info: this token is not linked to the ast
+In test_19.m, line 3
+| function test_19(x,y,scale)
+|                   ^ info: this token is not linked to the ast
+In test_19.m, line 3
+| function test_19(x,y,scale)
+|                     ^ info: this token is not linked to the ast
+In test_19.m, line 3
+| function test_19(x,y,scale)
+|                           ^ info: this token is not linked to the ast
+In test_19.m, line 4
+|     arguments(Repeating)
+|              ^ info: this token is not linked to the ast
+In test_19.m, line 4
+|     arguments(Repeating)
+|                        ^ info: this token is not linked to the ast
+In test_19.m, line 5
+|         x (1,:) double
+|           ^ info: this token is not linked to the ast
+In test_19.m, line 5
+|         x (1,:) double
+|             ^ info: this token is not linked to the ast
+In test_19.m, line 5
+|         x (1,:) double
+|               ^ info: this token is not linked to the ast
+In test_19.m, line 6
+|         y (1,:) double
+|           ^ info: this token is not linked to the ast
+In test_19.m, line 6
+|         y (1,:) double
+|             ^ info: this token is not linked to the ast
+In test_19.m, line 6
+|         y (1,:) double
+|               ^ info: this token is not linked to the ast
 In test_19.m, line 7
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test_19.m, line 9
+|         scale.PlotType (1,1) string
+|                        ^ info: this token is not linked to the ast
+In test_19.m, line 9
+|         scale.PlotType (1,1) string
+|                          ^ info: this token is not linked to the ast
+In test_19.m, line 9
+|         scale.PlotType (1,1) string
+|                            ^ info: this token is not linked to the ast
 In test_19.m, line 10
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test_19.m, line 11
+|     z = reshape([x;y],1,[]);
+|                ^ info: this token is not linked to the ast
+In test_19.m, line 11
+|     z = reshape([x;y],1,[]);
+|                   ^ info: this token is not linked to the ast
+In test_19.m, line 11
+|     z = reshape([x;y],1,[]);
+|                      ^ info: this token is not linked to the ast
+In test_19.m, line 11
+|     z = reshape([x;y],1,[]);
+|                        ^ info: this token is not linked to the ast
+In test_19.m, line 11
+|     z = reshape([x;y],1,[]);
+|                           ^ info: this token is not linked to the ast
+In test_19.m, line 11
+|     z = reshape([x;y],1,[]);
+|                            ^ info: this token is not linked to the ast
+In test_19.m, line 12
+|     if isfield(scale,"PlotType")
+|               ^ info: this token is not linked to the ast
+In test_19.m, line 12
+|     if isfield(scale,"PlotType")
+|                     ^ info: this token is not linked to the ast
+In test_19.m, line 12
+|     if isfield(scale,"PlotType")
+|                                ^ info: this token is not linked to the ast
+In test_19.m, line 14
+|             plot(z{:});
+|                 ^ info: this token is not linked to the ast
 In test_19.m, line 14
 |             plot(z{:});
 |                   ^ info: this token is not linked to the ast
 In test_19.m, line 14
 |             plot(z{:});
 |                     ^ info: this token is not linked to the ast
+In test_19.m, line 14
+|             plot(z{:});
+|                      ^ info: this token is not linked to the ast
+In test_19.m, line 14
+|             plot(z{:});
+|                       ^ info: this token is not linked to the ast
+In test_19.m, line 16
+|             loglog(z{:});
+|                   ^ info: this token is not linked to the ast
 In test_19.m, line 16
 |             loglog(z{:});
 |                     ^ info: this token is not linked to the ast
 In test_19.m, line 16
 |             loglog(z{:});
 |                       ^ info: this token is not linked to the ast
+In test_19.m, line 16
+|             loglog(z{:});
+|                        ^ info: this token is not linked to the ast
+In test_19.m, line 16
+|             loglog(z{:});
+|                         ^ info: this token is not linked to the ast
 In test_19.m, line 17
 |         end
 |         ^^^ info: this token is not linked to the ast

@@ -86,6 +86,108 @@ Root: Function_File
                 Items: Number_Literal <3>
                 Items: Number_Literal <4>
 ----------------------------------------------------------------------
+In basic.m, line 2
+| function basic()
+|               ^ info: this token is not linked to the ast
+In basic.m, line 2
+| function basic()
+|                ^ info: this token is not linked to the ast
+In basic.m, line 4
+|     x = {1<anon,> 2 {3 4}};
+|           ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 4
+|     x = {1 2<anon,> {3 4}};
+|             ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 4
+|     x = {1 2 {3<anon,> 4}};
+|                ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 4
+|     x = {1 2 {3 4}};
+|                    ^ info: this token is not linked to the ast
+In basic.m, line 5
+|     x = {1, 2 {3 4}};
+|           ^ info: this token is not linked to the ast
+In basic.m, line 5
+|     x = {1, 2<anon,> {3 4}};
+|              ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 5
+|     x = {1, 2 {3<anon,> 4}};
+|                 ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 5
+|     x = {1, 2 {3 4}};
+|                     ^ info: this token is not linked to the ast
+In basic.m, line 6
+|     x = {1<anon,> 2, {3 4}};
+|           ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 6
+|     x = {1 2, {3 4}};
+|             ^ info: this token is not linked to the ast
+In basic.m, line 6
+|     x = {1 2, {3<anon,> 4}};
+|                 ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 6
+|     x = {1 2, {3 4}};
+|                     ^ info: this token is not linked to the ast
+In basic.m, line 7
+|     x = {1<anon,> 2 {3, 4}};
+|           ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 7
+|     x = {1 2<anon,> {3, 4}};
+|             ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 7
+|     x = {1 2 {3, 4}};
+|                ^ info: this token is not linked to the ast
+In basic.m, line 7
+|     x = {1 2 {3, 4}};
+|                     ^ info: this token is not linked to the ast
+In basic.m, line 8
+|     x = {1, 2, {3 4}};
+|           ^ info: this token is not linked to the ast
+In basic.m, line 8
+|     x = {1, 2, {3 4}};
+|              ^ info: this token is not linked to the ast
+In basic.m, line 8
+|     x = {1, 2, {3<anon,> 4}};
+|                  ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 8
+|     x = {1, 2, {3 4}};
+|                      ^ info: this token is not linked to the ast
+In basic.m, line 9
+|     x = {1<anon,> 2,{3 4}};
+|           ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 9
+|     x = {1 2,{3 4}};
+|             ^ info: this token is not linked to the ast
+In basic.m, line 9
+|     x = {1 2,{3<anon,> 4}};
+|                ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 9
+|     x = {1 2,{3 4}};
+|                    ^ info: this token is not linked to the ast
+In basic.m, line 10
+|     x = {1<anon,> 2,{3,4}};
+|           ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 10
+|     x = {1 2,{3,4}};
+|             ^ info: this token is not linked to the ast
+In basic.m, line 10
+|     x = {1 2,{3,4}};
+|                ^ info: this token is not linked to the ast
+In basic.m, line 10
+|     x = {1 2,{3,4}};
+|                    ^ info: this token is not linked to the ast
+In basic.m, line 11
+|     x = {1,2,{3 4}};
+|           ^ info: this token is not linked to the ast
+In basic.m, line 11
+|     x = {1,2,{3 4}};
+|             ^ info: this token is not linked to the ast
+In basic.m, line 11
+|     x = {1,2,{3<anon,> 4}};
+|                ^^^^^^^ info: this token is not linked to the ast
+In basic.m, line 11
+|     x = {1,2,{3 4}};
+|                    ^ info: this token is not linked to the ast
 In basic.m, line 12
 | end
 | ^^^ info: this token is not linked to the ast

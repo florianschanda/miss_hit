@@ -14,6 +14,12 @@ Root: Script_File
             LHS: Identifier <potato>
             RHS: Number_Literal <8>
 ----------------------------------------------------------------------
+In invalid_modification.m, line 6
+|       x = 1;
+|            ^ info: this token is not linked to the ast
+In invalid_modification.m, line 7
+|       potato = 8;
+|                 ^ info: this token is not linked to the ast
 In invalid_modification.m, line 8
 | end
 | ^^^ info: this token is not linked to the ast

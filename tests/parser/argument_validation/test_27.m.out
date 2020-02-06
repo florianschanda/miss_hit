@@ -28,4 +28,49 @@ Root: Script_File
           LHS: Identifier <c>
           RHS: Number_Literal <25>
 ----------------------------------------------------------------------
+In test_27.m, line 3
+| c = test_26(1.8,1.5);
+|            ^ info: this token is not linked to the ast
+In test_27.m, line 3
+| c = test_26(1.8,1.5);
+|                ^ info: this token is not linked to the ast
+In test_27.m, line 3
+| c = test_26(1.8,1.5);
+|                    ^ info: this token is not linked to the ast
+In test_27.m, line 3
+| c = test_26(1.8,1.5);
+|                     ^ info: this token is not linked to the ast
+In test_27.m, line 4
+| assert(c == 4);
+|       ^ info: this token is not linked to the ast
+In test_27.m, line 4
+| assert(c == 4);
+|              ^ info: this token is not linked to the ast
+In test_27.m, line 4
+| assert(c == 4);
+|               ^ info: this token is not linked to the ast
+In test_27.m, line 6
+| c = test_26(1.8,1.5,25);
+|            ^ info: this token is not linked to the ast
+In test_27.m, line 6
+| c = test_26(1.8,1.5,25);
+|                ^ info: this token is not linked to the ast
+In test_27.m, line 6
+| c = test_26(1.8,1.5,25);
+|                    ^ info: this token is not linked to the ast
+In test_27.m, line 6
+| c = test_26(1.8,1.5,25);
+|                       ^ info: this token is not linked to the ast
+In test_27.m, line 6
+| c = test_26(1.8,1.5,25);
+|                        ^ info: this token is not linked to the ast
+In test_27.m, line 7
+| assert(c == 25);
+|       ^ info: this token is not linked to the ast
+In test_27.m, line 7
+| assert(c == 25);
+|               ^ info: this token is not linked to the ast
+In test_27.m, line 7
+| assert(c == 25);
+|                ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

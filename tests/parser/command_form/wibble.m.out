@@ -16,6 +16,33 @@ Root: Function_File
           Name: Identifier <disp>
           Arguments: Identifier <b>
 ----------------------------------------------------------------------
+In wibble.m, line 3
+| function wibble(a, b)
+|                ^ info: this token is not linked to the ast
+In wibble.m, line 3
+| function wibble(a, b)
+|                  ^ info: this token is not linked to the ast
+In wibble.m, line 3
+| function wibble(a, b)
+|                     ^ info: this token is not linked to the ast
+In wibble.m, line 4
+|   disp(a);
+|       ^ info: this token is not linked to the ast
+In wibble.m, line 4
+|   disp(a);
+|         ^ info: this token is not linked to the ast
+In wibble.m, line 4
+|   disp(a);
+|          ^ info: this token is not linked to the ast
+In wibble.m, line 5
+|   disp(b);
+|       ^ info: this token is not linked to the ast
+In wibble.m, line 5
+|   disp(b);
+|         ^ info: this token is not linked to the ast
+In wibble.m, line 5
+|   disp(b);
+|          ^ info: this token is not linked to the ast
 In wibble.m, line 6
 | end
 | ^^^ info: this token is not linked to the ast

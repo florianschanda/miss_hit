@@ -18,4 +18,31 @@ Root: Script_File
         Name: Identifier <disp>
         Arguments: String_Literal "baz"
 ----------------------------------------------------------------------
+In test_02.m, line 3
+| disp("foo");
+|     ^ info: this token is not linked to the ast
+In test_02.m, line 3
+| disp("foo");
+|           ^ info: this token is not linked to the ast
+In test_02.m, line 3
+| disp("foo");
+|            ^ info: this token is not linked to the ast
+In test_02.m, line 5
+|  disp("bar");
+|      ^ info: this token is not linked to the ast
+In test_02.m, line 5
+|  disp("bar");
+|            ^ info: this token is not linked to the ast
+In test_02.m, line 5
+|  disp("bar");
+|             ^ info: this token is not linked to the ast
+In test_02.m, line 7
+| disp("baz");
+|     ^ info: this token is not linked to the ast
+In test_02.m, line 7
+| disp("baz");
+|           ^ info: this token is not linked to the ast
+In test_02.m, line 7
+| disp("baz");
+|            ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)

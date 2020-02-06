@@ -125,30 +125,108 @@ Root: Function_File
 In cells.m, line 6
 | function myCell = test_01()
 |                 ^ info: this token is not linked to the ast
+In cells.m, line 6
+| function myCell = test_01()
+|                          ^ info: this token is not linked to the ast
+In cells.m, line 6
+| function myCell = test_01()
+|                           ^ info: this token is not linked to the ast
+In cells.m, line 8
+|   myCell = {1, 2, 3;
+|              ^ info: this token is not linked to the ast
+In cells.m, line 8
+|   myCell = {1, 2, 3;
+|                 ^ info: this token is not linked to the ast
+In cells.m, line 8
+|   myCell = {1, 2, 3;
+|                    ^ info: this token is not linked to the ast
+In cells.m, line 9
+|             'text', rand(5,10,2), {11; 22; 33}};
+|                   ^ info: this token is not linked to the ast
+In cells.m, line 9
+|             'text', rand(5,10,2), {11; 22; 33}};
+|                         ^ info: this token is not linked to the ast
+In cells.m, line 9
+|             'text', rand(5,10,2), {11; 22; 33}};
+|                           ^ info: this token is not linked to the ast
+In cells.m, line 9
+|             'text', rand(5,10,2), {11; 22; 33}};
+|                              ^ info: this token is not linked to the ast
+In cells.m, line 9
+|             'text', rand(5,10,2), {11; 22; 33}};
+|                                ^ info: this token is not linked to the ast
+In cells.m, line 9
+|             'text', rand(5,10,2), {11; 22; 33}};
+|                                 ^ info: this token is not linked to the ast
+In cells.m, line 9
+|             'text', rand(5,10,2), {11; 22; 33}};
+|                                      ^ info: this token is not linked to the ast
+In cells.m, line 9
+|             'text', rand(5,10,2), {11; 22; 33}};
+|                                          ^ info: this token is not linked to the ast
+In cells.m, line 9
+|             'text', rand(5,10,2), {11; 22; 33}};
+|                                                ^ info: this token is not linked to the ast
 In cells.m, line 11
 | end
 | ^^^ info: this token is not linked to the ast
 In cells.m, line 13
 | function C = test_02()
 |            ^ info: this token is not linked to the ast
+In cells.m, line 13
+| function C = test_02()
+|                     ^ info: this token is not linked to the ast
+In cells.m, line 13
+| function C = test_02()
+|                      ^ info: this token is not linked to the ast
+In cells.m, line 14
+|   C = {};
+|         ^ info: this token is not linked to the ast
 In cells.m, line 15
 | end
 | ^^^ info: this token is not linked to the ast
 In cells.m, line 17
 | function C = test_03()
 |            ^ info: this token is not linked to the ast
+In cells.m, line 17
+| function C = test_03()
+|                     ^ info: this token is not linked to the ast
+In cells.m, line 17
+| function C = test_03()
+|                      ^ info: this token is not linked to the ast
+In cells.m, line 18
+|   C = {1, 2, 3};
+|         ^ info: this token is not linked to the ast
+In cells.m, line 18
+|   C = {1, 2, 3};
+|            ^ info: this token is not linked to the ast
+In cells.m, line 18
+|   C = {1, 2, 3};
+|                ^ info: this token is not linked to the ast
 In cells.m, line 19
 |   C{4, 4} = 44;
 |    ^ info: this token is not linked to the ast
+In cells.m, line 19
+|   C{4, 4} = 44;
+|      ^ info: this token is not linked to the ast
 In cells.m, line 19
 |   C{4, 4} = 44;
 |         ^ info: this token is not linked to the ast
+In cells.m, line 19
+|   C{4, 4} = 44;
+|               ^ info: this token is not linked to the ast
 In cells.m, line 20
 |   C{5,5} = [];
 |    ^ info: this token is not linked to the ast
 In cells.m, line 20
 |   C{5,5} = [];
+|      ^ info: this token is not linked to the ast
+In cells.m, line 20
+|   C{5,5} = [];
 |        ^ info: this token is not linked to the ast
+In cells.m, line 20
+|   C{5,5} = [];
+|              ^ info: this token is not linked to the ast
 In cells.m, line 21
 | end
 | ^^^ info: this token is not linked to the ast
@@ -157,16 +235,94 @@ In cells.m, line 23
 |          ^ info: this token is not linked to the ast
 In cells.m, line 23
 | function [C4, C5] = test_04()
+|             ^ info: this token is not linked to the ast
+In cells.m, line 23
+| function [C4, C5] = test_04()
 |                 ^ info: this token is not linked to the ast
 In cells.m, line 23
 | function [C4, C5] = test_04()
 |                   ^ info: this token is not linked to the ast
+In cells.m, line 23
+| function [C4, C5] = test_04()
+|                            ^ info: this token is not linked to the ast
+In cells.m, line 23
+| function [C4, C5] = test_04()
+|                             ^ info: this token is not linked to the ast
+In cells.m, line 24
+|   C1 = {1, 2, 3};
+|          ^ info: this token is not linked to the ast
+In cells.m, line 24
+|   C1 = {1, 2, 3};
+|             ^ info: this token is not linked to the ast
+In cells.m, line 24
+|   C1 = {1, 2, 3};
+|                 ^ info: this token is not linked to the ast
+In cells.m, line 25
+|   C2 = {'A', 'B', 'C'};
+|            ^ info: this token is not linked to the ast
+In cells.m, line 25
+|   C2 = {'A', 'B', 'C'};
+|                 ^ info: this token is not linked to the ast
+In cells.m, line 25
+|   C2 = {'A', 'B', 'C'};
+|                       ^ info: this token is not linked to the ast
+In cells.m, line 26
+|   C3 = {10, 20, 30};
+|           ^ info: this token is not linked to the ast
+In cells.m, line 26
+|   C3 = {10, 20, 30};
+|               ^ info: this token is not linked to the ast
+In cells.m, line 26
+|   C3 = {10, 20, 30};
+|                    ^ info: this token is not linked to the ast
+In cells.m, line 28
+|   C4 = [C1; C2; C3];
+|           ^ info: this token is not linked to the ast
+In cells.m, line 28
+|   C4 = [C1; C2; C3];
+|               ^ info: this token is not linked to the ast
+In cells.m, line 28
+|   C4 = [C1; C2; C3];
+|                    ^ info: this token is not linked to the ast
+In cells.m, line 34
+|   C5 = {C1; C2; C3};
+|           ^ info: this token is not linked to the ast
+In cells.m, line 34
+|   C5 = {C1; C2; C3};
+|               ^ info: this token is not linked to the ast
+In cells.m, line 34
+|   C5 = {C1; C2; C3};
+|                    ^ info: this token is not linked to the ast
 In cells.m, line 39
 | end
 | ^^^ info: this token is not linked to the ast
 In cells.m, line 41
 | function A = test_05()
 |            ^ info: this token is not linked to the ast
+In cells.m, line 41
+| function A = test_05()
+|                     ^ info: this token is not linked to the ast
+In cells.m, line 41
+| function A = test_05()
+|                      ^ info: this token is not linked to the ast
+In cells.m, line 42
+|   A = [100, {uint8(200), 300}, 'MATLAB'];
+|           ^ info: this token is not linked to the ast
+In cells.m, line 42
+|   A = [100, {uint8(200), 300}, 'MATLAB'];
+|                   ^ info: this token is not linked to the ast
+In cells.m, line 42
+|   A = [100, {uint8(200), 300}, 'MATLAB'];
+|                       ^ info: this token is not linked to the ast
+In cells.m, line 42
+|   A = [100, {uint8(200), 300}, 'MATLAB'];
+|                        ^ info: this token is not linked to the ast
+In cells.m, line 42
+|   A = [100, {uint8(200), 300}, 'MATLAB'];
+|                              ^ info: this token is not linked to the ast
+In cells.m, line 42
+|   A = [100, {uint8(200), 300}, 'MATLAB'];
+|                                         ^ info: this token is not linked to the ast
 In cells.m, line 44
 | end
 | ^^^ info: this token is not linked to the ast

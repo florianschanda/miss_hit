@@ -21,9 +21,27 @@ Root: Function_File
         Name: Identifier <varargin>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
+In test_14.m, line 14
+| function test_14(a, b, varargin)
+|                 ^ info: this token is not linked to the ast
+In test_14.m, line 14
+| function test_14(a, b, varargin)
+|                   ^ info: this token is not linked to the ast
+In test_14.m, line 14
+| function test_14(a, b, varargin)
+|                      ^ info: this token is not linked to the ast
+In test_14.m, line 14
+| function test_14(a, b, varargin)
+|                                ^ info: this token is not linked to the ast
 In test_14.m, line 18
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test_14.m, line 19
+|     arguments (Repeating)
+|               ^ info: this token is not linked to the ast
+In test_14.m, line 19
+|     arguments (Repeating)
+|                         ^ info: this token is not linked to the ast
 In test_14.m, line 21
 |     end
 |     ^^^ info: this token is not linked to the ast

@@ -28,12 +28,39 @@ Root: Class_File
 In Bool.m, line 3
 | classdef Bool < logical
 |               ^ info: this token is not linked to the ast
+In Bool.m, line 5
+|       No  (0)
+|           ^ info: this token is not linked to the ast
+In Bool.m, line 5
+|       No  (0)
+|             ^ info: this token is not linked to the ast
+In Bool.m, line 6
+|       Yes (1)
+|           ^ info: this token is not linked to the ast
+In Bool.m, line 6
+|       Yes (1)
+|             ^ info: this token is not linked to the ast
 In Bool.m, line 7
 |    end
 |    ^^^ info: this token is not linked to the ast
 In Bool.m, line 9
 |      function obj = Bool(val)
 |                   ^ info: this token is not linked to the ast
+In Bool.m, line 9
+|      function obj = Bool(val)
+|                         ^ info: this token is not linked to the ast
+In Bool.m, line 9
+|      function obj = Bool(val)
+|                             ^ info: this token is not linked to the ast
+In Bool.m, line 10
+|        obj@logical(val);
+|                   ^ info: this token is not linked to the ast
+In Bool.m, line 10
+|        obj@logical(val);
+|                       ^ info: this token is not linked to the ast
+In Bool.m, line 10
+|        obj@logical(val);
+|                        ^ info: this token is not linked to the ast
 In Bool.m, line 11
 |      end
 |      ^^^ info: this token is not linked to the ast

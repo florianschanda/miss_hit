@@ -38,9 +38,51 @@ In test_06.m, line 5
 In test_06.m, line 5
 | function [varargout] = f (x, varargin)
 |                      ^ info: this token is not linked to the ast
+In test_06.m, line 5
+| function [varargout] = f (x, varargin)
+|                          ^ info: this token is not linked to the ast
+In test_06.m, line 5
+| function [varargout] = f (x, varargin)
+|                            ^ info: this token is not linked to the ast
+In test_06.m, line 5
+| function [varargout] = f (x, varargin)
+|                                      ^ info: this token is not linked to the ast
+In test_06.m, line 6
+|   assert (nargin == 1);
+|          ^ info: this token is not linked to the ast
+In test_06.m, line 6
+|   assert (nargin == 1);
+|                      ^ info: this token is not linked to the ast
+In test_06.m, line 6
+|   assert (nargin == 1);
+|                       ^ info: this token is not linked to the ast
+In test_06.m, line 7
+|   assert (nargout == 0);
+|          ^ info: this token is not linked to the ast
+In test_06.m, line 7
+|   assert (nargout == 0);
+|                       ^ info: this token is not linked to the ast
+In test_06.m, line 7
+|   assert (nargout == 0);
+|                        ^ info: this token is not linked to the ast
 In test_06.m, line 8
 | end
 | ^^^ info: this token is not linked to the ast
+In test_06.m, line 10
+| function test()
+|              ^ info: this token is not linked to the ast
+In test_06.m, line 10
+| function test()
+|               ^ info: this token is not linked to the ast
+In test_06.m, line 11
+|  f (1);
+|    ^ info: this token is not linked to the ast
+In test_06.m, line 11
+|  f (1);
+|      ^ info: this token is not linked to the ast
+In test_06.m, line 11
+|  f (1);
+|       ^ info: this token is not linked to the ast
 In test_06.m, line 12
 | end
 | ^^^ info: this token is not linked to the ast

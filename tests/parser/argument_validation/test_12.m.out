@@ -45,15 +45,81 @@ Root: Function_File
                   Name: Identifier <z>
                   Arguments: Reshape
 ----------------------------------------------------------------------
+In test_12.m, line 3
+| function test_12(x,y)
+|                 ^ info: this token is not linked to the ast
+In test_12.m, line 3
+| function test_12(x,y)
+|                   ^ info: this token is not linked to the ast
+In test_12.m, line 3
+| function test_12(x,y)
+|                     ^ info: this token is not linked to the ast
+In test_12.m, line 4
+|     arguments(Repeating)
+|              ^ info: this token is not linked to the ast
+In test_12.m, line 4
+|     arguments(Repeating)
+|                        ^ info: this token is not linked to the ast
+In test_12.m, line 5
+|         x (1,:) double
+|           ^ info: this token is not linked to the ast
+In test_12.m, line 5
+|         x (1,:) double
+|             ^ info: this token is not linked to the ast
+In test_12.m, line 5
+|         x (1,:) double
+|               ^ info: this token is not linked to the ast
+In test_12.m, line 6
+|         y (1,:) double
+|           ^ info: this token is not linked to the ast
+In test_12.m, line 6
+|         y (1,:) double
+|             ^ info: this token is not linked to the ast
+In test_12.m, line 6
+|         y (1,:) double
+|               ^ info: this token is not linked to the ast
 In test_12.m, line 7
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test_12.m, line 11
+|     z = reshape([x;y],1,[]);
+|                ^ info: this token is not linked to the ast
+In test_12.m, line 11
+|     z = reshape([x;y],1,[]);
+|                   ^ info: this token is not linked to the ast
+In test_12.m, line 11
+|     z = reshape([x;y],1,[]);
+|                      ^ info: this token is not linked to the ast
+In test_12.m, line 11
+|     z = reshape([x;y],1,[]);
+|                        ^ info: this token is not linked to the ast
+In test_12.m, line 11
+|     z = reshape([x;y],1,[]);
+|                           ^ info: this token is not linked to the ast
+In test_12.m, line 11
+|     z = reshape([x;y],1,[]);
+|                            ^ info: this token is not linked to the ast
+In test_12.m, line 14
+|     if ~isempty(z)
+|                ^ info: this token is not linked to the ast
+In test_12.m, line 14
+|     if ~isempty(z)
+|                  ^ info: this token is not linked to the ast
+In test_12.m, line 15
+|         plot(z{:});
+|             ^ info: this token is not linked to the ast
 In test_12.m, line 15
 |         plot(z{:});
 |               ^ info: this token is not linked to the ast
 In test_12.m, line 15
 |         plot(z{:});
 |                 ^ info: this token is not linked to the ast
+In test_12.m, line 15
+|         plot(z{:});
+|                  ^ info: this token is not linked to the ast
+In test_12.m, line 15
+|         plot(z{:});
+|                   ^ info: this token is not linked to the ast
 In test_12.m, line 16
 |     end
 |     ^^^ info: this token is not linked to the ast

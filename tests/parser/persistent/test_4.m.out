@@ -18,9 +18,18 @@ Root: Function_File
       Statements: Persistent_Statement
         Names: Identifier <x>
 ----------------------------------------------------------------------
+In test_4.m, line 8
+| function myfunA(x)
+|                ^ info: this token is not linked to the ast
+In test_4.m, line 8
+| function myfunA(x)
+|                  ^ info: this token is not linked to the ast
 In test_4.m, line 10
 | end
 | ^^^ info: this token is not linked to the ast
+In test_4.m, line 13
+|     x = 0;
+|          ^ info: this token is not linked to the ast
 In test_4.m, line 15
 | end
 | ^^^ info: this token is not linked to the ast

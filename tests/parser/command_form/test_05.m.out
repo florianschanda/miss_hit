@@ -13,6 +13,12 @@ Root: Function_File
           Name: Identifier <cd>
           Arguments: Char_Array_Literal '../foo'
 ----------------------------------------------------------------------
+In test_05.m, line 3
+| function test_05()
+|                 ^ info: this token is not linked to the ast
+In test_05.m, line 3
+| function test_05()
+|                  ^ info: this token is not linked to the ast
 In test_05.m, line 5
 | end
 | ^^^ info: this token is not linked to the ast

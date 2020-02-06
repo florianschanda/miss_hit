@@ -70,18 +70,12 @@ Root: Function_File
           Arguments: Char_Array_Literal '../.././a'
           Arguments: Char_Array_Literal 'b'
 ----------------------------------------------------------------------
-In test_06.m, line 6
-|   wibble a...
-|           ^^^^ info: this token is not linked to the ast
-In test_06.m, line 9
-|   wibble a....
-|           ^^^^^ info: this token is not linked to the ast
-In test_06.m, line 18
-|   wibble 'a' ...
-|              ^^^^ info: this token is not linked to the ast
-In test_06.m, line 19
-|          ...
-|          ^^^^ info: this token is not linked to the ast
+In test_06.m, line 3
+| function test_06()
+|                 ^ info: this token is not linked to the ast
+In test_06.m, line 3
+| function test_06()
+|                  ^ info: this token is not linked to the ast
 In test_06.m, line 23
 | end
 | ^^^ info: this token is not linked to the ast

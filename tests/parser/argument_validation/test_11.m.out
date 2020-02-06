@@ -20,5 +20,35 @@ In test_11.m, line 3
 | ^ info: this token is not linked to the ast
 In test_11.m, line 3
 | [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|       ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|             ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
 |                        ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|                                   ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|                                     ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|                                       ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|                                                ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|                                                  ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|                                                    ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|                                                            ^ info: this token is not linked to the ast
+In test_11.m, line 3
+| [xCell,yCell,optionCell] = fRepeat(1,2,"linear",3,4,"cubic");
+|                                                             ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

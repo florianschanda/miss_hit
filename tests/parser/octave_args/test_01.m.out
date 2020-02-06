@@ -24,9 +24,42 @@ Root: Function_File
       Statements: Naked_Expression_Statement
         Expression: Identifier <f>
 ----------------------------------------------------------------------
+In test_01.m, line 5
+| function f ()
+|            ^ info: this token is not linked to the ast
+In test_01.m, line 5
+| function f ()
+|             ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|   assert (nargin == 0);
+|          ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|   assert (nargin == 0);
+|                      ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|   assert (nargin == 0);
+|                       ^ info: this token is not linked to the ast
+In test_01.m, line 7
+|   assert (nargout == 0);
+|          ^ info: this token is not linked to the ast
+In test_01.m, line 7
+|   assert (nargout == 0);
+|                       ^ info: this token is not linked to the ast
+In test_01.m, line 7
+|   assert (nargout == 0);
+|                        ^ info: this token is not linked to the ast
 In test_01.m, line 8
 | end
 | ^^^ info: this token is not linked to the ast
+In test_01.m, line 10
+| function test()
+|              ^ info: this token is not linked to the ast
+In test_01.m, line 10
+| function test()
+|               ^ info: this token is not linked to the ast
+In test_01.m, line 11
+|  f;
+|   ^ info: this token is not linked to the ast
 In test_01.m, line 12
 | end
 | ^^^ info: this token is not linked to the ast

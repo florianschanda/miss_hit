@@ -28,6 +28,24 @@ Root: Class_File
 In cat.m, line 2
 | classdef cat < potato.kitten
 |              ^ info: this token is not linked to the ast
+In cat.m, line 4
+|         function meow(self)
+|                      ^ info: this token is not linked to the ast
+In cat.m, line 4
+|         function meow(self)
+|                           ^ info: this token is not linked to the ast
+In cat.m, line 6
+|             self.meow@potato.kitten;
+|                                    ^ info: this token is not linked to the ast
+In cat.m, line 7
+|             disp("*destory stuff*");
+|                 ^ info: this token is not linked to the ast
+In cat.m, line 7
+|             disp("*destory stuff*");
+|                                   ^ info: this token is not linked to the ast
+In cat.m, line 7
+|             disp("*destory stuff*");
+|                                    ^ info: this token is not linked to the ast
 In cat.m, line 8
 |         end
 |         ^^^ info: this token is not linked to the ast

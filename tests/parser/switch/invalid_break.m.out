@@ -25,6 +25,12 @@ Root: Script_File
             RHS: Number_Literal <2>
           Statements: Break_Statement
 ----------------------------------------------------------------------
+In invalid_break.m, line 5
+|       x = 1;
+|            ^ info: this token is not linked to the ast
+In invalid_break.m, line 8
+|       x = 2;
+|            ^ info: this token is not linked to the ast
 In invalid_break.m, line 10
 | end
 | ^^^ info: this token is not linked to the ast

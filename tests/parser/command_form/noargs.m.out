@@ -10,6 +10,21 @@ Root: Function_File
           Name: Identifier <disp>
           Arguments: String_Literal "hello world"
 ----------------------------------------------------------------------
+In noargs.m, line 3
+| function noargs()
+|                ^ info: this token is not linked to the ast
+In noargs.m, line 3
+| function noargs()
+|                 ^ info: this token is not linked to the ast
+In noargs.m, line 4
+|   disp("hello world");
+|       ^ info: this token is not linked to the ast
+In noargs.m, line 4
+|   disp("hello world");
+|                     ^ info: this token is not linked to the ast
+In noargs.m, line 4
+|   disp("hello world");
+|                      ^ info: this token is not linked to the ast
 In noargs.m, line 5
 | end
 | ^^^ info: this token is not linked to the ast

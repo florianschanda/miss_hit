@@ -8,4 +8,16 @@ Root: Script_File
         Arguments: Char_Array_Literal 'character vector'
         Arguments: Number_Literal <144>
 ----------------------------------------------------------------------
+In invalid_02.m, line 3
+| test_30('character vector',144);
+|        ^ info: this token is not linked to the ast
+In invalid_02.m, line 3
+| test_30('character vector',144);
+|                           ^ info: this token is not linked to the ast
+In invalid_02.m, line 3
+| test_30('character vector',144);
+|                               ^ info: this token is not linked to the ast
+In invalid_02.m, line 3
+| test_30('character vector',144);
+|                                ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

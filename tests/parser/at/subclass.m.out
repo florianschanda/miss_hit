@@ -37,9 +37,42 @@ In subclass.m, line 3
 In subclass.m, line 5
 |         function obj = MySub(arg1,arg2)
 |                      ^ info: this token is not linked to the ast
+In subclass.m, line 5
+|         function obj = MySub(arg1,arg2)
+|                             ^ info: this token is not linked to the ast
+In subclass.m, line 5
+|         function obj = MySub(arg1,arg2)
+|                                  ^ info: this token is not linked to the ast
+In subclass.m, line 5
+|         function obj = MySub(arg1,arg2)
+|                                       ^ info: this token is not linked to the ast
+In subclass.m, line 6
+|             obj = obj@MySuperClass(SuperClassArguments);
+|                                   ^ info: this token is not linked to the ast
+In subclass.m, line 6
+|             obj = obj@MySuperClass(SuperClassArguments);
+|                                                       ^ info: this token is not linked to the ast
+In subclass.m, line 6
+|             obj = obj@MySuperClass(SuperClassArguments);
+|                                                        ^ info: this token is not linked to the ast
 In subclass.m, line 7
 |         end
 |         ^^^ info: this token is not linked to the ast
+In subclass.m, line 9
+|         function disp(obj)
+|                      ^ info: this token is not linked to the ast
+In subclass.m, line 9
+|         function disp(obj)
+|                          ^ info: this token is not linked to the ast
+In subclass.m, line 10
+|             disp@MySuperClass(obj);
+|                              ^ info: this token is not linked to the ast
+In subclass.m, line 10
+|             disp@MySuperClass(obj);
+|                                  ^ info: this token is not linked to the ast
+In subclass.m, line 10
+|             disp@MySuperClass(obj);
+|                                   ^ info: this token is not linked to the ast
 In subclass.m, line 11
 |         end
 |         ^^^ info: this token is not linked to the ast

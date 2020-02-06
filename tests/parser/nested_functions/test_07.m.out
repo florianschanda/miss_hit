@@ -36,9 +36,33 @@ Root: Function_File
 In test_07.m, line 3
 | function p = test_07(a,b,c)
 |            ^ info: this token is not linked to the ast
+In test_07.m, line 3
+| function p = test_07(a,b,c)
+|                     ^ info: this token is not linked to the ast
+In test_07.m, line 3
+| function p = test_07(a,b,c)
+|                       ^ info: this token is not linked to the ast
+In test_07.m, line 3
+| function p = test_07(a,b,c)
+|                         ^ info: this token is not linked to the ast
+In test_07.m, line 3
+| function p = test_07(a,b,c)
+|                           ^ info: this token is not linked to the ast
+In test_07.m, line 4
+|     p = @parabola;
+|                  ^ info: this token is not linked to the ast
 In test_07.m, line 6
 |     function y = parabola(x)
 |                ^ info: this token is not linked to the ast
+In test_07.m, line 6
+|     function y = parabola(x)
+|                          ^ info: this token is not linked to the ast
+In test_07.m, line 6
+|     function y = parabola(x)
+|                            ^ info: this token is not linked to the ast
+In test_07.m, line 7
+|         y = a*x.^2 + b*x + c;
+|                             ^ info: this token is not linked to the ast
 In test_07.m, line 8
 |     end
 |     ^^^ info: this token is not linked to the ast

@@ -17,9 +17,27 @@ Root: Script_File
         LHS: Identifier <y>
         RHS: Identifier <x>
 ----------------------------------------------------------------------
+In foo.m, line 1
+| potato = foo(12);
+|             ^ info: this token is not linked to the ast
+In foo.m, line 1
+| potato = foo(12);
+|                ^ info: this token is not linked to the ast
+In foo.m, line 1
+| potato = foo(12);
+|                 ^ info: this token is not linked to the ast
 In foo.m, line 3
 | function y = foo(x)
 |            ^ info: this token is not linked to the ast
+In foo.m, line 3
+| function y = foo(x)
+|                 ^ info: this token is not linked to the ast
+In foo.m, line 3
+| function y = foo(x)
+|                   ^ info: this token is not linked to the ast
+In foo.m, line 4
+|   y = x;
+|        ^ info: this token is not linked to the ast
 In foo.m, line 5
 | end
 | ^^^ info: this token is not linked to the ast

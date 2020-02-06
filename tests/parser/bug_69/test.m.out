@@ -32,6 +32,15 @@ Root: Script_File
             LHS: Identifier <x>
             RHS: Number_Literal <2>
 ----------------------------------------------------------------------
+In test.m, line 3
+| x = 0;
+|      ^ info: this token is not linked to the ast
+In test.m, line 4
+| if x == 0 x = 1; else x = 2; end
+|                ^ info: this token is not linked to the ast
+In test.m, line 4
+| if x == 0 x = 1; else x = 2; end
+|                            ^ info: this token is not linked to the ast
 In test.m, line 4
 | if x == 0 x = 1; else x = 2; end
 |                              ^^^ info: this token is not linked to the ast

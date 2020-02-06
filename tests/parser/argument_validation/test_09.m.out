@@ -17,6 +17,15 @@ Root: Function_File
 In test_09.m, line 3
 | function c = test_09(~,x)
 |            ^ info: this token is not linked to the ast
+In test_09.m, line 3
+| function c = test_09(~,x)
+|                     ^ info: this token is not linked to the ast
+In test_09.m, line 3
+| function c = test_09(~,x)
+|                       ^ info: this token is not linked to the ast
+In test_09.m, line 3
+| function c = test_09(~,x)
+|                         ^ info: this token is not linked to the ast
 In test_09.m, line 7
 |     end
 |     ^^^ info: this token is not linked to the ast

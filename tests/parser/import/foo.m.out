@@ -10,6 +10,12 @@ Root: Function_File
       Statements: Import_Statement for PackageName.ClassName.staticMethodName
       Statements: Import_Statement for PackageName.*
 ----------------------------------------------------------------------
+In foo.m, line 3
+| function foo()
+|             ^ info: this token is not linked to the ast
+In foo.m, line 3
+| function foo()
+|              ^ info: this token is not linked to the ast
 In foo.m, line 4
 |     import PackageName.ClassName
 |                       ^ info: this token is not linked to the ast

@@ -17,6 +17,18 @@ Root: Function_File
 In kitten.m, line 3
 | function r = kitten(x)
 |            ^ info: this token is not linked to the ast
+In kitten.m, line 3
+| function r = kitten(x)
+|                    ^ info: this token is not linked to the ast
+In kitten.m, line 3
+| function r = kitten(x)
+|                      ^ info: this token is not linked to the ast
+In kitten.m, line 4
+|   properties = x;
+|                 ^ info: this token is not linked to the ast
+In kitten.m, line 5
+|   r = properties;
+|                 ^ info: this token is not linked to the ast
 In kitten.m, line 6
 | end
 | ^^^ info: this token is not linked to the ast

@@ -13,4 +13,10 @@ Root: Script_File
         Field: Identifier <continue>
       RHS: Number_Literal <42>
 ----------------------------------------------------------------------
+In test.m, line 3
+| x.foo = 12;
+|           ^ info: this token is not linked to the ast
+In test.m, line 4
+| x.continue = 42;
+|                ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

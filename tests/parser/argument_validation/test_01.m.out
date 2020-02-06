@@ -34,15 +34,48 @@ Root: Function_File
 In test_01.m, line 3
 | function r = test_01(x, y)
 |            ^ info: this token is not linked to the ast
+In test_01.m, line 3
+| function r = test_01(x, y)
+|                     ^ info: this token is not linked to the ast
+In test_01.m, line 3
+| function r = test_01(x, y)
+|                       ^ info: this token is not linked to the ast
+In test_01.m, line 3
+| function r = test_01(x, y)
+|                          ^ info: this token is not linked to the ast
+In test_01.m, line 5
+|     x (1, 1) single {mustBePositive, mustBeFinite}
+|       ^ info: this token is not linked to the ast
+In test_01.m, line 5
+|     x (1, 1) single {mustBePositive, mustBeFinite}
+|         ^ info: this token is not linked to the ast
+In test_01.m, line 5
+|     x (1, 1) single {mustBePositive, mustBeFinite}
+|            ^ info: this token is not linked to the ast
 In test_01.m, line 5
 |     x (1, 1) single {mustBePositive, mustBeFinite}
 |                     ^ info: this token is not linked to the ast
 In test_01.m, line 5
 |     x (1, 1) single {mustBePositive, mustBeFinite}
+|                                    ^ info: this token is not linked to the ast
+In test_01.m, line 5
+|     x (1, 1) single {mustBePositive, mustBeFinite}
 |                                                  ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|     y (1, 1) single
+|       ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|     y (1, 1) single
+|         ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|     y (1, 1) single
+|            ^ info: this token is not linked to the ast
 In test_01.m, line 7
 |   end
 |   ^^^ info: this token is not linked to the ast
+In test_01.m, line 9
+|   r = 0.5 * x + 0.5 * y;
+|                        ^ info: this token is not linked to the ast
 In test_01.m, line 10
 | end
 | ^^^ info: this token is not linked to the ast

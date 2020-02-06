@@ -37,6 +37,15 @@ Root: Function_File
           Name: Identifier <x>
           Arguments: Char_Array_Literal '+1'
 ----------------------------------------------------------------------
+In invalid_10.m, line 3
+| function invalid_10()
+|                    ^ info: this token is not linked to the ast
+In invalid_10.m, line 3
+| function invalid_10()
+|                     ^ info: this token is not linked to the ast
+In invalid_10.m, line 4
+|   x = 5;
+|        ^ info: this token is not linked to the ast
 In invalid_10.m, line 9
 | end
 | ^^^ info: this token is not linked to the ast

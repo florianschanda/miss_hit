@@ -19,6 +19,15 @@ In test_2.m, line 3
 In test_2.m, line 3
 | parfor i = 1:5
 |             ^ info: this token is not linked to the ast
+In test_2.m, line 4
+|   disp(i);
+|       ^ info: this token is not linked to the ast
+In test_2.m, line 4
+|   disp(i);
+|         ^ info: this token is not linked to the ast
+In test_2.m, line 4
+|   disp(i);
+|          ^ info: this token is not linked to the ast
 In test_2.m, line 5
 | end
 | ^^^ info: this token is not linked to the ast

@@ -44,19 +44,64 @@ In test_10.m, line 3
 |          ^ info: this token is not linked to the ast
 In test_10.m, line 3
 | function [xCell,yCell,optionCell] = test_10(x,y,option)
+|                ^ info: this token is not linked to the ast
+In test_10.m, line 3
+| function [xCell,yCell,optionCell] = test_10(x,y,option)
+|                      ^ info: this token is not linked to the ast
+In test_10.m, line 3
+| function [xCell,yCell,optionCell] = test_10(x,y,option)
 |                                 ^ info: this token is not linked to the ast
 In test_10.m, line 3
 | function [xCell,yCell,optionCell] = test_10(x,y,option)
 |                                   ^ info: this token is not linked to the ast
+In test_10.m, line 3
+| function [xCell,yCell,optionCell] = test_10(x,y,option)
+|                                            ^ info: this token is not linked to the ast
+In test_10.m, line 3
+| function [xCell,yCell,optionCell] = test_10(x,y,option)
+|                                              ^ info: this token is not linked to the ast
+In test_10.m, line 3
+| function [xCell,yCell,optionCell] = test_10(x,y,option)
+|                                                ^ info: this token is not linked to the ast
+In test_10.m, line 3
+| function [xCell,yCell,optionCell] = test_10(x,y,option)
+|                                                       ^ info: this token is not linked to the ast
+In test_10.m, line 4
+|     arguments (Repeating)
+|               ^ info: this token is not linked to the ast
+In test_10.m, line 4
+|     arguments (Repeating)
+|                         ^ info: this token is not linked to the ast
 In test_10.m, line 7
 |         option {mustBeMember(option,["linear","cubic"])}
 |                ^ info: this token is not linked to the ast
+In test_10.m, line 7
+|         option {mustBeMember(option,["linear","cubic"])}
+|                             ^ info: this token is not linked to the ast
+In test_10.m, line 7
+|         option {mustBeMember(option,["linear","cubic"])}
+|                                    ^ info: this token is not linked to the ast
+In test_10.m, line 7
+|         option {mustBeMember(option,["linear","cubic"])}
+|                                              ^ info: this token is not linked to the ast
+In test_10.m, line 7
+|         option {mustBeMember(option,["linear","cubic"])}
+|                                                       ^ info: this token is not linked to the ast
 In test_10.m, line 7
 |         option {mustBeMember(option,["linear","cubic"])}
 |                                                        ^ info: this token is not linked to the ast
 In test_10.m, line 8
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test_10.m, line 12
+|     xCell = x;
+|              ^ info: this token is not linked to the ast
+In test_10.m, line 13
+|     yCell = y;
+|              ^ info: this token is not linked to the ast
+In test_10.m, line 14
+|     optionCell = option;
+|                        ^ info: this token is not linked to the ast
 In test_10.m, line 15
 | end
 | ^^^ info: this token is not linked to the ast

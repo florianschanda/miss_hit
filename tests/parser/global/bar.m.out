@@ -12,6 +12,15 @@ Root: Function_File
         LHS: Identifier <z>
         RHS: Identifier <x>
 ----------------------------------------------------------------------
+In bar.m, line 1
+| function bar(x)
+|             ^ info: this token is not linked to the ast
+In bar.m, line 1
+| function bar(x)
+|               ^ info: this token is not linked to the ast
+In bar.m, line 3
+|     z = x;
+|          ^ info: this token is not linked to the ast
 In bar.m, line 4
 | end
 | ^^^ info: this token is not linked to the ast

@@ -29,9 +29,18 @@ Root: Function_File
 In test_15.m, line 3
 | function result = test_15(NameValueArgs)
 |                 ^ info: this token is not linked to the ast
+In test_15.m, line 3
+| function result = test_15(NameValueArgs)
+|                          ^ info: this token is not linked to the ast
+In test_15.m, line 3
+| function result = test_15(NameValueArgs)
+|                                        ^ info: this token is not linked to the ast
 In test_15.m, line 7
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test_15.m, line 10
+|     result = NameValueArgs.Name1 * NameValueArgs.Name2;
+|                                                       ^ info: this token is not linked to the ast
 In test_15.m, line 11
 | end
 | ^^^ info: this token is not linked to the ast

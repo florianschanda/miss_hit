@@ -84,9 +84,24 @@ In Prop.m, line 6
 In Prop.m, line 7
 |       Prop3 = sin(pi/12)
 |             ^ info: this token is not linked to the ast
+In Prop.m, line 7
+|       Prop3 = sin(pi/12)
+|                  ^ info: this token is not linked to the ast
+In Prop.m, line 7
+|       Prop3 = sin(pi/12)
+|                        ^ info: this token is not linked to the ast
 In Prop.m, line 8
 |       Prop4 = containers.Map
 |             ^ info: this token is not linked to the ast
+In Prop.m, line 9
+|       Prop5 (1,1) double {mustBePositive} = 1
+|             ^ info: this token is not linked to the ast
+In Prop.m, line 9
+|       Prop5 (1,1) double {mustBePositive} = 1
+|               ^ info: this token is not linked to the ast
+In Prop.m, line 9
+|       Prop5 (1,1) double {mustBePositive} = 1
+|                 ^ info: this token is not linked to the ast
 In Prop.m, line 9
 |       Prop5 (1,1) double {mustBePositive} = 1
 |                          ^ info: this token is not linked to the ast
@@ -101,13 +116,46 @@ In Prop.m, line 10
 |    ^^^ info: this token is not linked to the ast
 In Prop.m, line 11
 |    properties (Access = private)
+|               ^ info: this token is not linked to the ast
+In Prop.m, line 11
+|    properties (Access = private)
 |                       ^ info: this token is not linked to the ast
+In Prop.m, line 11
+|    properties (Access = private)
+|                                ^ info: this token is not linked to the ast
 In Prop.m, line 14
 |    end
 |    ^^^ info: this token is not linked to the ast
 In Prop.m, line 16
 |      function obj = set.Password(obj,pw)
 |                   ^ info: this token is not linked to the ast
+In Prop.m, line 16
+|      function obj = set.Password(obj,pw)
+|                                 ^ info: this token is not linked to the ast
+In Prop.m, line 16
+|      function obj = set.Password(obj,pw)
+|                                     ^ info: this token is not linked to the ast
+In Prop.m, line 16
+|      function obj = set.Password(obj,pw)
+|                                        ^ info: this token is not linked to the ast
+In Prop.m, line 17
+|        if numel(pw) < 7
+|                ^ info: this token is not linked to the ast
+In Prop.m, line 17
+|        if numel(pw) < 7
+|                   ^ info: this token is not linked to the ast
+In Prop.m, line 18
+|          error('Password must have at least 7 characters');
+|               ^ info: this token is not linked to the ast
+In Prop.m, line 18
+|          error('Password must have at least 7 characters');
+|                                                          ^ info: this token is not linked to the ast
+In Prop.m, line 18
+|          error('Password must have at least 7 characters');
+|                                                           ^ info: this token is not linked to the ast
+In Prop.m, line 20
+|          obj.Password = pw;
+|                           ^ info: this token is not linked to the ast
 In Prop.m, line 21
 |        end
 |        ^^^ info: this token is not linked to the ast
@@ -117,6 +165,24 @@ In Prop.m, line 22
 In Prop.m, line 23
 |      function o = getPropValue(obj,PropName)
 |                 ^ info: this token is not linked to the ast
+In Prop.m, line 23
+|      function o = getPropValue(obj,PropName)
+|                               ^ info: this token is not linked to the ast
+In Prop.m, line 23
+|      function o = getPropValue(obj,PropName)
+|                                   ^ info: this token is not linked to the ast
+In Prop.m, line 23
+|      function o = getPropValue(obj,PropName)
+|                                            ^ info: this token is not linked to the ast
+In Prop.m, line 24
+|        o = obj.(PropName);
+|                ^ info: this token is not linked to the ast
+In Prop.m, line 24
+|        o = obj.(PropName);
+|                         ^ info: this token is not linked to the ast
+In Prop.m, line 24
+|        o = obj.(PropName);
+|                          ^ info: this token is not linked to the ast
 In Prop.m, line 25
 |      end
 |      ^^^ info: this token is not linked to the ast

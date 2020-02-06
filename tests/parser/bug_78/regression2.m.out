@@ -42,7 +42,25 @@ In regression2.m, line 3
 |            ^ info: this token is not linked to the ast
 In regression2.m, line 4
 |     persistent y z, if isempty(y), y = 42; end
+|                   ^ info: this token is not linked to the ast
+In regression2.m, line 4
+|     persistent y z, if isempty(y), y = 42; end
+|                               ^ info: this token is not linked to the ast
+In regression2.m, line 4
+|     persistent y z, if isempty(y), y = 42; end
+|                                 ^ info: this token is not linked to the ast
+In regression2.m, line 4
+|     persistent y z, if isempty(y), y = 42; end
+|                                  ^ info: this token is not linked to the ast
+In regression2.m, line 4
+|     persistent y z, if isempty(y), y = 42; end
+|                                          ^ info: this token is not linked to the ast
+In regression2.m, line 4
+|     persistent y z, if isempty(y), y = 42; end
 |                                            ^^^ info: this token is not linked to the ast
+In regression2.m, line 5
+|     x = y;
+|          ^ info: this token is not linked to the ast
 In regression2.m, line 6
 | end
 | ^^^ info: this token is not linked to the ast

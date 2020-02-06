@@ -37,10 +37,31 @@ In meta.m, line 4
 |          ^ info: this token is not linked to the ast
 In meta.m, line 4
 | function [a, b] = test_01()
+|            ^ info: this token is not linked to the ast
+In meta.m, line 4
+| function [a, b] = test_01()
 |               ^ info: this token is not linked to the ast
 In meta.m, line 4
 | function [a, b] = test_01()
 |                 ^ info: this token is not linked to the ast
+In meta.m, line 4
+| function [a, b] = test_01()
+|                          ^ info: this token is not linked to the ast
+In meta.m, line 4
+| function [a, b] = test_01()
+|                           ^ info: this token is not linked to the ast
+In meta.m, line 5
+|   a = ?potato;
+|              ^ info: this token is not linked to the ast
+In meta.m, line 6
+|   b = meta.class.fromName('potato');
+|                          ^ info: this token is not linked to the ast
+In meta.m, line 6
+|   b = meta.class.fromName('potato');
+|                                   ^ info: this token is not linked to the ast
+In meta.m, line 6
+|   b = meta.class.fromName('potato');
+|                                    ^ info: this token is not linked to the ast
 In meta.m, line 7
 | end
 | ^^^ info: this token is not linked to the ast
@@ -53,6 +74,15 @@ In meta.m, line 9
 In meta.m, line 9
 | function [mc] = test_02()
 |               ^ info: this token is not linked to the ast
+In meta.m, line 9
+| function [mc] = test_02()
+|                        ^ info: this token is not linked to the ast
+In meta.m, line 9
+| function [mc] = test_02()
+|                         ^ info: this token is not linked to the ast
+In meta.m, line 10
+|   mc = ?meta.class;
+|                   ^ info: this token is not linked to the ast
 In meta.m, line 11
 | end
 | ^^^ info: this token is not linked to the ast

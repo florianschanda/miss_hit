@@ -25,12 +25,45 @@ Root: Class_File
 In test1.m, line 5
 |     function obj = test1()
 |                  ^ info: this token is not linked to the ast
+In test1.m, line 5
+|     function obj = test1()
+|                         ^ info: this token is not linked to the ast
+In test1.m, line 5
+|     function obj = test1()
+|                          ^ info: this token is not linked to the ast
+In test1.m, line 6
+|       disp("cons");
+|           ^ info: this token is not linked to the ast
+In test1.m, line 6
+|       disp("cons");
+|                  ^ info: this token is not linked to the ast
+In test1.m, line 6
+|       disp("cons");
+|                   ^ info: this token is not linked to the ast
 In test1.m, line 7
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test1.m, line 9
+|     wibble()
+|           ^ info: this token is not linked to the ast
+In test1.m, line 9
+|     wibble()
+|            ^ info: this token is not linked to the ast
+In test1.m, line 10
+|     potato(x)
+|           ^ info: this token is not linked to the ast
+In test1.m, line 10
+|     potato(x)
+|             ^ info: this token is not linked to the ast
 In test1.m, line 11
 |     p = properties()
 |       ^ info: this token is not linked to the ast
+In test1.m, line 11
+|     p = properties()
+|                   ^ info: this token is not linked to the ast
+In test1.m, line 11
+|     p = properties()
+|                    ^ info: this token is not linked to the ast
 In test1.m, line 12
 |   end
 |   ^^^ info: this token is not linked to the ast

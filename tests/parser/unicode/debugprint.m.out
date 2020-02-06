@@ -19,6 +19,42 @@ Root: Function_File
             Name: Identifier <length>
             Arguments: Identifier <s>
 ----------------------------------------------------------------------
+In debugprint.m, line 1
+| function debugprint(s)
+|                    ^ info: this token is not linked to the ast
+In debugprint.m, line 1
+| function debugprint(s)
+|                      ^ info: this token is not linked to the ast
+In debugprint.m, line 2
+|     fprintf("string: <%s>\n", s);
+|            ^ info: this token is not linked to the ast
+In debugprint.m, line 2
+|     fprintf("string: <%s>\n", s);
+|                             ^ info: this token is not linked to the ast
+In debugprint.m, line 2
+|     fprintf("string: <%s>\n", s);
+|                                ^ info: this token is not linked to the ast
+In debugprint.m, line 2
+|     fprintf("string: <%s>\n", s);
+|                                 ^ info: this token is not linked to the ast
+In debugprint.m, line 3
+|     fprintf("length: %u\n", length(s));
+|            ^ info: this token is not linked to the ast
+In debugprint.m, line 3
+|     fprintf("length: %u\n", length(s));
+|                           ^ info: this token is not linked to the ast
+In debugprint.m, line 3
+|     fprintf("length: %u\n", length(s));
+|                                   ^ info: this token is not linked to the ast
+In debugprint.m, line 3
+|     fprintf("length: %u\n", length(s));
+|                                     ^ info: this token is not linked to the ast
+In debugprint.m, line 3
+|     fprintf("length: %u\n", length(s));
+|                                      ^ info: this token is not linked to the ast
+In debugprint.m, line 3
+|     fprintf("length: %u\n", length(s));
+|                                       ^ info: this token is not linked to the ast
 In debugprint.m, line 4
 | end
 | ^^^ info: this token is not linked to the ast

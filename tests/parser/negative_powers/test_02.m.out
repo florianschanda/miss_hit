@@ -17,6 +17,27 @@ Root: Function_File
             Expression: Unary_Operation -
               Expression: Number_Literal <2>
 ----------------------------------------------------------------------
+In test_02.m, line 3
+| function test_02()
+|                 ^ info: this token is not linked to the ast
+In test_02.m, line 3
+| function test_02()
+|                  ^ info: this token is not linked to the ast
+In test_02.m, line 4
+|   x = 2 ^ -(-3) ^ -(-2);  % (2 ^ 3) ^ 2
+|            ^ info: this token is not linked to the ast
+In test_02.m, line 4
+|   x = 2 ^ -(-3) ^ -(-2);  % (2 ^ 3) ^ 2
+|               ^ info: this token is not linked to the ast
+In test_02.m, line 4
+|   x = 2 ^ -(-3) ^ -(-2);  % (2 ^ 3) ^ 2
+|                    ^ info: this token is not linked to the ast
+In test_02.m, line 4
+|   x = 2 ^ -(-3) ^ -(-2);  % (2 ^ 3) ^ 2
+|                       ^ info: this token is not linked to the ast
+In test_02.m, line 4
+|   x = 2 ^ -(-3) ^ -(-2);  % (2 ^ 3) ^ 2
+|                        ^ info: this token is not linked to the ast
 In test_02.m, line 6
 | end
 | ^^^ info: this token is not linked to the ast

@@ -1666,8 +1666,7 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot):
         for token in tbuf.tokens:
             if token.kind in ("NEWLINE",
                               "COMMENT",
-                              "BRA", "KET",
-                              "COMMA", "SEMICOLON"):
+                              "CONTINUATION"):
                 pass
             elif token.ast_link is None:
                 mh.info(token.location,

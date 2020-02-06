@@ -16,6 +16,15 @@ Root: Function_File
 In simple.m, line 1
 | function result = addOne(x)
 |                 ^ info: this token is not linked to the ast
+In simple.m, line 1
+| function result = addOne(x)
+|                         ^ info: this token is not linked to the ast
+In simple.m, line 1
+| function result = addOne(x)
+|                           ^ info: this token is not linked to the ast
+In simple.m, line 2
+|   result = x + 1;
+|                 ^ info: this token is not linked to the ast
 In simple.m, line 3
 | end
 | ^^^ info: this token is not linked to the ast

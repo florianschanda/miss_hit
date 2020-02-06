@@ -19,6 +19,33 @@ Root: Function_File
       Statements: Naked_Expression_Statement
         Expression: Identifier <noargs>
 ----------------------------------------------------------------------
+In test_07.m, line 3
+| function test_07()
+|                 ^ info: this token is not linked to the ast
+In test_07.m, line 3
+| function test_07()
+|                  ^ info: this token is not linked to the ast
+In test_07.m, line 4
+|   noargs ();
+|          ^ info: this token is not linked to the ast
+In test_07.m, line 4
+|   noargs ();
+|           ^ info: this token is not linked to the ast
+In test_07.m, line 4
+|   noargs ();
+|            ^ info: this token is not linked to the ast
+In test_07.m, line 5
+|   noargs();
+|         ^ info: this token is not linked to the ast
+In test_07.m, line 5
+|   noargs();
+|          ^ info: this token is not linked to the ast
+In test_07.m, line 5
+|   noargs();
+|           ^ info: this token is not linked to the ast
+In test_07.m, line 6
+|   noargs;
+|         ^ info: this token is not linked to the ast
 In test_07.m, line 9
 | end
 | ^^^ info: this token is not linked to the ast

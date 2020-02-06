@@ -47,6 +47,45 @@ Root: Function_File
           Name: Identifier <foo>
           Arguments: Char_Array_Literal '+kitten'
 ----------------------------------------------------------------------
+In test_01.m, line 3
+| function test_01()
+|                 ^ info: this token is not linked to the ast
+In test_01.m, line 3
+| function test_01()
+|                  ^ info: this token is not linked to the ast
+In test_01.m, line 4
+|     kitten = 12;
+|                ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|     foo(kitten); % 12
+|        ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|     foo(kitten); % 12
+|               ^ info: this token is not linked to the ast
+In test_01.m, line 6
+|     foo(kitten); % 12
+|                ^ info: this token is not linked to the ast
+In test_01.m, line 8
+|     foo (kitten); % 12
+|         ^ info: this token is not linked to the ast
+In test_01.m, line 8
+|     foo (kitten); % 12
+|                ^ info: this token is not linked to the ast
+In test_01.m, line 8
+|     foo (kitten); % 12
+|                 ^ info: this token is not linked to the ast
+In test_01.m, line 10
+|     foo kitten; % kitten
+|               ^ info: this token is not linked to the ast
+In test_01.m, line 11
+|     foo +kitten; % +kitten
+|                ^ info: this token is not linked to the ast
+In test_01.m, line 13
+|     foo kitten ; % kitten
+|                ^ info: this token is not linked to the ast
+In test_01.m, line 14
+|     foo +kitten ; % +kitten
+|                 ^ info: this token is not linked to the ast
 In test_01.m, line 18
 | end
 | ^^^ info: this token is not linked to the ast

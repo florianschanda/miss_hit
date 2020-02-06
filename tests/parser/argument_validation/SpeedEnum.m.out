@@ -18,6 +18,24 @@ Root: Class_File
 In SpeedEnum.m, line 3
 | classdef SpeedEnum < int32
 |                    ^ info: this token is not linked to the ast
+In SpeedEnum.m, line 5
+|         Full   (100)
+|                ^ info: this token is not linked to the ast
+In SpeedEnum.m, line 5
+|         Full   (100)
+|                    ^ info: this token is not linked to the ast
+In SpeedEnum.m, line 6
+|         Half   (50)
+|                ^ info: this token is not linked to the ast
+In SpeedEnum.m, line 6
+|         Half   (50)
+|                   ^ info: this token is not linked to the ast
+In SpeedEnum.m, line 7
+|         Stop   (0)
+|                ^ info: this token is not linked to the ast
+In SpeedEnum.m, line 7
+|         Stop   (0)
+|                  ^ info: this token is not linked to the ast
 In SpeedEnum.m, line 8
 |     end
 |     ^^^ info: this token is not linked to the ast

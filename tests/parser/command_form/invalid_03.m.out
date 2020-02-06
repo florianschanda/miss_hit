@@ -13,6 +13,18 @@ Root: Function_File
           LHS: Identifier <foo>
           RHS: Identifier <kitten>
 ----------------------------------------------------------------------
+In invalid_03.m, line 3
+| function invalid_03()
+|                    ^ info: this token is not linked to the ast
+In invalid_03.m, line 3
+| function invalid_03()
+|                     ^ info: this token is not linked to the ast
+In invalid_03.m, line 4
+|     kitten = 12;
+|                ^ info: this token is not linked to the ast
+In invalid_03.m, line 5
+|     foo + kitten; % semantic error (foo is function and missing input)
+|                 ^ info: this token is not linked to the ast
 In invalid_03.m, line 6
 | end
 | ^^^ info: this token is not linked to the ast

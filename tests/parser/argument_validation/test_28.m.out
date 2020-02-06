@@ -18,6 +18,33 @@ Root: Function_File
         Name: Identifier <b>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
+In test_28.m, line 3
+| function test_28(a, b)
+|                 ^ info: this token is not linked to the ast
+In test_28.m, line 3
+| function test_28(a, b)
+|                   ^ info: this token is not linked to the ast
+In test_28.m, line 3
+| function test_28(a, b)
+|                      ^ info: this token is not linked to the ast
+In test_28.m, line 5
+|         a (:,:) double
+|           ^ info: this token is not linked to the ast
+In test_28.m, line 5
+|         a (:,:) double
+|             ^ info: this token is not linked to the ast
+In test_28.m, line 5
+|         a (:,:) double
+|               ^ info: this token is not linked to the ast
+In test_28.m, line 6
+|         b (5,3)
+|           ^ info: this token is not linked to the ast
+In test_28.m, line 6
+|         b (5,3)
+|             ^ info: this token is not linked to the ast
+In test_28.m, line 6
+|         b (5,3)
+|               ^ info: this token is not linked to the ast
 In test_28.m, line 7
 |     end
 |     ^^^ info: this token is not linked to the ast

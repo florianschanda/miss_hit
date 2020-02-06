@@ -73,15 +73,90 @@ Root: Function_File
 In test_31.m, line 3
 | function result = test_31(a, b, c, namedargs)
 |                 ^ info: this token is not linked to the ast
+In test_31.m, line 3
+| function result = test_31(a, b, c, namedargs)
+|                          ^ info: this token is not linked to the ast
+In test_31.m, line 3
+| function result = test_31(a, b, c, namedargs)
+|                            ^ info: this token is not linked to the ast
+In test_31.m, line 3
+| function result = test_31(a, b, c, namedargs)
+|                               ^ info: this token is not linked to the ast
+In test_31.m, line 3
+| function result = test_31(a, b, c, namedargs)
+|                                  ^ info: this token is not linked to the ast
+In test_31.m, line 3
+| function result = test_31(a, b, c, namedargs)
+|                                             ^ info: this token is not linked to the ast
+In test_31.m, line 5
+|         a (1,1) double
+|           ^ info: this token is not linked to the ast
+In test_31.m, line 5
+|         a (1,1) double
+|             ^ info: this token is not linked to the ast
+In test_31.m, line 5
+|         a (1,1) double
+|               ^ info: this token is not linked to the ast
+In test_31.m, line 6
+|         b (1,1) double
+|           ^ info: this token is not linked to the ast
+In test_31.m, line 6
+|         b (1,1) double
+|             ^ info: this token is not linked to the ast
+In test_31.m, line 6
+|         b (1,1) double
+|               ^ info: this token is not linked to the ast
+In test_31.m, line 7
+|         c (1,1) double = 1
+|           ^ info: this token is not linked to the ast
+In test_31.m, line 7
+|         c (1,1) double = 1
+|             ^ info: this token is not linked to the ast
+In test_31.m, line 7
+|         c (1,1) double = 1
+|               ^ info: this token is not linked to the ast
 In test_31.m, line 7
 |         c (1,1) double = 1
 |                        ^ info: this token is not linked to the ast
+In test_31.m, line 8
+|         namedargs.Format (1,:) char
+|                          ^ info: this token is not linked to the ast
+In test_31.m, line 8
+|         namedargs.Format (1,:) char
+|                            ^ info: this token is not linked to the ast
+In test_31.m, line 8
+|         namedargs.Format (1,:) char
+|                              ^ info: this token is not linked to the ast
 In test_31.m, line 9
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test_31.m, line 14
+|             result = a + b;
+|                           ^ info: this token is not linked to the ast
+In test_31.m, line 16
+|             result = a^c + b^c;
+|                               ^ info: this token is not linked to the ast
 In test_31.m, line 17
 |     end
 |     ^^^ info: this token is not linked to the ast
+In test_31.m, line 18
+|     if isfield(namedargs,'Format')
+|               ^ info: this token is not linked to the ast
+In test_31.m, line 18
+|     if isfield(namedargs,'Format')
+|                         ^ info: this token is not linked to the ast
+In test_31.m, line 18
+|     if isfield(namedargs,'Format')
+|                                  ^ info: this token is not linked to the ast
+In test_31.m, line 19
+|         format(namedargs.Format);
+|               ^ info: this token is not linked to the ast
+In test_31.m, line 19
+|         format(namedargs.Format);
+|                                ^ info: this token is not linked to the ast
+In test_31.m, line 19
+|         format(namedargs.Format);
+|                                 ^ info: this token is not linked to the ast
 In test_31.m, line 20
 |     end
 |     ^^^ info: this token is not linked to the ast

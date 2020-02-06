@@ -44,9 +44,54 @@ Root: Function_File
                 Name: Identifier <disp>
                 Arguments: String_Literal "why do this"
 ----------------------------------------------------------------------
+In test.m, line 3
+| function test(potato)
+|              ^ info: this token is not linked to the ast
+In test.m, line 3
+| function test(potato)
+|                     ^ info: this token is not linked to the ast
+In test.m, line 4
+|   if potato > 3;    % for some silly reason people do this
+|                ^ info: this token is not linked to the ast
+In test.m, line 5
+|     disp("yes");
+|         ^ info: this token is not linked to the ast
+In test.m, line 5
+|     disp("yes");
+|               ^ info: this token is not linked to the ast
+In test.m, line 5
+|     disp("yes");
+|                ^ info: this token is not linked to the ast
+In test.m, line 6
+|   elseif potato < 3;
+|                    ^ info: this token is not linked to the ast
+In test.m, line 7
+|     disp("no");
+|         ^ info: this token is not linked to the ast
+In test.m, line 7
+|     disp("no");
+|              ^ info: this token is not linked to the ast
+In test.m, line 7
+|     disp("no");
+|               ^ info: this token is not linked to the ast
+In test.m, line 8
+|   else;
+|       ^ info: this token is not linked to the ast
+In test.m, line 9
+|     disp("why do this");
+|         ^ info: this token is not linked to the ast
+In test.m, line 9
+|     disp("why do this");
+|                       ^ info: this token is not linked to the ast
+In test.m, line 9
+|     disp("why do this");
+|                        ^ info: this token is not linked to the ast
 In test.m, line 10
 |   end;
 |   ^^^ info: this token is not linked to the ast
+In test.m, line 10
+|   end;
+|      ^ info: this token is not linked to the ast
 In test.m, line 11
 | end
 | ^^^ info: this token is not linked to the ast
