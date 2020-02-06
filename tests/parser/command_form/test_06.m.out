@@ -76,7 +76,4 @@ In test_06.m, line 3
 In test_06.m, line 3
 | function test_06()
 |                  ^ info: this token is not linked to the ast
-In test_06.m, line 23
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 8 style issue(s)

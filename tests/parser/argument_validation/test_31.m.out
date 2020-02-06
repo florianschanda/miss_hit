@@ -127,25 +127,4 @@ In test_31.m, line 8
 In test_31.m, line 8
 |         namedargs.Format (1,:) char
 |                              ^ info: this token is not linked to the ast
-In test_31.m, line 9
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_31.m, line 14
-|             result = a + b;
-|                           ^ info: this token is not linked to the ast
-In test_31.m, line 16
-|             result = a^c + b^c;
-|                               ^ info: this token is not linked to the ast
-In test_31.m, line 17
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_31.m, line 19
-|         format(namedargs.Format);
-|                                 ^ info: this token is not linked to the ast
-In test_31.m, line 20
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_31.m, line 21
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

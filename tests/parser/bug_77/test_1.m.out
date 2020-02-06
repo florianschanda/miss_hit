@@ -2,9 +2,9 @@
 --  Parse tree for test_1.m
 Root: Script_File
   Statements: Sequence_Of_Statements
-    Statements: Simple_For_Statement
+    Statements: General_For_Statement
       Identifier: Identifier <i>
-      Range: Range_Expression
+      Expression: Range_Expression
         First: Number_Literal <1>
         Last: Number_Literal <5>
       Body: Sequence_Of_Statements
@@ -15,20 +15,5 @@ Root: Script_File
 ----------------------------------------------------------------------
 In test_1.m, line 3
 | for (i = 1:5)
-|     ^ info: this token is not linked to the ast
-In test_1.m, line 3
-| for (i = 1:5)
-|        ^ info: this token is not linked to the ast
-In test_1.m, line 3
-| for (i = 1:5)
 |           ^ info: this token is not linked to the ast
-In test_1.m, line 3
-| for (i = 1:5)
-|             ^ info: this token is not linked to the ast
-In test_1.m, line 4
-|   disp(i);
-|          ^ info: this token is not linked to the ast
-In test_1.m, line 5
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

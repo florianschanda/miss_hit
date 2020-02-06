@@ -41,10 +41,4 @@ In test_26.m, line 3
 In test_26.m, line 7
 |         c uint32 = a .* b
 |                  ^ info: this token is not linked to the ast
-In test_26.m, line 8
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_26.m, line 11
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

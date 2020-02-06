@@ -165,12 +165,6 @@ In uses.m, line 4
 In uses.m, line 4
 |     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
 |                           ^ info: this token is not linked to the ast
-In uses.m, line 4
-|     g = @(c) (integral(@(x) (x.^2 + c*x + 1),0,1));
-|                                                   ^ info: this token is not linked to the ast
-In uses.m, line 5
-| end
-| ^^^ info: this token is not linked to the ast
 In uses.m, line 7
 | function no_inputs()
 |                   ^ info: this token is not linked to the ast
@@ -183,15 +177,6 @@ In uses.m, line 8
 In uses.m, line 8
 |     t = @() datestr(now);
 |           ^ info: this token is not linked to the ast
-In uses.m, line 8
-|     t = @() datestr(now);
-|                         ^ info: this token is not linked to the ast
-In uses.m, line 9
-|     d = t();
-|            ^ info: this token is not linked to the ast
-In uses.m, line 10
-| end
-| ^^^ info: this token is not linked to the ast
 In uses.m, line 12
 | function arrays()
 |                ^ info: this token is not linked to the ast
@@ -225,9 +210,6 @@ In uses.m, line 15
 In uses.m, line 15
 |          @(x,y)x.^2+y+10};
 |               ^ info: this token is not linked to the ast
-In uses.m, line 15
-|          @(x,y)x.^2+y+10};
-|                          ^ info: this token is not linked to the ast
 In uses.m, line 16
 |     f = {@(x) (x.^2);
 |           ^ info: this token is not linked to the ast
@@ -255,39 +237,24 @@ In uses.m, line 18
 In uses.m, line 18
 |          @(x,y) (x.^2 + y + 10)};
 |               ^ info: this token is not linked to the ast
-In uses.m, line 18
-|          @(x,y) (x.^2 + y + 10)};
-|                                 ^ info: this token is not linked to the ast
 In uses.m, line 20
 |     x = f{1}(x);
 |          ^ info: this token is not linked to the ast
 In uses.m, line 20
 |     x = f{1}(x);
 |            ^ info: this token is not linked to the ast
-In uses.m, line 20
-|     x = f{1}(x);
-|                ^ info: this token is not linked to the ast
 In uses.m, line 21
 |     y = f{2}(y);
 |          ^ info: this token is not linked to the ast
 In uses.m, line 21
 |     y = f{2}(y);
 |            ^ info: this token is not linked to the ast
-In uses.m, line 21
-|     y = f{2}(y);
-|                ^ info: this token is not linked to the ast
 In uses.m, line 22
 |     z = f{3}(x,y);
 |          ^ info: this token is not linked to the ast
 In uses.m, line 22
 |     z = f{3}(x,y);
 |            ^ info: this token is not linked to the ast
-In uses.m, line 22
-|     z = f{3}(x,y);
-|                  ^ info: this token is not linked to the ast
-In uses.m, line 23
-| end
-| ^^^ info: this token is not linked to the ast
 In uses.m, line 25
 | function bad_arrays()
 |                    ^ info: this token is not linked to the ast
@@ -321,10 +288,4 @@ In uses.m, line 28
 In uses.m, line 28
 |          @(x,y) x.^2 + y + 10};
 |               ^ info: this token is not linked to the ast
-In uses.m, line 28
-|          @(x,y) x.^2 + y + 10};
-|                               ^ info: this token is not linked to the ast
-In uses.m, line 29
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -67,9 +67,6 @@ In octave.m, line 3
 In octave.m, line 3
 | x = [0 i 1+i 2 3i<anon,> 3+4i];
 |                  ^^^^^^^ info: this token is not linked to the ast
-In octave.m, line 3
-| x = [0 i 1+i 2 3i 3+4i];
-|                        ^ info: this token is not linked to the ast
 In octave.m, line 4
 | x = [1, -1, i, -i];
 |       ^ info: this token is not linked to the ast
@@ -79,16 +76,4 @@ In octave.m, line 4
 In octave.m, line 4
 | x = [1, -1, i, -i];
 |              ^ info: this token is not linked to the ast
-In octave.m, line 4
-| x = [1, -1, i, -i];
-|                   ^ info: this token is not linked to the ast
-In octave.m, line 5
-| x = i;
-|      ^ info: this token is not linked to the ast
-In octave.m, line 6
-| assert (3*4i'.', 0 - 12i);
-|                          ^ info: this token is not linked to the ast
-In octave.m, line 7
-| assert (3*4i.'.', 0 + 12i);
-|                           ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

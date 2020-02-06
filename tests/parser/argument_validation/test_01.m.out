@@ -70,13 +70,4 @@ In test_01.m, line 6
 In test_01.m, line 6
 |     y (1, 1) single
 |            ^ info: this token is not linked to the ast
-In test_01.m, line 7
-|   end
-|   ^^^ info: this token is not linked to the ast
-In test_01.m, line 9
-|   r = 0.5 * x + 0.5 * y;
-|                        ^ info: this token is not linked to the ast
-In test_01.m, line 10
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

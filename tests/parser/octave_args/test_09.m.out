@@ -90,21 +90,6 @@ In test_09.m, line 8
 In test_09.m, line 8
 | function [x, y, z] = f (a, b, c, d, e)
 |                                      ^ info: this token is not linked to the ast
-In test_09.m, line 9
-|   assert (nargin == 4);
-|                       ^ info: this token is not linked to the ast
-In test_09.m, line 10
-|   assert (nargout == 2);
-|                        ^ info: this token is not linked to the ast
-In test_09.m, line 11
-|   x = a;
-|        ^ info: this token is not linked to the ast
-In test_09.m, line 12
-|   y = b;
-|        ^ info: this token is not linked to the ast
-In test_09.m, line 13
-| end
-| ^^^ info: this token is not linked to the ast
 In test_09.m, line 15
 | function test()
 |              ^ info: this token is not linked to the ast
@@ -120,19 +105,10 @@ In test_09.m, line 16
 In test_09.m, line 16
 |  [s, t] = f (1, 2, 3, 4);
 |       ^ info: this token is not linked to the ast
-In test_09.m, line 16
-|  [s, t] = f (1, 2, 3, 4);
-|                         ^ info: this token is not linked to the ast
 In test_09.m, line 17
 |  assert ([s<anon,> t] == [1 2]);
 |            ^^^^^^^ info: this token is not linked to the ast
 In test_09.m, line 17
 |  assert ([s t] == [1<anon,> 2]);
 |                     ^^^^^^^ info: this token is not linked to the ast
-In test_09.m, line 17
-|  assert ([s t] == [1 2]);
-|                         ^ info: this token is not linked to the ast
-In test_09.m, line 18
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

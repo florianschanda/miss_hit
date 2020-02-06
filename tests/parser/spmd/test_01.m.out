@@ -36,16 +36,4 @@ In test_01.m, line 5
 In test_01.m, line 5
 |     INP = load(['somedatafile' num2str(labindex)<anon,> '.mat']);
 |                                                 ^^^^^^^ info: this token is not linked to the ast
-In test_01.m, line 5
-|     INP = load(['somedatafile' num2str(labindex) '.mat']);
-|                                                          ^ info: this token is not linked to the ast
-In test_01.m, line 6
-|     RES = somefun(INP);
-|                       ^ info: this token is not linked to the ast
-In test_01.m, line 7
-|   end
-|   ^^^ info: this token is not linked to the ast
-In test_01.m, line 8
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

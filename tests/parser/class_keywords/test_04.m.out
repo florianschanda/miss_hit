@@ -20,10 +20,4 @@ Root: Function_File
 In test_04.m, line 3
 | function r = test_04
 |            ^ info: this token is not linked to the ast
-In test_04.m, line 4
-|   l = leek;
-|           ^ info: this token is not linked to the ast
-In test_04.m, line 6
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

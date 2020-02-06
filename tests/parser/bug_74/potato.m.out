@@ -32,13 +32,4 @@ In potato.m, line 3
 In potato.m, line 3
 | function [a, b] = potato()
 |                          ^ info: this token is not linked to the ast
-In potato.m, line 4
-|    a = 1;
-|         ^ info: this token is not linked to the ast
-In potato.m, line 5
-|    b = 2;
-|         ^ info: this token is not linked to the ast
-In potato.m, line 6
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

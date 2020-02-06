@@ -40,9 +40,6 @@ In Bool.m, line 6
 In Bool.m, line 6
 |       Yes (1)
 |             ^ info: this token is not linked to the ast
-In Bool.m, line 7
-|    end
-|    ^^^ info: this token is not linked to the ast
 In Bool.m, line 9
 |      function obj = Bool(val)
 |                   ^ info: this token is not linked to the ast
@@ -52,16 +49,4 @@ In Bool.m, line 9
 In Bool.m, line 9
 |      function obj = Bool(val)
 |                             ^ info: this token is not linked to the ast
-In Bool.m, line 10
-|        obj@logical(val);
-|                        ^ info: this token is not linked to the ast
-In Bool.m, line 11
-|      end
-|      ^^^ info: this token is not linked to the ast
-In Bool.m, line 12
-|    end
-|    ^^^ info: this token is not linked to the ast
-In Bool.m, line 13
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

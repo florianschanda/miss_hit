@@ -31,22 +31,4 @@ In bar.m, line 3
 In bar.m, line 3
 | function bar()
 |              ^ info: this token is not linked to the ast
-In bar.m, line 4
-|     x = 5;
-|          ^ info: this token is not linked to the ast
-In bar.m, line 5
-|     y = 0;
-|          ^ info: this token is not linked to the ast
-In bar.m, line 7
-|         z = x / y;
-|                  ^ info: this token is not linked to the ast
-In bar.m, line 9
-|         rethrow(ME);
-|                    ^ info: this token is not linked to the ast
-In bar.m, line 10
-|     end
-|     ^^^ info: this token is not linked to the ast
-In bar.m, line 11
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

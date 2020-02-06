@@ -19,7 +19,4 @@ In test_05.m, line 3
 In test_05.m, line 3
 | function test_05()
 |                  ^ info: this token is not linked to the ast
-In test_05.m, line 5
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

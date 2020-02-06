@@ -56,9 +56,6 @@ Root: Class_File
               Field: Identifier <B>
             RHS: Identifier <b>
 ----------------------------------------------------------------------
-In SyntaxColors.m, line 8
-|    end
-|    ^^^ info: this token is not linked to the ast
 In SyntaxColors.m, line 10
 |       function c = SyntaxColors(r, g, b)
 |                  ^ info: this token is not linked to the ast
@@ -74,21 +71,6 @@ In SyntaxColors.m, line 10
 In SyntaxColors.m, line 10
 |       function c = SyntaxColors(r, g, b)
 |                                        ^ info: this token is not linked to the ast
-In SyntaxColors.m, line 11
-|          c.R = r;
-|                 ^ info: this token is not linked to the ast
-In SyntaxColors.m, line 12
-|          c.G = g;
-|                 ^ info: this token is not linked to the ast
-In SyntaxColors.m, line 13
-|          c.B = b;
-|                 ^ info: this token is not linked to the ast
-In SyntaxColors.m, line 14
-|       end
-|       ^^^ info: this token is not linked to the ast
-In SyntaxColors.m, line 15
-|    end
-|    ^^^ info: this token is not linked to the ast
 In SyntaxColors.m, line 17
 |       Error   (1, 0, 0)
 |               ^ info: this token is not linked to the ast
@@ -137,10 +119,4 @@ In SyntaxColors.m, line 20
 In SyntaxColors.m, line 20
 |       String  (1, 0, 1)
 |                       ^ info: this token is not linked to the ast
-In SyntaxColors.m, line 21
-|    end
-|    ^^^ info: this token is not linked to the ast
-In SyntaxColors.m, line 22
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

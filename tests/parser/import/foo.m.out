@@ -16,19 +16,4 @@ In foo.m, line 3
 In foo.m, line 3
 | function foo()
 |              ^ info: this token is not linked to the ast
-In foo.m, line 4
-|     import PackageName.ClassName
-|                       ^ info: this token is not linked to the ast
-In foo.m, line 5
-|     import PackageName.FunctionName
-|                       ^ info: this token is not linked to the ast
-In foo.m, line 6
-|     import PackageName.ClassName.staticMethodName
-|                       ^ info: this token is not linked to the ast
-In foo.m, line 6
-|     import PackageName.ClassName.staticMethodName
-|                                 ^ info: this token is not linked to the ast
-In foo.m, line 8
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

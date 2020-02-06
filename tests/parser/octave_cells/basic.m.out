@@ -101,9 +101,6 @@ In basic.m, line 4
 In basic.m, line 4
 |     x = {1 2 {3<anon,> 4}};
 |                ^^^^^^^ info: this token is not linked to the ast
-In basic.m, line 4
-|     x = {1 2 {3 4}};
-|                    ^ info: this token is not linked to the ast
 In basic.m, line 5
 |     x = {1, 2 {3 4}};
 |           ^ info: this token is not linked to the ast
@@ -113,9 +110,6 @@ In basic.m, line 5
 In basic.m, line 5
 |     x = {1, 2 {3<anon,> 4}};
 |                 ^^^^^^^ info: this token is not linked to the ast
-In basic.m, line 5
-|     x = {1, 2 {3 4}};
-|                     ^ info: this token is not linked to the ast
 In basic.m, line 6
 |     x = {1<anon,> 2, {3 4}};
 |           ^^^^^^^ info: this token is not linked to the ast
@@ -125,9 +119,6 @@ In basic.m, line 6
 In basic.m, line 6
 |     x = {1 2, {3<anon,> 4}};
 |                 ^^^^^^^ info: this token is not linked to the ast
-In basic.m, line 6
-|     x = {1 2, {3 4}};
-|                     ^ info: this token is not linked to the ast
 In basic.m, line 7
 |     x = {1<anon,> 2 {3, 4}};
 |           ^^^^^^^ info: this token is not linked to the ast
@@ -137,9 +128,6 @@ In basic.m, line 7
 In basic.m, line 7
 |     x = {1 2 {3, 4}};
 |                ^ info: this token is not linked to the ast
-In basic.m, line 7
-|     x = {1 2 {3, 4}};
-|                     ^ info: this token is not linked to the ast
 In basic.m, line 8
 |     x = {1, 2, {3 4}};
 |           ^ info: this token is not linked to the ast
@@ -149,9 +137,6 @@ In basic.m, line 8
 In basic.m, line 8
 |     x = {1, 2, {3<anon,> 4}};
 |                  ^^^^^^^ info: this token is not linked to the ast
-In basic.m, line 8
-|     x = {1, 2, {3 4}};
-|                      ^ info: this token is not linked to the ast
 In basic.m, line 9
 |     x = {1<anon,> 2,{3 4}};
 |           ^^^^^^^ info: this token is not linked to the ast
@@ -161,9 +146,6 @@ In basic.m, line 9
 In basic.m, line 9
 |     x = {1 2,{3<anon,> 4}};
 |                ^^^^^^^ info: this token is not linked to the ast
-In basic.m, line 9
-|     x = {1 2,{3 4}};
-|                    ^ info: this token is not linked to the ast
 In basic.m, line 10
 |     x = {1<anon,> 2,{3,4}};
 |           ^^^^^^^ info: this token is not linked to the ast
@@ -173,9 +155,6 @@ In basic.m, line 10
 In basic.m, line 10
 |     x = {1 2,{3,4}};
 |                ^ info: this token is not linked to the ast
-In basic.m, line 10
-|     x = {1 2,{3,4}};
-|                    ^ info: this token is not linked to the ast
 In basic.m, line 11
 |     x = {1,2,{3 4}};
 |           ^ info: this token is not linked to the ast
@@ -185,10 +164,4 @@ In basic.m, line 11
 In basic.m, line 11
 |     x = {1,2,{3<anon,> 4}};
 |                ^^^^^^^ info: this token is not linked to the ast
-In basic.m, line 11
-|     x = {1,2,{3 4}};
-|                    ^ info: this token is not linked to the ast
-In basic.m, line 12
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -34,19 +34,4 @@ In cat.m, line 4
 In cat.m, line 4
 |         function meow(self)
 |                           ^ info: this token is not linked to the ast
-In cat.m, line 6
-|             self.meow@potato.kitten;
-|                                    ^ info: this token is not linked to the ast
-In cat.m, line 7
-|             disp("*destory stuff*");
-|                                    ^ info: this token is not linked to the ast
-In cat.m, line 8
-|         end
-|         ^^^ info: this token is not linked to the ast
-In cat.m, line 9
-|     end
-|     ^^^ info: this token is not linked to the ast
-In cat.m, line 10
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -36,25 +36,7 @@ Root: Script_File
               Name: Identifier <warning>
               Arguments: Char_Array_Literal 'Unexpected plot type. No plot created.'
 ----------------------------------------------------------------------
-In multiple.m, line 5
-|         bar(x);
-|               ^ info: this token is not linked to the ast
-In multiple.m, line 6
-|         title('Bar Graph');
-|                           ^ info: this token is not linked to the ast
 In multiple.m, line 7
 |     case {'pie','pie3'}
 |                ^ info: this token is not linked to the ast
-In multiple.m, line 8
-|         pie3(x);
-|                ^ info: this token is not linked to the ast
-In multiple.m, line 9
-|         title('Pie Chart');
-|                           ^ info: this token is not linked to the ast
-In multiple.m, line 11
-|         warning('Unexpected plot type. No plot created.');
-|                                                          ^ info: this token is not linked to the ast
-In multiple.m, line 12
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -24,13 +24,4 @@ In foo.m, line 3
 In foo.m, line 3
 | function x = foo(s)
 |                   ^ info: this token is not linked to the ast
-In foo.m, line 4
-|     disp(s);
-|            ^ info: this token is not linked to the ast
-In foo.m, line 5
-|     x = s;
-|          ^ info: this token is not linked to the ast
-In foo.m, line 6
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

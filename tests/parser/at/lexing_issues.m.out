@@ -78,60 +78,39 @@ In lexing_issues.m, line 3
 In lexing_issues.m, line 3
 | function lexing_issues()
 |                        ^ info: this token is not linked to the ast
-In lexing_issues.m, line 4
-|     x = 10;
-|           ^ info: this token is not linked to the ast
 In lexing_issues.m, line 5
 |     a = {(x)<anon,> 2};    % {x, 2}
 |             ^^^^^^^ info: this token is not linked to the ast
-In lexing_issues.m, line 5
-|     a = {(x) 2};    % {x, 2}
-|                ^ info: this token is not linked to the ast
 In lexing_issues.m, line 6
 |     b = {@(x) 2};   % {@(x)2}
 |           ^ info: this token is not linked to the ast
 In lexing_issues.m, line 6
 |     b = {@(x) 2};   % {@(x)2}
 |             ^ info: this token is not linked to the ast
-In lexing_issues.m, line 6
-|     b = {@(x) 2};   % {@(x)2}
-|                 ^ info: this token is not linked to the ast
 In lexing_issues.m, line 7
 |     c = {@ (x) 2};  % {@(x)2}
 |            ^ info: this token is not linked to the ast
 In lexing_issues.m, line 7
 |     c = {@ (x) 2};  % {@(x)2}
 |              ^ info: this token is not linked to the ast
-In lexing_issues.m, line 7
-|     c = {@ (x) 2};  % {@(x)2}
-|                  ^ info: this token is not linked to the ast
 In lexing_issues.m, line 8
 |     d = {@ (x)2};   % {@(x)2}
 |            ^ info: this token is not linked to the ast
 In lexing_issues.m, line 8
 |     d = {@ (x)2};   % {@(x)2}
 |              ^ info: this token is not linked to the ast
-In lexing_issues.m, line 8
-|     d = {@ (x)2};   % {@(x)2}
-|                 ^ info: this token is not linked to the ast
 In lexing_issues.m, line 10
 |     e = {@(x) x + 1}; % {@(x)(x+1)}
 |           ^ info: this token is not linked to the ast
 In lexing_issues.m, line 10
 |     e = {@(x) x + 1}; % {@(x)(x+1)}
 |             ^ info: this token is not linked to the ast
-In lexing_issues.m, line 10
-|     e = {@(x) x + 1}; % {@(x)(x+1)}
-|                     ^ info: this token is not linked to the ast
 In lexing_issues.m, line 11
 |     f = {@(x) x+ 1};  % {@(x)(x+1)}
 |           ^ info: this token is not linked to the ast
 In lexing_issues.m, line 11
 |     f = {@(x) x+ 1};  % {@(x)(x+1)}
 |             ^ info: this token is not linked to the ast
-In lexing_issues.m, line 11
-|     f = {@(x) x+ 1};  % {@(x)(x+1)}
-|                    ^ info: this token is not linked to the ast
 In lexing_issues.m, line 12
 |     g = {@(x) x +1};  % {@(x)x, 1}
 |           ^ info: this token is not linked to the ast
@@ -141,19 +120,10 @@ In lexing_issues.m, line 12
 In lexing_issues.m, line 12
 |     g = {@(x) x<anon,> +1};  % {@(x)x, 1}
 |                ^^^^^^^ info: this token is not linked to the ast
-In lexing_issues.m, line 12
-|     g = {@(x) x +1};  % {@(x)x, 1}
-|                    ^ info: this token is not linked to the ast
 In lexing_issues.m, line 13
 |     h = {@(x) x+1};   % {@(x)(x+1)}
 |           ^ info: this token is not linked to the ast
 In lexing_issues.m, line 13
 |     h = {@(x) x+1};   % {@(x)(x+1)}
 |             ^ info: this token is not linked to the ast
-In lexing_issues.m, line 13
-|     h = {@(x) x+1};   % {@(x)(x+1)}
-|                   ^ info: this token is not linked to the ast
-In lexing_issues.m, line 14
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

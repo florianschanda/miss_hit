@@ -25,19 +25,4 @@ In baz.m, line 6
 In baz.m, line 6
 | function baz()
 |              ^ info: this token is not linked to the ast
-In baz.m, line 7
-|     x = 5;
-|          ^ info: this token is not linked to the ast
-In baz.m, line 8
-|     y = 0;
-|          ^ info: this token is not linked to the ast
-In baz.m, line 10
-|         z = x / y;
-|                  ^ info: this token is not linked to the ast
-In baz.m, line 11
-|     end
-|     ^^^ info: this token is not linked to the ast
-In baz.m, line 12
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

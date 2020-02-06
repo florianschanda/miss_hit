@@ -29,22 +29,4 @@ In foo.m, line 3
 In foo.m, line 3
 | function foo()
 |              ^ info: this token is not linked to the ast
-In foo.m, line 4
-|     x = 5;
-|          ^ info: this token is not linked to the ast
-In foo.m, line 5
-|     y = 0;
-|          ^ info: this token is not linked to the ast
-In foo.m, line 7
-|         z = x / y;
-|                  ^ info: this token is not linked to the ast
-In foo.m, line 9
-|         z = 1;
-|              ^ info: this token is not linked to the ast
-In foo.m, line 10
-|     end
-|     ^^^ info: this token is not linked to the ast
-In foo.m, line 11
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -26,10 +26,4 @@ In letters.m, line 3
 In letters.m, line 4
 |   l = char('A':'Z');
 |               ^ info: this token is not linked to the ast
-In letters.m, line 4
-|   l = char('A':'Z');
-|                    ^ info: this token is not linked to the ast
-In letters.m, line 5
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

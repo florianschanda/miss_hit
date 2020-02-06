@@ -55,21 +55,12 @@ In valid.m, line 1
 In valid.m, line 1
 | function test_01()
 |                  ^ info: this token is not linked to the ast
-In valid.m, line 2
-|   foo.x = 0;
-|            ^ info: this token is not linked to the ast
-In valid.m, line 3
-|   foo.y = 0;
-|            ^ info: this token is not linked to the ast
 In valid.m, line 5
 |   foo.('x') = 42;
 |       ^ info: this token is not linked to the ast
 In valid.m, line 5
 |   foo.('x') = 42;
 |           ^ info: this token is not linked to the ast
-In valid.m, line 5
-|   foo.('x') = 42;
-|                 ^ info: this token is not linked to the ast
 In valid.m, line 6
 |   [foo.('x')] = 42;
 |   ^ info: this token is not linked to the ast
@@ -82,24 +73,12 @@ In valid.m, line 6
 In valid.m, line 6
 |   [foo.('x')] = 42;
 |             ^ info: this token is not linked to the ast
-In valid.m, line 6
-|   [foo.('x')] = 42;
-|                   ^ info: this token is not linked to the ast
-In valid.m, line 7
-| end
-| ^^^ info: this token is not linked to the ast
 In valid.m, line 9
 | function test_02()
 |                 ^ info: this token is not linked to the ast
 In valid.m, line 9
 | function test_02()
 |                  ^ info: this token is not linked to the ast
-In valid.m, line 10
-|   foo.x = 0;
-|            ^ info: this token is not linked to the ast
-In valid.m, line 11
-|   foo.y = 0;
-|            ^ info: this token is not linked to the ast
 In valid.m, line 13
 |   [foo.('x') foo.('y')] = potato();
 |   ^ info: this token is not linked to the ast
@@ -121,10 +100,4 @@ In valid.m, line 13
 In valid.m, line 13
 |   [foo.('x') foo.('y')] = potato();
 |                       ^ info: this token is not linked to the ast
-In valid.m, line 13
-|   [foo.('x') foo.('y')] = potato();
-|                                   ^ info: this token is not linked to the ast
-In valid.m, line 14
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -20,10 +20,4 @@ In test_07.m, line 3
 In test_07.m, line 3
 | function c = test_07(~)
 |                       ^ info: this token is not linked to the ast
-In test_07.m, line 6
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_07.m, line 9
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

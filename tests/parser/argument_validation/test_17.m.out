@@ -74,10 +74,4 @@ In test_17.m, line 8
 In test_17.m, line 8
 |         options.LineWidth (1,1) {mustBeNumeric} = 1
 |                                                 ^ info: this token is not linked to the ast
-In test_17.m, line 9
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_17.m, line 13
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

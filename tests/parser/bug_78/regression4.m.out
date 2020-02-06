@@ -18,7 +18,4 @@ In regression4.m, line 3
 In regression4.m, line 3
 | [x,y] = (size(1));
 |     ^ info: this token is not linked to the ast
-In regression4.m, line 3
-| [x,y] = (size(1));
-|                  ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

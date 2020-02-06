@@ -18,10 +18,4 @@ In test.m, line 3
 In test.m, line 3
 | function test()
 |               ^ info: this token is not linked to the ast
-In test.m, line 4
-|   A = foo.^3';
-|              ^ info: this token is not linked to the ast
-In test.m, line 5
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

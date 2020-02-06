@@ -49,19 +49,4 @@ In test_03.m, line 3
 In test_03.m, line 3
 | function test_03(a,b,c)
 |                       ^ info: this token is not linked to the ast
-In test_03.m, line 8
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_03.m, line 11
-|     disp(class(a));
-|                   ^ info: this token is not linked to the ast
-In test_03.m, line 12
-|     disp(class(b));
-|                   ^ info: this token is not linked to the ast
-In test_03.m, line 13
-|     disp(class(c));
-|                   ^ info: this token is not linked to the ast
-In test_03.m, line 14
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -81,46 +81,10 @@ In test_2.m, line 3
 In test_2.m, line 3
 | function logData(fname,n)
 |                         ^ info: this token is not linked to the ast
-In test_2.m, line 5
-|     currTime = datetime;
-|                        ^ info: this token is not linked to the ast
-In test_2.m, line 8
-|         logTime = currTime;
-|                           ^ info: this token is not linked to the ast
-In test_2.m, line 9
-|         disp('Logging initial value.');
-|                                       ^ info: this token is not linked to the ast
-In test_2.m, line 10
-|         dlmwrite(fname,n);
-|                          ^ info: this token is not linked to the ast
-In test_2.m, line 12
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_2.m, line 14
-|     dt = currTime - logTime;
-|                            ^ info: this token is not linked to the ast
-In test_2.m, line 16
-|         disp('Logging.');
-|                         ^ info: this token is not linked to the ast
-In test_2.m, line 17
-|         dlmwrite(fname,n,'-append');
-|                                    ^ info: this token is not linked to the ast
-In test_2.m, line 18
-|         logTime = currTime;
-|                           ^ info: this token is not linked to the ast
 In test_2.m, line 20
 |         disp(['Not logging. '<anon,> num2str(seconds(dt)) ' sec since last log.']);
 |                              ^^^^^^^ info: this token is not linked to the ast
 In test_2.m, line 20
 |         disp(['Not logging. ' num2str(seconds(dt))<anon,> ' sec since last log.']);
 |                                                   ^^^^^^^ info: this token is not linked to the ast
-In test_2.m, line 20
-|         disp(['Not logging. ' num2str(seconds(dt)) ' sec since last log.']);
-|                                                                            ^ info: this token is not linked to the ast
-In test_2.m, line 21
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_2.m, line 22
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -206,11 +206,14 @@ class MATLAB_Parser:
             self.peek("COMMA") or \
             self.peek("NEWLINE")
 
-    def match_eos(self, semi = "", allow_nothing = False):
+    def match_eos(self, n_ast, semi = "", allow_nothing = False):
         # This matches end-of-statements (COMMA, SEMICOLON, NEWLINE,
         # EOF). Later for style checking - if semi is ; then it
         # expects a single semicolon, if "" then the preferred form is
         # none.
+        #
+        # Links everything except the newlines to the given node.
+        assert isinstance(n_ast, Node)
         assert semi in ("", ";")
 
         found_semi_before_nl = False
@@ -229,6 +232,8 @@ class MATLAB_Parser:
         terminator_count = 0
         while self.peek("SEMICOLON") or self.peek("COMMA"):
             terminator_count += 1
+            self.nt.set_ast(n_ast)
+
             if self.peek("SEMICOLON"):
                 found_semi_before_nl = True
             elif self.peek("COMMA") and \
@@ -274,12 +279,15 @@ class MATLAB_Parser:
                 if found_nl:
                     self.nt.fix["delete"] = True
                 found_nl = True
-            elif config.active(self.cfg, "end_of_statements"):
-                self.mh.style_issue(self.nt.location,
-                                    "trailing statement terminator after"
-                                    " newline",
-                                    True)
-                self.nt.fix["delete"] = True
+            else:
+                self.nt.set_ast(n_ast)
+
+                if config.active(self.cfg, "end_of_statements"):
+                    self.mh.style_issue(self.nt.location,
+                                        "trailing statement terminator after"
+                                        " newline",
+                                        True)
+                    self.nt.fix["delete"] = True
 
             found_eos = True
             self.next()
@@ -545,9 +553,9 @@ class MATLAB_Parser:
                         break
                 self.match("KET")
 
-        self.match_eos()
-
-        return Function_Signature(n_name, l_inputs, l_outputs)
+        rv = Function_Signature(n_name, l_inputs, l_outputs)
+        self.match_eos(rv)
+        return rv
 
     def parse_function_def(self):
         self.match("KEYWORD", "function")
@@ -572,6 +580,11 @@ class MATLAB_Parser:
             else:
                 l_body.append(item)
 
+        rv = Function_Definition(t_fun, n_sig,
+                                 l_argval,
+                                 Sequence_Of_Statements(l_body),
+                                 l_nested)
+
         if self.peek_eof() and self.functions_require_end:
             self.mh.error(t_fun.location,
                           "this function must be terminated with end")
@@ -581,12 +594,8 @@ class MATLAB_Parser:
         else:
             self.functions_require_end = True
             self.match("KEYWORD", "end")
-            self.match_eos()
-
-        rv = Function_Definition(t_fun, n_sig,
-                                 l_argval,
-                                 Sequence_Of_Statements(l_body),
-                                 l_nested)
+            self.ct.set_ast(rv)
+            self.match_eos(rv)
 
         self.pop_context()
 
@@ -627,9 +636,8 @@ class MATLAB_Parser:
         t_kw = self.ct
 
         attributes = self.parse_name_value_pair_list()
-        self.match_eos()
-
         rv = Special_Block(t_kw, attributes)
+        self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
             if t_kw.value == "arguments":
@@ -693,7 +701,7 @@ class MATLAB_Parser:
                 self.match("ASSIGNMENT")
                 default_value = self.parse_expression()
 
-            self.match_eos()
+            self.match_eos(rv)
 
             rv.add_constraint(Entity_Constraints(prop_name,
                                                  val_dim,
@@ -702,7 +710,8 @@ class MATLAB_Parser:
                                                  default_value))
 
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
 
         return rv
 
@@ -716,9 +725,8 @@ class MATLAB_Parser:
         t_kw = self.ct
 
         attributes = self.parse_name_value_pair_list()
-        self.match_eos()
-
         rv = Special_Block(t_kw, attributes)
+        self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
             if self.peek("KEYWORD", "function"):
@@ -727,7 +735,8 @@ class MATLAB_Parser:
                 rv.add_method(self.parse_function_signature())
 
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
 
         return rv
 
@@ -737,9 +746,9 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "enumeration")
         t_kw = self.ct
-        self.match_eos()
 
         rv = Special_Block(t_kw, [])
+        self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
             name = self.parse_identifier(allow_void=False)
@@ -757,10 +766,11 @@ class MATLAB_Parser:
 
             rv.add_enumeration(Class_Enumeration(name, args))
 
-            self.match_eos()
+            self.match_eos(rv)
 
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
 
         return rv
 
@@ -769,16 +779,17 @@ class MATLAB_Parser:
         # https://www.mathworks.com/help/matlab/matlab_oop/events-and-listeners.html
         self.match("KEYWORD", "events")
         t_kw = self.ct
-        self.match_eos()
 
         rv = Special_Block(t_kw, [])
+        self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
             rv.add_event(self.parse_identifier(allow_void=False))
-            self.match_eos()
+            self.match_eos(rv)
 
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
 
         return rv
 
@@ -811,9 +822,8 @@ class MATLAB_Parser:
                 else:
                     break
 
-        self.match_eos()
-
         rv = Class_Definition(t_classdef, class_name, attributes, l_super)
+        self.match_eos(rv)
 
         while True:
             if self.peek("KEYWORD", "properties"):
@@ -832,7 +842,8 @@ class MATLAB_Parser:
                               " inside classdef")
 
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
         self.pop_context()
 
         return rv
@@ -937,7 +948,7 @@ class MATLAB_Parser:
             else:
                 rv = Naked_Expression_Statement(rv)
 
-            self.match_eos(";")
+            self.match_eos(rv, ";")
 
             return rv
 
@@ -987,12 +998,12 @@ class MATLAB_Parser:
             # has to be a function call. Needs to be checked.
             rhs = self.parse_expression()
 
-        self.match_eos(";")
-
         if len(lhs) == 1:
-            return Simple_Assignment_Statement(t_eq, lhs[0], rhs)
+            rv = Simple_Assignment_Statement(t_eq, lhs[0], rhs)
         else:
-            return Compound_Assignment_Statement(t_eq, lhs, rhs)
+            rv = Compound_Assignment_Statement(t_eq, lhs, rhs)
+        self.match_eos(rv, ";")
+        return rv
 
     def parse_expression(self):
         return self.parse_precedence_12()
@@ -1381,69 +1392,73 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "if")
         self.push_context("if")
-        t_kw = self.ct
-        n_expr = self.parse_expression()
-        self.match_eos(allow_nothing=True)
-        n_body = self.parse_delimited_input()
-        actions.append(Action(t_kw, n_expr, n_body))
+        n_action = Action(self.ct)
+        n_action.set_expression(self.parse_expression())
+        self.match_eos(n_action, allow_nothing=True)
+        n_action.set_body(self.parse_delimited_input())
+        actions.append(n_action)
 
         while self.peek("KEYWORD", "elseif"):
             self.match("KEYWORD", "elseif")
-            t_kw = self.ct
-            n_expr = self.parse_expression()
-            self.match_eos(allow_nothing=True)
-            n_body = self.parse_delimited_input()
-            actions.append(Action(t_kw, n_expr, n_body))
+            n_action = Action(self.ct)
+            n_action.set_expression(self.parse_expression())
+            self.match_eos(n_action, allow_nothing=True)
+            n_action.set_body(self.parse_delimited_input())
+            actions.append(n_action)
 
         if self.peek("KEYWORD", "else"):
             self.match("KEYWORD", "else")
-            t_kw = self.ct
-            self.match_eos(allow_nothing=True)
-            n_body = self.parse_delimited_input()
-            actions.append(Action(t_kw, None, n_body))
+            n_action = Action(self.ct)
+            self.match_eos(n_action, allow_nothing=True)
+            n_action.set_body(self.parse_delimited_input())
+            actions.append(n_action)
 
         self.match("KEYWORD", "end")
-        self.match_eos()
+        rv = If_Statement(actions)
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
         self.pop_context()
 
-        return If_Statement(actions)
+        return rv
 
     def parse_return_statement(self):
         self.match("KEYWORD", "return")
-        t_kw = self.ct
-        self.match_eos()
+        rv = Return_Statement(self.ct)
+        self.match_eos(rv)
 
-        return Return_Statement(t_kw)
+        return rv
 
     def parse_break_statement(self):
         self.match("KEYWORD", "break")
-        t_kw = self.ct
+        rv = Break_Statement(self.ct)
 
         if not self.in_context("loop"):
             self.mh.error(self.ct.location,
                           "break must appear inside loop",
                           fatal = False)
 
-        self.match_eos()
+        self.match_eos(rv)
 
-        return Break_Statement(t_kw)
+        return rv
 
     def parse_continue_statement(self):
         self.match("KEYWORD", "continue")
-        t_kw = self.ct
+        rv = Continue_Statement(self.ct)
 
         if not self.in_context("loop"):
             self.mh.error(self.ct.location,
                           "continue must appear inside loop",
                           fatal = False)
 
-        self.match_eos()
+        self.match_eos(rv)
 
-        return Continue_Statement(t_kw)
+        return rv
 
     def parse_for_assignment(self,
+                             n_ast,
                              allow_brackets=False,
                              allow_recursion=False):
+        assert isinstance(n_ast, Node)
         # Apparently it's OK to wrap the loop in arbitrarily nested
         # brackets, e.g. for ((i = 1:2))
         #
@@ -1453,12 +1468,16 @@ class MATLAB_Parser:
         # we cannot. For parfor we can never recurse.
         if self.peek("BRA") and allow_brackets:
             self.match("BRA")
-            n_ident, n_expr = self.parse_for_assignment(allow_recursion,
+            self.ct.set_ast(n_ast)
+            n_ident, n_expr = self.parse_for_assignment(n_ast,
+                                                        allow_recursion,
                                                         allow_recursion)
             self.match("KET")
+            self.ct.set_ast(n_ast)
         else:
             n_ident = self.parse_identifier(allow_void=False)
             self.match("ASSIGNMENT")
+            self.ct.set_ast(n_ast)
             n_expr = self.parse_expression()
 
         return n_ident, n_expr
@@ -1466,136 +1485,153 @@ class MATLAB_Parser:
     def parse_for_statement(self):
         self.match("KEYWORD", "for")
         self.push_context("loop")
-        t_kw = self.ct
+        rv = General_For_Statement(self.ct)
 
-        n_ident, n_expr = self.parse_for_assignment(allow_brackets=True)
-        self.match_eos()
+        n_ident, n_expr = self.parse_for_assignment(rv, allow_brackets=True)
+        rv.set_ident(n_ident)
+        rv.set_expression(n_expr)
+        self.match_eos(rv)
 
-        n_body = self.parse_delimited_input()
+        rv.set_body(self.parse_delimited_input())
 
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
         self.pop_context()
 
-        if isinstance(n_expr, Range_Expression):
-            return Simple_For_Statement(t_kw, n_ident, n_expr, n_body)
-        else:
-            return General_For_Statement(t_kw, n_ident, n_expr, n_body)
+        return rv
 
     def parse_parfor_statement(self):
         self.match("KEYWORD", "parfor")
         self.push_context("loop")
-        t_kw = self.ct
+        rv = Parallel_For_Statement(self.ct)
 
         if self.peek("BRA"):
             # parfor (var = first:last, max_workers)
             self.match("BRA")
-            n_ident, n_expr = self.parse_for_assignment()
+            self.ct.set_ast(rv)
+
+            n_ident, n_expr = self.parse_for_assignment(rv)
             if self.peek("COMMA"):
                 self.match("COMMA")
-                n_workers = self.parse_expression()
-            else:
-                n_workers = None
+                self.ct.set_ast(rv)
+                rv.set_workers(self.parse_expression())
+
             self.match("KET")
+            self.ct.set_ast(rv)
+
         else:
-            n_ident, n_expr = self.parse_for_assignment()
-            n_workers = None
-        self.match_eos()
+            n_ident, n_expr = self.parse_for_assignment(rv)
 
-        n_body = self.parse_delimited_input()
-
-        self.match("KEYWORD", "end")
-        self.match_eos()
-        self.pop_context()
-
+        rv.set_ident(n_ident)
         if not isinstance(n_expr, Range_Expression):
             raise ICE("parfor range is not a range")
         else:
-            return Parallel_For_Statement(t_kw, n_ident,
-                                          n_expr, n_body, n_workers)
+            rv.set_range(n_expr)
+
+        self.match_eos(rv)
+
+        rv.set_body(self.parse_delimited_input())
+
+        self.match("KEYWORD", "end")
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
+        self.pop_context()
+
+        return rv
 
     def parse_while_statement(self):
         self.match("KEYWORD", "while")
         self.push_context("loop")
         t_kw = self.ct
-
         n_guard = self.parse_expression()
-        self.match_eos()
+        rv = While_Statement(t_kw, n_guard)
+        self.match_eos(rv)
 
-        n_body = self.parse_delimited_input()
+        rv.set_body(self.parse_delimited_input())
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
         self.pop_context()
 
-        return While_Statement(t_kw, n_guard, n_body)
+        return rv
 
     def parse_global_statement(self):
         self.match("KEYWORD", "global")
-        t_global = self.ct
+        rv = Global_Statement(self.ct)
 
-        global_names = []
         while True:
-            global_names.append(self.parse_identifier(allow_void=False))
+            rv.add_name(self.parse_identifier(allow_void=False))
             if self.peek("NEWLINE"):
                 self.match("NEWLINE")
                 break
             elif self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
+                self.ct.set_ast(rv)
                 self.match("NEWLINE")
                 break
 
-        return Global_Statement(t_global, global_names)
+        return rv
 
     def parse_persistent_statement(self):
         self.match("KEYWORD", "persistent")
-        t_kw = self.ct
+        rv = Persistent_Statement(self.ct)
 
-        l_names = []
         while True:
-            l_names.append(self.parse_identifier(allow_void=False))
+            rv.add_name(self.parse_identifier(allow_void=False))
             if self.peek_eos():
-                self.match_eos()
+                self.match_eos(rv)
                 break
 
-        return Persistent_Statement(t_kw, l_names)
+        return rv
 
     def parse_switch_statement(self):
         self.match("KEYWORD", "switch")
         self.push_context("switch")
         t_switch = self.ct
-
         n_switch_expr = self.parse_expression()
-        self.match_eos()
+        rv = Switch_Statement(t_switch, n_switch_expr)
+        self.match_eos(rv)
 
-        l_options = []
         while True:
             if self.peek("KEYWORD", "otherwise"):
                 self.match("KEYWORD", "otherwise")
-                t_kw = self.ct
-                self.match_eos(allow_nothing=True)
-                n_body = self.parse_delimited_input()
-                l_options.append(Action(t_kw, None, n_body))
+                n_action = Action(self.ct)
+                self.match_eos(n_action, allow_nothing=True)
+                n_action.set_body(self.parse_delimited_input())
+                rv.add_action(n_action)
                 break
             else:
                 self.match("KEYWORD", "case")
-                t_kw = self.ct
-                n_expr = self.parse_expression()
-                self.match_eos(allow_nothing=True)
-                n_body = self.parse_delimited_input()
-                l_options.append(Action(t_kw, n_expr, n_body))
+                n_action = Action(self.ct)
+                n_action.set_expression(self.parse_expression())
+                self.match_eos(n_action, allow_nothing=True)
+                n_action.set_body(self.parse_delimited_input())
+                rv.add_action(n_action)
 
             if self.peek("KEYWORD", "end"):
                 break
 
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
         self.pop_context()
 
-        return Switch_Statement(t_switch, n_switch_expr, l_options)
+        return rv
 
     def parse_import_statement(self):
+        # https://www.mathworks.com/help/matlab/ref/import.html
+        #
+        # What makes this one curious is that previously it was
+        # probably a command-form function. Now it is a statement. But
+        # for this reason (probably) commas are not used to separate
+        # the things to import.
+        #
+        # In MISS_HIT for now you can only import a single name per
+        # import statement (i.e. no space separated lists allowed
+        # here).
         self.match("KEYWORD", "import")
-        t_kw = self.ct
+        rv = Import_Statement(self.ct)
 
         self.match("IDENTIFIER")
         chain = [self.ct]
@@ -1606,56 +1642,58 @@ class MATLAB_Parser:
                 break
             else:
                 self.match("SELECTION")
+                self.ct.set_ast(rv)
                 self.match("IDENTIFIER")
                 chain.append(self.ct)
-        self.match_eos()
 
-        return Import_Statement(t_kw, chain)
+        rv.set_chain(chain)
+        self.match_eos(rv)
+
+        return rv
 
     def parse_try_statement(self):
         self.match("KEYWORD", "try")
         self.push_context("block")
-        t_try = self.ct
-        self.match_eos(allow_nothing=True)
+        rv = Try_Statement(self.ct)
+        self.match_eos(rv, allow_nothing=True)
 
-        n_body = self.parse_delimited_input()
+        rv.set_body(self.parse_delimited_input())
 
         if self.peek("KEYWORD", "end"):
             # A missing catch block seems to be an undocumented
             # extension to MATLAB that Octave also supports. It should
             # be equivalent to a general catch with an empty body.
-            t_catch = None
-            n_handler = None
-            n_ident = None
+            pass
+
         else:
             self.match("KEYWORD", "catch")
             t_catch = self.ct
-            if self.peek_eos():
-                n_ident = None
-            else:
-                n_ident = self.parse_identifier(allow_void = False)
-            self.match_eos()
+            if not self.peek_eos():
+                rv.set_ident(self.parse_identifier(allow_void = False))
+            self.match_eos(rv)
 
-            n_handler = self.parse_delimited_input()
+            rv.set_handler_body(t_catch, self.parse_delimited_input())
 
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
         self.pop_context()
 
-        return Try_Statement(t_try, n_body, t_catch, n_ident, n_handler)
+        return rv
 
     def parse_spmd_statement(self):
         self.match("KEYWORD", "spmd")
         self.push_context("block")
-        t_spmd = self.ct
-        self.match_eos()
+        rv = SPMD_Statement(self.ct)
+        self.match_eos(rv)
 
-        n_body = self.parse_delimited_input()
+        rv.set_body(self.parse_delimited_input())
         self.match("KEYWORD", "end")
-        self.match_eos()
+        self.ct.set_ast(rv)
+        self.match_eos(rv)
         self.pop_context()
 
-        return SPMD_Statement(t_spmd, n_body)
+        return rv
 
 
 def sanity_test(mh, filename, show_bt, show_tree, show_dot):

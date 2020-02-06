@@ -54,12 +54,6 @@ In test_08.m, line 5
 In test_08.m, line 5
 | function [varargout] = f (varargin)
 |                                   ^ info: this token is not linked to the ast
-In test_08.m, line 6
-|   assert (nargin == 1);
-|                       ^ info: this token is not linked to the ast
-In test_08.m, line 7
-|   assert (nargout == 1);
-|                        ^ info: this token is not linked to the ast
 In test_08.m, line 8
 |   varargout{1} = varargin{1};
 |            ^ info: this token is not linked to the ast
@@ -72,22 +66,10 @@ In test_08.m, line 8
 In test_08.m, line 8
 |   varargout{1} = varargin{1};
 |                            ^ info: this token is not linked to the ast
-In test_08.m, line 8
-|   varargout{1} = varargin{1};
-|                             ^ info: this token is not linked to the ast
-In test_08.m, line 9
-| end
-| ^^^ info: this token is not linked to the ast
 In test_08.m, line 11
 | function test()
 |              ^ info: this token is not linked to the ast
 In test_08.m, line 11
 | function test()
 |               ^ info: this token is not linked to the ast
-In test_08.m, line 12
-|  assert (f (1) == 1);
-|                     ^ info: this token is not linked to the ast
-In test_08.m, line 13
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

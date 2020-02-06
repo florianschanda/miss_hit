@@ -48,9 +48,6 @@ In test_07.m, line 3
 In test_07.m, line 3
 | function p = test_07(a,b,c)
 |                           ^ info: this token is not linked to the ast
-In test_07.m, line 4
-|     p = @parabola;
-|                  ^ info: this token is not linked to the ast
 In test_07.m, line 6
 |     function y = parabola(x)
 |                ^ info: this token is not linked to the ast
@@ -60,13 +57,4 @@ In test_07.m, line 6
 In test_07.m, line 6
 |     function y = parabola(x)
 |                            ^ info: this token is not linked to the ast
-In test_07.m, line 7
-|         y = a*x.^2 + b*x + c;
-|                             ^ info: this token is not linked to the ast
-In test_07.m, line 8
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_07.m, line 10
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -52,28 +52,10 @@ In test_03.m, line 5
 In test_03.m, line 5
 | function [x, y] = f ()
 |                      ^ info: this token is not linked to the ast
-In test_03.m, line 6
-|   assert (nargin == 0);
-|                       ^ info: this token is not linked to the ast
-In test_03.m, line 7
-|   assert (nargout == 1);
-|                        ^ info: this token is not linked to the ast
-In test_03.m, line 8
-|   x = 2;
-|        ^ info: this token is not linked to the ast
-In test_03.m, line 9
-| end
-| ^^^ info: this token is not linked to the ast
 In test_03.m, line 11
 | function test()
 |              ^ info: this token is not linked to the ast
 In test_03.m, line 11
 | function test()
 |               ^ info: this token is not linked to the ast
-In test_03.m, line 12
-|  assert (f () == 2);
-|                    ^ info: this token is not linked to the ast
-In test_03.m, line 13
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

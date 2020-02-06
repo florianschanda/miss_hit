@@ -33,25 +33,4 @@ Root: Script_File
         Arguments: Identifier <x>
         Arguments: Identifier <y>
 ----------------------------------------------------------------------
-In test_06.m, line 3
-| x = 1.0;
-|        ^ info: this token is not linked to the ast
-In test_06.m, line 4
-| y = 1.0;
-|        ^ info: this token is not linked to the ast
-In test_06.m, line 5
-| minval = 0.0;
-|             ^ info: this token is not linked to the ast
-In test_06.m, line 6
-| maxval = 5.0;
-|             ^ info: this token is not linked to the ast
-In test_06.m, line 8
-| myFunction(x,y,maxval,minval);
-|                              ^ info: this token is not linked to the ast
-In test_06.m, line 9
-| myFunction(x,y,maxval);
-|                       ^ info: this token is not linked to the ast
-In test_06.m, line 10
-| myFunction(x,y);
-|                ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

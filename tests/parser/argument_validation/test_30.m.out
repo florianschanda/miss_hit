@@ -126,12 +126,6 @@ In test_30.m, line 6
 In test_30.m, line 6
 |         b {mustBeSize(b,[5,3])}
 |                               ^ info: this token is not linked to the ast
-In test_30.m, line 7
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_30.m, line 10
-| end
-| ^^^ info: this token is not linked to the ast
 In test_30.m, line 13
 | function mustBeA(input,className)
 |                 ^ info: this token is not linked to the ast
@@ -141,15 +135,6 @@ In test_30.m, line 13
 In test_30.m, line 13
 | function mustBeA(input,className)
 |                                 ^ info: this token is not linked to the ast
-In test_30.m, line 16
-|         error('Input must be of class double.');
-|                                                ^ info: this token is not linked to the ast
-In test_30.m, line 17
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_30.m, line 18
-| end
-| ^^^ info: this token is not linked to the ast
 In test_30.m, line 20
 | function mustBeSize(input,sizeDims)
 |                    ^ info: this token is not linked to the ast
@@ -162,15 +147,6 @@ In test_30.m, line 20
 In test_30.m, line 23
 |         error(['Input must be of size ',num2str(sizeDims)]);
 |                                        ^ info: this token is not linked to the ast
-In test_30.m, line 23
-|         error(['Input must be of size ',num2str(sizeDims)]);
-|                                                            ^ info: this token is not linked to the ast
-In test_30.m, line 24
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_30.m, line 25
-| end
-| ^^^ info: this token is not linked to the ast
 In test_30.m, line 27
 | function mustBeDims(input,numDims)
 |                    ^ info: this token is not linked to the ast
@@ -186,13 +162,4 @@ In test_30.m, line 30
 In test_30.m, line 30
 |         error(['Input must have ',num2str(numDims),' dimensions.']);
 |                                                   ^ info: this token is not linked to the ast
-In test_30.m, line 30
-|         error(['Input must have ',num2str(numDims),' dimensions.']);
-|                                                                    ^ info: this token is not linked to the ast
-In test_30.m, line 31
-|     end
-|     ^^^ info: this token is not linked to the ast
-In test_30.m, line 32
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

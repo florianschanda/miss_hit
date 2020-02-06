@@ -10,7 +10,4 @@ Root: Script_File
             LHS: Number_Literal <2>
             RHS: Number_Literal <1>
 ----------------------------------------------------------------------
-In test2.m, line 3
-| x = [2 >1];
-|           ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

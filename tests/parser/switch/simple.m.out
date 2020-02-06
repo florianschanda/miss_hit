@@ -42,22 +42,4 @@ In simple.m, line 3
 In simple.m, line 3
 | function simple()
 |                 ^ info: this token is not linked to the ast
-In simple.m, line 6
-|             disp('negative one');
-|                                 ^ info: this token is not linked to the ast
-In simple.m, line 8
-|             disp('zero');
-|                         ^ info: this token is not linked to the ast
-In simple.m, line 10
-|             disp('positive one');
-|                                 ^ info: this token is not linked to the ast
-In simple.m, line 12
-|             disp('other value');
-|                                ^ info: this token is not linked to the ast
-In simple.m, line 13
-|     end
-|     ^^^ info: this token is not linked to the ast
-In simple.m, line 14
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

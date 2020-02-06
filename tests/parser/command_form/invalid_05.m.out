@@ -46,13 +46,4 @@ In invalid_05.m, line 3
 In invalid_05.m, line 3
 | function invalid_05()
 |                     ^ info: this token is not linked to the ast
-In invalid_05.m, line 4
-|     kitten = 42;
-|                ^ info: this token is not linked to the ast
-In invalid_05.m, line 5
-|     foo = 5; % redefinition
-|            ^ info: this token is not linked to the ast
-In invalid_05.m, line 10
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, 4 style issue(s)

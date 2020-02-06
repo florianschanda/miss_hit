@@ -8,10 +8,4 @@ Root: Class_File
         Name: Identifier <x>
         Class: Identifier <uint8>
 ----------------------------------------------------------------------
-In potato.m, line 5
-|   end
-|   ^^^ info: this token is not linked to the ast
-In potato.m, line 7
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

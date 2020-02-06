@@ -43,28 +43,4 @@ Root: Script_File
         LHS: Number_Literal <1>
         RHS: Number_Literal <2j>
 ----------------------------------------------------------------------
-In test.m, line 3
-| z = 1i;
-|       ^ info: this token is not linked to the ast
-In test.m, line 4
-| z = a + bi;
-|           ^ info: this token is not linked to the ast
-In test.m, line 5
-| z = x + 1i*y;
-|             ^ info: this token is not linked to the ast
-In test.m, line 6
-| z = 1+2i;
-|         ^ info: this token is not linked to the ast
-In test.m, line 10
-| z = 1j;
-|       ^ info: this token is not linked to the ast
-In test.m, line 11
-| z = a + bj;
-|           ^ info: this token is not linked to the ast
-In test.m, line 12
-| z = x + 1j*y;
-|             ^ info: this token is not linked to the ast
-In test.m, line 13
-| z = 1+2j;
-|         ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

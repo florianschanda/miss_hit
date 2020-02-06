@@ -31,18 +31,12 @@ In handles.m, line 3
 In handles.m, line 3
 | function handles()
 |                  ^ info: this token is not linked to the ast
-In handles.m, line 5
-|     x = @false;
-|               ^ info: this token is not linked to the ast
 In handles.m, line 6
 |     y = @(a) 1 + a;
 |          ^ info: this token is not linked to the ast
 In handles.m, line 6
 |     y = @(a) 1 + a;
 |            ^ info: this token is not linked to the ast
-In handles.m, line 6
-|     y = @(a) 1 + a;
-|                   ^ info: this token is not linked to the ast
 In handles.m, line 7
 |     z = @(a, b) a + b;
 |          ^ info: this token is not linked to the ast
@@ -52,10 +46,4 @@ In handles.m, line 7
 In handles.m, line 7
 |     z = @(a, b) a + b;
 |               ^ info: this token is not linked to the ast
-In handles.m, line 7
-|     z = @(a, b) a + b;
-|                      ^ info: this token is not linked to the ast
-In handles.m, line 9
-| end
-| ^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

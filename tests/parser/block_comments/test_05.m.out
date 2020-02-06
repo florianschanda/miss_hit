@@ -11,10 +11,4 @@ Root: Script_File
         Name: Identifier <disp>
         Arguments: String_Literal "5"
 ----------------------------------------------------------------------
-In test_05.m, line 13
-| disp("1");
-|          ^ info: this token is not linked to the ast
-In test_05.m, line 21
-| disp("5");
-|          ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
