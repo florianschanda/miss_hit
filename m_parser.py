@@ -1237,7 +1237,7 @@ class MATLAB_Parser:
         return rv
 
     def parse_matrix_row(self):
-        rv = []
+        rv = Row()
 
         first = True
 
@@ -1251,6 +1251,7 @@ class MATLAB_Parser:
                 # comma, e.g. [,1,2] which is the same as [1, 2]
                 if self.peek("COMMA"):
                     self.match("COMMA")
+                    self.ct.set_ast(rv)
 
             if (self.peek("SEMICOLON") or
                 self.peek("NEWLINE") or
@@ -1260,7 +1261,7 @@ class MATLAB_Parser:
                 # matrix, e.g. [1,2,] which is the same as [1, 2]
                 break
 
-            rv.append(self.parse_expression())
+            rv.add_item(self.parse_expression())
 
             if self.peek("SEMICOLON"):
                 pass
@@ -1270,73 +1271,72 @@ class MATLAB_Parser:
                 pass
             else:
                 self.match("COMMA")
+                self.ct.set_ast(rv)
 
-        return Row(rv)
+        return rv
 
     def parse_matrix(self):
         self.match("M_BRA")
-        t_open = self.ct
+        rv = Matrix_Expression(self.ct)
 
         # Bad style, but there may be leading semicolons, e.g [;;3]
         # which is the same as [3].
         while self.peek("SEMICOLON"):
             self.match("SEMICOLON")
+            self.ct.set_ast(rv)
 
-        if self.peek("M_KET"):
-            rows = []
-        else:
-            rows = [self.parse_matrix_row()]
+        if not self.peek("M_KET"):
+            rv.add_row(self.parse_matrix_row())
             while self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
+                self.ct.set_ast(rv)
             if self.peek("NEWLINE"):
                 self.match("NEWLINE")
 
             while not (self.peek("SEMICOLON") or
                        self.peek("NEWLINE") or
                        self.peek("M_KET")):
-                rows.append(self.parse_matrix_row())
+                rv.add_row(self.parse_matrix_row())
                 while self.peek("SEMICOLON"):
                     self.match("SEMICOLON")
+                    self.ct.set_ast(rv)
                 if self.peek("NEWLINE"):
                     self.match("NEWLINE")
 
         self.match("M_KET")
-        t_close = self.ct
-
-        rv = Matrix_Expression(t_open, t_close, rows)
+        rv.set_closing_bracket(self.ct)
         return rv
 
     def parse_cell(self):
         self.match("C_BRA")
-        t_open = self.ct
+        rv = Cell_Expression(self.ct)
 
         # Bad style, but there may be leading semicolons, e.g {;;3}
         # which is the same as {3}.
         while self.peek("SEMICOLON"):
             self.match("SEMICOLON")
+            self.ct.set_ast(rv)
 
-        if self.peek("C_KET"):
-            rows = []
-        else:
-            rows = [self.parse_matrix_row()]
+        if not self.peek("C_KET"):
+            rv.add_row(self.parse_matrix_row())
             while self.peek("SEMICOLON"):
                 self.match("SEMICOLON")
+                self.ct.set_ast(rv)
             if self.peek("NEWLINE"):
                 self.match("NEWLINE")
 
             while not (self.peek("SEMICOLON") or
                        self.peek("NEWLINE") or
                        self.peek("C_KET")):
-                rows.append(self.parse_matrix_row())
+                rv.add_row(self.parse_matrix_row())
                 while self.peek("SEMICOLON"):
                     self.match("SEMICOLON")
+                    self.ct.set_ast(rv)
                 if self.peek("NEWLINE"):
                     self.match("NEWLINE")
 
         self.match("C_KET")
-        t_close = self.ct
-
-        rv = Cell_Expression(t_open, t_close, rows)
+        rv.set_closing_bracket(self.ct)
         return rv
 
     def parse_function_handle(self):

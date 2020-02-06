@@ -72,9 +72,6 @@ Root: Function_File
                 LHS: Identifier <x>
                 RHS: Number_Literal <1>
 ----------------------------------------------------------------------
-In lexing_issues.m, line 5
-|     a = {(x)<anon,> 2};    % {x, 2}
-|             ^^^^^^^ info: this token is not linked to the ast
 In lexing_issues.m, line 6
 |     b = {@(x) 2};   % {@(x)2}
 |           ^ info: this token is not linked to the ast
@@ -111,9 +108,6 @@ In lexing_issues.m, line 12
 In lexing_issues.m, line 12
 |     g = {@(x) x +1};  % {@(x)x, 1}
 |             ^ info: this token is not linked to the ast
-In lexing_issues.m, line 12
-|     g = {@(x) x<anon,> +1};  % {@(x)x, 1}
-|                ^^^^^^^ info: this token is not linked to the ast
 In lexing_issues.m, line 13
 |     h = {@(x) x+1};   % {@(x)(x+1)}
 |           ^ info: this token is not linked to the ast

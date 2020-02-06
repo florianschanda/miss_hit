@@ -113,17 +113,5 @@ In test_30.m, line 6
 |           ^ info: this token is not linked to the ast
 In test_30.m, line 6
 |         b {mustBeSize(b,[5,3])}
-|                           ^ info: this token is not linked to the ast
-In test_30.m, line 6
-|         b {mustBeSize(b,[5,3])}
 |                               ^ info: this token is not linked to the ast
-In test_30.m, line 23
-|         error(['Input must be of size ',num2str(sizeDims)]);
-|                                        ^ info: this token is not linked to the ast
-In test_30.m, line 30
-|         error(['Input must have ',num2str(numDims),' dimensions.']);
-|                                  ^ info: this token is not linked to the ast
-In test_30.m, line 30
-|         error(['Input must have ',num2str(numDims),' dimensions.']);
-|                                                   ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

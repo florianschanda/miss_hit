@@ -32,22 +32,4 @@ Root: Function_File
             LHS: Identifier <a>
             RHS: Identifier <b>
 ----------------------------------------------------------------------
-In afun2.m, line 3
-|     a = {1, @sin, 2, @cos};
-|           ^ info: this token is not linked to the ast
-In afun2.m, line 3
-|     a = {1, @sin, 2, @cos};
-|                 ^ info: this token is not linked to the ast
-In afun2.m, line 3
-|     a = {1, @sin, 2, @cos};
-|                    ^ info: this token is not linked to the ast
-In afun2.m, line 4
-|     b = {1<anon,> @sin 2 @cos};
-|           ^^^^^^^ info: this token is not linked to the ast
-In afun2.m, line 4
-|     b = {1 @sin<anon,> 2 @cos};
-|                ^^^^^^^ info: this token is not linked to the ast
-In afun2.m, line 4
-|     b = {1 @sin 2<anon,> @cos};
-|                  ^^^^^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

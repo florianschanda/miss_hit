@@ -52,28 +52,4 @@ Root: Script_File
           LHS: Number_Literal <0>
           RHS: Number_Literal <12i>
 ----------------------------------------------------------------------
-In octave.m, line 3
-| x = [0<anon,> i 1+i 2 3i 3+4i];
-|       ^^^^^^^ info: this token is not linked to the ast
-In octave.m, line 3
-| x = [0 i<anon,> 1+i 2 3i 3+4i];
-|         ^^^^^^^ info: this token is not linked to the ast
-In octave.m, line 3
-| x = [0 i 1+i<anon,> 2 3i 3+4i];
-|             ^^^^^^^ info: this token is not linked to the ast
-In octave.m, line 3
-| x = [0 i 1+i 2<anon,> 3i 3+4i];
-|               ^^^^^^^ info: this token is not linked to the ast
-In octave.m, line 3
-| x = [0 i 1+i 2 3i<anon,> 3+4i];
-|                  ^^^^^^^ info: this token is not linked to the ast
-In octave.m, line 4
-| x = [1, -1, i, -i];
-|       ^ info: this token is not linked to the ast
-In octave.m, line 4
-| x = [1, -1, i, -i];
-|           ^ info: this token is not linked to the ast
-In octave.m, line 4
-| x = [1, -1, i, -i];
-|              ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

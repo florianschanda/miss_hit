@@ -916,23 +916,25 @@ class Action(Node):
 
 class Row(Node):
     """ AST for matrix or cell array rows. """
-    def __init__(self, l_items):
-        super().__init__()
-        assert isinstance(l_items, list)
-        # assert len(l_items) >= 1
-        # TODO: Investigate if this empty rows should be pruned
-        for n_item in l_items:
-            assert isinstance(n_item, Expression)
 
-        self.l_items = l_items
-        for n_item in self.l_items:
-            n_item.set_parent(self)
+    # Open question: are empty rows allowed?
+
+    def __init__(self):
+        super().__init__()
+
+        self.l_items = []
         # Members of this row
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Matrix_Expression,
                                      Cell_Expression))
         super().set_parent(n_parent)
+
+    def add_item(self, n_item):
+        assert isinstance(n_item, Expression)
+
+        n_item.set_parent(self)
+        self.l_items.append(n_item)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -1717,26 +1719,31 @@ class Range_Expression(Expression):
 
 
 class Matrix_Expression(Expression):
-    def __init__(self, t_open, t_close, l_rows):
+    def __init__(self, t_open):
         super().__init__()
         assert isinstance(t_open, MATLAB_Token)
         assert t_open.kind == "M_BRA"
-        assert isinstance(t_close, MATLAB_Token)
-        assert t_close.kind == "M_KET"
-        assert isinstance(l_rows, list)
-        for n_row in l_rows:
-            assert isinstance(n_row, Row)
 
         self.t_open = t_open
         self.t_open.set_ast(self)
-        self.t_close = t_close
-        self.t_close.set_ast(self)
+        self.t_close = None
         # The tokens for [ and ]
 
-        self.l_rows = l_rows
-        for n_row in self.l_rows:
-            n_row.set_parent(self)
+        self.l_rows = []
         # Matrix rows
+
+    def add_row(self, n_row):
+        assert isinstance(n_row, Row)
+
+        n_row.set_parent(self)
+        self.l_rows.append(n_row)
+
+    def set_closing_bracket(self, t_close):
+        assert isinstance(t_close, MATLAB_Token)
+        assert t_close.kind == "M_KET"
+
+        self.t_close = t_close
+        self.t_close.set_ast(self)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -1745,26 +1752,31 @@ class Matrix_Expression(Expression):
 
 
 class Cell_Expression(Expression):
-    def __init__(self, t_open, t_close, l_rows):
+    def __init__(self, t_open):
         super().__init__()
         assert isinstance(t_open, MATLAB_Token)
         assert t_open.kind == "C_BRA"
-        assert isinstance(t_close, MATLAB_Token)
-        assert t_close.kind == "C_KET"
-        assert isinstance(l_rows, list)
-        for n_row in l_rows:
-            assert isinstance(n_row, Row)
 
         self.t_open = t_open
         self.t_open.set_ast(self)
-        self.t_close = t_close
-        self.t_close.set_ast(self)
+        self.t_close = None
         # The tokens for { and }
 
-        self.l_rows = l_rows
-        for n_row in self.l_rows:
-            n_row.set_parent(self)
+        self.l_rows = []
         # Cell rows
+
+    def add_row(self, n_row):
+        assert isinstance(n_row, Row)
+
+        n_row.set_parent(self)
+        self.l_rows.append(n_row)
+
+    def set_closing_bracket(self, t_close):
+        assert isinstance(t_close, MATLAB_Token)
+        assert t_close.kind == "C_KET"
+
+        self.t_close = t_close
+        self.t_close.set_ast(self)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)

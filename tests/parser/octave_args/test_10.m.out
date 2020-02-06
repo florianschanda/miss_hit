@@ -133,22 +133,4 @@ In test_10.m, line 15
 In test_10.m, line 15
 |  [s, t, u, v] = f (1, 2, 3);
 |             ^ info: this token is not linked to the ast
-In test_10.m, line 16
-|  assert ([s<anon,> t u v] == [1 2 3 4]);
-|            ^^^^^^^ info: this token is not linked to the ast
-In test_10.m, line 16
-|  assert ([s t<anon,> u v] == [1 2 3 4]);
-|              ^^^^^^^ info: this token is not linked to the ast
-In test_10.m, line 16
-|  assert ([s t u<anon,> v] == [1 2 3 4]);
-|                ^^^^^^^ info: this token is not linked to the ast
-In test_10.m, line 16
-|  assert ([s t u v] == [1<anon,> 2 3 4]);
-|                         ^^^^^^^ info: this token is not linked to the ast
-In test_10.m, line 16
-|  assert ([s t u v] == [1 2<anon,> 3 4]);
-|                           ^^^^^^^ info: this token is not linked to the ast
-In test_10.m, line 16
-|  assert ([s t u v] == [1 2 3<anon,> 4]);
-|                             ^^^^^^^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

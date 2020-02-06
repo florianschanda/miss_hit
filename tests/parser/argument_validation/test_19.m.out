@@ -108,9 +108,6 @@ In test_19.m, line 9
 In test_19.m, line 9
 |         scale.PlotType (1,1) string
 |                            ^ info: this token is not linked to the ast
-In test_19.m, line 11
-|     z = reshape([x;y],1,[]);
-|                   ^ info: this token is not linked to the ast
 In test_19.m, line 14
 |             plot(z{:});
 |                   ^ info: this token is not linked to the ast

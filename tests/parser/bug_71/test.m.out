@@ -37,22 +37,4 @@ Root: Script_File
               Items: Number_Literal <3>
               Items: Number_Literal <2>
 ----------------------------------------------------------------------
-In test.m, line 3
-| x = [1, 2, 3];
-|       ^ info: this token is not linked to the ast
-In test.m, line 3
-| x = [1, 2, 3];
-|          ^ info: this token is not linked to the ast
-In test.m, line 4
-| x([end-1<anon,> end]) = x([end end-1]);
-|         ^^^^^^^ info: this token is not linked to the ast
-In test.m, line 4
-| x([end-1 end]) = x([end<anon,> end-1]);
-|                        ^^^^^^^ info: this token is not linked to the ast
-In test.m, line 5
-| assert(x == [1, 3, 2]);
-|               ^ info: this token is not linked to the ast
-In test.m, line 5
-| assert(x == [1, 3, 2]);
-|                  ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

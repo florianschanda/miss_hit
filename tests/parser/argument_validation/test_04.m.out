@@ -115,12 +115,6 @@ In test_04.m, line 7
 |                           ^ info: this token is not linked to the ast
 In test_04.m, line 7
 |         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
-|                                                         ^ info: this token is not linked to the ast
-In test_04.m, line 7
-|         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
-|                                                                 ^ info: this token is not linked to the ast
-In test_04.m, line 7
-|         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
 |                                                                            ^ info: this token is not linked to the ast
 In test_04.m, line 7
 |         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
