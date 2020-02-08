@@ -118,19 +118,4 @@ In test_10.m, line 11
 In test_10.m, line 11
 |   varargout{4} = 4;
 |              ^ info: this token is not linked to the ast
-In test_10.m, line 15
-|  [s, t, u, v] = f (1, 2, 3);
-|  ^ info: this token is not linked to the ast
-In test_10.m, line 15
-|  [s, t, u, v] = f (1, 2, 3);
-|    ^ info: this token is not linked to the ast
-In test_10.m, line 15
-|  [s, t, u, v] = f (1, 2, 3);
-|       ^ info: this token is not linked to the ast
-In test_10.m, line 15
-|  [s, t, u, v] = f (1, 2, 3);
-|          ^ info: this token is not linked to the ast
-In test_10.m, line 15
-|  [s, t, u, v] = f (1, 2, 3);
-|             ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

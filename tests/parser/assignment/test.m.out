@@ -20,7 +20,7 @@ Root: Function_File
     Signature: Function_Signature
       Name: Identifier <test_02>
     Body: Sequence_Of_Statements
-      Statements: Simple_Assignment_Statement
+      Statements: Compound_Assignment_Statement
         LHS: Reference
           Name: Identifier <a>
           Arguments: Range_Expression
@@ -53,9 +53,6 @@ In test.m, line 5
 |            ^ info: this token is not linked to the ast
 In test.m, line 14
 |   [a(1:2:3,1:3)] = 2;
-|   ^ info: this token is not linked to the ast
-In test.m, line 14
-|   [a(1:2:3,1:3)] = 2;
 |       ^ info: this token is not linked to the ast
 In test.m, line 14
 |   [a(1:2:3,1:3)] = 2;
@@ -63,16 +60,4 @@ In test.m, line 14
 In test.m, line 14
 |   [a(1:2:3,1:3)] = 2;
 |             ^ info: this token is not linked to the ast
-In test.m, line 14
-|   [a(1:2:3,1:3)] = 2;
-|                ^ info: this token is not linked to the ast
-In test.m, line 23
-|   [a b] = size(1);
-|   ^ info: this token is not linked to the ast
-In test.m, line 23
-|   [a<anon,> b] = size(1);
-|     ^^^^^^^ info: this token is not linked to the ast
-In test.m, line 23
-|   [a b] = size(1);
-|       ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

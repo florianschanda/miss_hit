@@ -2,7 +2,7 @@
 --  Parse tree for assignment_to_field_of_array.m
 Root: Script_File
   Statements: Sequence_Of_Statements
-    Statements: Simple_Assignment_Statement
+    Statements: Compound_Assignment_Statement
       LHS: Selection
         Prefix: Reference
           Name: Identifier <foo>
@@ -17,10 +17,4 @@ Root: Script_File
         Field: Identifier <x>
       RHS: Number_Literal <42>
 ----------------------------------------------------------------------
-In assignment_to_field_of_array.m, line 1
-| [foo(i).x] = 42;
-| ^ info: this token is not linked to the ast
-In assignment_to_field_of_array.m, line 1
-| [foo(i).x] = 42;
-|          ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -2,7 +2,7 @@
 --  Parse tree for test.m
 Root: Script_File
   Statements: Sequence_Of_Statements
-    Statements: Simple_Assignment_Statement
+    Statements: Compound_Assignment_Statement
       LHS: Identifier <x>
       RHS: Number_Literal <42>
     Statements: Compound_Assignment_Statement
@@ -15,7 +15,7 @@ Root: Script_File
       LHS: Identifier <y>
       RHS: Reference
         Name: Identifier <potato>
-    Statements: Simple_Assignment_Statement
+    Statements: Compound_Assignment_Statement
       LHS: Identifier <x>
       RHS: Number_Literal <5>
     Statements: Simple_Assignment_Statement
@@ -66,49 +66,4 @@ Root: Script_File
         Rows: Row
           Items: Number_Literal <12>
 ----------------------------------------------------------------------
-In test.m, line 3
-| [x, ] = 42;
-| ^ info: this token is not linked to the ast
-In test.m, line 3
-| [x, ] = 42;
-|   ^ info: this token is not linked to the ast
-In test.m, line 3
-| [x, ] = 42;
-|     ^ info: this token is not linked to the ast
-In test.m, line 4
-| [x, y, ] = potato();
-| ^ info: this token is not linked to the ast
-In test.m, line 4
-| [x, y, ] = potato();
-|   ^ info: this token is not linked to the ast
-In test.m, line 4
-| [x, y, ] = potato();
-|      ^ info: this token is not linked to the ast
-In test.m, line 4
-| [x, y, ] = potato();
-|        ^ info: this token is not linked to the ast
-In test.m, line 5
-| [, x, y] = potato();
-| ^ info: this token is not linked to the ast
-In test.m, line 5
-| [, x, y] = potato();
-|  ^ info: this token is not linked to the ast
-In test.m, line 5
-| [, x, y] = potato();
-|     ^ info: this token is not linked to the ast
-In test.m, line 5
-| [, x, y] = potato();
-|        ^ info: this token is not linked to the ast
-In test.m, line 6
-| [,x,]    = 5;
-| ^ info: this token is not linked to the ast
-In test.m, line 6
-| [,x,]    = 5;
-|  ^ info: this token is not linked to the ast
-In test.m, line 6
-| [,x,]    = 5;
-|    ^ info: this token is not linked to the ast
-In test.m, line 6
-| [,x,]    = 5;
-|     ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

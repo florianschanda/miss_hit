@@ -1446,31 +1446,43 @@ class Simple_Assignment_Statement(Simple_Statement):
 
 
 class Compound_Assignment_Statement(Simple_Statement):
-    def __init__(self, t_eq, l_lhs, n_rhs):
+    # TODO: Rewrite single targets to Simple_Assignment_Statement
+    def __init__(self):
         super().__init__()
+
+        self.t_eq = None
+        # The token for the =
+
+        self.l_lhs = None
+        # The list of assignment targets.
+
+        self.n_rhs = None
+        # The expression to assign. Must be a function call that
+        # returns multiple outputs. We can't check it now (during
+        # parsing), it will be checked during semantic analysis.
+
+    def set_token_eq(self, t_eq):
         assert isinstance(t_eq, MATLAB_Token)
         assert t_eq.kind == "ASSIGNMENT"
-        assert isinstance(l_lhs, list)
-        assert len(l_lhs) >= 2
-        for n_lhs in l_lhs:
-            assert isinstance(n_lhs, Name)
-        assert isinstance(n_rhs, Expression)
 
         self.t_eq = t_eq
         self.t_eq.set_ast(self)
-        # The token for the =
+
+    def set_targets(self, l_lhs):
+        assert isinstance(l_lhs, list)
+        assert len(l_lhs) >= 1
+        for n_lhs in l_lhs:
+            assert isinstance(n_lhs, Name)
 
         self.l_lhs = l_lhs
         for n_target in self.l_lhs:
             n_target.set_parent(self)
-        # The list of assignment targets. At least 2 (other forms are
-        # re-written on the fly to Simple_Assignment_Statement.
+
+    def set_expression(self, n_rhs):
+        assert isinstance(n_rhs, Expression)
 
         self.n_rhs = n_rhs
         self.n_rhs.set_parent(self)
-        # The expression to assign. Must be a function call that
-        # returns multiple outputs. We can't check it now (during
-        # parsing), it will be checked during semantic analysis.
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)

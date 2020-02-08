@@ -20,7 +20,7 @@ Root: Function_File
           Prefix: Identifier <foo>
           Field: Char_Array_Literal 'x'
         RHS: Number_Literal <42>
-      Statements: Simple_Assignment_Statement
+      Statements: Compound_Assignment_Statement
         LHS: Dynamic_Selection
           Prefix: Identifier <foo>
           Field: Char_Array_Literal 'x'
@@ -57,35 +57,20 @@ In valid.m, line 5
 |           ^ info: this token is not linked to the ast
 In valid.m, line 6
 |   [foo.('x')] = 42;
-|   ^ info: this token is not linked to the ast
-In valid.m, line 6
-|   [foo.('x')] = 42;
 |        ^ info: this token is not linked to the ast
 In valid.m, line 6
 |   [foo.('x')] = 42;
 |            ^ info: this token is not linked to the ast
-In valid.m, line 6
-|   [foo.('x')] = 42;
-|             ^ info: this token is not linked to the ast
-In valid.m, line 13
-|   [foo.('x') foo.('y')] = potato();
-|   ^ info: this token is not linked to the ast
 In valid.m, line 13
 |   [foo.('x') foo.('y')] = potato();
 |        ^ info: this token is not linked to the ast
 In valid.m, line 13
 |   [foo.('x') foo.('y')] = potato();
 |            ^ info: this token is not linked to the ast
-In valid.m, line 13
-|   [foo.('x')<anon,> foo.('y')] = potato();
-|             ^^^^^^^ info: this token is not linked to the ast
 In valid.m, line 13
 |   [foo.('x') foo.('y')] = potato();
 |                  ^ info: this token is not linked to the ast
 In valid.m, line 13
 |   [foo.('x') foo.('y')] = potato();
 |                      ^ info: this token is not linked to the ast
-In valid.m, line 13
-|   [foo.('x') foo.('y')] = potato();
-|                       ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

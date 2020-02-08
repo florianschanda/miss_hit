@@ -57,13 +57,4 @@ Root: Function_File
                 Items: Number_Literal <1>
                 Items: Number_Literal <2>
 ----------------------------------------------------------------------
-In test_09.m, line 16
-|  [s, t] = f (1, 2, 3, 4);
-|  ^ info: this token is not linked to the ast
-In test_09.m, line 16
-|  [s, t] = f (1, 2, 3, 4);
-|    ^ info: this token is not linked to the ast
-In test_09.m, line 16
-|  [s, t] = f (1, 2, 3, 4);
-|       ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

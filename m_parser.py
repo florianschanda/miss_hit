@@ -975,12 +975,16 @@ class MATLAB_Parser:
         # trailing comma. This is not the same as a function return
         # list, since there cannot be a trailing comma there.
 
+        rv = Compound_Assignment_Statement()
+
         lhs = []
         require_comma = False
 
         self.match("A_BRA")
+        self.ct.set_ast(rv)
         if self.peek("COMMA"):
             self.match("COMMA")
+            self.ct.set_ast(rv)
         while True:
             # There is a special case we need to take care of with
             # ~. There is a MATLAB bug/weirdness with [~ x], which is
@@ -992,13 +996,16 @@ class MATLAB_Parser:
             if (self.peek("COMMA") or require_comma) and \
                not self.peek("A_KET"):
                 self.match("COMMA")
+                self.ct.set_ast(rv)
                 require_comma = False
             if self.peek("A_KET"):
                 break
         self.match("A_KET")
+        self.ct.set_ast(rv)
+        rv.set_targets(lhs)
 
         self.match("ASSIGNMENT")
-        t_eq = self.ct
+        rv.set_token_eq(self.ct)
 
         if len(lhs) == 1:
             # We've got something like
@@ -1011,11 +1018,8 @@ class MATLAB_Parser:
             # I believe that this can't be an expression, it basically
             # has to be a function call. Needs to be checked.
             rhs = self.parse_expression()
+        rv.set_expression(rhs)
 
-        if len(lhs) == 1:
-            rv = Simple_Assignment_Statement(t_eq, lhs[0], rhs)
-        else:
-            rv = Compound_Assignment_Statement(t_eq, lhs, rhs)
         self.match_eos(rv, ";")
         return rv
 
