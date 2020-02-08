@@ -51,24 +51,6 @@ In test_12.m, line 4
 In test_12.m, line 4
 |     arguments(Repeating)
 |                        ^ info: this token is not linked to the ast
-In test_12.m, line 5
-|         x (1,:) double
-|           ^ info: this token is not linked to the ast
-In test_12.m, line 5
-|         x (1,:) double
-|             ^ info: this token is not linked to the ast
-In test_12.m, line 5
-|         x (1,:) double
-|               ^ info: this token is not linked to the ast
-In test_12.m, line 6
-|         y (1,:) double
-|           ^ info: this token is not linked to the ast
-In test_12.m, line 6
-|         y (1,:) double
-|             ^ info: this token is not linked to the ast
-In test_12.m, line 6
-|         y (1,:) double
-|               ^ info: this token is not linked to the ast
 In test_12.m, line 15
 |         plot(z{:});
 |               ^ info: this token is not linked to the ast

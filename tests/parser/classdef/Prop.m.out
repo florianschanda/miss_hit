@@ -78,33 +78,6 @@ Root: Class_File
               Prefix: Identifier <obj>
               Field: Identifier <PropName>
 ----------------------------------------------------------------------
-In Prop.m, line 6
-|       Prop2 = 'some text'
-|             ^ info: this token is not linked to the ast
-In Prop.m, line 7
-|       Prop3 = sin(pi/12)
-|             ^ info: this token is not linked to the ast
-In Prop.m, line 8
-|       Prop4 = containers.Map
-|             ^ info: this token is not linked to the ast
-In Prop.m, line 9
-|       Prop5 (1,1) double {mustBePositive} = 1
-|             ^ info: this token is not linked to the ast
-In Prop.m, line 9
-|       Prop5 (1,1) double {mustBePositive} = 1
-|               ^ info: this token is not linked to the ast
-In Prop.m, line 9
-|       Prop5 (1,1) double {mustBePositive} = 1
-|                 ^ info: this token is not linked to the ast
-In Prop.m, line 9
-|       Prop5 (1,1) double {mustBePositive} = 1
-|                          ^ info: this token is not linked to the ast
-In Prop.m, line 9
-|       Prop5 (1,1) double {mustBePositive} = 1
-|                                         ^ info: this token is not linked to the ast
-In Prop.m, line 9
-|       Prop5 (1,1) double {mustBePositive} = 1
-|                                           ^ info: this token is not linked to the ast
 In Prop.m, line 11
 |    properties (Access = private)
 |               ^ info: this token is not linked to the ast

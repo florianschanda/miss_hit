@@ -81,33 +81,6 @@ In test_19.m, line 4
 In test_19.m, line 4
 |     arguments(Repeating)
 |                        ^ info: this token is not linked to the ast
-In test_19.m, line 5
-|         x (1,:) double
-|           ^ info: this token is not linked to the ast
-In test_19.m, line 5
-|         x (1,:) double
-|             ^ info: this token is not linked to the ast
-In test_19.m, line 5
-|         x (1,:) double
-|               ^ info: this token is not linked to the ast
-In test_19.m, line 6
-|         y (1,:) double
-|           ^ info: this token is not linked to the ast
-In test_19.m, line 6
-|         y (1,:) double
-|             ^ info: this token is not linked to the ast
-In test_19.m, line 6
-|         y (1,:) double
-|               ^ info: this token is not linked to the ast
-In test_19.m, line 9
-|         scale.PlotType (1,1) string
-|                        ^ info: this token is not linked to the ast
-In test_19.m, line 9
-|         scale.PlotType (1,1) string
-|                          ^ info: this token is not linked to the ast
-In test_19.m, line 9
-|         scale.PlotType (1,1) string
-|                            ^ info: this token is not linked to the ast
 In test_19.m, line 14
 |             plot(z{:});
 |                   ^ info: this token is not linked to the ast

@@ -26,31 +26,4 @@ Root: Function_File
         Class: Identifier <cell>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
-In test_02.m, line 5
-|         A (1,1) string
-|           ^ info: this token is not linked to the ast
-In test_02.m, line 5
-|         A (1,1) string
-|             ^ info: this token is not linked to the ast
-In test_02.m, line 5
-|         A (1,1) string
-|               ^ info: this token is not linked to the ast
-In test_02.m, line 6
-|         B (1,:) double
-|           ^ info: this token is not linked to the ast
-In test_02.m, line 6
-|         B (1,:) double
-|             ^ info: this token is not linked to the ast
-In test_02.m, line 6
-|         B (1,:) double
-|               ^ info: this token is not linked to the ast
-In test_02.m, line 7
-|         C (2,2) cell
-|           ^ info: this token is not linked to the ast
-In test_02.m, line 7
-|         C (2,2) cell
-|             ^ info: this token is not linked to the ast
-In test_02.m, line 7
-|         C (2,2) cell
-|               ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

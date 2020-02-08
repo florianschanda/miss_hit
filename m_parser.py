@@ -654,17 +654,25 @@ class MATLAB_Parser:
         self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
-            if t_kw.value == "arguments":
-                prop_name = self.parse_simple_name(allow_void=True)
-            else:
-                prop_name = self.parse_identifier(allow_void=False)
+            cons = Entity_Constraints()
 
-            # We might have validation stuff.
+            # First the name we refer to
+            if t_kw.value == "arguments":
+                cons.set_name(self.parse_simple_name(allow_void=True))
+            else:
+                cons.set_name(self.parse_identifier(allow_void=False))
+
+            # All other validation options are optional. Historically
+            # this is likely because the properties block used to be
+            # just a list of class properties, and then it evolved
+            # (and eventually got re-used in function argument
+            # validation blocks).
 
             # Dimension validation
             val_dim = []
             if self.peek("BRA"):
                 self.match("BRA")
+                self.ct.set_ast(cons)
 
                 while True:
                     if self.peek("NUMBER"):
@@ -680,48 +688,55 @@ class MATLAB_Parser:
 
                     if self.peek("COMMA"):
                         self.match("COMMA")
+                        self.ct.set_ast(cons)
                     else:
                         break
 
                 self.match("KET")
+                self.ct.set_ast(cons)
 
             if len(val_dim) == 1:
                 self.mh.error(self.ct.location,
                               "in MATLAB dimension constraints must contain"
-                              " at least two dimensions for some reason")
+                              " at least two dimensions",
+                              fatal=False)
+                # I speculate that the underlying reason is that the
+                # MATLAB parser otherwise sees this as a function or
+                # index? Reasons very unclear, this is just a wild
+                # guess.
+            elif len(val_dim) >= 2:
+                cons.set_dimension_constraints(val_dim)
 
             # Class validation
-            val_cls = None
             if self.peek("IDENTIFIER"):
-                val_cls = self.parse_simple_name()
+                cons.set_class_constraint(self.parse_simple_name())
 
             # Function validation
-            val_fun = []
             if self.peek("C_BRA"):
                 self.match("C_BRA")
+                self.ct.set_ast(cons)
 
                 while True:
-                    val_fun.append(self.parse_name(allow_void=False))
+                    cons.add_functional_constraint(
+                        self.parse_name(allow_void=False))
                     if self.peek("COMMA"):
                         self.match("COMMA")
+                        self.ct.set_ast(cons)
                     else:
                         break
 
                 self.match("C_KET")
+                self.ct.set_ast(cons)
 
             # Default value
-            default_value = None
             if self.peek("ASSIGNMENT"):
                 self.match("ASSIGNMENT")
-                default_value = self.parse_expression()
+                self.ct.set_ast(cons)
+                cons.set_default_value(self.parse_expression())
 
             self.match_eos(rv)
 
-            rv.add_constraint(Entity_Constraints(prop_name,
-                                                 val_dim,
-                                                 val_cls,
-                                                 val_fun,
-                                                 default_value))
+            rv.add_constraint(cons)
 
         self.match("KEYWORD", "end")
         self.ct.set_ast(rv)

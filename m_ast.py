@@ -774,50 +774,64 @@ class Entity_Constraints(Node):
     """ AST for a class property or argument validation found inside
         a properties or arguments block.
     """
-    def __init__(self, n_name,
-                 l_dim_constraint, n_class_constraint, l_fun_constraint,
-                 n_default_value):
+    def __init__(self):
         super().__init__()
+
+        self.n_name = None
+        # The entity name we refer to. This one is *not* optional.
+
+        self.l_dim_constraint = []
+        # List of optional dimension constraints. Must either be 0 or
+        # more than 2. These are (integral) number/colon tokens and
+        # not expressions.
+        #
+        # TODO: Validate that numbers are integral and convert to
+        # python integers, discarding the tokens
+
+        self.n_class_name = None
+        # An optional class name our entity must fit
+
+        self.l_fun_constraint = []
+        # An optional list of functional constraints our entity must
+        # meet.
+
+        self.n_default_value = None
+        # An optional default value expression
+
+    def set_name(self, n_name):
         assert isinstance(n_name, Name)
-        assert isinstance(l_dim_constraint, list)
-        assert len(l_dim_constraint) != 1
-        for n_dim_constraint in l_dim_constraint:
-            assert isinstance(n_dim_constraint, MATLAB_Token)
-            assert n_dim_constraint.kind in ("NUMBER", "COLON")
-        assert n_class_constraint is None or isinstance(n_class_constraint,
-                                                        Name)
-        assert isinstance(l_fun_constraint, list)
-        for n_fun_constraint in l_fun_constraint:
-            assert isinstance(n_fun_constraint, Name)
-        assert n_default_value is None or isinstance(n_default_value,
-                                                     Expression)
 
         self.n_name = n_name
         self.n_name.set_parent(self)
-        # The entity name we refer to
+
+    def set_dimension_constraints(self, l_dim_constraint):
+        assert isinstance(l_dim_constraint, list)
+        assert len(l_dim_constraint) >= 2
+        for n_dim_constraint in l_dim_constraint:
+            assert isinstance(n_dim_constraint, MATLAB_Token)
+            assert n_dim_constraint.kind in ("NUMBER", "COLON")
 
         self.l_dim_constraint = l_dim_constraint
         for t_dim_constraint in self.l_dim_constraint:
             t_dim_constraint.set_ast(self)
-        # List of optional dimension constraints. Must either be 0 or
-        # more than 2. These are number/colon tokens and not
-        # expressions.
 
-        self.n_class_constraint = n_class_constraint
-        if self.n_class_constraint:
-            self.n_class_constraint.set_parent(self)
-        # An optional class name our entity must fit
+    def set_class_constraint(self, n_class_name):
+        assert isinstance(n_class_name, Name)
 
-        self.l_fun_constraint = l_fun_constraint
-        for n_fun_constraint in self.l_fun_constraint:
-            n_fun_constraint.set_parent(self)
-        # An optional list of functional constraints our entity must
-        # meet.
+        self.n_class_name = n_class_name
+        self.n_class_name.set_parent(self)
+
+    def add_functional_constraint(self, n_fun_constraint):
+        assert isinstance(n_fun_constraint, Name)
+
+        n_fun_constraint.set_parent(self)
+        self.l_fun_constraint.append(n_fun_constraint)
+
+    def set_default_value(self, n_default_value):
+        assert isinstance(n_default_value, Expression)
 
         self.n_default_value = n_default_value
-        if self.n_default_value:
-            self.n_default_value.set_parent(self)
-        # An optional default value expression
+        self.n_default_value.set_parent(self)
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, Special_Block)
@@ -827,8 +841,8 @@ class Entity_Constraints(Node):
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_name.visit(self, function, "Name")
-        if self.n_class_constraint:
-            self.n_class_constraint.visit(self, function, "Class")
+        if self.n_class_name:
+            self.n_class_name.visit(self, function, "Class")
         self._visit_list(self.l_fun_constraint, function, "Functions")
         if self.n_default_value:
             self.n_default_value.visit(self, function, "Default")
@@ -2350,8 +2364,8 @@ def dot(fd, parent, annotation, node):
             dot(fd, node, "default", node.n_default_value)
         for n, n_dim in enumerate(node.l_dim_constraint, 1):
             dot(fd, node, "dim %u" % n, n_dim)
-        if node.n_class_constraint:
-            dot(fd, node, "class", node.n_class_constraint)
+        if node.n_class_name:
+            dot(fd, node, "class", node.n_class_name)
         for n_fun in node.l_fun_constraint:
             dot(fd, node, "constraint", n_fun)
 
