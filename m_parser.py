@@ -1781,14 +1781,7 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot):
             tree.pp_node()
             print("-" * 70)
 
-        for token in tbuf.tokens:
-            if token.kind in ("NEWLINE",
-                              "COMMENT",
-                              "CONTINUATION"):
-                pass
-            elif token.ast_link is None:
-                mh.info(token.location,
-                        "this token is not linked to the ast")
+        tbuf.debug_validate_links()
 
     except Error:
         if show_bt:

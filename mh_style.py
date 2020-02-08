@@ -708,7 +708,7 @@ def stage_3_analysis(mh, cfg, tbuf):
                         token.fix["ensure_ws_after"] = True
 
 
-def analyze(mh, filename, rule_set, autofix, fd_tree):
+def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
     assert isinstance(filename, str)
     assert isinstance(autofix, bool)
 
@@ -800,10 +800,15 @@ def analyze(mh, filename, rule_set, autofix, fd_tree):
         parser = MATLAB_Parser(mh, tbuf, cfg)
         parse_tree = parser.parse_file()
         parse_tree.sty_check_naming(mh, cfg)
+
+        if debug_validate_links:
+            tbuf.debug_validate_links()
+
         if fd_tree:
             fd_tree.write("-- Parse tree for %s\n" % filename)
             parse_tree.pp_node(fd_tree)
             fd_tree.write("\n\n")
+
     except Error:
         parse_tree = None
 
@@ -869,6 +874,10 @@ def main():
                     default=None,
                     metavar="FILE",
                     help="Dump text-based parse tree to given file")
+    ap.add_argument("--debug-validate-links",
+                    action="store_true",
+                    default=False,
+                    help="Debug option to check AST links")
 
     language_option = ap.add_argument_group("Language options")
     language_option.add_argument("--octave",
@@ -959,13 +968,15 @@ def main():
                                 os.path.normpath(os.path.join(path, f)),
                                 rule_set,
                                 options.fix,
-                                fd_tree)
+                                fd_tree,
+                                options.debug_validate_links)
         else:
             analyze(mh,
                     os.path.normpath(item),
                     rule_set,
                     options.fix,
-                    fd_tree)
+                    fd_tree,
+                    options.debug_validate_links)
 
     mh.summary_and_exit()
 

@@ -1182,6 +1182,18 @@ class Token_Buffer(Token_Generator):
                 fd.write(" " * gap)
         fd.write("\n")
 
+    def debug_validate_links(self):
+        for token in self.tokens:
+            if token.kind in ("NEWLINE",
+                              "COMMENT",
+                              "CONTINUATION"):
+                # These tokens are not linked
+                pass
+
+            elif token.ast_link is None:
+                self.lexer.mh.info(token.location,
+                                   "this token is not linked to the ast")
+
 
 def sanity_test(mh, filename):
     try:

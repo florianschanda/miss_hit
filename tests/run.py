@@ -28,6 +28,7 @@ def execute_style_test(name):
 
     # Run in plaintext mode
     r = subprocess.run(["../../../mh_style.py",
+                        "--debug-validate-links",
                         ".",
                         "--fix"],
                        stdout=subprocess.PIPE,
