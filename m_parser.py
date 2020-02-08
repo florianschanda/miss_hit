@@ -1153,22 +1153,27 @@ class MATLAB_Parser:
 
     # 7. Colon operator (:)
     def parse_range_expression(self):
+        t_first_colon = None
+        t_second_colon = None
         points = []
         points.append(self.parse_precedence_6())
         if self.peek("COLON"):
             self.match("COLON")
+            t_first_colon = self.ct
             points.append(self.parse_precedence_6())
         if self.peek("COLON"):
             self.match("COLON")
+            t_second_colon = self.ct
             points.append(self.parse_precedence_6())
         assert 1 <= len(points) <= 3
 
         if len(points) == 1:
             return points[0]
         elif len(points) == 2:
-            return Range_Expression(points[0], points[1])
+            return Range_Expression(points[0], t_first_colon, points[1])
         else:
-            return Range_Expression(points[0], points[2], points[1])
+            return Range_Expression(points[0], t_first_colon, points[2],
+                                    t_second_colon, points[1])
 
     # 8. Less than (<), less than or equal to (<=), greater than (>),
     #    greater than or equal to (>=), equal to (==), not equal to (~=)

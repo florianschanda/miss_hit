@@ -18,10 +18,4 @@ Root: Script_File
         Guard: Number_Literal <2>
         Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
-In scope.m, line 5
-|       x = -pi:0.01:pi;
-|              ^ info: this token is not linked to the ast
-In scope.m, line 5
-|       x = -pi:0.01:pi;
-|                   ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -1695,11 +1695,28 @@ class Reshape(Expression):
 
 
 class Range_Expression(Expression):
-    def __init__(self, n_first, n_last, n_stride=None):
+    def __init__(self,
+                 n_first, t_first_colon, n_last,
+                 t_second_colon=None, n_stride=None):
         super().__init__()
         assert isinstance(n_first, Expression)
         assert isinstance(n_last, Expression)
-        assert n_stride is None or isinstance(n_stride, Expression)
+        assert isinstance(t_first_colon, MATLAB_Token)
+        if t_second_colon:
+            assert isinstance(t_second_colon, MATLAB_Token)
+            assert t_second_colon.kind == "COLON"
+            assert isinstance(n_stride, Expression)
+        else:
+            assert n_stride is None
+
+        self.t_first_colon = t_first_colon
+        self.t_first_colon.set_ast(self)
+        # The first colon
+
+        self.t_second_colon = t_second_colon
+        if self.t_second_colon:
+            self.t_second_colon.set_ast(self)
+        # The optional second colon
 
         self.n_first = n_first
         self.n_first.set_parent(self)

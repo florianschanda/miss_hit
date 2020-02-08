@@ -14,7 +14,4 @@ Root: Function_File
             First: Char_Array_Literal 'A'
             Last: Char_Array_Literal 'Z'
 ----------------------------------------------------------------------
-In letters.m, line 4
-|   l = char('A':'Z');
-|               ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
