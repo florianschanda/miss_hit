@@ -1985,27 +1985,31 @@ class Binary_Operation(Expression):
 
 
 class Lambda_Function(Expression):
-    def __init__(self, t_at, l_parameters, n_body):
+    def __init__(self, t_at):
         super().__init__()
         assert isinstance(t_at, MATLAB_Token)
         assert t_at.kind == "AT"
-        assert isinstance(l_parameters, list)
-        for param in l_parameters:
-            assert isinstance(param, Identifier)
-        assert isinstance(n_body, Expression)
 
         self.t_at = t_at
         self.t_at.set_ast(self)
         # The token for @
 
-        self.l_parameters = l_parameters
-        for n_param in self.l_parameters:
-            n_param.set_parent(self)
+        self.l_parameters = []
         # Names for the parameters for our lambda function
 
+        self.n_body = None
+        # The expression
+
+    def add_parameter(self, n_parameter):
+        assert isinstance(n_parameter, Identifier)
+
+        self.l_parameters.append(n_parameter)
+        n_parameter.set_parent(self)
+
+    def set_body(self, n_body):
+        assert isinstance(n_body, Expression)
         self.n_body = n_body
         self.n_body.set_parent(self)
-        # The expression
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)

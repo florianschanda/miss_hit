@@ -1378,17 +1378,25 @@ class MATLAB_Parser:
         t_at = self.ct
 
         if self.peek("BRA"):
+            rv = Lambda_Function(t_at)
+
             self.match("BRA")
-            lambda_args = []
+            self.ct.set_ast(rv)
+
             while not self.peek("KET"):
-                lambda_args.append(self.parse_identifier(allow_void=True))
+                rv.add_parameter(self.parse_identifier(allow_void=True))
                 if self.peek("COMMA"):
                     self.match("COMMA")
+                    self.ct.set_ast(rv)
                 else:
                     break
+
             self.match("KET")
-            lambda_body = self.parse_expression()
-            return Lambda_Function(t_at, lambda_args, lambda_body)
+            self.ct.set_ast(rv)
+
+            rv.set_body(self.parse_expression())
+            return rv
+
         else:
             name = self.parse_simple_name()
             return Function_Pointer(t_at, name)

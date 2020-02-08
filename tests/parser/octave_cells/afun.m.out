@@ -28,10 +28,4 @@ Root: Function_File
                 Items: Number_Literal <1>
                 Items: Number_Literal <2>
 ----------------------------------------------------------------------
-In afun.m, line 3
-|     af_in_cell = {@(x) [1 2]};
-|                    ^ info: this token is not linked to the ast
-In afun.m, line 3
-|     af_in_cell = {@(x) [1 2]};
-|                      ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
