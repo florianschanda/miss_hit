@@ -382,43 +382,55 @@ class Class_File(Compilation_Unit):
 
 
 class Class_Definition(Definition):
-    def __init__(self, t_classdef, n_name, l_attr, l_super):
+    def __init__(self, t_classdef):
         super().__init__()
         assert isinstance(t_classdef, MATLAB_Token)
         assert t_classdef.kind == "KEYWORD" and \
             t_classdef.value == "classdef"
-        assert isinstance(n_name, Identifier)
-        assert isinstance(l_attr, list)
-        for n_attr in l_attr:
-            assert isinstance(n_attr, Name_Value_Pair)
-        assert isinstance(l_super, list)
-        for n_super in l_super:
-            assert isinstance(n_super, Name)
 
         self.t_classdef = t_classdef
         self.t_classdef.set_ast(self)
         # Token for the classdef
 
-        self.n_name = n_name
-        self.n_name.set_parent(self)
+        self.n_name = None
         # Name of the class. Always a simple identifier, not even dots
         # are allowed here.
 
-        self.l_super = l_super
-        for n_superclass in self.l_super:
-            n_superclass.set_parent(self)
-        # Optional list of superclasses
-
-        self.l_attr = l_attr
-        for n_attr in self.l_attr:
-            n_attr.set_parent(self)
+        self.l_attr = []
         # Optional list of class attributes
+
+        self.l_super = []
+        # Optional list of superclasses
 
         self.l_properties = []
         self.l_events = []
         self.l_enumerations = []
         self.l_methods = []
         # List of special class blocks
+
+    def set_name(self, n_name):
+        assert isinstance(n_name, Identifier)
+
+        self.n_name = n_name
+        self.n_name.set_parent(self)
+
+    def set_attributes(self, l_attr):
+        assert isinstance(l_attr, list)
+        for n_attr in l_attr:
+            assert isinstance(n_attr, Name_Value_Pair)
+
+        self.l_attr = l_attr
+        for n_attr in self.l_attr:
+            n_attr.set_parent(self)
+
+    def set_super_classes(self, l_super):
+        assert isinstance(l_super, list)
+        for n_super in l_super:
+            assert isinstance(n_super, Name)
+
+        self.l_super = l_super
+        for n_superclass in self.l_super:
+            n_superclass.set_parent(self)
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, Class_File)
@@ -672,19 +684,30 @@ class Name_Value_Pair(Node):
 
     For example (Access = protected)
     """
-    def __init__(self, n_name, n_value=None):
+    def __init__(self, n_name):
         super().__init__()
         assert isinstance(n_name, Identifier)
-        assert n_value is None or isinstance(n_value, Expression)
 
         self.n_name = n_name
         self.n_name.set_parent(self)
         # The name
 
-        self.n_value = n_value
-        if self.n_value:
-            self.n_value.set_parent(self)
+        self.t_eq = None
+        # The (optional) =
+
+        self.n_value = None
         # The (optional) value
+
+    def set_value(self, t_eq, n_value):
+        assert isinstance(t_eq, MATLAB_Token)
+        assert t_eq.kind == "ASSIGNMENT"
+        assert isinstance(n_value, Expression)
+
+        self.t_eq = t_eq
+        self.t_eq.set_ast(self)
+
+        self.n_value = n_value
+        self.n_value.set_parent(self)
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Special_Block,
@@ -705,7 +728,7 @@ class Special_Block(Node):
     """ AST for properties, methods, events, enumeration and argument
         validation blocks.
     """
-    def __init__(self, t_kw, l_attr):
+    def __init__(self, t_kw):
         super().__init__()
         assert isinstance(t_kw, MATLAB_Token)
         assert t_kw.kind == "KEYWORD" and t_kw.value in ("properties",
@@ -713,23 +736,27 @@ class Special_Block(Node):
                                                          "events",
                                                          "enumeration",
                                                          "arguments")
-        assert isinstance(l_attr, list)
-        for n_attr in l_attr:
-            assert isinstance(n_attr, Name_Value_Pair)
 
         self.t_kw = t_kw
         self.t_kw.set_ast(self)
         # The token (which we also use to distinguish between the 5
         # different kinds of special block).
 
-        self.l_attr = l_attr
-        for n_attr in self.l_attr:
-            n_attr.set_parent(self)
+        self.l_attr = []
         # An optional list of attributes that applies to all items in
         # the block.
 
         self.l_items = []
         # List of items in this block
+
+    def set_attributes(self, l_attr):
+        assert isinstance(l_attr, list)
+        for n_attr in l_attr:
+            assert isinstance(n_attr, Name_Value_Pair)
+
+        self.l_attr = l_attr
+        for n_attr in self.l_attr:
+            n_attr.set_parent(self)
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Class_Definition,

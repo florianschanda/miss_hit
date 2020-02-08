@@ -78,15 +78,6 @@ Root: Class_File
               Prefix: Identifier <obj>
               Field: Identifier <PropName>
 ----------------------------------------------------------------------
-In Prop.m, line 11
-|    properties (Access = private)
-|               ^ info: this token is not linked to the ast
-In Prop.m, line 11
-|    properties (Access = private)
-|                       ^ info: this token is not linked to the ast
-In Prop.m, line 11
-|    properties (Access = private)
-|                                ^ info: this token is not linked to the ast
 In Prop.m, line 24
 |        o = obj.(PropName);
 |                ^ info: this token is not linked to the ast

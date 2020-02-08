@@ -45,12 +45,6 @@ Root: Function_File
                   Name: Identifier <z>
                   Arguments: Reshape
 ----------------------------------------------------------------------
-In test_12.m, line 4
-|     arguments(Repeating)
-|              ^ info: this token is not linked to the ast
-In test_12.m, line 4
-|     arguments(Repeating)
-|                        ^ info: this token is not linked to the ast
 In test_12.m, line 15
 |         plot(z{:});
 |               ^ info: this token is not linked to the ast

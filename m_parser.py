@@ -615,25 +615,33 @@ class MATLAB_Parser:
 
         return rv
 
-    def parse_name_value_pair_list(self):
+    def parse_name_value_pair_list(self, n_ast):
+        assert isinstance(n_ast, Node)
+
         properties = []
 
         if self.peek("BRA"):
             self.match("BRA")
+            self.ct.set_ast(n_ast)
             while True:
-                n_name = self.parse_identifier(allow_void=False)
+                n_pair = Name_Value_Pair(
+                    self.parse_identifier(allow_void=False))
+
                 if self.peek("ASSIGNMENT"):
                     self.match("ASSIGNMENT")
+                    t_eq = self.ct
                     n_value = self.parse_expression()
-                    properties.append(Name_Value_Pair(n_name, n_value))
-                else:
-                    properties.append(Name_Value_Pair(n_name))
+                    n_pair.set_value(t_eq, n_value)
+
+                properties.append(n_pair)
 
                 if self.peek("COMMA"):
                     self.match("COMMA")
+                    self.ct.set_ast(n_ast)
                 else:
                     break
             self.match("KET")
+            self.ct.set_ast(n_ast)
 
         return properties
 
@@ -649,8 +657,8 @@ class MATLAB_Parser:
             self.match("KEYWORD", "properties")
         t_kw = self.ct
 
-        attributes = self.parse_name_value_pair_list()
-        rv = Special_Block(t_kw, attributes)
+        rv = Special_Block(t_kw)
+        rv.set_attributes(self.parse_name_value_pair_list(rv))
         self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
@@ -753,8 +761,8 @@ class MATLAB_Parser:
         self.match("KEYWORD", "methods")
         t_kw = self.ct
 
-        attributes = self.parse_name_value_pair_list()
-        rv = Special_Block(t_kw, attributes)
+        rv = Special_Block(t_kw)
+        rv.set_attributes(self.parse_name_value_pair_list(rv))
         self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
@@ -776,7 +784,7 @@ class MATLAB_Parser:
         self.match("KEYWORD", "enumeration")
         t_kw = self.ct
 
-        rv = Special_Block(t_kw, [])
+        rv = Special_Block(t_kw)
         self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
@@ -809,7 +817,7 @@ class MATLAB_Parser:
         self.match("KEYWORD", "events")
         t_kw = self.ct
 
-        rv = Special_Block(t_kw, [])
+        rv = Special_Block(t_kw)
         self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
@@ -829,18 +837,19 @@ class MATLAB_Parser:
 
         self.match("KEYWORD", "classdef")
         self.push_context("classdef")
-        t_classdef = self.ct
+        rv = Class_Definition(self.ct)
 
         # Class attributes. Ignored for now.
-        attributes = self.parse_name_value_pair_list()
+        rv.set_attributes(self.parse_name_value_pair_list(rv))
 
         # Class name
-        class_name = self.parse_identifier(allow_void=False)
+        rv.set_name(self.parse_identifier(allow_void=False))
 
         # Inheritance
         l_super = []
         if self.peek("OPERATOR", "<"):
             self.match("OPERATOR", "<")
+            self.ct.set_ast(rv)
 
             while True:
                 sc_name = self.parse_simple_name()
@@ -848,10 +857,11 @@ class MATLAB_Parser:
 
                 if self.peek("OPERATOR", "&"):
                     self.match("OPERATOR", "&")
+                    self.ct.set_ast(rv)
                 else:
                     break
+        rv.set_super_classes(l_super)
 
-        rv = Class_Definition(t_classdef, class_name, attributes, l_super)
         self.match_eos(rv)
 
         while True:

@@ -15,9 +15,6 @@ Root: Class_File
         Name: Identifier <Stop>
         Arguments: Number_Literal <0>
 ----------------------------------------------------------------------
-In SpeedEnum.m, line 3
-| classdef SpeedEnum < int32
-|                    ^ info: this token is not linked to the ast
 In SpeedEnum.m, line 5
 |         Full   (100)
 |                ^ info: this token is not linked to the ast

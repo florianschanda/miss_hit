@@ -25,9 +25,6 @@ Root: Class_File
                 Name: Identifier <logical>
                 Arguments: Identifier <val>
 ----------------------------------------------------------------------
-In Bool.m, line 3
-| classdef Bool < logical
-|               ^ info: this token is not linked to the ast
 In Bool.m, line 5
 |       No  (0)
 |           ^ info: this token is not linked to the ast

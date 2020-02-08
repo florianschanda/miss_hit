@@ -18,7 +18,4 @@ Root: Class_File
               Arguments: Identifier <obj>
               Arguments: Char_Array_Literal 'StateChange'
 ----------------------------------------------------------------------
-In basic.m, line 3
-| classdef MyClass < handle
-|                  ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
