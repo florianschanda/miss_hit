@@ -386,9 +386,13 @@ class MATLAB_Parser:
 
                     if self.peek("BRA"):
                         self.match("BRA")
+                        t_open = self.ct
                         dyn_field = self.parse_expression()
                         self.match("KET")
+                        t_close = self.ct
                         rv = Dynamic_Selection(tok, rv, dyn_field)
+                        t_open.set_ast(rv)
+                        t_close.set_ast(rv)
                     else:
                         field = self.parse_identifier(allow_void=False)
                         rv = Selection(tok, rv, field)

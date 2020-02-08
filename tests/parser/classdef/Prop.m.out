@@ -78,10 +78,4 @@ Root: Class_File
               Prefix: Identifier <obj>
               Field: Identifier <PropName>
 ----------------------------------------------------------------------
-In Prop.m, line 24
-|        o = obj.(PropName);
-|                ^ info: this token is not linked to the ast
-In Prop.m, line 24
-|        o = obj.(PropName);
-|                         ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
