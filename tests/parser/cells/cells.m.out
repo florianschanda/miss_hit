@@ -122,22 +122,4 @@ Root: Function_File
                 Items: Number_Literal <300>
             Items: Char_Array_Literal 'MATLAB'
 ----------------------------------------------------------------------
-In cells.m, line 19
-|   C{4, 4} = 44;
-|    ^ info: this token is not linked to the ast
-In cells.m, line 19
-|   C{4, 4} = 44;
-|      ^ info: this token is not linked to the ast
-In cells.m, line 19
-|   C{4, 4} = 44;
-|         ^ info: this token is not linked to the ast
-In cells.m, line 20
-|   C{5,5} = [];
-|    ^ info: this token is not linked to the ast
-In cells.m, line 20
-|   C{5,5} = [];
-|      ^ info: this token is not linked to the ast
-In cells.m, line 20
-|   C{5,5} = [];
-|        ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

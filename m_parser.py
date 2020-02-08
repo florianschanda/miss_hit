@@ -396,7 +396,7 @@ class MATLAB_Parser:
                     rv = Reference(rv)
                     rv.set_arguments(self.parse_argument_list(rv))
                 elif self.peek("C_BRA"):
-                    rv = Cell_Reference(rv, self.parse_cell_argument_list())
+                    rv = self.parse_cell_reference(rv)
                 else:
                     raise ICE("impossible path (nt.kind = %s)" % self.nt.kind)
 
@@ -1418,22 +1418,27 @@ class MATLAB_Parser:
         self.ct.set_ast(n_ast)
         return args
 
-    def parse_cell_argument_list(self):
-        # cell_arglist ::= '{' expression { ',' expression } '}'
+    def parse_cell_reference(self, n_name):
+        # cell_arglist ::= <<name>> '{' expression { ',' expression } '}'
         #
         # Note: cannot be empty
-        args = []
+        rv = Cell_Reference(n_name)
+
         self.match("C_BRA")
+        self.ct.set_ast(rv)
 
         while True:
-            args.append(self.parse_expression())
+            rv.add_argument(self.parse_expression())
             if self.peek("COMMA"):
                 self.match("COMMA")
+                self.ct.set_ast(rv)
             elif self.peek("C_KET"):
                 break
 
         self.match("C_KET")
-        return args
+        self.ct.set_ast(rv)
+
+        return rv
 
     def parse_if_statement(self):
         actions = []

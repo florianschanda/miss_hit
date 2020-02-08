@@ -1028,21 +1028,22 @@ class Reference(Name):
 
 
 class Cell_Reference(Name):
-    def __init__(self, n_ident, arglist):
+    def __init__(self, n_ident):
         super().__init__()
         assert isinstance(n_ident, Name)
-        assert isinstance(arglist, list)
-        for arg in arglist:
-            assert isinstance(arg, Expression)
 
         self.n_ident = n_ident
         self.n_ident.set_parent(self)
         # An identifier
 
-        self.l_args = arglist
-        for n_arg in self.l_args:
-            n_arg.set_parent(self)
+        self.l_args = []
         # A list of indices
+
+    def add_argument(self, n_arg):
+        assert isinstance(n_arg, Expression)
+
+        self.l_args.append(n_arg)
+        n_arg.set_parent(self)
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
