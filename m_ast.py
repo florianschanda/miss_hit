@@ -878,21 +878,22 @@ class Entity_Constraints(Node):
 
 class Class_Enumeration(Node):
     """ AST for enumeration literal/constructors inside classdefs """
-    def __init__(self, n_name, l_args):
+    def __init__(self, n_name):
         super().__init__()
         assert isinstance(n_name, Identifier)
-        assert isinstance(l_args, list)
-        for n_arg in l_args:
-            assert isinstance(n_arg, Expression)
 
         self.n_name = n_name
         self.n_name.set_parent(self)
         # Name to introduce enumeration literal
 
-        self.l_args = l_args
-        for n_arg in self.l_args:
-            n_arg.set_parent(self)
+        self.l_args = []
         # Parameters for class constructor to build this literal
+
+    def add_argument(self, n_argument):
+        isinstance(n_argument, Expression)
+
+        self.l_args.append(n_argument)
+        n_argument.set_parent(self)
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, Special_Block)

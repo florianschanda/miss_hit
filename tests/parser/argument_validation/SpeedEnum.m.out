@@ -15,22 +15,4 @@ Root: Class_File
         Name: Identifier <Stop>
         Arguments: Number_Literal <0>
 ----------------------------------------------------------------------
-In SpeedEnum.m, line 5
-|         Full   (100)
-|                ^ info: this token is not linked to the ast
-In SpeedEnum.m, line 5
-|         Full   (100)
-|                    ^ info: this token is not linked to the ast
-In SpeedEnum.m, line 6
-|         Half   (50)
-|                ^ info: this token is not linked to the ast
-In SpeedEnum.m, line 6
-|         Half   (50)
-|                   ^ info: this token is not linked to the ast
-In SpeedEnum.m, line 7
-|         Stop   (0)
-|                ^ info: this token is not linked to the ast
-In SpeedEnum.m, line 7
-|         Stop   (0)
-|                  ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

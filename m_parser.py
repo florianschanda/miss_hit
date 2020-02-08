@@ -788,20 +788,24 @@ class MATLAB_Parser:
         self.match_eos(rv)
 
         while not self.peek("KEYWORD", "end"):
-            name = self.parse_identifier(allow_void=False)
+            enum = Class_Enumeration(self.parse_identifier(allow_void=False))
 
-            args = []
             if self.peek("BRA"):
                 self.match("BRA")
+                self.ct.set_ast(enum)
+
                 while True:
-                    args.append(self.parse_expression())
+                    enum.add_argument(self.parse_expression())
                     if self.peek("COMMA"):
                         self.match("COMMA")
+                        self.ct.set_ast(enum)
                     else:
                         break
-                self.match("KET")
 
-            rv.add_enumeration(Class_Enumeration(name, args))
+                self.match("KET")
+                self.ct.set_ast(enum)
+
+            rv.add_enumeration(enum)
 
             self.match_eos(rv)
 

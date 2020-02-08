@@ -25,16 +25,4 @@ Root: Class_File
                 Name: Identifier <logical>
                 Arguments: Identifier <val>
 ----------------------------------------------------------------------
-In Bool.m, line 5
-|       No  (0)
-|           ^ info: this token is not linked to the ast
-In Bool.m, line 5
-|       No  (0)
-|             ^ info: this token is not linked to the ast
-In Bool.m, line 6
-|       Yes (1)
-|           ^ info: this token is not linked to the ast
-In Bool.m, line 6
-|       Yes (1)
-|             ^ info: this token is not linked to the ast
 MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
