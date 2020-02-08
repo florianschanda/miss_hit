@@ -5,6 +5,9 @@ In codechecker_tests.m, line 15
 In codechecker_tests.m, line 15
 | x = ((a * 3) <= 1) && ((single(1 + 1) - (1^3 + 4))/5 ~= (1/3))
 |                                                           ^ style: non power binary operator must be surrounded by whitespace [fixed]
+In codechecker_tests.m, line 28
+| -b
+| ^ style: continuations must be offset by at least one space [fixed]
 In codechecker_tests.m, line 44
 |         -var1 > 2, single(-0.0625));
 |         ^ style: continuations should not start with operators
@@ -50,7 +53,7 @@ In codechecker_tests.m, line 86
 In codechecker_tests.m, line 88
 | x = a ^ b
 |       ^ style: power binary operator must not be surrounded by whitespace [fixed]
-MISS_HIT Summary: 2 file(s) analysed, 17 style issue(s)
+MISS_HIT Summary: 2 file(s) analysed, 18 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 17 style issue(s)
+MISS_HIT Summary: 2 file(s) analysed, 18 style issue(s)

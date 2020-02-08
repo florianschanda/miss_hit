@@ -7,6 +7,9 @@ In on/test.m, line 3
 |          ^^^^^^ style: violates naming scheme for function
 In on/test.m, line 4
 |   disp foo#bar
+|   ^^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+In on/test.m, line 4
+|   disp foo#bar
 |        ^^^ style: end statement with a semicolon [fixed]
 In on/test.m, line 4
 |   disp foo#bar
@@ -14,10 +17,13 @@ In on/test.m, line 4
 In on/test.m, line 4
 |   disp foo#bar
 |           ^^^^ style: comment must be preceeded by whitespace [fixed]
+In on/test.m, line 5
+|    # This is a comment
+|    ^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 3 [fixed]
 In off/test.m, line 5
 |    # This is a comment
 |    ^ lex error: unexpected character '#'
-MISS_HIT Summary: 2 file(s) analysed, 5 style issue(s), 1 error(s)
+MISS_HIT Summary: 2 file(s) analysed, 7 style issue(s), 1 error(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 5 style issue(s), 1 error(s)
+MISS_HIT Summary: 2 file(s) analysed, 7 style issue(s), 1 error(s)

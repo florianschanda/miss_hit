@@ -84,9 +84,10 @@ class MATLAB_Parser:
         assert isinstance(mh, Message_Handler)
         assert isinstance(lexer, Token_Generator)
         assert isinstance(cfg, dict)
+
         self.lexer = lexer
-        self.mh = mh
-        self.cfg = cfg
+        self.mh    = mh
+        self.cfg   = cfg
 
         self.context = []
 
@@ -1769,7 +1770,7 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot):
     try:
         mh.register_file(filename)
         lexer = MATLAB_Lexer(mh, filename)
-        tbuf = Token_Buffer(lexer)
+        tbuf = Token_Buffer(lexer, config.BASE_CONFIG)
         parser = MATLAB_Parser(mh,
                                tbuf,
                                config.BASE_CONFIG)

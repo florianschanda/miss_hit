@@ -17,10 +17,22 @@ In test.m, line 8
 In test.m, line 10
 | function x = pi() % bad
 |              ^^ style: violates naming scheme for function
+In test.m, line 11
+|   x = 3;
+|   ^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+In test.m, line 13
+|   for i = [1, 2]  % tolerable
+|   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+In test.m, line 14
+|     i = x;  % no, for many reasons
+|     ^ style: indentation not correct, should be 8 spaces, not 4 [fixed]
 In test.m, line 14
 |     i = x;  % no, for many reasons
 |     ^ style: redefinition of builtin function is a very naughty thing to do
-MISS_HIT Summary: 1 file(s) analysed, 7 style issue(s)
+In test.m, line 15
+|   end
+|   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 11 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 7 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 11 style issue(s)

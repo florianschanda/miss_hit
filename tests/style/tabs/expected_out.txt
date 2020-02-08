@@ -13,6 +13,9 @@ In test.m, line 12
 |  ^^^^^ style: end statement with a semicolon [fixed]
 In test.m, line 12
 |  "a b"
+|  ^^^^^ style: indentation not correct, should be 0 spaces, not 1 [fixed]
+In test.m, line 12
+|  "a b"
 |    ^ style: tab is not allowed [fixed]
 In test.m, line 13
 | "a  b"
@@ -23,7 +26,7 @@ In test.m, line 13
 In test.m, line 16
 | x = 12;
 |  ^ style: tab is not allowed [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 8 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 8 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 10 style issue(s)

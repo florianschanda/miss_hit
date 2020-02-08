@@ -199,6 +199,26 @@ class Node:
     def pp_node(self, fd=None):
         self.visit(None, Text_Visitor(fd), "Root")
 
+    def get_indentation(self):
+        if self.n_parent:
+            indent = self.n_parent.get_indentation()
+            if isinstance(self.n_parent, If_Statement):
+                # We do not indent for this, since the if actions
+                # indent instead.
+                pass
+
+            elif isinstance(self.n_parent, (Action,
+                                            Special_Block,
+                                            Class_Definition,
+                                            Function_Definition,
+                                            Compound_Statement)):
+                indent += 1
+
+        else:
+            indent = 0
+
+        return indent
+
 
 ##############################################################################
 # Some top-level groupings

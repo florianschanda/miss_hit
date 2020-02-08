@@ -367,6 +367,9 @@ def stage_3_analysis(mh, cfg, tbuf):
 
     last_newline = 0
 
+    statement_start_token = None
+    current_indent = 0
+
     for n, token in enumerate(tbuf.tokens):
         if n - 1 >= 0:
             prev_token = tbuf.tokens[n - 1]
@@ -412,6 +415,9 @@ def stage_3_analysis(mh, cfg, tbuf):
             last_code_in_line = True
         else:
             last_code_in_line = False
+
+        if token.first_in_statement:
+            statement_start_token = token
 
         # Recognize justifications
         if token.kind in ("COMMENT", "CONTINUATION"):
@@ -707,6 +713,40 @@ def stage_3_analysis(mh, cfg, tbuf):
                         token.fix["ensure_ws_before"] = True
                         token.fix["ensure_ws_after"] = True
 
+        # Complain about indentation
+        if config.active(cfg, "indentation"):
+            if token.first_in_line:
+                if token.first_in_statement:
+                    if token.ast_link:
+                        current_indent = token.ast_link.get_indentation()
+
+                    if token.location.col_start != (cfg["tab_width"] *
+                                                    current_indent):
+                        mh.style_issue(token.location,
+                                       "indentation not correct, should be"
+                                       " %u spaces, not %u" %
+                                       (cfg["tab_width"] * current_indent,
+                                        token.location.col_start),
+                                       True)
+
+                else:
+                    # This is a continued line. We try to preserve
+                    # the offset. We work out how much extra space
+                    # this token has based on the statement
+                    # starting token.
+                    offset = token.location.col_start - \
+                        statement_start_token.location.col_start
+
+                    # If positive, we can just add it. If 0 or
+                    # negative, then we add 1/2 tabs to continue
+                    # the line, since previously it was not offset
+                    # at all.
+                    if offset <= 0:
+                        mh.style_issue(token.location,
+                                       "continuations must be offset by"
+                                       " at least one space",
+                                       True)
+
 
 def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
     assert isinstance(filename, str)
@@ -789,7 +829,7 @@ def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
     # Create tokenbuffer
 
     try:
-        tbuf = Token_Buffer(lexer)
+        tbuf = Token_Buffer(lexer, cfg)
     except Error:
         # If there are lex errors, we can stop here
         return

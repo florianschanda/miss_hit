@@ -13,11 +13,20 @@ In test.m, line 3
 |                    ^^ style: trailing whitespace [fixed]
 In test.m, line 4
 | x = y + ...   
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+In test.m, line 4
+| x = y + ...   
 |            ^^^^ style: trailing whitespace [fixed]
 In test.m, line 5
 |  z;  
 |    ^^^ style: trailing whitespace [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 6 style issue(s)
+In test.m, line 7
+| % Whitespace after ... is not trimmed
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+In test.m, line 8
+| % Also added comment with trailing WS
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 6 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)

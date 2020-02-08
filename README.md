@@ -17,7 +17,7 @@ https://florianschanda.github.io/miss_hit/
 
 ### Style Checker
 
-A simple coding style checker for MATLAB. See
+A simple coding style checker and code formatter for MATLAB. See
 https://florianschanda.github.io/miss_hit/style_checker.html for more
 information and a user manual.
 

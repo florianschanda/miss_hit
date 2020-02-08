@@ -1,0 +1,26 @@
+=== PLAIN MODE ===
+In Simple.m, line 1
+|     % (c) Copyright 2020 Florian Schanda
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
+In Simple.m, line 4
+| if y > 0
+| ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+In Simple.m, line 5
+| x = y;
+| ^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+In Simple.m, line 6
+| else
+| ^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+In Simple.m, line 7
+|               x = Potato(y);
+|               ^ style: indentation not correct, should be 8 spaces, not 14 [fixed]
+In Simple.m, line 8
+|      end
+|      ^^^ style: indentation not correct, should be 4 spaces, not 5 [fixed]
+In Simple.m, line 11
+| z = -w;
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 7 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 1 file(s) analysed, 7 style issue(s)

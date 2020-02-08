@@ -70,6 +70,7 @@ STYLE_RULES = {
     "naming_functions" : ("Checks names of functions, nested functions, and"
                           " class methods."),
     "naming_classes" : ("Checks names of classes."),
+    "indentation" : ("Make indentation consistent."),
 }
 
 

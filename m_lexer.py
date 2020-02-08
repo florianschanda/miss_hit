@@ -28,6 +28,7 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 
+import config
 import m_ast
 from errors import Location, Error, Message_Handler, ICE
 from m_language import KEYWORDS
@@ -69,9 +70,12 @@ from m_language import KEYWORDS
 class Token_Generator(metaclass=ABCMeta):
     def __init__(self, filename):
         assert isinstance(filename, str)
+
         self.filename = filename
+
         self.in_class_directory = os.path.basename(
             os.path.dirname(os.path.abspath(filename))).startswith("@")
+        # Make a note if this file resides inside a @ directory
 
     @abstractmethod
     def token(self):
@@ -1049,12 +1053,16 @@ class MATLAB_Lexer(Token_Generator):
 
 
 class Token_Buffer(Token_Generator):
-    def __init__(self, lexer):
+    def __init__(self, lexer, cfg):
         assert isinstance(lexer, MATLAB_Lexer)
+        assert isinstance(cfg, dict)
         super().__init__(lexer.filename)
 
+        self.cfg = cfg
         self.pos = 0
         self.tokens = []
+        self.mh = lexer.mh
+
         while True:
             tok = lexer.token()
             if tok is None:
@@ -1133,6 +1141,8 @@ class Token_Buffer(Token_Generator):
                        for t in self.tokens
                        if not t.anonymous and not t.fix.get("delete", False)]
 
+        statement_start_token = None
+        current_indent = 0
         for n, token in enumerate(real_tokens):
             if n + 1 < len(real_tokens):
                 next_token = real_tokens[n + 1]
@@ -1143,8 +1153,35 @@ class Token_Buffer(Token_Generator):
             else:
                 next_in_line = None
 
+            if token.first_in_statement:
+                statement_start_token = token
+
             if token.first_in_line:
-                fd.write(" " * token.location.col_start)
+                if config.active(self.cfg, "indentation"):
+                    if token.first_in_statement:
+                        if token.ast_link:
+                            current_indent = token.ast_link.get_indentation()
+                        offset = 0
+                    else:
+                        # This is a continued line. We try to preserve
+                        # the offset. We work out how much extra space
+                        # this token has based on the statement
+                        # starting token.
+                        offset = token.location.col_start - \
+                            statement_start_token.location.col_start
+
+                        # If positive, we can just add it. If 0 or
+                        # negative, then we add 1/2 tabs to continue
+                        # the line, since previously it was not offset
+                        # at all.
+                        if offset <= 0:
+                            offset = self.cfg["tab_width"] // 2
+
+                    fd.write(" " * (current_indent *
+                                    self.cfg["tab_width"] +
+                                    offset))
+                else:
+                    fd.write(" " * token.location.col_start)
 
             if token.kind == "NEWLINE":
                 amount = min(2, token.raw_text.count("\n"))
@@ -1191,8 +1228,8 @@ class Token_Buffer(Token_Generator):
                 pass
 
             elif token.ast_link is None:
-                self.lexer.mh.info(token.location,
-                                   "this token is not linked to the ast")
+                self.mh.info(token.location,
+                             "this token is not linked to the ast")
 
 
 def sanity_test(mh, filename):

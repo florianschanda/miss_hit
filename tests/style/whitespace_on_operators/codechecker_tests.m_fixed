@@ -25,7 +25,7 @@ x = b > -another2Variable
 x = a < ~b
 
 x = a < ...
--b
+  -b
 
 a = [-5, var, 4, -1, -4; ...
      6, 9, -2, varvar, -3]

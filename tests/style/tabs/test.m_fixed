@@ -9,7 +9,7 @@ end
 
 % tabs in strings are not ok. its a bit weird since
 % those two should be the same string
- "a b";
+"a b";
 "a  b";
 
 % tabs to align are not ok
