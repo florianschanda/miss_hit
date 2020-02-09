@@ -12,7 +12,7 @@ In fail_1.m, line 8
 In fail_1.m, line 9
 | ... 
 |    ^^ style: trailing whitespace [fixed]
-fail_1.m:10:0: style: continuations must be offset by at least one space [fixed]
+fail_1.m:10:0: style: indentation not correct, should be 2 spaces, not 0 [fixed]
 MISS_HIT Summary: 1 file(s) analysed, 6 style issue(s)
 
 === HTML MODE ===

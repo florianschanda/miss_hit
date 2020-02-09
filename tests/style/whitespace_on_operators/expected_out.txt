@@ -7,7 +7,7 @@ In codechecker_tests.m, line 15
 |                                                           ^ style: non power binary operator must be surrounded by whitespace [fixed]
 In codechecker_tests.m, line 28
 | -b
-| ^ style: continuations must be offset by at least one space [fixed]
+| ^ style: indentation not correct, should be 2 spaces, not 0 [fixed]
 In codechecker_tests.m, line 44
 |         -var1 > 2, single(-0.0625));
 |         ^ style: continuations should not start with operators

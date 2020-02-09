@@ -1141,9 +1141,6 @@ class Token_Buffer(Token_Generator):
                        for t in self.tokens
                        if not t.anonymous and not t.fix.get("delete", False)]
 
-        statement_start_token = None
-        current_indent = 0
-        enclosing_ast = None
         for n, token in enumerate(real_tokens):
             if n + 1 < len(real_tokens):
                 next_token = real_tokens[n + 1]
@@ -1154,61 +1151,10 @@ class Token_Buffer(Token_Generator):
             else:
                 next_in_line = None
 
-            if token.first_in_statement:
-                # We need to take special care of comments that are
-                # the first thing after an open block. Since comments
-                # are not attached to the AST (and it is not practical
-                # to do so), most of the time we can just indent them
-                # to "same as above". But if they are the first item
-                # inside e.g. an if statement, then this won't work
-                # (the previous indentation level is one too low).
-                if token.kind == "COMMENT":
-                    if statement_start_token and \
-                       statement_start_token.kind == "KEYWORD" and \
-                       statement_start_token.value == "end":
-                        # The previous token was 'end'. We don't need
-                        # to do anything in this case, since we'll
-                        # re-use the indentation level of the compound
-                        # statement
-                        enclosing_ast = None
-                    elif statement_start_token and \
-                         statement_start_token.ast_link and \
-                         statement_start_token.ast_link.causes_indentation():
-                        # We've got a previous AST node. We remember
-                        # it, and indent one level below it, but only
-                        # if it is a statement that would create
-                        # nesting.
-                        enclosing_ast = statement_start_token.ast_link
-
-                statement_start_token = token
-
             if token.first_in_line:
-                if config.active(self.cfg, "indentation"):
-                    if token.first_in_statement:
-                        if token.ast_link:
-                            current_indent = token.ast_link.get_indentation()
-                        elif enclosing_ast:
-                            current_indent = \
-                                enclosing_ast.get_indentation() + 1
-                        offset = 0
-                    else:
-                        # This is a continued line. We try to preserve
-                        # the offset. We work out how much extra space
-                        # this token has based on the statement
-                        # starting token.
-                        offset = token.location.col_start - \
-                            statement_start_token.location.col_start
-
-                        # If positive, we can just add it. If 0 or
-                        # negative, then we add 1/2 tabs to continue
-                        # the line, since previously it was not offset
-                        # at all.
-                        if offset <= 0:
-                            offset = self.cfg["tab_width"] // 2
-
-                    fd.write(" " * (current_indent *
-                                    self.cfg["tab_width"] +
-                                    offset))
+                if config.active(self.cfg, "indentation") and \
+                   "correct_indent" in token.fix:
+                    fd.write(" " * token.fix["correct_indent"])
                 else:
                     fd.write(" " * token.location.col_start)
 

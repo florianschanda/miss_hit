@@ -19,6 +19,9 @@ In test.m, line 4
 |            ^^^^ style: trailing whitespace [fixed]
 In test.m, line 5
 |  z;  
+|  ^ style: indentation not correct, should be 5 spaces, not 1 [fixed]
+In test.m, line 5
+|  z;  
 |    ^^^ style: trailing whitespace [fixed]
 In test.m, line 7
 | % Whitespace after ... is not trimmed
@@ -26,7 +29,7 @@ In test.m, line 7
 In test.m, line 8
 | % Also added comment with trailing WS
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 10 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 10 style issue(s)

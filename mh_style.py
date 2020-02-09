@@ -367,8 +367,10 @@ def stage_3_analysis(mh, cfg, tbuf):
 
     last_newline = 0
 
+    # Some state needed to fix indentation
     statement_start_token = None
     current_indent = 0
+    enclosing_ast = None
 
     for n, token in enumerate(tbuf.tokens):
         if n - 1 >= 0:
@@ -416,7 +418,32 @@ def stage_3_analysis(mh, cfg, tbuf):
         else:
             last_code_in_line = False
 
+        # Keep track of statement starters. This is required for
+        # indentation.
         if token.first_in_statement:
+            # We need to take special care of comments that are the
+            # first thing after an open block. Since comments are not
+            # attached to the AST (and it is not practical to do so),
+            # most of the time we can just indent them to "same as
+            # above". But if they are the first item inside e.g. an if
+            # statement, then this won't work (the previous
+            # indentation level is one too low).
+            if token.kind == "COMMENT":
+                if statement_start_token and \
+                   statement_start_token.kind == "KEYWORD" and \
+                   statement_start_token.value == "end":
+                    # The previous token was 'end'. We don't need to
+                    # do anything in this case, since we'll re-use the
+                    # indentation level of the compound statement
+                    enclosing_ast = None
+                elif statement_start_token and \
+                     statement_start_token.ast_link and \
+                     statement_start_token.ast_link.causes_indentation():
+                    # We've got a previous AST node. We remember it,
+                    # and indent one level below it, but only if it is
+                    # a statement that would create nesting.
+                    enclosing_ast = statement_start_token.ast_link
+
             statement_start_token = token
 
         # Recognize justifications
@@ -719,15 +746,9 @@ def stage_3_analysis(mh, cfg, tbuf):
                 if token.first_in_statement:
                     if token.ast_link:
                         current_indent = token.ast_link.get_indentation()
-
-                    if token.location.col_start != (cfg["tab_width"] *
-                                                    current_indent):
-                        mh.style_issue(token.location,
-                                       "indentation not correct, should be"
-                                       " %u spaces, not %u" %
-                                       (cfg["tab_width"] * current_indent,
-                                        token.location.col_start),
-                                       True)
+                    elif enclosing_ast:
+                        current_indent = enclosing_ast.get_indentation() + 1
+                    offset = 0
 
                 else:
                     # This is a continued line. We try to preserve
@@ -742,10 +763,18 @@ def stage_3_analysis(mh, cfg, tbuf):
                     # the line, since previously it was not offset
                     # at all.
                     if offset <= 0:
-                        mh.style_issue(token.location,
-                                       "continuations must be offset by"
-                                       " at least one space",
-                                       True)
+                        offset = cfg["tab_width"] // 2
+
+                correct_spaces = cfg["tab_width"] * current_indent + offset
+                token.fix["correct_indent"] = correct_spaces
+
+                if token.location.col_start != correct_spaces:
+                    mh.style_issue(token.location,
+                                   "indentation not correct, should be"
+                                   " %u spaces, not %u" %
+                                   (correct_spaces,
+                                    token.location.col_start),
+                                   True)
 
 
 def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):

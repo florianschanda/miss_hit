@@ -2,6 +2,12 @@
 In Comments.m, line 1
 |     % (c) Copyright 2020 Florian Schanda
 |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
+In Comments.m, line 4
+| % (A1) this should be indented
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+In Comments.m, line 5
+| % (A2) this should be indented
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
 In Comments.m, line 7
 | x = 10;
 | ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
@@ -16,10 +22,10 @@ In Comments.m, line 11
 | ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
 In Comments.m, line 12
 |           % (C1) indented twice
-|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 10 [fixed]
+|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 10 [fixed]
 In Comments.m, line 13
 |           % (C2) indented twice
-|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 10 [fixed]
+|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 10 [fixed]
 In Comments.m, line 14
 | x = x - 1;
 | ^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
@@ -61,10 +67,10 @@ In Comments.m, line 28
 | ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
 In Comments.m, line 29
 | % (H1) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
 In Comments.m, line 30
 | % (H2) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
 In Comments.m, line 31
 | end
 | ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
@@ -95,7 +101,7 @@ In Simple.m, line 8
 In Simple.m, line 11
 | z = -w;
 | ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
-MISS_HIT Summary: 2 file(s) analysed, 32 style issue(s)
+MISS_HIT Summary: 2 file(s) analysed, 34 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 32 style issue(s)
+MISS_HIT Summary: 2 file(s) analysed, 34 style issue(s)
