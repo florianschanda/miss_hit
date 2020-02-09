@@ -199,21 +199,30 @@ class Node:
     def pp_node(self, fd=None):
         self.visit(None, Text_Visitor(fd), "Root")
 
+    def causes_indentation(self):
+        if isinstance(self, If_Statement):
+            # We do not indent for this, since the if actions
+            # indent instead.
+            return False
+
+        elif isinstance(self, (Action,
+                               Special_Block,
+                               Class_Definition,
+                               Function_Definition,
+                               Compound_Statement)):
+            return True
+
+        else:
+            return False
+
     def get_indentation(self):
+        # Indentation is the same level as the parent. + 1 if the
+        # parent itself causes children to be indented.
+
         if self.n_parent:
             indent = self.n_parent.get_indentation()
-            if isinstance(self.n_parent, If_Statement):
-                # We do not indent for this, since the if actions
-                # indent instead.
-                pass
-
-            elif isinstance(self.n_parent, (Action,
-                                            Special_Block,
-                                            Class_Definition,
-                                            Function_Definition,
-                                            Compound_Statement)):
+            if self.n_parent.causes_indentation():
                 indent += 1
-
         else:
             indent = 0
 
