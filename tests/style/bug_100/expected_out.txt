@@ -1,8 +1,5 @@
 === PLAIN MODE ===
-In test.m, line 3
-| x = [1, 5: ...
-|          ^ style: no whitespace around colon allowed [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

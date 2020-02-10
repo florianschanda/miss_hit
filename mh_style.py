@@ -534,9 +534,17 @@ def stage_3_analysis(mh, cfg, tbuf):
                 else:
                     if ((prev_in_line and ws_before > 0) or
                         (next_in_line and ws_after > 0)):
-                        mh.style_issue(token.location,
-                                       "no whitespace around colon allowed",
-                                       True)
+
+                        if next_in_line and \
+                           next_in_line.kind == "CONTINUATION":
+                            # Special exception in the rare cases we
+                            # continue a range expression
+                            pass
+                        else:
+                            mh.style_issue(token.location,
+                                           "no whitespace around colon"
+                                           " allowed",
+                                           True)
 
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
         elif token.kind == "ASSIGNMENT":
