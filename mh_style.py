@@ -428,21 +428,20 @@ def stage_3_analysis(mh, cfg, tbuf):
             # above". But if they are the first item inside e.g. an if
             # statement, then this won't work (the previous
             # indentation level is one too low).
-            if token.kind == "COMMENT":
-                if statement_start_token and \
-                   statement_start_token.kind == "KEYWORD" and \
-                   statement_start_token.value == "end":
-                    # The previous token was 'end'. We don't need to
-                    # do anything in this case, since we'll re-use the
-                    # indentation level of the compound statement
-                    enclosing_ast = None
-                elif statement_start_token and \
-                     statement_start_token.ast_link and \
-                     statement_start_token.ast_link.causes_indentation():
-                    # We've got a previous AST node. We remember it,
-                    # and indent one level below it, but only if it is
-                    # a statement that would create nesting.
-                    enclosing_ast = statement_start_token.ast_link
+            if statement_start_token and \
+               statement_start_token.kind == "KEYWORD" and \
+               statement_start_token.value == "end":
+                # The previous token was 'end'. We don't need to
+                # do anything in this case, since we'll re-use the
+                # indentation level of the compound statement
+                enclosing_ast = None
+            elif statement_start_token and \
+                 statement_start_token.ast_link and \
+                 statement_start_token.ast_link.causes_indentation():
+                # We've got a previous AST node. We remember it,
+                # and indent one level below it, but only if it is
+                # a statement that would create nesting.
+                enclosing_ast = statement_start_token.ast_link
 
             statement_start_token = token
 

@@ -1,8 +1,10 @@
 %% (c) Copyright 2020 Zenuity AB
 function test
-    % The following comment causes bug 101 to appear:
+    % This comment and the next one cause bug 101 to appear
 
-    % '
+    x = 1;
+
+    % potato
 
     if potato
 
