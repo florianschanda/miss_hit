@@ -1,0 +1,14 @@
+=== PLAIN MODE ===
+In test.m, line 3
+| if potato ...
+|           ^^^^ style: useless line continuation [fixed]
+In test.m, line 9
+|      2]; ...
+|          ^^^^ style: useless line continuation [fixed]
+In test.m, line 11
+| x = 12; ...
+|         ^^^^ style: useless line continuation [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)

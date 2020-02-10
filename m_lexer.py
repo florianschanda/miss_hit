@@ -1167,14 +1167,19 @@ class Token_Buffer(Token_Generator):
                     amount = 0
                 fd.write("\n" * amount)
             elif token.kind == "CONTINUATION":
-                fd.write(token.raw_text.rstrip() + "\n")
+                if token.fix.get("replace_with_newline", False):
+                    fd.write("\n")
+                else:
+                    fd.write(token.raw_text.rstrip() + "\n")
             else:
                 fd.write(token.raw_text.rstrip())
 
             if token.fix.get("add_semicolon_after", False):
                 fd.write(";")
 
-            if next_in_line and next_in_line.kind != "NEWLINE":
+            if next_in_line and \
+               next_in_line.kind != "NEWLINE" and \
+               not next_in_line.fix.get("replace_with_newline", False):
                 gap = (next_in_line.location.col_start -
                        (token.location.col_end + 1))
                 # At most one space, unless we have a comment, then

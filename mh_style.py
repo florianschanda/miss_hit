@@ -702,6 +702,16 @@ def stage_3_analysis(mh, cfg, tbuf):
                                "continuations should not start with binary "
                                "operators")
 
+            if config.active(cfg, "useless_continuation") and \
+               next_token and \
+               next_token.kind in ("NEWLINE", "COMMENT"):
+                # Continuations followed immediately by a new-line or
+                # comment are not actually helpful at all.
+                mh.style_issue(token.location,
+                               "useless line continuation",
+                               True)
+                token.fix["replace_with_newline"] = True
+
         elif token.kind == "OPERATOR":
             if not config.active(cfg, "operator_whitespace"):
                 pass
@@ -741,7 +751,7 @@ def stage_3_analysis(mh, cfg, tbuf):
                         token.fix["ensure_ws_after"] = True
 
         # Complain about indentation
-        if config.active(cfg, "indentation"):
+        if config.active(cfg, "indentation") and token.kind != "NEWLINE":
             if token.first_in_line:
                 if token.first_in_statement:
                     if token.ast_link:

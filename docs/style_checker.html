@@ -351,6 +351,22 @@ enable_rule: "file_length"
         thing on a line and a line continuation.
       </div>
 
+      <h4>Continuations followed by terminators ("useless_continuation")</h4>
+
+      <div>
+        This rule flags up line continuations that are followed by
+        things that would end the statement anyway. For example:
+      </div>
+
+      <div>
+<pre>
+if potato ...
+
+    x = 1;
+end
+</pre>
+      </div>
+
       <h4>Whitespace around operators ("operator_whitespace")</h4>
 
       <div>
