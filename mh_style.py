@@ -694,20 +694,13 @@ def stage_3_analysis(mh, cfg, tbuf):
 
             if config.active(cfg, "operator_after_continuation") and \
                next_token and next_token.first_in_line and \
-               next_token.kind == "OPERATOR":
+               next_token.kind == "OPERATOR" and \
+               next_token.fix.get("binary_operator", False):
                 # Continuations should not start with operators unless
-                # its a unary. Right now we can't tell (needs
-                # parsing), so we under-approximate
-                if prev_token and prev_token.kind == "OPERATOR":
-                    pass
-                elif prev_token and prev_token.kind == "ASSIGNMENT":
-                    # x = ...
-                    #    -potato (this is ok)
-                    pass
-                else:
-                    mh.style_issue(next_token.location,
-                                   "continuations should not start with "
-                                   "operators")
+                # its a unary.
+                mh.style_issue(next_token.location,
+                               "continuations should not start with binary "
+                               "operators")
 
         elif token.kind == "OPERATOR":
             if not config.active(cfg, "operator_whitespace"):
