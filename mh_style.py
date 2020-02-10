@@ -561,50 +561,6 @@ def stage_3_analysis(mh, cfg, tbuf):
                                    "= must be succeeded by whitespace",
                                    True)
 
-            if config.active(cfg, "builtin_shadow"):
-                # Here we now try to figure out what we assigned to. In
-                # the absence of parser we can just go backwards to the
-                # last newline, reverse matching brackets on the way.
-                brackets = []
-                badness = []
-                parens = 0
-                for i in reversed(range(last_newline, n)):
-                    if tbuf.tokens[i].kind in ("A_KET", "M_KET"):
-                        brackets.append("]")
-                    elif tbuf.tokens[i].kind == "KET":
-                        brackets.append(")")
-                        parens += 1
-                    elif tbuf.tokens[i].kind in ("A_BRA", "M_BRA"):
-                        if len(brackets) == 0:
-                            # Almost certain a syntax error
-                            break
-                        elif brackets.pop() != "]":
-                            break
-                    elif tbuf.tokens[i].kind == "BRA":
-                        if len(brackets) == 0:
-                            # Syntax error or maybe classdef
-                            break
-                        elif brackets.pop() != ")":
-                            break
-                        parens -= 1
-                    elif tbuf.tokens[i].kind == "COMMA" and len(brackets) == 0:
-                        break
-                    elif tbuf.tokens[i].kind == "IDENTIFIER" and parens == 0:
-                        if tbuf.tokens[i].value in BUILTIN_FUNCTIONS:
-                            badness.append(tbuf.tokens[i])
-                    elif tbuf.tokens[i].kind == "KEYWORD" and \
-                         tbuf.tokens[i].value == "for":
-                        # If we find a for, then we're in a for loop. We
-                        # special case i and j since they are so damn
-                        # common.
-                        badness = [t
-                                   for t in badness
-                                   if t.value not in ("i", "j")]
-                for tok in badness:
-                    mh.style_issue(tok.location,
-                                   "redefinition of builtin function is a"
-                                   " very naughty thing to do")
-
         # Corresponds to the old CodeChecker ParenthesisWhitespace and
         # BracketsWhitespace rules
         elif token.kind in ("BRA", "A_BRA", "M_BRA"):
