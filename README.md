@@ -33,7 +33,7 @@ different things.
 ### Lexing
 On the lexical level MATLAB (R) and Octave are probably the one of the
 [most challenging
-languages](https://github.com/florianschanda/miss_hit/blob/master/HORRORS.md)
+languages](https://github.com/florianschanda/miss_hit/blob/master/LEXING_ISSUESS.md)
 ever invented that aren't weird on purpose (e.g. Malbolge). We posit
 that a key reason for this is that the actual MATLAB (R) parser
 combines lexing and parsing in one step; which allows for some

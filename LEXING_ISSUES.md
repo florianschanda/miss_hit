@@ -1,4 +1,4 @@
-# Lexing horrors of MATLAB
+# Lexing issues of MATLAB
 
 Lexing of MATLAB looks easy enough at first, but there are many
 language feature that make a traditional approach (Dragon style
