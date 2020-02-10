@@ -36,7 +36,6 @@ import textwrap
 
 from abc import ABCMeta, abstractmethod
 
-from m_language_builtins import BUILTIN_FUNCTIONS
 from m_lexer import MATLAB_Lexer, Token_Buffer
 from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
 import config
@@ -365,8 +364,6 @@ def stage_3_analysis(mh, cfg, tbuf):
     copyright_token = None
     copyright_notice = []
 
-    last_newline = 0
-
     # Some state needed to fix indentation
     statement_start_token = None
     current_indent = 0
@@ -393,9 +390,6 @@ def stage_3_analysis(mh, cfg, tbuf):
             prev_in_line = None
             ws_before = None
 
-        if token.kind == "NEWLINE":
-            last_newline = n
-
         if (next_token and
             next_token.location.line == token.location.line):
             if next_token.kind == "NEWLINE":
@@ -408,15 +402,6 @@ def stage_3_analysis(mh, cfg, tbuf):
         else:
             next_in_line = None
             ws_after = None
-
-        if token.kind in ("NEWLINE", "COMMENT", "CONTINUATION"):
-            last_code_in_line = False
-        elif next_in_line is None:
-            last_code_in_line = True
-        elif next_in_line.kind in ("NEWLINE", "COMMENT"):
-            last_code_in_line = True
-        else:
-            last_code_in_line = False
 
         # Keep track of statement starters. This is required for
         # indentation.
