@@ -256,7 +256,8 @@ def register_tree(mh, dirname, options):
         CONFIG_TREE[dirname]["children"] = set(
             os.path.join(dirname, d)
             for d in os.listdir(dirname)
-            if os.path.isdir(os.path.join(dirname, d))
+            if (os.path.isdir(os.path.join(dirname, d)) and
+                os.access(os.path.join(dirname, d), os.R_OK))
         )
 
         for child in CONFIG_TREE[dirname]["children"]:
