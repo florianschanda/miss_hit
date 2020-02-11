@@ -20,63 +20,129 @@
       correct (when the --fix options given) a number of coding style
       issues, most of which are configurable.
     </div>
+
     <div class="title">
       <img src="assets/settings.svg" alt="Configuration" />
       <h1>Configuration</h1>
     </div>
 
     <section>
-      <h2>Files</h2>
+      <h2>Using MISS_HIT Style</h2>
       <div>
-        Options are read from configuration
-        files <span class="file">miss_hit.cfg</span>. This behaviour can
-        be disabled with the --ignore-config option. When analysing the
-        file <span class="file">foo/bar/potato.m</span>, we will first
-        look in the root for <span class="file">miss_hit.cfg</span>,
-        then in <span class="file">foo/miss_hit.cfg</span>, and finally
-        in <span class="file">foo/bar/miss_hit.cfg</span>. Each file
-        augments or overwrites previously given configuration, and
-        command-line options overwrite everything.
+        The easiest way to use the style checker is to just invoke it
+        on the command-line:
       </div>
 
       <div>
-        For example you can put
-        this <span class="file">miss_hit.cfg</span> in your project
-        root:
+        To analyse a single file:
+        <pre>$ mh_style.py my_file.m</pre>
       </div>
 
       <div>
+        To analyse all files in a directory tree:
+        <pre>$ mh_style.py src/</pre>
+      </div>
+
+      <h3>Setting up configuration in your project (a worked example)</h3>
+      <div>
+        However, it is very likely that you do not like all default
+        options. MISS_HIT can be configured for projects using
+        configuration files which must be
+        named <span class="file">miss_hit.cfg</span>
+        (or <span class="file">.miss_hit</span>, this alternative
+        exists for people who do not want to have them visible).
+      </div>
+
+      <div>
+        The configuration system is based on inheriting options. This
+        is best explained by example. Lets say we have a project that
+        has the following structure:
 <pre>
-# Options written like on the
-# commandline
-line_length: 100
-file_length: 2500
-copyright_entity: "Lord Buckethead"
+foo/
+foo/foo_main.m
+foo/lib/potato.m
+foo/lib/kitten.m
+foo/external/some_toolkit.m
+</pre>
+        We have a main program, some library code, but we also use an
+        external toolkit that we've included for convenience.
+      </div>
+
+      <div>
+        Lets say we want to configure a tab-width of 8 for our
+        project. We then place a new file in the tree at
+        <span class="file">foo/miss_hit.cfg</span> that contains the
+        following:
+        <pre>tab_width: 8</pre>
+      </div>
+
+      <div>
+        However, now we get tons of warnings for the external tool-kit
+        if we just run miss_hit in the project root. We can exclude
+        this directory by adding the following to our config file:
+        <pre>exclude_dir: "external"</pre>
+      </div>
+
+      <div>
+        Finally, we want to relax the line length to 120 characters
+        for our library, but not for anything else. To do this we
+        create another config file
+        in <span class="file">foo/lib/miss_hit.cfg and</span> write:
+
+        <pre>line_length: 120</pre>
+
+        Note that we do not have to repeat the tab-width, this setting
+        is inherited from <span class="file">foo/miss_hit.cfg</span>.
+      </div>
+
+      <div>
+        Our tree now looks like this:
+<pre>
+foo/
+foo/miss_hit.cfg
+foo/foo_main.m
+foo/lib/miss_hit.cfg
+foo/lib/potato.m
+foo/lib/kitten.m
+foo/external/some_toolkit.m
 </pre>
       </div>
 
       <div>
-        And you can adjust options in subdirectories, for example if you place
-        this in <span class="file">foo/miss_hit.cfg</span>:
+        Now, when running the style checker on a file or directory the
+        correct settings are automatically applied, using the entire
+        tree of configuration.
+      </div>
+
+      <h3>Configuration on the command-line</h3>
+
+      <div>
+        Some options (like line length) can also be configured on the
+        command-line. Command-line options are intended to be
+        temporary, and they take precedence over any options specified
+        in config files.
       </div>
 
       <div>
-<pre>
-# Legacy code which had a different
-# coding standard
-line_length: 180
-</pre>
+        Options are usually read from configuration
+        files <span class="file">miss_hit.cfg</span>. This behaviour
+        can be disabled entirely with the --ignore-config option.
       </div>
 
-      <div>
-        Then files in <span class="file">foo/</span> or below will be
-        checked for a line length of 180 (redefined) and a file length
-        of 2500 (taken over from the project root).
-      </div>
     </section>
 
     <section>
-      <h2>Excluding directories from analysis</h2>
+      <h2>Configuration file syntax reference</h2>
+      <div>
+        In general the config files follow a simply sytax:
+        <pre>key: value</pre> The key is some identifier like
+        tab_width, and the value is the configuration for that
+        key. Integers are written directly, and strings are enclosed
+        in double quotes. Comments start with #.
+      </div>
+
+      <h3>Enable/disable analysis ("enable")</h3>
+
       <div>
         A special entry "enable" into
         a <span class="file">miss_hit.cfg</span> can be used to enable
@@ -108,8 +174,12 @@ enable: 1
       </div>
 
       <div>
-        Like any other option, the "closest one" takes precedence.
+        Like any other option, the "closest one" takes
+        precedence. Specifically this means you can disable for a
+        large tree, and enable again for specific sub-trees.
       </div>
+
+      <h3>Excluding directories ("exclude_dir")</h3>
 
       <div>
         You can also specify the special "exclude_dir" property in
@@ -119,6 +189,13 @@ enable: 1
         the configuration file resides in. This is especially useful
         when including an external repository, over which we have
         limited control.
+      </div>
+
+      <div>
+        This is a much more drastic option that "enable: 0", since
+        this permanently excludes a tree from analysis. It cannot be
+        turned on again since the tool will never search excluded
+        directories.
       </div>
 
       <div>
