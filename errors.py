@@ -399,13 +399,22 @@ class HTML_Message_Handler(Message_Handler):
         self.fd.write("<html>\n")
         self.fd.write("<head>\n")
         self.fd.write("<meta charset=\"UTF-8\">\n")
+        # Link style-sheet with a relative path based on where the
+        # output report file will be
         self.fd.write("<link rel=\"stylesheet\" href=\"file:%s\">\n" %
                       os.path.relpath(os.path.join(sys.path[0],
                                                    "docs",
-                                                   "style.css")))
+                                                   "style.css"),
+                                      os.path.dirname(
+                                          os.path.abspath(filename))))
+        self.fd.write("<title>MISS_HIT Report</title>\n")
         self.fd.write("</head>\n")
         self.fd.write("<body>\n")
-        self.fd.write("<h1>MISS_HIT Report</h1>\n")
+        self.fd.write("<header>MISS_HIT Report</header>\n")
+        self.fd.write("<main>\n")
+        self.fd.write("<div></div>\n")
+        self.fd.write("<h1>Issues identified</h1>\n")
+        self.fd.write("<section>\n")
 
         self.last_file = None
 
@@ -447,6 +456,8 @@ class HTML_Message_Handler(Message_Handler):
         super().emit_summary()
         if not (self.style_issues or self.warnings or self.errors):
             self.fd.write("<div>Everything is fine :)</div>")
+        self.fd.write("</section>\n")
+        self.fd.write("</main>\n")
         self.fd.write("</body>\n")
         self.fd.write("</html>\n")
         self.fd.close()

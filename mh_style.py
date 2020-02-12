@@ -944,6 +944,9 @@ def main():
         sys.exit(1)
 
     if options.html:
+        if os.path.exists(options.html) and not os.path.isfile(options.html):
+            ap.error("Cannot write to %s: it is not a file" %
+                     options.html)
         mh = HTML_Message_Handler(options.html)
     else:
         mh = Message_Handler()
