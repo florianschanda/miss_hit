@@ -4,7 +4,7 @@ classdef miss_hit < handle
 
     properties (Constant, Access = private)
 
-        here = fileparts(mfilename('fullpath'));
+        here = fileparts(mfilename('fullpath'))
 
     end
 
