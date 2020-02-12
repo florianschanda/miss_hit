@@ -1189,12 +1189,12 @@ class Token_Buffer(Token_Generator):
                 # if next_in_line.kind not in ("COMMENT", "CONTINUATION"):
                 #    gap = min(gap, 1)
 
-                if (token.fix.get("ensure_trim_after", False) or
-                    next_in_line.fix.get("ensure_trim_before", False)):
-                    gap = 0
-                elif (token.fix.get("ensure_ws_after", False) or
-                      next_in_line.fix.get("ensure_ws_before", False)):
+                if (token.fix.get("ensure_ws_after", False) or
+                    next_in_line.fix.get("ensure_ws_before", False)):
                     gap = max(gap, 1)
+                elif (token.fix.get("ensure_trim_after", False) or
+                      next_in_line.fix.get("ensure_trim_before", False)):
+                    gap = 0
 
                 fd.write(" " * gap)
         fd.write("\n")

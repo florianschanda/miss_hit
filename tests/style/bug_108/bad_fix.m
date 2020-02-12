@@ -1,0 +1,3 @@
+% (c) Copyright 2020 Zenuity AB
+potato(x:...
+       x + 1) = 1;
