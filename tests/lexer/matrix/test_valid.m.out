@@ -140,6 +140,9 @@ In test_valid.m, line 11
 |         0.1 +.1i .2     % .1 .1i .2
 |         ^^^ info: [ L] NUMBER
 In test_valid.m, line 11
+|         0.1<anon,> +.1i .2     % .1 .1i .2
+|            ^^^^^^^ info: COMMA
+In test_valid.m, line 11
 |         0.1 +.1i .2     % .1 .1i .2
 |             ^ info: OPERATOR
 In test_valid.m, line 11

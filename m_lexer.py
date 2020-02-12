@@ -983,8 +983,8 @@ class MATLAB_Lexer(Token_Generator):
             elif next_non_ws in "-+~":
                 if after_next_non_ws in ("+", "-", "("):
                     self.add_comma = True
-                elif after_next_non_ws.isalnum():
-                    # +6...
+                elif after_next_non_ws.isalnum() or after_next_non_ws == ".":
+                    # +6... -.1
                     self.add_comma = True
 
         if self.in_lambda and token.kind == "KET":
