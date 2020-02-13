@@ -1,6 +1,3 @@
-In kitten.m, line 4
-|   properties = x;
-|   ^^^^^^^^^^ style: overwrites matlab builtin function
 ----------------------------------------------------------------------
 --  Parse tree for kitten.m
 Root: Function_File
@@ -17,4 +14,4 @@ Root: Function_File
         LHS: Identifier <r>
         RHS: Identifier <properties>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

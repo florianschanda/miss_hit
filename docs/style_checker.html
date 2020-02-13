@@ -582,9 +582,10 @@ end
       <div>
         This rule attempts to find cases where we assign to a MATLAB
         builtin function (e.g. re-defining false to be 1). Note: this
-        rule does not catch all cases and raises false alarms because we
-        don't have a working parser yet. Once we have a parser this can
-        be done easily and correctly.
+        rule works on a hand-curated list of "high impact" built-in
+        functions, where it is likely this re-definition will result
+        in confusion. So we complain e.g. about "true", but we do not
+        complain about "bar".
       </div>
 
       <h4>Naming scheme for classes ("naming_classes")</h4>

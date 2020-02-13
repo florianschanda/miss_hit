@@ -1,6 +1,3 @@
-In regression.m, line 4
-| bar = 2;
-| ^^^ style: overwriting standard matlab toolbox function
 ----------------------------------------------------------------------
 --  Parse tree for regression.m
 Root: Script_File
@@ -17,4 +14,4 @@ Root: Script_File
         Arguments: Identifier <foo>
         Arguments: Identifier <bar>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

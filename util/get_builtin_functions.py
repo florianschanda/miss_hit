@@ -8,6 +8,58 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 from m_language import KEYWORDS
 
+high_impact_builtins = set([
+    "cd",
+    "clock",
+    "close",
+    "cputime",
+    "eps",
+    "eye",
+    "false",
+    "flintmax",
+    "horzcat",
+    "inf",
+    "Inf",
+    "isdeployed",
+    "lasterr",
+    "lastwarn",
+    "license",
+    "more",
+    "nan",
+    "NaN",
+    "nargin",
+    "nargout",
+    "newline",
+    "ones",
+    "pi",
+    "rand",
+    "randn",
+    "realmax",
+    "realmin",
+    "speye",
+    "tic",
+    "toc",
+    "true",
+    "vertcat",
+    "zeros",
+    "single",
+    "double",
+    "int8",
+    "int16",
+    "int32",
+    "int64",
+    "uint8",
+    "uint16",
+    "uint32",
+    "uint64",
+    "clear",
+    "exit",
+    "quit",
+    "close"
+])
+# This is a list of hand-picked built-ins are definitely not a good
+# idea to overwrite.
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("matlab_root")
@@ -33,7 +85,8 @@ def main():
 
     toolbox = os.path.join(options.matlab_root, "toolbox", "matlab")
 
-    builtin_functions = set()
+    builtin_functions = set(["NaN", "Inf"])
+    # There capitalised versions of nan and inf.
     extra_functions = set()
     namespaces = set()
     builtin_classes = set()
@@ -86,9 +139,17 @@ def main():
     extra_functions -= set(["classdef"])
     assert len(extra_functions & KEYWORDS) == 0
 
+    assert len(high_impact_builtins - builtin_functions) == 0, \
+        ", ".join(high_impact_builtins - builtin_functions)
+
     with open(os.path.join("..", "m_language_builtins.py"), "w") as fd:
         fd.write("# This file is auto-generated with util/get_builtin_functions\n")
         fd.write("# for MATLAB release %s\n\n" % version)
+
+        fd.write("HIGH_IMPACT_BUILTIN_FUNCTIONS = frozenset([\n")
+        for fn in sorted(high_impact_builtins):
+            fd.write("    \"%s\",\n" % fn)
+        fd.write("])\n\n")
 
         fd.write("BUILTIN_FUNCTIONS = frozenset([\n")
         for fn in sorted(builtin_functions):
@@ -114,7 +175,6 @@ def main():
         for fn in sorted(special_vars):
             fd.write("    \"%s\",\n" % fn)
         fd.write("])\n")
-
 
 if __name__ == "__main__":
     main()

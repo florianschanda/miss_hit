@@ -1,6 +1,6 @@
 In baz.m, line 1
 | false = 42;
-| ^^^^^ style: overwrites matlab builtin function
+| ^^^^^ style: redefining this builtin is very naughty
 ----------------------------------------------------------------------
 --  Parse tree for baz.m
 Root: Script_File

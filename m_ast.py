@@ -27,7 +27,7 @@ import subprocess
 import re
 
 import config
-import m_language_builtins
+from m_language_builtins import HIGH_IMPACT_BUILTIN_FUNCTIONS
 from errors import ICE, Location
 
 
@@ -1120,21 +1120,9 @@ class Identifier(Name):
                            "violates naming scheme for %s" % kind)
 
     def sty_check_builtin_shadow(self, mh, cfg):
-        if self.t_ident.value in m_language_builtins.BUILTIN_FUNCTIONS:
+        if self.t_ident.value in HIGH_IMPACT_BUILTIN_FUNCTIONS:
             mh.style_issue(self.t_ident.location,
-                           "overwrites matlab builtin function")
-        elif self.t_ident.value in m_language_builtins.EXTRA_FUNCTIONS:
-            mh.style_issue(self.t_ident.location,
-                           "overwriting standard matlab toolbox function")
-        elif self.t_ident.value in m_language_builtins.BUILTIN_CLASSES:
-            mh.style_issue(self.t_ident.location,
-                           "shadows matlab builtin class")
-        elif self.t_ident.value in m_language_builtins.SPECIAL_NAMES:
-            mh.style_issue(self.t_ident.location,
-                           "shadows matlab special name")
-        elif self.t_ident.value in m_language_builtins.BUILTIN_NAMESPACES:
-            mh.style_issue(self.t_ident.location,
-                           "shadows matlab builtin namespace")
+                           "redefining this builtin is very naughty")
 
 
 class Selection(Name):
