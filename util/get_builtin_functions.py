@@ -50,8 +50,8 @@ def main():
             elif dirs[i].startswith("@"):
                 builtin_classes.add(dirs[i][1:])
                 del dirs[i]
-            elif dirs[i] == "demos":
-                # Remove examples
+            elif dirs[i] in ("demos", "private"):
+                # Remove examples or private directories
                 del dirs[i]
 
         for f in files:
