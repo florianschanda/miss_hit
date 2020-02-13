@@ -1,10 +1,19 @@
 === PLAIN MODE ===
+In test.m, line 4
+| false = 0.01; % bad
+| ^^^^^ style: overwrites matlab builtin function
 In test.m, line 6
 | x = pi, [true] = 42; % bad
 |       ^ style: end statement with a semicolon instead of comma [fixed]
 In test.m, line 6
 | x = pi, [true] = 42; % bad
 |       ^ style: end statement with a newline
+In test.m, line 6
+| x = pi, [true] = 42; % bad
+|          ^^^^ style: overwrites matlab builtin function
+In test.m, line 8
+| [a, uint8, b(i)] = potato; % uint8 bad, but the i is ok
+|     ^^^^^ style: overwrites matlab builtin function
 In test.m, line 10
 | function x = pi() % bad
 |              ^^ style: violates naming scheme for function
@@ -16,11 +25,14 @@ In test.m, line 13
 |   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
 In test.m, line 14
 |     i = x;  % no, for many reasons
+|     ^ style: overwrites matlab builtin function
+In test.m, line 14
+|     i = x;  % no, for many reasons
 |     ^ style: indentation not correct, should be 8 spaces, not 4 [fixed]
 In test.m, line 15
 |   end
 |   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 7 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 11 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 7 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 11 style issue(s)

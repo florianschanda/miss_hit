@@ -92,10 +92,13 @@ In test.m, line 7
 In test.m, line 7
 | baz = 4, bar = 5;
 |        ^ style: end statement with a newline
+In test.m, line 7
+| baz = 4, bar = 5;
+|          ^^^ style: overwriting standard matlab toolbox function
 In test.m, line 8
 | spoon
 | ^^^^^ style: end statement with a semicolon [fixed]
-MISS_HIT Summary: 2 file(s) analysed, 32 style issue(s)
+MISS_HIT Summary: 2 file(s) analysed, 33 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 32 style issue(s)
+MISS_HIT Summary: 2 file(s) analysed, 33 style issue(s)

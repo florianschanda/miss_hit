@@ -1,3 +1,6 @@
+In potato.m, line 12
+|       properties = x;
+|       ^^^^^^^^^^ style: overwrites matlab builtin function
 ----------------------------------------------------------------------
 --  Parse tree for potato.m
 Root: Class_File
@@ -31,4 +34,4 @@ Root: Class_File
             LHS: Identifier <p>
             RHS: Number_Literal <123>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

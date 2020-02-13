@@ -976,6 +976,8 @@ class MATLAB_Parser:
                                   " Name, found %s instead" %
                                   rv.__class__.__name__)
                 rhs = self.parse_expression()
+                if config.active(self.cfg, "builtin_shadow"):
+                    rv.sty_check_builtin_shadow(self.mh, self.cfg)
                 rv = Simple_Assignment_Statement(t_eq, rv, rhs)
 
             elif self.peek("CARRAY"):
@@ -1026,7 +1028,10 @@ class MATLAB_Parser:
             # issue #70. Hence we enforce commas after any ~.
             if self.peek("OPERATOR", "~"):
                 require_comma = True
-            lhs.append(self.parse_name(allow_void=True))
+            target = self.parse_name(allow_void=True)
+            if config.active(self.cfg, "builtin_shadow"):
+                target.sty_check_builtin_shadow(self.mh, self.cfg)
+            lhs.append(target)
             if (self.peek("COMMA") or require_comma) and \
                not self.peek("A_KET"):
                 self.match("COMMA")

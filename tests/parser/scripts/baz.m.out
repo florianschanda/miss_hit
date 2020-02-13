@@ -1,3 +1,6 @@
+In baz.m, line 1
+| false = 42;
+| ^^^^^ style: overwrites matlab builtin function
 ----------------------------------------------------------------------
 --  Parse tree for baz.m
 Root: Script_File
@@ -6,4 +9,4 @@ Root: Script_File
       LHS: Identifier <false>
       RHS: Number_Literal <42>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
