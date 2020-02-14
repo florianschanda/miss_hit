@@ -3,6 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
+##              Copyright (C) 2020,      Florian Schanda                    ##
 ##              Copyright (C) 2019-2020, Zenuity AB                         ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -36,7 +37,10 @@ BASE_CONFIG = {
     "regex_class_name"    : DEFAULT_NAMING_SCHEME,
     "regex_function_name" : DEFAULT_NAMING_SCHEME,
     "regex_nested_name"   : DEFAULT_NAMING_SCHEME,
-    "regex_method_name"   : "[a-z]+(_[a-z]+)*"
+    "regex_method_name"   : "[a-z]+(_[a-z]+)*",
+    "file_length"         : 1000,
+    "line_length"         : 80,
+    "tab_width"           : 4,
 }
 
 STYLE_RULES = {

@@ -27,15 +27,12 @@
 # This is a stylechecker for (mostly) whitespace issues. It can
 # rewrite the code to fix most of them.
 
-import sys
 import os
-import argparse
 import re
-import traceback
-import textwrap
 
 from abc import ABCMeta, abstractmethod
 
+import command_line
 from m_lexer import MATLAB_Lexer, Token_Buffer
 from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
 import config
@@ -88,12 +85,13 @@ class Rule_File_Length(Style_Rule_File):
         "file_length": {
             "type"    : int,
             "metavar" : "N",
-            "help"    : "Maximum lines in a file, 1000 by default.",
+            "help"    : ("Maximum lines in a file, %u by default." %
+                         config.BASE_CONFIG["file_length"]),
         }
     }
 
     defaults = {
-        "file_length" : 1000,
+        "file_length" : config.BASE_CONFIG["file_length"],
     }
 
     def __init__(self):
@@ -147,12 +145,13 @@ class Rule_Line_Length(Style_Rule_Line):
         "line_length": {
             "type"    : int,
             "metavar" : "N",
-            "help"    : "Maximum characters per line, 80 by default.",
+            "help"    : ("Maximum characters per line, %u by default." %
+                         config.BASE_CONFIG["line_length"]),
         }
     }
 
     defaults = {
-        "line_length" : 80,
+        "line_length" : config.BASE_CONFIG["line_length"],
     }
 
     def __init__(self):
@@ -223,12 +222,13 @@ class Rule_Line_Tabs(Style_Rule_Line):
         "tab_width": {
             "type"    : int,
             "metavar" : "N",
-            "help"    : "Tab-width, by default 4.",
+            "help"    : ("Tab-width, by default %u." %
+                         config.BASE_CONFIG["tab_width"]),
         }
     }
 
     defaults = {
-        "tab_width" : 4,
+        "tab_width" : config.BASE_CONFIG["tab_width"],
     }
 
     def __init__(self):
@@ -319,16 +319,6 @@ def build_library(cfg, rules):
                 lib[kind].append(inst)
 
     return lib
-
-
-def build_default_config(rule_set):
-    cfg = {}
-
-    for kind in rule_set:
-        for rule in rule_set[kind]:
-            cfg.update(getattr(rule, "defaults", {}))
-
-    return cfg
 
 
 ##############################################################################
@@ -858,57 +848,38 @@ def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
 
 def main():
     rule_set = get_rules()
+    clp = command_line.create_basic_clp()
 
-    ap = argparse.ArgumentParser(
-        description="MATLAB Independent Syntax and Semantics System")
-    ap.add_argument("files",
-                    metavar="FILE|DIR",
-                    nargs="*",
-                    help="MATLAB files or directories to analyze")
-    ap.add_argument("--fix",
-                    action="store_true",
-                    default=False,
-                    help="Automatically fix issues where the fix is obvious")
-    ap.add_argument("--ignore-config",
-                    action="store_true",
-                    default=False,
-                    help=("Ignore all %s files." %
-                          " or ".join(config_files.CONFIG_FILENAMES)))
+    clp["ap"].add_argument("--fix",
+                           action="store_true",
+                           default=False,
+                           help=("Automatically fix issues where the fix"
+                                 " is obvious"))
 
-    # Output options
-    ap.add_argument("--brief",
-                    action="store_true",
-                    default=False,
-                    help="Don't show line-context on messages")
-    ap.add_argument("--html",
-                    default=None,
-                    help="Write report to given file as HTML")
-    ap.add_argument("--no-style",
-                    action="store_true",
-                    default=False,
-                    help=("Don't show any style message, only show warnings "
-                          "and errors."))
+    # Extra output options
+    clp["output_options"].add_argument(
+        "--html",
+        default=None,
+        help="Write report to given file as HTML")
+    clp["output_options"].add_argument(
+        "--no-style",
+        action="store_true",
+        default=False,
+        help="Don't show any style message, only show warnings and errors.")
 
     # Debug options
-    ap.add_argument("--debug-dump-tree",
-                    default=None,
-                    metavar="FILE",
-                    help="Dump text-based parse tree to given file")
-    ap.add_argument("--debug-validate-links",
-                    action="store_true",
-                    default=False,
-                    help="Debug option to check AST links")
+    clp["debug_options"].add_argument(
+        "--debug-dump-tree",
+        default=None,
+        metavar="FILE",
+        help="Dump text-based parse tree to given file")
+    clp["debug_options"].add_argument(
+        "--debug-validate-links",
+        action="store_true",
+        default=False,
+        help="Debug option to check AST links")
 
-    language_option = ap.add_argument_group("Language options")
-    language_option.add_argument("--octave",
-                                 default=False,
-                                 action="store_true",
-                                 help=("Enable support for the Octave"
-                                       " language. Note: This is highly"
-                                       " incomplete right now, only the"
-                                       " # comments are supported."))
-
-    style_option = ap.add_argument_group("Rule options")
+    style_option = clp["ap"].add_argument_group("rule options")
 
     # Add any parameters from rules
     for rule_kind in rule_set:
@@ -928,25 +899,12 @@ def main():
                                     "Copyright notices. Can be specified "
                                     "multiple times."))
 
-    options = ap.parse_args()
-
-    if not options.brief and sys.stdout.encoding != "UTF-8":
-        print("WARNING: It looks like your environment is not set up quite")
-        print("         right since python will encode to %s on stdout." %
-              sys.stdout.encoding)
-        print()
-        print("To fix set one of the following environment variables:")
-        print("   LC_ALL=en_GB.UTF-8 (or something similar)")
-        print("   PYTHONIOENCODING=UTF-8")
-
-    if not options.files:
-        ap.print_help()
-        sys.exit(1)
+    options = command_line.parse_args(clp)
 
     if options.html:
         if os.path.exists(options.html) and not os.path.isfile(options.html):
-            ap.error("Cannot write to %s: it is not a file" %
-                     options.html)
+            clp["ap"].error("Cannot write to %s: it is not a file" %
+                            options.html)
         mh = HTML_Message_Handler(options.html)
     else:
         mh = Message_Handler()
@@ -962,24 +920,7 @@ def main():
     else:
         fd_tree = None
 
-    try:
-        for item in options.files:
-            if os.path.isdir(item):
-                config_files.register_tree(mh,
-                                           os.path.abspath(item),
-                                           options)
-            elif os.path.isfile(item):
-                config_files.register_tree(
-                    mh,
-                    os.path.dirname(os.path.abspath(item)),
-                    options)
-            else:
-                ap.error("%s is neither a file nor directory" % item)
-        config_files.build_config_tree(mh,
-                                       build_default_config(rule_set),
-                                       options)
-    except Error:
-        mh.summary_and_exit()
+    command_line.read_config(mh, options)
 
     for item in options.files:
         if os.path.isdir(item):
@@ -1007,24 +948,5 @@ def main():
         fd_tree.close()
 
 
-def ice_handler():
-    try:
-        main()
-    except ICE as internal_compiler_error:
-        traceback.print_exc()
-        print("-" * 70)
-        print("- Encountered an internal compiler error. This is a tool")
-        print("- bug, please report it on our github issues so we can fix it:")
-        print("-")
-        print("-    %s" % GITHUB_ISSUES)
-        print("-")
-        print("- Please include the above backtrace in your bug report, and")
-        print("- the following information:")
-        print("-")
-        lines = textwrap.wrap(internal_compiler_error.reason)
-        print("\n".join("- %s" % l for l in lines))
-        print("-" * 70)
-
-
 if __name__ == "__main__":
-    ice_handler()
+    command_line.ice_handler(main)

@@ -3,6 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
+##              Copyright (C) 2020,      Florian Schanda                    ##
 ##              Copyright (C) 2019-2020, Zenuity AB                         ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -270,10 +271,9 @@ def register_tree(mh, dirname, options):
     register_subtree(dirname)
 
 
-def build_config_tree(mh, defaults, cmdline_options):
+def build_config_tree(mh, cmdline_options):
     # Construct basic default options
     root_config = deepcopy(config.BASE_CONFIG)
-    root_config.update(defaults)
 
     # Find root of config tree
     roots = [d for d in CONFIG_TREE if CONFIG_TREE[d]["root"]]
