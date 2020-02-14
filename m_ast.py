@@ -252,6 +252,7 @@ class Name(Expression):
     def sty_check_builtin_shadow(self, mh, cfg):
         pass
 
+
 class Literal(Expression):
     pass
 
