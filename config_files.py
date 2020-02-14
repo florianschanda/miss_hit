@@ -287,17 +287,24 @@ def build_config_tree(mh, cmdline_options):
     parse_config = not cmdline_options.ignore_config
 
     def merge_command_line(cfg):
-        # Overwrite with options from the command-line
-        if cmdline_options.line_length:
-            cfg["line_length"] = cmdline_options.line_length
-        if cmdline_options.file_length:
-            cfg["file_length"] = cmdline_options.file_length
-        if cmdline_options.tab_width:
-            cfg["tab_width"] = cmdline_options.tab_width
-        if cmdline_options.copyright_entity:
-            cfg["copyright_entity"] = set(cmdline_options.copyright_entity)
+        # Thse options exist for all tools
         if cmdline_options.octave:
             cfg["octave"] = cmdline_options.octave
+
+        # Overwrite some options from the command-line for style
+        # checking
+        if "line_length" in cmdline_options and \
+           cmdline_options.line_length:
+            cfg["line_length"] = cmdline_options.line_length
+        if "file_length" in cmdline_options and \
+           cmdline_options.file_length:
+            cfg["file_length"] = cmdline_options.file_length
+        if "tab_width" in cmdline_options and \
+           cmdline_options.tab_width:
+            cfg["tab_width"] = cmdline_options.tab_width
+        if "copyright_entity" in cmdline_options and \
+           cmdline_options.copyright_entity:
+            cfg["copyright_entity"] = set(cmdline_options.copyright_entity)
 
     def build(node, exclude=False):
         if CONFIG_TREE[node]["root"]:
