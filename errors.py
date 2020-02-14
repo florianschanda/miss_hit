@@ -144,8 +144,42 @@ class Message_Handler:
         self.show_style = True
         self.sort_messages = True
 
-        self.messages = {}        # file -> line -> message
-        self.justifications = {}  # file -> line -> justification
+        self.messages = {}        # file -> line -> [message]
+        self.justifications = {}  # file -> line -> [justification]
+
+    def integrate(self, other):
+        assert isinstance(other, Message_Handler)
+        assert self.autofix       == other.autofix
+        assert self.colour        == other.colour
+        assert self.show_context  == other.show_context
+        assert self.show_style    == other.show_style
+        assert self.sort_messages == other.sort_messages
+
+        self.style_issues   += other.style_issues
+        self.warnings       += other.warnings
+        self.errors         += other.errors
+        self.justified      += other.justified
+        self.file_count     += other.file_count
+        self.files          |= other.files
+        self.excluded_files |= other.excluded_files
+
+        for filename in other.messages:
+            if filename not in self.messages:
+                self.messages[filename] = {}
+            for line in other.messages[filename]:
+                if line not in self.messages[filename]:
+                    self.messages[filename][line] = []
+                self.messages[filename][line] += \
+                  other.messages[filename][line]
+
+        for filename in other.justifications:
+            if filename not in self.justifications:
+                self.justifications[filename] = {}
+            for line in other.justifications[filename]:
+                if line not in self.justifications[filename]:
+                    self.justifications[filename][line] = []
+                self.justifications[filename][line] += \
+                  other.justifications[filename][line]
 
     def register_file(self, filename):
         assert isinstance(filename, str)
