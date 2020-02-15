@@ -49,6 +49,10 @@ def create_basic_clp():
                     metavar="FILE|DIR",
                     nargs="*",
                     help="MATLAB files or directories to analyze")
+    ap.add_argument("--single",
+                    action="store_true",
+                    default=False,
+                    help="Do not use multi-threaded analysis")
     ap.add_argument("--ignore-config",
                     action="store_true",
                     default=False,

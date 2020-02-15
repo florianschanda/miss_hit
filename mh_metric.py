@@ -31,22 +31,28 @@ import multiprocessing
 
 import command_line
 
-from m_lexer import MATLAB_Lexer, Token_Buffer
-from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
-import config
+from m_lexer import MATLAB_Lexer
+from errors import Location, Error, Message_Handler
 import config_files
 from m_parser import MATLAB_Parser
 
+# pylint: disable=wildcard-import,unused-wildcard-import
+from m_ast import *
+# pylint: enable=wildcard-import,unused-wildcard-import
+
 
 def collect_metrics(args):
-    mh, filename, options = args
+    mh, filename, _ = args
     assert isinstance(filename, str)
 
     cfg = config_files.get_config(filename)
+    metrics = {filename: {"errors" : False,
+                          "metrics": {},
+                          "functions" : {}}}
 
     if not cfg["enable"]:
         mh.register_exclusion(filename)
-        return False, filename, mh
+        return False, filename, mh, metrics
 
     mh.register_file(filename)
 
@@ -58,7 +64,8 @@ def collect_metrics(args):
         if not os.path.isfile(filename):
             mh.error(Location(filename), "is not a file")
     except Error:
-        return True, filename, mh
+        metrics[filename]["errors"] = True
+        return True, filename, mh, metrics
 
     # Create lexer
 
@@ -72,7 +79,13 @@ def collect_metrics(args):
     # We're dealing with an empty file here. Lets just not do anything
 
     if len(lexer.text.strip()) == 0:
-        return True, filename, mh
+        return True, filename, mh, metrics
+
+    # File metrics
+
+    metrics[filename]["metrics"] = {
+        "lines" : len(lexer.context_line),
+    }
 
     # Create parse tree
 
@@ -80,15 +93,46 @@ def collect_metrics(args):
         parser = MATLAB_Parser(mh, lexer, cfg)
         parse_tree = parser.parse_file()
     except Error:
-        return True, filename, mh
+        metrics[filename]["errors"] = True
+        return True, filename, mh, metrics
 
-    # Collect metrics
+    # Collect function metrics
 
-    pass
+    metrics[filename]["functions"] = get_function_metrics(parse_tree)
 
-    # Emit messages
+    # Return results
 
-    return True, filename, mh
+    return True, filename, mh, metrics
+
+
+def get_function_metrics(tree):
+    assert isinstance(tree, Compilation_Unit)
+
+    metrics = {}
+
+    def process_function(n_fdef, naming_stack):
+        assert isinstance(n_fdef, Function_Definition)
+
+        # We need a unique name for the function for this file.
+        name = "::".join(map(str, naming_stack + [n_fdef.n_sig.n_name]))
+
+        metrics[name] = {}
+
+    class Function_Visitor(AST_Visitor):
+        def __init__(self):
+            self.name_stack = []
+
+        def visit(self, node, n_parent, relation):
+            if isinstance(node, Function_Definition):
+                process_function(node, self.name_stack)
+                self.name_stack.append(node.n_sig.n_name)
+
+        def visit_end(self, node, n_parent, relation):
+            if isinstance(node, Function_Definition):
+                self.name_stack.pop()
+
+    tree.visit(None, Function_Visitor(), "Root")
+    return metrics
 
 
 def main():
@@ -110,6 +154,8 @@ def main():
     for item in options.files:
         if os.path.isdir(item):
             for path, dirs, files in os.walk(item):
+                if path == ".":
+                    path = ""
                 dirs.sort()
                 for f in sorted(files):
                     if f.endswith(".m"):
@@ -119,19 +165,37 @@ def main():
         else:
             work_list.append((blank_mh(), item, options))
 
-    pool = multiprocessing.Pool()
-    for processed, filename, result in pool.imap(collect_metrics,
-                                                 work_list,
-                                                 5):
-        mh.integrate(result)
-        if processed:
-            mh.finalize_file(filename)
+    all_metrics = {}
+    # file -> { metrics -> {}
+    #           functions -> {name -> {}} }
 
-    # for processed, filename, result in map(collect_metrics,
-    #                                        work_list):
-    #     mh.integrate(result)
-    #     if processed:
-    #         mh.finalize_file(filename)
+    if options.single:
+        for processed, filename, result, metrics in map(collect_metrics,
+                                                        work_list):
+            mh.integrate(result)
+            if processed:
+                mh.finalize_file(filename)
+                all_metrics.update(metrics)
+
+    else:
+        pool = multiprocessing.Pool()
+        for processed, filename, result, metrics in pool.imap(collect_metrics,
+                                                              work_list,
+                                                              5):
+            mh.integrate(result)
+            if processed:
+                mh.finalize_file(filename)
+                all_metrics.update(metrics)
+
+    # Print metrics to stdout for now
+    for filename in sorted(all_metrics):
+        metrics = all_metrics[filename]
+        print("Code metrics for file %s:" % filename)
+        if metrics["errors"]:
+            print("  Contains syntax or semantics errors!")
+        print("  Lines: %u" % metrics["metrics"]["lines"])
+        for function in sorted(metrics["functions"]):
+            print("  Code metrics for function %s:" % function)
 
     mh.summary_and_exit()
 

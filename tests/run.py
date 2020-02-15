@@ -62,6 +62,28 @@ def execute_style_test(name):
     return "Ran style test %s" % name
 
 
+def execute_metric_test(name):
+    os.chdir(os.path.join(TEST_ROOT,
+                          "metrics",
+                          name))
+
+    # Run
+    r = subprocess.run(["../../../mh_metric.py",
+                        "--single",
+                        ".",],
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.STDOUT,
+                       encoding="utf-8")
+    plain_out = r.stdout
+
+    # Save stdout
+    with open("expected_out.txt", "w") as fd:
+        fd.write("=== PLAIN MODE ===\n")
+        fd.write(plain_out)
+
+    return "Ran metrics test %s" % name
+
+
 def execute_lexer_test(name):
     os.chdir(os.path.join(TEST_ROOT,
                           "lexer",
@@ -113,9 +135,10 @@ def execute_parser_test(name):
 
 
 def run_test(test):
-    fn = {"style" : execute_style_test,
-          "lexer" : execute_lexer_test,
-          "parser" : execute_parser_test}
+    fn = {"style"   : execute_style_test,
+          "metrics" : execute_metric_test,
+          "lexer"   : execute_lexer_test,
+          "parser"  : execute_parser_test}
     return fn[test["kind"]](test["test"])
 
 
@@ -133,7 +156,7 @@ def main():
 
     tests = []
 
-    for kind in ("lexer", "style", "parser"):
+    for kind in ("lexer", "parser", "style", "metrics"):
         for t in os.listdir(kind):
             tests.append({"kind" : kind,
                           "test" : t})

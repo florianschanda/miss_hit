@@ -1,0 +1,9 @@
+=== PLAIN MODE ===
+Code metrics for file file_1.m:
+  Lines: 18
+Code metrics for file file_2.m:
+  Lines: 11
+  Code metrics for function kitten:
+  Code metrics for function kitten::cat:
+  Code metrics for function potato:
+MISS_HIT Summary: 2 file(s) analysed, everything seemes fine
