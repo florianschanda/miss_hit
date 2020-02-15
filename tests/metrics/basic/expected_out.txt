@@ -4,6 +4,19 @@ Code metrics for file file_1.m:
 Code metrics for file file_2.m:
   Lines: 11
   Code metrics for function kitten:
+    Path count: 1
   Code metrics for function kitten::cat:
+    Path count: 1
   Code metrics for function potato:
-MISS_HIT Summary: 2 file(s) analysed, everything seemes fine
+    Path count: 1
+Code metrics for file npath.m:
+  Lines: 30
+  Code metrics for function ifs:
+    Path count: 8
+  Code metrics for function loops_1:
+    Path count: 2
+  Code metrics for function loops_2:
+    Path count: 3
+  Code metrics for function sequence:
+    Path count: 1
+MISS_HIT Summary: 3 file(s) analysed, everything seemes fine

@@ -75,6 +75,28 @@
         These metrics are computed for each function, nested function,
         and method.
       </div>
+
+      <h3>Path count</h3>
+      <div>
+        This approximates the number of paths through a function. This
+        metric is based
+        on <a href="https://dl.acm.org/doi/abs/10.1145/42372.42379">NPATH</a>
+        and should be similar what other popular metric tools compute.
+      </div>
+
+      <div>
+        Note that this number can grow very large, very quickly,
+        especially if you have a lot of sequential if blocks. Further
+        note that this metric is neither an under-approximate or
+        over-approximate, but a reasonable compromise.
+      </div>
+
+      <div>
+        Since the MATLAB language supports raising and catching
+        exceptions (including exceptions further down the call tree) a
+        safe over-approximate cannot be reasonably computed since
+        every single line may raise multiple exceptions.
+      </div>
     </section>
 
   </main>

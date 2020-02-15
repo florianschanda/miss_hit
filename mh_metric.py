@@ -32,7 +32,7 @@ import multiprocessing
 import command_line
 
 from m_lexer import MATLAB_Lexer
-from errors import Location, Error, Message_Handler
+from errors import Location, Error, ICE, Message_Handler
 import config_files
 from m_parser import MATLAB_Parser
 
@@ -105,6 +105,49 @@ def collect_metrics(args):
     return True, filename, mh, metrics
 
 
+def npath(node):
+    assert isinstance(node, (Sequence_Of_Statements,
+                             Statement))
+
+    if isinstance(node, Sequence_Of_Statements):
+        paths = 1
+        for n_statement in node.l_statements:
+            if isinstance(n_statement, (If_Statement,
+                                        For_Loop_Statement,
+                                        Switch_Statement,
+                                        Try_Statement,
+                                        While_Statement)):
+                paths *= npath(n_statement)
+        return paths
+
+    elif isinstance(node, If_Statement):
+        paths = 0
+        for n_action in node.l_actions:
+            paths += npath(n_action.n_body)
+        if not node.has_else:
+            paths += 1
+
+        return paths
+
+    elif isinstance(node, Switch_Statement):
+        paths = 0
+        for n_action in node.l_actions:
+            paths += npath(n_action.n_body)
+        if not node.has_otherwise:
+            paths += 1
+
+        return paths
+
+    elif isinstance(node, (For_Loop_Statement, While_Statement)):
+        return 1 + npath(node.n_body)
+
+    elif isinstance(node, Try_Statement):
+        return npath(node.n_body) * 2
+
+    else:
+        raise ICE("unexpected node")
+
+
 def get_function_metrics(tree):
     assert isinstance(tree, Compilation_Unit)
 
@@ -116,7 +159,9 @@ def get_function_metrics(tree):
         # We need a unique name for the function for this file.
         name = "::".join(map(str, naming_stack + [n_fdef.n_sig.n_name]))
 
-        metrics[name] = {}
+        metrics[name] = {
+            "npath" : npath(n_fdef.n_body),
+        }
 
     class Function_Visitor(AST_Visitor):
         def __init__(self):
@@ -126,9 +171,11 @@ def get_function_metrics(tree):
             if isinstance(node, Function_Definition):
                 process_function(node, self.name_stack)
                 self.name_stack.append(node.n_sig.n_name)
+            elif isinstance(node, Class_Definition):
+                self.name_stack.append(node.n_name)
 
         def visit_end(self, node, n_parent, relation):
-            if isinstance(node, Function_Definition):
+            if isinstance(node, Definition):
                 self.name_stack.pop()
 
     tree.visit(None, Function_Visitor(), "Root")
@@ -195,7 +242,9 @@ def main():
             print("  Contains syntax or semantics errors!")
         print("  Lines: %u" % metrics["metrics"]["lines"])
         for function in sorted(metrics["functions"]):
+            f_metrics = metrics["functions"][function]
             print("  Code metrics for function %s:" % function)
+            print("    Path count: %u" % f_metrics["npath"])
 
     mh.summary_and_exit()
 
