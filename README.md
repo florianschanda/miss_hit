@@ -17,8 +17,14 @@ https://florianschanda.github.io/miss_hit/
 
 ### Style Checker
 
-A simple coding style checker and code formatter for MATLAB. See
-https://florianschanda.github.io/miss_hit/style_checker.html for more
+A simple coding style checker and code formatter for MATLAB or Octave
+code. See https://florianschanda.github.io/miss_hit/style_checker.html
+for more information and a user manual.
+
+### Code Metrics
+
+A simple code metric tool for MATLAB or Octave code. See
+https://florianschanda.github.io/miss_hit/metrics.html for more
 information and a user manual.
 
 ## Challenges

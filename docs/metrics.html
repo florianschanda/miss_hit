@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    MISS_HIT - MATLAB independent, small & safe, high integrity tools
+  </title>
+</head>
+
+<body>
+  <header>MISS_HIT Code Metrics</header>
+
+  <main>
+    <div class="section">
+      <a href="index.html">MISS_HIT</a> includes a simple code metric
+      tool (<span class="file">mh_metric.py</span>). It computes code
+      metrics and (in a future release) complains if the metrics
+      exceed acceptable levels.
+    </div>
+
+    <div class="title">
+      <img src="assets/settings.svg" alt="Configuration" />
+      <h1>Configuration</h1>
+    </div>
+
+    <section>
+      <h2>Using MISS_HIT Metric</h2>
+      <div>
+        This tool works exactly the same as the style checker, and
+        re-uses the same <a href="style_checker.html">configuration
+        files and mechanism</a>.
+      </div>
+
+      <div>
+        To compute metrics on a single file:
+        <pre>$ mh_metric.py my_file.m</pre>
+      </div>
+
+      <div>
+        To compute metrics for all files in a directory tree:
+        <pre>$ mh_metric.py src/</pre>
+      </div>
+
+      <div>
+        Currently, metrics are printed on standard out. In a future
+        release other formats (HTML report, json, csv, etc.) will be
+        supported.
+      </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/bar-chart-2.svg" alt="Metrics" />
+      <h1>Metrics</h1>
+    </div>
+
+    <section>
+      <h2>File metrics</h2>
+      <div>
+        These metrics are computed for each file.
+      </div>
+
+      <h3>Lines</h3>
+      <div>
+        The number of lines. Should be the equivalent to running the
+        standard UNIX tool <span class="file">wc -l</span>. This means
+        comments and blank lines are counted.
+      </div>
+
+      <div></div>
+      <h2>Function metrics</h2>
+      <div>
+        These metrics are computed for each function, nested function,
+        and method.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    &copy; 2020 Florian Schanda<br>
+    MISS_HIT is licensed under the GPLv3
+  </footer>
+</body>
+
+</html>
