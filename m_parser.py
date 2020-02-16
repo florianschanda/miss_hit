@@ -30,10 +30,7 @@ import traceback
 from m_lexer import Token_Generator, MATLAB_Lexer, Token_Buffer
 from errors import ICE, Error, Location, Message_Handler
 import config
-
-# pylint: disable=wildcard-import,unused-wildcard-import
 from m_ast import *
-# pylint: enable=wildcard-import,unused-wildcard-import
 
 
 IGNORED_TOKENS = frozenset(["COMMENT"])
@@ -1771,7 +1768,9 @@ class MATLAB_Parser:
         return rv
 
 
-def sanity_test(mh, filename, show_bt, show_tree, show_dot):
+def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
+    import g_cfg
+
     try:
         mh.register_file(filename)
         lexer = MATLAB_Lexer(mh, filename)
@@ -1786,12 +1785,21 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot):
             print("--  Parse tree for %s" % os.path.basename(filename))
             tree.pp_node()
             print("-" * 70)
+        if show_cfg:
+            if isinstance(tree, Script_File):
+                g_cfg.build_cfg(tree)
 
         tbuf.debug_validate_links()
 
     except Error:
         if show_bt:
             traceback.print_exc()
+
+    except ICE as ice:
+        if show_bt:
+            traceback.print_exc()
+        print("ICE:", ice.reason)
+
     mh.finalize_file(filename)
 
 
@@ -1811,6 +1819,10 @@ def parser_test_main():
                     action="store_true",
                     default=False,
                     help="Create parse tree with graphviz for each function")
+    ap.add_argument("--cfg",
+                    action="store_true",
+                    default=False,
+                    help="Create cfg with graphviz for each function")
     options = ap.parse_args()
 
     mh = Message_Handler()
@@ -1820,7 +1832,8 @@ def parser_test_main():
     sanity_test(mh, options.file,
                 not options.no_tb,
                 options.tree,
-                options.dot)
+                options.dot,
+                options.cfg)
 
     mh.summary_and_exit()
 

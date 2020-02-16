@@ -38,10 +38,8 @@ from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
 import config
 import config_files
 from m_parser import MATLAB_Parser
-
-# pylint: disable=wildcard-import,unused-wildcard-import
 from m_ast import *
-# pylint: enable=wildcard-import,unused-wildcard-import
+
 
 GITHUB_ISSUES = "https://github.com/florianschanda/miss_hit/issues"
 

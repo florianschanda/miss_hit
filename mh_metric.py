@@ -35,10 +35,7 @@ from m_lexer import MATLAB_Lexer
 from errors import Location, Error, ICE, Message_Handler
 import config_files
 from m_parser import MATLAB_Parser
-
-# pylint: disable=wildcard-import,unused-wildcard-import
 from m_ast import *
-# pylint: enable=wildcard-import,unused-wildcard-import
 
 
 def collect_metrics(args):

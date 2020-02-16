@@ -1,0 +1,71 @@
+----------------------------------------------------------------------
+--  Parse tree for test_1.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Number_Literal <1>
+    Statements: If_Statement
+      Action: If Action
+        Guard: Binary_Operation >
+          LHS: Identifier <x>
+          RHS: Number_Literal <0>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <y>
+            RHS: Number_Literal <1>
+    Statements: If_Statement
+      Action: If Action
+        Guard: Binary_Operation >
+          LHS: Identifier <x>
+          RHS: Number_Literal <0>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <y>
+            RHS: Number_Literal <1>
+      Action: Else Action
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <y>
+            RHS: Number_Literal <0>
+    Statements: If_Statement
+      Action: If Action
+        Guard: Binary_Operation >
+          LHS: Identifier <x>
+          RHS: Number_Literal <0>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <y>
+            RHS: Number_Literal <1>
+      Action: Elseif Action
+        Guard: Binary_Operation <
+          LHS: Identifier <y>
+          RHS: Number_Literal <0>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <y>
+            RHS: Number_Literal <2>
+      Action: Else Action
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <y>
+            RHS: Number_Literal <0>
+    Statements: If_Statement
+      Action: If Action
+        Guard: Binary_Operation >
+          LHS: Identifier <x>
+          RHS: Number_Literal <0>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <y>
+            RHS: Number_Literal <1>
+      Action: Elseif Action
+        Guard: Binary_Operation <
+          LHS: Identifier <y>
+          RHS: Number_Literal <0>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <y>
+            RHS: Number_Literal <2>
+----------------------------------------------------------------------
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
