@@ -39,7 +39,7 @@ from m_ast import *
 
 
 def collect_metrics(args):
-    mh, filename, _ = args
+    mh, filename, _, _ = args
     assert isinstance(filename, str)
 
     cfg = config_files.get_config(filename)
@@ -183,31 +183,12 @@ def main():
     clp = command_line.create_basic_clp()
     options = command_line.parse_args(clp)
 
-    def blank_mh():
-        mh = Message_Handler()
-        mh.show_context = not options.brief
-        mh.show_style   = False
-        mh.autofix      = False
-        return mh
+    mh = Message_Handler()
+    mh.show_context = not options.brief
+    mh.show_style   = False
+    mh.autofix      = False
 
-    mh = blank_mh()
-
-    command_line.read_config(mh, options)
-
-    work_list = []
-    for item in options.files:
-        if os.path.isdir(item):
-            for path, dirs, files in os.walk(item):
-                if path == ".":
-                    path = ""
-                dirs.sort()
-                for f in sorted(files):
-                    if f.endswith(".m"):
-                        work_list.append((blank_mh(),
-                                          os.path.join(path, f),
-                                          options))
-        else:
-            work_list.append((blank_mh(), item, options))
+    work_list = command_line.read_config(mh, options, {})
 
     all_metrics = {}
     # file -> { metrics -> {}

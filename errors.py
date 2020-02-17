@@ -147,6 +147,15 @@ class Message_Handler:
         self.messages = {}        # file -> line -> [message]
         self.justifications = {}  # file -> line -> [justification]
 
+    def fork(self):
+        rv = Message_Handler()
+        rv.autofix       = self.autofix
+        rv.colour        = self.colour
+        rv.show_context  = self.show_context
+        rv.show_style    = self.show_style
+        rv.sort_messages = self.sort_messages
+        return rv
+
     def integrate(self, other):
         assert isinstance(other, Message_Handler)
         assert self.autofix       == other.autofix
@@ -428,7 +437,24 @@ class Message_Handler:
 class HTML_Message_Handler(Message_Handler):
     def __init__(self, filename):
         super().__init__()
-        self.fd = open(filename, "w")
+        self.filename = filename
+        self.fd = None
+        self.last_file = None
+
+    def fork(self):
+        rv = HTML_Message_Handler(self.filename)
+        rv.autofix       = self.autofix
+        rv.colour        = self.colour
+        rv.show_context  = self.show_context
+        rv.show_style    = self.show_style
+        rv.sort_messages = self.sort_messages
+        return rv
+
+    def setup_fd(self):
+        if self.fd is not None:
+            return
+
+        self.fd = open(self.filename, "w")
         self.fd.write("<!DOCTYPE html>\n")
         self.fd.write("<html>\n")
         self.fd.write("<head>\n")
@@ -440,7 +466,7 @@ class HTML_Message_Handler(Message_Handler):
                                                    "docs",
                                                    "style.css"),
                                       os.path.dirname(
-                                          os.path.abspath(filename))))
+                                          os.path.abspath(self.filename))))
         self.fd.write("<title>MISS_HIT Report</title>\n")
         self.fd.write("</head>\n")
         self.fd.write("<body>\n")
@@ -450,9 +476,9 @@ class HTML_Message_Handler(Message_Handler):
         self.fd.write("<h1>Issues identified</h1>\n")
         self.fd.write("<section>\n")
 
-        self.last_file = None
-
     def emit_message(self, message):
+        self.setup_fd()
+
         if self.last_file != message.location.filename:
             self.last_file = message.location.filename
             self.fd.write("<h2>%s</h2>\n" % message.location.filename)
@@ -487,6 +513,7 @@ class HTML_Message_Handler(Message_Handler):
         self.fd.write("</div>\n")
 
     def emit_summary(self):
+        self.setup_fd()
         super().emit_summary()
         if not (self.style_issues or self.warnings or self.errors):
             self.fd.write("<div>Everything is fine :)</div>")

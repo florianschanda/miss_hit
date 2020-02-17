@@ -29,6 +29,7 @@
 
 import os
 import re
+import multiprocessing
 
 from abc import ABCMeta, abstractmethod
 
@@ -720,7 +721,13 @@ def stage_3_analysis(mh, cfg, tbuf):
                                    True)
 
 
-def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
+def analyze(work_package):
+    mh, filename, options, extra_options = work_package
+    rule_set = extra_options["rule_set"]
+    autofix  = options.fix
+    fd_tree  = extra_options["fd_tree"]
+    debug_validate_links = options.debug_validate_links
+
     assert isinstance(filename, str)
     assert isinstance(autofix, bool)
 
@@ -733,7 +740,7 @@ def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
 
     if not cfg["enable"]:
         mh.register_exclusion(filename)
-        return
+        return False, filename, mh
 
     mh.register_file(filename)
 
@@ -749,7 +756,7 @@ def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
         if not filename.endswith(".m"):
             mh.warning(Location(filename), "filename should end with '.m'")
     except Error:
-        return
+        return True, filename, mh
 
     # Create lexer
 
@@ -763,7 +770,7 @@ def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
     # We're dealing with an empty file here. Lets just not do anything
 
     if len(lexer.text.strip()) == 0:
-        return
+        return True, filename, mh
 
     # Stage 1 - rules around the file itself
 
@@ -804,7 +811,7 @@ def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
         tbuf = Token_Buffer(lexer, cfg)
     except Error:
         # If there are lex errors, we can stop here
-        return
+        return True, filename, mh
 
     # Create parse tree
 
@@ -843,9 +850,9 @@ def analyze(mh, filename, rule_set, autofix, fd_tree, debug_validate_links):
             with open(filename, "w", encoding=encoding) as fd:
                 tbuf.replay(fd)
 
-    # Emit messages
+    # Return final results
 
-    mh.finalize_file(filename)
+    return True, filename, mh
 
 
 def main():
@@ -914,40 +921,36 @@ def main():
     mh.show_context = not options.brief
     mh.show_style   = not options.no_style
     mh.autofix      = options.fix
-    mh.html         = options.html is not None
-    # mh.sort_messages = False
+
+    extra_options = {
+        "fd_tree"  : None,
+        "rule_set" : rule_set,
+    }
 
     if options.debug_dump_tree:
-        fd_tree = open(options.debug_dump_tree, "w")
+        extra_options["fd_tree"] = open(options.debug_dump_tree, "w")
+
+    work_list = command_line.read_config(mh, options, extra_options)
+
+    if options.single:
+        for processed, filename, result in map(analyze, work_list):
+            mh.integrate(result)
+            if processed:
+                mh.finalize_file(filename)
+
     else:
-        fd_tree = None
+        pool = multiprocessing.Pool()
+        for processed, filename, result in pool.imap(analyze,
+                                                     work_list,
+                                                     5):
+            mh.integrate(result)
+            if processed:
+                mh.finalize_file(filename)
 
-    command_line.read_config(mh, options)
-
-    for item in options.files:
-        if os.path.isdir(item):
-            for path, dirs, files in os.walk(item):
-                dirs.sort()
-                for f in sorted(files):
-                    if f.endswith(".m"):
-                        analyze(mh,
-                                os.path.normpath(os.path.join(path, f)),
-                                rule_set,
-                                options.fix,
-                                fd_tree,
-                                options.debug_validate_links)
-        else:
-            analyze(mh,
-                    os.path.normpath(item),
-                    rule_set,
-                    options.fix,
-                    fd_tree,
-                    options.debug_validate_links)
+    if options.debug_dump_tree:
+        extra_options["fd_tree"].close()
 
     mh.summary_and_exit()
-
-    if options.debug_dump_tree:
-        fd_tree.close()
 
 
 if __name__ == "__main__":

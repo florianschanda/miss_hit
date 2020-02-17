@@ -106,7 +106,7 @@ def parse_args(clp):
     return options
 
 
-def read_config(mh, options):
+def read_config(mh, options, extra_options):
     try:
         for item in options.files:
             if os.path.isdir(item):
@@ -125,6 +125,25 @@ def read_config(mh, options):
 
     except errors.Error:
         mh.summary_and_exit()
+
+    work_list = []
+    for item in options.files:
+        if os.path.isdir(item):
+            for path, dirs, files in os.walk(item):
+                if path == ".":
+                    path = ""
+                dirs.sort()
+                for f in sorted(files):
+                    if f.endswith(".m"):
+                        work_list.append(
+                            (mh.fork(),
+                             os.path.normpath(os.path.join(path, f)),
+                             options,
+                             extra_options))
+        else:
+            work_list.append((mh.fork(), item, options, extra_options))
+
+    return work_list
 
 
 def ice_handler(main_function):
