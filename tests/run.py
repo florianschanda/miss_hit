@@ -22,25 +22,10 @@ def execute_style_test(name):
 
     # Take a copy of the original file
     orig = {}
+    fixed = {}
     for f in m_files:
         with open(f, "r") as fd:
             orig[f] = fd.read()
-
-    # Run in plaintext mode
-    r = subprocess.run(["../../../mh_style.py",
-                        "--debug-validate-links",
-                        ".",
-                        "--fix"],
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8")
-    plain_out = r.stdout
-
-    # Rename the fixed files, and restore the original
-    for f in m_files:
-        os.rename(f, f + "_fixed")
-        with open(f, "w") as fd:
-            fd.write(orig[f])
 
     # Run in HTML mode
     r = subprocess.run(["../../../mh_style.py",
@@ -51,6 +36,45 @@ def execute_style_test(name):
                        encoding="utf-8")
     html_out = r.stdout
 
+    # Run in plaintext mode and fix
+    r = subprocess.run(["../../../mh_style.py",
+                        "--debug-validate-links",
+                        ".",
+                        "--fix"],
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.STDOUT,
+                       encoding="utf-8")
+    plain_out = r.stdout
+
+    # Write the fixed file to foo.m_fixed
+    for f in m_files:
+        with open(f, "r") as fd:
+            fixed[f] = fd.read()
+        with open(f + "_fixed", "w") as fd:
+            fd.write(fixed[f])
+
+    # Run in plaintext mode, again, to see if more things need fixing
+    r = subprocess.run(["../../../mh_style.py",
+                        ".",
+                        "--fix"],
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.STDOUT,
+                       encoding="utf-8")
+    plain_out_again = r.stdout
+
+    # Check if fixed files not "fixed" again
+    broken_fixes = set()
+    for f in m_files:
+        with open(f, "r") as fd:
+            tmp = fd.read()
+        if tmp != fixed[f]:
+            broken_fixes.add(f)
+
+    # Restore original output
+    for f in m_files:
+        with open(f, "w") as fd:
+            fd.write(orig[f])
+
     # Save stdout
     with open("expected_out.txt", "w") as fd:
         fd.write("=== PLAIN MODE ===\n")
@@ -58,6 +82,12 @@ def execute_style_test(name):
         fd.write("\n")
         fd.write("=== HTML MODE ===\n")
         fd.write(html_out)
+        if broken_fixes:
+            fd.write("\n")
+            fd.write("=== ! BROKEN FIXES ! ===\n")
+            for fail in sorted(broken_fixes):
+                fd.write("Fixing is not idempotent for %s\n" % fail)
+
 
     return "Ran style test %s" % name
 
