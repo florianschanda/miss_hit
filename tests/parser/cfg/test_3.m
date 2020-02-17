@@ -3,8 +3,10 @@
 for i = 1:10
   if i > 5
     x = 10;
-    break;
+    break
   end
 
   y = 10;
 end
+
+x = 10;

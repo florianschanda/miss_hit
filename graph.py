@@ -25,6 +25,8 @@
 
 # A simple graph library that we use to build e.g. the CFG
 
+import os
+
 from errors import ICE
 
 
@@ -103,6 +105,7 @@ class Graph:
                     fd.write("  %u -> %u;\n" %
                              (hash(src), hash(dst)))
             fd.write("}\n")
+        os.system("dot -Tpdf -o%s.pdf %s.dot" % (filename, filename))
 
 
 def sanity_check():

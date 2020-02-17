@@ -1,0 +1,35 @@
+----------------------------------------------------------------------
+--  Parse tree for test_4.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: General_For_Statement
+      Identifier: Identifier <i>
+      Expression: Range_Expression
+        First: Number_Literal <1>
+        Last: Number_Literal <10>
+      Body: Sequence_Of_Statements
+        Statements: General_For_Statement
+          Identifier: Identifier <j>
+          Expression: Range_Expression
+            First: Number_Literal <1>
+            Last: Number_Literal <10>
+          Body: Sequence_Of_Statements
+            Statements: If_Statement
+              Action: If Action
+                Guard: Binary_Operation <
+                  LHS: Identifier <i>
+                  RHS: Identifier <j>
+                Body: Sequence_Of_Statements
+                  Statements: Break_Statement
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Binary_Operation *
+                  LHS: Identifier <i>
+                  RHS: Identifier <j>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Char_Array_Literal 'end'
+----------------------------------------------------------------------
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

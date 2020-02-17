@@ -1,6 +1,3 @@
-In test_3.m, line 6
-|     break;
-|     ^^^^^ style: end this with just a newline
 ----------------------------------------------------------------------
 --  Parse tree for test_3.m
 Root: Script_File
@@ -24,5 +21,8 @@ Root: Script_File
         Statements: Simple_Assignment_Statement
           LHS: Identifier <y>
           RHS: Number_Literal <10>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Number_Literal <10>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

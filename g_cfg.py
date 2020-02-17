@@ -45,6 +45,8 @@ def build_cfg_statement(graph, n_statement):
 
     v_entry = Vertex(graph, n_statement)
     v_exits = []
+    v_loop_breaks = []
+
     if isinstance(n_statement, (Compound_Assignment_Statement,
                                 Global_Statement,
                                 Import_Statement,
@@ -63,7 +65,8 @@ def build_cfg_statement(graph, n_statement):
             graph.add_edge(current_link, v_action)
             current_link = v_action
 
-            action_entry, action_exits = build_cfg_sos(graph, n_action.n_body)
+            action_entry, action_exits, v_loop_breaks = \
+                build_cfg_sos(graph, n_action.n_body)
             graph.add_edge(v_action, action_entry)
             v_exits += action_exits
 
@@ -71,19 +74,23 @@ def build_cfg_statement(graph, n_statement):
             v_exits.append(last_action)
 
     elif isinstance(n_statement, For_Loop_Statement):
-        loop_entry, loop_exits = build_cfg_sos(graph, n_statement.n_body)
+        loop_entry, loop_exits, loop_breaks = \
+            build_cfg_sos(graph, n_statement.n_body)
         graph.add_edge(v_entry, loop_entry)
 
         for src in loop_exits:
             graph.add_edge(src, v_entry)
 
-        v_exits = [v_entry]
+        v_exits = [v_entry] + loop_breaks
+
+    elif isinstance(n_statement, Break_Statement):
+        v_loop_breaks = [v_entry]
 
     else:
         raise ICE("unknown statement kind %s" %
                   n_statement.__class__.__name__)
 
-    return v_entry, v_exits
+    return v_entry, v_exits, v_loop_breaks
 
 
 def build_cfg_sos(graph, n_sos):
@@ -92,15 +99,18 @@ def build_cfg_sos(graph, n_sos):
 
     v_entry = None
     current_exits = []
+    loop_breaks = []
     for n_statement in n_sos.l_statements:
-        new_entry, new_exits = build_cfg_statement(graph, n_statement)
+        new_entry, new_exits, new_loop_breaks = \
+            build_cfg_statement(graph, n_statement)
         if v_entry is None:
             v_entry = new_entry
         for src in current_exits:
             graph.add_edge(src, new_entry)
         current_exits = new_exits
+        loop_breaks += new_loop_breaks
 
-    return v_entry, current_exits
+    return v_entry, current_exits, loop_breaks
 
 
 def build_cfg(n_fdef):
@@ -112,14 +122,18 @@ def build_cfg(n_fdef):
     v_end = Vertex_Root(graph, "end")
 
     if isinstance(n_fdef, Function_Definition):
-        v_entry, v_exits = build_cfg_sos(graph, n_fdef.n_block)
+        v_entry, v_exits, v_loop_exits = \
+            build_cfg_sos(graph, n_fdef.n_block)
+        assert len(v_loop_exits) == 0
         graph.add_edge(v_start, v_entry)
         for v_exit in v_exits:
             graph.add_edge(v_exit, v_end)
         graph.debug_write_dot(str(n_fdef.n_sig.n_name))
 
     else:
-        v_entry, v_exits = build_cfg_sos(graph, n_fdef.n_statements)
+        v_entry, v_exits, v_loop_exits = \
+            build_cfg_sos(graph, n_fdef.n_statements)
+        assert len(v_loop_exits) == 0
         graph.add_edge(v_start, v_entry)
         for v_exit in v_exits:
             graph.add_edge(v_exit, v_end)
