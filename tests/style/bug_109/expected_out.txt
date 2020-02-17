@@ -1,0 +1,14 @@
+=== PLAIN MODE ===
+In test.m, line 1
+| x = foo(bar:...
+| ^ style: file does not appear to contain any copyright header
+In test.m, line 1
+| x = foo(bar:...
+|             ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test.m, line 2
+|         baz)
+|            ^ style: end statement with a semicolon [fixed]
+MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)

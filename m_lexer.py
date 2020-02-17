@@ -1168,7 +1168,8 @@ class Token_Buffer(Token_Generator):
                 fd.write("\n" * amount)
             elif token.kind == "CONTINUATION":
                 if token.fix.get("replace_with_newline", False):
-                    fd.write("\n")
+                    if next_token.kind != "NEWLINE":
+                        fd.write("\n")
                 else:
                     fd.write(token.raw_text.rstrip() + "\n")
             else:

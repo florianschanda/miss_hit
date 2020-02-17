@@ -501,27 +501,27 @@ def stage_3_analysis(mh, cfg, tbuf):
 
         elif token.kind == "COLON":
             if config.active(cfg, "whitespace_colon"):
-                token.fix["ensure_trim_before"] = True
-                token.fix["ensure_trim_after"] = True
-
                 if prev_in_line and prev_in_line.kind == "COMMA":
-                    token.fix["ensure_trim_before"] = False
+                    pass
                     # We don't deal with this here. If anything it's the
                     # problem of the comma whitespace rules.
-                else:
-                    if ((prev_in_line and ws_before > 0) or
-                        (next_in_line and ws_after > 0)):
-
-                        if next_in_line and \
-                           next_in_line.kind == "CONTINUATION":
-                            # Special exception in the rare cases we
-                            # continue a range expression
-                            pass
-                        else:
-                            mh.style_issue(token.location,
-                                           "no whitespace around colon"
-                                           " allowed",
-                                           True)
+                elif next_in_line and \
+                     next_in_line.kind == "CONTINUATION":
+                    # Special exception in the rare cases we
+                    # continue a range expression
+                    if prev_in_line and ws_before > 0:
+                        token.fix["ensure_trim_before"] = True
+                        mh.style_issue(token.location,
+                                       "no whitespace before colon",
+                                       True)
+                elif (prev_in_line and ws_before > 0) or \
+                     (next_in_line and ws_after > 0):
+                    token.fix["ensure_trim_before"] = True
+                    token.fix["ensure_trim_after"] = True
+                    mh.style_issue(token.location,
+                                   "no whitespace around colon"
+                                   " allowed",
+                                   True)
 
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
         elif token.kind == "ASSIGNMENT":
