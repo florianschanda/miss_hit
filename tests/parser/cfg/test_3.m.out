@@ -1,0 +1,28 @@
+In test_3.m, line 6
+|     break;
+|     ^^^^^ style: end this with just a newline
+----------------------------------------------------------------------
+--  Parse tree for test_3.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: General_For_Statement
+      Identifier: Identifier <i>
+      Expression: Range_Expression
+        First: Number_Literal <1>
+        Last: Number_Literal <10>
+      Body: Sequence_Of_Statements
+        Statements: If_Statement
+          Action: If Action
+            Guard: Binary_Operation >
+              LHS: Identifier <i>
+              RHS: Number_Literal <5>
+            Body: Sequence_Of_Statements
+              Statements: Simple_Assignment_Statement
+                LHS: Identifier <x>
+                RHS: Number_Literal <10>
+              Statements: Break_Statement
+        Statements: Simple_Assignment_Statement
+          LHS: Identifier <y>
+          RHS: Number_Literal <10>
+----------------------------------------------------------------------
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

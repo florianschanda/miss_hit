@@ -70,6 +70,15 @@ def build_cfg_statement(graph, n_statement):
         if not n_statement.has_else:
             v_exits.append(last_action)
 
+    elif isinstance(n_statement, For_Loop_Statement):
+        loop_entry, loop_exits = build_cfg_sos(graph, n_statement.n_body)
+        graph.add_edge(v_entry, loop_entry)
+
+        for src in loop_exits:
+            graph.add_edge(src, v_entry)
+
+        v_exits = [v_entry]
+
     else:
         raise ICE("unknown statement kind %s" %
                   n_statement.__class__.__name__)
