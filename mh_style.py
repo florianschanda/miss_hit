@@ -423,6 +423,10 @@ def stage_3_analysis(mh, cfg, tbuf):
             if "mh:ignore_style" in token.value:
                 mh.register_justification(token)
 
+        # Don't ever check anonymous tokens
+        if token.anonymous:
+            continue
+
         # Corresponds to the old CodeChecker CopyrightCheck rule
         if in_copyright_notice:
             if token.kind == "COMMENT":
