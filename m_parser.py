@@ -1769,7 +1769,9 @@ class MATLAB_Parser:
 
 
 def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
+    # pylint: disable=import-outside-toplevel
     import g_cfg
+    # pylint: enable=import-outside-toplevel
 
     try:
         mh.register_file(filename)

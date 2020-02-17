@@ -317,7 +317,8 @@ class Script_File(Compilation_Unit):
         dotpr("scr_" + str(self.name) + ".dot", self.n_statements)
         subprocess.run(["dot", "-Tpdf",
                         "scr_" + str(self.name) + ".dot",
-                        "-oscr_" + str(self.name) + ".pdf"])
+                        "-oscr_" + str(self.name) + ".pdf"],
+                       check=False)
 
         for n_function in self.l_functions:
             n_function.debug_parse_tree()
@@ -388,7 +389,8 @@ class Class_File(Compilation_Unit):
         dotpr("cls_" + str(self.name) + ".dot", self.n_classdef)
         subprocess.run(["dot", "-Tpdf",
                         "cls_" + str(self.name) + ".dot",
-                        "-ocls_" + str(self.name) + ".pdf"])
+                        "-ocls_" + str(self.name) + ".pdf"],
+                       check=False)
 
         for n_function in self.l_functions:
             n_function.debug_parse_tree()
@@ -552,7 +554,8 @@ class Function_Definition(Definition):
         dotpr("fun_" + str(self.n_sig.n_name) + ".dot", self)
         subprocess.run(["dot", "-Tpdf",
                         "fun_" + str(self.n_sig.n_name) + ".dot",
-                        "-ofun_" + str(self.n_sig.n_name) + ".pdf"])
+                        "-ofun_" + str(self.n_sig.n_name) + ".pdf"],
+                       check=False)
 
         for n_function in self.l_nested:
             n_function.debug_parse_tree()
