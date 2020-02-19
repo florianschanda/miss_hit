@@ -1,15 +1,15 @@
 In test.m, line 4
 |   if potato > 3;    % for some silly reason people do this
-|               ^ style: end this with just a newline
+|                ^ style: end this with just a newline
 In test.m, line 6
 |   elseif potato < 3;
-|                   ^ style: end this with just a newline
+|                    ^ style: end this with just a newline
 In test.m, line 8
 |   else;
-|   ^^^^ style: end this with just a newline
+|       ^ style: end this with just a newline
 In test.m, line 10
 |   end;
-|   ^^^ style: end this with just a newline
+|      ^ style: end this with just a newline
 ----------------------------------------------------------------------
 --  Parse tree for test.m
 Root: Function_File

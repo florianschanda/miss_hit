@@ -1,10 +1,4 @@
-In invalid_11.m, line 4
-| disp ...
-| ^^^^ style: end statement with a semicolon
-In invalid_11.m, line 4
-| disp ...
-| ^^^^ style: end statement with a newline
 In invalid_11.m, line 5
 |    foo
 |    ^^^ error: expected end of statement, found IDENTIFIER instead
-MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s), 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

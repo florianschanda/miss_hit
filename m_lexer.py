@@ -1137,9 +1137,21 @@ class Token_Buffer(Token_Generator):
         return token
 
     def replay(self, fd):
-        real_tokens = [self.autofix(t)
-                       for t in self.tokens
-                       if not t.anonymous and not t.fix.delete]
+        # Strip all tokens marked with delete
+        tmp_tokens = [self.autofix(t)
+                      for t in self.tokens
+                      if not t.anonymous and not t.fix.delete]
+
+        # Strip (now) duplicate newlines
+        real_tokens = []
+        old_token = None
+        for token in tmp_tokens:
+            if old_token and \
+               old_token.kind == "NEWLINE" and \
+               token.kind == "NEWLINE":
+                continue
+            real_tokens.append(token)
+            old_token = token
 
         for n, token in enumerate(real_tokens):
             if n + 1 < len(real_tokens):

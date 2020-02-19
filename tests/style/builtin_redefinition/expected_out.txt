@@ -4,7 +4,7 @@ In test.m, line 4
 | ^^^^^ style: redefining this builtin is very naughty
 In test.m, line 6
 | x = pi, [true] = 42; % bad
-|       ^ style: end statement with a semicolon instead of comma [fixed]
+|       ^ style: end this with a semicolon instead of a comma [fixed]
 In test.m, line 6
 | x = pi, [true] = 42; % bad
 |       ^ style: end statement with a newline

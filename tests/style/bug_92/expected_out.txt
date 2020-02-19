@@ -4,29 +4,17 @@ In test.m, line 3
 |          ^^^^ style: violates naming scheme for class
 In test.m, line 5
 |         x, y, z
-|          ^ style: end statement with a semicolon instead of comma [fixed]
-In test.m, line 5
-|         x, y, z
-|          ^ style: end statement with a newline
-In test.m, line 5
-|         x, y, z
-|             ^ style: end statement with a semicolon instead of comma [fixed]
-In test.m, line 5
-|         x, y, z
-|             ^ style: end statement with a newline
-In test.m, line 6
-|         a; b; c
 |         ^ style: end this with just a newline
-In test.m, line 6
-|         a; b; c
-|          ^ style: end statement with a newline
-In test.m, line 6
-|         a; b; c
+In test.m, line 5
+|         x, y, z
 |            ^ style: end this with just a newline
 In test.m, line 6
 |         a; b; c
-|             ^ style: end statement with a newline
-MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)
+|          ^ style: end this with just a newline
+In test.m, line 6
+|         a; b; c
+|             ^ style: end this with just a newline
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)
+MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)

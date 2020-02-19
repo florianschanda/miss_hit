@@ -1,10 +1,4 @@
 In invalid_04.m, line 5
 |     x = foo kitten; % command form only allowd as a statement
-|         ^^^ style: end statement with a semicolon
-In invalid_04.m, line 5
-|     x = foo kitten; % command form only allowd as a statement
-|         ^^^ style: end statement with a newline
-In invalid_04.m, line 5
-|     x = foo kitten; % command form only allowd as a statement
 |             ^^^^^^ error: expected end of statement, found IDENTIFIER instead
-MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s), 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

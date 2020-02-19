@@ -4,7 +4,7 @@ In test.m, line 5
 | ^ style: tab is not allowed [fixed]
 In test.m, line 5
 |     return;
-|     ^^^^^^ style: end this with just a newline
+|           ^ style: end this with just a newline [fixed]
 In test.m, line 8
 | % tabs in comments are not ok
 |                   ^ style: tab is not allowed [fixed]

@@ -205,119 +205,122 @@ class MATLAB_Parser:
             self.peek("NEWLINE")
 
     def match_eos(self, n_ast, semi = "", allow_nothing = False):
-        # This matches end-of-statements (COMMA, SEMICOLON, NEWLINE,
-        # EOF). Later for style checking - if semi is ; then it
-        # expects a single semicolon, if "" then the preferred form is
-        # none.
-        #
-        # Links everything except the newlines to the given node.
+        """Match end-of-statement
+
+        This generally matches a newline. If semi is set to ";", then
+        it matches a semicolon followed by a newline. Anything that
+        deviates from this will create style issues.
+
+        Any termination tokens are attached to the node given by
+        n_ast.
+
+        A syntax error is raised if ot statement terminator is found,
+        unless allow_nothing is set to true.
+
+        """
         assert isinstance(n_ast, Node)
         assert semi in ("", ";")
-
-        found_semi_before_nl = False
-        found_nl = False
-        found_eos = False
+        assert isinstance(allow_nothing, bool)
 
         ending_token = self.ct
         # The last token of the previous thing. We might need it later
         # to attach error messages or to record autofix instructions.
 
-        eos_token = None
-        # The first comma or semicolon. We might need it later for
-        # autofixing.
-
-        # Skip any number of semicolons or commas
-        terminator_count = 0
-        while self.peek("SEMICOLON") or self.peek("COMMA"):
-            terminator_count += 1
-            self.nt.set_ast(n_ast)
-
-            if self.peek("SEMICOLON"):
-                found_semi_before_nl = True
-            elif self.peek("COMMA") and \
-                 config.active(self.cfg, "end_of_statements"):
-                self.mh.style_issue(self.nt.location,
-                                    "end statement with a semicolon"
-                                    " instead of comma",
-                                    True)
-                self.nt.fix.change_to_semicolon = True
-
-            if config.active(self.cfg, "end_of_statements") and \
-               terminator_count > 1:
-                self.mh.style_issue(self.nt.location,
-                                    "use only one statement terminator",
-                                    True)
-                self.nt.fix.delete = True
-
-            found_eos = True
-            if not eos_token:
-                eos_token = self.nt
-                if config.active(self.cfg, "end_of_statements"):
-                    if semi and eos_token.kind == "COMMA":
-                        eos_token.fix.change_to_semicolon = True
-                    elif not semi:
-                        eos_token.fix.delete = True
-
+        # Get all terminator tokens that follow our ending token.
+        terminator_tokens = []
+        first_newline = None
+        while self.peek_eos():
             self.next()
+            self.ct.set_ast(n_ast)
+            terminator_tokens.append(self.ct)
+            if self.ct.kind == "NEWLINE" and first_newline is None:
+                first_newline = len(terminator_tokens) - 1
+                break
+        while self.peek_eos():  # and not self.peek("NEWLINE"):
+            self.next()
+            self.ct.set_ast(n_ast)
+            terminator_tokens.append(self.ct)
 
-        if config.active(self.cfg, "end_of_statements"):
-            if semi and not found_semi_before_nl and not found_eos:
+        if not terminator_tokens:
+            # We found nothing. This is actually a syntax error in
+            # most cases.
+            if allow_nothing:
+                if config.active(self.cfg, "end_of_statements"):
+                    if semi:
+                        self.mh.style_issue(ending_token.location,
+                                            "end this with a ; and newline",
+                                            False)
+                    else:
+                        self.mh.style_issue(ending_token.location,
+                                            "end statement with a newline",
+                                            False)
+                return
+            elif self.peek_eof():
+                # EOF is also a valid (but rude) terminator
+                return
+            else:
+                self.mh.error(self.nt.location,
+                              "expected end of statement,"
+                              " found %s instead" % self.nt.kind)
+            raise ICE("logic error")
+        assert len(terminator_tokens) >= 1
+
+        if not config.active(self.cfg, "end_of_statements"):
+            return
+
+        if semi:
+            # Exactly two tokens are required and useful. The first
+            # semicolon, and the first new_line.
+            if terminator_tokens[0].kind == "SEMICOLON":
+                pass
+            elif terminator_tokens[0].kind == "COMMA":
+                self.mh.style_issue(terminator_tokens[0].location,
+                                    "end this with a semicolon"
+                                    " instead of a comma",
+                                    True)
+                terminator_tokens[0].fix.change_to_semicolon = True
+            else:
+                assert terminator_tokens[0].kind == "NEWLINE"
                 self.mh.style_issue(ending_token.location,
                                     "end statement with a semicolon",
                                     True)
                 ending_token.fix.add_semicolon_after = True
-            elif not semi and found_semi_before_nl:
+
+            if first_newline is None:
+                self.mh.style_issue(terminator_tokens[0].location,
+                                    "end statement with a newline",
+                                    False)
+                # terminator_tokens[0].fix.add_newline = True
+
+        else:
+            # Exactly one token is required and useful. The first new
+            # line.
+            if (not config.active(self.cfg, "indentation") or True) and \
+               terminator_tokens[0].kind == "COMMA":
+                # The statement was ended with a comma. Ideally we
+                # just have a newline, but since we're not fixing
+                # indetation we can't fix it. Complain instead about
+                # the comma
                 self.mh.style_issue(ending_token.location,
                                     "end this with just a newline",
                                     False)
+                if first_newline is None:
+                    terminator_tokens[0].fix.change_to_semicolon = True
 
-        # Skip any number of semicolons, commas or newlines
-        while self.peek_eos():
-            if self.peek("NEWLINE"):
-                if found_nl:
-                    self.nt.fix.delete = True
-                found_nl = True
-            else:
-                self.nt.set_ast(n_ast)
+            elif terminator_tokens[0].kind != "NEWLINE":
+                self.mh.style_issue(terminator_tokens[0].location,
+                                    "end this with just a newline",
+                                    first_newline is not None)
+                if first_newline is not None:
+                    terminator_tokens[0].fix.delete = True
+                # terminator_tokens[0].fix.add_newline = True
 
-                if config.active(self.cfg, "end_of_statements"):
-                    self.mh.style_issue(self.nt.location,
-                                        "trailing statement terminator after"
-                                        " newline",
-                                        True)
-                    self.nt.fix.delete = True
-
-            found_eos = True
-            self.next()
-
-        if config.active(self.cfg, "end_of_statements") and \
-           not found_nl:
-            self.mh.style_issue(self.ct.location
-                                if found_eos
-                                else ending_token.location,
-                                "end statement with a newline",
-                                False)
-
-            # pylint: disable=simplifiable-if-statement
-            if eos_token:
-                eos_token.fix.add_newline = True
-            else:
-                ending_token.fix.add_newline = True
-            # pylint: enable=simplifiable-if-statement
-
-        # If we found the end of the file, then this is also an
-        # acceptable end of statement
-        if self.peek_eof():
-            found_eos = True
-
-        if not found_eos and not allow_nothing:
-            self.mh.error(self.nt.location,
-                          "expected end of statement, found %s instead" %
-                          self.nt.kind)
-        elif not found_nl and eos_token and not allow_nothing:
-            # Workaround for #92 until we can add newlines and indent
-            # correctly.
-            eos_token.fix.delete = False
+        for terminator in terminator_tokens[1:]:
+            if terminator.kind != "NEWLINE":
+                self.mh.style_issue(terminator.location,  # Molten steel?
+                                    "unnecessary statement terminator",
+                                    True)
+                terminator.fix.delete = True
 
     def parse_identifier(self, allow_void):
         # identifier ::= <IDENTIFIER>

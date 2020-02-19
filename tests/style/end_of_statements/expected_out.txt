@@ -7,16 +7,10 @@ In newlines.m, line 1
 |          ^^^^^^^^ style: violates naming scheme for class
 In newlines.m, line 3
 |         x, y; z
-|          ^ style: end statement with a semicolon instead of comma [fixed]
+|         ^ style: end this with just a newline
 In newlines.m, line 3
 |         x, y; z
-|          ^ style: end statement with a newline
-In newlines.m, line 3
-|         x, y; z
-|            ^ style: end this with just a newline
-In newlines.m, line 3
-|         x, y; z
-|             ^ style: end statement with a newline
+|             ^ style: end this with just a newline
 In other.m, line 11
 | function out = foo(in)
 |                ^^^ style: violates naming scheme for function
@@ -37,19 +31,19 @@ In other.m, line 18
 |          ^^^^^^^^^^^^^^^^ style: violates naming scheme for function
 In other.m, line 20
 |     aVar = 3,;
-|             ^ style: end statement with a semicolon instead of comma [fixed]
+|             ^ style: end this with a semicolon instead of a comma [fixed]
 In other.m, line 20
 |     aVar = 3,;
 |             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In other.m, line 20
 |     aVar = 3,;
-|              ^ style: use only one statement terminator [fixed]
+|              ^ style: unnecessary statement terminator [fixed]
 In other.m, line 23
 |     ;
-|     ^ style: trailing statement terminator after newline [fixed]
+|     ^ style: unnecessary statement terminator [fixed]
 In other.m, line 24
 |     ,
-|     ^ style: trailing statement terminator after newline [fixed]
+|     ^ style: unnecessary statement terminator [fixed]
 In other.m, line 25
 |     if input1 > input2 output1=0, else output2=1; end
 |                 ^^^^^^ style: end statement with a newline
@@ -58,7 +52,7 @@ In other.m, line 25
 |                               ^ style: = must be preceeded by whitespace [fixed]
 In other.m, line 25
 |     if input1 > input2 output1=0, else output2=1; end
-|                                 ^ style: end statement with a semicolon instead of comma [fixed]
+|                                 ^ style: end this with a semicolon instead of a comma [fixed]
 In other.m, line 25
 |     if input1 > input2 output1=0, else output2=1; end
 |                                 ^ style: end statement with a newline
@@ -73,7 +67,7 @@ In other.m, line 25
 |                                                 ^ style: end statement with a newline
 In other.m, line 26
 |     if input1 > input2;
-|                 ^^^^^^ style: end this with just a newline
+|                       ^ style: end this with just a newline [fixed]
 In other.m, line 27
 |         output1=0
 |                ^ style: = must be preceeded by whitespace [fixed]
@@ -82,38 +76,38 @@ In other.m, line 27
 |                 ^ style: end statement with a semicolon [fixed]
 In other.m, line 28
 |     else;
-|     ^^^^ style: end this with just a newline
+|         ^ style: end this with just a newline [fixed]
 In other.m, line 29
 |         output2=1 ...
 |                ^ style: = must be preceeded by whitespace [fixed]
 In other.m, line 30
 |                     ,
-|                     ^ style: end statement with a semicolon instead of comma [fixed]
+|                     ^ style: end this with a semicolon instead of a comma [fixed]
 In other.m, line 31
 |     end;
-|     ^^^ style: end this with just a newline
+|        ^ style: end this with just a newline [fixed]
 In test.m, line 3
 | foo = 1,
-|        ^ style: end statement with a semicolon instead of comma [fixed]
+|        ^ style: end this with a semicolon instead of a comma [fixed]
 In test.m, line 5
 | potato = 2, 
-|           ^ style: end statement with a semicolon instead of comma [fixed]
+|           ^ style: end this with a semicolon instead of a comma [fixed]
 In test.m, line 5
 | potato = 2, 
 |            ^^ style: trailing whitespace [fixed]
 In test.m, line 6
 | kitten = 3,     % comment
-|           ^ style: end statement with a semicolon instead of comma [fixed]
+|           ^ style: end this with a semicolon instead of a comma [fixed]
 In test.m, line 7
 | baz = 4, bar = 5;
-|        ^ style: end statement with a semicolon instead of comma [fixed]
+|        ^ style: end this with a semicolon instead of a comma [fixed]
 In test.m, line 7
 | baz = 4, bar = 5;
 |        ^ style: end statement with a newline
 In test.m, line 8
 | spoon
 | ^^^^^ style: end statement with a semicolon [fixed]
-MISS_HIT Summary: 3 file(s) analysed, 38 style issue(s)
+MISS_HIT Summary: 3 file(s) analysed, 36 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 3 file(s) analysed, 38 style issue(s)
+MISS_HIT Summary: 3 file(s) analysed, 36 style issue(s)
