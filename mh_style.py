@@ -490,8 +490,8 @@ def stage_3_analysis(mh, cfg, tbuf):
         # complete.
         if token.kind == "COMMA":
             if config.active(cfg, "whitespace_comma"):
-                token.fix["ensure_trim_before"] = True
-                token.fix["ensure_ws_after"] = True
+                token.fix.ensure_trim_before = True
+                token.fix.ensure_ws_after = True
 
                 if (next_in_line and ws_after == 0) or \
                    (prev_in_line and ws_before > 0):
@@ -511,14 +511,14 @@ def stage_3_analysis(mh, cfg, tbuf):
                     # Special exception in the rare cases we
                     # continue a range expression
                     if prev_in_line and ws_before > 0:
-                        token.fix["ensure_trim_before"] = True
+                        token.fix.ensure_trim_before = True
                         mh.style_issue(token.location,
                                        "no whitespace before colon",
                                        True)
                 elif (prev_in_line and ws_before > 0) or \
                      (next_in_line and ws_after > 0):
-                    token.fix["ensure_trim_before"] = True
-                    token.fix["ensure_trim_after"] = True
+                    token.fix.ensure_trim_before = True
+                    token.fix.ensure_trim_after = True
                     mh.style_issue(token.location,
                                    "no whitespace around colon"
                                    " allowed",
@@ -527,8 +527,8 @@ def stage_3_analysis(mh, cfg, tbuf):
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
         elif token.kind == "ASSIGNMENT":
             if config.active(cfg, "whitespace_assignment"):
-                token.fix["ensure_ws_before"] = True
-                token.fix["ensure_ws_after"] = True
+                token.fix.ensure_ws_before = True
+                token.fix.ensure_ws_after = True
 
                 if prev_in_line and ws_before == 0:
                     mh.style_issue(token.location,
@@ -549,7 +549,7 @@ def stage_3_analysis(mh, cfg, tbuf):
                                "%s must not be followed by whitespace" %
                                token.raw_text,
                                True)
-                token.fix["ensure_trim_after"] = True
+                token.fix.ensure_trim_after = True
 
         elif token.kind in ("KET", "A_KET", "M_KET"):
             if config.active(cfg, "whitespace_brackets") and \
@@ -558,7 +558,7 @@ def stage_3_analysis(mh, cfg, tbuf):
                                "%s must not be preceeded by whitespace" %
                                token.raw_text,
                                True)
-                token.fix["ensure_trim_before"] = True
+                token.fix.ensure_trim_before = True
 
         # Corresponds to the old CodeChecker KeywordWhitespace rule
         elif (token.kind == "KEYWORD" and
@@ -568,7 +568,7 @@ def stage_3_analysis(mh, cfg, tbuf):
                 mh.style_issue(token.location,
                                "keyword must be succeeded by whitespace",
                                True)
-                token.fix["ensure_ws_after"] = True
+                token.fix.ensure_ws_after = True
 
         # Corresponds to the old CodeChecker CommentWhitespace rule
         elif token.kind == "COMMENT":
@@ -615,7 +615,7 @@ def stage_3_analysis(mh, cfg, tbuf):
                     mh.style_issue(token.location,
                                    "comment must be preceeded by whitespace",
                                    True)
-                    token.fix["ensure_ws_before"] = True
+                    token.fix.ensure_ws_before = True
 
         elif token.kind == "CONTINUATION":
             # Make sure we have whitespace before each line continuation
@@ -624,12 +624,12 @@ def stage_3_analysis(mh, cfg, tbuf):
                 mh.style_issue(token.location,
                                "continuation must be preceeded by whitespace",
                                True)
-                token.fix["ensure_ws_before"] = True
+                token.fix.ensure_ws_before = True
 
             if config.active(cfg, "operator_after_continuation") and \
                next_token and next_token.first_in_line and \
                next_token.kind == "OPERATOR" and \
-               next_token.fix.get("binary_operator", False):
+               next_token.fix.binary_operator:
                 # Continuations should not start with operators unless
                 # its a unary.
                 mh.style_issue(next_token.location,
@@ -644,27 +644,27 @@ def stage_3_analysis(mh, cfg, tbuf):
                 mh.style_issue(token.location,
                                "useless line continuation",
                                True)
-                token.fix["replace_with_newline"] = True
+                token.fix.replace_with_newline = True
 
         elif token.kind == "OPERATOR":
             if not config.active(cfg, "operator_whitespace"):
                 pass
-            elif token.fix.get("unary_operator", False):
+            elif token.fix.unary_operator:
                 if (prev_in_line and ws_before > 0) and \
                    token.value in (".'", "'"):
                     mh.style_issue(token.location,
                                    "suffix operator must not be preceeded by"
                                    " whitespace",
                                    True)
-                    token.fix["ensure_trim_before"] = True
+                    token.fix.ensure_trim_before = True
                 elif (next_in_line and ws_after > 0) and \
                      token.value not in (".'", "'"):
                     mh.style_issue(token.location,
                                    "unary operator must not be followed by"
                                    " whitespace",
                                    True)
-                    token.fix["ensure_trim_after"] = True
-            elif token.fix.get("binary_operator", False):
+                    token.fix.ensure_trim_after = True
+            elif token.fix.binary_operator:
                 if token.value in (".^", "^"):
                     if (prev_in_line and ws_before > 0) or \
                        (next_in_line and ws_after > 0):
@@ -672,8 +672,8 @@ def stage_3_analysis(mh, cfg, tbuf):
                                        "power binary operator"
                                        " must not be surrounded by whitespace",
                                        True)
-                        token.fix["ensure_trim_before"] = True
-                        token.fix["ensure_trim_after"] = True
+                        token.fix.ensure_trim_before = True
+                        token.fix.ensure_trim_after = True
                 else:
                     if (prev_in_line and ws_before == 0) or \
                        (next_in_line and ws_after == 0):
@@ -681,8 +681,8 @@ def stage_3_analysis(mh, cfg, tbuf):
                                        "non power binary operator"
                                        " must be surrounded by whitespace",
                                        True)
-                        token.fix["ensure_ws_before"] = True
-                        token.fix["ensure_ws_after"] = True
+                        token.fix.ensure_ws_before = True
+                        token.fix.ensure_ws_after = True
 
         # Complain about indentation
         if config.active(cfg, "indentation") and token.kind != "NEWLINE":
@@ -710,7 +710,7 @@ def stage_3_analysis(mh, cfg, tbuf):
                         offset = cfg["tab_width"] // 2
 
                 correct_spaces = cfg["tab_width"] * current_indent + offset
-                token.fix["correct_indent"] = correct_spaces
+                token.fix.correct_indent = correct_spaces
 
                 if token.location.col_start != correct_spaces:
                     mh.style_issue(token.location,

@@ -240,23 +240,23 @@ class MATLAB_Parser:
                                     "end statement with a semicolon"
                                     " instead of comma",
                                     True)
-                self.nt.fix["change_to_semicolon"] = True
+                self.nt.fix.change_to_semicolon = True
 
             if config.active(self.cfg, "end_of_statements") and \
                terminator_count > 1:
                 self.mh.style_issue(self.nt.location,
                                     "use only one statement terminator",
                                     True)
-                self.nt.fix["delete"] = True
+                self.nt.fix.delete = True
 
             found_eos = True
             if not eos_token:
                 eos_token = self.nt
                 if config.active(self.cfg, "end_of_statements"):
                     if semi and eos_token.kind == "COMMA":
-                        eos_token.fix["change_to_semicolon"] = True
+                        eos_token.fix.change_to_semicolon = True
                     elif not semi:
-                        eos_token.fix["delete"] = True
+                        eos_token.fix.delete = True
 
             self.next()
 
@@ -265,7 +265,7 @@ class MATLAB_Parser:
                 self.mh.style_issue(ending_token.location,
                                     "end statement with a semicolon",
                                     True)
-                ending_token.fix["add_semicolon_after"] = True
+                ending_token.fix.add_semicolon_after = True
             elif not semi and found_semi_before_nl:
                 self.mh.style_issue(ending_token.location,
                                     "end this with just a newline",
@@ -275,7 +275,7 @@ class MATLAB_Parser:
         while self.peek_eos():
             if self.peek("NEWLINE"):
                 if found_nl:
-                    self.nt.fix["delete"] = True
+                    self.nt.fix.delete = True
                 found_nl = True
             else:
                 self.nt.set_ast(n_ast)
@@ -285,7 +285,7 @@ class MATLAB_Parser:
                                         "trailing statement terminator after"
                                         " newline",
                                         True)
-                    self.nt.fix["delete"] = True
+                    self.nt.fix.delete = True
 
             found_eos = True
             self.next()
@@ -300,9 +300,9 @@ class MATLAB_Parser:
 
             # pylint: disable=simplifiable-if-statement
             if eos_token:
-                eos_token.fix["add_newline"] = True
+                eos_token.fix.add_newline = True
             else:
-                ending_token.fix["add_newline"] = True
+                ending_token.fix.add_newline = True
             # pylint: enable=simplifiable-if-statement
 
         # If we found the end of the file, then this is also an
@@ -317,7 +317,7 @@ class MATLAB_Parser:
         elif not found_nl and eos_token and not allow_nothing:
             # Workaround for #92 until we can add newlines and indent
             # correctly.
-            eos_token.fix["delete"] = False
+            eos_token.fix.delete = False
 
     def parse_identifier(self, allow_void):
         # identifier ::= <IDENTIFIER>

@@ -1128,18 +1128,18 @@ class Token_Buffer(Token_Generator):
     #     set_last_in_line()
 
     def autofix(self, token):
-        if token.fix.get("change_to_semicolon", False):
+        if token.fix.change_to_semicolon:
             token.kind = "SEMICOLON"
             token.raw_text = ";"
             token.value = ";"
-            token.fix["ensure_trim_before"] = True
+            token.fix.ensure_trim_before = True
 
         return token
 
     def replay(self, fd):
         real_tokens = [self.autofix(t)
                        for t in self.tokens
-                       if not t.anonymous and not t.fix.get("delete", False)]
+                       if not t.anonymous and not t.fix.delete]
 
         for n, token in enumerate(real_tokens):
             if n + 1 < len(real_tokens):
@@ -1153,8 +1153,8 @@ class Token_Buffer(Token_Generator):
 
             if token.first_in_line:
                 if config.active(self.cfg, "indentation") and \
-                   "correct_indent" in token.fix:
-                    fd.write(" " * token.fix["correct_indent"])
+                   token.fix.correct_indent is not None:
+                    fd.write(" " * token.fix.correct_indent)
                 else:
                     fd.write(" " * token.location.col_start)
 
@@ -1167,7 +1167,7 @@ class Token_Buffer(Token_Generator):
                     amount = 0
                 fd.write("\n" * amount)
             elif token.kind == "CONTINUATION":
-                if token.fix.get("replace_with_newline", False):
+                if token.fix.replace_with_newline:
                     if next_token.kind != "NEWLINE":
                         fd.write("\n")
                 else:
@@ -1175,12 +1175,12 @@ class Token_Buffer(Token_Generator):
             else:
                 fd.write(token.raw_text.rstrip())
 
-            if token.fix.get("add_semicolon_after", False):
+            if token.fix.add_semicolon_after:
                 fd.write(";")
 
             if next_in_line and \
                next_in_line.kind != "NEWLINE" and \
-               not next_in_line.fix.get("replace_with_newline", False):
+               not next_in_line.fix.replace_with_newline:
                 gap = (next_in_line.location.col_start -
                        (token.location.col_end + 1))
                 # At most one space, unless we have a comment, then
@@ -1190,11 +1190,11 @@ class Token_Buffer(Token_Generator):
                 # if next_in_line.kind not in ("COMMENT", "CONTINUATION"):
                 #    gap = min(gap, 1)
 
-                if (token.fix.get("ensure_ws_after", False) or
-                    next_in_line.fix.get("ensure_ws_before", False)):
+                if (token.fix.ensure_ws_after or
+                    next_in_line.fix.ensure_ws_before):
                     gap = max(gap, 1)
-                elif (token.fix.get("ensure_trim_after", False) or
-                      next_in_line.fix.get("ensure_trim_before", False)):
+                elif (token.fix.ensure_trim_after or
+                      next_in_line.fix.ensure_trim_before):
                     gap = 0
 
                 fd.write(" " * gap)

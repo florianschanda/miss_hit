@@ -1,4 +1,22 @@
 === PLAIN MODE ===
+In newlines.m, line 1
+| classdef newlines
+| ^^^^^^^^ style: file does not appear to contain any copyright header
+In newlines.m, line 1
+| classdef newlines
+|          ^^^^^^^^ style: violates naming scheme for class
+In newlines.m, line 3
+|         x, y; z
+|          ^ style: end statement with a semicolon instead of comma [fixed]
+In newlines.m, line 3
+|         x, y; z
+|          ^ style: end statement with a newline
+In newlines.m, line 3
+|         x, y; z
+|            ^ style: end this with just a newline
+In newlines.m, line 3
+|         x, y; z
+|             ^ style: end statement with a newline
 In other.m, line 11
 | function out = foo(in)
 |                ^^^ style: violates naming scheme for function
@@ -95,7 +113,7 @@ In test.m, line 7
 In test.m, line 8
 | spoon
 | ^^^^^ style: end statement with a semicolon [fixed]
-MISS_HIT Summary: 2 file(s) analysed, 32 style issue(s)
+MISS_HIT Summary: 3 file(s) analysed, 38 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 32 style issue(s)
+MISS_HIT Summary: 3 file(s) analysed, 38 style issue(s)

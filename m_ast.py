@@ -75,6 +75,39 @@ TOKENS_WITH_IMPLICIT_VALUE = frozenset([
 ])
 
 
+class Autofix_Instruction:
+    def __init__(self):
+        self.ensure_trim_before = False
+        self.ensure_trim_after  = False
+        self.ensure_ws_before   = False
+        self.ensure_ws_after    = False
+        # Control whitespace before/after token
+
+        self.delete = False
+        # Remove this token
+
+        self.correct_indent = None
+        # The correct level of indentation
+
+        self.replace_with_newline = False
+        # For CONTINUATION tokens. Means this continuation should be
+        # just a newline instead.
+
+        self.change_to_semicolon = False
+        # Replace this (comma) token with a semicolon
+
+        self.add_semicolon_after = False
+        # Insert a new semicolon after this token
+
+        self.add_newline = False
+        # Insert a newline after this token. DOES NOT WORK RIGHT NOW.
+
+        self.binary_operator = False
+        self.unary_operator  = False
+        # Classification if this token is a unary or binary
+        # operator. Only set for OPERATOR tokens.
+
+
 class MATLAB_Token:
     def __init__(self,
                  kind,
@@ -123,7 +156,7 @@ class MATLAB_Token:
 
         # A free-form dictionary where we can record autofix
         # requirements.
-        self.fix = {}
+        self.fix = Autofix_Instruction()
 
         # A link back to the AST so that we can identify to which node
         # tokens nominally belong.
@@ -1971,7 +2004,7 @@ class Unary_Operation(Expression):
 
         # To support the style checker we flag that this operator is
         # unary.
-        self.t_op.fix["unary_operator"] = True
+        self.t_op.fix.unary_operator = True
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -2014,7 +2047,7 @@ class Binary_Operation(Expression):
 
         # To support the style checker we flag that this operator is
         # unary.
-        self.t_op.fix["binary_operator"] = True
+        self.t_op.fix.binary_operator = True
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
