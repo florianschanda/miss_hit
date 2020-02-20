@@ -115,6 +115,9 @@ def build_cfg_statement(graph, n_statement):
     elif isinstance(n_statement, Continue_Statement):
         ctx.l_loop_continues.append(ctx.v_entry)
 
+    elif isinstance(n_statement, Return_Statement):
+        graph.add_edge(ctx.v_entry, graph.get_named_vertex("end"))
+
     else:
         raise ICE("unknown statement kind %s" %
                   n_statement.__class__.__name__)
