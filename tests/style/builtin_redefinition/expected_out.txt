@@ -7,26 +7,26 @@ In test.m, line 6
 |       ^ style: end this with a semicolon instead of a comma [fixed]
 In test.m, line 6
 | x = pi, [true] = 42; % bad
-|       ^ style: end statement with a newline
-In test.m, line 6
+|       ^ style: end statement with a newline [fixed]
+In test.m, line 7
 | x = pi, [true] = 42; % bad
 |          ^^^^ style: redefining this builtin is very naughty
-In test.m, line 8
+In test.m, line 9
 | [a, uint8, b(i)] = potato; % uint8 bad, but the i is ok
 |     ^^^^^ style: redefining this builtin is very naughty
-In test.m, line 10
+In test.m, line 11
 | function x = pi() % bad
 |              ^^ style: violates naming scheme for function
-In test.m, line 11
+In test.m, line 12
 |   x = 3;
 |   ^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
-In test.m, line 13
+In test.m, line 14
 |   for i = [1, 2]  % tolerable
 |   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
-In test.m, line 14
+In test.m, line 15
 |     i = x;  % no, for many reasons
 |     ^ style: indentation not correct, should be 8 spaces, not 4 [fixed]
-In test.m, line 15
+In test.m, line 16
 |   end
 |   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
 MISS_HIT Summary: 1 file(s) analysed, 10 style issue(s)

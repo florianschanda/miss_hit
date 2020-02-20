@@ -1141,21 +1141,62 @@ class Token_Buffer(Token_Generator):
         tmp_tokens = [self.autofix(t)
                       for t in self.tokens
                       if not t.anonymous and not t.fix.delete]
+        new_tokens = tmp_tokens
+
+        # Add newlines
+        tmp_tokens = new_tokens
+        new_tokens = []
+        newline_added = False
+        shift_lines = 0
+        previous_token = None
+        for token in tmp_tokens:
+            token.location.line += shift_lines
+            new_tokens.append(token)
+
+            # We've previously added a new-line. This means we need to
+            # tidy up this token (specifically we need to indent it
+            # correctly).
+            if newline_added:
+                newline_added = False
+                token.first_in_line = True
+                token.first_in_statement = True
+                if token.ast_link:
+                    token.fix.correct_indent = (
+                        token.ast_link.get_indentation() *
+                        self.cfg["tab_width"])
+                else:
+                    token.fix.correct_indent = (
+                        previous_token.ast_link.get_indentation() *
+                        self.cfg["tab_width"])
+
+            # This token requires a newline to be inserted.
+            if token.fix.add_newline:
+                newline_added = True
+                new_tokens.append(m_ast.MATLAB_Token("NEWLINE", "\n",
+                                                     token.location,
+                                                     False, False,
+                                                     anonymous = True))
+                shift_lines += 1
+
+            previous_token = token
 
         # Strip (now) duplicate newlines
-        real_tokens = []
+        tmp_tokens = new_tokens
+        new_tokens = []
         old_token = None
         for token in tmp_tokens:
             if old_token and \
                old_token.kind == "NEWLINE" and \
                token.kind == "NEWLINE":
                 continue
-            real_tokens.append(token)
+            new_tokens.append(token)
             old_token = token
 
-        for n, token in enumerate(real_tokens):
-            if n + 1 < len(real_tokens):
-                next_token = real_tokens[n + 1]
+        # Regurgitate the processed tokens to re-create the source
+        # file, including comments
+        for n, token in enumerate(new_tokens):
+            if n + 1 < len(new_tokens):
+                next_token = new_tokens[n + 1]
             else:
                 next_token = None
             if next_token and next_token.location.line == token.location.line:
@@ -1172,7 +1213,7 @@ class Token_Buffer(Token_Generator):
 
             if token.kind == "NEWLINE":
                 amount = min(2, token.raw_text.count("\n"))
-                if n + 1 == len(real_tokens):
+                if n + 1 == len(new_tokens):
                     # At the end of a file, we have at most one
                     # newline. This newline is inserted manually at
                     # the end

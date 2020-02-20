@@ -1,9 +1,9 @@
 In regression2.m, line 4
 |     persistent y z, if isempty(y), y = 42; end
-|                  ^ style: end this with just a newline
+|                   ^ style: end this with just a newline
 In regression2.m, line 4
 |     persistent y z, if isempty(y), y = 42; end
-|                                 ^ style: end this with just a newline
+|                                  ^ style: end this with just a newline
 In regression2.m, line 4
 |     persistent y z, if isempty(y), y = 42; end
 |                                          ^ style: end statement with a newline

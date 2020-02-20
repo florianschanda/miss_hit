@@ -15,7 +15,7 @@ In test_01.m, line 8
 |      ^ style: end this with just a newline
 In test_01.m, line 9
 | end,
-| ^^^ style: end this with just a newline
+|    ^ style: end this with just a newline
 ----------------------------------------------------------------------
 --  Parse tree for test_01.m
 Root: Function_File

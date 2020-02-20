@@ -20,7 +20,11 @@ function [output1, output2, output3, ...
     aVar = 3;
     out = foo(in);
     % potato
-    if input1 > input2 output1 = 0; else output2 = 1; end
+    if input1 > input2
+        output1 = 0;
+    else
+        output2 = 1;
+    end
     if input1 > input2
         output1 = 0;
     else

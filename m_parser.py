@@ -247,13 +247,20 @@ class MATLAB_Parser:
             if allow_nothing:
                 if config.active(self.cfg, "end_of_statements"):
                     if semi:
+                        ending_token.add_semicolon_after = True
+                        if config.active(self.cfg, "indentation"):
+                            ending_token.fix.add_newline = True
                         self.mh.style_issue(ending_token.location,
                                             "end this with a ; and newline",
-                                            False)
+                                            True)
                     else:
+                        fixed = False
+                        if config.active(self.cfg, "indentation"):
+                            ending_token.fix.add_newline = True
+                            fixed = True
                         self.mh.style_issue(ending_token.location,
                                             "end statement with a newline",
-                                            False)
+                                            fixed)
                 return
             elif self.peek_eof():
                 # EOF is also a valid (but rude) terminator
@@ -273,12 +280,14 @@ class MATLAB_Parser:
             # semicolon, and the first new_line.
             if terminator_tokens[0].kind == "SEMICOLON":
                 pass
+
             elif terminator_tokens[0].kind == "COMMA":
                 self.mh.style_issue(terminator_tokens[0].location,
                                     "end this with a semicolon"
                                     " instead of a comma",
                                     True)
                 terminator_tokens[0].fix.change_to_semicolon = True
+
             else:
                 assert terminator_tokens[0].kind == "NEWLINE"
                 self.mh.style_issue(ending_token.location,
@@ -287,15 +296,18 @@ class MATLAB_Parser:
                 ending_token.fix.add_semicolon_after = True
 
             if first_newline is None:
+                fixed = False
+                if config.active(self.cfg, "indentation"):
+                    terminator_tokens[0].fix.add_newline = True
+                    fixed = True
                 self.mh.style_issue(terminator_tokens[0].location,
                                     "end statement with a newline",
-                                    False)
-                # terminator_tokens[0].fix.add_newline = True
+                                    fixed)
 
         else:
             # Exactly one token is required and useful. The first new
             # line.
-            if (not config.active(self.cfg, "indentation") or True) and \
+            if not config.active(self.cfg, "indentation") and \
                terminator_tokens[0].kind == "COMMA":
                 # The statement was ended with a comma. Ideally we
                 # just have a newline, but since we're not fixing
@@ -308,12 +320,20 @@ class MATLAB_Parser:
                     terminator_tokens[0].fix.change_to_semicolon = True
 
             elif terminator_tokens[0].kind != "NEWLINE":
+                fixed = False
+                if first_newline is None:
+                    # We can only fix a missing newline if indentation
+                    # fixing is active.
+                    if config.active(self.cfg, "indentation"):
+                        terminator_tokens[0].fix.delete = True
+                        ending_token.fix.add_newline = True
+                        fixed = True
+                else:
+                    terminator_tokens[0].fix.delete = True
+                    fixed = True
                 self.mh.style_issue(terminator_tokens[0].location,
                                     "end this with just a newline",
-                                    first_newline is not None)
-                if first_newline is not None:
-                    terminator_tokens[0].fix.delete = True
-                # terminator_tokens[0].fix.add_newline = True
+                                    fixed)
 
         for terminator in terminator_tokens[1:]:
             if terminator.kind != "NEWLINE":

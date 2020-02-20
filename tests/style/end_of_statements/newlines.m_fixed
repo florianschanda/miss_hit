@@ -1,6 +1,8 @@
 classdef newlines
     properties
-        x; y; z
+        x
+        y
+        z
     end
 
 end

@@ -4,16 +4,16 @@ In test.m, line 3
 |          ^^^^ style: violates naming scheme for class
 In test.m, line 5
 |         x, y, z
-|         ^ style: end this with just a newline
+|          ^ style: end this with just a newline [fixed]
 In test.m, line 5
 |         x, y, z
-|            ^ style: end this with just a newline
+|             ^ style: end this with just a newline [fixed]
 In test.m, line 6
 |         a; b; c
-|          ^ style: end this with just a newline
+|          ^ style: end this with just a newline [fixed]
 In test.m, line 6
 |         a; b; c
-|             ^ style: end this with just a newline
+|             ^ style: end this with just a newline [fixed]
 MISS_HIT Summary: 1 file(s) analysed, 5 style issue(s)
 
 === HTML MODE ===
