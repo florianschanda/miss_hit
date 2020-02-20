@@ -1133,6 +1133,18 @@ class Token_Buffer(Token_Generator):
             token.raw_text = ";"
             token.value = ";"
             token.fix.ensure_trim_before = True
+        elif token.fix.replace_with_newline:
+            assert token.kind == "CONTINUATION"
+            token.fix.replace_with_newline = False
+            if token.value == "":
+                token.kind = "NEWLINE"
+                token.raw_text = "\n"
+                token.value = "\n"
+            else:
+                token.kind = "COMMENT"
+                token.value = token.value.lstrip("%").strip()
+                token.raw_text = "% " + token.value
+                token.fix.add_newline = True
 
         return token
 
@@ -1160,14 +1172,15 @@ class Token_Buffer(Token_Generator):
                 newline_added = False
                 token.first_in_line = True
                 token.first_in_statement = True
-                if token.ast_link:
-                    token.fix.correct_indent = (
-                        token.ast_link.get_indentation() *
-                        self.cfg["tab_width"])
-                else:
-                    token.fix.correct_indent = (
-                        previous_token.ast_link.get_indentation() *
-                        self.cfg["tab_width"])
+                if config.active(self.cfg, "indentation"):
+                    if token.ast_link:
+                        token.fix.correct_indent = (
+                            token.ast_link.get_indentation() *
+                            self.cfg["tab_width"])
+                    else:
+                        token.fix.correct_indent = (
+                            previous_token.ast_link.get_indentation() *
+                            self.cfg["tab_width"])
 
             # This token requires a newline to be inserted.
             if token.fix.add_newline:
@@ -1188,6 +1201,9 @@ class Token_Buffer(Token_Generator):
             if old_token and \
                old_token.kind == "NEWLINE" and \
                token.kind == "NEWLINE":
+                if len(token.raw_text) == 1 and len(old_token.raw_text) == 1:
+                    old_token.raw_text += "\n"
+                    old_token.value += "\n"
                 continue
             new_tokens.append(token)
             old_token = token
@@ -1220,20 +1236,14 @@ class Token_Buffer(Token_Generator):
                     amount = 0
                 fd.write("\n" * amount)
             elif token.kind == "CONTINUATION":
-                if token.fix.replace_with_newline:
-                    if next_token.kind != "NEWLINE":
-                        fd.write("\n")
-                else:
-                    fd.write(token.raw_text.rstrip() + "\n")
+                fd.write(token.raw_text.rstrip() + "\n")
             else:
                 fd.write(token.raw_text.rstrip())
 
             if token.fix.add_semicolon_after:
                 fd.write(";")
 
-            if next_in_line and \
-               next_in_line.kind != "NEWLINE" and \
-               not next_in_line.fix.replace_with_newline:
+            if next_in_line and next_in_line.kind != "NEWLINE":
                 gap = (next_in_line.location.col_start -
                        (token.location.col_end + 1))
                 # At most one space, unless we have a comment, then

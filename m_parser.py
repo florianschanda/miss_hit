@@ -245,6 +245,7 @@ class MATLAB_Parser:
             # We found nothing. This is actually a syntax error in
             # most cases.
             if allow_nothing:
+                ending_token.fix.flag_continuations = True
                 if config.active(self.cfg, "end_of_statements"):
                     if semi:
                         ending_token.add_semicolon_after = True

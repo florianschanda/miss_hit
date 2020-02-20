@@ -444,6 +444,33 @@ end
 </pre>
       </div>
 
+      <h4>Dangerously misleading continuations ("dangerous_continuation")</h4>
+
+      <div>
+        This rule identifies continuations that are one code change
+        away from introducing difficult to find bugs. In MATLAB /
+        Octave statements are usually terminated by a ; and a newline,
+        but there are a few places where nothing is required. Consider
+        this example:
+      </div>
+
+      <div>
+<pre>
+if potato ...
+    if kitten
+        x = 1;
+    end
+end
+</pre>
+      </div>
+
+      <div>
+        Since the expression for the if-guard does not need
+        termination, the continuation here just happens to work. This
+        rule removes these continuations (or replaces them with
+        comments).
+      </div>
+
       <h4>Whitespace around operators ("operator_whitespace")</h4>
 
       <div>

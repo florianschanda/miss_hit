@@ -91,7 +91,7 @@ class Autofix_Instruction:
 
         self.replace_with_newline = False
         # For CONTINUATION tokens. Means this continuation should be
-        # just a newline instead.
+        # just a newline (or comment) instead.
 
         self.change_to_semicolon = False
         # Replace this (comma) token with a semicolon
@@ -102,10 +102,17 @@ class Autofix_Instruction:
         self.add_newline = False
         # Insert a newline after this token. DOES NOT WORK RIGHT NOW.
 
+        # The following are not fixes as such, but extra annotation to
+        # produce fixes.
+
         self.binary_operator = False
         self.unary_operator  = False
         # Classification if this token is a unary or binary
         # operator. Only set for OPERATOR tokens.
+
+        self.flag_continuations = False
+        # Set in cases where continuations following this token would
+        # be highly problematic
 
 
 class MATLAB_Token:

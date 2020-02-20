@@ -684,6 +684,18 @@ def stage_3_analysis(mh, cfg, tbuf):
                         token.fix.ensure_ws_before = True
                         token.fix.ensure_ws_after = True
 
+        # Check some specific problems with continuations
+        if token.fix.flag_continuations and \
+           next_in_line and next_in_line.kind == "CONTINUATION":
+            fixed = False
+            token.fix.add_newline = False
+            if config.active(cfg, "dangerous_continuation"):
+                next_in_line.fix.replace_with_newline = True
+                fixed = True
+            mh.style_issue(next_in_line.location,
+                           "this continuation is dangerously misleading",
+                           fixed)
+
         # Complain about indentation
         if config.active(cfg, "indentation") and token.kind != "NEWLINE":
             if token.first_in_line:

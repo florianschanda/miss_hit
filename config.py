@@ -66,6 +66,7 @@ STYLE_RULES = {
                                  " comment."),
     "operator_after_continuation" : ("Complains about operators after"
                                      " a line continuation."),
+    "dangerous_continuation": ("Flag misleading line continuations."),
     "useless_continuation" : ("Flag unnecessary line continuations."),
     "operator_whitespace" : ("Enfore whitespace around unary and binary"
                              " operators."),
