@@ -1,4 +1,61 @@
-In test_3.m, line 22
-|         propArgs.?matlab.graphics.chart.primitive.Bar
-|                 ^^ error: expected end of statement, found NVP_DELEGATE instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+----------------------------------------------------------------------
+--  Parse tree for test_3.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_3>
+      Inputs: Identifier <x>
+      Inputs: Identifier <y>
+      Inputs: Identifier <propArgs>
+    Validation: Arguments Special_Block
+      Items: Entity_Constraints
+        Dimension 1 constraint: COLON
+        Dimension 2 constraint: COLON
+        Name: Identifier <x>
+        Class: Identifier <double>
+      Items: Entity_Constraints
+        Dimension 1 constraint: COLON
+        Dimension 2 constraint: COLON
+        Name: Identifier <y>
+        Class: Identifier <double>
+      Items: Argument_Validation_Delegation
+        Name: Identifier <propArgs>
+        Class: Selection
+          Prefix: Selection
+            Prefix: Selection
+              Prefix: Selection
+                Prefix: Identifier <matlab>
+                Field: Identifier <graphics>
+              Field: Identifier <chart>
+            Field: Identifier <primitive>
+          Field: Identifier <Bar>
+      Items: Entity_Constraints
+        Name: Selection
+          Prefix: Identifier <propArgs>
+          Field: Identifier <FaceColor>
+        Functions: Reference
+          Name: Identifier <mustBeMember>
+          Arguments: Selection
+            Prefix: Identifier <propArgs>
+            Field: Identifier <FaceColor>
+          Arguments: Cell_Expression
+            Rows: Row
+              Items: Char_Array_Literal 'red'
+              Items: Char_Array_Literal 'blue'
+        Default: String_Literal "blue"
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <propertyCell>
+        RHS: Reference
+          Name: Identifier <namedargs2cell>
+          Arguments: Identifier <propArgs>
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <bar>
+          Arguments: Identifier <x>
+          Arguments: Identifier <y>
+          Arguments: Cell_Reference
+            Name: Identifier <propertyCell>
+            Arguments: Reshape
+----------------------------------------------------------------------
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

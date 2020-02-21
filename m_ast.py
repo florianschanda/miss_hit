@@ -855,6 +855,12 @@ class Special_Block(Node):
         self.l_items.append(n_cons)
         n_cons.set_parent(self)
 
+    def add_delegation(self, n_cons):
+        assert isinstance(n_cons, Argument_Validation_Delegation)
+        assert self.kind() == "arguments"
+        self.l_items.append(n_cons)
+        n_cons.set_parent(self)
+
     def add_method(self, n_method):
         assert isinstance(n_method, (Function_Definition, Function_Signature))
         assert self.kind() == "methods"
@@ -950,6 +956,47 @@ class Entity_Constraints(Node):
         self._visit_list(self.l_fun_constraint, function, "Functions")
         if self.n_default_value:
             self.n_default_value.visit(self, function, "Default")
+        self._visit_end(parent, function, relation)
+
+
+class Argument_Validation_Delegation(Node):
+    """ AST for a the .? special syntax found inside argument blocks.
+    """
+    def __init__(self, t_op):
+        super().__init__()
+        assert isinstance(t_op, MATLAB_Token) and t_op.kind == "NVP_DELEGATE"
+
+        self.t_op = t_op
+        self.t_op.set_ast(self)
+        # The .? token
+
+        self.n_name = None
+        # The entity name we refer to.
+
+        self.n_class_name = None
+        # The name of the class we delegate validation to
+
+    def set_name(self, n_name):
+        assert isinstance(n_name, Name)
+
+        self.n_name = n_name
+        self.n_name.set_parent(self)
+
+    def set_class_name(self, n_class_name):
+        assert isinstance(n_class_name, Name)
+
+        self.n_class_name = n_class_name
+        self.n_class_name.set_parent(self)
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, Special_Block)
+        assert n_parent.kind() == "arguments"
+        super().set_parent(n_parent)
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_name.visit(self, function, "Name")
+        self.n_class_name.visit(self, function, "Class")
         self._visit_end(parent, function, relation)
 
 

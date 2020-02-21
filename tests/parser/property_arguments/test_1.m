@@ -17,5 +17,5 @@ function test_1(x,y,propArgs)
         propArgs.?matlab.graphics.chart.primitive.Bar
     end
     propertyCell = namedargs2cell(propArgs);
-    bar(x,y,propertyCell{:})
+    bar(x,y,propertyCell{:});
 end
