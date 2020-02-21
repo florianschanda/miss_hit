@@ -31,7 +31,7 @@ OPERATOR      ./       n     n     element-wise right division
 OPERATOR      .\       n     n     element-wise left division
 OPERATOR      .^       n     n     element-wise power
 OPERATOR      .'       y     n     transpose
-<TODO>        .?       ?     ?     field of name-value structure
+NVP_DELEGATE  .?       n/a   n/a   name-value pair delegate
 ASSIGNMENT =           n     n     (assignment)
 OPERATOR      ==       n     n     equals
 AT         @           n     n     lambda function or function pointer

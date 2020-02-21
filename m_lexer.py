@@ -511,6 +511,10 @@ class MATLAB_Lexer(Token_Generator):
                 kind = "OPERATOR"
                 self.next()
 
+            elif self.cc == "." and self.nc == "?":
+                kind = "NVP_DELEGATE"
+                self.next()
+
             elif self.cc == "'":
                 # This is either a single-quoted string or the
                 # transpose operation. If we had preceeding
@@ -956,6 +960,7 @@ class MATLAB_Lexer(Token_Generator):
             #   AT           (entails comma)
             #   BANG         (syntax error)
             #   METACLASS    (entails comma)
+            #   NVP_DELEGATE (error: cannot appear in matrix)
 
             if next_non_ws in (",", ";", "\n"):
                 # COMMA

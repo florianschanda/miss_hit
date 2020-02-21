@@ -44,20 +44,21 @@ TOKEN_KINDS = frozenset([
     "NUMBER",
     "CARRAY",          # 'foo' character array
     "STRING",          # "foo" string class literal
-    "KEYWORD",
-    "OPERATOR",
-    "COMMA",
-    "SEMICOLON",
-    "COLON",
+    "KEYWORD",         # see m_keywords.py
+    "OPERATOR",        # see docs/matlab_operators.txt
+    "COMMA",           # ,
+    "SEMICOLON",       # ;
+    "COLON",           # :
     "BRA", "KET",      # ( )
     "C_BRA", "C_KET",  # { }
     "M_BRA", "M_KET",  # [ ] for matrices
     "A_BRA", "A_KET",  # [ ] for assignment targets
-    "ASSIGNMENT",
-    "SELECTION",
-    "AT",
-    "BANG",
-    "METACLASS",
+    "ASSIGNMENT",      # =
+    "SELECTION",       # .
+    "AT",              # @
+    "BANG",            # !
+    "METACLASS",       # ?
+    "NVP_DELEGATE",    # .? (name value pair delegation)
 ])
 
 TOKENS_WITH_IMPLICIT_VALUE = frozenset([
