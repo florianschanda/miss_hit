@@ -45,7 +45,7 @@ TOKEN_KINDS = frozenset([
     "CARRAY",          # 'foo' character array
     "STRING",          # "foo" string class literal
     "KEYWORD",         # see m_keywords.py
-    "OPERATOR",        # see docs/matlab_operators.txt
+    "OPERATOR",        # see docs/internal/matlab_operators.txt
     "COMMA",           # ,
     "SEMICOLON",       # ;
     "COLON",           # :
