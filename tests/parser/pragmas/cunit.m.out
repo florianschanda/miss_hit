@@ -1,0 +1,8 @@
+----------------------------------------------------------------------
+--  Parse tree for cunit.m
+Root: Class_File
+  Pragmas: Simple_Pragma debug_pragma <None>
+  Classdef: Class_Definition
+    Name: Identifier <cunit>
+----------------------------------------------------------------------
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -451,17 +451,28 @@ class MATLAB_Parser:
         # This is the top-level parse function. First we need to
         # figure out exactly what kind of file we're dealing
         # with. This also hilariously depends on the file name.
-        while self.peek("NEWLINE"):
-            self.next()
+
+        # File can start with pragmas or newlines. We need to process
+        # them first until we arrive at the first interesting thing
+        # that helps us decide.
+        l_pragmas = []
+        while self.peek("NEWLINE") or self.peek("PRAGMA"):
+            if self.peek("NEWLINE"):
+                self.next()
+            elif self.peek("PRAGMA"):
+                self.match("PRAGMA")
+                l_pragmas.append(Simple_Pragma(self.ct))
+                self.match("NEWLINE")
 
         if self.peek("KEYWORD", "function"):
             cunit = Function_File(os.path.basename(self.lexer.filename),
                                   self.parse_function_list(),
-                                  self.lexer.in_class_directory)
+                                  self.lexer.in_class_directory,
+                                  l_pragmas)
         elif self.peek("KEYWORD", "classdef") or self.lexer.in_class_directory:
-            cunit = self.parse_class_file()
+            cunit = self.parse_class_file(l_pragmas)
         else:
-            cunit = self.parse_script_file()
+            cunit = self.parse_script_file(l_pragmas)
 
         if self.debug_tree:
             cunit.debug_parse_tree()
@@ -470,7 +481,7 @@ class MATLAB_Parser:
 
         return cunit
 
-    def parse_script_file(self):
+    def parse_script_file(self, l_pragmas):
         statements = []
         while not self.peek_eof():
             if self.peek("KEYWORD", "function"):
@@ -478,15 +489,16 @@ class MATLAB_Parser:
             else:
                 statements.append(self.parse_statement())
 
-        functions = self.parse_function_list()
+        l_functions = self.parse_function_list()
 
         rv = Script_File(os.path.basename(self.lexer.filename),
                          Sequence_Of_Statements(statements),
-                         functions)
+                         l_functions,
+                         l_pragmas)
 
         return rv
 
-    def parse_class_file(self):
+    def parse_class_file(self, l_pragmas):
         self.functions_require_end = True
 
         n_classdef  = self.parse_classdef()
@@ -494,7 +506,8 @@ class MATLAB_Parser:
 
         rv = Class_File(os.path.basename(self.lexer.filename),
                         n_classdef,
-                        l_functions)
+                        l_functions,
+                        l_pragmas)
         return rv
 
     def parse_function_list(self):
@@ -985,6 +998,11 @@ class MATLAB_Parser:
                 self.mh.error(self.nt.location,
                               "expected valid statement,"
                               " found keyword '%s' instead" % self.nt.value)
+        elif self.peek("PRAGMA"):
+            self.match("PRAGMA")
+            rv = Simple_Pragma(self.ct)
+            self.match_eos(rv)
+            return rv
         elif self.peek("BANG"):
             self.match("BANG")
             t_bang = self.ct

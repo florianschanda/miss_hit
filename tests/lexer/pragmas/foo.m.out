@@ -1,0 +1,59 @@
+In foo.m, line 1
+| %% (c) Copyright 2020 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '% (c) Copyright 2020 Florian Schanda'
+In foo.m, line 1
+| %% (c) Copyright 2020 Florian Schanda
+|                                      ^ info: NEWLINE
+In foo.m, line 3
+| function v = foo(x)
+| ^^^^^^^^ info: [SL] KEYWORD
+In foo.m, line 3
+| function v = foo(x)
+|          ^ info: IDENTIFIER
+In foo.m, line 3
+| function v = foo(x)
+|            ^ info: ASSIGNMENT
+In foo.m, line 3
+| function v = foo(x)
+|              ^^^ info: IDENTIFIER
+In foo.m, line 3
+| function v = foo(x)
+|                 ^ info: BRA
+In foo.m, line 3
+| function v = foo(x)
+|                  ^ info: IDENTIFIER
+In foo.m, line 3
+| function v = foo(x)
+|                   ^ info: KET
+In foo.m, line 3
+| function v = foo(x)
+|                    ^ info: NEWLINE
+In foo.m, line 4
+|     % mh:flow:unused x, "we dont' need x here, thanks"
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] PRAGMA
+In foo.m, line 4
+|     % mh:flow:unused x, "we dont' need x here, thanks"
+|                                                       ^ info: NEWLINE
+In foo.m, line 5
+|     v = 12;
+|     ^ info: [SL] IDENTIFIER
+In foo.m, line 5
+|     v = 12;
+|       ^ info: ASSIGNMENT
+In foo.m, line 5
+|     v = 12;
+|         ^^ info: NUMBER
+In foo.m, line 5
+|     v = 12;
+|           ^ info: SEMICOLON
+In foo.m, line 5
+|     v = 12;
+|            ^ info: [S ] NEWLINE
+In foo.m, line 6
+| end
+| ^^^ info: [SL] KEYWORD
+In foo.m, line 6
+| end
+|    ^ info: NEWLINE
+foo.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

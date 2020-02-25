@@ -27,6 +27,7 @@ import subprocess
 import re
 
 import config
+from m_language import TOKEN_KINDS
 from m_language_builtins import HIGH_IMPACT_BUILTIN_FUNCTIONS
 from errors import ICE, Location
 
@@ -34,32 +35,6 @@ from errors import ICE, Location
 ##############################################################################
 # Lexical tokens
 ##############################################################################
-
-
-TOKEN_KINDS = frozenset([
-    "NEWLINE",
-    "CONTINUATION",
-    "COMMENT",
-    "IDENTIFIER",
-    "NUMBER",
-    "CARRAY",          # 'foo' character array
-    "STRING",          # "foo" string class literal
-    "KEYWORD",         # see m_keywords.py
-    "OPERATOR",        # see docs/internal/matlab_operators.txt
-    "COMMA",           # ,
-    "SEMICOLON",       # ;
-    "COLON",           # :
-    "BRA", "KET",      # ( )
-    "C_BRA", "C_KET",  # { }
-    "M_BRA", "M_KET",  # [ ] for matrices
-    "A_BRA", "A_KET",  # [ ] for assignment targets
-    "ASSIGNMENT",      # =
-    "SELECTION",       # .
-    "AT",              # @
-    "BANG",            # !
-    "METACLASS",       # ?
-    "NVP_DELEGATE",    # .? (name value pair delegation)
-])
 
 TOKENS_WITH_IMPLICIT_VALUE = frozenset([
     "COMMA",
@@ -74,6 +49,7 @@ TOKENS_WITH_IMPLICIT_VALUE = frozenset([
     "AT",
     "METACLASS"
 ])
+assert TOKENS_WITH_IMPLICIT_VALUE <= TOKEN_KINDS
 
 
 class Autofix_Instruction:
@@ -302,6 +278,13 @@ class Definition(Node):
     pass
 
 
+class Pragma(Node):
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, (Sequence_Of_Statements,
+                                     Compilation_Unit))
+        super().set_parent(n_parent)
+
+
 class Statement(Node):
     def set_parent(self, n_parent):
         assert isinstance(n_parent, Sequence_Of_Statements)
@@ -338,16 +321,23 @@ class Compilation_Unit(Node):
 
 
 class Script_File(Compilation_Unit):
-    def __init__(self, name, n_statements, l_functions):
+    def __init__(self, name, n_statements, l_functions, l_pragmas):
         super().__init__(name)
         assert isinstance(n_statements, Sequence_Of_Statements)
         assert isinstance(l_functions, list)
         for n_function in l_functions:
             assert isinstance(n_function, Function_Definition)
+        assert isinstance(l_pragmas, list)
+        for n_pragma in l_pragmas:
+            assert isinstance(n_pragma, Pragma)
 
         self.n_statements = n_statements
         self.n_statements.set_parent(self)
         # The main body of the script file
+
+        self.n_statements.prepend_pragmas(l_pragmas)
+        # The list of pragmas we found so far actually belongs to the
+        # statement list in this file.
 
         self.l_functions = l_functions
         for n_function in self.l_functions:
@@ -376,13 +366,16 @@ class Script_File(Compilation_Unit):
 
 
 class Function_File(Compilation_Unit):
-    def __init__(self, name, l_functions, is_separate):
+    def __init__(self, name, l_functions, is_separate, l_pragmas):
         super().__init__(name)
         assert isinstance(l_functions, list)
         assert len(l_functions) >= 1
         for n_function in l_functions:
             assert isinstance(n_function, Function_Definition)
         assert isinstance(is_separate, bool)
+        assert isinstance(l_pragmas, list)
+        for n_pragma in l_pragmas:
+            assert isinstance(n_pragma, Pragma)
 
         self.l_functions = l_functions
         for n_function in self.l_functions:
@@ -394,12 +387,18 @@ class Function_File(Compilation_Unit):
         # If true, then this compilation unit resides in a @ directory
         # for classes.
 
+        self.l_pragmas = l_pragmas
+        for n_pragma in l_pragmas:
+            n_pragma.set_parent(self)
+        # A list of pragmas that applies to this compilation unit
+
     def debug_parse_tree(self):
         for n_function in self.l_functions:
             n_function.debug_parse_tree()
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
+        self._visit_list(self.l_pragmas, function, "Pragmas")
         self._visit_list(self.l_functions, function, "Functions")
         self._visit_end(parent, function, relation)
 
@@ -409,12 +408,15 @@ class Function_File(Compilation_Unit):
 
 
 class Class_File(Compilation_Unit):
-    def __init__(self, name, n_classdef, l_functions):
+    def __init__(self, name, n_classdef, l_functions, l_pragmas):
         super().__init__(name)
         assert isinstance(n_classdef, Class_Definition)
         assert isinstance(l_functions, list)
         for n_function in l_functions:
             assert isinstance(n_function, Function_Definition)
+        assert isinstance(l_pragmas, list)
+        for n_pragma in l_pragmas:
+            assert isinstance(n_pragma, Pragma)
 
         self.n_classdef = n_classdef
         self.n_classdef.set_parent(self)
@@ -425,6 +427,11 @@ class Class_File(Compilation_Unit):
             n_function.set_parent(self)
         # Auxiliary (but not nested) functions that can appear after
         # the class definition.
+
+        self.l_pragmas = l_pragmas
+        for n_pragma in l_pragmas:
+            n_pragma.set_parent(self)
+        # A list of pragmas that applies to this compilation unit
 
     def debug_parse_tree(self):
         dotpr("cls_" + str(self.name) + ".dot", self.n_classdef)
@@ -443,6 +450,7 @@ class Class_File(Compilation_Unit):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
+        self._visit_list(self.l_pragmas, function, "Pragmas")
         self.n_classdef.visit(self, function, "Classdef")
         self._visit_list(self.l_functions, function, "Functions")
         self._visit_end(parent, function, relation)
@@ -736,12 +744,21 @@ class Sequence_Of_Statements(Node):
         super().__init__()
         assert isinstance(l_statements, list)
         for statement in l_statements:
-            assert isinstance(statement, Statement)
+            assert isinstance(statement, (Pragma, Statement))
 
         self.l_statements = l_statements
         for n_statement in self.l_statements:
             n_statement.set_parent(self)
         # The list of statements
+
+    def prepend_pragmas(self, l_pragmas):
+        assert isinstance(l_pragmas, list)
+        for n_pragma in l_pragmas:
+            assert isinstance(n_pragma, Pragma)
+
+        self.l_statements = l_pragmas + self.l_statements
+        for n_pragma in l_pragmas:
+            n_pragma.set_parent(self)
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Compound_Statement,
@@ -1791,6 +1808,31 @@ class Import_Statement(Simple_Statement):
                 for t in self.l_chain]
 
 
+class Simple_Pragma(Pragma):
+    def __init__(self, t_pragma):
+        super().__init__()
+        assert isinstance(t_pragma, MATLAB_Token)
+        assert t_pragma.kind == "PRAGMA"
+        assert t_pragma.raw_text.startswith("% mh:")
+
+        self.t_pragma = t_pragma
+        self.t_pragma.set_ast(self)
+        # The token for the miss_hit pragma
+
+        content = t_pragma.raw_text[5:].strip()
+        sections = content.split(":", 1)
+
+        self.category = sections[0]
+        if len(sections) > 1:
+            self.pragma = sections[1]
+        else:
+            self.pragma = None
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_end(parent, function, relation)
+
+
 ##############################################################################
 # Literals
 ##############################################################################
@@ -2274,6 +2316,10 @@ class Text_Visitor(AST_Visitor):
             self.write_head(node.__class__.__name__ +
                             " for " +
                             ".".join(node.get_chain_strings()),
+                            relation)
+        elif isinstance(node, Simple_Pragma):
+            self.write_head(node.__class__.__name__ +
+                            " %s <%s>" % (node.category, node.pragma),
                             relation)
         else:
             self.write_head(node.__class__.__name__,

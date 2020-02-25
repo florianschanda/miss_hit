@@ -24,8 +24,43 @@
 ##                                                                          ##
 ##############################################################################
 
+# Tokens for the MATLAB language
+TOKEN_KINDS = frozenset([
+    "NEWLINE",
+    "CONTINUATION",
+    "COMMENT",
+    "IDENTIFIER",
+    "NUMBER",
+    "CARRAY",          # 'foo' character array
+    "STRING",          # "foo" string class literal
+    "KEYWORD",         # see below
+    "OPERATOR",        # see docs/internal/matlab_operators.txt
+    "COMMA",           # ,
+    "SEMICOLON",       # ;
+    "COLON",           # :
+    "BRA", "KET",      # ( )
+    "C_BRA", "C_KET",  # { }
+    "M_BRA", "M_KET",  # [ ] for matrices
+    "A_BRA", "A_KET",  # [ ] for assignment targets
+    "ASSIGNMENT",      # =
+    "SELECTION",       # .
+    "AT",              # @
+    "BANG",            # !
+    "METACLASS",       # ?
+    "NVP_DELEGATE",    # .? (name value pair delegation)
+    "PRAGMA",          # miss_hit pragma
+])
+
 # As of MATLAB 2019b
 # See: https://www.mathworks.com/help/matlab/ref/iskeyword.html
+#
+# We have taken the liberty to make "import" a keyword, since that
+# simplifies parsing quite a bit. This does mean that you can't have
+# variables named "import".
+#
+# There are a few more keywords, but they are not always keywords. The
+# lexer also sometimes emits properties, arguments, methods, events,
+# and enumeration as keywords, depending on context.
 KEYWORDS = frozenset([
     'break',
     'case',

@@ -625,12 +625,24 @@ class MATLAB_Lexer(Token_Generator):
         #                                      col_end,
         #                                      repr(self.cc)))
 
+        ######################################################################
+        # Change token kinds in some cases
+
         # Classify keywords, except after selections. That way we
         # permit structure fields with names like "function".
         if kind == "IDENTIFIER" and \
            raw_text in KEYWORDS and \
            self.last_kind != "SELECTION":
             kind = "KEYWORD"
+
+        # Recognise MISS_HIT pragmas. They start with "% mh:", but the
+        # style suppression comments are not pragmas.
+        if kind == "COMMENT" and \
+           self.first_in_line and \
+           self.first_in_statement and \
+           raw_text.startswith("% mh:") and \
+           "ignore_style" not in raw_text:
+            kind = "PRAGMA"
 
         # Keep track of blocks, and special sections where
         # command-form is disabled.
@@ -689,6 +701,9 @@ class MATLAB_Lexer(Token_Generator):
             raise ICE("line is larger than the length of the file %s" %
                       self.filename)
 
+        ######################################################################
+        # Create token
+
         token = m_ast.MATLAB_Token(kind,
                                    raw_text,
                                    Location(self.filename,
@@ -702,6 +717,9 @@ class MATLAB_Lexer(Token_Generator):
                                    contains_quotes = contains_quotes)
         self.first_in_line = False
         self.first_in_statement = False
+
+        ######################################################################
+        # Postprocessing
 
         if kind == "BRA" and self.last_kind == "AT":
             self.in_lambda = True
