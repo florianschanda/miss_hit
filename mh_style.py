@@ -779,6 +779,8 @@ def analyze(work_package):
         encoding = "utf8"
     if cfg["octave"]:
         lexer.set_octave_mode()
+    if cfg["ignore_pragmas"]:
+        lexer.process_pragmas = False
 
     # We're dealing with an empty file here. Lets just not do anything
 

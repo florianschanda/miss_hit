@@ -148,7 +148,13 @@ class MATLAB_Lexer(Token_Generator):
 
         self.config_file_mode = False
         # We abuse this lexer to parse our config files. If this is
-        # set, we don't do command_mode at all.
+        # set, we don't do command_mode or pragmas at all.
+
+        self.process_pragmas = True
+        # Process miss_hit pragmas. This could create parse errors for
+        # perfectly valid (legacy) code, that accidentally includes
+        # pragmas. Hence there is an option to turn this off. It is
+        # also turned off in config file mode.
 
         self.octave_mode = False
         # If set to true, also deal with Octave's extensions to
@@ -179,6 +185,7 @@ class MATLAB_Lexer(Token_Generator):
     def set_config_file_mode(self):
         self.config_file_mode = True
         self.comment_char = frozenset("#")
+        self.process_pragmas = False
 
     def correct_tabs(self, tabwidth):
         assert isinstance(tabwidth, int) and tabwidth >= 2
@@ -637,7 +644,8 @@ class MATLAB_Lexer(Token_Generator):
 
         # Recognise MISS_HIT pragmas. They start with "% mh:", but the
         # style suppression comments are not pragmas.
-        if kind == "COMMENT" and \
+        if self.process_pragmas and \
+           kind == "COMMENT" and \
            self.first_in_line and \
            self.first_in_statement and \
            raw_text.startswith("% mh:") and \

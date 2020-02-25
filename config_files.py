@@ -290,6 +290,8 @@ def build_config_tree(mh, cmdline_options):
         # Thse options exist for all tools
         if cmdline_options.octave:
             cfg["octave"] = cmdline_options.octave
+        if cmdline_options.ignore_pragmas:
+            cfg["ignore_pragmas"] = cmdline_options.ignore_pragmas
 
         # Overwrite some options from the command-line for style
         # checking

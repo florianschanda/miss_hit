@@ -78,6 +78,13 @@ def create_basic_clp():
                                         " incomplete right now, only the"
                                         " # comments are supported."))
 
+    language_options.add_argument("--ignore-pragmas",
+                                  default=False,
+                                  action="store_true",
+                                  help=("Disable special treatment of"
+                                        " MISS_HIT pragmas. These are"
+                                        " comments that start with '%% mh:'"))
+
     debug_options = ap.add_argument_group("debugging options")
     rv["debug_options"] = debug_options
 

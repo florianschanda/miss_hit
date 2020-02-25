@@ -31,6 +31,7 @@ DEFAULT_NAMING_SCHEME = "([A-Z]+|[A-Z][a-z]*)(_([A-Z]+|[A-Z][a-z]*|[0-9]+))*"
 BASE_CONFIG = {
     "enable"              : True,
     "octave"              : False,
+    "ignore_pragmas"      : False,
     "copyright_entity"    : set(),
     "exclude_dir"         : set(),
     "suppress_rule"       : set(),
