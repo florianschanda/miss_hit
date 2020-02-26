@@ -569,6 +569,33 @@ end
         </ul>
       </div>
 
+      <h4>Redundant brackets ("redundant_brackets")</h4>
+
+      <div>
+        This rule enforces removes some brackets that are clearly
+        useless: top-level brackets and double brackets. Brackets that
+        have been added to clarify operator precedence are not
+        touched.
+      </div>
+
+      <div>
+        This is an example of redundant brackets:
+<pre>
+if (potato)
+    x = ((x + 1));
+end
+</pre>
+      </div>
+
+      <div>
+        This set of brackets are technically redundant due to operator
+        precedence, but they are left alone since they were probably
+        added for clarity:
+<pre>
+  x = (a * b) + (b * c);
+</pre>
+      </div>
+
       <!-- HOOK: AUTOFIX RULES -->
       <!-- END HOOK: AUTOFIX RULES -->
     </section>

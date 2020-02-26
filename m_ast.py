@@ -60,6 +60,10 @@ class Autofix_Instruction:
         self.ensure_ws_after    = False
         # Control whitespace before/after token
 
+        self.ensure_maxgap_before = False
+        self.ensure_maxgap_after  = False
+        # Make sure there is at most 1 whitespace around this token
+
         self.delete = False
         # Remove this token
 
@@ -259,7 +263,24 @@ class Entity(Node):
 
 
 class Expression(Node):
-    pass
+    def __init__(self):
+        super().__init__()
+
+        self.t_bracket_open = None
+        self.t_bracket_close = None
+        # Tokens for the () around this expression
+
+    def set_enclosing_brackets(self, t_open, t_close):
+        assert isinstance(t_open, MATLAB_Token)
+        assert isinstance(t_close, MATLAB_Token)
+        assert t_open.kind == "BRA"
+        assert t_close.kind == "KET"
+
+        self.t_bracket_open = t_open
+        self.t_bracket_open.set_ast(self)
+
+        self.t_bracket_close = t_close
+        self.t_bracket_close.set_ast(self)
 
 
 class Name(Expression):

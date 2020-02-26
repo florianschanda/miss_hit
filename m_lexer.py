@@ -1179,12 +1179,66 @@ class Token_Buffer(Token_Generator):
 
         return token
 
+    def fixup_ws(self, token, where):
+        assert where in ("before", "after")
+
+        # Adjust whitespace of tokens surrounding deleted tokens
+        if where == "before":
+            if token.kind in ("BRA", "C_BRA", "M_BRA"):
+                token.fix.ensure_trim_after = True
+            elif token.kind in ("SEMICOLON", "COMMA"):
+                token.fix.ensure_ws_after = True
+                token.fix.ensure_maxgap_after = True
+            else:
+                token.fix.ensure_maxgap_after = True
+        else:
+            if token.kind in ("KET", "C_KET", "M_KET"):
+                token.fix.ensure_trim_before = True
+            elif token.kind in ("SEMICOLON", "COMMA"):
+                token.fix.ensure_trim_before = True
+                token.fix.ensure_maxgap_before = True
+            else:
+                token.fix.ensure_maxgap_before = True
+
     def replay(self, fd):
         # Strip all tokens marked with delete
-        tmp_tokens = [self.autofix(t)
-                      for t in self.tokens
-                      if not t.anonymous and not t.fix.delete]
-        new_tokens = tmp_tokens
+        new_tokens = []
+        token_deleted = False
+        next_token_is_fil = False
+        next_token_is_fis = False
+        for token in self.tokens:
+            if token.fix.delete:
+                token_deleted = True
+
+                next_token_is_fil = token.first_in_line
+                next_token_is_fis = token.first_in_statement
+
+                if new_tokens:
+                    self.fixup_ws(new_tokens[-1], "before")
+
+                    if token.fix.add_semicolon_after:
+                        # If we need to add a semicolon here, we now
+                        # need to do it on the previous token
+                        new_tokens[-1].fix.add_semicolon_after = True
+
+            elif token.anonymous:
+                pass
+
+            else:
+                new_tokens.append(self.autofix(token))
+                if token_deleted:
+                    self.fixup_ws(new_tokens[-1], "after")
+                    new_tokens[-1].first_in_line = next_token_is_fil
+                    new_tokens[-1].first_in_statement = next_token_is_fis
+                    token_deleted = False
+
+                    # We might have to fix up indentation
+                    if new_tokens[-1].first_in_statement and \
+                       config.active(self.cfg, "indentation"):
+                        if new_tokens[-1].ast_link:
+                            new_tokens[-1].fix.correct_indent = (
+                                new_tokens[-1].ast_link.get_indentation() *
+                                self.cfg["tab_width"])
 
         # Add newlines
         tmp_tokens = new_tokens
@@ -1290,6 +1344,18 @@ class Token_Buffer(Token_Generator):
                 elif (token.fix.ensure_trim_after or
                       next_in_line.fix.ensure_trim_before):
                     gap = 0
+
+                # Make sure we don't have too much space in some cases
+                if token.fix.ensure_maxgap_after or \
+                   next_in_line.fix.ensure_maxgap_before:
+
+                    if next_in_line.kind == "COMMENT":
+                        # We leave comments alone in this scenario,
+                        # since we don't want to break any vertical
+                        # alignment
+                        pass
+                    else:
+                        gap = min(gap, 1)
 
                 fd.write(" " * gap)
         fd.write("\n")

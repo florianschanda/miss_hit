@@ -197,6 +197,29 @@ class MATLAB_Parser:
         return self.nt is None
 
     ##########################################################################
+    # Some style-related helper functions
+
+    def set_expression_brackets(self, n_expr, t_open, t_close):
+        assert isinstance(n_expr, Expression)
+
+        # We already have brackets, so any old ones are redundant
+        self.check_redundant_brackets(n_expr)
+
+        n_expr.set_enclosing_brackets(t_open, t_close)
+
+    def check_redundant_brackets(self, n_expr):
+        assert isinstance(n_expr, Expression), \
+            "required expression, not %s" % n_expr.__class__.__name__
+
+        if config.active(self.cfg, "redundant_brackets") and \
+           n_expr.t_bracket_open:
+            self.mh.style_issue(n_expr.t_bracket_open.location,
+                                "redundant parenthesis",
+                                True)
+            n_expr.t_bracket_open.fix.delete = True
+            n_expr.t_bracket_close.fix.delete = True
+
+    ##########################################################################
     # Parsing
 
     def peek_eos(self):
@@ -1029,7 +1052,7 @@ class MATLAB_Parser:
                                   "left-hand side of assignment must be a"
                                   " Name, found %s instead" %
                                   rv.__class__.__name__)
-                rhs = self.parse_expression()
+                rhs = self.parse_nested_expression()
                 if config.active(self.cfg, "builtin_shadow"):
                     rv.sty_check_builtin_shadow(self.mh, self.cfg)
                 rv = Simple_Assignment_Statement(t_eq, rv, rhs)
@@ -1116,8 +1139,13 @@ class MATLAB_Parser:
         self.match_eos(rv, ";")
         return rv
 
-    def parse_expression(self):
+    def parse_nested_expression(self):
         return self.parse_precedence_12()
+
+    def parse_expression(self):
+        n_expr = self.parse_nested_expression()
+        self.check_redundant_brackets(n_expr)
+        return n_expr
 
     # 1. Parentheses ()
     def parse_precedence_1(self):
@@ -1136,11 +1164,10 @@ class MATLAB_Parser:
         elif self.peek("BRA"):
             self.match("BRA")
             t_open = self.ct
-            expr = self.parse_expression()
+            expr = self.parse_nested_expression()
             self.match("KET")
             t_close = self.ct
-            t_open.set_ast(expr)
-            t_close.set_ast(expr)
+            self.set_expression_brackets(expr, t_open, t_close)
             return expr
 
         elif self.peek("M_BRA"):
@@ -1363,7 +1390,7 @@ class MATLAB_Parser:
                 # matrix, e.g. [1,2,] which is the same as [1, 2]
                 break
 
-            rv.add_item(self.parse_expression())
+            rv.add_item(self.parse_nested_expression())
 
             if self.peek("SEMICOLON"):
                 pass
@@ -1462,7 +1489,7 @@ class MATLAB_Parser:
             self.match("KET")
             self.ct.set_ast(rv)
 
-            rv.set_body(self.parse_expression())
+            rv.set_body(self.parse_nested_expression())
             return rv
 
         else:

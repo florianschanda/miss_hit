@@ -78,6 +78,8 @@ STYLE_RULES = {
                           " class methods."),
     "naming_classes" : ("Checks names of classes."),
     "indentation" : ("Make indentation consistent."),
+    "redundant_brackets" : ("Check for obviously useless brackets. Does not"
+                            " complain about brackets added for clarity."),
 }
 
 

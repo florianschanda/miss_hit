@@ -30,6 +30,7 @@ def execute_style_test(name):
     # Run in HTML mode
     r = subprocess.run(["../../../mh_style.py",
                         ".",
+                        "--single",
                         "--html=expected_out.html"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
@@ -40,6 +41,7 @@ def execute_style_test(name):
     r = subprocess.run(["../../../mh_style.py",
                         "--debug-validate-links",
                         ".",
+                        "--single",
                         "--fix"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
@@ -56,6 +58,7 @@ def execute_style_test(name):
     # Run in plaintext mode, again, to see if more things need fixing
     r = subprocess.run(["../../../mh_style.py",
                         ".",
+                        "--single",
                         "--fix"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
