@@ -1,0 +1,1 @@
+function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;

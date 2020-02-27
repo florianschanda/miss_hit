@@ -101,7 +101,61 @@ In Simple.m, line 8
 In Simple.m, line 11
 | z = -w;
 | ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
-MISS_HIT Summary: 2 file(s) analysed, 34 style issue(s)
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+| ^^^^^^^^ style: file does not appear to contain any copyright header
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|             ^ style: = must be preceeded by whitespace [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|               ^^^ style: violates naming scheme for function
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                      ^ style: end this with just a newline [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                ^ style: end this with just a newline [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                 ^ style: unnecessary statement terminator [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                 ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                             ^ style: end this with just a newline [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                                    ^ style: unnecessary statement terminator [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                                     ^ style: unnecessary statement terminator [fixed]
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                                          ^ style: end this with just a newline [fixed]
+In awful.m, line 3
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                     ^ style: = must be preceeded by whitespace [fixed]
+In awful.m, line 3
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                        ^ style: end statement with a newline [fixed]
+In awful.m, line 5
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                                 ^ style: = must be preceeded by whitespace [fixed]
+In awful.m, line 5
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|                                                   ^ style: end statement with a newline [fixed]
+MISS_HIT Summary: 3 file(s) analysed, 52 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 34 style issue(s)
+MISS_HIT Summary: 3 file(s) analysed, 52 style issue(s)
