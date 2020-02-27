@@ -55,7 +55,7 @@ In test_02.m, line 3
 |                                                                         ^ style: end this with just a newline [fixed]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                                                                  ^^^ style: line exceeds 80 characters
+|                                                                                 ^^^^ style: line exceeds 80 characters
 In test_02.m, line 5
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
 |                                           ^ style: end this with a semicolon instead of a comma [fixed]
@@ -130,7 +130,7 @@ In test_03.m, line 3
 |                                                                    ^ style: end this with just a newline [fixed]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                                                                  ^^ style: line exceeds 80 characters
+|                                                                                 ^^^ style: line exceeds 80 characters
 In test_03.m, line 4
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
 |                                    ^ style: end statement with a newline [fixed]

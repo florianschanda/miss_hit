@@ -157,10 +157,10 @@ class Rule_Line_Length(Style_Rule_Line):
         super().__init__("line_length", False)
 
     def apply(self, mh, cfg, filename, line_no, line):
-        if len(line) > cfg["line_length"] + 1:
+        if len(line) > cfg["line_length"]:
             mh.style_issue(Location(filename,
                                     line_no,
-                                    cfg["line_length"] + 1,
+                                    cfg["line_length"],
                                     len(line),
                                     line),
                            "line exceeds %u characters" % cfg["line_length"],
