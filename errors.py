@@ -100,7 +100,8 @@ class Style_Justification(Justification):
 class Message:
     def __init__(self, location, kind, message, fatal, autofixed):
         assert isinstance(location, Location)
-        assert kind in ("info", "style", "warning", "lex error", "error")
+        assert kind in ("info", "style", "metric",
+                        "warning", "lex error", "error")
         assert isinstance(message, str)
         assert isinstance(fatal, bool)
         assert isinstance(autofixed, bool)
@@ -131,6 +132,7 @@ class Message_Handler:
     """ All messages should be routed through this class """
     def __init__(self):
         self.style_issues = 0
+        self.metric_issues = 0
         self.warnings = 0
         self.errors = 0
         self.justified = 0
@@ -165,6 +167,7 @@ class Message_Handler:
         assert self.sort_messages == other.sort_messages
 
         self.style_issues   += other.style_issues
+        self.metric_issues  += other.metric_issues
         self.warnings       += other.warnings
         self.errors         += other.errors
         self.justified      += other.justified
@@ -226,6 +229,8 @@ class Message_Handler:
                 self.style_issues += 1
             else:
                 return
+        elif message.kind == "metric":
+            self.metric_issues += 1
         elif message.kind == "warning":
             self.warnings += 1
         elif message.kind in ("lex error", "error"):
@@ -375,6 +380,14 @@ class Message_Handler:
                       message   = message,
                       fatal     = False,
                       autofixed = autofix)
+        self.register_message(msg)
+
+    def metric_issue(self, location, message):
+        msg = Message(location  = location,
+                      kind      = "metric",
+                      message   = message,
+                      fatal     = False,
+                      autofixed = False)
         self.register_message(msg)
 
     def warning(self, location, message):

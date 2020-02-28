@@ -83,7 +83,7 @@ def collect_metrics(args):
     # File metrics
 
     metrics[filename]["metrics"] = {
-        "lines" : len(lexer.context_line),
+        "file_length" : len(lexer.context_line),
     }
 
     # Create parse tree
@@ -95,9 +95,20 @@ def collect_metrics(args):
         metrics[filename]["errors"] = True
         return True, filename, mh, metrics
 
+    # Check file metrics
+
+    for file_metric in config.FILE_METRICS:
+        if config.metric_check(cfg, file_metric):
+            measured = metrics[filename]["metrics"][file_metric]
+            limit = config.metric_upper_limit(cfg, file_metric)
+            if measured > limit:
+                mh.metric_issue(Location(filename),
+                                "exceeded %s: measured %u > limit %u" %
+                                (file_metric, measured, limit))
+
     # Collect function metrics
 
-    metrics[filename]["functions"] = get_function_metrics(parse_tree)
+    metrics[filename]["functions"] = get_function_metrics(mh, cfg, parse_tree)
 
     # Return results
 
@@ -147,7 +158,7 @@ def npath(node):
         raise ICE("unexpected node")
 
 
-def get_function_metrics(tree):
+def get_function_metrics(mh, cfg, tree):
     assert isinstance(tree, Compilation_Unit)
 
     metrics = {}
@@ -161,6 +172,18 @@ def get_function_metrics(tree):
         metrics[name] = {
             "npath" : npath(n_fdef.n_body),
         }
+
+        # Check function metrics
+
+        for function_metric in config.FUNCTION_METRICS:
+            if config.metric_check(cfg, function_metric):
+                measured = metrics[name][function_metric]
+                limit = config.metric_upper_limit(cfg, function_metric)
+                if measured > limit:
+                    mh.metric_issue(
+                        n_fdef.t_fun.location,
+                        "function exceeded %s: measured %u > limit %u" %
+                        (function_metric, measured, limit))
 
     class Function_Visitor(AST_Visitor):
         def __init__(self):
@@ -220,7 +243,7 @@ def main():
         print("Code metrics for file %s:" % filename)
         if metrics["errors"]:
             print("  Contains syntax or semantics errors!")
-        print("  Lines: %u" % metrics["metrics"]["lines"])
+        print("  Lines: %u" % metrics["metrics"]["file_length"])
         for function in sorted(metrics["functions"]):
             f_metrics = metrics["functions"][function]
             print("  Code metrics for function %s:" % function)

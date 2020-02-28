@@ -45,9 +45,43 @@
       </div>
 
       <div>
-        Currently, metrics are printed on standard out. In a future
+        Currently, metrics are reported on standard out. In a future
         release other formats (HTML report, json, csv, etc.) will be
         supported.
+      </div>
+    </section>
+
+    <section>
+      <h2>Enforcing limits</h2>
+      <div>
+        By default metrics are just reported. If you want to enforce
+        limits on a metric you can do this in the configuration files.
+        Currently there is not way to justify exceeding metrics, but
+        this is planned in a future release.
+      </div>
+
+      <div>
+        For example, to limit the number of paths for each function,
+        you add this this to your configuration file:
+        <pre>metric "npath": limit 5</pre>
+      </div>
+
+      <div>
+        As with other configuration, these limits propagate to
+        sub-directories. You can change these limits on a more local
+        bases (just like with style rules).
+      </div>
+
+      <div>
+        To turn off limit checking for a specific metric (the default
+        for all metrics), you can use the report directive:
+        <pre>metric "npath": report</pre> A future release will
+        include a mechanism to completely disable a metric as well.
+      </div>
+
+      <div>
+        In the description for each metric below, the name of the
+        metric to use in config files is included in parenthesis.
       </div>
     </section>
 
@@ -62,7 +96,7 @@
         These metrics are computed for each file.
       </div>
 
-      <h3>Lines</h3>
+      <h3>Lines ("file_length")</h3>
       <div>
         The number of lines. Should be the equivalent to running the
         standard UNIX tool <span class="file">wc -l</span>. This means
@@ -76,7 +110,7 @@
         and method.
       </div>
 
-      <h3>Path count</h3>
+      <h3>Path count ("npath")</h3>
       <div>
         This approximates the number of paths through a function. This
         metric is based

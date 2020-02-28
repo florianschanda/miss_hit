@@ -1,0 +1,12 @@
+=== PLAIN MODE ===
+test.m: metric: exceeded file_length: measured 25 > limit 10
+In test.m, line 12
+| function y = test_2 (x)
+| ^^^^^^^^ metric: function exceeded npath: measured 8 > limit 5
+Code metrics for file test.m:
+  Lines: 25
+  Code metrics for function test_1:
+    Path count: 4
+  Code metrics for function test_2:
+    Path count: 8
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

@@ -101,93 +101,141 @@ class Config_Parser:
         else:
             return False
 
+    def parse_generic_entry(self, cfg):
+        self.match("IDENTIFIER")
+        t_key = self.ct
+        key = self.ct.value
+        value = None
+        self.match("COLON")
+
+        if key == "enable_rule":
+            self.match("STRING")
+            value = self.ct.value
+            if value not in config.STYLE_RULES:
+                self.mh.error(self.ct.location,
+                              "unknown rule")
+                # TODO: Use difflib to find a likely one
+
+        elif key not in cfg:
+            self.mh.error(t_key.location,
+                          "unknown option %s" % key)
+
+        elif isinstance(cfg[key], int):
+            self.match("NUMBER")
+            try:
+                value = int(self.ct.value)
+            except ValueError:
+                self.mh.error(self.ct.location,
+                              "%s option requires an integer" % key)
+
+        elif isinstance(cfg[key], bool):
+            self.match("NUMBER")
+            if self.ct.value in ("0", "1"):
+                value = self.ct.value == "1"
+            else:
+                self.mh.error(self.ct.location,
+                              "boolean option %s requires 0 or 1" %
+                              key)
+
+        elif isinstance(cfg[key], set):
+            self.match("STRING")
+            value = self.ct.value
+
+            if key == "exclude_dir":
+                if os.path.basename(value) != value or \
+                   not os.path.isdir(os.path.join(self.dirname,
+                                                  value)):
+                    self.mh.error(self.ct.location,
+                                  "must be a valid local directory")
+
+            elif key == "suppress_rule":
+                if value not in config.STYLE_RULES:
+                    self.mh.error(self.ct.location,
+                                  "unknown rule")
+                    # TODO: Use difflib to find a likely one
+
+        elif isinstance(cfg[key], str):
+            self.match("STRING")
+            value = self.ct.value
+
+            if key.startswith("regex"):
+                # If this is supposed to be a regex, we can
+                # check in advance if it compiles or not. On
+                # failure we can feed back the error using our
+                # own error system.
+                try:
+                    re.compile(value)
+                except re.error as err:
+                    loc = deepcopy(self.ct.location)
+                    if err.colno is not None:
+                        loc.col_start += err.colno
+                        loc.col_end = loc.col_start
+
+                        self.mh.error(loc, err.msg)
+
+        if key == "enable_rule":
+            if value in cfg["suppress_rule"]:
+                cfg["suppress_rule"].remove(value)
+        elif isinstance(cfg[key], set):
+            cfg[key].add(value)
+        else:
+            cfg[key] = value
+
+    def parse_metric_entry(self, cfg):
+        self.match("IDENTIFIER", "metric")
+
+        self.match("STRING")
+        metric_name = self.ct.value
+
+        if metric_name in config.METRICS:
+            metric_info = config.METRICS[metric_name]
+        else:
+            self.mh.error(self.ct.location,
+                          "unknown metric '%s'" % metric_name)
+
+        self.match("COLON")
+
+        self.match("IDENTIFIER")
+        if self.ct.value == "limit":
+            self.match("NUMBER")
+            if metric_info["type"] != "int":
+                raise ICE("logic error: metric that is not an int")
+
+            try:
+                value = int(self.ct.value)
+            except ValueError:
+                self.mh.error(self.ct.location,
+                              "expected positive integer")
+            if value < 1:
+                self.mh.error(self.ct.location,
+                              "expected positive integer")
+
+            cfg["metrics"][metric_name] = {"max" : value}
+
+        elif self.ct.value == "report":
+            if metric_name in cfg["metrics"]:
+                del cfg["metrics"][metric_name]
+
+        else:
+            self.mh.error(self.ct.location,
+                          "expected report or limit")
+
     def parse_file(self, cfg):
         while self.nt:
             if self.nt.kind == "NEWLINE":
                 self.match("NEWLINE")
+                continue
+
+            if self.peek("IDENTIFIER", "metric"):
+                self.parse_metric_entry(cfg)
             else:
-                self.match("IDENTIFIER")
-                t_key = self.ct
-                key = self.ct.value
-                value = None
-                self.match("COLON")
+                self.parse_generic_entry(cfg)
 
-                if key == "enable_rule":
-                    self.match("STRING")
-                    value = self.ct.value
-                    if value not in config.STYLE_RULES:
-                        self.mh.error(self.ct.location,
-                                      "unknown rule")
-                        # TODO: Use difflib to find a likely one
-
-                elif key not in cfg:
-                    self.mh.error(t_key.location,
-                                  "unknown option %s" % key)
-
-                elif isinstance(cfg[key], int):
-                    self.match("NUMBER")
-                    try:
-                        value = int(self.ct.value)
-                    except ValueError:
-                        self.mh.error(self.ct.location,
-                                      "%s option requires an integer" % key)
-
-                elif isinstance(cfg[key], bool):
-                    self.match("NUMBER")
-                    if self.ct.value in ("0", "1"):
-                        value = self.ct.value == "1"
-                    else:
-                        self.mh.error(self.ct.location,
-                                      "boolean option %s requires 0 or 1" %
-                                      key)
-
-                elif isinstance(cfg[key], set):
-                    self.match("STRING")
-                    value = self.ct.value
-
-                    if key == "exclude_dir":
-                        if os.path.basename(value) != value or \
-                           not os.path.isdir(os.path.join(self.dirname,
-                                                          value)):
-                            self.mh.error(self.ct.location,
-                                          "must be a valid local directory")
-
-                    elif key == "suppress_rule":
-                        if value not in config.STYLE_RULES:
-                            self.mh.error(self.ct.location,
-                                          "unknown rule")
-                            # TODO: Use difflib to find a likely one
-
-                elif isinstance(cfg[key], str):
-                    self.match("STRING")
-                    value = self.ct.value
-
-                    if key.startswith("regex"):
-                        # If this is supposed to be a regex, we can
-                        # check in advance if it compiles or not. On
-                        # failure we can feed back the error using our
-                        # own error system.
-                        try:
-                            re.compile(value)
-                        except re.error as err:
-                            loc = deepcopy(self.ct.location)
-                            if err.colno is not None:
-                                loc.col_start += err.colno
-                                loc.col_end = loc.col_start
-                            self.mh.error(loc, err.msg)
-
-                if self.nt:
-                    self.match("NEWLINE")
-                else:
-                    self.match_eof()
-
-                if key == "enable_rule":
-                    if value in cfg["suppress_rule"]:
-                        cfg["suppress_rule"].remove(value)
-                elif isinstance(cfg[key], set):
-                    cfg[key].add(value)
-                else:
-                    cfg[key] = value
+            # Finished with this thing, now we expect a newline or EOF
+            if self.nt:
+                self.match("NEWLINE")
+            else:
+                self.match_eof()
 
 
 def load_config(mh, cfg_file, cfg):

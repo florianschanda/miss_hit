@@ -42,6 +42,7 @@ BASE_CONFIG = {
     "file_length"         : 1000,
     "line_length"         : 80,
     "tab_width"           : 4,
+    "metrics"             : {}
 }
 
 STYLE_RULES = {
@@ -82,9 +83,49 @@ STYLE_RULES = {
                             " complain about brackets added for clarity."),
 }
 
+METRICS = {
+    "file_length" : {
+        "kind" : "file",
+        "type" : "int",
+        "help" : "Number of lines in each file.",
+    },
+    "npath" : {
+        "kind" : "function",
+        "type" : "int",
+        "help" : ("Approximation for maximum number of paths in"
+                  " function."),
+    }
+}
+FILE_METRICS = sorted(metric
+                      for metric in METRICS
+                      if METRICS[metric]["kind"] == "file")
+FUNCTION_METRICS = sorted(metric
+                          for metric in METRICS
+                          if METRICS[metric]["kind"] == "function")
+
 
 def active(cfg, rule):
     assert isinstance(cfg, dict)
     assert isinstance(rule, str)
     assert rule in STYLE_RULES
     return rule not in cfg["suppress_rule"]
+
+
+def metric_check(cfg, metric):
+    assert isinstance(cfg, dict)
+    assert isinstance(metric, str)
+    assert metric in METRICS
+
+    return metric in cfg["metrics"]
+
+
+def metric_upper_limit(cfg, metric):
+    assert isinstance(cfg, dict)
+    assert isinstance(metric, str)
+    assert metric in METRICS
+    assert METRICS[metric]["type"] == "int"
+
+    if metric in cfg["metrics"]:
+        return cfg["metrics"][metric]["max"]
+    else:
+        return None
