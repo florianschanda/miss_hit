@@ -1,6 +1,8 @@
 === PLAIN MODE ===
 Code metrics for file file_1.m:
   Lines: 18
+  Code metrics for function file_1:
+    Path count: 1
 Code metrics for file file_2.m:
   Lines: 11
   Code metrics for function kitten:

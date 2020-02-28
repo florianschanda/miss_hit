@@ -166,35 +166,56 @@ def get_function_metrics(mh, cfg, tree):
     def process_function(n_fdef, naming_stack):
         assert isinstance(n_fdef, Function_Definition)
 
-        # We need a unique name for the function for this file.
+        # We need a unique name for the function for this function.
         name = "::".join(map(str, naming_stack + [n_fdef.n_sig.n_name]))
 
         metrics[name] = {
             "npath" : npath(n_fdef.n_body),
         }
 
-        # Check function metrics
+        return name
 
-        for function_metric in config.FUNCTION_METRICS:
-            if config.metric_check(cfg, function_metric):
-                measured = metrics[name][function_metric]
-                limit = config.metric_upper_limit(cfg, function_metric)
-                if measured > limit:
-                    mh.metric_issue(
-                        n_fdef.t_fun.location,
-                        "function exceeded %s: measured %u > limit %u" %
-                        (function_metric, measured, limit))
+    def process_script(n_script):
+        assert isinstance(n_script, Script_File)
+
+        # We need a unique name for the script
+        name = n_script.name.rsplit(".")[0]
+
+        metrics[name] = {
+            "npath" : npath(n_script.n_statements),
+        }
+
+        return name
 
     class Function_Visitor(AST_Visitor):
         def __init__(self):
             self.name_stack = []
 
         def visit(self, node, n_parent, relation):
+            name = None
             if isinstance(node, Function_Definition):
-                process_function(node, self.name_stack)
+                name = process_function(node, self.name_stack)
+                loc = node.t_fun.location
                 self.name_stack.append(node.n_sig.n_name)
             elif isinstance(node, Class_Definition):
                 self.name_stack.append(node.n_name)
+            elif isinstance(node, Script_File):
+                name = process_script(node)
+                loc = Location(node.name)
+                self.name_stack.append(node.name)
+
+            # Check function metrics
+
+            if name is not None:
+                for function_metric in config.FUNCTION_METRICS:
+                    if config.metric_check(cfg, function_metric):
+                        measured = metrics[name][function_metric]
+                        limit = config.metric_upper_limit(cfg, function_metric)
+                        if measured > limit:
+                            mh.metric_issue(
+                                loc,
+                                "exceeded %s: measured %u > limit %u" %
+                                (function_metric, measured, limit))
 
         def visit_end(self, node, n_parent, relation):
             if isinstance(node, Definition):

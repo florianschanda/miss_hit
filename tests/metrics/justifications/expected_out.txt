@@ -1,0 +1,12 @@
+=== PLAIN MODE ===
+script_file.m: metric: exceeded npath: measured 8 > limit 5
+script_file_justified.m: metric: exceeded npath: measured 8 > limit 5
+Code metrics for file script_file.m:
+  Lines: 19
+  Code metrics for function script_file:
+    Path count: 8
+Code metrics for file script_file_justified.m:
+  Lines: 21
+  Code metrics for function script_file_justified:
+    Path count: 8
+MISS_HIT Summary: 2 file(s) analysed, everything seemes fine
