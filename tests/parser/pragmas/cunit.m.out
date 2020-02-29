@@ -1,8 +1,4 @@
-----------------------------------------------------------------------
---  Parse tree for cunit.m
-Root: Class_File
-  Pragmas: Simple_Pragma debug_pragma <None>
-  Classdef: Class_Definition
-    Name: Identifier <cunit>
-----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+In cunit.m, line 4
+| % mh:debug_pragma
+| ^^^^^^^^^^^^^^^^^ error: invalid miss_hit pragma: unknown tool 'debug_pragma'
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

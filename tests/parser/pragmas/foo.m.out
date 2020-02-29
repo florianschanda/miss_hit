@@ -1,15 +1,4 @@
-----------------------------------------------------------------------
---  Parse tree for foo.m
-Root: Function_File
-  Functions: Function_Definition
-    Signature: Function_Signature
-      Name: Identifier <foo>
-      Inputs: Identifier <x>
-      Outputs: Identifier <v>
-    Body: Sequence_Of_Statements
-      Statements: Simple_Pragma flow <unused x, "we dont' need x here, thanks">
-      Statements: Simple_Assignment_Statement
-        LHS: Identifier <v>
-        RHS: Number_Literal <12>
-----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+In foo.m, line 4
+|     % mh:flow:unused x, "we dont' need x here, thanks"
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ error: invalid miss_hit pragma: unknown tool 'flow:unused'
+MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

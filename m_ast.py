@@ -1830,28 +1830,32 @@ class Import_Statement(Simple_Statement):
 
 
 class Simple_Pragma(Pragma):
-    def __init__(self, t_pragma):
+    def __init__(self, t_pragma, tool):
         super().__init__()
         assert isinstance(t_pragma, MATLAB_Token)
         assert t_pragma.kind == "PRAGMA"
         assert t_pragma.raw_text.startswith("% mh:")
+        assert isinstance(tool, str)
 
         self.t_pragma = t_pragma
         self.t_pragma.set_ast(self)
-        # The token for the miss_hit pragma
 
-        content = t_pragma.raw_text[5:].strip()
-        sections = content.split(":", 1)
-
-        self.category = sections[0]
-        if len(sections) > 1:
-            self.pragma = sections[1]
-        else:
-            self.pragma = None
+        self.tool = tool
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self._visit_end(parent, function, relation)
+
+
+class Metric_Justification_Pragma(Simple_Pragma):
+    def __init__(self, t_pragma, metric, reason):
+        super().__init__(t_pragma, "metric")
+        assert isinstance(metric, str)
+        assert metric in config.METRICS
+        assert isinstance(reason, str)
+
+        self.metric = metric
+        self.reason = reason
 
 
 ##############################################################################
@@ -2338,9 +2342,9 @@ class Text_Visitor(AST_Visitor):
                             " for " +
                             ".".join(node.get_chain_strings()),
                             relation)
-        elif isinstance(node, Simple_Pragma):
+        elif isinstance(node, Metric_Justification_Pragma):
             self.write_head(node.__class__.__name__ +
-                            " %s <%s>" % (node.category, node.pragma),
+                            " for %s: %s" % (node.metric, node.reason),
                             relation)
         else:
             self.write_head(node.__class__.__name__,

@@ -366,6 +366,50 @@ class MATLAB_Parser:
                                     True)
                 terminator.fix.delete = True
 
+    def parse_pragma(self):
+        def chop(txt):
+            if " " in txt:
+                return txt.split(" ", 1)
+            else:
+                return (txt, None)
+
+        self.match("PRAGMA")
+        t_pragma = self.ct
+
+        if not t_pragma.raw_text.startswith("% mh:"):
+            raise ICE("pragma does not start with standard prefix")
+
+        pragma_code = t_pragma.raw_text[5:]
+        tool, pragma_code = chop(pragma_code)
+
+        if tool not in ("metric",):
+            self.mh.error(t_pragma.location,
+                          "invalid miss_hit pragma: unknown tool '%s'" %
+                          tool)
+
+        action, pragma_code = chop(pragma_code)
+        if action not in ("justify",):
+            self.mh.error(t_pragma.location,
+                          "invalid miss_hit pragma: unknown action '%s'" %
+                          action)
+
+        metric, pragma_code = chop(pragma_code)
+        metric = metric.rstrip(":")
+        if metric not in config.METRICS:
+            self.mh.error(t_pragma.location,
+                          "invalid miss_hit pragma: unknown metric '%s'" %
+                          metric)
+
+        reason = pragma_code
+        if not reason.strip().rstrip(".;,"):
+            self.mh.error(t_pragma.location,
+                          "invalid miss_hit pragma: missing reason")
+
+        rv = Metric_Justification_Pragma(t_pragma, metric, reason.strip())
+        self.match_eos(rv)
+
+        return rv
+
     def parse_identifier(self, allow_void):
         # identifier ::= <IDENTIFIER>
         #
@@ -483,9 +527,7 @@ class MATLAB_Parser:
             if self.peek("NEWLINE"):
                 self.next()
             elif self.peek("PRAGMA"):
-                self.match("PRAGMA")
-                l_pragmas.append(Simple_Pragma(self.ct))
-                self.match("NEWLINE")
+                l_pragmas.append(self.parse_pragma())
 
         if self.peek("KEYWORD", "function"):
             cunit = Function_File(os.path.basename(self.lexer.filename),
@@ -1022,10 +1064,7 @@ class MATLAB_Parser:
                               "expected valid statement,"
                               " found keyword '%s' instead" % self.nt.value)
         elif self.peek("PRAGMA"):
-            self.match("PRAGMA")
-            rv = Simple_Pragma(self.ct)
-            self.match_eos(rv)
-            return rv
+            return self.parse_pragma()
         elif self.peek("BANG"):
             self.match("BANG")
             t_bang = self.ct
