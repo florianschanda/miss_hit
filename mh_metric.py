@@ -38,82 +38,9 @@ from m_parser import MATLAB_Parser
 from m_ast import *
 
 
-def collect_metrics(args):
-    mh, filename, _, _ = args
-    assert isinstance(filename, str)
-
-    cfg = config_files.get_config(filename)
-    metrics = {filename: {"errors" : False,
-                          "metrics": {},
-                          "functions" : {}}}
-
-    if not cfg["enable"]:
-        mh.register_exclusion(filename)
-        return False, filename, mh, metrics
-
-    mh.register_file(filename)
-
-    # Do some file-based sanity checking
-
-    try:
-        if not os.path.exists(filename):
-            mh.error(Location(filename), "file does not exist")
-        if not os.path.isfile(filename):
-            mh.error(Location(filename), "is not a file")
-    except Error:
-        metrics[filename]["errors"] = True
-        return True, filename, mh, metrics
-
-    # Create lexer
-
-    try:
-        lexer = MATLAB_Lexer(mh, filename, encoding="cp1252")
-    except UnicodeDecodeError:
-        lexer = MATLAB_Lexer(mh, filename, encoding="utf8")
-    if cfg["octave"]:
-        lexer.set_octave_mode()
-    if cfg["ignore_pragmas"]:
-        lexer.process_pragmas = False
-
-    # We're dealing with an empty file here. Lets just not do anything
-
-    if len(lexer.text.strip()) == 0:
-        return True, filename, mh, metrics
-
-    # File metrics
-
-    metrics[filename]["metrics"] = {
-        "file_length" : len(lexer.context_line),
-    }
-
-    # Create parse tree
-
-    try:
-        parser = MATLAB_Parser(mh, lexer, cfg)
-        parse_tree = parser.parse_file()
-    except Error:
-        metrics[filename]["errors"] = True
-        return True, filename, mh, metrics
-
-    # Check file metrics
-
-    for file_metric in config.FILE_METRICS:
-        if config.metric_check(cfg, file_metric):
-            measured = metrics[filename]["metrics"][file_metric]
-            limit = config.metric_upper_limit(cfg, file_metric)
-            if measured > limit:
-                mh.metric_issue(Location(filename),
-                                "exceeded %s: measured %u > limit %u" %
-                                (file_metric, measured, limit))
-
-    # Collect function metrics
-
-    metrics[filename]["functions"] = get_function_metrics(mh, cfg, parse_tree)
-
-    # Return results
-
-    return True, filename, mh, metrics
-
+##############################################################################
+# Metrics
+##############################################################################
 
 def npath(node):
     assert isinstance(node, (Sequence_Of_Statements,
@@ -158,10 +85,78 @@ def npath(node):
         raise ICE("unexpected node")
 
 
+##############################################################################
+# Infrastructure
+##############################################################################
+
+def check_metric(mh, cfg, loc, metric, metrics, justifications):
+    if config.metric_check(cfg, metric):
+        measured = metrics[metric]
+        limit = config.metric_upper_limit(cfg, metric)
+        if measured > limit:
+            if metric in justifications:
+                mh.metric_justifications += 1
+                justifications[metric].applies = True
+            else:
+                mh.metric_issue(loc,
+                                "exceeded %s: measured %u > limit %u" %
+                                (metric, measured, limit))
+
+
+def get_justifications(mh, n_root):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(n_root, Sequence_Of_Statements)
+
+    justifications = {}
+
+    for n_statement in n_root.l_statements:
+        if isinstance(n_statement, Metric_Justification_Pragma):
+            if n_statement.metric in justifications:
+                mh.warning(n_statement.t_pragma.location,
+                           "duplicate justification for %s" %
+                           n_statement.metric)
+            else:
+                justifications[n_statement.metric] = n_statement
+
+    return justifications
+
+
+def get_file_justifications(mh, n_cu):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(n_cu, Compilation_Unit)
+
+    justifications = {}
+
+    if isinstance(n_cu, Script_File):
+        # Pragmas are in the top statement list
+        for n_statement in n_cu.n_statements.l_statements:
+            if isinstance(n_statement, Metric_Justification_Pragma):
+                if n_statement.metric in justifications:
+                    mh.warning(n_statement.t_pragma.location,
+                               "duplicate justification for %s" %
+                               n_statement.metric)
+                else:
+                    justifications[n_statement.metric] = n_statement
+
+    else:
+        # Pragmas are in the dedicated file pragma list
+        for n_pragma in n_cu.l_pragmas:
+            if isinstance(n_pragma, Metric_Justification_Pragma):
+                if n_pragma.metric in justifications:
+                    mh.warning(n_pragma.t_pragma.location,
+                               "duplicate justification for %s" %
+                               n_pragma.metric)
+                else:
+                    justifications[n_pragma.metric] = n_pragma
+
+    return justifications
+
+
 def get_function_metrics(mh, cfg, tree):
     assert isinstance(tree, Compilation_Unit)
 
     metrics = {}
+    justifications = {}
 
     def process_function(n_fdef, naming_stack):
         assert isinstance(n_fdef, Function_Definition)
@@ -172,6 +167,8 @@ def get_function_metrics(mh, cfg, tree):
         metrics[name] = {
             "npath" : npath(n_fdef.n_body),
         }
+
+        justifications[name] = get_justifications(mh, n_fdef.n_body)
 
         return name
 
@@ -184,6 +181,8 @@ def get_function_metrics(mh, cfg, tree):
         metrics[name] = {
             "npath" : npath(n_script.n_statements),
         }
+
+        justifications[name] = get_justifications(mh, n_script.n_statements)
 
         return name
 
@@ -204,18 +203,13 @@ def get_function_metrics(mh, cfg, tree):
                 loc = Location(node.name)
                 self.name_stack.append(node.name)
 
-            # Check function metrics
+            # Check+justify function metrics
 
             if name is not None:
                 for function_metric in config.FUNCTION_METRICS:
-                    if config.metric_check(cfg, function_metric):
-                        measured = metrics[name][function_metric]
-                        limit = config.metric_upper_limit(cfg, function_metric)
-                        if measured > limit:
-                            mh.metric_issue(
-                                loc,
-                                "exceeded %s: measured %u > limit %u" %
-                                (function_metric, measured, limit))
+                    check_metric(mh, cfg, loc, function_metric,
+                                 metrics[name],
+                                 justifications[name])
 
         def visit_end(self, node, n_parent, relation):
             if isinstance(node, Definition):
@@ -223,6 +217,101 @@ def get_function_metrics(mh, cfg, tree):
 
     tree.visit(None, Function_Visitor(), "Root")
     return metrics
+
+
+def warn_unused_justifications(mh, n_cu):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(n_cu, Compilation_Unit)
+
+    class Justification_Visitor(AST_Visitor):
+        def __init__(self):
+            self.name_stack = []
+
+        def visit(self, node, n_parent, relation):
+            if isinstance(node, Metric_Justification_Pragma):
+                if not node.applies:
+                    mh.warning(node.t_pragma.location,
+                               "this justification does not apply to anything")
+
+    n_cu.visit(None, Justification_Visitor(), "Root")
+
+
+def collect_metrics(args):
+    mh, filename, _, _ = args
+    assert isinstance(filename, str)
+
+    cfg = config_files.get_config(filename)
+    metrics = {filename: {"errors" : False,
+                          "metrics": {},
+                          "functions" : {}}}
+
+    if not cfg["enable"]:
+        mh.register_exclusion(filename)
+        return False, filename, mh, metrics
+
+    mh.register_file(filename)
+
+    # Do some file-based sanity checking
+
+    try:
+        if not os.path.exists(filename):
+            mh.error(Location(filename), "file does not exist")
+        if not os.path.isfile(filename):
+            mh.error(Location(filename), "is not a file")
+    except Error:
+        metrics[filename]["errors"] = True
+        return True, filename, mh, metrics
+
+    # Create lexer
+
+    try:
+        lexer = MATLAB_Lexer(mh, filename, encoding="cp1252")
+    except UnicodeDecodeError:
+        lexer = MATLAB_Lexer(mh, filename, encoding="utf8")
+    if cfg["octave"]:
+        lexer.set_octave_mode()
+    if cfg["ignore_pragmas"]:
+        lexer.process_pragmas = False
+
+    # We're dealing with an empty file here. Lets just not do anything
+
+    if len(lexer.text.strip()) == 0:
+        return True, filename, mh, metrics
+
+    # Create parse tree
+
+    try:
+        parser = MATLAB_Parser(mh, lexer, cfg)
+        parse_tree = parser.parse_file()
+    except Error:
+        metrics[filename]["errors"] = True
+        return True, filename, mh, metrics
+
+    # File metrics
+
+    metrics[filename]["metrics"] = {
+        "file_length" : len(lexer.context_line),
+    }
+    justifications = {filename : get_file_justifications(mh, parse_tree)}
+
+    # Check+justify file metrics
+
+    for file_metric in config.FILE_METRICS:
+        check_metric(mh, cfg, Location(filename), file_metric,
+                     metrics[filename]["metrics"],
+                     justifications[filename])
+
+    # Collect, check, and justify function metrics
+
+    metrics[filename]["functions"] = get_function_metrics(mh, cfg, parse_tree)
+
+    # Complain about unused justifications
+
+    warn_unused_justifications(mh, parse_tree)
+
+    # Return results
+
+    return True, filename, mh, metrics
 
 
 def main():

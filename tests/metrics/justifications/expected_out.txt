@@ -1,12 +1,34 @@
 === PLAIN MODE ===
+function_file.m: metric: exceeded file_length: measured 24 > limit 10
+In function_file.m, line 3
+| function function_file
+| ^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
+In function_file.m, line 5
+|     % mh:metric justify npath: (invalid, does not apply)
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ warning: this justification does not apply to anything
+In function_file.m, line 24
+| % mh:metric justify npath: (invalid, does not apply)
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ warning: this justification does not apply to anything
+script_file.m: metric: exceeded file_length: measured 19 > limit 10
 script_file.m: metric: exceeded npath: measured 8 > limit 5
-script_file_justified.m: metric: exceeded npath: measured 8 > limit 5
+script_file_justified.m: metric: exceeded file_length: measured 22 > limit 10
+In script_file_justified.m, line 6
+|     % mh:metric justify file_length: potato
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ warning: this justification does not apply to anything
+Code metrics for file function_file.m:
+  Lines: 24
+  Code metrics for function function_file:
+    Path count: 8
+Code metrics for file function_file_justified.m:
+  Lines: 24
+  Code metrics for function function_file_justified:
+    Path count: 8
 Code metrics for file script_file.m:
   Lines: 19
   Code metrics for function script_file:
     Path count: 8
 Code metrics for file script_file_justified.m:
-  Lines: 21
+  Lines: 22
   Code metrics for function script_file_justified:
     Path count: 8
-MISS_HIT Summary: 2 file(s) analysed, everything seemes fine
+MISS_HIT Summary: 4 file(s) analysed, 5 metric deviations(s), 3 warning(s), 3 justified metric deviations(s)

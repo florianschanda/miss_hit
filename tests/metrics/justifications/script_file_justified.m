@@ -3,6 +3,7 @@
 % mh:metric justify npath: this seems fine
 
 if rand() > 0.5
+    % mh:metric justify file_length: potato
     disp heads;
 else
     disp tails;

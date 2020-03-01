@@ -133,6 +133,7 @@ class Message_Handler:
     def __init__(self):
         self.style_issues = 0
         self.metric_issues = 0
+        self.metric_justifications = 0
         self.warnings = 0
         self.errors = 0
         self.justified = 0
@@ -166,14 +167,15 @@ class Message_Handler:
         assert self.show_style    == other.show_style
         assert self.sort_messages == other.sort_messages
 
-        self.style_issues   += other.style_issues
-        self.metric_issues  += other.metric_issues
-        self.warnings       += other.warnings
-        self.errors         += other.errors
-        self.justified      += other.justified
-        self.file_count     += other.file_count
-        self.files          |= other.files
-        self.excluded_files |= other.excluded_files
+        self.style_issues          += other.style_issues
+        self.metric_issues         += other.metric_issues
+        self.metric_justifications += other.metric_justifications
+        self.warnings              += other.warnings
+        self.errors                += other.errors
+        self.justified             += other.justified
+        self.file_count            += other.file_count
+        self.files                 |= other.files
+        self.excluded_files        |= other.excluded_files
 
         for filename in other.messages:
             if filename not in self.messages:
@@ -295,6 +297,8 @@ class Message_Handler:
         stats = ["%u file(s) analysed" % self.file_count]
         if self.style_issues:
             stats.append("%u style issue(s)" % self.style_issues)
+        if self.metric_issues:
+            stats.append("%u metric deviations(s)" % self.metric_issues)
         if self.warnings:
             stats.append("%u warning(s)" % self.warnings)
         if self.errors:
@@ -303,6 +307,9 @@ class Message_Handler:
             stats.append("everything seemes fine")
         if self.justified > 0:
             stats.append("%u justified message(s)" % self.justified)
+        if self.metric_justifications > 0:
+            stats.append("%u justified metric deviations(s)" %
+                         self.metric_justifications)
         tmp += ", ".join(stats)
         if self.excluded_files:
             tmp += ("; %u file(s) excluded from analysis" %

@@ -1401,7 +1401,9 @@ def sanity_test(mh, filename):
 
 
 def lexer_test_main():
+    # pylint: disable=import-outside-toplevel
     from argparse import ArgumentParser
+    # pylint: enable=import-outside-toplevel
     ap = ArgumentParser()
     ap.add_argument("file")
     options = ap.parse_args()

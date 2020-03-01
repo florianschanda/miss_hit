@@ -530,10 +530,11 @@ class MATLAB_Parser:
                 l_pragmas.append(self.parse_pragma())
 
         if self.peek("KEYWORD", "function"):
+            l_functions, l_more_pragmas = self.parse_function_list()
             cunit = Function_File(os.path.basename(self.lexer.filename),
-                                  self.parse_function_list(),
+                                  l_functions,
                                   self.lexer.in_class_directory,
-                                  l_pragmas)
+                                  l_pragmas + l_more_pragmas)
         elif self.peek("KEYWORD", "classdef") or self.lexer.in_class_directory:
             cunit = self.parse_class_file(l_pragmas)
         else:
@@ -554,38 +555,42 @@ class MATLAB_Parser:
             else:
                 statements.append(self.parse_statement())
 
-        l_functions = self.parse_function_list()
+        l_functions, l_more_pragmas = self.parse_function_list()
 
         rv = Script_File(os.path.basename(self.lexer.filename),
                          Sequence_Of_Statements(statements),
                          l_functions,
-                         l_pragmas)
+                         l_pragmas + l_more_pragmas)
 
         return rv
 
     def parse_class_file(self, l_pragmas):
         self.functions_require_end = True
 
-        n_classdef  = self.parse_classdef()
-        l_functions = self.parse_function_list()
+        n_classdef                  = self.parse_classdef()
+        l_functions, l_more_pragmas = self.parse_function_list()
 
         rv = Class_File(os.path.basename(self.lexer.filename),
                         n_classdef,
                         l_functions,
-                        l_pragmas)
+                        l_pragmas + l_more_pragmas)
         return rv
 
     def parse_function_list(self):
         l_functions = []
-        while self.peek("KEYWORD", "function"):
-            l_functions.append(self.parse_function_def())
+        l_pragmas = []
+        while self.peek("KEYWORD", "function") or self.peek("PRAGMA"):
+            if self.peek("PRAGMA"):
+                l_pragmas.append(self.parse_pragma())
+            else:
+                l_functions.append(self.parse_function_def())
 
         if not self.functions_require_end and l_functions:
             if len(l_functions) > 1:
                 raise ICE("logic error")
             l_functions = self.reorder_as_function_list(l_functions[0])
 
-        return l_functions
+        return l_functions, l_pragmas
 
     def reorder_as_function_list(self, n_fdef):
         # To deal with the special case where none of the functions
@@ -1929,7 +1934,9 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
 
 
 def parser_test_main():
+    # pylint: disable=import-outside-toplevel
     from argparse import ArgumentParser
+    # pylint: enable=import-outside-toplevel
     ap = ArgumentParser()
     ap.add_argument("file")
     ap.add_argument("--no-tb",

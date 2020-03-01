@@ -1857,6 +1857,12 @@ class Metric_Justification_Pragma(Simple_Pragma):
         self.metric = metric
         self.reason = reason
 
+        self.applies = False
+        # Is set to true by mh_metric if this pragma successfully
+        # justifies a metrics violation. That way we can do a tree
+        # walk at the end and complain about all pragmas that don't
+        # actually do something.
+
 
 ##############################################################################
 # Literals
