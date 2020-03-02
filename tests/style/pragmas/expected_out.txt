@@ -1,15 +1,8 @@
 === PLAIN MODE ===
-foo.m: error: file is not auto-fixed because it contains parse errors
-In foo.m, line 4
-|     % mh:flow:unused x, "we dont' need x here, thanks"
-|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ error: invalid miss_hit pragma: unknown tool 'flow:unused'
-In foo.m, line 4
-|     % mh:flow:unused x, "we dont' need x here, thanks"
-|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
-In foo.m, line 5
-|     v = 12;
-|     ^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s), 2 error(s)
+In foo.m, line 3
+| function v = foo(x)
+|              ^^^ style: violates naming scheme for function
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s), 1 error(s)
+MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)

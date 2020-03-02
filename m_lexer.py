@@ -128,6 +128,13 @@ class MATLAB_Lexer(Token_Generator):
         # must *not* add a comma after the ) if it occurs in a matrix
         # or cell. This is a temporary override for add_comma.
 
+        self.in_annotation = False
+        # The MISS_HIT annotation language is another major change in
+        # how we lex things. If set, we don't process command form and
+        # tokens produced will have the annotation flag
+        # set. Annotations technically are MATLAB comments, so this
+        # produces tokens from things inside those comments.
+
         self.delay_list = []
         # See token() for a description.
 
@@ -269,7 +276,8 @@ class MATLAB_Lexer(Token_Generator):
                                                 fake_line),
                                        False,
                                        False,
-                                       anonymous = True)
+                                       anonymous = True,
+                                       annotation = self.in_annotation)
             self.last_kind = "COMMA"
             self.last_value = ","
             return token
@@ -443,22 +451,35 @@ class MATLAB_Lexer(Token_Generator):
         else:
             # Ordinary lexing
 
-            if self.cc in self.comment_char:
+            if self.cc in self.comment_char and \
+               self.nc == "|" and \
+               self.first_in_line and \
+               self.process_pragmas:
+                # '%|' on its own in a new line begins an annotation.
+                self.in_annotation = True
+                kind = "ANNOTATION"
+                self.next()
+
+            elif self.cc in self.comment_char:
                 # Comments go until the end of the line
                 kind = "COMMENT"
                 while self.nc not in ("\n", "\0"):
                     self.next()
 
             elif self.cc == "\n":
-                # Newlines are summarised into one token
+                # Newlines are summarised into one token, except if
+                # we're in annotation mode
                 kind = "NEWLINE"
-                while self.nc in ("\n", " ", "\t"):
-                    self.next()
+                if self.in_annotation:
+                    pass
+                else:
+                    while self.nc in ("\n", " ", "\t"):
+                        self.next()
 
             elif self.cc == ";":
                 kind = "SEMICOLON"
 
-            elif self.cc == "." and self.nc == ".":
+            elif not self.in_annotation and self.cc == "." and self.nc == ".":
                 # This is a continuation
                 self.next()
                 if self.nc == ".":
@@ -722,7 +743,8 @@ class MATLAB_Lexer(Token_Generator):
                                    self.first_in_line,
                                    self.first_in_statement,
                                    value = value,
-                                   contains_quotes = contains_quotes)
+                                   contains_quotes = contains_quotes,
+                                   annotation = self.in_annotation)
         self.first_in_line = False
         self.first_in_statement = False
 
@@ -735,6 +757,7 @@ class MATLAB_Lexer(Token_Generator):
         if kind == "NEWLINE":
             self.line += token.raw_text.count("\n")
             self.first_in_line = True
+            self.in_annotation = False
         elif kind == "CONTINUATION":
             self.line += 1
             self.first_in_line = True
@@ -743,6 +766,7 @@ class MATLAB_Lexer(Token_Generator):
         # character is not a space, it's never a command.
         if not self.config_file_mode and \
            not self.in_special_section and \
+           not self.in_annotation and \
            token.first_in_statement and \
            token.kind == "IDENTIFIER" and \
            self.nc in (" ", "\t"):
@@ -1389,6 +1413,8 @@ def sanity_test(mh, filename):
                         "L" if tok.first_in_line else " ")
                 else:
                     txt = ""
+                if tok.annotation:
+                    txt += "ANNOTATION "
                 txt += tok.kind
                 if tok.value is not None and tok.value != tok.raw_text:
                     txt += " " + repr(tok.value)

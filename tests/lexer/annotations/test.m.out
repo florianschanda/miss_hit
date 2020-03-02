@@ -1,0 +1,121 @@
+In test.m, line 1
+| x = 1;
+| ^ info: [SL] IDENTIFIER
+In test.m, line 1
+| x = 1;
+|   ^ info: ASSIGNMENT
+In test.m, line 1
+| x = 1;
+|     ^ info: NUMBER
+In test.m, line 1
+| x = 1;
+|      ^ info: SEMICOLON
+In test.m, line 1
+| x = 1;
+|       ^ info: [S ] NEWLINE
+In test.m, line 2
+| %| pragma Justify(metric, "npath",
+| ^^ info: [SL] ANNOTATION ANNOTATION
+In test.m, line 2
+| %| pragma Justify(metric, "npath",
+|    ^^^^^^ info: ANNOTATION IDENTIFIER
+In test.m, line 2
+| %| pragma Justify(metric, "npath",
+|           ^^^^^^^ info: ANNOTATION IDENTIFIER
+In test.m, line 2
+| %| pragma Justify(metric, "npath",
+|                  ^ info: ANNOTATION BRA
+In test.m, line 2
+| %| pragma Justify(metric, "npath",
+|                   ^^^^^^ info: ANNOTATION IDENTIFIER
+In test.m, line 2
+| %| pragma Justify(metric, "npath",
+|                         ^ info: ANNOTATION COMMA
+In test.m, line 2
+| %| pragma Justify(metric, "npath",
+|                           ^^^^^^^ info: ANNOTATION STRING 'npath'
+In test.m, line 2
+| %| pragma Justify(metric, "npath",
+|                                  ^ info: ANNOTATION COMMA
+In test.m, line 2
+| %| pragma Justify(metric, "npath",
+|                                   ^ info: ANNOTATION NEWLINE
+In test.m, line 3
+| %|                "this is" + "ok");
+| ^^ info: [ L] ANNOTATION ANNOTATION
+In test.m, line 3
+| %|                "this is" + "ok");
+|                   ^^^^^^^^^ info: ANNOTATION STRING 'this is'
+In test.m, line 3
+| %|                "this is" + "ok");
+|                             ^ info: ANNOTATION OPERATOR
+In test.m, line 3
+| %|                "this is" + "ok");
+|                               ^^^^ info: ANNOTATION STRING 'ok'
+In test.m, line 3
+| %|                "this is" + "ok");
+|                                   ^ info: ANNOTATION KET
+In test.m, line 3
+| %|                "this is" + "ok");
+|                                    ^ info: ANNOTATION SEMICOLON
+In test.m, line 3
+| %|                "this is" + "ok");
+|                                     ^ info: [S ] ANNOTATION NEWLINE
+test.m:4:0: info: [SL] NEWLINE
+In test.m, line 5
+| foo
+| ^^^ info: [SL] IDENTIFIER
+In test.m, line 5
+| foo
+|    ^ info: NEWLINE
+In test.m, line 7
+| %| bar
+| ^^ info: [SL] ANNOTATION ANNOTATION
+In test.m, line 7
+| %| bar
+|    ^^^ info: ANNOTATION IDENTIFIER
+In test.m, line 7
+| %| bar
+|       ^ info: ANNOTATION NEWLINE
+In test.m, line 8
+| %  bar
+| ^^^^^^ info: [SL] COMMENT 'bar'
+In test.m, line 8
+| %  bar
+|       ^ info: NEWLINE
+In test.m, line 9
+| %| baz
+| ^^ info: [SL] ANNOTATION ANNOTATION
+In test.m, line 9
+| %| baz
+|    ^^^ info: ANNOTATION IDENTIFIER
+In test.m, line 9
+| %| baz
+|       ^ info: ANNOTATION NEWLINE
+test.m:10:0: info: [SL] NEWLINE
+In test.m, line 12
+| %| anno; %| comment
+| ^^ info: [SL] ANNOTATION ANNOTATION
+In test.m, line 12
+| %| anno; %| comment
+|    ^^^^ info: ANNOTATION IDENTIFIER
+In test.m, line 12
+| %| anno; %| comment
+|        ^ info: ANNOTATION SEMICOLON
+In test.m, line 12
+| %| anno; %| comment
+|          ^^^^^^^^^^ info: [S ] ANNOTATION COMMENT '| comment'
+In test.m, line 12
+| %| anno; %| comment
+|                    ^ info: ANNOTATION NEWLINE
+In test.m, line 13
+| %| %|
+| ^^ info: [SL] ANNOTATION ANNOTATION
+In test.m, line 13
+| %| %|
+|    ^^ info: ANNOTATION COMMENT '|'
+In test.m, line 13
+| %| %|
+|      ^ info: ANNOTATION NEWLINE
+test.m: lexed OK
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

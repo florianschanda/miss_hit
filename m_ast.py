@@ -105,7 +105,8 @@ class MATLAB_Token:
                  first_in_statement,
                  value = None,
                  anonymous = False,
-                 contains_quotes = False):
+                 contains_quotes = False,
+                 annotation = False):
         assert kind in TOKEN_KINDS
         assert isinstance(raw_text, str)
         assert isinstance(location, Location)
@@ -113,6 +114,7 @@ class MATLAB_Token:
         assert isinstance(first_in_statement, bool)
         assert isinstance(anonymous, bool)
         assert isinstance(contains_quotes, bool)
+        assert isinstance(annotation, bool)
         assert not contains_quotes or kind in ("STRING", "CARRAY")
 
         self.kind               = kind
@@ -122,6 +124,7 @@ class MATLAB_Token:
         self.first_in_statement = first_in_statement
         self.anonymous          = anonymous
         self.contains_quotes    = contains_quotes
+        self.annotation         = annotation
 
         if value is None:
             if self.kind in TOKENS_WITH_IMPLICIT_VALUE:

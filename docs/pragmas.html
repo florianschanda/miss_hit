@@ -42,6 +42,13 @@
 
     <section>
       <h2>Parametric pragmas</h2>
+      <div style='background-color: #fcc'>
+        Warning: parametric pragmas are currently in the design phase
+        and cannot be considered a stable feature. They might
+        disappear completely. Do not write code relying on this
+        feature.
+      </div>
+
       <div>
         There is an extended form of pragmas that can be extended in
         the future to also deal with other issues. The general syntax
@@ -88,6 +95,53 @@ function foo
         <pre>% mh:metric justify file_length: impossible to split up</pre>
       </div>
     </section>
+
+    <div class="title">
+      <img src="assets/file-text.svg" alt="Picture of text" />
+      <h1>Annotations</h1>
+    </div>
+
+    <section>
+      <h2>MISS_HIT Annotations</h2>
+      <div style='background-color: #fcc'>
+        Warning: annotations are currently in the design phase and
+        cannot be considered a stable feature. They might disappear
+        completely. Do not write code relying on this feature.
+      </div>
+
+      <div>
+        MISS_IT supports a special annotation language embedded inside
+        specially formatted MATLAB or Octave comments. An annotation
+        is introduce using a comment and the bar:
+        <pre>%| some_annotation</pre>
+      </div>
+
+      <div>
+        Annotations span until the end of the line. Annotations can be
+        multi-line as long as there is no other program text between:
+<pre>
+%| pragma Justification(metric, "npath",
+%|                      "multi-line example");
+</pre>
+      </div>
+
+      <div>
+        Annotation must be the first and only program text on a
+        line. For example the following program does not contain an
+        annotation:
+        <pre>x + 1; %| this is not an annotation</pre>
+      </div>
+
+      <div>
+        Annotations have most of the lexical features of MATLAB,
+        except that line continuations and command form do not
+        exist. You can even have comments (but not annotations) in
+        your annotation:
+        <pre>%| some_annotation; % comment</pre>
+      </div>
+
+    </section>
+
   </main>
 
   <footer>

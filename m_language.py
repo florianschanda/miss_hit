@@ -49,6 +49,7 @@ TOKEN_KINDS = frozenset([
     "METACLASS",       # ?
     "NVP_DELEGATE",    # .? (name value pair delegation)
     "PRAGMA",          # miss_hit pragma
+    "ANNOTATION",      # miss_hit annotation
 ])
 
 # As of MATLAB 2019b
