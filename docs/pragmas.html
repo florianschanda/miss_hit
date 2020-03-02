@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    MISS_HIT - MATLAB independent, small & safe, high integrity tools
+  </title>
+</head>
+
+<body>
+  <header>MISS_HIT Pragmas</header>
+
+  <main>
+    <div class="section">
+      The behaviour of the <a href="index.html">MISS_HIT</a> tools can
+      be controlled with pragmas (special comments that can be placed
+      in the source code). This document describes the syntax and
+      semantics of the pragmas.
+    </div>
+
+    <div class="title">
+      <img src="assets/file-text.svg" alt="Picture of text" />
+      <h1>One-line trivial pragmas</h1>
+    </div>
+
+    <section>
+      <h2>Style justification</h2>
+      <div>
+        You can justify style issues by placing a style justification
+        pragma on the same line the message occurs.
+        <pre>% mh:ignore_style</pre>
+      </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/file-text.svg" alt="Picture of text" />
+      <h1>One-line pragmas with parameters</h1>
+    </div>
+
+    <section>
+      <h2>Parametric pragmas</h2>
+      <div>
+        There is an extended form of pragmas that can be extended in
+        the future to also deal with other issues. The general syntax
+        is:
+        <pre>% mh:TOOL ACTION PARAMETER: REASON</pre>
+        The TOOL, ACTION, and PARAMETER are documented below. REASON is a
+        free-text explanation. It does not need to appear in quotes, the
+        REASON is everything after the colon to the end of the line.
+        Currently it is not possible to have a multi-line reason, but we
+        plan to add this in a future release.
+      </div>
+
+      <div>
+        These pragmas must appear on their own line, and they only apply
+        to the level of scope where they appear.
+      </div>
+
+      <div>
+        For example this is an appropriate metric justification, since
+        it applies to the function it appear is.
+<pre>
+function foo
+   % mh:metric justify npath: for testing purposes
+   if foo
+</pre>
+      </div>
+
+      <div>
+        This metric justification no longer applies to the function
+        foo since it does not appear in the top level of scope.
+<pre>
+function foo
+   if foo
+      % mh:metric justify npath: for testing purposes
+</pre>
+      </div>
+
+      <h2>Metric justification</h2>
+      <div>
+        Metric violations can be justified using a parametric
+        pragma. The TOOL is metric, the ACTION is justify and the
+        PARAMETER is the name of the metric, as listed in the
+        <a href="metrics.html">mh_metric manual</a>. For example:
+        <pre>% mh:metric justify file_length: impossible to split up</pre>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2020 Florian Schanda<br>
+    MISS_HIT is licensed under the GPLv3
+  </footer>
+</body>
+
+</html>

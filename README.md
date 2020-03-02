@@ -10,9 +10,9 @@ gap.
 If you have MATLAB in your production code and want to improve code
 quality then this tool-suite is for you.
 
-## Tools
+## Tools & Documentation
 
-All tools are documented here:
+All tools and language features are documented here:
 https://florianschanda.github.io/miss_hit/
 
 We intend to provide more tools later, please refer to the
@@ -30,6 +30,12 @@ for more information.
   A simple code metric tool for MATLAB or Octave code. See
   https://florianschanda.github.io/miss_hit/metrics.html for more
   information and a user manual.
+
+* Pragmas understood by MISS_HIT tools
+
+  The tools can be controlled with some special pragmas. See
+  https://florianschanda.github.io/miss_hit/pragmas.html for more
+  information.
 
 ## Installing and using MISS_HIT
 

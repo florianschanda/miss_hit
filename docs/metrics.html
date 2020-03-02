@@ -17,8 +17,7 @@
     <div class="section">
       <a href="index.html">MISS_HIT</a> includes a simple code metric
       tool (<span class="file">mh_metric.py</span>). It computes code
-      metrics and (in a future release) complains if the metrics
-      exceed acceptable levels.
+      metrics and complains if the metrics exceed acceptable levels.
     </div>
 
     <div class="title">
@@ -52,12 +51,10 @@
     </section>
 
     <section>
-      <h2>Enforcing limits</h2>
+      <h2>Configuring and enforcing limits</h2>
       <div>
         By default metrics are just reported. If you want to enforce
         limits on a metric you can do this in the configuration files.
-        Currently there is not way to justify exceeding metrics, but
-        this is planned in a future release.
       </div>
 
       <div>
@@ -82,6 +79,29 @@
       <div>
         In the description for each metric below, the name of the
         metric to use in config files is included in parenthesis.
+      </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/check-square.svg" alt="Justifications" />
+      <h1>Justifications</h1>
+    </div>
+
+    <section>
+      <div>
+        Metrics can be justified by placing a justification pragma at
+        the level of scope where the violation occurs. Please refer
+        to <a href="pragmas.html">MISS_HIT Pragmas</a> for a
+        full description of all pragmas understood by MISS_HIT.
+      </div>
+
+      <div>
+        For example:
+        <pre>% mh:metric justify file_length: impossible to split up</pre>
+      </div>
+
+      <div>
+        Justifications that are useless generate a warning.
       </div>
     </section>
 
