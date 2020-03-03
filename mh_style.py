@@ -580,6 +580,11 @@ def stage_3_analysis(mh, cfg, tbuf):
                     # not be subject to style checks
                     pass
 
+                elif token.raw_text.startswith("%|"):
+                    # This is a miss-hit pragma, but we've not
+                    # processed it. This is fine.
+                    pass
+
                 elif re.match("^%# +[a-zA-Z]", token.raw_text):
                     # This looks like a pragma, but there is a spurious
                     # space

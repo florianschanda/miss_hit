@@ -37,78 +37,11 @@
 
     <div class="title">
       <img src="assets/file-text.svg" alt="Picture of text" />
-      <h1>One-line pragmas with parameters</h1>
+      <h1>MISS_HIT Annotation language</h1>
     </div>
 
     <section>
-      <h2>Parametric pragmas</h2>
-      <div style='background-color: #fcc'>
-        Warning: parametric pragmas are currently in the design phase
-        and cannot be considered a stable feature. They might
-        disappear completely. Do not write code relying on this
-        feature.
-      </div>
-
-      <div>
-        There is an extended form of pragmas that can be extended in
-        the future to also deal with other issues. The general syntax
-        is:
-        <pre>% mh:TOOL ACTION PARAMETER: REASON</pre>
-        The TOOL, ACTION, and PARAMETER are documented below. REASON is a
-        free-text explanation. It does not need to appear in quotes, the
-        REASON is everything after the colon to the end of the line.
-        Currently it is not possible to have a multi-line reason, but we
-        plan to add this in a future release.
-      </div>
-
-      <div>
-        These pragmas must appear on their own line, and they only apply
-        to the level of scope where they appear.
-      </div>
-
-      <div>
-        For example this is an appropriate metric justification, since
-        it applies to the function it appear is.
-<pre>
-function foo
-   % mh:metric justify npath: for testing purposes
-   if foo
-</pre>
-      </div>
-
-      <div>
-        This metric justification no longer applies to the function
-        foo since it does not appear in the top level of scope.
-<pre>
-function foo
-   if foo
-      % mh:metric justify npath: for testing purposes
-</pre>
-      </div>
-
-      <h2>Metric justification</h2>
-      <div>
-        Metric violations can be justified using a parametric
-        pragma. The TOOL is metric, the ACTION is justify and the
-        PARAMETER is the name of the metric, as listed in the
-        <a href="metrics.html">mh_metric manual</a>. For example:
-        <pre>% mh:metric justify file_length: impossible to split up</pre>
-      </div>
-    </section>
-
-    <div class="title">
-      <img src="assets/file-text.svg" alt="Picture of text" />
-      <h1>Annotations</h1>
-    </div>
-
-    <section>
-      <h2>MISS_HIT Annotations</h2>
-      <div style='background-color: #fcc'>
-        Warning: annotations are currently in the design phase and
-        cannot be considered a stable feature. They might disappear
-        completely. Do not write code relying on this feature.
-      </div>
-
+      <h2>Introducing annotations</h2>
       <div>
         MISS_IT supports a special annotation language embedded inside
         specially formatted MATLAB or Octave comments. An annotation
@@ -139,6 +72,53 @@ function foo
         your annotation:
         <pre>%| some_annotation; % comment</pre>
       </div>
+
+      <h2>Pragma</h2>
+      <div>
+        Currently only a single annotation exists: justification
+        pragmas. These can appear in any place where normal program
+        statement can occur.
+      </div>
+
+      <div>
+        A miss-hit pragma has the following grammar:
+<pre>
+name ::= IDENTIFIER
+
+annotation_pragma ::= 'pragma' name '(' pragma_parameters ')' ';'
+                    | 'pragma' name ';'
+
+pragma_parameters ::= expression { ',' expression }
+</pre>
+      </div>
+
+      <h3>Justification pragmas</h3>
+      <div>
+        A justification pragma has the following signature:
+        <pre>pragma Justify(TOOL, PARAMETER, REASON);</pre>
+        Tool identifies the miss_hit tool and can be one of:
+        <ul>
+          <li>style</li>
+          <li>metric</li>
+        </ul>
+        The parameter is a tool-dependent identifier. Reason is a
+        plain-text human explanation for why this justification is
+        reasonable. Currently it must be a string literal, but in the
+        future this will allow any static string expression.
+      </div>
+
+      <h4>Metric justification pragmas</h4>
+      <div>
+        A metric justification pragma has the following signature:
+        <pre>pragma Justify(metric, METRIC_NAME, REASON);</pre> The
+        metric name must be a string to match one of
+        the <a href="metrics.html">documented metric names</a>. For example:
+<pre>
+%| pragma Justify(metric, "npath",
+%|                "code impossible to restructure");
+</pre>
+      </div>
+
 
     </section>
 

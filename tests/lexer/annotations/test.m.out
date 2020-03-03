@@ -18,7 +18,7 @@ In test.m, line 2
 | ^^ info: [SL] ANNOTATION ANNOTATION
 In test.m, line 2
 | %| pragma Justify(metric, "npath",
-|    ^^^^^^ info: ANNOTATION IDENTIFIER
+|    ^^^^^^ info: ANNOTATION KEYWORD
 In test.m, line 2
 | %| pragma Justify(metric, "npath",
 |           ^^^^^^^ info: ANNOTATION IDENTIFIER

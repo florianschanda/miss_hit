@@ -303,6 +303,21 @@ class Definition(Node):
 
 
 class Pragma(Node):
+    def __init__(self, t_pragma, t_kind):
+        super().__init__()
+        assert isinstance(t_pragma, MATLAB_Token)
+        assert t_pragma.kind == "KEYWORD" and t_pragma.value == "pragma"
+        assert isinstance(t_kind, MATLAB_Token)
+        assert t_kind.kind == "IDENTIFIER"
+
+        self.t_pragma = t_pragma
+        self.t_pragma.set_ast(self)
+        # The pragma token
+
+        self.t_kind = t_kind
+        self.t_kind.set_ast(self)
+        # The pragma kind
+
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Sequence_Of_Statements,
                                      Compilation_Unit))
@@ -325,12 +340,17 @@ class Compound_Statement(Statement):
 
 class Compilation_Unit(Node):
     # pylint: disable=unused-argument
-    def __init__(self, name):
+    def __init__(self, name, loc):
         super().__init__()
         assert isinstance(name, str)
+        assert isinstance(loc, Location)
 
         self.name = name
         # Not a node since it comes from the filename
+
+        self.error_location = loc
+        # In case we need to attach a message to the compilation unit
+        # itself
 
     def set_parent(self, n_parent):
         raise ICE("compilation unit cannot have a parent")
@@ -345,8 +365,8 @@ class Compilation_Unit(Node):
 
 
 class Script_File(Compilation_Unit):
-    def __init__(self, name, n_statements, l_functions, l_pragmas):
-        super().__init__(name)
+    def __init__(self, name, loc, n_statements, l_functions, l_pragmas):
+        super().__init__(name, loc)
         assert isinstance(n_statements, Sequence_Of_Statements)
         assert isinstance(l_functions, list)
         for n_function in l_functions:
@@ -390,8 +410,8 @@ class Script_File(Compilation_Unit):
 
 
 class Function_File(Compilation_Unit):
-    def __init__(self, name, l_functions, is_separate, l_pragmas):
-        super().__init__(name)
+    def __init__(self, name, loc, l_functions, is_separate, l_pragmas):
+        super().__init__(name, loc)
         assert isinstance(l_functions, list)
         assert len(l_functions) >= 1
         for n_function in l_functions:
@@ -432,8 +452,8 @@ class Function_File(Compilation_Unit):
 
 
 class Class_File(Compilation_Unit):
-    def __init__(self, name, n_classdef, l_functions, l_pragmas):
-        super().__init__(name)
+    def __init__(self, name, loc, n_classdef, l_functions, l_pragmas):
+        super().__init__(name, loc)
         assert isinstance(n_classdef, Class_Definition)
         assert isinstance(l_functions, list)
         for n_function in l_functions:
@@ -1832,39 +1852,45 @@ class Import_Statement(Simple_Statement):
                 for t in self.l_chain]
 
 
-class Simple_Pragma(Pragma):
-    def __init__(self, t_pragma, tool):
-        super().__init__()
-        assert isinstance(t_pragma, MATLAB_Token)
-        assert t_pragma.kind == "PRAGMA"
-        assert t_pragma.raw_text.startswith("% mh:")
-        assert isinstance(tool, str)
+class Metric_Justification_Pragma(Pragma):
+    def __init__(self, t_pragma, t_kind, t_tool, t_metric, n_reason):
+        super().__init__(t_pragma, t_kind)
+        assert isinstance(t_tool, MATLAB_Token)
+        assert t_tool.kind == "IDENTIFIER" and t_tool.value == "metric"
+        assert isinstance(t_metric, MATLAB_Token)
+        assert t_metric.kind == "STRING"
+        assert isinstance(n_reason, String_Literal)
 
-        self.t_pragma = t_pragma
-        self.t_pragma.set_ast(self)
+        self.t_tool = t_tool
+        self.t_tool.set_ast(self)
+        # The tool. Will always be 'metric' in this case. This will
+        # move out to general justification pragmas once we get there.
 
-        self.tool = tool
+        self.t_metric = t_metric
+        self.t_metric.set_ast(self)
+        # A string to identify the metric
 
-    def visit(self, parent, function, relation):
-        self._visit(parent, function, relation)
-        self._visit_end(parent, function, relation)
-
-
-class Metric_Justification_Pragma(Simple_Pragma):
-    def __init__(self, t_pragma, metric, reason):
-        super().__init__(t_pragma, "metric")
-        assert isinstance(metric, str)
-        assert metric in config.METRICS
-        assert isinstance(reason, str)
-
-        self.metric = metric
-        self.reason = reason
+        self.n_reason = n_reason
+        self.n_reason.set_parent(self)
+        # The reason why this deviation is OK. Currently just a string
+        # literal, but can be a string expression in the future.
 
         self.applies = False
         # Is set to true by mh_metric if this pragma successfully
         # justifies a metrics violation. That way we can do a tree
         # walk at the end and complain about all pragmas that don't
         # actually do something.
+
+    def metric(self):
+        return self.t_metric.value
+
+    def reason(self):
+        return self.n_reason.t_string.value
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self.n_reason.visit(self, function, "Reason")
+        self._visit_end(parent, function, relation)
 
 
 ##############################################################################
@@ -2353,7 +2379,7 @@ class Text_Visitor(AST_Visitor):
                             relation)
         elif isinstance(node, Metric_Justification_Pragma):
             self.write_head(node.__class__.__name__ +
-                            " for %s: %s" % (node.metric, node.reason),
+                            " for %s" % node.t_metric.value,
                             relation)
         else:
             self.write_head(node.__class__.__name__,

@@ -112,12 +112,12 @@ def get_justifications(mh, n_root):
 
     for n_statement in n_root.l_statements:
         if isinstance(n_statement, Metric_Justification_Pragma):
-            if n_statement.metric in justifications:
+            if n_statement.metric() in justifications:
                 mh.warning(n_statement.t_pragma.location,
                            "duplicate justification for %s" %
                            n_statement.metric)
             else:
-                justifications[n_statement.metric] = n_statement
+                justifications[n_statement.metric()] = n_statement
 
     return justifications
 
@@ -132,23 +132,23 @@ def get_file_justifications(mh, n_cu):
         # Pragmas are in the top statement list
         for n_statement in n_cu.n_statements.l_statements:
             if isinstance(n_statement, Metric_Justification_Pragma):
-                if n_statement.metric in justifications:
+                if n_statement.metric() in justifications:
                     mh.warning(n_statement.t_pragma.location,
                                "duplicate justification for %s" %
-                               n_statement.metric)
+                               n_statement.metric())
                 else:
-                    justifications[n_statement.metric] = n_statement
+                    justifications[n_statement.metric()] = n_statement
 
     else:
         # Pragmas are in the dedicated file pragma list
         for n_pragma in n_cu.l_pragmas:
             if isinstance(n_pragma, Metric_Justification_Pragma):
-                if n_pragma.metric in justifications:
+                if n_pragma.metric() in justifications:
                     mh.warning(n_pragma.t_pragma.location,
                                "duplicate justification for %s" %
-                               n_pragma.metric)
+                               n_pragma.metric())
                 else:
-                    justifications[n_pragma.metric] = n_pragma
+                    justifications[n_pragma.metric()] = n_pragma
 
     return justifications
 
@@ -201,7 +201,7 @@ def get_function_metrics(mh, cfg, tree):
                 self.name_stack.append(node.n_name)
             elif isinstance(node, Script_File):
                 name = process_script(node)
-                loc = Location(node.name)
+                loc = node.error_location
                 self.name_stack.append(node.name)
 
             # Check+justify function metrics
@@ -378,11 +378,12 @@ def main():
         fd.write("Code metrics for file %s:\n" % filename)
         if metrics["errors"]:
             fd.write("  Contains syntax or semantics errors!\n")
-        fd.write("  Lines: %u\n" % metrics["metrics"]["file_length"])
-        for function in sorted(metrics["functions"]):
-            f_metrics = metrics["functions"][function]
-            fd.write("  Code metrics for function %s:\n" % function)
-            fd.write("    Path count: %u\n" % f_metrics["npath"])
+        else:
+            fd.write("  Lines: %u\n" % metrics["metrics"]["file_length"])
+            for function in sorted(metrics["functions"]):
+                f_metrics = metrics["functions"][function]
+                fd.write("  Code metrics for function %s:\n" % function)
+                fd.write("    Path count: %u\n" % f_metrics["npath"])
 
     if options.text:
         fd.close()

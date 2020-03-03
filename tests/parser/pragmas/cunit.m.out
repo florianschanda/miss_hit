@@ -1,4 +1,0 @@
-In cunit.m, line 4
-| % mh:debug_pragma
-| ^^^^^^^^^^^^^^^^^ error: invalid miss_hit pragma: unknown tool 'debug_pragma'
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)

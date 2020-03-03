@@ -320,7 +320,8 @@ class Message_Handler:
         assert isinstance(msg, Message)
 
         if msg.location.filename not in self.files:
-            raise ICE("attempted to emit message on unknown file")
+            raise ICE("attempted to emit message on unknown file '%s'" %
+                      msg.location.filename)
 
         if self.sort_messages:
             # Add message to list

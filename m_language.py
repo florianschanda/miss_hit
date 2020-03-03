@@ -48,7 +48,6 @@ TOKEN_KINDS = frozenset([
     "BANG",            # !
     "METACLASS",       # ?
     "NVP_DELEGATE",    # .? (name value pair delegation)
-    "PRAGMA",          # miss_hit pragma
     "ANNOTATION",      # miss_hit annotation
 ])
 
@@ -86,4 +85,9 @@ KEYWORDS = frozenset([
 
     # These really should be keywords but are not
     'import',
+])
+
+# The annotation language defines more keywords
+ANNOTATION_KEYWORDS = KEYWORDS | frozenset([
+    'pragma',
 ])

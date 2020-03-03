@@ -1,9 +1,9 @@
 %% (c) Copyright 2020 Zenuity AB
 
-% mh:metric justify npath: this seems fine
+%| pragma Justify (metric, "npath", "this seems fine");
 
 if rand() > 0.5
-    % mh:metric justify file_length: potato
+    %| pragma Justify (metric, "file_length", "potato");
     disp heads;
 else
     disp tails;

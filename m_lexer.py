@@ -31,7 +31,7 @@ from abc import ABCMeta, abstractmethod
 import config
 import m_ast
 from errors import Location, Error, Message_Handler, ICE
-from m_language import KEYWORDS
+from m_language import KEYWORDS, ANNOTATION_KEYWORDS
 
 # The 1999 technical report "The Design and Implementation of a Parser
 # and Scanner for the MATLAB Language in the MATCH Compiler" is a key
@@ -658,20 +658,11 @@ class MATLAB_Lexer(Token_Generator):
 
         # Classify keywords, except after selections. That way we
         # permit structure fields with names like "function".
-        if kind == "IDENTIFIER" and \
-           raw_text in KEYWORDS and \
-           self.last_kind != "SELECTION":
-            kind = "KEYWORD"
-
-        # Recognise MISS_HIT pragmas. They start with "% mh:", but the
-        # style suppression comments are not pragmas.
-        if self.process_pragmas and \
-           kind == "COMMENT" and \
-           self.first_in_line and \
-           self.first_in_statement and \
-           raw_text.startswith("% mh:") and \
-           "ignore_style" not in raw_text:
-            kind = "PRAGMA"
+        if kind == "IDENTIFIER" and self.last_kind != "SELECTION":
+            if self.in_annotation and raw_text in ANNOTATION_KEYWORDS:
+                kind = "KEYWORD"
+            elif not self.in_annotation and raw_text in KEYWORDS:
+                kind = "KEYWORD"
 
         # Keep track of blocks, and special sections where
         # command-form is disabled.
@@ -1388,7 +1379,8 @@ class Token_Buffer(Token_Generator):
         for token in self.tokens:
             if token.kind in ("NEWLINE",
                               "COMMENT",
-                              "CONTINUATION"):
+                              "CONTINUATION",
+                              "ANNOTATION"):
                 # These tokens are not linked
                 pass
 

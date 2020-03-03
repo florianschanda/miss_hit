@@ -131,9 +131,20 @@ class MATLAB_Parser:
         self.nt = self.nnt
         self.nnt = self.lexer.token()
 
+        def should_skip(token):
+            if not token:
+                return False
+            if token.kind in ("COMMENT",
+                              "CONTINUATION",
+                              "ANNOTATION"):
+                return True
+            if token.annotation and token.kind == "NEWLINE":
+                return True
+            return False
+
         while self.nnt:
-            # Skip comments and continuations
-            while self.nnt and self.nnt.kind in ("COMMENT", "CONTINUATION"):
+            # Skip comments, continuations and annotation indications
+            while should_skip(self.nnt):
                 self.nnt = self.lexer.token()
 
             # Join new-lines
@@ -151,6 +162,37 @@ class MATLAB_Parser:
         if self.ct is None:
             self.mh.error(Location(self.lexer.filename),
                           "expected %s, reached EOF instead" % kind)
+        elif self.ct.annotation:
+            self.mh.error(self.ct.location,
+                          "expected %s, "
+                          "found miss_hit annotation instead" %
+                          kind)
+        elif self.ct.kind != kind:
+            if value:
+                self.mh.error(self.ct.location,
+                              "expected %s(%s), found %s instead" %
+                              (kind, value, self.ct.kind))
+            else:
+                self.mh.error(self.ct.location,
+                              "expected %s, found %s instead" % (kind,
+                                                                 self.ct.kind))
+
+        elif value and self.ct.value != value:
+            self.mh.error(self.ct.location,
+                          "expected %s(%s), found %s(%s) instead" %
+                          (kind, value, self.ct.kind, self.ct.value))
+
+    def amatch(self, kind, value=None):
+        assert kind in TOKEN_KINDS
+        self.next()
+        if self.ct is None:
+            self.mh.error(Location(self.lexer.filename),
+                          "expected %s, reached EOF instead" % kind)
+        elif not self.ct.annotation:
+            self.mh.error(self.ct.location,
+                          "expected %s annotation, "
+                          "found normal program text instead" %
+                          kind)
         elif self.ct.kind != kind:
             if value:
                 self.mh.error(self.ct.location,
@@ -169,13 +211,36 @@ class MATLAB_Parser:
     def match_eof(self):
         self.next()
         if self.ct is not None:
-            self.mh.error(self.ct.location,
-                          "expected end of file, found %s instead" %
-                          self.ct.kind)
+            if self.ct.annotation:
+                self.mh.error(self.ct.location,
+                              "expected end of file, "
+                              "found annotation %s instead" %
+                              self.ct.kind)
+            else:
+                self.mh.error(self.ct.location,
+                              "expected end of file, found %s instead" %
+                              self.ct.kind)
+
+    def peek_annotation(self):
+        return self.nt and self.nt.annotation
 
     def peek(self, kind, value=None):
         assert kind in TOKEN_KINDS
-        if self.nt and self.nt.kind == kind:
+        if self.nt and \
+           self.nt.kind == kind and \
+           not self.nt.annotation:
+            if value is None:
+                return True
+            else:
+                return self.nt.value == value
+        else:
+            return False
+
+    def apeek(self, kind, value=None):
+        assert kind in TOKEN_KINDS
+        if self.nt and \
+           self.nt.kind == kind and \
+           self.nt.annotation:
             if value is None:
                 return True
             else:
@@ -185,7 +250,9 @@ class MATLAB_Parser:
 
     def peek2(self, kind, value=None):
         assert kind in TOKEN_KINDS
-        if self.nnt and self.nnt.kind == kind:
+        if self.nnt and \
+           self.nnt.kind == kind and \
+           not self.nnt.annotation:
             if value is None:
                 return True
             else:
@@ -366,50 +433,6 @@ class MATLAB_Parser:
                                     True)
                 terminator.fix.delete = True
 
-    def parse_pragma(self):
-        def chop(txt):
-            if " " in txt:
-                return txt.split(" ", 1)
-            else:
-                return (txt, None)
-
-        self.match("PRAGMA")
-        t_pragma = self.ct
-
-        if not t_pragma.raw_text.startswith("% mh:"):
-            raise ICE("pragma does not start with standard prefix")
-
-        pragma_code = t_pragma.raw_text[5:]
-        tool, pragma_code = chop(pragma_code)
-
-        if tool not in ("metric",):
-            self.mh.error(t_pragma.location,
-                          "invalid miss_hit pragma: unknown tool '%s'" %
-                          tool)
-
-        action, pragma_code = chop(pragma_code)
-        if action not in ("justify",):
-            self.mh.error(t_pragma.location,
-                          "invalid miss_hit pragma: unknown action '%s'" %
-                          action)
-
-        metric, pragma_code = chop(pragma_code)
-        metric = metric.rstrip(":")
-        if metric not in config.METRICS:
-            self.mh.error(t_pragma.location,
-                          "invalid miss_hit pragma: unknown metric '%s'" %
-                          metric)
-
-        reason = pragma_code
-        if not reason.strip().rstrip(".;,"):
-            self.mh.error(t_pragma.location,
-                          "invalid miss_hit pragma: missing reason")
-
-        rv = Metric_Justification_Pragma(t_pragma, metric, reason.strip())
-        self.match_eos(rv)
-
-        return rv
-
     def parse_identifier(self, allow_void):
         # identifier ::= <IDENTIFIER>
         #
@@ -523,15 +546,16 @@ class MATLAB_Parser:
         # them first until we arrive at the first interesting thing
         # that helps us decide.
         l_pragmas = []
-        while self.peek("NEWLINE") or self.peek("PRAGMA"):
+        while self.peek("NEWLINE") or self.apeek("KEYWORD", "pragma"):
             if self.peek("NEWLINE"):
                 self.next()
-            elif self.peek("PRAGMA"):
-                l_pragmas.append(self.parse_pragma())
+            else:
+                l_pragmas.append(self.parse_annotation_pragma())
 
         if self.peek("KEYWORD", "function"):
             l_functions, l_more_pragmas = self.parse_function_list()
             cunit = Function_File(os.path.basename(self.lexer.filename),
+                                  Location(self.lexer.filename),
                                   l_functions,
                                   self.lexer.in_class_directory,
                                   l_pragmas + l_more_pragmas)
@@ -558,6 +582,7 @@ class MATLAB_Parser:
         l_functions, l_more_pragmas = self.parse_function_list()
 
         rv = Script_File(os.path.basename(self.lexer.filename),
+                         Location(self.lexer.filename),
                          Sequence_Of_Statements(statements),
                          l_functions,
                          l_pragmas + l_more_pragmas)
@@ -571,6 +596,7 @@ class MATLAB_Parser:
         l_functions, l_more_pragmas = self.parse_function_list()
 
         rv = Class_File(os.path.basename(self.lexer.filename),
+                        Location(self.lexer.filename),
                         n_classdef,
                         l_functions,
                         l_pragmas + l_more_pragmas)
@@ -579,11 +605,12 @@ class MATLAB_Parser:
     def parse_function_list(self):
         l_functions = []
         l_pragmas = []
-        while self.peek("KEYWORD", "function") or self.peek("PRAGMA"):
-            if self.peek("PRAGMA"):
-                l_pragmas.append(self.parse_pragma())
-            else:
+        while self.peek("KEYWORD", "function") or \
+              self.apeek("KEYWORD", "pragma"):
+            if self.peek("KEYWORD", "function"):
                 l_functions.append(self.parse_function_def())
+            else:
+                l_pragmas.append(self.parse_annotation_pragma())
 
         if not self.functions_require_end and l_functions:
             if len(l_functions) > 1:
@@ -1030,7 +1057,68 @@ class MATLAB_Parser:
 
         return Sequence_Of_Statements(statements)
 
+    def parse_annotation_expression(self):
+        self.amatch("STRING")
+        return String_Literal(self.ct)
+
+    def parse_annotation_pragma(self):
+        punctuation = []
+
+        self.amatch("KEYWORD", "pragma")
+        t_pragma = self.ct
+
+        self.amatch("IDENTIFIER")
+        t_pragma_kind = self.ct
+
+        self.amatch("BRA")
+        punctuation.append(self.ct)
+
+        self.amatch("IDENTIFIER")
+        t_tool = self.ct
+
+        if t_tool.value not in ("metric",):
+            self.mh.warning(t_tool.location,
+                            "unknown miss_hit tool '%s'" % t_tool.value)
+
+        self.amatch("COMMA")
+        punctuation.append(self.ct)
+
+        self.amatch("STRING")
+        t_param = self.ct
+
+        if t_param.value not in config.METRICS:
+            self.mh.warning(t_param.location,
+                            "unknown metric '%s'" % t_param.value)
+
+        self.amatch("COMMA")
+        punctuation.append(self.ct)
+
+        n_reason = self.parse_annotation_expression()
+
+        self.amatch("KET")
+        punctuation.append(self.ct)
+
+        self.amatch("SEMICOLON")
+        punctuation.append(self.ct)
+
+        rv = Metric_Justification_Pragma(t_pragma, t_pragma_kind,
+                                         t_tool, t_param, n_reason)
+        for token in punctuation:
+            token.set_ast(rv)
+
+        return rv
+
+    def parse_annotation_statement(self):
+        if self.apeek("KEYWORD", "pragma"):
+            return self.parse_annotation_pragma()
+        else:
+            self.mh.error(self.nt.location,
+                          "expected valid miss_hit annotation statement")
+
     def parse_statement(self):
+        while self.peek("NEWLINE"):
+            self.next()
+
         if self.peek("KEYWORD"):
             if self.nt.value == "for":
                 return self.parse_for_statement()
@@ -1068,8 +1156,8 @@ class MATLAB_Parser:
                 self.mh.error(self.nt.location,
                               "expected valid statement,"
                               " found keyword '%s' instead" % self.nt.value)
-        elif self.peek("PRAGMA"):
-            return self.parse_pragma()
+        elif self.peek_annotation():
+            return self.parse_annotation_statement()
         elif self.peek("BANG"):
             self.match("BANG")
             t_bang = self.ct

@@ -1,0 +1,14 @@
+----------------------------------------------------------------------
+--  Parse tree for basic.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Number_Literal <1>
+    Statements: Metric_Justification_Pragma for npath
+      Reason: String_Literal "this is quite OK"
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <y>
+      RHS: Number_Literal <2>
+----------------------------------------------------------------------
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine

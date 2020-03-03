@@ -2,7 +2,7 @@
 
 function function_file
   if rand() > 0.5
-    % mh:metric justify npath: (invalid, does not apply)
+    %| pragma Justify(metric, "npath", "(invalid, does not apply)");
     disp heads;
   else
     disp tails;
@@ -21,4 +21,4 @@ function function_file
   end
 end
 
-% mh:metric justify npath: (invalid, does not apply)
+%| pragma Justify(metric, "npath", "(invalid, does not apply)");
