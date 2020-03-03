@@ -448,7 +448,10 @@ class Message_Handler:
 
         self.emit_summary()
 
-        if self.style_issues or self.warnings or self.errors:
+        if self.style_issues or \
+           self.metric_issues or \
+           self.warnings or \
+           self.errors:
             sys.exit(1)
         else:
             sys.exit(0)
