@@ -19,14 +19,17 @@ Code metrics for file function_file.m:
   Lines: 24
   Code metrics for function function_file:
     Path count: 8
+
 Code metrics for file function_file_justified.m:
   Lines: 24
   Code metrics for function function_file_justified:
     Path count: 8
+
 Code metrics for file script_file.m:
   Lines: 19
   Code metrics for function script_file:
     Path count: 8
+
 Code metrics for file script_file_justified.m:
   Lines: 22
   Code metrics for function script_file_justified:

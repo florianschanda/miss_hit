@@ -27,6 +27,7 @@
 # metrics like path count or cyclomatic complexity.
 
 import os
+import sys
 import multiprocessing
 
 import command_line
@@ -316,7 +317,20 @@ def collect_metrics(args):
 
 def main():
     clp = command_line.create_basic_clp()
+
+    clp["output_options"].add_argument(
+        "--text",
+        default=None,
+        metavar="FILE",
+        help=("Print plain-text metrics summary to the given file. By"
+              " default we print the summary to standard output."))
+
     options = command_line.parse_args(clp)
+
+    if options.text:
+        if os.path.exists(options.text) and not os.path.isfile(options.text):
+            clp["ap"].error("cannot write metrics to %s, it exists and is"
+                            " not a file" % options.text)
 
     mh = Message_Handler()
     mh.show_context = not options.brief
@@ -347,17 +361,31 @@ def main():
                 mh.finalize_file(filename)
                 all_metrics.update(metrics)
 
-    # Print metrics to stdout for now
+    # Print metrics to file or stdout
+
+    if options.text:
+        fd = open(options.text, "w")
+    else:
+        fd = sys.stdout
+
+    first = True
     for filename in sorted(all_metrics):
         metrics = all_metrics[filename]
-        print("Code metrics for file %s:" % filename)
+        if first:
+            first = False
+        else:
+            fd.write("\n")
+        fd.write("Code metrics for file %s:\n" % filename)
         if metrics["errors"]:
-            print("  Contains syntax or semantics errors!")
-        print("  Lines: %u" % metrics["metrics"]["file_length"])
+            fd.write("  Contains syntax or semantics errors!\n")
+        fd.write("  Lines: %u\n" % metrics["metrics"]["file_length"])
         for function in sorted(metrics["functions"]):
             f_metrics = metrics["functions"][function]
-            print("  Code metrics for function %s:" % function)
-            print("    Path count: %u" % f_metrics["npath"])
+            fd.write("  Code metrics for function %s:\n" % function)
+            fd.write("    Path count: %u\n" % f_metrics["npath"])
+
+    if options.text:
+        fd.close()
 
     mh.summary_and_exit()
 

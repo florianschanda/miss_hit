@@ -3,6 +3,7 @@ Code metrics for file file_1.m:
   Lines: 18
   Code metrics for function file_1:
     Path count: 1
+
 Code metrics for file file_2.m:
   Lines: 11
   Code metrics for function kitten:
@@ -11,6 +12,7 @@ Code metrics for file file_2.m:
     Path count: 1
   Code metrics for function potato:
     Path count: 1
+
 Code metrics for file npath.m:
   Lines: 30
   Code metrics for function ifs:
