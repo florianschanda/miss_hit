@@ -81,6 +81,7 @@ STYLE_RULES = {
     "indentation" : ("Make indentation consistent."),
     "redundant_brackets" : ("Check for obviously useless brackets. Does not"
                             " complain about brackets added for clarity."),
+    "annotation_whitespace": ("Check for a space after %|"),
 }
 
 METRICS = {

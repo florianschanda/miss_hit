@@ -689,6 +689,16 @@ def stage_3_analysis(mh, cfg, tbuf):
                         token.fix.ensure_ws_before = True
                         token.fix.ensure_ws_after = True
 
+        elif token.kind == "ANNOTATION":
+            if config.active(cfg, "annotation_whitespace"):
+                token.fix.ensure_ws_after = True
+
+                if next_in_line and ws_after == 0:
+                    mh.style_issue(token.location,
+                                   "annotation indication must be succeeded"
+                                   " by whitespace",
+                                   True)
+
         # Check some specific problems with continuations
         if token.fix.flag_continuations and \
            next_in_line and next_in_line.kind == "CONTINUATION":
@@ -784,13 +794,8 @@ def analyze(work_package):
         encoding = "utf8"
     if cfg["octave"]:
         lexer.set_octave_mode()
-
-    # Right now we ignore the new pragma language until the design has
-    # stabilised. No need to disrupt people's lives.
-    #
-    # if cfg["ignore_pragmas"]:
-    #     lexer.process_pragmas = False
-    lexer.process_pragmas = False
+    if cfg["ignore_pragmas"]:
+        lexer.process_pragmas = False
 
     # We're dealing with an empty file here. Lets just not do anything
 
