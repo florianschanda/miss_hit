@@ -91,13 +91,13 @@
       <div>
         Metrics can be justified by placing a justification pragma at
         the level of scope where the violation occurs. Please refer
-        to <a href="pragmas.html">MISS_HIT Pragmas</a> for a
-        full description of all pragmas understood by MISS_HIT.
+        to <a href="pragmas.html">MISS_HIT Pragmas</a> for a full
+        description of all pragmas understood by MISS_HIT.
       </div>
 
       <div>
         For example:
-        <pre>% mh:metric justify file_length: impossible to split up</pre>
+        <pre>%| pragma Justify(metric, "npath", "can't be refactored");</pre>
       </div>
 
       <div>
