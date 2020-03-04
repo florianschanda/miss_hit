@@ -31,6 +31,11 @@ Code metrics for file function_file_justified.m:
   Code metrics for function function_file_justified:
     Path count: 8
 
+Code metrics for file multi_line.m:
+  Lines: 11
+  Code metrics for function multi_line:
+    Path count: 1
+
 Code metrics for file script_file.m:
   Lines: 19
   Code metrics for function script_file:
@@ -40,4 +45,4 @@ Code metrics for file script_file_justified.m:
   Lines: 22
   Code metrics for function script_file_justified:
     Path count: 8
-MISS_HIT Summary: 5 file(s) analysed, 5 metric deviations(s), 4 warning(s), 4 justified metric deviations(s)
+MISS_HIT Summary: 6 file(s) analysed, 5 metric deviations(s), 4 warning(s), 5 justified metric deviations(s)

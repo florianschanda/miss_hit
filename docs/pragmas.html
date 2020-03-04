@@ -74,6 +74,21 @@
         <pre>%| some_annotation; % comment</pre>
       </div>
 
+      <h2>Expressions</h2>
+      <div>
+        Currently, only static string expressions or direct names are
+        supported.
+      </div>
+
+      <div>
+<pre>
+a_name ::= IDENTIFIER
+
+a_expression ::= a_name
+               | STRING { '+' STRING }
+</pre>
+      </div>
+
       <h2>Pragma</h2>
       <div>
         Currently only a single annotation exists: justification
@@ -84,12 +99,10 @@
       <div>
         A miss-hit pragma has the following grammar:
 <pre>
-name ::= IDENTIFIER
+annotation_pragma ::= 'pragma' a_name '(' a_pragma_parameters ')' ';'
+                    | 'pragma' a_name ';'
 
-annotation_pragma ::= 'pragma' name '(' pragma_parameters ')' ';'
-                    | 'pragma' name ';'
-
-pragma_parameters ::= expression { ',' expression }
+a_pragma_parameters ::= a_expression { ',' a_expression }
 </pre>
       </div>
 
@@ -104,8 +117,7 @@ pragma_parameters ::= expression { ',' expression }
         </ul>
         The parameter is a tool-dependent identifier. Reason is a
         plain-text human explanation for why this justification is
-        reasonable. Currently it must be a string literal, but in the
-        future this will allow any static string expression.
+        reasonable.
       </div>
 
       <h4>Metric justification pragmas</h4>
@@ -119,7 +131,6 @@ pragma_parameters ::= expression { ',' expression }
 %|                "code impossible to restructure");
 </pre>
       </div>
-
 
     </section>
 

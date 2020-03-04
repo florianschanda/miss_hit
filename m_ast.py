@@ -285,6 +285,9 @@ class Expression(Node):
         self.t_bracket_close = t_close
         self.t_bracket_close.set_ast(self)
 
+    def evaluate_static_string_expression(self):
+        raise ICE("not a static string expression")
+
 
 class Name(Expression):
     def is_simple_dotted_name(self):
@@ -1859,7 +1862,7 @@ class Metric_Justification_Pragma(Pragma):
         assert t_tool.kind == "IDENTIFIER" and t_tool.value == "metric"
         assert isinstance(t_metric, MATLAB_Token)
         assert t_metric.kind == "STRING"
-        assert isinstance(n_reason, String_Literal)
+        assert isinstance(n_reason, (String_Literal, Binary_Operation))
 
         self.t_tool = t_tool
         self.t_tool.set_ast(self)
@@ -1885,7 +1888,7 @@ class Metric_Justification_Pragma(Pragma):
         return self.t_metric.value
 
     def reason(self):
-        return self.n_reason.t_string.value
+        return self.n_reason.evaluate_static_string_expression()
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -1940,6 +1943,9 @@ class String_Literal(Literal):
 
     def __str__(self):
         return '"' + self.t_string.value + '"'
+
+    def evaluate_static_string_expression(self):
+        return self.t_string.value
 
 
 ##############################################################################
@@ -2214,6 +2220,13 @@ class Binary_Operation(Expression):
 
     def __str__(self):
         return "(%s %s %s)" % (self.n_lhs, self.t_op.value, self.n_rhs)
+
+    def evaluate_static_string_expression(self):
+        if self.t_op.value == "+":
+            return (self.n_lhs.evaluate_static_string_expression() +
+                    self.n_rhs.evaluate_static_string_expression())
+        else:
+            return super().evaluate_static_string_expression()
 
 
 class Lambda_Function(Expression):

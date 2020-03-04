@@ -1057,9 +1057,18 @@ class MATLAB_Parser:
 
         return Sequence_Of_Statements(statements)
 
-    def parse_annotation_expression(self):
+    def parse_annotation_static_string_expression(self):
         self.amatch("STRING")
-        return String_Literal(self.ct)
+        rv = String_Literal(self.ct)
+
+        while self.apeek("OPERATOR", "+"):
+            self.amatch("OPERATOR", "+")
+            t_op = self.ct
+
+            self.amatch("STRING")
+            rv = Binary_Operation(1, t_op, rv, String_Literal(self.ct))
+
+        return rv
 
     def parse_annotation_pragma(self):
         punctuation = []
@@ -1093,7 +1102,7 @@ class MATLAB_Parser:
         self.amatch("COMMA")
         punctuation.append(self.ct)
 
-        n_reason = self.parse_annotation_expression()
+        n_reason = self.parse_annotation_static_string_expression()
 
         self.amatch("KET")
         punctuation.append(self.ct)
