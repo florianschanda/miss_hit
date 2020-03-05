@@ -28,6 +28,7 @@
 
 import os
 import sys
+import html
 import multiprocessing
 
 import command_line
@@ -409,8 +410,9 @@ def write_html_report(fd, fd_name, all_metrics):
         for file_metric in config.FILE_METRICS:
             results = metrics["metrics"][file_metric]
             if results["reason"]:
-                fd.write("<td class='ok_justified'>%u</td>" %
-                         results["measure"])
+                fd.write("<td class='ok_justified' tip='%s'>%u</td>" %
+                         ("Justification: " + html.escape(results["reason"]),
+                          results["measure"]))
             elif results["limit"] and results["measure"] > results["limit"]:
                 fd.write("<td class='nok'>%u</td>" %
                          results["measure"])
@@ -426,8 +428,10 @@ def write_html_report(fd, fd_name, all_metrics):
             for function_metric in config.FUNCTION_METRICS:
                 results = metrics["functions"][function][function_metric]
                 if results["reason"]:
-                    fd.write("<td class='ok_justified'>%u</td>" %
-                             results["measure"])
+                    fd.write("<td class='ok_justified' tip='%s'>%u</td>" %
+                             ("Justification: " +
+                              html.escape(results["reason"]),
+                              results["measure"]))
                 elif results["limit"] and \
                      results["measure"] > results["limit"]:
                     fd.write("<td class='nok'>%u</td>" %

@@ -115,6 +115,39 @@ td.ok {
 
 td.ok_justified {
     background-color: #ccf;
+    position:relative;
+}
+
+td.ok_justified:hover{
+    z-index:1000;
+    position:relative;
+}
+
+td.ok_justified:hover:after{
+    display:block;
+}
+
+td.ok_justified:hover:before{
+    display:block;
+}
+
+td.ok_justified:hover{
+    text-decoration:none;
+}
+
+td.ok_justified:after{
+    content: attr(tip);
+    position: absolute;
+    padding: 0.5em;
+    margin: 0.2em;
+    display:none;
+    background-color: white;
+    top: 1em;
+    left: 1em;
+    border-radius: 0.2em;
+    border: 0.1em solid lightgray;
+    width: 15em;
+    box-shadow: 3px 3px 4px rgba(0,0,0, .65);
 }
 
 td.nok {
