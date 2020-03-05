@@ -42,8 +42,6 @@ from m_parser import MATLAB_Parser
 from m_ast import *
 
 
-GITHUB_ISSUES = "https://github.com/florianschanda/miss_hit/issues"
-
 COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"
 
 
