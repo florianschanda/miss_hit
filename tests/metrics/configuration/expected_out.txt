@@ -4,9 +4,11 @@ In test.m, line 12
 | function y = test_2 (x)
 | ^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
 Code metrics for file test.m:
-  Lines: 25
+  file_length: 25 (!not justified!)
+
   Code metrics for function test_1:
-    Path count: 4
+    npath: 4
+
   Code metrics for function test_2:
-    Path count: 8
+    npath: 8 (!not justified!)
 MISS_HIT Summary: 1 file(s) analysed, 2 metric deviations(s)

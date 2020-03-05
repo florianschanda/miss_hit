@@ -19,30 +19,35 @@ In script_file_justified.m, line 6
 |     %| pragma Justify (metric, "file_length", "potato");
 |        ^^^^^^ warning: this justification does not apply to anything
 Code metrics for file class_file.m:
-  Lines: 13
+  file_length: 13 (seems OK)
 
 Code metrics for file function_file.m:
-  Lines: 24
+  file_length: 24 (!not justified!)
+
   Code metrics for function function_file:
-    Path count: 8
+    npath: 8 (!not justified!)
 
 Code metrics for file function_file_justified.m:
-  Lines: 24
+  file_length: 24 (for testing purposes)
+
   Code metrics for function function_file_justified:
-    Path count: 8
+    npath: 8 (for testing purposes)
 
 Code metrics for file multi_line.m:
-  Lines: 11
+  file_length: 11 (this is a very long justification over many lines)
+
   Code metrics for function multi_line:
-    Path count: 1
+    npath: 1
 
 Code metrics for file script_file.m:
-  Lines: 19
+  file_length: 19 (!not justified!)
+
   Code metrics for function script_file:
-    Path count: 8
+    npath: 8 (!not justified!)
 
 Code metrics for file script_file_justified.m:
-  Lines: 22
+  file_length: 22 (!not justified!)
+
   Code metrics for function script_file_justified:
-    Path count: 8
+    npath: 8 (this seems fine)
 MISS_HIT Summary: 6 file(s) analysed, 5 metric deviations(s), 4 warning(s), 5 justified metric deviations(s)

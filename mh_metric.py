@@ -92,16 +92,18 @@ def npath(node):
 
 def check_metric(mh, cfg, loc, metric, metrics, justifications):
     if config.metric_check(cfg, metric):
-        measured = metrics[metric]
+        measure = metrics[metric]["measure"]
         limit = config.metric_upper_limit(cfg, metric)
-        if measured > limit:
+        metrics[metric]["limit"] = limit
+        if measure > limit:
             if metric in justifications:
                 mh.metric_justifications += 1
                 justifications[metric].applies = True
+                metrics[metric]["reason"] = justifications[metric].reason()
             else:
                 mh.metric_issue(loc,
                                 "exceeded %s: measured %u > limit %u" %
-                                (metric, measured, limit))
+                                (metric, measure, limit))
 
 
 def get_justifications(mh, n_root):
@@ -166,7 +168,9 @@ def get_function_metrics(mh, cfg, tree):
         name = "::".join(map(str, naming_stack + [n_fdef.n_sig.n_name]))
 
         metrics[name] = {
-            "npath" : npath(n_fdef.n_body),
+            "npath" : {"measure" : npath(n_fdef.n_body),
+                       "limit"   : None,
+                       "reason"  : None},
         }
 
         justifications[name] = get_justifications(mh, n_fdef.n_body)
@@ -180,7 +184,9 @@ def get_function_metrics(mh, cfg, tree):
         name = n_script.name.rsplit(".")[0]
 
         metrics[name] = {
-            "npath" : npath(n_script.n_statements),
+            "npath" : {"measure" : npath(n_script.n_statements),
+                       "limit"   : None,
+                       "reason"  : None},
         }
 
         justifications[name] = get_justifications(mh, n_script.n_statements)
@@ -242,8 +248,8 @@ def collect_metrics(args):
     assert isinstance(filename, str)
 
     cfg = config_files.get_config(filename)
-    metrics = {filename: {"errors" : False,
-                          "metrics": {},
+    metrics = {filename: {"errors"    : False,
+                          "metrics"   : {},
                           "functions" : {}}}
 
     if not cfg["enable"]:
@@ -291,7 +297,9 @@ def collect_metrics(args):
     # File metrics
 
     metrics[filename]["metrics"] = {
-        "file_length" : len(lexer.context_line),
+        "file_length" : {"measure" : len(lexer.context_line),
+                         "limit"   : None,
+                         "reason"  : None}
     }
     justifications = {filename : get_file_justifications(mh, parse_tree)}
 
@@ -376,14 +384,35 @@ def main():
         else:
             fd.write("\n")
         fd.write("Code metrics for file %s:\n" % filename)
+
         if metrics["errors"]:
-            fd.write("  Contains syntax or semantics errors!\n")
-        else:
-            fd.write("  Lines: %u\n" % metrics["metrics"]["file_length"])
-            for function in sorted(metrics["functions"]):
-                f_metrics = metrics["functions"][function]
-                fd.write("  Code metrics for function %s:\n" % function)
-                fd.write("    Path count: %u\n" % f_metrics["npath"])
+            fd.write("  Contains syntax or semantics errors,\n")
+            fd.write("  no metrics collected.\n")
+            continue
+
+        for file_metric in config.FILE_METRICS:
+            results = metrics["metrics"][file_metric]
+            fd.write("  %s: %u" % (file_metric, results["measure"]))
+            if results["reason"]:
+                fd.write(" (%s)\n" % results["reason"])
+            elif results["limit"] and results["measure"] > results["limit"]:
+                fd.write(" (!not justified!)\n")
+            else:
+                fd.write("\n")
+
+        for function in sorted(metrics["functions"]):
+            fd.write("\n")
+            fd.write("  Code metrics for function %s:\n" % function)
+            for function_metric in config.FUNCTION_METRICS:
+                results = metrics["functions"][function][function_metric]
+                fd.write("    %s: %u" % (function_metric, results["measure"]))
+                if results["reason"]:
+                    fd.write(" (%s)\n" % results["reason"])
+                elif results["limit"] and \
+                     results["measure"] > results["limit"]:
+                    fd.write(" (!not justified!)\n")
+                else:
+                    fd.write("\n")
 
     if options.text:
         fd.close()
