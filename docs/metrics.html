@@ -44,8 +44,13 @@
       </div>
 
       <div>
-        Currently, metrics are reported on standard out. In a future
-        release other formats (HTML report, json, csv, etc.) will be
+        Metrics are reported on standard out. You can also produce a
+        HTML report or write the metrics to a text-file:
+<pre>
+$ mh_metrics src --text=metrics.txt
+$ mh_metrics src --html=metrics.html
+</pre>
+        In a future release more formats (json, csv, etc.) will be
         supported.
       </div>
     </section>

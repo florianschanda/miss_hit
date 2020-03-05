@@ -32,3 +32,7 @@ Code metrics for file npath.m:
   Code metrics for function sequence:
     npath: 1
 MISS_HIT Summary: 3 file(s) analysed, everything seemes fine
+
+
+=== HTML MODE ===
+MISS_HIT Summary: 3 file(s) analysed, everything seemes fine

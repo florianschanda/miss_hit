@@ -95,3 +95,28 @@ section pre {
     line-height: normal;
     color: black;
 }
+
+table {
+    border-radius: 0.2em;
+    border: 0.1em solid lightgray;
+}
+
+thead {
+    background-color: #f6f6f6;
+}
+
+td.na {
+    background-color: #f6f6f6;
+}
+
+td.ok {
+    background-color: #cfc;
+}
+
+td.ok_justified {
+    background-color: #ccf;
+}
+
+td.nok {
+    background-color: #fcc;
+}

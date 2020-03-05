@@ -12,3 +12,11 @@ Code metrics for file test.m:
   Code metrics for function test_2:
     npath: 8 (!not justified!)
 MISS_HIT Summary: 1 file(s) analysed, 2 metric deviations(s)
+
+
+=== HTML MODE ===
+test.m: metric: exceeded file_length: measured 25 > limit 10
+In test.m, line 12
+| function y = test_2 (x)
+| ^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
+MISS_HIT Summary: 1 file(s) analysed, 2 metric deviations(s)

@@ -323,59 +323,7 @@ def collect_metrics(args):
     return True, filename, mh, metrics
 
 
-def main():
-    clp = command_line.create_basic_clp()
-
-    clp["output_options"].add_argument(
-        "--text",
-        default=None,
-        metavar="FILE",
-        help=("Print plain-text metrics summary to the given file. By"
-              " default we print the summary to standard output."))
-
-    options = command_line.parse_args(clp)
-
-    if options.text:
-        if os.path.exists(options.text) and not os.path.isfile(options.text):
-            clp["ap"].error("cannot write metrics to %s, it exists and is"
-                            " not a file" % options.text)
-
-    mh = Message_Handler()
-    mh.show_context = not options.brief
-    mh.show_style   = False
-    mh.autofix      = False
-
-    work_list = command_line.read_config(mh, options, {})
-
-    all_metrics = {}
-    # file -> { metrics -> {}
-    #           functions -> {name -> {}} }
-
-    if options.single:
-        for processed, filename, result, metrics in map(collect_metrics,
-                                                        work_list):
-            mh.integrate(result)
-            if processed:
-                mh.finalize_file(filename)
-                all_metrics.update(metrics)
-
-    else:
-        pool = multiprocessing.Pool()
-        for processed, filename, result, metrics in pool.imap(collect_metrics,
-                                                              work_list,
-                                                              5):
-            mh.integrate(result)
-            if processed:
-                mh.finalize_file(filename)
-                all_metrics.update(metrics)
-
-    # Print metrics to file or stdout
-
-    if options.text:
-        fd = open(options.text, "w")
-    else:
-        fd = sys.stdout
-
+def write_text_report(fd, all_metrics):
     first = True
     for filename in sorted(all_metrics):
         metrics = all_metrics[filename]
@@ -414,8 +362,160 @@ def main():
                 else:
                     fd.write("\n")
 
+
+def write_html_report(fd, fd_name, all_metrics):
+    fd.write("<!DOCTYPE html>\n")
+    fd.write("<html>\n")
+    fd.write("<head>\n")
+    fd.write("<meta charset=\"UTF-8\">\n")
+    # Link style-sheet with a relative path based on where the
+    # output report file will be
+    fd.write("<link rel=\"stylesheet\" href=\"file:%s\">\n" %
+                  os.path.relpath(os.path.join(sys.path[0],
+                                               "docs",
+                                               "style.css"),
+                                  os.path.dirname(
+                                      os.path.abspath(fd_name))))
+    fd.write("<title>MISS_HIT Report</title>\n")
+    fd.write("</head>\n")
+    fd.write("<body>\n")
+    fd.write("<header>MISS_HIT Report</header>\n")
+    fd.write("<main>\n")
+    fd.write("<div></div>\n")
+    fd.write("<h1>Code metrics</h1>\n")
+    fd.write("<section>\n")
+
+    for filename in sorted(all_metrics):
+        metrics = all_metrics[filename]
+
+        fd.write("<h2>%s</h2>\n" % filename)
+
+        fd.write("<div>\n")
+        fd.write("<table>\n")
+
+        fd.write("<thead>")
+        fd.write("<tr>")
+        fd.write("<td>Item</td>")
+        for file_metric in config.FILE_METRICS:
+            fd.write("<td>%s</td>" % file_metric)
+        for function_metric in config.FUNCTION_METRICS:
+            fd.write("<td>%s</td>" % function_metric)
+        fd.write("</tr>\n")
+        fd.write("</thead>\n")
+        fd.write("<tbody>")
+
+        fd.write("<tr>")
+        fd.write("<td>%s</td>" % os.path.basename(filename))
+        for file_metric in config.FILE_METRICS:
+            results = metrics["metrics"][file_metric]
+            if results["reason"]:
+                fd.write("<td class='ok_justified'>%u</td>" %
+                         results["measure"])
+            elif results["limit"] and results["measure"] > results["limit"]:
+                fd.write("<td class='nok'>%u</td>" %
+                         results["measure"])
+            else:
+                fd.write("<td class='ok'>%u</td>" % results["measure"])
+        fd.write("<td class='na'></td>" * len(config.FUNCTION_METRICS))
+        fd.write("</tr>\n")
+
+        for function in sorted(metrics["functions"]):
+            fd.write("<tr>")
+            fd.write("<td>%s</td>" % function)
+            fd.write("<td class='na'></td>" * len(config.FUNCTION_METRICS))
+            for function_metric in config.FUNCTION_METRICS:
+                results = metrics["functions"][function][function_metric]
+                if results["reason"]:
+                    fd.write("<td class='ok_justified'>%u</td>" %
+                             results["measure"])
+                elif results["limit"] and \
+                     results["measure"] > results["limit"]:
+                    fd.write("<td class='nok'>%u</td>" %
+                             results["measure"])
+                else:
+                    fd.write("<td class='ok'>%u</td>" % results["measure"])
+            fd.write("</tr>\n")
+
+        fd.write("</tbody>")
+        fd.write("</table>\n")
+        fd.write("</div>\n")
+
+    fd.write("</section>\n")
+    fd.write("</main>\n")
+    fd.write("</body>\n")
+    fd.write("</html>\n")
+
+
+def main():
+    clp = command_line.create_basic_clp()
+
+    clp["output_options"].add_argument(
+        "--text",
+        default=None,
+        metavar="FILE",
+        help=("Print plain-text metrics summary to the given file. By"
+              " default we print the summary to standard output."))
+
+    clp["output_options"].add_argument(
+        "--html",
+        default=None,
+        metavar="FILE",
+        help=("Write HTML metrics report to the file."))
+
+    options = command_line.parse_args(clp)
+
     if options.text:
-        fd.close()
+        if os.path.exists(options.text) and not os.path.isfile(options.text):
+            clp["ap"].error("cannot write metrics to %s, it exists and is"
+                            " not a file" % options.text)
+
+    if options.html:
+        if os.path.exists(options.html) and not os.path.isfile(options.html):
+            clp["ap"].error("cannot write metrics to %s, it exists and is"
+                            " not a file" % options.text)
+
+    if options.text and options.html:
+        clp["ap"].error("the text and html options are mutually exclusive")
+
+    mh = Message_Handler()
+    mh.show_context = not options.brief
+    mh.show_style   = False
+    mh.autofix      = False
+
+    work_list = command_line.read_config(mh, options, {})
+
+    all_metrics = {}
+    # file -> { metrics -> {}
+    #           functions -> {name -> {}} }
+
+    if options.single:
+        for processed, filename, result, metrics in map(collect_metrics,
+                                                        work_list):
+            mh.integrate(result)
+            if processed:
+                mh.finalize_file(filename)
+                all_metrics.update(metrics)
+
+    else:
+        pool = multiprocessing.Pool()
+        for processed, filename, result, metrics in pool.imap(collect_metrics,
+                                                              work_list,
+                                                              5):
+            mh.integrate(result)
+            if processed:
+                mh.finalize_file(filename)
+                all_metrics.update(metrics)
+
+    # Generate report
+
+    if options.html:
+        with open(options.html, "w") as fd:
+            write_html_report(fd, options.html, all_metrics)
+    elif options.text:
+        with open(options.text, "w") as fd:
+            write_text_report(fd, all_metrics)
+    else:
+        write_text_report(sys.stdout, all_metrics)
 
     mh.summary_and_exit()
 

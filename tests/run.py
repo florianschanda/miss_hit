@@ -109,10 +109,23 @@ def execute_metric_test(name):
                        encoding="utf-8")
     plain_out = r.stdout
 
+    # HTML
+    r = subprocess.run(["../../../mh_metric.py",
+                        "--single",
+                        "--html=metrics.html",
+                        ".",],
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.STDOUT,
+                       encoding="utf-8")
+    html_out = r.stdout
+
     # Save stdout
     with open("expected_out.txt", "w") as fd:
         fd.write("=== PLAIN MODE ===\n")
         fd.write(plain_out)
+
+        fd.write("\n\n=== HTML MODE ===\n")
+        fd.write(html_out)
 
     return "Ran metrics test %s" % name
 
