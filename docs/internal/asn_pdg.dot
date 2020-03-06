@@ -1,0 +1,52 @@
+// The PDG constructed from the CFG.
+
+digraph G {
+// x = (a && b) + (c || d)
+
+start;
+a;
+b;
+c;
+d;
+and [label="&&"];
+or [label="||"];
+plus [label="+"];
+assign [label="x="];
+
+a_initial [label="a", shape="none"];
+b_initial [label="b", shape="none"];
+c_initial [label="c", shape="none"];
+d_initial [label="d", shape="none"];
+x_final [label="x", shape="none"];
+
+// CDG
+start -> a;
+start -> and;
+start -> plus;
+start -> c;
+start -> or;
+start -> assign;
+and -> b;
+or -> d;
+
+// DDG
+edge [color=red];
+
+a_initial -> a;
+b_initial -> b;
+c_initial -> c;
+d_initial -> d;
+
+a -> and;
+b -> and;
+
+c -> or;
+d -> or;
+
+and -> plus;
+or -> plus;
+
+plus -> assign;
+
+assign -> x_final;
+}

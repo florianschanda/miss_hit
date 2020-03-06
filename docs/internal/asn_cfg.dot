@@ -1,0 +1,31 @@
+// Exploration on CFG that expands expressions. This way cyclomatic
+// complexity would not need a special case, but there are possibly
+// other benefits.
+
+digraph G {
+// x = (a && b) + (c || d)
+
+a;
+b;
+c;
+d;
+and [label="&&"];
+or [label="||"];
+plus [label="+"];
+assign [label="x="];
+
+a -> and -> b;
+
+b -> plus;
+and -> plus;
+
+plus -> c;
+
+c -> or -> d;
+
+d -> assign;
+or -> assign;
+
+// cyc = e - n + 2
+// cyc = 9 - 8 + 2 = 3
+}
