@@ -167,7 +167,7 @@ $ mh_metrics src --html=metrics.html
         every single line may raise multiple exceptions.
       </div>
 
-      <h3>Maximum nestring of control structures ("cnest")</h3>
+      <h3>Maximum nesting of control structures ("cnest")</h3>
       <div>
         This measures the maximum level of nesting of
         control. Statements that are considered control statements
@@ -179,6 +179,12 @@ $ mh_metrics src --html=metrics.html
           <li>While loops</li>
           <li>Exception handlers</li>
         </ul>
+      </div>
+
+      <h3>Number of function parameters ("parameters")</h3>
+      <div>
+        This counts the number of parameters for each function. Both
+        inputs and outputs are considered.
       </div>
 
     </section>

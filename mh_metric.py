@@ -126,6 +126,12 @@ def cnest(node):
         raise ICE("unexpected node %s" % node.__class__.__name__)
 
 
+def parameters(node):
+    assert isinstance(node, Function_Definition)
+
+    return len(node.n_sig.l_inputs) + len(node.n_sig.l_outputs)
+
+
 ##############################################################################
 # Infrastructure
 ##############################################################################
@@ -214,6 +220,9 @@ def get_function_metrics(mh, cfg, tree):
             "cnest" : {"measure" : cnest(n_fdef.n_body),
                        "limit"   : None,
                        "reason"  : None},
+            "parameters" : {"measure" : parameters(n_fdef),
+                            "limit"   : None,
+                            "reason"  : None},
         }
 
         justifications[name] = get_justifications(mh, n_fdef.n_body)
@@ -233,6 +242,9 @@ def get_function_metrics(mh, cfg, tree):
             "cnest" : {"measure" : cnest(n_script.n_statements),
                        "limit"   : None,
                        "reason"  : None},
+            "parameters" : {"measure" : 0,
+                            "limit"   : None,
+                            "reason"  : None},
         }
 
         justifications[name] = get_justifications(mh, n_script.n_statements)

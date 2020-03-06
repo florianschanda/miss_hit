@@ -101,6 +101,11 @@ METRICS = {
         "type" : "int",
         "help" : "Maximum nesting of control structures."
     },
+    "parameters" : {
+        "kind" : "function",
+        "type" : "int",
+        "help" : "Number of input/output parameters."
+    },
 }
 FILE_METRICS = sorted(metric
                       for metric in METRICS
