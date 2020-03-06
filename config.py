@@ -95,7 +95,12 @@ METRICS = {
         "type" : "int",
         "help" : ("Approximation for maximum number of paths in"
                   " function."),
-    }
+    },
+    "cnest" : {
+        "kind" : "function",
+        "type" : "int",
+        "help" : "Maximum nesting of control structures."
+    },
 }
 FILE_METRICS = sorted(metric
                       for metric in METRICS

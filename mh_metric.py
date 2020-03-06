@@ -46,7 +46,8 @@ from m_ast import *
 
 def npath(node):
     assert isinstance(node, (Sequence_Of_Statements,
-                             Statement))
+                             Statement,
+                             Pragma))
 
     if isinstance(node, Sequence_Of_Statements):
         paths = 1
@@ -84,7 +85,45 @@ def npath(node):
         return npath(node.n_body) * 2
 
     else:
-        raise ICE("unexpected node")
+        raise ICE("unexpected node %s" % node.__class__.__name__)
+
+
+def cnest(node):
+    assert isinstance(node, (Sequence_Of_Statements,
+                             Statement,
+                             Pragma))
+
+    if isinstance(node, Sequence_Of_Statements):
+        return max(map(cnest, node.l_statements),
+                   default=0)
+
+    elif isinstance(node, (Simple_Statement,
+                           Pragma)):
+        return 0
+
+    elif isinstance(node, SPMD_Statement):
+        return cnest(node.n_body)
+
+    elif isinstance(node, If_Statement):
+        return 1 + max((cnest(a.n_body) for a in node.l_actions),
+                       default=0)
+
+    elif isinstance(node, Switch_Statement):
+        return 1 + max((cnest(a.n_body) for a in node.l_actions),
+                       default=0)
+
+    elif isinstance(node, (For_Loop_Statement, While_Statement)):
+        return 1 + cnest(node.n_body)
+
+    elif isinstance(node, Try_Statement):
+        if node.n_handler:
+            return 1 + max(cnest(node.n_body),
+                           cnest(node.n_handler))
+        else:
+            return 1 + cnest(node.n_body)
+
+    else:
+        raise ICE("unexpected node %s" % node.__class__.__name__)
 
 
 ##############################################################################
@@ -172,6 +211,9 @@ def get_function_metrics(mh, cfg, tree):
             "npath" : {"measure" : npath(n_fdef.n_body),
                        "limit"   : None,
                        "reason"  : None},
+            "cnest" : {"measure" : cnest(n_fdef.n_body),
+                       "limit"   : None,
+                       "reason"  : None},
         }
 
         justifications[name] = get_justifications(mh, n_fdef.n_body)
@@ -186,6 +228,9 @@ def get_function_metrics(mh, cfg, tree):
 
         metrics[name] = {
             "npath" : {"measure" : npath(n_script.n_statements),
+                       "limit"   : None,
+                       "reason"  : None},
+            "cnest" : {"measure" : cnest(n_script.n_statements),
                        "limit"   : None,
                        "reason"  : None},
         }
@@ -424,7 +469,7 @@ def write_html_report(fd, fd_name, all_metrics):
         for function in sorted(metrics["functions"]):
             fd.write("<tr>")
             fd.write("<td>%s</td>" % function)
-            fd.write("<td class='na'></td>" * len(config.FUNCTION_METRICS))
+            fd.write("<td class='na'></td>" * len(config.FILE_METRICS))
             for function_metric in config.FUNCTION_METRICS:
                 results = metrics["functions"][function][function_metric]
                 if results["reason"]:
