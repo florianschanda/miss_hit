@@ -24,72 +24,72 @@ def execute_style_test(name):
     orig = {}
     fixed = {}
     for f in m_files:
-        with open(f, "r") as fd:
+        with open(f, "rb") as fd:
             orig[f] = fd.read()
 
     # Run in HTML mode
-    r = subprocess.run(["../../../mh_style.py",
+    r = subprocess.run([sys.executable,
+                        "../../../mh_style.py",
                         ".",
                         "--single",
                         "--html=expected_out.html"],
                        stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8")
+                       stderr=subprocess.STDOUT)
     html_out = r.stdout
 
     # Run in plaintext mode and fix
-    r = subprocess.run(["../../../mh_style.py",
+    r = subprocess.run([sys.executable,
+                        "../../../mh_style.py",
                         "--debug-validate-links",
                         ".",
                         "--single",
                         "--fix"],
                        stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8")
+                       stderr=subprocess.STDOUT)
     plain_out = r.stdout
 
     # Write the fixed file to foo.m_fixed
     for f in m_files:
-        with open(f, "r") as fd:
+        with open(f, "rb") as fd:
             fixed[f] = fd.read()
-        with open(f + "_fixed", "w") as fd:
+        with open(f + "_fixed", "wb") as fd:
             fd.write(fixed[f])
 
     # Run in plaintext mode, again, to see if more things need fixing
-    r = subprocess.run(["../../../mh_style.py",
+    r = subprocess.run([sys.executable,
+                        "../../../mh_style.py",
                         ".",
                         "--single",
                         "--fix"],
                        stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8")
+                       stderr=subprocess.STDOUT)
     plain_out_again = r.stdout
 
     # Check if fixed files not "fixed" again
     broken_fixes = set()
     for f in m_files:
-        with open(f, "r") as fd:
+        with open(f, "rb") as fd:
             tmp = fd.read()
         if tmp != fixed[f]:
             broken_fixes.add(f)
 
     # Restore original output
     for f in m_files:
-        with open(f, "w") as fd:
+        with open(f, "wb") as fd:
             fd.write(orig[f])
 
     # Save stdout
-    with open("expected_out.txt", "w") as fd:
-        fd.write("=== PLAIN MODE ===\n")
+    with open("expected_out.txt", "wb") as fd:
+        fd.write(b"=== PLAIN MODE ===\n")
         fd.write(plain_out)
-        fd.write("\n")
-        fd.write("=== HTML MODE ===\n")
+        fd.write(b"\n")
+        fd.write(b"=== HTML MODE ===\n")
         fd.write(html_out)
         if broken_fixes:
-            fd.write("\n")
-            fd.write("=== ! BROKEN FIXES ! ===\n")
+            fd.write(b"\n")
+            fd.write(b"=== ! BROKEN FIXES ! ===\n")
             for fail in sorted(broken_fixes):
-                fd.write("Fixing is not idempotent for %s\n" % fail)
+                fd.write(b"Fixing is not idempotent for %s\n" % fail)
 
 
     return "Ran style test %s" % name
@@ -101,30 +101,30 @@ def execute_metric_test(name):
                           name))
 
     # Run
-    r = subprocess.run(["../../../mh_metric.py",
+    r = subprocess.run([sys.executable,
+                        "../../../mh_metric.py",
                         "--single",
                         ".",],
                        stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8")
+                       stderr=subprocess.STDOUT)
     plain_out = r.stdout
 
     # HTML
-    r = subprocess.run(["../../../mh_metric.py",
+    r = subprocess.run([sys.executable,
+                        "../../../mh_metric.py",
                         "--single",
                         "--html=metrics.html",
                         ".",],
                        stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8")
+                       stderr=subprocess.STDOUT)
     html_out = r.stdout
 
     # Save stdout
-    with open("expected_out.txt", "w") as fd:
-        fd.write("=== PLAIN MODE ===\n")
+    with open("expected_out.txt", "wb") as fd:
+        fd.write(b"=== PLAIN MODE ===\n")
         fd.write(plain_out)
 
-        fd.write("\n\n=== HTML MODE ===\n")
+        fd.write(b"\n\n=== HTML MODE ===\n")
         fd.write(html_out)
 
     return "Ran metrics test %s" % name
@@ -144,11 +144,10 @@ def execute_lexer_test(name):
                             "../../../m_lexer.py",
                             f],
                            stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT,
-                           encoding="utf-8")
+                           stderr=subprocess.STDOUT)
         plain_out = r.stdout
 
-        with open(f + ".out", "w") as fd:
+        with open(f + ".out", "wb") as fd:
             fd.write(plain_out)
 
     return "Ran lexer test %s" % name
@@ -170,11 +169,10 @@ def execute_parser_test(name):
                             "--tree",
                             f],
                            stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT,
-                           encoding="utf-8")
+                           stderr=subprocess.STDOUT)
         plain_out = r.stdout
 
-        with open(f + ".out", "w") as fd:
+        with open(f + ".out", "wb") as fd:
             fd.write(plain_out)
 
     return "Ran parser test %s" % name
