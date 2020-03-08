@@ -187,6 +187,36 @@ $ mh_metrics src --html=metrics.html
         inputs and outputs are considered.
       </div>
 
+      <h3>Number of direct globals ("globals")</h3>
+      <div>
+        This counts the number direct non-transitive globals for each
+        function. In other words, it counts how many distinct things
+        are mentioned by all global statements in a function.
+      </div>
+
+      <div>
+        For example this function has exactly one direct global:
+<pre>
+function result = f1()
+    global x
+    result = x;
+end
+</pre>
+      </div>
+
+      <div>
+        This function also has exactly one <i>direct</i> global. There
+        is another global dependency via the call to f1, but it is
+        hidden. The metric to measure all globals (direct and hidden)
+        will be implemented once we have basic flow analysis working.
+<pre>
+function result = f2()
+    global y
+    result = f1() + y;
+end
+</pre>
+      </div>
+
     </section>
 
   </main>
