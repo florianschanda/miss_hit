@@ -2,12 +2,14 @@
 
 import os
 import sys
+import copy
 import subprocess
 import multiprocessing
 import argparse
 
 TEST_ROOT = os.getcwd()
-TEST_ENV = {"PYTHONIOENCODING" : "UTF-8"}
+TEST_ENV = copy.copy(os.environ)
+TEST_ENV["PYTHONIOENCODING"] = "UTF-8"
 
 def execute_style_test(name):
     os.chdir(os.path.join(TEST_ROOT,
@@ -193,6 +195,13 @@ def execute_parser_test(name):
 
 
 def run_test(test):
+    if os.path.exists(os.path.join(TEST_ROOT,
+                                   test["kind"],
+                                   test["test"],
+                                   "ONLY_LINUX")):
+        if sys.platform != "linux":
+            return "SKIPPED linux-only test %s" % test["test"]
+
     fn = {"style"   : execute_style_test,
           "metrics" : execute_metric_test,
           "lexer"   : execute_lexer_test,

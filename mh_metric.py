@@ -478,7 +478,8 @@ def write_html_report(fd, fd_name, all_metrics):
                                                "docs",
                                                "style.css"),
                                   os.path.dirname(
-                                      os.path.abspath(fd_name))))
+                                      os.path.abspath(fd_name))).
+             replace("\\", "/"))
     fd.write("<title>MISS_HIT Report</title>\n")
     fd.write("</head>\n")
     fd.write("<body>\n")

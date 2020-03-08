@@ -490,7 +490,8 @@ class HTML_Message_Handler(Message_Handler):
                                                    "docs",
                                                    "style.css"),
                                       os.path.dirname(
-                                          os.path.abspath(self.filename))))
+                                          os.path.abspath(self.filename))).
+                      replace("\\", "/"))
         self.fd.write("<title>MISS_HIT Report</title>\n")
         self.fd.write("</head>\n")
         self.fd.write("<body>\n")
