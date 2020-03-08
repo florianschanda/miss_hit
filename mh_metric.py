@@ -222,7 +222,7 @@ def get_justifications(mh, n_root):
     for n_statement in n_root.l_statements:
         if isinstance(n_statement, Metric_Justification_Pragma):
             if n_statement.metric() in justifications:
-                mh.warning(n_statement.t_pragma.location,
+                mh.warning(n_statement.loc(),
                            "duplicate justification for %s" %
                            n_statement.metric)
             else:
@@ -242,7 +242,7 @@ def get_file_justifications(mh, n_cu):
         for n_statement in n_cu.n_statements.l_statements:
             if isinstance(n_statement, Metric_Justification_Pragma):
                 if n_statement.metric() in justifications:
-                    mh.warning(n_statement.t_pragma.location,
+                    mh.warning(n_statement.loc(),
                                "duplicate justification for %s" %
                                n_statement.metric())
                 else:
@@ -253,7 +253,7 @@ def get_file_justifications(mh, n_cu):
         for n_pragma in n_cu.l_pragmas:
             if isinstance(n_pragma, Metric_Justification_Pragma):
                 if n_pragma.metric() in justifications:
-                    mh.warning(n_pragma.t_pragma.location,
+                    mh.warning(n_pragma.loc(),
                                "duplicate justification for %s" %
                                n_pragma.metric())
                 else:
@@ -306,20 +306,18 @@ def get_function_metrics(mh, cfg, tree):
             name = None
             if isinstance(node, Function_Definition):
                 name = process_function(node, self.name_stack)
-                loc = node.t_fun.location
                 self.name_stack.append(node.n_sig.n_name)
             elif isinstance(node, Class_Definition):
                 self.name_stack.append(node.n_name)
             elif isinstance(node, Script_File):
                 name = process_script(node)
-                loc = node.error_location
                 self.name_stack.append(node.name)
 
             # Check+justify function metrics
 
             if name is not None:
                 for function_metric in config.FUNCTION_METRICS:
-                    check_metric(mh, cfg, loc, function_metric,
+                    check_metric(mh, cfg, node.loc(), function_metric,
                                  metrics[name],
                                  justifications[name])
 
@@ -342,7 +340,7 @@ def warn_unused_justifications(mh, n_cu):
         def visit(self, node, n_parent, relation):
             if isinstance(node, Metric_Justification_Pragma):
                 if not node.applies:
-                    mh.warning(node.t_pragma.location,
+                    mh.warning(node.loc(),
                                "this justification does not apply to anything")
 
     n_cu.visit(None, Justification_Visitor(), "Root")

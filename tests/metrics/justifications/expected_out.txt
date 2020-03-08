@@ -5,7 +5,7 @@ In class_file.m, line 13
 function_file.m: metric: exceeded file_length: measured 24 > limit 10
 In function_file.m, line 3
 | function function_file
-| ^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
+|          ^^^^^^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
 In function_file.m, line 5
 |     %| pragma Justify(metric, "npath", "(invalid, does not apply)");
 |        ^^^^^^ warning: this justification does not apply to anything
@@ -75,7 +75,7 @@ In class_file.m, line 13
 function_file.m: metric: exceeded file_length: measured 24 > limit 10
 In function_file.m, line 3
 | function function_file
-| ^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
+|          ^^^^^^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
 In function_file.m, line 5
 |     %| pragma Justify(metric, "npath", "(invalid, does not apply)");
 |        ^^^^^^ warning: this justification does not apply to anything

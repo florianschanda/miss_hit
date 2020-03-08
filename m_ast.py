@@ -189,6 +189,9 @@ class Node:
         self.uid = NODE_UID[0]
         self.n_parent = None
 
+    def loc(self):
+        raise ICE("cannot produce error location")
+
     def set_parent(self, n_parent):
         assert isinstance(n_parent, Node)
         self.n_parent = n_parent
@@ -321,6 +324,9 @@ class Pragma(Node):
         self.t_kind.set_ast(self)
         # The pragma kind
 
+    def loc(self):
+        return self.t_pragma.location
+
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Sequence_Of_Statements,
                                      Compilation_Unit))
@@ -354,6 +360,9 @@ class Compilation_Unit(Node):
         self.error_location = loc
         # In case we need to attach a message to the compilation unit
         # itself
+
+    def loc(self):
+        return self.error_location
 
     def set_parent(self, n_parent):
         raise ICE("compilation unit cannot have a parent")
@@ -539,6 +548,12 @@ class Class_Definition(Definition):
         self.l_methods = []
         # List of special class blocks
 
+    def loc(self):
+        if self.n_name:
+            return self.n_name.loc()
+        else:
+            return self.t_classdef.location
+
     def set_name(self, n_name):
         assert isinstance(n_name, Identifier)
 
@@ -640,6 +655,12 @@ class Function_Definition(Definition):
             n_fdef.set_parent(self)
         # Optional list of nested functions
 
+    def loc(self):
+        if self.n_sig.n_name:
+            return self.n_sig.loc()
+        else:
+            return self.t_fun.location
+
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Compilation_Unit,
                                      Special_Block,
@@ -699,6 +720,12 @@ class Function_Signature(Node):
 
         self.l_outputs = None
         # List of outputs
+
+    def loc(self):
+        if self.n_name:
+            return self.n_name.loc()
+        else:
+            raise ICE("cannot attach error to blank signature")
 
     def set_name(self, n_name):
         assert isinstance(n_name, Name)
@@ -839,6 +866,9 @@ class Name_Value_Pair(Node):
         self.n_value = None
         # The (optional) value
 
+    def loc(self):
+        return self.n_name.loc()
+
     def set_value(self, t_eq, n_value):
         assert isinstance(t_eq, MATLAB_Token)
         assert t_eq.kind == "ASSIGNMENT"
@@ -889,6 +919,9 @@ class Special_Block(Node):
 
         self.l_items = []
         # List of items in this block
+
+    def loc(self):
+        return self.t_kw.location
 
     def set_attributes(self, l_attr):
         assert isinstance(l_attr, list)
@@ -972,6 +1005,12 @@ class Entity_Constraints(Node):
         self.n_default_value = None
         # An optional default value expression
 
+    def loc(self):
+        if self.n_name:
+            return self.n_name.loc()
+        else:
+            raise ICE("cannot attach error to blank entity constraints")
+
     def set_name(self, n_name):
         assert isinstance(n_name, Name)
 
@@ -1040,6 +1079,9 @@ class Argument_Validation_Delegation(Node):
         self.n_class_name = None
         # The name of the class we delegate validation to
 
+    def loc(self):
+        return self.t_op.location
+
     def set_name(self, n_name):
         assert isinstance(n_name, Name)
 
@@ -1077,6 +1119,9 @@ class Class_Enumeration(Node):
         self.l_args = []
         # Parameters for class constructor to build this literal
 
+    def loc(self):
+        return self.n_name.loc()
+
     def add_argument(self, n_argument):
         isinstance(n_argument, Expression)
 
@@ -1112,6 +1157,9 @@ class Action(Node):
 
         self.n_body = None
         # The body
+
+    def loc(self):
+        return self.t_kw.location
 
     def set_expression(self, n_expr):
         assert self.t_kw.value not in ("else", "otherwise")
@@ -1155,6 +1203,9 @@ class Row(Node):
         self.l_items = []
         # Members of this row
 
+    def loc(self):
+        raise ICE("cannot attach error to matrix rows")
+
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Matrix_Expression,
                                      Cell_Expression))
@@ -1194,6 +1245,9 @@ class Reference(Name):
         # A list of parameters or indices. This is set later so that
         # separating tokens can be correctly attached.
 
+    def loc(self):
+        return self.n_ident.loc()
+
     def set_arguments(self, l_args):
         assert isinstance(l_args, list)
         for n_arg in l_args:
@@ -1228,6 +1282,9 @@ class Cell_Reference(Name):
         self.l_args = []
         # A list of indices
 
+    def loc(self):
+        return self.n_ident.loc()
+
     def add_argument(self, n_arg):
         assert isinstance(n_arg, Expression)
 
@@ -1259,6 +1316,9 @@ class Identifier(Name):
         self.t_ident = t_ident
         self.t_ident.set_ast(self)
         # The token
+
+    def loc(self):
+        return self.t_ident.location
 
     def __str__(self):
         if self.t_ident.kind == "BANG":
@@ -1301,6 +1361,9 @@ class Selection(Name):
         self.n_field.set_parent(self)
         # The stuff after the .
 
+    def loc(self):
+        return self.t_selection.location
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_prefix.visit(self, function, "Prefix")
@@ -1334,6 +1397,9 @@ class Dynamic_Selection(Name):
         self.n_field.set_parent(self)
         # The stuff in the brackets after the .
 
+    def loc(self):
+        return self.t_selection.location
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_prefix.visit(self, function, "Prefix")
@@ -1363,6 +1429,9 @@ class Superclass_Reference(Name):
         self.n_reference = n_reference
         self.n_reference.set_parent(self)
         # Stuff after the @
+
+    def loc(self):
+        return self.t_at.location
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
@@ -1395,6 +1464,9 @@ class For_Loop_Statement(Compound_Statement):
 
         self.n_body = None
         # The body for the loop
+
+    def loc(self):
+        return self.t_for.location
 
     def set_ident(self, n_ident):
         assert isinstance(n_ident, Identifier)
@@ -1487,6 +1559,9 @@ class While_Statement(Compound_Statement):
         self.n_body = None
         # The loop body
 
+    def loc(self):
+        return self.t_while.location
+
     def set_body(self, n_body):
         assert isinstance(n_body, Sequence_Of_Statements)
 
@@ -1524,6 +1599,9 @@ class If_Statement(Compound_Statement):
         self.has_else = self.l_actions[-1].kind() == "else"
         # Cache if we have an else part or not.
 
+    def loc(self):
+        return self.l_actions[0].loc()
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self._visit_list(self.l_actions, function, "Action")
@@ -1551,6 +1629,9 @@ class Switch_Statement(Compound_Statement):
 
         self.has_otherwise = False
         # Cache if we have an otherwise or not.
+
+    def loc(self):
+        return self.t_kw.location
 
     def add_action(self, n_action):
         assert isinstance(n_action, Action)
@@ -1592,6 +1673,9 @@ class Try_Statement(Compound_Statement):
         # An optional body for the catch block. If absent then the
         # semantics are to catch and ignore any exceptions, and resume
         # execution with the statement following this block.
+
+    def loc(self):
+        return self.t_try.location
 
     def set_body(self, n_body):
         assert isinstance(n_body, Sequence_Of_Statements)
@@ -1637,6 +1721,9 @@ class SPMD_Statement(Compound_Statement):
         self.n_body = None
         # The body
 
+    def loc(self):
+        return self.t_spmd.location
+
     def set_body(self, n_body):
         assert isinstance(n_body, Sequence_Of_Statements)
 
@@ -1674,6 +1761,9 @@ class Simple_Assignment_Statement(Simple_Statement):
         self.n_rhs.set_parent(self)
         # The expression to assign
 
+    def loc(self):
+        return self.t_eq.location
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_lhs.visit(parent, function, "LHS")
@@ -1696,6 +1786,12 @@ class Compound_Assignment_Statement(Simple_Statement):
         # The expression to assign. Must be a function call that
         # returns multiple outputs. We can't check it now (during
         # parsing), it will be checked during semantic analysis.
+
+    def loc(self):
+        if self.t_eq:
+            return self.t_eq.location
+        else:
+            raise ICE("cannot attach error to blank compound assignment")
 
     def set_token_eq(self, t_eq):
         assert isinstance(t_eq, MATLAB_Token)
@@ -1736,6 +1832,9 @@ class Naked_Expression_Statement(Simple_Statement):
         self.n_expr.set_parent(self)
         # The expression
 
+    def loc(self):
+        return self.n_expr.loc()
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_expr.visit(parent, function, "Expression")
@@ -1752,6 +1851,9 @@ class Return_Statement(Simple_Statement):
         self.t_kw.set_ast(self)
         # The token for return
 
+    def loc(self):
+        return self.t_kw.location
+
 
 class Break_Statement(Simple_Statement):
     def __init__(self, t_kw):
@@ -1763,6 +1865,9 @@ class Break_Statement(Simple_Statement):
         self.t_kw.set_ast(self)
         # The token for break
 
+    def loc(self):
+        return self.t_kw.location
+
 
 class Continue_Statement(Simple_Statement):
     def __init__(self, t_kw):
@@ -1773,6 +1878,9 @@ class Continue_Statement(Simple_Statement):
         self.t_kw = t_kw
         self.t_kw.set_ast(self)
         # The token for continue
+
+    def loc(self):
+        return self.t_kw.location
 
 
 class Global_Statement(Simple_Statement):
@@ -1787,6 +1895,9 @@ class Global_Statement(Simple_Statement):
 
         self.l_names = []
         # List of names from the special global namespace
+
+    def loc(self):
+        return self.t_kw.location
 
     def add_name(self, n_name):
         assert isinstance(n_name, Identifier)
@@ -1813,6 +1924,9 @@ class Persistent_Statement(Simple_Statement):
         self.l_names = []
         # List of identifiers to make persistent
 
+    def loc(self):
+        return self.t_kw.location
+
     def add_name(self, n_name):
         assert isinstance(n_name, Identifier)
 
@@ -1838,6 +1952,9 @@ class Import_Statement(Simple_Statement):
         self.l_chain = None
         # The tokens for the namespace to import. Will be identifiers,
         # followed by an optional operator (.*).
+
+    def loc(self):
+        return self.t_kw.location
 
     def set_chain(self, l_chain):
         assert isinstance(l_chain, list)
@@ -1914,6 +2031,9 @@ class Number_Literal(Literal):
     def __str__(self):
         return self.t_value.value
 
+    def loc(self):
+        return self.t_value.location
+
 
 class Char_Array_Literal(Literal):
     def __init__(self, t_string):
@@ -1930,6 +2050,9 @@ class Char_Array_Literal(Literal):
     def __str__(self):
         return "'" + self.t_string.value + "'"
 
+    def loc(self):
+        return self.t_string.location
+
 
 class String_Literal(Literal):
     def __init__(self, t_string):
@@ -1943,6 +2066,9 @@ class String_Literal(Literal):
 
     def __str__(self):
         return '"' + self.t_string.value + '"'
+
+    def loc(self):
+        return self.t_string.location
 
     def evaluate_static_string_expression(self):
         return self.t_string.value
@@ -1962,6 +2088,9 @@ class Reshape(Expression):
         self.t_colon = t_colon
         self.t_colon.set_ast(self)
         # The token for :
+
+    def loc(self):
+        return self.t_colon.location
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Reference,
@@ -2012,6 +2141,9 @@ class Range_Expression(Expression):
         # The (optional) stride. It doesn't have to neatly divide the
         # range.
 
+    def loc(self):
+        return self.t_first_colon.location
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_first.visit(self, function, "First")
@@ -2040,6 +2172,9 @@ class Matrix_Expression(Expression):
 
         self.l_rows = []
         # Matrix rows
+
+    def loc(self):
+        return self.t_open.location
 
     def add_row(self, n_row):
         assert isinstance(n_row, Row)
@@ -2073,6 +2208,9 @@ class Cell_Expression(Expression):
 
         self.l_rows = []
         # Cell rows
+
+    def loc(self):
+        return self.t_open.location
 
     def add_row(self, n_row):
         assert isinstance(n_row, Row)
@@ -2123,6 +2261,9 @@ class Function_Call(Expression):
         # List of parameters. Char literals for command form or shell
         # escapes, expressions otherwise.
 
+    def loc(self):
+        return self.n_name.loc()
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         if self.variant != "escape":
@@ -2169,6 +2310,9 @@ class Unary_Operation(Expression):
         # unary.
         self.t_op.fix.unary_operator = True
 
+    def loc(self):
+        return self.t_op.location
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_expr.visit(parent, function, "Expression")
@@ -2212,6 +2356,9 @@ class Binary_Operation(Expression):
         # unary.
         self.t_op.fix.binary_operator = True
 
+    def loc(self):
+        return self.t_op.location
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_lhs.visit(parent, function, "LHS")
@@ -2244,6 +2391,9 @@ class Lambda_Function(Expression):
 
         self.n_body = None
         # The expression
+
+    def loc(self):
+        return self.t_at.location
 
     def add_parameter(self, n_parameter):
         assert isinstance(n_parameter, Identifier)
@@ -2282,6 +2432,9 @@ class Function_Pointer(Expression):
         self.n_name.set_parent(self)
         # The (simple dotted) name of the function we point to
 
+    def loc(self):
+        return self.t_at.location
+
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_name.visit(parent, function, "Name")
@@ -2305,6 +2458,9 @@ class Metaclass(Expression):
         self.n_name = n_name
         self.n_name.set_parent(self)
         # The (simple dotted) name of a class
+
+    def loc(self):
+        return self.t_mc.location
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)

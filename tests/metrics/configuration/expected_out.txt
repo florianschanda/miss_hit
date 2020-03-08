@@ -2,7 +2,7 @@
 test.m: metric: exceeded file_length: measured 25 > limit 10
 In test.m, line 12
 | function y = test_2 (x)
-| ^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
+|              ^^^^^^ metric: exceeded npath: measured 8 > limit 5
 Code metrics for file test.m:
   file_length: 25 (!not justified!)
 
@@ -24,5 +24,5 @@ MISS_HIT Summary: 1 file(s) analysed, 2 metric deviations(s)
 test.m: metric: exceeded file_length: measured 25 > limit 10
 In test.m, line 12
 | function y = test_2 (x)
-| ^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
+|              ^^^^^^ metric: exceeded npath: measured 8 > limit 5
 MISS_HIT Summary: 1 file(s) analysed, 2 metric deviations(s)
