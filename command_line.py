@@ -94,6 +94,8 @@ def create_basic_clp():
 def parse_args(clp):
     options = clp["ap"].parse_args()
 
+    # False alarm from pylint
+    # pylint: disable=no-member
     if not options.brief and sys.stdout.encoding.lower() != "utf-8":
         print("WARNING: It looks like your environment is not set up quite")
         print("         right since python will encode to %s on stdout." %
