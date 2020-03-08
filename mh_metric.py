@@ -35,21 +35,44 @@ import command_line
 
 from m_lexer import MATLAB_Lexer
 from errors import Location, Error, ICE, Message_Handler
+import config
 import config_files
 from m_parser import MATLAB_Parser
 from m_ast import *
+
+MEASURE = {m : None for m in config.METRICS}
+
+
+def measures(metric_name):
+    assert isinstance(metric_name, str)
+    assert metric_name in config.METRICS
+
+    def decorator(func):
+        MEASURE[metric_name] = func
+        return func
+
+    return decorator
 
 
 ##############################################################################
 # Metrics
 ##############################################################################
 
+@measures("npath")
 def npath(node):
     assert isinstance(node, (Sequence_Of_Statements,
                              Statement,
-                             Pragma))
+                             Pragma,
+                             Function_Definition,
+                             Script_File))
 
-    if isinstance(node, Sequence_Of_Statements):
+    if isinstance(node, Function_Definition):
+        return npath(node.n_body)
+
+    elif isinstance(node, Script_File):
+        return npath(node.n_statements)
+
+    elif isinstance(node, Sequence_Of_Statements):
         paths = 1
         for n_statement in node.l_statements:
             if isinstance(n_statement, (If_Statement,
@@ -88,12 +111,21 @@ def npath(node):
         raise ICE("unexpected node %s" % node.__class__.__name__)
 
 
+@measures("cnest")
 def cnest(node):
     assert isinstance(node, (Sequence_Of_Statements,
                              Statement,
-                             Pragma))
+                             Pragma,
+                             Function_Definition,
+                             Script_File))
 
-    if isinstance(node, Sequence_Of_Statements):
+    if isinstance(node, Function_Definition):
+        return cnest(node.n_body)
+
+    elif isinstance(node, Script_File):
+        return cnest(node.n_statements)
+
+    elif isinstance(node, Sequence_Of_Statements):
         return max(map(cnest, node.l_statements),
                    default=0)
 
@@ -126,10 +158,39 @@ def cnest(node):
         raise ICE("unexpected node %s" % node.__class__.__name__)
 
 
+@measures("parameters")
 def parameters(node):
-    assert isinstance(node, Function_Definition)
+    assert isinstance(node, (Function_Definition,
+                             Script_File))
 
-    return len(node.n_sig.l_inputs) + len(node.n_sig.l_outputs)
+    if isinstance(node, Function_Definition):
+        return len(node.n_sig.l_inputs) + len(node.n_sig.l_outputs)
+
+    else:
+        return 0
+
+
+@measures("globals")
+def direct_globals(node):
+    assert isinstance(node, (Function_Definition,
+                             Script_File))
+
+    class Global_Visitor(AST_Visitor):
+        def __init__(self):
+            self.names = set()
+
+        def visit(self, node, n_parent, relation):
+            if isinstance(node, Global_Statement):
+                self.names |= set(n_ident.t_ident.value
+                                  for n_ident in node.l_names)
+
+    if isinstance(node, Function_Definition):
+        gvis = Global_Visitor()
+        node.n_body.visit(None, gvis, "Root")
+        return len(gvis.names)
+
+    else:
+        return 0
 
 
 ##############################################################################
@@ -213,17 +274,10 @@ def get_function_metrics(mh, cfg, tree):
         # We need a unique name for the function for this function.
         name = "::".join(map(str, naming_stack + [n_fdef.n_sig.n_name]))
 
-        metrics[name] = {
-            "npath" : {"measure" : npath(n_fdef.n_body),
-                       "limit"   : None,
-                       "reason"  : None},
-            "cnest" : {"measure" : cnest(n_fdef.n_body),
-                       "limit"   : None,
-                       "reason"  : None},
-            "parameters" : {"measure" : parameters(n_fdef),
-                            "limit"   : None,
-                            "reason"  : None},
-        }
+        metrics[name] = {m: {"measure" : MEASURE[m](n_fdef),
+                             "limit"   : None,
+                             "reason"  : None}
+                         for m in config.FUNCTION_METRICS}
 
         justifications[name] = get_justifications(mh, n_fdef.n_body)
 
@@ -235,17 +289,10 @@ def get_function_metrics(mh, cfg, tree):
         # We need a unique name for the script
         name = n_script.name.rsplit(".")[0]
 
-        metrics[name] = {
-            "npath" : {"measure" : npath(n_script.n_statements),
-                       "limit"   : None,
-                       "reason"  : None},
-            "cnest" : {"measure" : cnest(n_script.n_statements),
-                       "limit"   : None,
-                       "reason"  : None},
-            "parameters" : {"measure" : 0,
-                            "limit"   : None,
-                            "reason"  : None},
-        }
+        metrics[name] = {m: {"measure" : MEASURE[m](n_script),
+                             "limit"   : None,
+                             "reason"  : None}
+                         for m in config.FUNCTION_METRICS}
 
         justifications[name] = get_justifications(mh, n_script.n_statements)
 

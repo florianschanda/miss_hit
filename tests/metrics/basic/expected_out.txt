@@ -4,6 +4,7 @@ Code metrics for file file_1.m:
 
   Code metrics for function file_1:
     cnest: 0
+    globals: 0
     npath: 1
     parameters: 0
 
@@ -12,16 +13,19 @@ Code metrics for file file_2.m:
 
   Code metrics for function kitten:
     cnest: 0
+    globals: 0
     npath: 1
     parameters: 0
 
   Code metrics for function kitten::cat:
     cnest: 0
+    globals: 0
     npath: 1
     parameters: 0
 
   Code metrics for function potato:
     cnest: 0
+    globals: 0
     npath: 1
     parameters: 0
 
@@ -30,21 +34,25 @@ Code metrics for file npath.m:
 
   Code metrics for function ifs:
     cnest: 1
+    globals: 0
     npath: 8
     parameters: 1
 
   Code metrics for function loops_1:
     cnest: 1
+    globals: 0
     npath: 2
     parameters: 0
 
   Code metrics for function loops_2:
     cnest: 2
+    globals: 0
     npath: 3
     parameters: 0
 
   Code metrics for function sequence:
     cnest: 0
+    globals: 0
     npath: 1
     parameters: 0
 MISS_HIT Summary: 3 file(s) analysed, everything seemes fine

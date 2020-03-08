@@ -106,6 +106,11 @@ METRICS = {
         "type" : "int",
         "help" : "Number of input/output parameters."
     },
+    "globals" : {
+        "kind" : "function",
+        "type" : "int",
+        "help" : "Number of direct (non-transitive) global variables."
+    },
 }
 FILE_METRICS = sorted(metric
                       for metric in METRICS
