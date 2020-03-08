@@ -96,13 +96,27 @@ section pre {
     color: black;
 }
 
-table {
+.metrics h2 {
+    margin-bottom: 0;
+}
+
+.metrics td {
+    padding: 0.3em;
+}
+
+.metrics td:first-child {
+     min-width: 12em;
+}
+
+.metrics table{
     border-radius: 0.2em;
     border: 0.1em solid lightgray;
+    margin-bottom: 1.5em;
 }
 
 thead {
     background-color: #f6f6f6;
+    font-weight: bold;
 }
 
 td.na {

@@ -492,9 +492,8 @@ def write_html_report(fd, fd_name, all_metrics):
     for filename in sorted(all_metrics):
         metrics = all_metrics[filename]
 
+        fd.write("<div  class='metrics'>\n")
         fd.write("<h2>%s</h2>\n" % filename)
-
-        fd.write("<div>\n")
         fd.write("<table>\n")
 
         fd.write("<thead>")
@@ -549,6 +548,9 @@ def write_html_report(fd, fd_name, all_metrics):
 
     fd.write("</section>\n")
     fd.write("</main>\n")
+    fd.write("<footer>\n")
+    fd.write("MISS_HIT is licensed under the GPLv3\n")
+    fd.write("</footer>\n")
     fd.write("</body>\n")
     fd.write("</html>\n")
 
