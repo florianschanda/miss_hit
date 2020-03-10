@@ -572,6 +572,10 @@ class MATLAB_Parser:
         return cunit
 
     def parse_script_file(self, l_pragmas):
+        # At least in MATLAB 2017b script files cannot use the
+        # non-ended chained functions
+
+        self.functions_require_end = True
         statements = []
         while not self.peek_eof():
             if self.peek("KEYWORD", "function"):

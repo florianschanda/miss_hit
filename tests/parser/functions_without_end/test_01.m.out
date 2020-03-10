@@ -1,0 +1,23 @@
+----------------------------------------------------------------------
+--  Parse tree for test_01.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <a>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <x>
+        RHS: Number_Literal <1>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <b>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <y>
+        RHS: Number_Literal <2>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <c>
+    Body: Sequence_Of_Statements
+----------------------------------------------------------------------
+MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
