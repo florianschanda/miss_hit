@@ -13,18 +13,21 @@ Code metrics for file file_2.m:
 
   Code metrics for function kitten:
     cnest: 0
+    function_length: 7
     globals: 0
     npath: 1
     parameters: 0
 
   Code metrics for function kitten::cat:
     cnest: 0
+    function_length: 3
     globals: 0
     npath: 1
     parameters: 0
 
   Code metrics for function potato:
     cnest: 0
+    function_length: 3
     globals: 0
     npath: 1
     parameters: 0
@@ -34,24 +37,28 @@ Code metrics for file npath.m:
 
   Code metrics for function ifs:
     cnest: 1
+    function_length: 11
     globals: 0
     npath: 8
     parameters: 1
 
   Code metrics for function loops_1:
     cnest: 1
+    function_length: 5
     globals: 0
     npath: 2
     parameters: 0
 
   Code metrics for function loops_2:
     cnest: 2
+    function_length: 7
     globals: 0
     npath: 3
     parameters: 0
 
   Code metrics for function sequence:
     cnest: 0
+    function_length: 4
     globals: 0
     npath: 1
     parameters: 0

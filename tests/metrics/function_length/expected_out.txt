@@ -1,0 +1,39 @@
+=== PLAIN MODE ===
+Code metrics for file test_01.m:
+  file_length: 14
+
+  Code metrics for function a:
+    cnest: 0
+    function_length: 5
+    globals: 0
+    npath: 1
+    parameters: 0
+
+  Code metrics for function b:
+    cnest: 0
+    function_length: 6
+    globals: 0
+    npath: 1
+    parameters: 0
+
+  Code metrics for function c:
+    cnest: 0
+    function_length: 1
+    globals: 0
+    npath: 1
+    parameters: 0
+
+Code metrics for file test_02.m:
+  file_length: 6
+
+  Code metrics for function a:
+    cnest: 0
+    function_length: 4
+    globals: 0
+    npath: 1
+    parameters: 0
+MISS_HIT Summary: 2 file(s) analysed, everything seemes fine
+
+
+=== HTML MODE ===
+MISS_HIT Summary: 2 file(s) analysed, everything seemes fine

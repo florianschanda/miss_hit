@@ -90,6 +90,11 @@ METRICS = {
         "type" : "int",
         "help" : "Number of lines in each file.",
     },
+    "function_length" : {
+        "kind" : "function",
+        "type" : "int",
+        "help" : "Number for lines for each function.",
+    },
     "npath" : {
         "kind" : "function",
         "type" : "int",

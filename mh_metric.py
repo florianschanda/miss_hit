@@ -193,6 +193,39 @@ def direct_globals(node):
         return 0
 
 
+@measures("function_length")
+def function_length(node):
+    assert isinstance(node, (Function_Definition,
+                             Script_File))
+
+    if isinstance(node, Script_File):
+        return None
+
+    elif node.t_end:
+        return node.t_end.location.line - node.t_fun.location.line + 1
+
+    else:
+        # If a function does not have an end, its length is from this
+        # function up to and including the next function or the end of
+        # the file
+        n_cu = node.n_parent
+        if not isinstance(n_cu, Function_File):
+            raise ICE("unterminated function must be a child of a "
+                      "function file")
+
+        this_function_idx = n_cu.l_functions.index(node)
+        next_function_idx = this_function_idx + 1
+
+        if next_function_idx < len(n_cu.l_functions):
+            # We have a function following this one
+            return (n_cu.l_functions[next_function_idx].t_fun.location.line -
+                    node.t_fun.location.line)
+
+        else:
+            # This is the last function in the file
+            return n_cu.file_length - node.t_fun.location.line + 1
+
+
 ##############################################################################
 # Infrastructure
 ##############################################################################
@@ -200,6 +233,10 @@ def direct_globals(node):
 def check_metric(mh, cfg, loc, metric, metrics, justifications):
     if config.metric_check(cfg, metric):
         measure = metrics[metric]["measure"]
+
+        if measure is None:
+            return
+
         limit = config.metric_upper_limit(cfg, metric)
         metrics[metric]["limit"] = limit
         if measure > limit:
@@ -443,6 +480,8 @@ def write_text_report(fd, all_metrics):
 
         for file_metric in config.FILE_METRICS:
             results = metrics["metrics"][file_metric]
+            if results["measure"] is None:
+                continue
             fd.write("  %s: %u" % (file_metric, results["measure"]))
             if results["reason"]:
                 fd.write(" (%s)\n" % results["reason"])
@@ -456,6 +495,8 @@ def write_text_report(fd, all_metrics):
             fd.write("  Code metrics for function %s:\n" % function)
             for function_metric in config.FUNCTION_METRICS:
                 results = metrics["functions"][function][function_metric]
+                if results["measure"] is None:
+                    continue
                 fd.write("    %s: %u" % (function_metric, results["measure"]))
                 if results["reason"]:
                     fd.write(" (%s)\n" % results["reason"])
@@ -511,7 +552,9 @@ def write_html_report(fd, fd_name, all_metrics):
         fd.write("<td>%s</td>" % os.path.basename(filename))
         for file_metric in config.FILE_METRICS:
             results = metrics["metrics"][file_metric]
-            if results["reason"]:
+            if results["measure"] is None:
+                fd.write("<td class='na'></td>")
+            elif results["reason"]:
                 fd.write("<td class='ok_justified' tip='%s'>%u</td>" %
                          ("Justification: " + html.escape(results["reason"]),
                           results["measure"]))
@@ -529,7 +572,9 @@ def write_html_report(fd, fd_name, all_metrics):
             fd.write("<td class='na'></td>" * len(config.FILE_METRICS))
             for function_metric in config.FUNCTION_METRICS:
                 results = metrics["functions"][function][function_metric]
-                if results["reason"]:
+                if results["measure"] is None:
+                    fd.write("<td class='na'></td>")
+                elif results["reason"]:
                     fd.write("<td class='ok_justified' tip='%s'>%u</td>" %
                              ("Justification: " +
                               html.escape(results["reason"]),

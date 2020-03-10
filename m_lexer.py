@@ -81,6 +81,10 @@ class Token_Generator(metaclass=ABCMeta):
     def token(self):
         pass
 
+    @abstractmethod
+    def line_count(self):
+        pass
+
 
 class MATLAB_Lexer(Token_Generator):
     def __init__(self, mh, filename, encoding="utf-8"):
@@ -193,6 +197,9 @@ class MATLAB_Lexer(Token_Generator):
         self.config_file_mode = True
         self.comment_char = frozenset("#")
         self.process_pragmas = False
+
+    def line_count(self):
+        return len(self.context_line)
 
     def correct_tabs(self, tabwidth):
         assert isinstance(tabwidth, int) and tabwidth >= 2
@@ -1108,6 +1115,7 @@ class Token_Buffer(Token_Generator):
         self.pos = 0
         self.tokens = []
         self.mh = lexer.mh
+        self.lines = lexer.line_count()
 
         while True:
             tok = lexer.token()
@@ -1124,6 +1132,9 @@ class Token_Buffer(Token_Generator):
             tok = None
 
         return tok
+
+    def line_count(self):
+        return self.lines
 
     def reset(self):
         self.pos = 0

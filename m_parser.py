@@ -556,6 +556,7 @@ class MATLAB_Parser:
             l_functions, l_more_pragmas = self.parse_function_list()
             cunit = Function_File(os.path.basename(self.lexer.filename),
                                   Location(self.lexer.filename),
+                                  self.lexer.line_count(),
                                   l_functions,
                                   self.lexer.in_class_directory,
                                   l_pragmas + l_more_pragmas)
@@ -587,6 +588,7 @@ class MATLAB_Parser:
 
         rv = Script_File(os.path.basename(self.lexer.filename),
                          Location(self.lexer.filename),
+                         self.lexer.line_count(),
                          Sequence_Of_Statements(statements),
                          l_functions,
                          l_pragmas + l_more_pragmas)
@@ -601,6 +603,7 @@ class MATLAB_Parser:
 
         rv = Class_File(os.path.basename(self.lexer.filename),
                         Location(self.lexer.filename),
+                        self.lexer.line_count(),
                         n_classdef,
                         l_functions,
                         l_pragmas + l_more_pragmas)
