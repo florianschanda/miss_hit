@@ -636,6 +636,9 @@ class Function_Definition(Definition):
         self.t_fun.set_ast(self)
         # The 'function' token
 
+        self.t_end = None
+        # The (optional) end token
+
         self.n_sig = n_sig
         self.n_sig.set_parent(self)
         # The function signature i.e. name, inputs, and outputs
@@ -666,6 +669,13 @@ class Function_Definition(Definition):
                                      Special_Block,
                                      Function_Definition))
         super().set_parent(n_parent)
+
+    def set_end(self, t_end):
+        assert isinstance(t_end, MATLAB_Token)
+        assert t_end.kind == "KEYWORD" and t_end.value == "end"
+
+        self.t_end = t_end
+        self.t_end.set_ast(self)
 
     def debug_parse_tree(self):
         dotpr("fun_" + str(self.n_sig.n_name) + ".dot", self)

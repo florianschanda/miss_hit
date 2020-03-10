@@ -748,7 +748,7 @@ class MATLAB_Parser:
         else:
             self.functions_require_end = True
             self.match("KEYWORD", "end")
-            self.ct.set_ast(rv)
+            rv.set_end(self.ct)
             self.match_eos(rv)
 
         self.pop_context()
