@@ -23,10 +23,10 @@ In test_05.m, line 5
 | %
 |  ^ info: NEWLINE
 In test_05.m, line 6
-| % Octave says "between matching ‘#{’ and ‘#}’ or ‘%{’ and ‘%}’
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Octave says "between matching ‘#{’ and ‘#}’ or ‘%{’ and ‘%}’'
+| % Octave says "between matching '#{' and '#}' or '%{' and '%}'
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'Octave says "between matching \'#{\' and \'#}\' or \'%{\' and \'%}\''
 In test_05.m, line 6
-| % Octave says "between matching ‘#{’ and ‘#}’ or ‘%{’ and ‘%}’
+| % Octave says "between matching '#{' and '#}' or '%{' and '%}'
 |                                                               ^ info: NEWLINE
 In test_05.m, line 7
 | % markers." so that does imply some support for nesting.

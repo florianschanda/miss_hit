@@ -3,7 +3,7 @@
 % Curiously neither the MATLAB documentation nor Octave explicitly say
 % what happens if you nest these.
 %
-% Octave says "between matching ‘#{’ and ‘#}’ or ‘%{’ and ‘%}’
+% Octave says "between matching '#{' and '#}' or '%{' and '%}'
 % markers." so that does imply some support for nesting.
 
 % Actual behaviour:
