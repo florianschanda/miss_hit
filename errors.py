@@ -199,27 +199,30 @@ class Message_Handler:
 
     def register_file(self, filename):
         assert isinstance(filename, str)
-        assert filename not in self.files
-        assert filename not in self.excluded_files
+        canonical_filename = filename.replace("\\", "/")
+        assert canonical_filename not in self.files
+        assert canonical_filename not in self.excluded_files
 
-        self.files.add(filename)
-        self.messages[filename] = {}
-        self.justifications[filename] = {}
+        self.files.add(canonical_filename)
+        self.messages[canonical_filename] = {}
+        self.justifications[canonical_filename] = {}
 
     def register_exclusion(self, filename):
         assert isinstance(filename, str)
-        assert filename not in self.files
-        assert filename not in self.excluded_files
+        canonical_filename = filename.replace("\\", "/")
+        assert canonical_filename not in self.files
+        assert canonical_filename not in self.excluded_files
 
-        self.excluded_files.add(filename)
+        self.excluded_files.add(canonical_filename)
 
     def unregister_file(self, filename):
         assert isinstance(filename, str)
-        assert filename in self.files
+        canonical_filename = filename.replace("\\", "/")
+        assert canonical_filename in self.files
 
-        self.files.remove(filename)
-        del self.messages[filename]
-        del self.justifications[filename]
+        self.files.remove(canonical_filename)
+        del self.messages[canonical_filename]
+        del self.justifications[canonical_filename]
 
     def process_message(self, message):
         # Count the message
@@ -426,22 +429,23 @@ class Message_Handler:
 
     def finalize_file(self, filename):
         assert isinstance(filename, str)
-        assert filename in self.files
+        canonical_filename = filename.replace("\\", "/")
+        assert canonical_filename in self.files
 
         # New messages for justifications that did not apply
-        for justifications in self.justifications[filename].values():
+        for justifications in self.justifications[canonical_filename].values():
             for justification in justifications:
                 if not justification.used:
                     self.warning(justification.token.location,
                                  "style justification does not apply")
 
         # Process messages
-        for messages in sorted(self.messages[filename].values()):
+        for messages in sorted(self.messages[canonical_filename].values()):
             for message in sorted(messages):
                 self.process_message(message)
 
         # Remove file
-        self.unregister_file(filename)
+        self.unregister_file(canonical_filename)
         self.file_count += 1
 
     def summary_and_exit(self):
