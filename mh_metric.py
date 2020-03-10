@@ -437,7 +437,7 @@ def collect_metrics(args):
     # File metrics
 
     metrics[filename]["metrics"] = {
-        "file_length" : {"measure" : len(lexer.context_line),
+        "file_length" : {"measure" : lexer.line_count(),
                          "limit"   : None,
                          "reason"  : None}
     }
