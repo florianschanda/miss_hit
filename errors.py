@@ -46,7 +46,9 @@ class Location:
                                    col_start is not None)
         assert context is None or isinstance(context, str)
 
-        self.filename = filename
+        self.filename = filename.replace("\\", "/")
+        # We canonicalise filenames so that windows and linux produce
+        # the same output.
         self.line     = line
         self.col_start = col_start
         if col_end is None:
