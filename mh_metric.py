@@ -604,6 +604,13 @@ def main():
     clp = command_line.create_basic_clp()
 
     clp["output_options"].add_argument(
+        "--ci",
+        default=False,
+        action="store_true",
+        help=("Do not print any metrics report, only notify about violations."
+              "This is the intended way to run in a CI environment."))
+
+    clp["output_options"].add_argument(
         "--text",
         default=None,
         metavar="FILE",
@@ -630,6 +637,10 @@ def main():
 
     if options.text and options.html:
         clp["ap"].error("the text and html options are mutually exclusive")
+
+    if options.ci and (options.text or options.html):
+        clp["ap"].error("the CI mode and and text/html options are mutually "
+                        "exclusive")
 
     mh = Message_Handler()
     mh.show_context = not options.brief
@@ -668,7 +679,7 @@ def main():
     elif options.text:
         with open(options.text, "w") as fd:
             write_text_report(fd, all_metrics)
-    else:
+    elif not options.ci:
         write_text_report(sys.stdout, all_metrics)
 
     mh.summary_and_exit()

@@ -53,6 +53,14 @@ $ mh_metrics src --html=metrics.html
         In a future release more formats (json, csv, etc.) will be
         supported.
       </div>
+
+      <div>
+        Inside a CI environment, this produces too much
+        output. Instead you can use the ci option for this:
+        <pre>$ mh_metrics src --ci</pre> This mode will not produce an
+        overall report, instead only report violations.
+      </div>
+
     </section>
 
     <section>
