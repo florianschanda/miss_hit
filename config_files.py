@@ -206,7 +206,7 @@ class Config_Parser:
             except ValueError:
                 self.mh.error(self.ct.location,
                               "expected positive integer")
-            if value < 1:
+            if value < 0:
                 self.mh.error(self.ct.location,
                               "expected positive integer")
 
