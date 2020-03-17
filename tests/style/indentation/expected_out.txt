@@ -155,7 +155,7 @@ In awful.m, line 5
 In awful.m, line 5
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
 |                                                   ^ style: end statement with a newline [fixed]
-MISS_HIT Summary: 3 file(s) analysed, 52 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 52 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 3 file(s) analysed, 52 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 52 style issue(s)

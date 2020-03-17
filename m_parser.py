@@ -2061,7 +2061,7 @@ def parser_test_main():
                     help="Create cfg with graphviz for each function")
     options = ap.parse_args()
 
-    mh = Message_Handler()
+    mh = Message_Handler("debug")
     mh.sort_messages = False
     mh.colour = False
 

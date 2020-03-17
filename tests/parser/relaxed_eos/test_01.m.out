@@ -42,4 +42,4 @@ Root: Function_File
                 Arguments: Unary_Operation -
                   Expression: Identifier <x>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 6 style issue(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 6 style issue(s)

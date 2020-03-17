@@ -2,7 +2,7 @@
 In miss_hit.cfg, line 1
 | exclude_dir: "potato"
 |              ^^^^^^^^ error: must be a valid local directory
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 1 error(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 1 error(s)

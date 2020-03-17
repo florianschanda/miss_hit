@@ -88,4 +88,4 @@ Root: Script_File
         Arguments: Char_Array_Literal 'foo'
         Arguments: Char_Array_Literal ')foo      '
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 12 style issue(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 12 style issue(s)

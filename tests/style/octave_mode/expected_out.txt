@@ -23,7 +23,7 @@ In on/test.m, line 4
 In on/test.m, line 5
 |    # This is a comment
 |    ^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 3 [fixed]
-MISS_HIT Summary: 2 file(s) analysed, 7 style issue(s), 1 error(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 7 style issue(s), 1 error(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 7 style issue(s), 1 error(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 7 style issue(s), 1 error(s)

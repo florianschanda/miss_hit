@@ -14,4 +14,4 @@ Root: Script_File
             LHS: Identifier <potato>
             RHS: Number_Literal <8>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

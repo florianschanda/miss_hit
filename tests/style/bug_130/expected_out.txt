@@ -5,7 +5,7 @@ In potato.m, line 3
 In test.m, line 3
 |     %{
 |     ^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
-MISS_HIT Summary: 2 file(s) analysed, 2 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 2 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 2 style issue(s)

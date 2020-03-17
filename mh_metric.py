@@ -642,7 +642,7 @@ def main():
         clp["ap"].error("the CI mode and and text/html options are mutually "
                         "exclusive")
 
-    mh = Message_Handler()
+    mh = Message_Handler("metric")
     mh.show_context = not options.brief
     mh.show_style   = False
     mh.autofix      = False

@@ -1,4 +1,4 @@
 In invalid_1.m, line 4
 | for ((i = 1:5))
 |      ^ error: expected IDENTIFIER, found BRA instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

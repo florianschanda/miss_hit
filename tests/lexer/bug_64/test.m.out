@@ -47,4 +47,4 @@ In test.m, line 3
 | idx = [true; diff(id_remove) >1];
 |                                  ^ info: [S ] NEWLINE
 test.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

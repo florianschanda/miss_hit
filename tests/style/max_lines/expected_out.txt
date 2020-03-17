@@ -1,6 +1,6 @@
 === PLAIN MODE ===
 test.m:12: style: file exceeds 10 lines
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s)

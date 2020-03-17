@@ -1439,7 +1439,7 @@ def lexer_test_main():
     ap.add_argument("file")
     options = ap.parse_args()
 
-    mh = Message_Handler()
+    mh = Message_Handler("debug")
     mh.sort_messages = False
     mh.colour = True
 

@@ -1,4 +1,4 @@
 In invalid_5.m, line 3
 | x = [,,3]
 |       ^ error: expected IDENTIFIER, found COMMA instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

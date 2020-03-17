@@ -47,4 +47,4 @@ Root: Function_File
           Name: Identifier <foo>
           Arguments: Char_Array_Literal '+kitten'
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 2 style issue(s)

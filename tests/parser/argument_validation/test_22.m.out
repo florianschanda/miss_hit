@@ -47,4 +47,4 @@ Root: Function_File
             Name: Identifier <propertyCell>
             Arguments: Reshape
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 style issue(s)

@@ -5,7 +5,7 @@ In test.m, line 7
 In test.m, line 10
 |   potato ];
 |          ^ style: ] must not be preceeded by whitespace [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s), 1 warning(s), 2 justified message(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s), 1 warning(s), 2 justified message(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s), 1 warning(s), 2 justified message(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s), 1 warning(s), 2 justified message(s)

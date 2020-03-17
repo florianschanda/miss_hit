@@ -11,4 +11,4 @@ Root: Script_File
         Arguments: Char_Array_Literal 'f(o]'
         Arguments: Char_Array_Literal '[b   '
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 style issue(s)

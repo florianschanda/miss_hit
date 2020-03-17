@@ -132,7 +132,11 @@ class Message:
 
 class Message_Handler:
     """ All messages should be routed through this class """
-    def __init__(self):
+    def __init__(self, tool_id):
+        assert tool_id in ("debug", "style", "metric")
+
+        self.tool_id = tool_id
+
         self.style_issues = 0
         self.metric_issues = 0
         self.metric_justifications = 0
@@ -153,7 +157,7 @@ class Message_Handler:
         self.justifications = {}  # file -> line -> [justification]
 
     def fork(self):
-        rv = Message_Handler()
+        rv = Message_Handler(self.tool_id)
         rv.autofix       = self.autofix
         rv.colour        = self.colour
         rv.show_context  = self.show_context
@@ -298,7 +302,7 @@ class Message_Handler:
                                             mtext))
 
     def emit_summary(self):
-        tmp = "MISS_HIT Summary: "
+        tmp = "MISS_HIT %s Summary: " % self.tool_id.capitalize()
         stats = ["%u file(s) analysed" % self.file_count]
         if self.style_issues:
             stats.append("%u style issue(s)" % self.style_issues)
@@ -465,14 +469,14 @@ class Message_Handler:
 
 
 class HTML_Message_Handler(Message_Handler):
-    def __init__(self, filename):
-        super().__init__()
+    def __init__(self, tool_id, filename):
+        super().__init__(tool_id)
         self.filename = filename
         self.fd = None
         self.last_file = None
 
     def fork(self):
-        rv = HTML_Message_Handler(self.filename)
+        rv = HTML_Message_Handler(self.tool_id, self.filename)
         rv.autofix       = self.autofix
         rv.colour        = self.colour
         rv.show_context  = self.show_context

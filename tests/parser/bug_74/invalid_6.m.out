@@ -1,4 +1,4 @@
 In invalid_6.m, line 3
 | [x;y]' = size(1);
 |        ^ error: left-hand side of assignment must be a Name, found Unary_Operation instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

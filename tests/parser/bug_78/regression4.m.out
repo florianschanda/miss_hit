@@ -12,4 +12,4 @@ Root: Script_File
         Name: Identifier <size>
         Arguments: Number_Literal <1>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 style issue(s)

@@ -71,4 +71,4 @@ In numbers.m, line 10
 | e2
 |   ^ info: NEWLINE
 numbers.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

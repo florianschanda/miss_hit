@@ -26,7 +26,7 @@ In test.m, line 13
 In test.m, line 16
 | x = 12;
 |  ^ style: tab is not allowed [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 9 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 9 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 10 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 10 style issue(s)

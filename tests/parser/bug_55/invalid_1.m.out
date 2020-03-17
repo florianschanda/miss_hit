@@ -1,4 +1,4 @@
 In invalid_1.m, line 7
 |      properties
 |      ^^^^^^^^^^ error: expected IDENTIFIER, found KEYWORD instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

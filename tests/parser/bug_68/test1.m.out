@@ -22,4 +22,4 @@ Root: Class_File
         Name: Identifier <properties>
         Outputs: Identifier <p>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

@@ -2,6 +2,7 @@ pre-commit-checks: doc test lint
 
 doc:
 	@cd util; ./update_docs.py
+	@cd util; ./update_versions.py
 
 test:
 	@cd tests; ./run.py

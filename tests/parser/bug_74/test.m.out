@@ -66,4 +66,4 @@ Root: Script_File
         Rows: Row
           Items: Number_Literal <12>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

@@ -173,4 +173,4 @@ In details.m, line 25
 | end
 |    ^ info: NEWLINE
 details.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

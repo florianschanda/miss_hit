@@ -31,4 +31,4 @@ Root: Class_File
             LHS: Identifier <p>
             RHS: Number_Literal <123>
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

@@ -1,6 +1,6 @@
 === PLAIN MODE ===
 directory .: error: cannot have both a miss_hit.cfg and .miss_hit config file
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 1 error(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 1 error(s)

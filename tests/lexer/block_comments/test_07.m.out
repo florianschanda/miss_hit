@@ -80,4 +80,4 @@ In test_07.m, line 13
 | disp("5");
 |           ^ info: NEWLINE
 test_07.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 warning(s)

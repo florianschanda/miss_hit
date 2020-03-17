@@ -311,4 +311,4 @@ In foo.m, line 13
 | b6 = [tmp' ']'];
 |                 ^ info: [S ] NEWLINE
 foo.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

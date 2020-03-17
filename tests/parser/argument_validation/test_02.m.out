@@ -26,4 +26,4 @@ Root: Function_File
         Class: Identifier <cell>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

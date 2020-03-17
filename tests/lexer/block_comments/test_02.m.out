@@ -74,4 +74,4 @@ In test_02.m, line 7
 | disp("baz");
 |             ^ info: [S ] NEWLINE
 test_02.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, 1 warning(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 warning(s)

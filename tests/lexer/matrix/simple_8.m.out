@@ -68,4 +68,4 @@ In simple_8.m, line 3
 |      7 8 9];
 |             ^ info: [S ] NEWLINE
 simple_8.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

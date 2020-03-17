@@ -71,4 +71,4 @@ In simple_6.m, line 3
 | [1 + + 1] % 2
 |              ^ info: NEWLINE
 simple_6.m: lexed OK
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

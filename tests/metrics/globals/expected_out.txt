@@ -37,8 +37,8 @@ Code metrics for file setup.m:
     globals: 0
     npath: 1
     parameters: 0
-MISS_HIT Summary: 4 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 4 file(s) analysed, everything seemes fine
 
 
 === HTML MODE ===
-MISS_HIT Summary: 4 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 4 file(s) analysed, everything seemes fine

@@ -182,7 +182,7 @@ In test_04.m, line 8
 In test_04.m, line 7
 | end,
 |    ^ style: end this with just a newline [fixed]
-MISS_HIT Summary: 4 file(s) analysed, 61 style issue(s)
+MISS_HIT Style Summary: 4 file(s) analysed, 61 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 4 file(s) analysed, 61 style issue(s)
+MISS_HIT Style Summary: 4 file(s) analysed, 61 style issue(s)

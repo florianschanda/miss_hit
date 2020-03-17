@@ -13,4 +13,4 @@ Root: Script_File
         Name: Identifier <disp>
         Arguments: String_Literal "1"
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, 2 warning(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 2 warning(s)

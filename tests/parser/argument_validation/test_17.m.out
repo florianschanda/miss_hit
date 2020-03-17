@@ -32,4 +32,4 @@ Root: Function_File
         Default: Number_Literal <1>
     Body: Sequence_Of_Statements
 ----------------------------------------------------------------------
-MISS_HIT Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

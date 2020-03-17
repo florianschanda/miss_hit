@@ -33,9 +33,7 @@ import textwrap
 
 import config_files
 import errors
-
-
-GITHUB_ISSUES = "https://github.com/florianschanda/miss_hit/issues"
+from version import GITHUB_ISSUES, VERSION, FULL_NAME
 
 
 def create_basic_clp():
@@ -45,6 +43,10 @@ def create_basic_clp():
         description="MATLAB Independent, Small & Safe, High Integrity Tools")
     rv["ap"] = ap
 
+    ap.add_argument("-v", "--version",
+                    action="store_true",
+                    default=False,
+                    help="Show version and exit")
     ap.add_argument("files",
                     metavar="FILE|DIR",
                     nargs="*",
@@ -93,6 +95,10 @@ def create_basic_clp():
 
 def parse_args(clp):
     options = clp["ap"].parse_args()
+
+    if options.version:
+        print(FULL_NAME)
+        sys.exit(0)
 
     # False alarm from pylint
     # pylint: disable=no-member
@@ -168,6 +174,8 @@ def ice_handler(main_function):
         print("-")
         print("- Please include the above backtrace in your bug report, and")
         print("- the following information:")
+        print("-")
+        print("- MISS_HIT version: %s" % VERSION)
         print("-")
         lines = textwrap.wrap(internal_compiler_error.reason)
         print("\n".join("- %s" % l for l in lines))

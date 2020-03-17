@@ -1,4 +1,4 @@
 In test4.m, line 3
 | x = [[1]1];
 |         ^ error: expected COMMA, found NUMBER instead
-MISS_HIT Summary: 1 file(s) analysed, 1 error(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

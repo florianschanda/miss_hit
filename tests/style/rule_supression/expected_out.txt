@@ -2,7 +2,7 @@
 In nested/test.m, line 4
 |     + 2;
 |     ^ style: continuations should not start with binary operators
-MISS_HIT Summary: 2 file(s) analysed, 1 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 1 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 2 file(s) analysed, 1 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 1 style issue(s)

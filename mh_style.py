@@ -952,9 +952,9 @@ def main():
         if os.path.exists(options.html) and not os.path.isfile(options.html):
             clp["ap"].error("Cannot write to %s: it is not a file" %
                             options.html)
-        mh = HTML_Message_Handler(options.html)
+        mh = HTML_Message_Handler("style", options.html)
     else:
-        mh = Message_Handler()
+        mh = Message_Handler("style")
 
     mh.show_context = not options.brief
     mh.show_style   = not options.no_style

@@ -5,7 +5,7 @@ In test.m, line 4
 In test.m, line 5
 | a =b;   % not ok
 |   ^ style: = must be succeeded by whitespace [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 2 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)

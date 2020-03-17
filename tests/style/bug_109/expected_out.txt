@@ -8,7 +8,7 @@ In test.m, line 1
 In test.m, line 2
 |         baz)
 |            ^ style: end statement with a semicolon [fixed]
-MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
