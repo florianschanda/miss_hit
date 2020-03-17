@@ -39,13 +39,13 @@ In test_04.m, line 6
 | ^^^^^^^^^ [31mwarning[0m: ignored block comment end: no text must appear around the block comment marker %}
 In test_04.m, line 6
 | %} potato
-| ^^^^^^^^^ info: [SL] COMMENT '} potato'
+| ^^^^^^^^^ info: [SL] COMMENT
 In test_04.m, line 6
 | %} potato
 |          ^ info: NEWLINE
 In test_04.m, line 7
 | disp("baz");
-| ^^^^^^^^^^^^ info: [SL] COMMENT 'isp("baz");'
+| ^^^^^^^^^^^^ info: [SL] COMMENT
 In test_04.m, line 7
 | disp("baz");
 |             ^ info: NEWLINE

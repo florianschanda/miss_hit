@@ -69,13 +69,13 @@ In test_07.m, line 11
 |             ^ info: NEWLINE
 In test_07.m, line 12
 | %}
-| ^^ info: [SL] COMMENT '}'
+| ^^ info: [SL] COMMENT
 In test_07.m, line 12
 | %}
 |   ^ info: NEWLINE
 In test_07.m, line 13
 | disp("5");
-| ^^^^^^^^^^ info: [SL] COMMENT 'isp("5");'
+| ^^^^^^^^^^ info: [SL] COMMENT
 In test_07.m, line 13
 | disp("5");
 |           ^ info: NEWLINE

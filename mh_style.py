@@ -583,6 +583,16 @@ def stage_3_analysis(mh, cfg, tbuf):
                     # processed it. This is fine.
                     pass
 
+                elif token.block_comment:
+                    # Ignore block comments
+                    pass
+
+                elif token.raw_text.strip() in ("%s%s" % (cc, cb)
+                                                for cc in tbuf.comment_char
+                                                for cb in "{}"):
+                    # Leave block comment indicators alone
+                    pass
+
                 elif re.match("^%# +[a-zA-Z]", token.raw_text):
                     # This looks like a pragma, but there is a spurious
                     # space
@@ -711,7 +721,7 @@ def stage_3_analysis(mh, cfg, tbuf):
 
         # Complain about indentation
         if config.active(cfg, "indentation") and token.kind != "NEWLINE":
-            if token.first_in_line:
+            if token.first_in_line and not token.block_comment:
                 if token.first_in_statement:
                     if token.ast_link:
                         current_indent = token.ast_link.get_indentation()

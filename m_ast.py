@@ -106,6 +106,7 @@ class MATLAB_Token:
                  value = None,
                  anonymous = False,
                  contains_quotes = False,
+                 block_comment = False,
                  annotation = False):
         assert kind in TOKEN_KINDS
         assert isinstance(raw_text, str)
@@ -114,6 +115,7 @@ class MATLAB_Token:
         assert isinstance(first_in_statement, bool)
         assert isinstance(anonymous, bool)
         assert isinstance(contains_quotes, bool)
+        assert isinstance(block_comment, bool)
         assert isinstance(annotation, bool)
         assert not contains_quotes or kind in ("STRING", "CARRAY")
 
@@ -124,6 +126,7 @@ class MATLAB_Token:
         self.first_in_statement = first_in_statement
         self.anonymous          = anonymous
         self.contains_quotes    = contains_quotes
+        self.block_comment      = block_comment
         self.annotation         = annotation
 
         if value is None:
@@ -132,7 +135,10 @@ class MATLAB_Token:
             elif self.kind == "CONTINUATION":
                 self.value = self.raw_text[3:].strip()
             elif self.kind == "COMMENT":
-                self.value = self.raw_text[1:].strip()
+                if self.block_comment:
+                    self.value = self.raw_text.strip()
+                else:
+                    self.value = self.raw_text[1:].strip()
             elif self.kind in ("CARRAY", "STRING"):
                 if self.contains_quotes:
                     self.value = self.raw_text[1:-1]

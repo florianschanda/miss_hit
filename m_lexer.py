@@ -742,6 +742,7 @@ class MATLAB_Lexer(Token_Generator):
                                    self.first_in_statement,
                                    value = value,
                                    contains_quotes = contains_quotes,
+                                   block_comment = self.block_comment > 0,
                                    annotation = self.in_annotation)
         self.first_in_line = False
         self.first_in_statement = False
@@ -1116,6 +1117,7 @@ class Token_Buffer(Token_Generator):
         self.tokens = []
         self.mh = lexer.mh
         self.lines = lexer.line_count()
+        self.comment_char = lexer.comment_char
 
         while True:
             tok = lexer.token()

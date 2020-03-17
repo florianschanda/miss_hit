@@ -22,7 +22,7 @@ In test.m, line 3
 test.m:4:0: info: [SL] NEWLINE
 In test.m, line 5
 | foo
-| ^^^ info: [SL] COMMENT 'oo'
+| ^^^ info: [SL] COMMENT
 In test.m, line 5
 | foo
 |    ^ info: NEWLINE

@@ -78,7 +78,7 @@ In test_08.m, line 12
 |        ^ info: NEWLINE
 In test_08.m, line 13
 | disp("5");
-| ^^^^^^^^^^ info: [SL] COMMENT 'isp("5");'
+| ^^^^^^^^^^ info: [SL] COMMENT
 In test_08.m, line 13
 | disp("5");
 |           ^ info: NEWLINE
