@@ -116,6 +116,11 @@ METRICS = {
         "type" : "int",
         "help" : "Number of direct (non-transitive) global variables."
     },
+    "persistent" : {
+        "kind" : "function",
+        "type" : "int",
+        "help" : "Number of persistent variables."
+    },
 }
 FILE_METRICS = sorted(metric
                       for metric in METRICS

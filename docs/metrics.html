@@ -232,6 +232,19 @@ end
 </pre>
       </div>
 
+      <h3>Number of persistent variables ("persistent")</h3>
+      <div>
+        This counts the number of persistent variables for each
+        function. In other words, it counts how many distinct things
+        are mentioned by all persistent statements in a function.
+      </div>
+
+      <div>
+        Persistent variables make testing extremely difficult in
+        MATLAB, more so than globals; so it is a really good idea to
+        not have too many of them.
+      </div>
+
     </section>
 
   </main>

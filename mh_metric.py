@@ -184,13 +184,38 @@ def direct_globals(node):
                 self.names |= set(n_ident.t_ident.value
                                   for n_ident in node.l_names)
 
-    if isinstance(node, Function_Definition):
-        gvis = Global_Visitor()
-        node.n_body.visit(None, gvis, "Root")
-        return len(gvis.names)
+    gvis = Global_Visitor()
 
+    if isinstance(node, Function_Definition):
+        node.n_body.visit(None, gvis, "Root")
     else:
-        return 0
+        node.n_statements.visit(None, gvis, "Root")
+
+    return len(gvis.names)
+
+
+@measures("persistent")
+def persistent_variables(node):
+    assert isinstance(node, (Function_Definition,
+                             Script_File))
+
+    class Persistent_Visitor(AST_Visitor):
+        def __init__(self):
+            self.names = set()
+
+        def visit(self, node, n_parent, relation):
+            if isinstance(node, Persistent_Statement):
+                self.names |= set(n_ident.t_ident.value
+                                  for n_ident in node.l_names)
+
+    pvis = Persistent_Visitor()
+
+    if isinstance(node, Function_Definition):
+        node.n_body.visit(None, pvis, "Root")
+    else:
+        node.n_statements.visit(None, pvis, "Root")
+
+    return len(pvis.names)
 
 
 @measures("function_length")

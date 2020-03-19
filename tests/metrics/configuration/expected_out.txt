@@ -12,6 +12,7 @@ Code metrics for file test.m:
     globals: 0
     npath: 4
     parameters: 2
+    persistent: 0
 
   Code metrics for function test_2:
     cnest: 1
@@ -19,6 +20,7 @@ Code metrics for file test.m:
     globals: 0
     npath: 8 (!not justified!)
     parameters: 2
+    persistent: 0
 MISS_HIT Metric Summary: 1 file(s) analysed, 2 metric deviations(s)
 
 

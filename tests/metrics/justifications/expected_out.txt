@@ -30,6 +30,7 @@ Code metrics for file function_file.m:
     globals: 0
     npath: 8 (!not justified!)
     parameters: 0
+    persistent: 0
 
 Code metrics for file function_file_justified.m:
   file_length: 24 (for testing purposes)
@@ -40,6 +41,7 @@ Code metrics for file function_file_justified.m:
     globals: 0
     npath: 8 (for testing purposes)
     parameters: 0
+    persistent: 0
 
 Code metrics for file multi_line.m:
   file_length: 11 (this is a very long justification over many lines)
@@ -49,6 +51,7 @@ Code metrics for file multi_line.m:
     globals: 0
     npath: 1
     parameters: 0
+    persistent: 0
 
 Code metrics for file script_file.m:
   file_length: 19 (!not justified!)
@@ -58,6 +61,7 @@ Code metrics for file script_file.m:
     globals: 0
     npath: 8 (!not justified!)
     parameters: 0
+    persistent: 0
 
 Code metrics for file script_file_justified.m:
   file_length: 22 (!not justified!)
@@ -67,6 +71,7 @@ Code metrics for file script_file_justified.m:
     globals: 0
     npath: 8 (this seems fine)
     parameters: 0
+    persistent: 0
 MISS_HIT Metric Summary: 6 file(s) analysed, 5 metric deviations(s), 4 warning(s), 5 justified metric deviations(s)
 
 

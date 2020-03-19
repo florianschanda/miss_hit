@@ -8,6 +8,7 @@ Code metrics for file test_01.m:
     globals: 0
     npath: 1
     parameters: 0
+    persistent: 0
 
   Code metrics for function b:
     cnest: 0
@@ -15,6 +16,7 @@ Code metrics for file test_01.m:
     globals: 0
     npath: 1
     parameters: 0
+    persistent: 0
 
   Code metrics for function c:
     cnest: 0
@@ -22,6 +24,7 @@ Code metrics for file test_01.m:
     globals: 0
     npath: 1
     parameters: 0
+    persistent: 0
 
 Code metrics for file test_02.m:
   file_length: 6
@@ -32,6 +35,7 @@ Code metrics for file test_02.m:
     globals: 0
     npath: 1
     parameters: 0
+    persistent: 0
 MISS_HIT Metric Summary: 2 file(s) analysed, everything seemes fine
 
 
