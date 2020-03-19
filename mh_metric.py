@@ -562,57 +562,57 @@ def write_html_report(fd, fd_name, all_metrics):
         fd.write("<h2>%s</h2>\n" % filename)
         fd.write("<table>\n")
 
-        fd.write("<thead>")
-        fd.write("<tr>")
-        fd.write("<td>Item</td>")
+        fd.write("<thead>\n")
+        fd.write("<tr>\n")
+        fd.write("  <td>Item</td>\n")
         for file_metric in config.FILE_METRICS:
-            fd.write("<td>%s</td>" % file_metric)
+            fd.write("  <td>%s</td>\n" % file_metric)
         for function_metric in config.FUNCTION_METRICS:
-            fd.write("<td>%s</td>" % function_metric)
+            fd.write("  <td>%s</td>\n" % function_metric)
         fd.write("</tr>\n")
         fd.write("</thead>\n")
-        fd.write("<tbody>")
+        fd.write("<tbody>\n")
 
-        fd.write("<tr>")
-        fd.write("<td>%s</td>" % os.path.basename(filename))
+        fd.write("<tr>\n")
+        fd.write("  <td>%s</td>\n" % os.path.basename(filename))
         for file_metric in config.FILE_METRICS:
             results = metrics["metrics"][file_metric]
             if results["measure"] is None:
-                fd.write("<td class='na'></td>")
+                fd.write("  <td class='na'></td>\n")
             elif results["reason"]:
-                fd.write("<td class='ok_justified' tip='%s'>%u</td>" %
+                fd.write("  <td class='ok_justified' tip='%s'>%u</td>\n" %
                          ("Justification: " + html.escape(results["reason"]),
                           results["measure"]))
             elif results["limit"] and results["measure"] > results["limit"]:
-                fd.write("<td class='nok'>%u</td>" %
+                fd.write("  <td class='nok'>%u</td>\n" %
                          results["measure"])
             else:
                 fd.write("<td class='ok'>%u</td>" % results["measure"])
-        fd.write("<td class='na'></td>" * len(config.FUNCTION_METRICS))
+        fd.write("  <td class='na'></td>\n" * len(config.FUNCTION_METRICS))
         fd.write("</tr>\n")
 
         for function in sorted(metrics["functions"]):
-            fd.write("<tr>")
-            fd.write("<td>%s</td>" % function)
-            fd.write("<td class='na'></td>" * len(config.FILE_METRICS))
+            fd.write("<tr>\n")
+            fd.write("  <td>%s</td>\n" % function)
+            fd.write("  <td class='na'></td>\n" * len(config.FILE_METRICS))
             for function_metric in config.FUNCTION_METRICS:
                 results = metrics["functions"][function][function_metric]
                 if results["measure"] is None:
-                    fd.write("<td class='na'></td>")
+                    fd.write("  <td class='na'></td>\n")
                 elif results["reason"]:
-                    fd.write("<td class='ok_justified' tip='%s'>%u</td>" %
+                    fd.write("  <td class='ok_justified' tip='%s'>%u</td>\n" %
                              ("Justification: " +
                               html.escape(results["reason"]),
                               results["measure"]))
                 elif results["limit"] and \
                      results["measure"] > results["limit"]:
-                    fd.write("<td class='nok'>%u</td>" %
+                    fd.write("  <td class='nok'>%u</td>\n" %
                              results["measure"])
                 else:
-                    fd.write("<td class='ok'>%u</td>" % results["measure"])
+                    fd.write("  <td class='ok'>%u</td>\n" % results["measure"])
             fd.write("</tr>\n")
 
-        fd.write("</tbody>")
+        fd.write("</tbody>\n")
         fd.write("</table>\n")
         fd.write("</div>\n")
 
