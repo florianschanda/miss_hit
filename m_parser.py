@@ -1085,6 +1085,10 @@ class MATLAB_Parser:
 
         self.amatch("IDENTIFIER")
         t_pragma_kind = self.ct
+        if t_pragma_kind.value not in ("Justify", ):
+            self.mh.warning(t_pragma_kind.location,
+                            "unknown miss_hit pragma '%s'" %
+                            t_pragma_kind.value)
 
         self.amatch("BRA")
         punctuation.append(self.ct)
@@ -1092,7 +1096,7 @@ class MATLAB_Parser:
         self.amatch("IDENTIFIER")
         t_tool = self.ct
 
-        if t_tool.value not in ("metric",):
+        if t_tool.value not in ("metric" ,):
             self.mh.warning(t_tool.location,
                             "unknown miss_hit tool '%s'" % t_tool.value)
 

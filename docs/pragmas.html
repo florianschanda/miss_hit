@@ -54,8 +54,8 @@
         Annotations span until the end of the line. Annotations can be
         multi-line as long as there is no other program text between:
 <pre>
-%| pragma Justification(metric, "npath",
-%|                      "multi-line example");
+%| pragma Justify (metric, "npath",
+%|                 "multi-line example");
 </pre>
       </div>
 
@@ -109,7 +109,7 @@ a_pragma_parameters ::= a_expression { ',' a_expression }
       <h3>Justification pragmas</h3>
       <div>
         A justification pragma has the following signature:
-        <pre>pragma Justify(TOOL, PARAMETER, REASON);</pre>
+        <pre>pragma Justify (TOOL, PARAMETER, REASON);</pre>
         Tool identifies the miss_hit tool and can be one of:
         <ul>
           <li>style</li>
@@ -123,12 +123,12 @@ a_pragma_parameters ::= a_expression { ',' a_expression }
       <h4>Metric justification pragmas</h4>
       <div>
         A metric justification pragma has the following signature:
-        <pre>pragma Justify(metric, METRIC_NAME, REASON);</pre> The
+        <pre>pragma Justify (metric, METRIC_NAME, REASON);</pre> The
         metric name must be a string to match one of
         the <a href="metrics.html">documented metric names</a>. For example:
 <pre>
-%| pragma Justify(metric, "npath",
-%|                "code impossible to restructure");
+%| pragma Justify (metric, "npath",
+%|                 "code impossible to restructure");
 </pre>
       </div>
 
