@@ -18,7 +18,6 @@ def process(filename):
                                   "(-[a-z0-9]+)?)?",
                                   version.FULL_NAME,
                                   raw_line))
-                print(tmp[-1])
             else:
                 tmp.append(raw_line)
 

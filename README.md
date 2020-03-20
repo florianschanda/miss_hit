@@ -19,6 +19,9 @@ We intend to provide more tools later, please refer to the
 [roadmap](https://github.com/florianschanda/miss_hit/blob/master/ROADMAP.md)
 for more information.
 
+Please refer to the [release notes](https://github.com/florianschanda/miss_hit/blob/master/CHANGELOG.md)
+for a summary of recent changes and known issues.
+
 * Style Checker `mh_style.py`
 
   A simple coding style checker and code formatter for MATLAB or Octave
