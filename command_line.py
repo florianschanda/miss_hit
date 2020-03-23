@@ -36,6 +36,13 @@ import errors
 from version import GITHUB_ISSUES, VERSION, FULL_NAME
 
 
+def st_default():
+    # This is a workaround for #133 (issues with multi-threading on
+    # windows)
+    return sys.platform.startswith("win32") or \
+        sys.platform.startswith("cygwin")
+
+
 def create_basic_clp():
     rv = {}
 
@@ -53,7 +60,7 @@ def create_basic_clp():
                     help="MATLAB files or directories to analyze")
     ap.add_argument("--single",
                     action="store_true",
-                    default=False,
+                    default=st_default(),
                     help="Do not use multi-threaded analysis")
     ap.add_argument("--ignore-config",
                     action="store_true",
