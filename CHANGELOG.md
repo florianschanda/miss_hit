@@ -1,8 +1,9 @@
 # MISS_HIT Release Notes
 
-## 0.9.2-dev
+## 0.9.2
 
-* Workaround for #133 (multi-threading issues on windows)
+* Workaround for #133. Until I can work what the root cause of this
+  is, multi-threading is disabled on Windows platforms.
 
 ### Known issues
 
