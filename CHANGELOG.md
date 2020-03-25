@@ -5,12 +5,14 @@
 * MH Metric can now measure cyclomatic complexity. We've aimed for
   producing the same numbers as mlint does, even if it's wrong.
 
+* Fix for #133: resolved multi-threading issues on Windows. To be
+  honest, this seems more like a Python bug.
+
 ### Known issues
 
 #### Tooling
 
 * #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
-* #133 [multi-threading on windows](https://github.com/florianschanda/miss_hit/issues/133)
 
 #### Language support
 

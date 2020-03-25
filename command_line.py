@@ -36,13 +36,6 @@ import errors
 from version import GITHUB_ISSUES, VERSION, FULL_NAME
 
 
-def st_default():
-    # This is a workaround for #133 (issues with multi-threading on
-    # windows)
-    return sys.platform.startswith("win32") or \
-        sys.platform.startswith("cygwin")
-
-
 def create_basic_clp():
     rv = {}
 
@@ -60,7 +53,7 @@ def create_basic_clp():
                     help="MATLAB files or directories to analyze")
     ap.add_argument("--single",
                     action="store_true",
-                    default=st_default(),
+                    default=False,
                     help="Do not use multi-threaded analysis")
     ap.add_argument("--ignore-config",
                     action="store_true",
@@ -157,13 +150,18 @@ def read_config(mh, options, extra_options):
                 dirs.sort()
                 for f in sorted(files):
                     if f.endswith(".m"):
+                        canonical_name = os.path.normpath(os.path.join(path,
+                                                                       f))
+                        cfg = config_files.get_config(canonical_name)
                         work_list.append(
                             (mh.fork(),
-                             os.path.normpath(os.path.join(path, f)),
+                             canonical_name,
                              options,
-                             extra_options))
+                             extra_options,
+                             cfg))
         else:
-            work_list.append((mh.fork(), item, options, extra_options))
+            cfg = config_files.get_config(item)
+            work_list.append((mh.fork(), item, options, extra_options, cfg))
 
     return work_list
 

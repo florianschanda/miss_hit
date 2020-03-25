@@ -758,7 +758,7 @@ def stage_3_analysis(mh, cfg, tbuf):
 
 
 def analyze(work_package):
-    mh, filename, options, extra_options = work_package
+    mh, filename, options, extra_options, cfg = work_package
     rule_set = extra_options["rule_set"]
     autofix  = options.fix
     fd_tree  = extra_options["fd_tree"]
@@ -769,15 +769,15 @@ def analyze(work_package):
 
     encoding = "cp1252"
 
-    # Get config first, since we might want to skip this file
-
-    cfg = config_files.get_config(filename)
-    rule_lib = build_library(cfg, rule_set)
-
+    # Check config first, since we might want to skip this file
     if not cfg["enable"]:
         mh.register_exclusion(filename)
         return False, filename, mh
 
+    # Build rule library
+    rule_lib = build_library(cfg, rule_set)
+
+    # Start processing file
     mh.register_file(filename)
 
     # Do some file-based sanity checking

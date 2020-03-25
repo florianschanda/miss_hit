@@ -475,10 +475,9 @@ def warn_unused_justifications(mh, n_cu):
 
 
 def collect_metrics(args):
-    mh, filename, _, _ = args
+    mh, filename, _, _, cfg = args
     assert isinstance(filename, str)
 
-    cfg = config_files.get_config(filename)
     metrics = {filename: {"errors"    : False,
                           "metrics"   : {},
                           "functions" : {}}}
