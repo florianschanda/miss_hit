@@ -1213,8 +1213,8 @@ class Action(Node):
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         if self.n_expr:
-            self.n_expr.visit(parent, function, "Guard")
-        self.n_body.visit(parent, function, "Body")
+            self.n_expr.visit(self, function, "Guard")
+        self.n_body.visit(self, function, "Body")
         self._visit_end(parent, function, relation)
 
 
@@ -1528,9 +1528,9 @@ class General_For_Statement(For_Loop_Statement):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_ident.visit(parent, function, "Identifier")
-        self.n_expr.visit(parent, function, "Expression")
-        self.n_body.visit(parent, function, "Body")
+        self.n_ident.visit(self, function, "Identifier")
+        self.n_expr.visit(self, function, "Expression")
+        self.n_body.visit(self, function, "Body")
         self._visit_end(parent, function, relation)
 
 
@@ -1559,11 +1559,11 @@ class Parallel_For_Statement(For_Loop_Statement):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_ident.visit(parent, function, "Identifier")
-        self.n_range.visit(parent, function, "Range")
+        self.n_ident.visit(self, function, "Identifier")
+        self.n_range.visit(self, function, "Range")
         if self.n_workers:
-            self.n_workers.visit(parent, function, "Workers")
-        self.n_body.visit(parent, function, "Body")
+            self.n_workers.visit(self, function, "Workers")
+        self.n_body.visit(self, function, "Body")
         self._visit_end(parent, function, relation)
 
 
@@ -1596,8 +1596,8 @@ class While_Statement(Compound_Statement):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_guard.visit(parent, function, "Guard")
-        self.n_body.visit(parent, function, "Body")
+        self.n_guard.visit(self, function, "Guard")
+        self.n_body.visit(self, function, "Body")
         self._visit_end(parent, function, relation)
 
 
@@ -1671,7 +1671,7 @@ class Switch_Statement(Compound_Statement):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_expr.visit(parent, function, "Guard")
+        self.n_expr.visit(self, function, "Guard")
         self._visit_list(self.l_actions, function, "Action")
         self._visit_end(parent, function, relation)
 
@@ -1726,11 +1726,11 @@ class Try_Statement(Compound_Statement):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_body.visit(parent, function, "Body")
+        self.n_body.visit(self, function, "Body")
         if self.n_ident:
-            self.n_ident.visit(parent, function, "Identifier")
+            self.n_ident.visit(self, function, "Identifier")
         if self.n_handler:
-            self.n_handler.visit(parent, function, "Handler")
+            self.n_handler.visit(self, function, "Handler")
         self._visit_end(parent, function, relation)
 
 
@@ -1758,7 +1758,7 @@ class SPMD_Statement(Compound_Statement):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_body.visit(parent, function, "Body")
+        self.n_body.visit(self, function, "Body")
         self._visit_end(parent, function, relation)
 
 
@@ -1792,8 +1792,8 @@ class Simple_Assignment_Statement(Simple_Statement):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_lhs.visit(parent, function, "LHS")
-        self.n_rhs.visit(parent, function, "RHS")
+        self.n_lhs.visit(self, function, "LHS")
+        self.n_rhs.visit(self, function, "RHS")
         self._visit_end(parent, function, relation)
 
 
@@ -1845,7 +1845,7 @@ class Compound_Assignment_Statement(Simple_Statement):
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self._visit_list(self.l_lhs, function, "LHS")
-        self.n_rhs.visit(parent, function, "RHS")
+        self.n_rhs.visit(self, function, "RHS")
         self._visit_end(parent, function, relation)
 
 
@@ -1863,7 +1863,7 @@ class Naked_Expression_Statement(Simple_Statement):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_expr.visit(parent, function, "Expression")
+        self.n_expr.visit(self, function, "Expression")
         self._visit_end(parent, function, relation)
 
 
@@ -2293,7 +2293,7 @@ class Function_Call(Expression):
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         if self.variant != "escape":
-            self.n_name.visit(parent, function, "Name")
+            self.n_name.visit(self, function, "Name")
         self._visit_list(self.l_args, function, "Arguments")
         self._visit_end(parent, function, relation)
 
@@ -2341,7 +2341,7 @@ class Unary_Operation(Expression):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_expr.visit(parent, function, "Expression")
+        self.n_expr.visit(self, function, "Expression")
         self._visit_end(parent, function, relation)
 
     def __str__(self):
@@ -2387,8 +2387,8 @@ class Binary_Operation(Expression):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_lhs.visit(parent, function, "LHS")
-        self.n_rhs.visit(parent, function, "RHS")
+        self.n_lhs.visit(self, function, "LHS")
+        self.n_rhs.visit(self, function, "RHS")
         self._visit_end(parent, function, relation)
 
     def __str__(self):
@@ -2435,7 +2435,7 @@ class Lambda_Function(Expression):
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self._visit_list(self.l_parameters, function, "Parameters")
-        self.n_body.visit(parent, function, "Body")
+        self.n_body.visit(self, function, "Body")
         self._visit_end(parent, function, relation)
 
     def __str__(self):
@@ -2463,7 +2463,7 @@ class Function_Pointer(Expression):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_name.visit(parent, function, "Name")
+        self.n_name.visit(self, function, "Name")
         self._visit_end(parent, function, relation)
 
     def __str__(self):
@@ -2490,7 +2490,7 @@ class Metaclass(Expression):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self.n_name.visit(parent, function, "Name")
+        self.n_name.visit(self, function, "Name")
         self._visit_end(parent, function, relation)
 
     def __str__(self):
