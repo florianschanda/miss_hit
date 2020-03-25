@@ -4,6 +4,7 @@ Code metrics for file test_01.m:
 
   Code metrics for function a:
     cnest: 0
+    cyc: 1
     function_length: 5
     globals: 0
     npath: 1
@@ -12,6 +13,7 @@ Code metrics for file test_01.m:
 
   Code metrics for function b:
     cnest: 0
+    cyc: 1
     function_length: 6
     globals: 0
     npath: 1
@@ -20,6 +22,7 @@ Code metrics for file test_01.m:
 
   Code metrics for function c:
     cnest: 0
+    cyc: 1
     function_length: 1
     globals: 0
     npath: 1
@@ -31,6 +34,7 @@ Code metrics for file test_02.m:
 
   Code metrics for function a:
     cnest: 0
+    cyc: 1
     function_length: 4
     globals: 0
     npath: 1

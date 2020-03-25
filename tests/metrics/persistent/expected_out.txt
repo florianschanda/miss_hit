@@ -4,6 +4,7 @@ Code metrics for file test_01.m:
 
   Code metrics for function test_01:
     cnest: 1
+    cyc: 2
     function_length: 7
     globals: 0
     npath: 2

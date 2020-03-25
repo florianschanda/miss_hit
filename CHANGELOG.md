@@ -1,9 +1,9 @@
 # MISS_HIT Release Notes
 
-## 0.9.2
+## 0.9.3-dev
 
-* Workaround for #133. Until I can work what the root cause of this
-  is, multi-threading is disabled on Windows platforms.
+* MH Metric can now measure cyclomatic complexity. We've aimed for
+  producing the same numbers as mlint does, even if it's wrong.
 
 ### Known issues
 
@@ -16,6 +16,11 @@
 
 * #88 [allow end as method name](https://github.com/florianschanda/miss_hit/issues/88)
 * #131 [end of statement after enumeration optional](https://github.com/florianschanda/miss_hit/issues/131)
+
+## 0.9.2
+
+* Workaround for #133. Until I can work what the root cause of this
+  is, multi-threading is disabled on Windows platforms.
 
 ## 0.9.1
 

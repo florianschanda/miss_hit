@@ -153,6 +153,28 @@ $ mh_metrics src --html=metrics.html
         and method.
       </div>
 
+      <h3>McCabe Cyclomatic Complexity ("cyc")</h3>
+      <div>
+        This measures
+        the <a href="http://www.literateprogramming.com/mccabe.pdf">McCabe
+        cyclomatic complexity</a>. We have aimed for mlint
+        compatibility, instead of doing it "right". Specifically this
+        means:
+        <ul>
+          <li>
+            Empty branches "count", even though they should not
+            contribute, based on the original definition of the
+            metric.
+          </li>
+          <li>
+            Exceptions are generally ignored. Specifically a try-catch
+            block is treated like on flat block + one branch. This is
+            not correct since every statement in a try block may
+            create a jump.
+          </li>
+        </ul>
+      </div>
+
       <h3>Lines in function ("function_length")</h3>
       <div>
         The number of lines for each function. Note that adding

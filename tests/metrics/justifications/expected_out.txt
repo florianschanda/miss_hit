@@ -26,6 +26,7 @@ Code metrics for file function_file.m:
 
   Code metrics for function function_file:
     cnest: 1
+    cyc: 4
     function_length: 20
     globals: 0
     npath: 8 (!not justified!)
@@ -37,6 +38,7 @@ Code metrics for file function_file_justified.m:
 
   Code metrics for function function_file_justified:
     cnest: 1
+    cyc: 4
     function_length: 20
     globals: 0
     npath: 8 (for testing purposes)
@@ -48,6 +50,7 @@ Code metrics for file multi_line.m:
 
   Code metrics for function multi_line:
     cnest: 0
+    cyc: 1
     globals: 0
     npath: 1
     parameters: 0
@@ -58,6 +61,7 @@ Code metrics for file script_file.m:
 
   Code metrics for function script_file:
     cnest: 1
+    cyc: 4
     globals: 0
     npath: 8 (!not justified!)
     parameters: 0
@@ -68,6 +72,7 @@ Code metrics for file script_file_justified.m:
 
   Code metrics for function script_file_justified:
     cnest: 1
+    cyc: 4
     globals: 0
     npath: 8 (this seems fine)
     parameters: 0

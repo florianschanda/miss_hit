@@ -4,6 +4,7 @@ Code metrics for file f1.m:
 
   Code metrics for function f1:
     cnest: 0
+    cyc: 1
     function_length: 4
     globals: 1
     npath: 1
@@ -15,6 +16,7 @@ Code metrics for file f2.m:
 
   Code metrics for function f2:
     cnest: 0
+    cyc: 1
     function_length: 4
     globals: 1
     npath: 1
@@ -26,6 +28,7 @@ Code metrics for file f3.m:
 
   Code metrics for function f3:
     cnest: 0
+    cyc: 1
     function_length: 6
     globals: 2
     npath: 1
@@ -37,6 +40,7 @@ Code metrics for file setup.m:
 
   Code metrics for function setup:
     cnest: 0
+    cyc: 1
     globals: 2
     npath: 1
     parameters: 0

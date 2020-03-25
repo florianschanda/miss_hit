@@ -2,14 +2,12 @@
 In pragma.m, line 4
 | %| pragma Justify (metric, "cyc", "this is fine");
 |    ^^^^^^ warning: this justification does not apply to anything
-In pragma.m, line 4
-| %| pragma Justify (metric, "cyc", "this is fine");
-|                            ^^^^^ warning: unknown metric 'cyc'
 Code metrics for file complete_if.m:
   file_length: 9
 
   Code metrics for function complete_if:
     cnest: 1
+    cyc: 2
     globals: 0
     npath: 2
     parameters: 0
@@ -20,6 +18,7 @@ Code metrics for file complex_loop.m:
 
   Code metrics for function complex_loop:
     cnest: 2
+    cyc: 4
     globals: 0
     npath: 5
     parameters: 0
@@ -30,6 +29,7 @@ Code metrics for file degenerate_try.m:
 
   Code metrics for function degenerate_try:
     cnest: 1
+    cyc: 2
     globals: 0
     npath: 2
     parameters: 0
@@ -40,6 +40,7 @@ Code metrics for file extended_if.m:
 
   Code metrics for function extended_if:
     cnest: 1
+    cyc: 3
     globals: 0
     npath: 3
     parameters: 0
@@ -50,20 +51,10 @@ Code metrics for file flat.m:
 
   Code metrics for function flat:
     cnest: 0
+    cyc: 1
     globals: 0
     npath: 1
     parameters: 0
-    persistent: 0
-
-Code metrics for file foo.m:
-  file_length: 17
-
-  Code metrics for function foo:
-    cnest: 2
-    function_length: 17
-    globals: 0
-    npath: 3
-    parameters: 4
     persistent: 0
 
 Code metrics for file maybe_exception.m:
@@ -71,6 +62,7 @@ Code metrics for file maybe_exception.m:
 
   Code metrics for function maybe_exception:
     cnest: 1
+    cyc: 2
     function_length: 7
     globals: 0
     npath: 2
@@ -82,6 +74,7 @@ Code metrics for file pragma.m:
 
   Code metrics for function pragma:
     cnest: 0
+    cyc: 1
     globals: 0
     npath: 1
     parameters: 0
@@ -92,6 +85,7 @@ Code metrics for file short_circuits.m:
 
   Code metrics for function short_circuits:
     cnest: 1
+    cyc: 7
     globals: 0
     npath: 4
     parameters: 0
@@ -102,6 +96,7 @@ Code metrics for file short_circuits_2.m:
 
   Code metrics for function short_circuits_2:
     cnest: 1
+    cyc: 5
     globals: 0
     npath: 4
     parameters: 0
@@ -112,6 +107,7 @@ Code metrics for file short_if.m:
 
   Code metrics for function short_if:
     cnest: 1
+    cyc: 2
     globals: 0
     npath: 2
     parameters: 0
@@ -122,6 +118,7 @@ Code metrics for file simple_for.m:
 
   Code metrics for function simple_for:
     cnest: 1
+    cyc: 2
     globals: 0
     npath: 2
     parameters: 0
@@ -132,6 +129,7 @@ Code metrics for file simple_spmd.m:
 
   Code metrics for function simple_spmd:
     cnest: 0
+    cyc: 1
     globals: 0
     npath: 1
     parameters: 0
@@ -142,6 +140,7 @@ Code metrics for file simple_try.m:
 
   Code metrics for function simple_try:
     cnest: 1
+    cyc: 2
     globals: 0
     npath: 2
     parameters: 0
@@ -152,6 +151,7 @@ Code metrics for file simple_while.m:
 
   Code metrics for function simple_while:
     cnest: 1
+    cyc: 2
     globals: 0
     npath: 2
     parameters: 0
@@ -162,6 +162,7 @@ Code metrics for file switch_minimal.m:
 
   Code metrics for function switch_minimal:
     cnest: 1
+    cyc: 2
     globals: 0
     npath: 2
     parameters: 0
@@ -172,6 +173,7 @@ Code metrics for file switch_three_options.m:
 
   Code metrics for function switch_three_options:
     cnest: 1
+    cyc: 4
     globals: 0
     npath: 4
     parameters: 0
@@ -182,6 +184,7 @@ Code metrics for file switch_two_options.m:
 
   Code metrics for function switch_two_options:
     cnest: 1
+    cyc: 3
     globals: 0
     npath: 3
     parameters: 0
@@ -192,6 +195,7 @@ Code metrics for file switch_with_default.m:
 
   Code metrics for function switch_with_default:
     cnest: 1
+    cyc: 4
     globals: 0
     npath: 4
     parameters: 0
@@ -202,18 +206,16 @@ Code metrics for file void_statements.m:
 
   Code metrics for function void_statements:
     cnest: 1
+    cyc: 2
     globals: 0
     npath: 2
     parameters: 0
     persistent: 0
-MISS_HIT Metric Summary: 20 file(s) analysed, 2 warning(s)
+MISS_HIT Metric Summary: 19 file(s) analysed, 1 warning(s)
 
 
 === HTML MODE ===
 In pragma.m, line 4
 | %| pragma Justify (metric, "cyc", "this is fine");
 |    ^^^^^^ warning: this justification does not apply to anything
-In pragma.m, line 4
-| %| pragma Justify (metric, "cyc", "this is fine");
-|                            ^^^^^ warning: unknown metric 'cyc'
-MISS_HIT Metric Summary: 20 file(s) analysed, 2 warning(s)
+MISS_HIT Metric Summary: 19 file(s) analysed, 1 warning(s)

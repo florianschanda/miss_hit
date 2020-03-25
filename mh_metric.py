@@ -251,6 +251,72 @@ def function_length(node):
             return n_cu.file_length - node.t_fun.location.line + 1
 
 
+@measures("cyc")
+def cyclomatic_complexity(node):
+    assert isinstance(node, (Function_Definition,
+                             Script_File))
+    # See
+    # https://uk.mathworks.com/help/matlab/ref/logicaloperatorsshortcircuit.html
+    # for short-circuit semantics
+
+    class Cyclomatic_Complexity_Visitor(AST_Visitor):
+        def __init__(self):
+            self.metric = 1
+            self.in_guard_expression = False
+
+        def visit(self, node, n_parent, relation):
+            if isinstance(n_parent, Action) and \
+               relation == "Guard" and \
+               n_parent.kind() in ("if", "elseif"):
+                self.in_guard_expression = True
+            elif isinstance(n_parent, While_Statement) and \
+                 relation == "Guard":
+                self.in_guard_expression = True
+
+            if isinstance(node, Binary_Operation):
+                if node.t_op.value in ("&&", "||"):
+                    self.metric += 1
+                elif node.t_op.value in ("&", "|") and \
+                     self.in_guard_expression:
+                    # When you use the element-wise & and | operators
+                    # in the context of an if or while loop expression
+                    # (and only in that context), they use
+                    # short-circuiting to evaluate expressions.
+                    self.metric += 1
+            elif isinstance(node, (For_Loop_Statement,
+                                   While_Statement,
+                                   Try_Statement)):
+                self.metric += 1
+            elif isinstance(node, If_Statement):
+                if node.has_else:
+                    self.metric += len(node.l_actions) - 1
+                else:
+                    self.metric += len(node.l_actions)
+            elif isinstance(node, Switch_Statement):
+                if node.has_otherwise:
+                    self.metric += len(node.l_actions) - 1
+                else:
+                    self.metric += len(node.l_actions)
+
+        def visit_end(self, node, n_parent, relation):
+            if isinstance(n_parent, Action) and \
+               relation == "Guard" and \
+               n_parent.kind() in ("if", "elseif"):
+                self.in_guard_expression = False
+            elif isinstance(n_parent, While_Statement) and \
+                 relation == "Guard":
+                self.in_guard_expression = False
+
+    cvis = Cyclomatic_Complexity_Visitor()
+
+    if isinstance(node, Function_Definition):
+        node.n_body.visit(None, cvis, "Root")
+    else:
+        node.n_statements.visit(None, cvis, "Root")
+
+    return cvis.metric
+
+
 ##############################################################################
 # Infrastructure
 ##############################################################################

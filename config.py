@@ -121,6 +121,11 @@ METRICS = {
         "type" : "int",
         "help" : "Number of persistent variables."
     },
+    "cyc" : {
+        "kind" : "function",
+        "type" : "int",
+        "help" : "The McCabe cyclomatic complexity metric."
+    },
 }
 FILE_METRICS = sorted(metric
                       for metric in METRICS
