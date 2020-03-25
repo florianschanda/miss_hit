@@ -37,7 +37,6 @@ import command_line
 from m_lexer import MATLAB_Lexer, Token_Buffer
 from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
 import config
-import config_files
 from m_parser import MATLAB_Parser
 from m_ast import *
 import g_cfg
