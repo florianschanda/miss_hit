@@ -2009,6 +2009,16 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
     import g_cfg
     # pylint: enable=import-outside-toplevel
 
+    class CFG_Visitor(AST_Visitor):
+        def visit(self, node, n_parent, relation):
+            if isinstance(node, (Function_Definition, Script_File)):
+                cfg = g_cfg.build_cfg(node)
+
+                if isinstance(node, Function_Definition):
+                    cfg.debug_write_dot(str(node.n_sig.n_name))
+                else:
+                    cfg.debug_write_dot(node.name)
+
     try:
         mh.register_file(filename)
         lexer = MATLAB_Lexer(mh, filename)
@@ -2023,9 +2033,9 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
             print("--  Parse tree for %s" % os.path.basename(filename))
             tree.pp_node()
             print("-" * 70)
+
         if show_cfg:
-            if isinstance(tree, Script_File):
-                g_cfg.build_cfg(tree)
+            tree.visit(None, CFG_Visitor(), "Root")
 
         tbuf.debug_validate_links()
 

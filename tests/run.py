@@ -45,6 +45,7 @@ def execute_style_test(name):
     r = subprocess.run([sys.executable,
                         "../../../mh_style.py",
                         "--debug-validate-links",
+                        "--debug-cfg",
                         ".",
                         "--single",
                         "--fix"],

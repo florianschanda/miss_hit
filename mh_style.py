@@ -40,6 +40,7 @@ import config
 import config_files
 from m_parser import MATLAB_Parser
 from m_ast import *
+import g_cfg
 
 
 COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"
@@ -869,6 +870,11 @@ def analyze(work_package):
     except Error:
         parse_tree = None
 
+    # Create CFG for debugging purposes
+
+    if parse_tree and options.debug_cfg:
+        g_cfg.debug_cfg(parse_tree, mh)
+
     # Stage 3 - rules around individual tokens
 
     stage_3_analysis(mh, cfg, tbuf)
@@ -925,6 +931,11 @@ def main():
         action="store_true",
         default=False,
         help="Debug option to check AST links")
+    clp["debug_options"].add_argument(
+        "--debug-cfg",
+        action="store_true",
+        default=False,
+        help="Build CFG for every function")
 
     style_option = clp["ap"].add_argument_group("rule options")
 

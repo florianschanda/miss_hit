@@ -107,6 +107,12 @@ class Graph:
             fd.write("}\n")
         os.system("dot -Tpdf -o%s.pdf %s.dot" % (filename, filename))
 
+    def count_vertices(self):
+        return len(self.vertices)
+
+    def count_edges(self):
+        return sum(len(v.out_edges) for v in self.vertices)
+
 
 def sanity_check():
     class Debug_Vertex(Vertex_Root):
