@@ -1,0 +1,59 @@
+# SIMULINK SLX file format
+
+- zip archive containing xml
+- documented here is only the essentials needed to deal with embedded
+  scripts
+- unclear how format has evolved so far
+
+## directory `metadata`
+
+### `mwcoreProperties.xml`
+contains matlab release (e.g. R2017b)
+
+### `mwcorePropertiesExtension.xml`
+contains more precise matlab release (e.g. 9.3.0.700277)
+
+## directory `simulink`
+
+### `configSetInfo.xml`
+- dictionary pointing to config objects
+
+### `configSet0.xml`
+
+- contains configuration
+- unclear if there can be more than one config
+- unclear if the name is necessarily the same
+
+### `modelDictionary.xml`
+
+- purpose unclear
+
+### `bddefaults.xml`
+
+- purpose unclear
+
+### `blockdiagram.xml`
+
+- seems to be the main file for the model
+
+- ModelInformation.Library prefixes everything
+
+- .P Name="SavedCharacterEncoding" seems to contain the correct encoding.
+- .System seems to contain the actual thing
+- .System.Block contains the name of the model
+
+- ... .System.Block BlockType="SubSystem" Name="$NAME"
+  P Name="SFBlockType" == MATLAB Function
+
+  Find in stateflow.xml the chained name (e.g. foo_S_sys_bar/$NAME)
+
+### `stateflow.xml`
+
+- not always present
+- seems to contain the matlab scripts
+- eML == "embedded MATLAB"?
+
+- ... .chart
+  P Name="name" foo_S_sys_bar/$NAME
+  .Children.state.eml
+  P Name="script" contains matlab script
