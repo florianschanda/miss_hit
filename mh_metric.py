@@ -616,14 +616,17 @@ def write_html_report(fd, fd_name, all_metrics):
     fd.write("<header>MISS_HIT Report</header>\n")
     fd.write("<main>\n")
     fd.write("<div></div>\n")
-    fd.write("<h1>Code metrics</h1>\n")
+
+    # Produce full list of metrics
+    fd.write("<h1>Code metrics by file</h1>\n")
     fd.write("<section>\n")
 
     for filename in sorted(all_metrics):
         metrics = all_metrics[filename]
 
-        fd.write("<div  class='metrics'>\n")
-        fd.write("<h2>%s</h2>\n" % filename)
+        fd.write("<div class='metrics'>\n")
+        fd.write("<h2><a name='%s'>%s</a></h2>\n" % (filename,
+                                                     filename))
         fd.write("<table>\n")
 
         fd.write("<thead>\n")
@@ -644,7 +647,7 @@ def write_html_report(fd, fd_name, all_metrics):
             if results["measure"] is None:
                 fd.write("  <td class='na'></td>\n")
             elif results["reason"]:
-                fd.write("  <td class='ok_justified' tip='%s'>%u</td>\n" %
+                fd.write("  <td class='ok_justified tip' tip='%s'>%u</td>\n" %
                          ("Justification: " + html.escape(results["reason"]),
                           results["measure"]))
             elif results["limit"] and results["measure"] > results["limit"]:
@@ -657,14 +660,16 @@ def write_html_report(fd, fd_name, all_metrics):
 
         for function in sorted(metrics["functions"]):
             fd.write("<tr>\n")
-            fd.write("  <td>%s</td>\n" % function)
+            fd.write("  <td><a name='%s'></a>%s</td>\n" % (function,
+                                                           function))
             fd.write("  <td class='na'></td>\n" * len(config.FILE_METRICS))
             for function_metric in config.FUNCTION_METRICS:
                 results = metrics["functions"][function][function_metric]
                 if results["measure"] is None:
                     fd.write("  <td class='na'></td>\n")
                 elif results["reason"]:
-                    fd.write("  <td class='ok_justified' tip='%s'>%u</td>\n" %
+                    fd.write("  <td class='ok_justified tip' tip='%s'>"
+                             "%u</td>\n" %
                              ("Justification: " +
                               html.escape(results["reason"]),
                               results["measure"]))

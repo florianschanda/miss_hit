@@ -129,27 +129,34 @@ td.ok {
 
 td.ok_justified {
     background-color: #ccf;
+}
+
+td.nok {
+    background-color: #fcc;
+}
+
+.tip {
     position:relative;
 }
 
-td.ok_justified:hover{
+.tip:hover{
     z-index:1000;
     position:relative;
 }
 
-td.ok_justified:hover:after{
+.tip:hover:after{
     display:block;
 }
 
-td.ok_justified:hover:before{
+.tip:hover:before{
     display:block;
 }
 
-td.ok_justified:hover{
+.tip:hover{
     text-decoration:none;
 }
 
-td.ok_justified:after{
+.tip:after{
     content: attr(tip);
     position: absolute;
     padding: 0.5em;
@@ -157,13 +164,9 @@ td.ok_justified:after{
     display:none;
     background-color: white;
     top: 1em;
-    left: 1em;
+    left: 2.5em;
     border-radius: 0.2em;
     border: 0.1em solid lightgray;
-    width: 15em;
+    width: 25em;
     box-shadow: 3px 3px 4px rgba(0,0,0, .65);
-}
-
-td.nok {
-    background-color: #fcc;
 }
