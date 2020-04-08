@@ -1,5 +1,7 @@
 === PLAIN MODE ===
-Code metrics for file file_1.m:
+=== Code metric by file:
+
+* Code metrics for file file_1.m:
   file_length: 18
 
   Code metrics for function file_1:
@@ -10,7 +12,7 @@ Code metrics for file file_1.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file file_2.m:
+* Code metrics for file file_2.m:
   file_length: 11
 
   Code metrics for function kitten:
@@ -40,7 +42,7 @@ Code metrics for file file_2.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file npath.m:
+* Code metrics for file npath.m:
   file_length: 30
 
   Code metrics for function ifs:
@@ -78,6 +80,55 @@ Code metrics for file npath.m:
     npath: 1
     parameters: 0
     persistent: 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric file_length:
+  1. 30 (npath.m)
+  2. 18 (file_1.m)
+  3. 11 (file_2.m)
+
+* Function metric cnest:
+  1. 2 (npath.m, function loops_2)
+  2. 1 (npath.m, function loops_1)
+  3. 1 (npath.m, function ifs)
+
+* Function metric cyc:
+  1. 4 (npath.m, function ifs)
+  2. 3 (npath.m, function loops_2)
+  3. 2 (npath.m, function loops_1)
+  4. 1 (npath.m, function sequence)
+  5. 1 (file_2.m, function potato)
+  6. 1 (file_2.m, function kitten::cat)
+  7. 1 (file_2.m, function kitten)
+  8. 1 (file_1.m, function file_1)
+
+* Function metric function_length:
+  1. 11 (npath.m, function ifs)
+  2. 7 (npath.m, function loops_2)
+  3. 7 (file_2.m, function kitten)
+  4. 5 (npath.m, function loops_1)
+  5. 4 (npath.m, function sequence)
+  6. 3 (file_2.m, function potato)
+  7. 3 (file_2.m, function kitten::cat)
+
+* Function metric globals:
+
+* Function metric npath:
+  1. 8 (npath.m, function ifs)
+  2. 3 (npath.m, function loops_2)
+  3. 2 (npath.m, function loops_1)
+  4. 1 (npath.m, function sequence)
+  5. 1 (file_2.m, function potato)
+  6. 1 (file_2.m, function kitten::cat)
+  7. 1 (file_2.m, function kitten)
+  8. 1 (file_1.m, function file_1)
+
+* Function metric parameters:
+  1. 1 (npath.m, function ifs)
+
+* Function metric persistent:
+
 MISS_HIT Metric Summary: 3 file(s) analysed, everything seemes fine
 
 

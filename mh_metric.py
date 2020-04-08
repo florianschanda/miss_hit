@@ -30,6 +30,7 @@ import os
 import sys
 import html
 import multiprocessing
+import functools
 
 import command_line
 
@@ -552,15 +553,17 @@ def collect_metrics(args):
     return True, filename, mh, metrics
 
 
-def write_text_report(fd, all_metrics):
+def write_text_report(fd, all_metrics, worst_offenders):
     first = True
+
+    fd.write("=== Code metric by file:\n\n")
     for filename in sorted(all_metrics):
         metrics = all_metrics[filename]
         if first:
             first = False
         else:
             fd.write("\n")
-        fd.write("Code metrics for file %s:\n" % filename)
+        fd.write("* Code metrics for file %s:\n" % filename)
 
         if metrics["errors"]:
             fd.write("  Contains syntax or semantics errors,\n")
@@ -595,21 +598,47 @@ def write_text_report(fd, all_metrics):
                 else:
                     fd.write("\n")
 
+    if worst_offenders:
+        fd.write("\n=== Global summary of worst offenders by metric:\n\n")
 
-def write_html_report(fd, fd_name, all_metrics):
+        for file_metric in config.FILE_METRICS:
+            fd.write("* File metric %s:\n" % file_metric)
+            for rank, file_name in enumerate(worst_offenders[file_metric], 1):
+                if file_name:
+                    mdata = all_metrics[file_name]["metrics"][file_metric]
+                    fd.write("  %u. %u (%s)\n" % (rank,
+                                                  mdata["measure"],
+                                                  file_name))
+            fd.write("\n")
+
+        for function_metric in config.FUNCTION_METRICS:
+            fd.write("* Function metric %s:\n" % function_metric)
+            for rank, tup in enumerate(worst_offenders[function_metric], 1):
+                if tup:
+                    file_name, function_name = tup
+                    mdata = (all_metrics[file_name]["functions"]
+                             [function_name][function_metric])
+                    fd.write("  %u. %u (%s, function %s)\n" %
+                             (rank,
+                              mdata["measure"],
+                              file_name,
+                              function_name))
+            fd.write("\n")
+
+
+def write_html_report(fd, fd_name, all_metrics, worst_offenders):
+    docs_dir = os.path.dirname(os.path.relpath(
+        os.path.join(sys.path[0], "docs", "style.css"),
+        os.path.dirname(os.path.abspath(fd_name)))).replace("\\", "/")
+
     fd.write("<!DOCTYPE html>\n")
     fd.write("<html>\n")
     fd.write("<head>\n")
     fd.write("<meta charset=\"UTF-8\">\n")
     # Link style-sheet with a relative path based on where the
     # output report file will be
-    fd.write("<link rel=\"stylesheet\" href=\"file:%s\">\n" %
-                  os.path.relpath(os.path.join(sys.path[0],
-                                               "docs",
-                                               "style.css"),
-                                  os.path.dirname(
-                                      os.path.abspath(fd_name))).
-             replace("\\", "/"))
+    fd.write("<link rel=\"stylesheet\" href=\"file:%s/style.css\">\n" %
+             docs_dir)
     fd.write("<title>MISS_HIT Report</title>\n")
     fd.write("</head>\n")
     fd.write("<body>\n")
@@ -617,8 +646,76 @@ def write_html_report(fd, fd_name, all_metrics):
     fd.write("<main>\n")
     fd.write("<div></div>\n")
 
+    # Produce worst-offender table
+    if worst_offenders:
+        fd.write("<div class='title'>\n")
+        fd.write("<img src='%s/assets/alert-triangle.svg' alt='Warning'>\n" %
+                 docs_dir)
+        fd.write("<h1>Worst offenders</h1>\n")
+        fd.write("</div>\n")
+        fd.write("<section>\n")
+
+        fd.write("<div class='metrics'>\n")
+        fd.write("<table>\n")
+
+        fd.write("<thead>\n")
+        fd.write("<tr>\n")
+        fd.write("  <td>Rank</td>\n")
+        for file_metric in config.FILE_METRICS:
+            fd.write("  <td>%s</td>\n" % file_metric)
+        for function_metric in config.FUNCTION_METRICS:
+            fd.write("  <td>%s</td>\n" % function_metric)
+        fd.write("</tr>\n")
+        fd.write("</thead>\n")
+        fd.write("<tbody>\n")
+
+        count = worst_offender_count(worst_offenders)
+        for rank in range(count):
+            fd.write("<tr>\n")
+            fd.write("  <td>%s</td>\n" % (rank + 1))
+            for file_metric in config.FILE_METRICS:
+                file_name = worst_offenders[file_metric][rank]
+                if file_name:
+                    mdata = all_metrics[file_name]["metrics"][file_metric]
+                    fd.write("  <td class='tip' tip='%s'>"
+                             "<a href='#%s'>%u</a></td>\n" %
+                             (os.path.basename(file_name),
+                              file_name,
+                              mdata["measure"]))
+
+                else:
+                    fd.write("  <td class='na'></td>\n")
+            for function_metric in config.FUNCTION_METRICS:
+                metric = worst_offenders[function_metric][rank]
+                if metric:
+                    file_name, function_name = metric
+                    mdata = (all_metrics[file_name]["functions"]
+                             [function_name][function_metric])
+                    fd.write("  <td class='tip' tip='%s'>"
+                             "<a href='#%s'>%u</a></td>\n" %
+                             ("%s in file %s" % (function_name,
+                                                 os.path.basename(file_name)),
+                              file_name,
+
+                              mdata["measure"]))
+
+                else:
+                    fd.write("  <td class='na'></td>\n")
+
+            fd.write("</tr>\n")
+
+        fd.write("</tbody>\n")
+        fd.write("</table>\n")
+        fd.write("</div>\n")
+
+        fd.write("</section>\n")
+
     # Produce full list of metrics
+    fd.write("<div class='title'>\n")
+    fd.write("<img src='%s/assets/bar-chart-2.svg' alt='Warning'>\n" %
+             docs_dir)
     fd.write("<h1>Code metrics by file</h1>\n")
+    fd.write("</div>\n")
     fd.write("<section>\n")
 
     for filename in sorted(all_metrics):
@@ -694,8 +791,85 @@ def write_html_report(fd, fd_name, all_metrics):
     fd.write("</html>\n")
 
 
+def worst_offender_count(worst_offenders):
+    for metric in worst_offenders:
+        return len(worst_offenders[metric])
+    raise ICE("cannot determine length of wo table")
+
+
+def build_worst_offenders_table(all_metrics, count):
+    assert isinstance(count, int) and count >= 1
+    # all_metrics = {filename -> {errors : bool
+    #                             functions : {fn_name -> MD}
+    #                             metrics : MD}}
+    # MD = {m_name -> {measure : INT
+    #                  limit   : INT
+    #                  reason  : STR}}
+
+    wot = {}
+    # file_metric -> [ filename, ... ]
+    # fn_metric -> [ (filename, fn_name), ... ]
+
+    def key_file_metric(file_name, metric):
+        return (all_metrics[file_name]["metrics"][metric]["measure"],
+                file_name)
+
+    def key_function_metric(name_tuple, metric):
+        file_name, function_name = name_tuple
+        metrics = all_metrics[file_name]["functions"][function_name]
+        return (metrics[metric]["measure"],
+                file_name,
+                function_name)
+
+    for file_metric in config.FILE_METRICS:
+        wot[file_metric] = []
+        for file_name in all_metrics:
+            metrics = all_metrics[file_name]
+            if metrics["errors"]:
+                continue
+            if not metrics["metrics"][file_metric]["measure"]:
+                continue
+            wot[file_metric].append(file_name)
+        key_fn = functools.partial(key_file_metric,
+                                   metric=file_metric)
+        wot[file_metric].sort(key=key_fn, reverse=True)
+
+    for function_metric in config.FUNCTION_METRICS:
+        wot[function_metric] = []
+        for file_name in all_metrics:
+            metrics = all_metrics[file_name]
+            if metrics["errors"]:
+                continue
+            for function_name in metrics["functions"]:
+                function_metrics = metrics["functions"][function_name]
+                if not function_metrics[function_metric]["measure"]:
+                    continue
+                wot[function_metric].append((file_name, function_name))
+        key_fn = functools.partial(key_function_metric,
+                                   metric=function_metric)
+        wot[function_metric].sort(key=key_fn, reverse=True)
+
+    # Make sure the length is as expected for each metric
+    for metric in config.METRICS:
+        if len(wot[metric]) < count:
+            wot[metric] += [None] * (count - len(wot[metric]))
+        elif len(wot[metric]) > count:
+            wot[metric] = wot[metric][:count]
+        assert len(wot[metric]) == count
+
+    return wot
+
+
 def main():
     clp = command_line.create_basic_clp()
+
+    clp["output_options"].add_argument(
+        "--worst-offenders",
+        default=10,
+        type=int,
+        help=("Produce a table of the worst offenders for each metric."
+              " By default this is 10; setting it to 0 disables this"
+              " feature."))
 
     clp["output_options"].add_argument(
         "--ci",
@@ -736,6 +910,9 @@ def main():
         clp["ap"].error("the CI mode and and text/html options are mutually "
                         "exclusive")
 
+    if options.worst_offenders < 0:
+        clp["ap"].error("the worst-offender option cannot be negative")
+
     mh = Message_Handler("metric")
     mh.show_context = not options.brief
     mh.show_style   = False
@@ -765,16 +942,27 @@ def main():
                 mh.finalize_file(filename)
                 all_metrics.update(metrics)
 
+    # Postprocess
+
+    if options.worst_offenders:
+        worst_offenders = build_worst_offenders_table(all_metrics,
+                                                      options.worst_offenders)
+    else:
+        worst_offenders = None
+
     # Generate report
 
     if options.html:
         with open(options.html, "w") as fd:
-            write_html_report(fd, options.html, all_metrics)
+            write_html_report(fd,
+                              options.html,
+                              all_metrics,
+                              worst_offenders)
     elif options.text:
         with open(options.text, "w") as fd:
-            write_text_report(fd, all_metrics)
+            write_text_report(fd, all_metrics, worst_offenders)
     elif not options.ci:
-        write_text_report(sys.stdout, all_metrics)
+        write_text_report(sys.stdout, all_metrics, worst_offenders)
 
     mh.summary_and_exit()
 

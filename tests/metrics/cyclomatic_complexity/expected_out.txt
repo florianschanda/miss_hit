@@ -2,7 +2,9 @@
 In pragma.m, line 4
 | %| pragma Justify (metric, "cyc", "this is fine");
 |    ^^^^^^ warning: this justification does not apply to anything
-Code metrics for file complete_if.m:
+=== Code metric by file:
+
+* Code metrics for file complete_if.m:
   file_length: 9
 
   Code metrics for function complete_if:
@@ -13,7 +15,7 @@ Code metrics for file complete_if.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file complex_loop.m:
+* Code metrics for file complex_loop.m:
   file_length: 10
 
   Code metrics for function complex_loop:
@@ -24,7 +26,7 @@ Code metrics for file complex_loop.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file degenerate_try.m:
+* Code metrics for file degenerate_try.m:
   file_length: 11
 
   Code metrics for function degenerate_try:
@@ -35,7 +37,7 @@ Code metrics for file degenerate_try.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file extended_if.m:
+* Code metrics for file extended_if.m:
   file_length: 11
 
   Code metrics for function extended_if:
@@ -46,7 +48,7 @@ Code metrics for file extended_if.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file flat.m:
+* Code metrics for file flat.m:
   file_length: 4
 
   Code metrics for function flat:
@@ -57,7 +59,7 @@ Code metrics for file flat.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file maybe_exception.m:
+* Code metrics for file maybe_exception.m:
   file_length: 9
 
   Code metrics for function maybe_exception:
@@ -69,7 +71,7 @@ Code metrics for file maybe_exception.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file pragma.m:
+* Code metrics for file pragma.m:
   file_length: 4
 
   Code metrics for function pragma:
@@ -80,7 +82,7 @@ Code metrics for file pragma.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file short_circuits.m:
+* Code metrics for file short_circuits.m:
   file_length: 19
 
   Code metrics for function short_circuits:
@@ -91,7 +93,7 @@ Code metrics for file short_circuits.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file short_circuits_2.m:
+* Code metrics for file short_circuits_2.m:
   file_length: 15
 
   Code metrics for function short_circuits_2:
@@ -102,7 +104,7 @@ Code metrics for file short_circuits_2.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file short_if.m:
+* Code metrics for file short_if.m:
   file_length: 7
 
   Code metrics for function short_if:
@@ -113,7 +115,7 @@ Code metrics for file short_if.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file simple_for.m:
+* Code metrics for file simple_for.m:
   file_length: 5
 
   Code metrics for function simple_for:
@@ -124,7 +126,7 @@ Code metrics for file simple_for.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file simple_spmd.m:
+* Code metrics for file simple_spmd.m:
   file_length: 5
 
   Code metrics for function simple_spmd:
@@ -135,7 +137,7 @@ Code metrics for file simple_spmd.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file simple_try.m:
+* Code metrics for file simple_try.m:
   file_length: 13
 
   Code metrics for function simple_try:
@@ -146,7 +148,7 @@ Code metrics for file simple_try.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file simple_while.m:
+* Code metrics for file simple_while.m:
   file_length: 6
 
   Code metrics for function simple_while:
@@ -157,7 +159,7 @@ Code metrics for file simple_while.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file switch_minimal.m:
+* Code metrics for file switch_minimal.m:
   file_length: 8
 
   Code metrics for function switch_minimal:
@@ -168,7 +170,7 @@ Code metrics for file switch_minimal.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file switch_three_options.m:
+* Code metrics for file switch_three_options.m:
   file_length: 12
 
   Code metrics for function switch_three_options:
@@ -179,7 +181,7 @@ Code metrics for file switch_three_options.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file switch_two_options.m:
+* Code metrics for file switch_two_options.m:
   file_length: 10
 
   Code metrics for function switch_two_options:
@@ -190,7 +192,7 @@ Code metrics for file switch_two_options.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file switch_with_default.m:
+* Code metrics for file switch_with_default.m:
   file_length: 14
 
   Code metrics for function switch_with_default:
@@ -201,7 +203,7 @@ Code metrics for file switch_with_default.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file void_statements.m:
+* Code metrics for file void_statements.m:
   file_length: 9
 
   Code metrics for function void_statements:
@@ -211,6 +213,66 @@ Code metrics for file void_statements.m:
     npath: 2
     parameters: 0
     persistent: 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric file_length:
+  1. 19 (short_circuits.m)
+  2. 15 (short_circuits_2.m)
+  3. 14 (switch_with_default.m)
+  4. 13 (simple_try.m)
+  5. 12 (switch_three_options.m)
+  6. 11 (extended_if.m)
+  7. 11 (degenerate_try.m)
+  8. 10 (switch_two_options.m)
+  9. 10 (complex_loop.m)
+  10. 9 (void_statements.m)
+
+* Function metric cnest:
+  1. 2 (complex_loop.m, function complex_loop)
+  2. 1 (void_statements.m, function void_statements)
+  3. 1 (switch_with_default.m, function switch_with_default)
+  4. 1 (switch_two_options.m, function switch_two_options)
+  5. 1 (switch_three_options.m, function switch_three_options)
+  6. 1 (switch_minimal.m, function switch_minimal)
+  7. 1 (simple_while.m, function simple_while)
+  8. 1 (simple_try.m, function simple_try)
+  9. 1 (simple_for.m, function simple_for)
+  10. 1 (short_if.m, function short_if)
+
+* Function metric cyc:
+  1. 7 (short_circuits.m, function short_circuits)
+  2. 5 (short_circuits_2.m, function short_circuits_2)
+  3. 4 (switch_with_default.m, function switch_with_default)
+  4. 4 (switch_three_options.m, function switch_three_options)
+  5. 4 (complex_loop.m, function complex_loop)
+  6. 3 (switch_two_options.m, function switch_two_options)
+  7. 3 (extended_if.m, function extended_if)
+  8. 2 (void_statements.m, function void_statements)
+  9. 2 (switch_minimal.m, function switch_minimal)
+  10. 2 (simple_while.m, function simple_while)
+
+* Function metric function_length:
+  1. 7 (maybe_exception.m, function maybe_exception)
+
+* Function metric globals:
+
+* Function metric npath:
+  1. 5 (complex_loop.m, function complex_loop)
+  2. 4 (switch_with_default.m, function switch_with_default)
+  3. 4 (switch_three_options.m, function switch_three_options)
+  4. 4 (short_circuits_2.m, function short_circuits_2)
+  5. 4 (short_circuits.m, function short_circuits)
+  6. 3 (switch_two_options.m, function switch_two_options)
+  7. 3 (extended_if.m, function extended_if)
+  8. 2 (void_statements.m, function void_statements)
+  9. 2 (switch_minimal.m, function switch_minimal)
+  10. 2 (simple_while.m, function simple_while)
+
+* Function metric parameters:
+
+* Function metric persistent:
+
 MISS_HIT Metric Summary: 19 file(s) analysed, 1 warning(s)
 
 

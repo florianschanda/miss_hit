@@ -3,7 +3,9 @@ test.m: metric: exceeded file_length: measured 25 > limit 10
 In test.m, line 12
 | function y = test_2 (x)
 |              ^^^^^^ metric: exceeded npath: measured 8 > limit 5
-Code metrics for file test.m:
+=== Code metric by file:
+
+* Code metrics for file test.m:
   file_length: 25 (!not justified!)
 
   Code metrics for function test_1:
@@ -23,6 +25,36 @@ Code metrics for file test.m:
     npath: 8 (!not justified!)
     parameters: 2
     persistent: 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric file_length:
+  1. 25 (test.m)
+
+* Function metric cnest:
+  1. 1 (test.m, function test_2)
+  2. 1 (test.m, function test_1)
+
+* Function metric cyc:
+  1. 4 (test.m, function test_2)
+  2. 3 (test.m, function test_1)
+
+* Function metric function_length:
+  1. 14 (test.m, function test_2)
+  2. 10 (test.m, function test_1)
+
+* Function metric globals:
+
+* Function metric npath:
+  1. 8 (test.m, function test_2)
+  2. 4 (test.m, function test_1)
+
+* Function metric parameters:
+  1. 2 (test.m, function test_2)
+  2. 2 (test.m, function test_1)
+
+* Function metric persistent:
+
 MISS_HIT Metric Summary: 1 file(s) analysed, 2 metric deviations(s)
 
 

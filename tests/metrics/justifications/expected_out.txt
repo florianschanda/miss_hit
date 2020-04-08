@@ -18,10 +18,12 @@ script_file_justified.m: metric: exceeded file_length: measured 22 > limit 10
 In script_file_justified.m, line 6
 |     %| pragma Justify (metric, "file_length", "potato");
 |        ^^^^^^ warning: this justification does not apply to anything
-Code metrics for file class_file.m:
+=== Code metric by file:
+
+* Code metrics for file class_file.m:
   file_length: 13 (seems OK)
 
-Code metrics for file function_file.m:
+* Code metrics for file function_file.m:
   file_length: 24 (!not justified!)
 
   Code metrics for function function_file:
@@ -33,7 +35,7 @@ Code metrics for file function_file.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file function_file_justified.m:
+* Code metrics for file function_file_justified.m:
   file_length: 24 (for testing purposes)
 
   Code metrics for function function_file_justified:
@@ -45,7 +47,7 @@ Code metrics for file function_file_justified.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file multi_line.m:
+* Code metrics for file multi_line.m:
   file_length: 11 (this is a very long justification over many lines)
 
   Code metrics for function multi_line:
@@ -56,7 +58,7 @@ Code metrics for file multi_line.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file script_file.m:
+* Code metrics for file script_file.m:
   file_length: 19 (!not justified!)
 
   Code metrics for function script_file:
@@ -67,7 +69,7 @@ Code metrics for file script_file.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file script_file_justified.m:
+* Code metrics for file script_file_justified.m:
   file_length: 22 (!not justified!)
 
   Code metrics for function script_file_justified:
@@ -77,6 +79,47 @@ Code metrics for file script_file_justified.m:
     npath: 8 (this seems fine)
     parameters: 0
     persistent: 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric file_length:
+  1. 24 (function_file_justified.m)
+  2. 24 (function_file.m)
+  3. 22 (script_file_justified.m)
+  4. 19 (script_file.m)
+  5. 13 (class_file.m)
+  6. 11 (multi_line.m)
+
+* Function metric cnest:
+  1. 1 (script_file_justified.m, function script_file_justified)
+  2. 1 (script_file.m, function script_file)
+  3. 1 (function_file_justified.m, function function_file_justified)
+  4. 1 (function_file.m, function function_file)
+
+* Function metric cyc:
+  1. 4 (script_file_justified.m, function script_file_justified)
+  2. 4 (script_file.m, function script_file)
+  3. 4 (function_file_justified.m, function function_file_justified)
+  4. 4 (function_file.m, function function_file)
+  5. 1 (multi_line.m, function multi_line)
+
+* Function metric function_length:
+  1. 20 (function_file_justified.m, function function_file_justified)
+  2. 20 (function_file.m, function function_file)
+
+* Function metric globals:
+
+* Function metric npath:
+  1. 8 (script_file_justified.m, function script_file_justified)
+  2. 8 (script_file.m, function script_file)
+  3. 8 (function_file_justified.m, function function_file_justified)
+  4. 8 (function_file.m, function function_file)
+  5. 1 (multi_line.m, function multi_line)
+
+* Function metric parameters:
+
+* Function metric persistent:
+
 MISS_HIT Metric Summary: 6 file(s) analysed, 5 metric deviations(s), 4 warning(s), 5 justified metric deviations(s)
 
 

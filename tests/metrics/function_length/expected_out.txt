@@ -1,5 +1,7 @@
 === PLAIN MODE ===
-Code metrics for file test_01.m:
+=== Code metric by file:
+
+* Code metrics for file test_01.m:
   file_length: 14
 
   Code metrics for function a:
@@ -29,7 +31,7 @@ Code metrics for file test_01.m:
     parameters: 0
     persistent: 0
 
-Code metrics for file test_02.m:
+* Code metrics for file test_02.m:
   file_length: 6
 
   Code metrics for function a:
@@ -40,6 +42,39 @@ Code metrics for file test_02.m:
     npath: 1
     parameters: 0
     persistent: 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric file_length:
+  1. 14 (test_01.m)
+  2. 6 (test_02.m)
+
+* Function metric cnest:
+
+* Function metric cyc:
+  1. 1 (test_02.m, function a)
+  2. 1 (test_01.m, function c)
+  3. 1 (test_01.m, function b)
+  4. 1 (test_01.m, function a)
+
+* Function metric function_length:
+  1. 6 (test_01.m, function b)
+  2. 5 (test_01.m, function a)
+  3. 4 (test_02.m, function a)
+  4. 1 (test_01.m, function c)
+
+* Function metric globals:
+
+* Function metric npath:
+  1. 1 (test_02.m, function a)
+  2. 1 (test_01.m, function c)
+  3. 1 (test_01.m, function b)
+  4. 1 (test_01.m, function a)
+
+* Function metric parameters:
+
+* Function metric persistent:
+
 MISS_HIT Metric Summary: 2 file(s) analysed, everything seemes fine
 
 

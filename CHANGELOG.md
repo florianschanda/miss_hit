@@ -5,6 +5,9 @@
 * MH Metric can now measure cyclomatic complexity. We've aimed for
   producing the same numbers as mlint does, even if it's wrong.
 
+* MH Metric produces an (optional) table of "worst offenders" for each
+  metric. This can be used to get a quick overview of code smell.
+
 * Fix for #133: resolved multi-threading issues on Windows. To be
   honest, this seems more like a Python bug.
 
