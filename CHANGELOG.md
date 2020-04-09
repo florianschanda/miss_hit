@@ -1,6 +1,6 @@
 # MISS_HIT Release Notes
 
-## 0.9.3-dev
+## 0.9.3
 
 * MH Metric can now measure cyclomatic complexity. We've aimed for
   producing the same numbers as mlint does, even if it's wrong.
