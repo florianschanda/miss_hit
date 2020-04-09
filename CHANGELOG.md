@@ -1,15 +1,6 @@
 # MISS_HIT Release Notes
 
-## 0.9.3
-
-* MH Metric can now measure cyclomatic complexity. We've aimed for
-  producing the same numbers as mlint does, even if it's wrong.
-
-* MH Metric produces an (optional) table of "worst offenders" for each
-  metric. This can be used to get a quick overview of code smell.
-
-* Fix for #133: resolved multi-threading issues on Windows. To be
-  honest, this seems more like a Python bug.
+## 0.9.4-dev
 
 ### Known issues
 
@@ -21,6 +12,17 @@
 
 * #88 [allow end as method name](https://github.com/florianschanda/miss_hit/issues/88)
 * #131 [end of statement after enumeration optional](https://github.com/florianschanda/miss_hit/issues/131)
+
+## 0.9.3
+
+* MH Metric can now measure cyclomatic complexity. We've aimed for
+  producing the same numbers as mlint does, even if it's wrong.
+
+* MH Metric produces an (optional) table of "worst offenders" for each
+  metric. This can be used to get a quick overview of code smell.
+
+* Fix for #133: resolved multi-threading issues on Windows. To be
+  honest, this seems more like a Python bug.
 
 ## 0.9.2
 
