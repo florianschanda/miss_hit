@@ -1,11 +1,19 @@
 \documentclass{beamer}
+\usepackage{tikz}
+
+\definecolor{mh_bg}{HTML}{f6f6f6}
+\definecolor{mh_main}{HTML}{6495ED} % cornflowerblue
+
 \beamertemplatenavigationsymbolsempty
-\setbeamercolor{block title}{use=structure,fg=white,bg=structure!50}
+\setbeamercolor*{structure}{fg=mh_main}
+\setbeamercolor{block title}{use=structure,fg=white,bg=mh_main}
 \setbeamercolor{block body}{parent=normal text,use=block title,bg=black!5}
+\setbeamertemplate{blocks}[rounded][shadow=false]
 
 \usepackage{listings}
 \lstset{basicstyle=\scriptsize\tt}
-\lstset{keywordstyle=\scriptsize\bf}
+\lstset{keywordstyle=\scriptsize\tt\color{mh_main}}
+\lstset{commentstyle=\scriptsize\tt\color{black!60}}
 
 \author{Florian Schanda}
 \title{What is MISS\_HIT}
@@ -13,6 +21,12 @@
 \begin{document}
 
 \maketitle
+
+\setbeamertemplate{background}
+{\begin{tikzpicture}[overlay]
+    \fill[mh_bg] (0, 0) rectangle (\paperwidth, -\paperheight);
+    \fill[white] (0.5, -\paperheight) [rounded corners] -- (0.5, -1.5) [sharp corners] -- (\paperwidth, -1.5) -- (\paperwidth, -\paperheight) -- cycle;
+\end{tikzpicture}}
 
 \begin{frame}{Overview}
   \structure{MISS\_HIT} is:
