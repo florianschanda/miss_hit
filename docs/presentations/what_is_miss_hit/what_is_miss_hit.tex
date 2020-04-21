@@ -15,8 +15,12 @@
 \lstset{keywordstyle=\scriptsize\tt\color{mh_main}}
 \lstset{commentstyle=\scriptsize\tt\color{black!60}}
 
+\newcommand{\mh}[0]{{\sc\structure{Miss\_Hit}}}
+
 \author{Florian Schanda}
-\title{What is MISS\_HIT}
+\title{What is {\sc Miss\_Hit}?}
+\subtitle{A quick overview}
+\date{April 23, 2020}
 
 \begin{document}
 
@@ -25,13 +29,19 @@
 \setbeamertemplate{background}
 {\begin{tikzpicture}[overlay]
     \fill[mh_bg] (0, 0) rectangle (\paperwidth, -\paperheight);
-    \fill[white] (0.5, -\paperheight) [rounded corners] -- (0.5, -1.5) [sharp corners] -- (\paperwidth, -1.5) -- (\paperwidth, -\paperheight) -- cycle;
+    \fill[white] (0.5, -\paperheight) [rounded corners] --
+                 (0.5, -1.5) [sharp corners] --
+                 (\paperwidth, -1.5) --
+                 (\paperwidth, -\paperheight) --
+                 cycle;
 \end{tikzpicture}}
 
+\section{Overview}
 \begin{frame}{Overview}
-  \structure{MISS\_HIT} is:
+  \mh~is:
   \begin{itemize}
-  \item A feature-complete free-software lexer and parser for GNU MATLAB\texttrademark\ and Octave
+  \item A feature-complete free-software compiler framework for
+    MATLAB\texttrademark\ and GNU Octave
     \pause
   \item A supplementary tool-suite for MATLAB\texttrademark\ and GNU
     Octave
@@ -47,12 +57,15 @@
   \begin{itemize}
   \item Available on GitHub: \url{https://github.com/florianschanda/miss_hit}
   \item Licensed under GPLv3
+    \pause
   \item Requires only Python 3.6+
   \item Does \emph{not} require a working MATLAB\texttrademark\ or GNU
     Octave environment
   \end{itemize}
 \end{frame}
 
+\section{Tools}
+\subsection{Style Checker}
 \begin{frame}{Tool overview}{Style checker}
   \begin{itemize}
   \item Can check many style issues, e.g:
@@ -62,6 +75,8 @@
     \item Naming of variables, functions, classes
     \item etc.
     \end{itemize}
+  \item Highly configurable through config files
+  \item Justification mechanism for messages
   \end{itemize}
 \end{frame}
 
@@ -72,7 +87,7 @@ if (foo)
 \end{lstlisting}
   \end{block}
   \pause
-  \begin{block}{Output of mh\_style.py}
+  \begin{block}{Output of {\tt mh\_style.py}}
     \scriptsize
 \begin{verbatim}
 In test.m, line 7
@@ -92,11 +107,11 @@ In test.m, line 7
 \begin{frame}[fragile]{Tool overview}{Code formatter}
   \begin{block}{Example code}
 \begin{lstlisting}[language=MATLAB]
-function rv= foo (x), if x < 0,,rv=-x;else,rv=x;,; end;
+function rv= foo (x), if x < 0,,rv=-   x;else,rv=x;,; end;
 \end{lstlisting}
   \end{block}
   \pause
-  \begin{block}{Fixed code using mh\_style.py --fix}
+  \begin{block}{Fixed code using {\tt mh\_style.py --fix}}
 \begin{lstlisting}[language=MATLAB]
 function rv = foo (x)
     if x < 0
@@ -124,10 +139,11 @@ function rv = foo (x)
   All of this works correctly!
 \end{frame}
 
+\subsection{Code Metrics}
 \begin{frame}{Tool overview}{Code metric tool}
-  MISS\_HIT also includes a code metric tool that can measure:
+  \mh~also includes a code metric tool that can measure:
   \begin{itemize}
-  \item Cyclomatic complexity (equivalent to {\tt mlint})
+  \item Cyclomatic complexity (equivalent to {\tt mlint -cyc})
   \item Path count
   \item Maximum nesting of control structures
   \item Number of function parameters
@@ -145,7 +161,7 @@ function rv = foo (x)
 \end{frame}
 
 \begin{frame}[fragile]{Tool overview}{Code metric tool}
-  Exceeding metric generates errors!
+  Exceeding metric generates messages:
   \begin{block}{Example}
     \scriptsize
 \begin{verbatim}
@@ -158,7 +174,7 @@ In function_file.m, line 3
 
 \begin{frame}[fragile]{Tool overview}{Code metric tool}
   Justification mechanism allows you to locally exceed limits:
-\begin{block}{Justification pragma example}
+  \begin{block}{Justification pragma example}
 \begin{lstlisting}[language=MATLAB]
 function function_file_justified
   %| pragma Justify(metric, "npath",
@@ -171,11 +187,13 @@ function function_file_justified
 
   % ...
 \end{lstlisting}
-\end{block}
+  \end{block}
+  \pause
+  Justification is included in report.
 \end{frame}
 
 \begin{frame}{Optimised for CI}
-  MISS\_HIT is ideal for integration in your continuous integration
+  \mh~is ideal for integration in your continuous integration
   environment:
   \begin{itemize}
   \item Low foot-print, no requirements (only Python 3)
@@ -187,26 +205,53 @@ function function_file_justified
   \end{itemize}
 \end{frame}
 
+\section{Conclusion}
+\subsection{Getting Help}
 \begin{frame}{Getting help}
   \begin{itemize}
   \item Documentation describes everything: style rules, metrics, and
     how to use the configuration files
   \item \url{https://florianschanda.github.io/miss_hit/}
+    \pause
   \item Found a bug / want something done? Raise an issue on GitHub!
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Possible ideas for MISS\_HIT}
+\subsection{Roadmap}
+\begin{frame}{Roadmap}
   Some ideas for the future:
   \begin{itemize}
-  \item Analyze embedded code inside SIMULINK\texttrademark\ models
+  \item Analyse embedded code inside SIMULINK\texttrademark\ models
   \item Linter tool
-  \item More Octave support
-  \item Octave / MATLAB\texttrademark\ compatibility check
+  \item More GNU Octave support
+  \item GNU Octave / MATLAB\texttrademark\ compatibility check
   \item Tool qualification for e.g. ISO 26262
     \pause
   \item \structure{Anything else users suggest!}
   \end{itemize}
+\end{frame}
+
+\subsection{Summary}
+\begin{frame}{Conclusion}
+  \begin{itemize}
+  \item \mh~is the only feature-complete free-software parser for full
+    MATLAB\texttrademark\ I'm aware of
+  \item Fills holes in the MATLAB\texttrademark\ eco-system
+    \begin{itemize}
+    \item Reliable code formatting
+    \item Metrics
+    \end{itemize}
+  \item Built on solid foundations so more features will come
+  \end{itemize}
+
+  \vspace{12pt}
+
+  \visible<2->{
+    \begin{center}
+      \structure{Thank you for your time and attention.}\\
+      {\scriptsize Made using only Free Software}
+    \end{center}
+  }
 \end{frame}
 
 \end{document}
