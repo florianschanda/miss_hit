@@ -6,9 +6,10 @@
 
 \beamertemplatenavigationsymbolsempty
 \setbeamercolor*{structure}{fg=mh_main}
-\setbeamercolor{block title}{use=structure,fg=white,bg=mh_main}
-\setbeamercolor{block body}{parent=normal text,use=block title,bg=black!5}
-\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamercolor{block title}{use=structure,fg=black,bg=mh_bg}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=mh_bg!25}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamerfont{block title}{size=\small}
 
 \usepackage{listings}
 \lstset{basicstyle=\scriptsize\tt}
@@ -29,6 +30,11 @@
 \setbeamertemplate{background}
 {\begin{tikzpicture}[overlay]
     \fill[mh_bg] (0, 0) rectangle (\paperwidth, -\paperheight);
+    \fill[mh_bg!50] (0.45, -\paperheight) [rounded corners] --
+                       (0.45, -1.45) [sharp corners] --
+                       (\paperwidth, -1.45) --
+                       (\paperwidth, -\paperheight) --
+                       cycle;
     \fill[white] (0.5, -\paperheight) [rounded corners] --
                  (0.5, -1.5) [sharp corners] --
                  (\paperwidth, -1.5) --
@@ -126,16 +132,30 @@ function rv = foo (x)
 \begin{frame}[fragile]{Tool overview}{Code formatter}
   Code formatter is fully aware of all whitespace peculiarities!
   \pause
-  \begin{itemize}
-  \item \verb|[1 1]|
-  \item \verb|[1+1]|
-  \item \verb|[1+ 1]|
-  \item \verb|[1 +1]|
-  \item \verb|[1 + 1]|
-  \item \verb|[1 ++ 1]|
-  \item \verb|[1 + + 1]|
-  \item \verb|[1+ +1]|
-  \end{itemize}
+  \begin{center}
+    \begin{tikzpicture}[y=-0.5cm,x=3cm,font=\tt\small]
+      \node[anchor=west] at (0, 0) {[1 1]};     % [1 1]
+      \node[anchor=west] at (0, 1) {[1+1]};     % [2]
+      \node[anchor=west] at (0, 2) {[1+ 1]};    % [2]
+      \node[anchor=west] at (0, 3) {[1 +1]};    % [1 1]
+      \node[anchor=west] at (0, 4) {[1 + 1]};   % [2]
+      \node[anchor=west] at (0, 5) {[1 ++ 1]};  % [1 1]
+      \node[anchor=west] at (0, 6) {[1 + + 1]}; % [2]
+      \node[anchor=west] at (0, 7) {[1+ +1]};   % [2]
+
+      \visible<3->{
+      \node[anchor=west] at (2, 0) {[1 1]};
+      \node[anchor=west] at (2, 1) {[1 + 1]};
+      \node[anchor=west] at (2, 2) {[1 + 1]};
+      \node[anchor=west] at (2, 3) {[1 +1]};
+      \node[anchor=west] at (2, 4) {[1 + 1]};
+      \node[anchor=west] at (2, 5) {[1 ++1]};
+      \node[anchor=west] at (2, 6) {[1 + +1]};
+      \node[anchor=west] at (2, 7) {[1 + +1]};
+      }
+    \end{tikzpicture}
+  \end{center}
+  \pause
   All of this works correctly!
 \end{frame}
 
