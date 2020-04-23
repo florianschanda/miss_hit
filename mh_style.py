@@ -707,6 +707,14 @@ def stage_3_analysis(mh, cfg, tbuf):
                                    " by whitespace",
                                    True)
 
+        elif token.kind == "NEWLINE":
+            if n == 0 and config.active(cfg, "no_starting_newline"):
+                # Files should not *start* with newline(s)
+                mh.style_issue(token.location,
+                               "files should not start with a newline",
+                               True)
+                token.fix.delete = True
+
         # Check some specific problems with continuations
         if token.fix.flag_continuations and \
            next_in_line and next_in_line.kind == "CONTINUATION":

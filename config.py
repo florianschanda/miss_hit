@@ -50,6 +50,7 @@ STYLE_RULES = {
     "line_length" : ("Ensures lines do not get too long."),
     "copyright_notice" : ("Ensures the first thing in each file is a"
                           " copyright notice."),
+    "no_starting_newline" : ("Ensures files do not start with newlines."),
     "whitespace_comma" : ("Ensures there is no whitespace before a comma"
                           " and whitespace after."),
     "whitespace_colon" : ("Ensures there is no whitespace around colons"

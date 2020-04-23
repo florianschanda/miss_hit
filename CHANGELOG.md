@@ -2,6 +2,9 @@
 
 ## 0.9.4-dev
 
+* MH Style has a new rule `no_starting_newline` to make sure files do
+  not start with just whitespace.
+
 ### Known issues
 
 #### Tooling
