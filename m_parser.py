@@ -943,7 +943,7 @@ class MATLAB_Parser:
         t_kw = self.ct
 
         rv = Special_Block(t_kw)
-        self.match_eos(rv)
+        self.match_eos(rv, allow_nothing=True)
 
         while not self.peek("KEYWORD", "end"):
             enum = Class_Enumeration(self.parse_identifier(allow_void=False))

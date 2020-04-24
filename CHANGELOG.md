@@ -2,8 +2,19 @@
 
 ## 0.9.4-dev
 
+### Features
 * MH Style has a new rule `no_starting_newline` to make sure files do
   not start with just whitespace.
+
+### Fixes
+* #131 The parser now allows the end of statement (newline, comma, or
+  semicolon) after an enumeration keyword to be optional. I.e. we can
+  now process this code fragment correctly:
+
+  ```
+  enumeration Picasso, Laura, King_Edward
+  end
+  ```
 
 ### Known issues
 
@@ -14,7 +25,6 @@
 #### Language support
 
 * #88 [allow end as method name](https://github.com/florianschanda/miss_hit/issues/88)
-* #131 [end of statement after enumeration optional](https://github.com/florianschanda/miss_hit/issues/131)
 
 ## 0.9.3
 

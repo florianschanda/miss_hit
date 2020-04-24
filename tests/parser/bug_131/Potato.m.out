@@ -1,0 +1,23 @@
+In Potato.m, line 3
+|     enumeration Picasso, Laura, King_Edward
+|     ^^^^^^^^^^^ style: end statement with a newline
+In Potato.m, line 3
+|     enumeration Picasso, Laura, King_Edward
+|                        ^ style: end this with just a newline
+In Potato.m, line 3
+|     enumeration Picasso, Laura, King_Edward
+|                               ^ style: end this with just a newline
+----------------------------------------------------------------------
+--  Parse tree for Potato.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <Potato>
+    Enumerations: Enumeration Special_Block
+      Items: Class_Enumeration
+        Name: Identifier <Picasso>
+      Items: Class_Enumeration
+        Name: Identifier <Laura>
+      Items: Class_Enumeration
+        Name: Identifier <King_Edward>
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, 3 style issue(s)
