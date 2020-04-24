@@ -28,17 +28,20 @@
 
 ## 0.9.3
 
+### Features
 * MH Metric can now measure cyclomatic complexity. We've aimed for
   producing the same numbers as mlint does, even if it's wrong.
 
 * MH Metric produces an (optional) table of "worst offenders" for each
   metric. This can be used to get a quick overview of code smell.
 
+### Fixes
 * Fix for #133: resolved multi-threading issues on Windows. To be
   honest, this seems more like a Python bug.
 
 ## 0.9.2
 
+### Fixes
 * Workaround for #133. Until I can work what the root cause of this
   is, multi-threading is disabled on Windows platforms.
 
