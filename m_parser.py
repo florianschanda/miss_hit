@@ -433,16 +433,30 @@ class MATLAB_Parser:
                                     True)
                 terminator.fix.delete = True
 
-    def parse_identifier(self, allow_void):
+    def parse_identifier(self, allow_void, allow_some_keywords=False):
         # identifier ::= <IDENTIFIER>
         #
         # void_or_identifier ::= identifier
         #                      | '~'
+        #
+        # If allow_some_keywords is true, we permit some keywords that
+        # are normally reserved to be identifiers. This is to allow
+        # class methods called 'end' or 'methods'.
+        #
+        # The exception to this is 'end', since that is generally
+        # allowed since it makes parsing expressions using ranges much
+        # easier.
         if self.peek("OPERATOR", "~") and allow_void:
             self.match("OPERATOR")
             return Identifier(self.ct)
         elif self.peek("KEYWORD", "end"):
             self.match("KEYWORD", "end")
+            return Identifier(self.ct)
+        elif allow_some_keywords and self.peek("KEYWORD", "import"):
+            self.match("KEYWORD", "import")
+            return Identifier(self.ct)
+        elif allow_some_keywords and self.peek("KEYWORD", "arguments"):
+            self.match("KEYWORD", "arguments")
             return Identifier(self.ct)
         else:
             self.match("IDENTIFIER")
@@ -518,11 +532,12 @@ class MATLAB_Parser:
 
             return rv
 
-    def parse_simple_name(self, allow_void=False):
+    def parse_simple_name(self, allow_void=False, allow_some_keywords=False):
         # reference ::= identifier
         #             | reference '.' identifier
 
-        rv = self.parse_identifier(allow_void=allow_void)
+        rv = self.parse_identifier(allow_void=allow_void,
+                                   allow_some_keywords=allow_some_keywords)
 
         # We need to lookahead 2 here to avoid parsing dynamic fields
 
@@ -530,7 +545,9 @@ class MATLAB_Parser:
             if self.peek("SELECTION"):
                 self.match("SELECTION")
                 tok = self.ct
-                field = self.parse_identifier(allow_void=allow_void)
+                field = self.parse_identifier(
+                    allow_void=allow_void,
+                    allow_some_keywords=allow_some_keywords)
                 rv = Selection(tok, rv, field)
             else:
                 raise ICE("impossible path (nt.kind = %s)" % self.nt.kind)
@@ -688,7 +705,7 @@ class MATLAB_Parser:
             # function a = potato...
             self.match("ASSIGNMENT")
             self.ct.set_ast(rv)
-            n_name = self.parse_simple_name()
+            n_name = self.parse_simple_name(allow_some_keywords=True)
 
         l_inputs = []
         if self.peek("BRA"):

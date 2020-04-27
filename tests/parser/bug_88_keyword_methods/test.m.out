@@ -1,0 +1,72 @@
+----------------------------------------------------------------------
+--  Parse tree for test.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <c>
+      RHS: Reference
+        Name: Identifier <cls>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Reference
+          Name: Selection
+            Prefix: Identifier <c>
+            Field: Identifier <end>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Reference
+          Name: Selection
+            Prefix: Identifier <c>
+            Field: Identifier <import>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Reference
+          Name: Selection
+            Prefix: Identifier <c>
+            Field: Identifier <methods>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Reference
+          Name: Identifier <methods>
+          Arguments: Identifier <c>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Reference
+          Name: Selection
+            Prefix: Identifier <c>
+            Field: Identifier <properties>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Reference
+          Name: Selection
+            Prefix: Identifier <c>
+            Field: Identifier <events>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Reference
+          Name: Selection
+            Prefix: Identifier <c>
+            Field: Identifier <enumeration>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Reference
+          Name: Selection
+            Prefix: Identifier <c>
+            Field: Identifier <arguments>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Reference
+          Name: Dynamic_Selection
+            Prefix: Identifier <c>
+            Field: Char_Array_Literal 'wibble.wabble'
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

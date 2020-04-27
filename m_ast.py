@@ -1337,6 +1337,8 @@ class Identifier(Name):
         assert t_ident.kind == "IDENTIFIER" or \
             (t_ident.kind == "OPERATOR" and t_ident.value == "~") or \
             (t_ident.kind == "KEYWORD" and t_ident.value == "end") or \
+            (t_ident.kind == "KEYWORD" and t_ident.value == "import") or \
+            (t_ident.kind == "KEYWORD" and t_ident.value == "arguments") or \
             t_ident.kind == "BANG"
 
         self.t_ident = t_ident

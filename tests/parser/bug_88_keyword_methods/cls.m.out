@@ -1,0 +1,82 @@
+----------------------------------------------------------------------
+--  Parse tree for cls.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <cls>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <end>
+          Inputs: Identifier <self>
+          Outputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <8>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <import>
+          Inputs: Identifier <self>
+          Outputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <21>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <methods>
+          Inputs: Identifier <self>
+          Outputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <22>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <properties>
+          Inputs: Identifier <self>
+          Outputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <23>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <events>
+          Inputs: Identifier <self>
+          Outputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <24>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <enumeration>
+          Inputs: Identifier <self>
+          Outputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <25>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <arguments>
+          Inputs: Identifier <self>
+          Outputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <26>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Selection
+            Prefix: Identifier <wibble>
+            Field: Identifier <wabble>
+          Inputs: Identifier <self>
+          Outputs: Identifier <x>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <x>
+            RHS: Number_Literal <27>
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

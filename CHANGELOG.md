@@ -6,6 +6,10 @@
 * MH Style has a new rule `no_starting_newline` to make sure files do
   not start with just whitespace.
 
+* The MH tools now allow all possible class method names, even the
+  ones that are highly questionable like "import", "end", or
+  "arguments".
+
 ### Fixes
 * #131 The parser now allows the end of statement (newline, comma, or
   semicolon) after an enumeration keyword to be optional. I.e. we can
@@ -24,7 +28,7 @@
 
 #### Language support
 
-* #88 [allow end as method name](https://github.com/florianschanda/miss_hit/issues/88)
+None
 
 ## 0.9.3
 
