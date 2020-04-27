@@ -28,7 +28,7 @@
 
 #### Language support
 
-None
+None known. Should be compatible with up to MATLAB 2019b.
 
 ## 0.9.3
 
