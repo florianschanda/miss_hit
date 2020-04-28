@@ -1204,6 +1204,9 @@ class Token_Buffer(Token_Generator):
                 token.value = token.value.lstrip("%").strip()
                 token.raw_text = "% " + token.value
                 token.fix.add_newline = True
+        elif token.fix.make_shortcircuit_explicit:
+            token.raw_text = token.raw_text * 2
+            token.value = token.value * 2
 
         return token
 

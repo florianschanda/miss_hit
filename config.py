@@ -83,6 +83,8 @@ STYLE_RULES = {
     "redundant_brackets" : ("Check for obviously useless brackets. Does not"
                             " complain about brackets added for clarity."),
     "annotation_whitespace": ("Check for a space after %|"),
+    "implicit_shortcircuit": ("Complain about implicit short-circuit"
+                              " operations in if or while guards"),
 }
 
 METRICS = {

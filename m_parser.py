@@ -92,6 +92,10 @@ class MATLAB_Parser:
         # If true, we have encountered a function with end. This means
         # all of them must have an end.
 
+        self.in_shortcircuit_context = False
+        # Some places change the meaning of & and |, we use this to
+        # keep track of it.
+
         # pylint: disable=invalid-name
         self.ct = None
         self.nt = None
@@ -1153,6 +1157,9 @@ class MATLAB_Parser:
                           "expected valid miss_hit annotation statement")
 
     def parse_statement(self):
+        if self.in_shortcircuit_context:
+            raise ICE("failed to unset sc context")
+
         while self.peek("NEWLINE"):
             self.next()
 
@@ -1494,7 +1501,9 @@ class MATLAB_Parser:
             self.match("OPERATOR", "&")
             t_op = self.ct
             rhs = self.parse_precedence_8()
-            rv = Binary_Operation(9, t_op, rv, rhs)
+            rv = Binary_Logical_Operation(9,
+                                          t_op, self.in_shortcircuit_context,
+                                          rv, rhs)
 
         return rv
 
@@ -1506,7 +1515,9 @@ class MATLAB_Parser:
             self.match("OPERATOR", "|")
             t_op = self.ct
             rhs = self.parse_precedence_9()
-            rv = Binary_Operation(10, t_op, rv, rhs)
+            rv = Binary_Logical_Operation(10,
+                                          t_op, self.in_shortcircuit_context,
+                                          rv, rhs)
 
         return rv
 
@@ -1518,7 +1529,7 @@ class MATLAB_Parser:
             self.match("OPERATOR", "&&")
             t_op = self.ct
             rhs = self.parse_precedence_10()
-            rv = Binary_Operation(11, t_op, rv, rhs)
+            rv = Binary_Logical_Operation(11, t_op, True, rv, rhs)
 
         return rv
 
@@ -1530,7 +1541,7 @@ class MATLAB_Parser:
             self.match("OPERATOR", "||")
             t_op = self.ct
             rhs = self.parse_precedence_11()
-            rv = Binary_Operation(12, t_op, rv, rhs)
+            rv = Binary_Logical_Operation(12, t_op, True, rv, rhs)
 
         return rv
 
@@ -1718,7 +1729,9 @@ class MATLAB_Parser:
         self.match("KEYWORD", "if")
         self.push_context("if")
         n_action = Action(self.ct)
+        self.in_shortcircuit_context = True
         n_action.set_expression(self.parse_expression())
+        self.in_shortcircuit_context = False
         self.match_eos(n_action, allow_nothing=True)
         n_action.set_body(self.parse_delimited_input())
         actions.append(n_action)
@@ -1726,7 +1739,9 @@ class MATLAB_Parser:
         while self.peek("KEYWORD", "elseif"):
             self.match("KEYWORD", "elseif")
             n_action = Action(self.ct)
+            self.in_shortcircuit_context = True
             n_action.set_expression(self.parse_expression())
+            self.in_shortcircuit_context = False
             self.match_eos(n_action, allow_nothing=True)
             n_action.set_body(self.parse_delimited_input())
             actions.append(n_action)
@@ -1869,7 +1884,9 @@ class MATLAB_Parser:
         self.match("KEYWORD", "while")
         self.push_context("loop")
         t_kw = self.ct
+        self.in_shortcircuit_context = True
         n_guard = self.parse_expression()
+        self.in_shortcircuit_context = False
         rv = While_Statement(t_kw, n_guard)
         self.match_eos(rv)
 

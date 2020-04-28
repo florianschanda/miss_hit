@@ -95,6 +95,10 @@ class Autofix_Instruction:
         # Set in cases where continuations following this token would
         # be highly problematic
 
+        self.make_shortcircuit_explicit = False
+        # Set for & and | inside if/while guards to change them into
+        # the explicit short-circuit form && or ||
+
 
 class MATLAB_Token:
     def __init__(self,
@@ -2404,6 +2408,19 @@ class Binary_Operation(Expression):
             return super().evaluate_static_string_expression()
 
 
+class Binary_Logical_Operation(Binary_Operation):
+    def __init__(self, precedence, t_op, short_circuit, n_lhs, n_rhs):
+        # In some contexts a normal & or | takes on short-circuit
+        # semantics. Specifically inside an "if" or "while"
+        # guard. Hence we can overwrite the behaviour for & or | here
+        # with the short_circuit flag.
+        super().__init__(precedence, t_op, n_lhs, n_rhs)
+        assert t_op.value in ("&", "&&", "|", "||")
+        assert short_circuit if t_op.value in ("&&", "||") else True
+
+        self.short_circuit = short_circuit
+
+
 class Lambda_Function(Expression):
     def __init__(self, t_at):
         super().__init__()
@@ -2569,6 +2586,8 @@ class Text_Visitor(AST_Visitor):
         elif isinstance(node, Binary_Operation):
             self.write_head(node.__class__.__name__ + " " + node.t_op.value,
                             relation)
+            if isinstance(node, Binary_Logical_Operation):
+                self.write("Short-Circuit: %s" % node.short_circuit)
         elif isinstance(node, Import_Statement):
             self.write_head(node.__class__.__name__ +
                             " for " +

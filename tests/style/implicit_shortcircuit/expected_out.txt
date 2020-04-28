@@ -1,0 +1,11 @@
+=== PLAIN MODE ===
+In test.m, line 8
+| if a & b        % short-circuit, because used in an if
+|      ^ style: implicit short-circuit operation due to expression being contained in if/while guard [fixed]
+In test.m, line 14
+| while a & b     % short-circuit, because used in a while
+|         ^ style: implicit short-circuit operation due to expression being contained in if/while guard [fixed]
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)

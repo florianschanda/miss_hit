@@ -612,6 +612,27 @@ end
         <pre>%| pragma Potato;</pre>
       </div>
 
+      <h4>Implicit short-circuit operations ("implicit_shortcircuit")</h4>
+
+      <div>
+        This rule make sure that when logical operations & and | are
+        not used in if/while
+        guards. The <a href="https://www.mathworks.com/help/matlab/ref/logicaloperatorsshortcircuit.html">semantics
+        of MATLAB are confusing here</a> in that in those contexts &
+        behaves like &&, and | behaves like ||.
+
+        <pre>if a & b</pre>
+
+        In this example b will never be evaluated if a evaluates to
+        false. Compare this with:
+
+        <pre>tmp = a & b; if tmp</pre>
+
+        In this example b will always be evaluated. This rule
+        auto-fixes the implicit short-circuit operations to be
+        explicit.
+      </div>
+
       <!-- HOOK: AUTOFIX RULES -->
       <!-- END HOOK: AUTOFIX RULES -->
     </section>

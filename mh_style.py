@@ -697,6 +697,17 @@ def stage_3_analysis(mh, cfg, tbuf):
                         token.fix.ensure_ws_before = True
                         token.fix.ensure_ws_after = True
 
+            if config.active(cfg, "implicit_shortcircuit") and \
+               token.value in ("&", "|") and \
+               token.ast_link and \
+               isinstance(token.ast_link, Binary_Logical_Operation) and \
+               token.ast_link.short_circuit:
+                mh.style_issue(token.location,
+                               "implicit short-circuit operation due to"
+                               " expression being contained in if/while guard",
+                               True)
+                token.fix.make_shortcircuit_explicit = True
+
         elif token.kind == "ANNOTATION":
             if config.active(cfg, "annotation_whitespace"):
                 token.fix.ensure_ws_after = True

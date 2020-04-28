@@ -3,8 +3,12 @@
 ## 0.9.4-dev
 
 ### Features
-* MH Style has a new rule `no_starting_newline` to make sure files do
-  not start with just whitespace.
+* MH Style has a new (autofixed) rule `no_starting_newline` to make
+  sure files do not start with just whitespace.
+
+* MH Style has a new (autofixed) rule `implicit_shortcircuit` that
+  complains about misleading use of `&` and `|` inside if/while
+  guards.
 
 * The MH tools now allow all possible class method names, even the
   ones that are highly questionable like "import", "end", or
