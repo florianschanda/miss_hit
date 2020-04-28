@@ -1,6 +1,6 @@
 # MISS_HIT Release Notes
 
-## 0.9.4-dev
+## 0.9.4
 
 ### Features
 * MH Style has a new (autofixed) rule `no_starting_newline` to make
