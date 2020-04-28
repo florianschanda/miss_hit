@@ -1,5 +1,17 @@
 # MISS_HIT Release Notes
 
+## 0.9.5-dev
+
+### Known issues
+
+#### Tooling
+
+* #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
+
+#### Language support
+
+None known. Should be compatible with up to MATLAB 2019b.
+
 ## 0.9.4
 
 ### Features
@@ -23,16 +35,6 @@
   enumeration Picasso, Laura, King_Edward
   end
   ```
-
-### Known issues
-
-#### Tooling
-
-* #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
-
-#### Language support
-
-None known. Should be compatible with up to MATLAB 2019b.
 
 ## 0.9.3
 
