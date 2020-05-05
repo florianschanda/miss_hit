@@ -36,7 +36,10 @@ contains more precise matlab release (e.g. 9.3.0.700277)
 
 - seems to be the main file for the model
 
-- ModelInformation.Library prefixes everything
+- ModelInformation is the top tag, can contain one or more of:
+  - Model
+  - Library
+  - Stateflow
 
 - .P Name="SavedCharacterEncoding" seems to contain the correct encoding.
 - .System seems to contain the actual thing

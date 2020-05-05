@@ -785,6 +785,10 @@ def analyze(work_package):
     assert isinstance(filename, str)
     assert isinstance(autofix, bool)
 
+    if filename.endswith(".slx"):
+        autofix = False
+        return False, filename, mh
+
     encoding = "cp1252"
 
     # Check config first, since we might want to skip this file

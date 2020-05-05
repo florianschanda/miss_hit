@@ -1,0 +1,14 @@
+test1.slx: info: model contains 3 MATLAB function blocks
+test1.slx/Add One: info: block contains 3 lines of MATLAB
+test1.slx/Add One:1: info: function y = add_one(u)
+test1.slx/Add One:2: info: 
+test1.slx/Add One:3: info: y = u + 1;
+test1.slx/Multiply: info: block contains 3 lines of MATLAB
+test1.slx/Multiply:1: info: function y = my_multiply(u, v)
+test1.slx/Multiply:2: info: 
+test1.slx/Multiply:3: info: y = u * v;
+test1.slx/Sub One: info: block contains 3 lines of MATLAB
+test1.slx/Sub One:1: info: function y = sub_one(u)
+test1.slx/Sub One:2: info: 
+test1.slx/Sub One:3: info: y = u - 1;
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

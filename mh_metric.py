@@ -482,6 +482,9 @@ def collect_metrics(args):
                           "metrics"   : {},
                           "functions" : {}}}
 
+    if filename.endswith(".slx"):
+        return False, filename, mh, metrics
+
     if not cfg["enable"]:
         mh.register_exclusion(filename)
         return False, filename, mh, metrics

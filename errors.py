@@ -30,14 +30,24 @@ import html
 
 
 class Location:
-    """ This fully describes where a message originates from """
+    """ This fully describes where a message originates from.
+
+    * filename must be an actual file where the message is attached
+    * blockname can describe a virtual construct (e.g. simulink block)
+    * line is the line number (starts at 1)
+    * col_start and col_end describe the column (starts at 0)
+    * context is a replication of the line that contains the offending
+      construct
+    """
     def __init__(self,
                  filename,
                  line=None,
                  col_start=None,
                  col_end=None,
-                 context=None):
+                 context=None,
+                 blockname=None):
         assert isinstance(filename, str)
+        assert blockname is None or isinstance(blockname, str)
         assert line is None or (isinstance(line, int) and line >= 1)
         assert col_start is None or (isinstance(col_start, int) and
                                      col_start >= 0)
@@ -49,7 +59,10 @@ class Location:
         self.filename = filename.replace("\\", "/")
         # We canonicalise filenames so that windows and linux produce
         # the same output.
-        self.line     = line
+
+        self.blockname = blockname
+
+        self.line = line
         self.col_start = col_start
         if col_end is None:
             self.col_end = col_start
@@ -268,12 +281,18 @@ class Message_Handler:
         if message.fixed and self.autofix:
             mtext += " [fixed]"
 
+        if message.location.blockname is None:
+            full_location = message.location.filename
+        else:
+            full_location = "%s/%s" % (message.location.filename,
+                                       message.location.blockname)
+
         if message.location.line is None:
-            print("%s: %s: %s" % (message.location.filename,
+            print("%s: %s: %s" % (full_location,
                                   kstring,
                                   mtext))
         elif message.location.col_start is None:
-            print("%s:%u: %s: %s" % (message.location.filename,
+            print("%s:%u: %s: %s" % (full_location,
                                      message.location.line,
                                      kstring,
                                      mtext))

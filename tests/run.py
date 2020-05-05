@@ -195,6 +195,32 @@ def execute_parser_test(name):
     return "Ran parser test %s" % name
 
 
+def execute_simulink_parser_test(name):
+    os.chdir(os.path.join(TEST_ROOT,
+                          "simulink_parser",
+                          name))
+
+    files = [f
+             for f in os.listdir(".")
+             if f.endswith(".slx")]
+
+    for f in files:
+        r = subprocess.run([sys.executable,
+                            "../../../s_parser.py",
+                            "--no-tb",
+                            f],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT,
+                           encoding="utf-8",
+                           env=TEST_ENV)
+        plain_out = r.stdout
+
+        with open(f + ".out", "w") as fd:
+            fd.write(plain_out)
+
+    return "Ran simulink parser test %s" % name
+
+
 def run_test(test):
     if os.path.exists(os.path.join(TEST_ROOT,
                                    test["kind"],
@@ -203,10 +229,13 @@ def run_test(test):
         if sys.platform != "linux":
             return "SKIPPED linux-only test %s" % test["test"]
 
-    fn = {"style"   : execute_style_test,
-          "metrics" : execute_metric_test,
-          "lexer"   : execute_lexer_test,
-          "parser"  : execute_parser_test}
+    fn = {
+        "style"           : execute_style_test,
+        "metrics"         : execute_metric_test,
+        "lexer"           : execute_lexer_test,
+        "parser"          : execute_parser_test,
+        "simulink_parser" : execute_simulink_parser_test,
+    }
     return fn[test["kind"]](test["test"])
 
 
@@ -224,7 +253,7 @@ def main():
 
     tests = []
 
-    for kind in ("lexer", "parser", "style", "metrics"):
+    for kind in ("lexer", "parser", "simulink_parser", "style", "metrics"):
         for t in os.listdir(kind):
             tests.append({"kind" : kind,
                           "test" : t})
