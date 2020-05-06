@@ -1,10 +1,94 @@
 test2.slx: info: model contains 2 MATLAB function blocks
 test2.slx/My_Sub_System/Potato: info: block contains 3 lines of MATLAB
-test2.slx/My_Sub_System/Potato:1: info: function y = fcn(u)
-test2.slx/My_Sub_System/Potato:2: info: % This is in the subsystem
-test2.slx/My_Sub_System/Potato:3: info: y = u;
+In test2.slx/My_Sub_System/Potato, line 1
+| function y = fcn(u)
+| ^^^^^^^^ info: KEYWORD
+In test2.slx/My_Sub_System/Potato, line 1
+| function y = fcn(u)
+|          ^ info: IDENTIFIER
+In test2.slx/My_Sub_System/Potato, line 1
+| function y = fcn(u)
+|            ^ info: ASSIGNMENT
+In test2.slx/My_Sub_System/Potato, line 1
+| function y = fcn(u)
+|              ^^^ info: IDENTIFIER
+In test2.slx/My_Sub_System/Potato, line 1
+| function y = fcn(u)
+|                 ^ info: BRA
+In test2.slx/My_Sub_System/Potato, line 1
+| function y = fcn(u)
+|                  ^ info: IDENTIFIER
+In test2.slx/My_Sub_System/Potato, line 1
+| function y = fcn(u)
+|                   ^ info: KET
+In test2.slx/My_Sub_System/Potato, line 1
+| function y = fcn(u)
+|                    ^ info: NEWLINE
+In test2.slx/My_Sub_System/Potato, line 2
+| % This is in the subsystem
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^ info: COMMENT
+In test2.slx/My_Sub_System/Potato, line 2
+| % This is in the subsystem
+|                           ^ info: NEWLINE
+In test2.slx/My_Sub_System/Potato, line 3
+| y = u;
+| ^ info: IDENTIFIER
+In test2.slx/My_Sub_System/Potato, line 3
+| y = u;
+|   ^ info: ASSIGNMENT
+In test2.slx/My_Sub_System/Potato, line 3
+| y = u;
+|     ^ info: IDENTIFIER
+In test2.slx/My_Sub_System/Potato, line 3
+| y = u;
+|      ^ info: SEMICOLON
+In test2.slx/My_Sub_System/Potato, line 3
+| y = u;
+|       ^ info: NEWLINE
 test2.slx/Potato: info: block contains 3 lines of MATLAB
-test2.slx/Potato:1: info: function y = fcn(u)
-test2.slx/Potato:2: info: % This is in test2
-test2.slx/Potato:3: info: y = u;
+In test2.slx/Potato, line 1
+| function y = fcn(u)
+| ^^^^^^^^ info: KEYWORD
+In test2.slx/Potato, line 1
+| function y = fcn(u)
+|          ^ info: IDENTIFIER
+In test2.slx/Potato, line 1
+| function y = fcn(u)
+|            ^ info: ASSIGNMENT
+In test2.slx/Potato, line 1
+| function y = fcn(u)
+|              ^^^ info: IDENTIFIER
+In test2.slx/Potato, line 1
+| function y = fcn(u)
+|                 ^ info: BRA
+In test2.slx/Potato, line 1
+| function y = fcn(u)
+|                  ^ info: IDENTIFIER
+In test2.slx/Potato, line 1
+| function y = fcn(u)
+|                   ^ info: KET
+In test2.slx/Potato, line 1
+| function y = fcn(u)
+|                    ^ info: NEWLINE
+In test2.slx/Potato, line 2
+| % This is in test2
+| ^^^^^^^^^^^^^^^^^^ info: COMMENT
+In test2.slx/Potato, line 2
+| % This is in test2
+|                   ^ info: NEWLINE
+In test2.slx/Potato, line 3
+| y = u;
+| ^ info: IDENTIFIER
+In test2.slx/Potato, line 3
+| y = u;
+|   ^ info: ASSIGNMENT
+In test2.slx/Potato, line 3
+| y = u;
+|     ^ info: IDENTIFIER
+In test2.slx/Potato, line 3
+| y = u;
+|      ^ info: SEMICOLON
+In test2.slx/Potato, line 3
+| y = u;
+|       ^ info: NEWLINE
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

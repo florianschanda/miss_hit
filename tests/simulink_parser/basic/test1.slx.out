@@ -1,14 +1,146 @@
 test1.slx: info: model contains 3 MATLAB function blocks
 test1.slx/Add One: info: block contains 3 lines of MATLAB
-test1.slx/Add One:1: info: function y = add_one(u)
-test1.slx/Add One:2: info: 
-test1.slx/Add One:3: info: y = u + 1;
+In test1.slx/Add One, line 1
+| function y = add_one(u)
+| ^^^^^^^^ info: KEYWORD
+In test1.slx/Add One, line 1
+| function y = add_one(u)
+|          ^ info: IDENTIFIER
+In test1.slx/Add One, line 1
+| function y = add_one(u)
+|            ^ info: ASSIGNMENT
+In test1.slx/Add One, line 1
+| function y = add_one(u)
+|              ^^^^^^^ info: IDENTIFIER
+In test1.slx/Add One, line 1
+| function y = add_one(u)
+|                     ^ info: BRA
+In test1.slx/Add One, line 1
+| function y = add_one(u)
+|                      ^ info: IDENTIFIER
+In test1.slx/Add One, line 1
+| function y = add_one(u)
+|                       ^ info: KET
+In test1.slx/Add One, line 1
+| function y = add_one(u)
+|                        ^ info: NEWLINE
+In test1.slx/Add One, line 3
+| y = u + 1;
+| ^ info: IDENTIFIER
+In test1.slx/Add One, line 3
+| y = u + 1;
+|   ^ info: ASSIGNMENT
+In test1.slx/Add One, line 3
+| y = u + 1;
+|     ^ info: IDENTIFIER
+In test1.slx/Add One, line 3
+| y = u + 1;
+|       ^ info: OPERATOR
+In test1.slx/Add One, line 3
+| y = u + 1;
+|         ^ info: NUMBER
+In test1.slx/Add One, line 3
+| y = u + 1;
+|          ^ info: SEMICOLON
+In test1.slx/Add One, line 3
+| y = u + 1;
+|           ^ info: NEWLINE
 test1.slx/Multiply: info: block contains 3 lines of MATLAB
-test1.slx/Multiply:1: info: function y = my_multiply(u, v)
-test1.slx/Multiply:2: info: 
-test1.slx/Multiply:3: info: y = u * v;
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+| ^^^^^^^^ info: KEYWORD
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+|          ^ info: IDENTIFIER
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+|            ^ info: ASSIGNMENT
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+|              ^^^^^^^^^^^ info: IDENTIFIER
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+|                         ^ info: BRA
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+|                          ^ info: IDENTIFIER
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+|                           ^ info: COMMA
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+|                             ^ info: IDENTIFIER
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+|                              ^ info: KET
+In test1.slx/Multiply, line 1
+| function y = my_multiply(u, v)
+|                               ^ info: NEWLINE
+In test1.slx/Multiply, line 3
+| y = u * v;
+| ^ info: IDENTIFIER
+In test1.slx/Multiply, line 3
+| y = u * v;
+|   ^ info: ASSIGNMENT
+In test1.slx/Multiply, line 3
+| y = u * v;
+|     ^ info: IDENTIFIER
+In test1.slx/Multiply, line 3
+| y = u * v;
+|       ^ info: OPERATOR
+In test1.slx/Multiply, line 3
+| y = u * v;
+|         ^ info: IDENTIFIER
+In test1.slx/Multiply, line 3
+| y = u * v;
+|          ^ info: SEMICOLON
+In test1.slx/Multiply, line 3
+| y = u * v;
+|           ^ info: NEWLINE
 test1.slx/Sub One: info: block contains 3 lines of MATLAB
-test1.slx/Sub One:1: info: function y = sub_one(u)
-test1.slx/Sub One:2: info: 
-test1.slx/Sub One:3: info: y = u - 1;
+In test1.slx/Sub One, line 1
+| function y = sub_one(u)
+| ^^^^^^^^ info: KEYWORD
+In test1.slx/Sub One, line 1
+| function y = sub_one(u)
+|          ^ info: IDENTIFIER
+In test1.slx/Sub One, line 1
+| function y = sub_one(u)
+|            ^ info: ASSIGNMENT
+In test1.slx/Sub One, line 1
+| function y = sub_one(u)
+|              ^^^^^^^ info: IDENTIFIER
+In test1.slx/Sub One, line 1
+| function y = sub_one(u)
+|                     ^ info: BRA
+In test1.slx/Sub One, line 1
+| function y = sub_one(u)
+|                      ^ info: IDENTIFIER
+In test1.slx/Sub One, line 1
+| function y = sub_one(u)
+|                       ^ info: KET
+In test1.slx/Sub One, line 1
+| function y = sub_one(u)
+|                        ^ info: NEWLINE
+In test1.slx/Sub One, line 3
+| y = u - 1;
+| ^ info: IDENTIFIER
+In test1.slx/Sub One, line 3
+| y = u - 1;
+|   ^ info: ASSIGNMENT
+In test1.slx/Sub One, line 3
+| y = u - 1;
+|     ^ info: IDENTIFIER
+In test1.slx/Sub One, line 3
+| y = u - 1;
+|       ^ info: OPERATOR
+In test1.slx/Sub One, line 3
+| y = u - 1;
+|         ^ info: NUMBER
+In test1.slx/Sub One, line 3
+| y = u - 1;
+|          ^ info: SEMICOLON
+In test1.slx/Sub One, line 3
+| y = u - 1;
+|           ^ info: NEWLINE
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

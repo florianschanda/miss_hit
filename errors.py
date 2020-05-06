@@ -305,7 +305,7 @@ class Message_Handler:
                 show_context = False
 
             if show_context:
-                print("In %s, line %u" % (message.location.filename,
+                print("In %s, line %u" % (full_location,
                                           message.location.line))
                 print("| " + message.location.context.replace("\t", " "))
                 print("| " +
@@ -314,7 +314,7 @@ class Message_Handler:
                               message.location.col_start + 1)) +
                       " %s: %s" % (kstring, mtext))
             else:
-                print("%s:%u:%u: %s: %s" % (message.location.filename,
+                print("%s:%u:%u: %s: %s" % (full_location,
                                             message.location.line,
                                             message.location.col_start,
                                             kstring,

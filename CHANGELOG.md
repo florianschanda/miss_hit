@@ -8,6 +8,10 @@
   resolve this we need semantic analysis and type inference; so until
   then this rule just does nothing.
 
+* MH Metric can now process and produce metrics for code inside modern
+  SIMULINK models (slx files). This does not work yet in MH Style, but
+  I plan to also support this there.
+
 ### Known issues
 
 #### Tooling

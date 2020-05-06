@@ -1,0 +1,111 @@
+=== PLAIN MODE ===
+=== Code metric by file:
+
+* Code metrics for file test1.slx/Add One:
+  file_length: 3
+
+  Code metrics for function add_one:
+    cnest: 0
+    cyc: 1
+    function_length: 3
+    globals: 0
+    npath: 1
+    parameters: 2
+    persistent: 0
+
+* Code metrics for file test1.slx/Multiply:
+  file_length: 3
+
+  Code metrics for function my_multiply:
+    cnest: 0
+    cyc: 1
+    function_length: 3
+    globals: 0
+    npath: 1
+    parameters: 3
+    persistent: 0
+
+* Code metrics for file test1.slx/Sub One:
+  file_length: 3
+
+  Code metrics for function sub_one:
+    cnest: 0
+    cyc: 1
+    function_length: 3
+    globals: 0
+    npath: 1
+    parameters: 2
+    persistent: 0
+
+* Code metrics for file test2.slx/My_Sub_System/Potato:
+  file_length: 3
+
+  Code metrics for function fcn:
+    cnest: 0
+    cyc: 1
+    function_length: 3
+    globals: 0
+    npath: 1
+    parameters: 2
+    persistent: 0
+
+* Code metrics for file test2.slx/Potato:
+  file_length: 3
+
+  Code metrics for function fcn:
+    cnest: 0
+    cyc: 1
+    function_length: 3
+    globals: 0
+    npath: 1
+    parameters: 2
+    persistent: 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric file_length:
+  1. 3 (test2.slx/Potato)
+  2. 3 (test2.slx/My_Sub_System/Potato)
+  3. 3 (test1.slx/Sub One)
+  4. 3 (test1.slx/Multiply)
+  5. 3 (test1.slx/Add One)
+
+* Function metric cnest:
+
+* Function metric cyc:
+  1. 1 (test2.slx/Potato, function fcn)
+  2. 1 (test2.slx/My_Sub_System/Potato, function fcn)
+  3. 1 (test1.slx/Sub One, function sub_one)
+  4. 1 (test1.slx/Multiply, function my_multiply)
+  5. 1 (test1.slx/Add One, function add_one)
+
+* Function metric function_length:
+  1. 3 (test2.slx/Potato, function fcn)
+  2. 3 (test2.slx/My_Sub_System/Potato, function fcn)
+  3. 3 (test1.slx/Sub One, function sub_one)
+  4. 3 (test1.slx/Multiply, function my_multiply)
+  5. 3 (test1.slx/Add One, function add_one)
+
+* Function metric globals:
+
+* Function metric npath:
+  1. 1 (test2.slx/Potato, function fcn)
+  2. 1 (test2.slx/My_Sub_System/Potato, function fcn)
+  3. 1 (test1.slx/Sub One, function sub_one)
+  4. 1 (test1.slx/Multiply, function my_multiply)
+  5. 1 (test1.slx/Add One, function add_one)
+
+* Function metric parameters:
+  1. 3 (test1.slx/Multiply, function my_multiply)
+  2. 2 (test2.slx/Potato, function fcn)
+  3. 2 (test2.slx/My_Sub_System/Potato, function fcn)
+  4. 2 (test1.slx/Sub One, function sub_one)
+  5. 2 (test1.slx/Add One, function add_one)
+
+* Function metric persistent:
+
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seemes fine
+
+
+=== HTML MODE ===
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seemes fine

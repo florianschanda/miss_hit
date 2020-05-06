@@ -261,6 +261,7 @@ class SIMULINK_Model:
 def sanity_test(mh, filename, show_bt):
     # pylint: disable=import-outside-toplevel
     import traceback
+    import m_lexer
     # pylint: enable=import-outside-toplevel
 
     try:
@@ -273,11 +274,15 @@ def sanity_test(mh, filename, show_bt):
             mh.info(block.loc(),
                     "block contains %u lines of MATLAB" %
                     len(block.get_text().splitlines()))
-            for lno, line in enumerate(block.get_text().splitlines(), 1):
-                mh.info(Location(smdl.filename,
-                                 blockname = block.local_name(),
-                                 line = lno),
-                        line)
+            lexer = m_lexer.MATLAB_Lexer(mh,
+                                         block.get_text(),
+                                         filename,
+                                         block.local_name())
+            while True:
+                token = lexer.token()
+                if token is None:
+                    break
+                mh.info(token.location, token.kind)
 
     except Error:
         if show_bt:

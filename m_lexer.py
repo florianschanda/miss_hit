@@ -30,6 +30,7 @@ from abc import ABCMeta, abstractmethod
 
 import config
 import m_ast
+import file_util
 from errors import Location, Error, Message_Handler, ICE
 from m_language import KEYWORDS, ANNOTATION_KEYWORDS
 
@@ -68,13 +69,17 @@ from m_language import KEYWORDS, ANNOTATION_KEYWORDS
 
 
 class Token_Generator(metaclass=ABCMeta):
-    def __init__(self, filename):
+    def __init__(self, filename, blockname=None):
         assert isinstance(filename, str)
+        assert blockname is None or isinstance(blockname, str)
 
-        self.filename = filename
+        self.filename  = filename
+        self.blockname = blockname
 
-        self.in_class_directory = os.path.basename(
-            os.path.dirname(os.path.abspath(filename))).startswith("@")
+        self.in_class_directory = \
+           blockname is None and \
+           os.path.basename(
+               os.path.dirname(os.path.abspath(filename))).startswith("@")
         # Make a note if this file resides inside a @ directory
 
     @abstractmethod
@@ -85,17 +90,22 @@ class Token_Generator(metaclass=ABCMeta):
     def line_count(self):
         pass
 
+    def get_file_loc(self, line=None):
+        assert line is None or isinstance(line, int)
+        return Location(filename  = self.filename,
+                        blockname = self.blockname,
+                        line      = line)
+
 
 class MATLAB_Lexer(Token_Generator):
-    def __init__(self, mh, filename, encoding="utf-8"):
-        super().__init__(filename)
+    def __init__(self, mh, content, filename, blockname=None):
+        super().__init__(filename, blockname)
+        assert isinstance(content, str)
 
-        with open(filename, "r", encoding=encoding) as fd:
-            self.text = fd.read()
+        self.text = content
         self.context_line = self.text.splitlines()
 
         self.mh = mh
-        self.filename = filename
         self.lexpos = -1
         self.col_offset = 0
         self.line = 1
@@ -245,11 +255,12 @@ class MATLAB_Lexer(Token_Generator):
             return match.group(0)
 
     def lex_error(self, message=None):
-        self.mh.lex_error(Location(self.filename,
-                                   self.line,
-                                   self.lexpos - self.col_offset,
-                                   self.lexpos - self.col_offset,
-                                   self.context_line[self.line - 1]),
+        self.mh.lex_error(Location(filename =self.filename,
+                                   blockname=self.blockname,
+                                   line     =self.line,
+                                   col_start=self.lexpos - self.col_offset,
+                                   col_end  =self.lexpos - self.col_offset,
+                                   context  =self.context_line[self.line - 1]),
                           (message
                            if message
                            else "unexpected character %s" % repr(self.cc)))
@@ -274,17 +285,19 @@ class MATLAB_Lexer(Token_Generator):
             fake_line = self.context_line[self.line - 1]
             fake_col = self.lexpos - self.col_offset + 1
             fake_line = fake_line[:fake_col] + "<anon,>" + fake_line[fake_col:]
-            token = m_ast.MATLAB_Token("COMMA",
-                                       ",",
-                                       Location(self.filename,
-                                                self.line,
-                                                fake_col,
-                                                fake_col + 6,
-                                                fake_line),
-                                       False,
-                                       False,
-                                       anonymous = True,
-                                       annotation = self.in_annotation)
+            token = m_ast.MATLAB_Token(
+                "COMMA",
+                ",",
+                Location(filename  = self.filename,
+                         blockname = self.blockname,
+                         line      = self.line,
+                         col_start = fake_col,
+                         col_end   = fake_col + 6,
+                         context   = fake_line),
+                False,
+                False,
+                anonymous = True,
+                annotation = self.in_annotation)
             self.last_kind = "COMMA"
             self.last_value = ","
             return token
@@ -442,10 +455,14 @@ class MATLAB_Lexer(Token_Generator):
                             # Transition to string mode
                             string_mode = True
                             open_quote_location = \
-                                Location(self.filename,
-                                         self.line,
-                                         self.lexpos + 1 - self.col_offset,
-                                         self.lexpos + 1 - self.col_offset,
+                              Location(filename  = self.filename,
+                                       blockname = self.blockname,
+                                       line      = self.line,
+                                       col_start = (self.lexpos + 1 -
+                                                    self.col_offset),
+                                       col_end   = (self.lexpos + 1 -
+                                                    self.col_offset),
+                                       context   =
                                          self.context_line[self.line - 1])
 
                         else:
@@ -733,11 +750,12 @@ class MATLAB_Lexer(Token_Generator):
 
         token = m_ast.MATLAB_Token(kind,
                                    raw_text,
-                                   Location(self.filename,
-                                            self.line,
-                                            col_start,
-                                            col_end,
-                                            ctx_line),
+                                   Location(filename  = self.filename,
+                                            blockname = self.blockname,
+                                            line      = self.line,
+                                            col_start = col_start,
+                                            col_end   = col_end,
+                                            context   = ctx_line),
                                    self.first_in_line,
                                    self.first_in_statement,
                                    value = value,
@@ -1110,7 +1128,7 @@ class Token_Buffer(Token_Generator):
     def __init__(self, lexer, cfg):
         assert isinstance(lexer, MATLAB_Lexer)
         assert isinstance(cfg, dict)
-        super().__init__(lexer.filename)
+        super().__init__(lexer.filename, lexer.blockname)
 
         self.cfg = cfg
         self.pos = 0
@@ -1407,8 +1425,8 @@ class Token_Buffer(Token_Generator):
 
 def sanity_test(mh, filename):
     try:
-        mh.register_file(filename)
-        lexer = MATLAB_Lexer(mh, filename)
+        content = file_util.load_local_file(mh, filename)
+        lexer = MATLAB_Lexer(mh, content, filename)
         lexer.debug_comma = True
         while True:
             tok = lexer.token()

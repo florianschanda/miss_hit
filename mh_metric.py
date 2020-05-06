@@ -33,12 +33,14 @@ import multiprocessing
 import functools
 
 import command_line
-
-from m_lexer import MATLAB_Lexer
-from errors import Location, Error, ICE, Message_Handler
 import config
-from m_parser import MATLAB_Parser
+import file_util
+
+from errors import Error, ICE, Message_Handler
 from m_ast import *
+from m_lexer import MATLAB_Lexer
+from m_parser import MATLAB_Parser
+from s_parser import SIMULINK_Model
 
 MEASURE = {m : None for m in config.METRICS}
 
@@ -449,40 +451,19 @@ def warn_unused_justifications(mh, n_cu):
     n_cu.visit(None, Justification_Visitor(), "Root")
 
 
-def collect_metrics(args):
-    mh, filename, _, _, cfg = args
-    assert isinstance(filename, str)
+def collect_metrics(mh, cfg, content, filename, blockname):
+    if blockname is None:
+        full_name = filename
+    else:
+        full_name = filename + "/" + blockname
 
-    metrics = {filename: {"errors"    : False,
-                          "metrics"   : {},
-                          "functions" : {}}}
-
-    if filename.endswith(".slx"):
-        return False, filename, mh, metrics
-
-    if not cfg["enable"]:
-        mh.register_exclusion(filename)
-        return False, filename, mh, metrics
-
-    mh.register_file(filename)
-
-    # Do some file-based sanity checking
-
-    try:
-        if not os.path.exists(filename):
-            mh.error(Location(filename), "file does not exist")
-        if not os.path.isfile(filename):
-            mh.error(Location(filename), "is not a file")
-    except Error:
-        metrics[filename]["errors"] = True
-        return True, filename, mh, metrics
+    metrics = {full_name: {"errors"    : False,
+                           "metrics"   : {},
+                           "functions" : {}}}
 
     # Create lexer
 
-    try:
-        lexer = MATLAB_Lexer(mh, filename, encoding="cp1252")
-    except UnicodeDecodeError:
-        lexer = MATLAB_Lexer(mh, filename, encoding="utf8")
+    lexer = MATLAB_Lexer(mh, content, filename, blockname)
     if cfg["octave"]:
         lexer.set_octave_mode()
     if cfg["ignore_pragmas"]:
@@ -491,7 +472,7 @@ def collect_metrics(args):
     # We're dealing with an empty file here. Lets just not do anything
 
     if len(lexer.text.strip()) == 0:
-        return True, filename, mh, metrics
+        return metrics
 
     # Create parse tree
 
@@ -500,27 +481,27 @@ def collect_metrics(args):
         parse_tree = parser.parse_file()
     except Error:
         metrics[filename]["errors"] = True
-        return True, filename, mh, metrics
+        return metrics
 
     # File metrics
 
-    metrics[filename]["metrics"] = {
+    metrics[full_name]["metrics"] = {
         "file_length" : {"measure" : lexer.line_count(),
                          "limit"   : None,
                          "reason"  : None}
     }
-    justifications = {filename : get_file_justifications(mh, parse_tree)}
+    justifications = {full_name : get_file_justifications(mh, parse_tree)}
 
     # Check+justify file metrics
 
     for file_metric in config.FILE_METRICS:
-        check_metric(mh, cfg, Location(filename), file_metric,
-                     metrics[filename]["metrics"],
-                     justifications[filename])
+        check_metric(mh, cfg, lexer.get_file_loc(), file_metric,
+                     metrics[full_name]["metrics"],
+                     justifications[full_name])
 
     # Collect, check, and justify function metrics
 
-    metrics[filename]["functions"] = get_function_metrics(mh, cfg, parse_tree)
+    metrics[full_name]["functions"] = get_function_metrics(mh, cfg, parse_tree)
 
     # Complain about unused justifications
 
@@ -528,7 +509,48 @@ def collect_metrics(args):
 
     # Return results
 
-    return True, filename, mh, metrics
+    return metrics
+
+
+def process_wp(args):
+    mh, filename, _, _, cfg = args
+    assert isinstance(filename, str)
+
+    processed = True
+    metrics = {filename: {"errors"    : False,
+                          "metrics"   : {},
+                          "functions" : {}}}
+
+    if not cfg["enable"]:
+        # This file is excluded from analysis
+        mh.register_exclusion(filename)
+        processed = False
+
+    elif filename.endswith(".slx"):
+        # This is a modern SIMULINK model
+        metrics = {}
+        try:
+            smdl = SIMULINK_Model(mh, filename)
+            for block in smdl.matlab_blocks:
+                metrics.update(collect_metrics(mh, cfg,
+                                               block.get_text(),
+                                               filename,
+                                               block.local_name()))
+        except Error:
+            metrics[filename]["errors"] = True
+
+    else:
+        # This is a normal MATLAB / Octave file
+        content = file_util.load_local_file(mh, filename, "cp1252")
+        if content is None:
+            metrics[filename]["errors"] = True
+        else:
+            metrics.update(collect_metrics(mh, cfg,
+                                           content,
+                                           filename,
+                                           None))
+
+    return processed, filename, mh, metrics
 
 
 def write_text_report(fd, all_metrics, worst_offenders):
@@ -903,7 +925,7 @@ def main():
     #           functions -> {name -> {}} }
 
     if options.single:
-        for processed, filename, result, metrics in map(collect_metrics,
+        for processed, filename, result, metrics in map(process_wp,
                                                         work_list):
             mh.integrate(result)
             if processed:
@@ -912,7 +934,7 @@ def main():
 
     else:
         pool = multiprocessing.Pool()
-        for processed, filename, result, metrics in pool.imap(collect_metrics,
+        for processed, filename, result, metrics in pool.imap(process_wp,
                                                               work_list,
                                                               5):
             mh.integrate(result)

@@ -51,12 +51,6 @@ def create_basic_clp():
                     metavar="FILE|DIR",
                     nargs="*",
                     help="MATLAB/SIMULINK files or directories to analyze")
-    ap.add_argument("--process-slx",
-                    action="store_true",
-                    default=False,
-                    help=("Process MATLAB code inside SIMULINK slx models."
-                          " Warning: this option is experimental and is not"
-                          " guaranteed to work reliably yet."))
     ap.add_argument("--single",
                     action="store_true",
                     default=False,
@@ -155,8 +149,7 @@ def read_config(mh, options, extra_options):
                     path = ""
                 dirs.sort()
                 for f in sorted(files):
-                    if f.endswith(".m") or \
-                       (options.process_slx and f.endswith(".slx")):
+                    if f.endswith(".m") or f.endswith(".slx"):
                         canonical_name = os.path.normpath(os.path.join(path,
                                                                        f))
                         cfg = config_files.get_config(canonical_name)

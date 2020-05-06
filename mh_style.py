@@ -34,12 +34,14 @@ import multiprocessing
 from abc import ABCMeta, abstractmethod
 
 import command_line
-from m_lexer import MATLAB_Lexer, Token_Buffer
-from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
 import config
-from m_parser import MATLAB_Parser
-from m_ast import *
+import file_util
 import g_cfg
+
+from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
+from m_ast import *
+from m_lexer import MATLAB_Lexer, Token_Buffer
+from m_parser import MATLAB_Parser
 
 
 COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"
@@ -801,8 +803,6 @@ def analyze(work_package):
         autofix = False
         return False, filename, mh
 
-    encoding = "cp1252"
-
     # Check config first, since we might want to skip this file
     if not cfg["enable"]:
         mh.register_exclusion(filename)
@@ -811,30 +811,15 @@ def analyze(work_package):
     # Build rule library
     rule_lib = build_library(cfg, rule_set)
 
-    # Start processing file
-    mh.register_file(filename)
+    # Load file content
 
-    # Do some file-based sanity checking
-
-    try:
-        if not os.path.exists(filename):
-            mh.error(Location(filename), "file does not exist")
-
-        if not os.path.isfile(filename):
-            mh.error(Location(filename), "is not a file")
-
-        if not filename.endswith(".m"):
-            mh.warning(Location(filename), "filename should end with '.m'")
-    except Error:
+    content = file_util.load_local_file(mh, filename, "cp1252")
+    if content is None:
         return True, filename, mh
 
     # Create lexer
 
-    try:
-        lexer = MATLAB_Lexer(mh, filename, encoding=encoding)
-    except UnicodeDecodeError:
-        lexer = MATLAB_Lexer(mh, filename, encoding="utf8")
-        encoding = "utf8"
+    lexer = MATLAB_Lexer(mh, content, filename)
     if cfg["octave"]:
         lexer.set_octave_mode()
     if cfg["ignore_pragmas"]:
@@ -921,11 +906,11 @@ def analyze(work_package):
 
     if autofix:
         if not parse_tree:
-            mh.error(Location(filename),
+            mh.error(lexer.get_file_loc(),
                      "file is not auto-fixed because it contains parse errors",
                      fatal=False)
         else:
-            with open(filename, "w", encoding=encoding) as fd:
+            with open(filename, "w", encoding="cp1252") as fd:
                 tbuf.replay(fd)
 
     # Return final results

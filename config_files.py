@@ -28,8 +28,10 @@ import os
 import re
 from copy import deepcopy
 
-import m_lexer
 import config
+import file_util
+import m_lexer
+
 from errors import ICE, Error, Location
 
 
@@ -42,7 +44,8 @@ class Config_Parser:
     def __init__(self, mh, config_file):
         self.filename = config_file
         self.dirname = os.path.dirname(config_file)
-        self.lexer = m_lexer.MATLAB_Lexer(mh, self.filename)
+        content = file_util.load_local_file(mh, config_file)
+        self.lexer = m_lexer.MATLAB_Lexer(mh, content, self.filename)
         self.lexer.set_config_file_mode()
         self.mh = mh
 
@@ -74,7 +77,7 @@ class Config_Parser:
     def match(self, kind, value=None):
         self.next()
         if self.ct is None:
-            self.mh.error(Location(self.lexer.filename),
+            self.mh.error(self.lexer.get_file_loc(),
                           "expected %s, reached EOF instead" % kind)
         elif self.ct.kind != kind:
             self.mh.error(self.ct.location,
@@ -246,7 +249,6 @@ def load_config(mh, cfg_file, cfg):
     rel_name = os.path.relpath(cfg_file)
 
     try:
-        mh.register_file(rel_name)
         parser = Config_Parser(mh, rel_name)
         parser.parse_file(cfg)
         # Now that we have parsed the file, we should remove it again

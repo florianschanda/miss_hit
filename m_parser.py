@@ -27,8 +27,9 @@
 import os
 import traceback
 
+import file_util
 from m_lexer import Token_Generator, MATLAB_Lexer, Token_Buffer
-from errors import ICE, Error, Location, Message_Handler
+from errors import ICE, Error, Message_Handler
 import config
 from m_ast import *
 
@@ -189,7 +190,7 @@ class MATLAB_Parser:
         assert kind in TOKEN_KINDS
         self.next()
         if self.ct is None:
-            self.mh.error(Location(self.lexer.filename),
+            self.mh.error(self.lexer.get_file_loc(),
                           "expected %s, reached EOF instead" % kind)
         elif self.ct.annotation:
             self.mh.error(self.ct.location,
@@ -215,7 +216,7 @@ class MATLAB_Parser:
         assert kind in TOKEN_KINDS
         self.next()
         if self.ct is None:
-            self.mh.error(Location(self.lexer.filename),
+            self.mh.error(self.lexer.get_file_loc(),
                           "expected %s, reached EOF instead" % kind)
         elif not self.ct.annotation:
             self.mh.error(self.ct.location,
@@ -601,7 +602,7 @@ class MATLAB_Parser:
         if self.peek("KEYWORD", "function"):
             l_functions, l_more_pragmas = self.parse_function_list()
             cunit = Function_File(os.path.basename(self.lexer.filename),
-                                  Location(self.lexer.filename),
+                                  self.lexer.get_file_loc(),
                                   self.lexer.line_count(),
                                   l_functions,
                                   self.lexer.in_class_directory,
@@ -633,7 +634,7 @@ class MATLAB_Parser:
         l_functions, l_more_pragmas = self.parse_function_list()
 
         rv = Script_File(os.path.basename(self.lexer.filename),
-                         Location(self.lexer.filename),
+                         self.lexer.get_file_loc(),
                          self.lexer.line_count(),
                          Sequence_Of_Statements(statements),
                          l_functions,
@@ -648,7 +649,7 @@ class MATLAB_Parser:
         l_functions, l_more_pragmas = self.parse_function_list()
 
         rv = Class_File(os.path.basename(self.lexer.filename),
-                        Location(self.lexer.filename),
+                        self.lexer.get_file_loc(),
                         self.lexer.line_count(),
                         n_classdef,
                         l_functions,
@@ -2079,8 +2080,8 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
                     cfg.debug_write_dot(node.name)
 
     try:
-        mh.register_file(filename)
-        lexer = MATLAB_Lexer(mh, filename)
+        content = file_util.load_local_file(mh, filename)
+        lexer = MATLAB_Lexer(mh, content, filename)
         tbuf = Token_Buffer(lexer, config.BASE_CONFIG)
         parser = MATLAB_Parser(mh,
                                tbuf,
