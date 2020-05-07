@@ -1,6 +1,6 @@
 # MISS_HIT Release Notes
 
-## 0.9.5-dev
+## 0.9.5
 
 * Disabled (but not removed) the `implicit_shortcircuit` rule. It
   turns out that in some cases `&` really does mean `&`, even inside
