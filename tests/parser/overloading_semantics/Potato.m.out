@@ -1,0 +1,57 @@
+----------------------------------------------------------------------
+--  Parse tree for Potato.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <Potato>
+    Properties: Properties Special_Block
+      Items: Entity_Constraints
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <value>
+        Class: Identifier <logical>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <Potato>
+          Inputs: Identifier <val>
+          Outputs: Identifier <obj>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Selection
+              Prefix: Identifier <obj>
+              Field: Identifier <value>
+            RHS: Identifier <val>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <logical>
+          Inputs: Identifier <obj>
+          Outputs: Identifier <result>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <result>
+            RHS: Selection
+              Prefix: Identifier <obj>
+              Field: Identifier <value>
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <and>
+          Inputs: Identifier <lhs>
+          Inputs: Identifier <rhs>
+          Outputs: Identifier <result>
+        Body: Sequence_Of_Statements
+          Statements: Naked_Expression_Statement
+            Expression: Reference
+              Name: Identifier <disp>
+              Arguments: String_Literal "potato"
+          Statements: Simple_Assignment_Statement
+            LHS: Identifier <result>
+            RHS: Binary_Logical_Operation &
+              Short-Circuit: False
+              LHS: Selection
+                Prefix: Identifier <lhs>
+                Field: Identifier <value>
+              RHS: Selection
+                Prefix: Identifier <rhs>
+                Field: Identifier <value>
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

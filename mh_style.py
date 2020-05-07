@@ -702,11 +702,23 @@ def stage_3_analysis(mh, cfg, tbuf):
                token.ast_link and \
                isinstance(token.ast_link, Binary_Logical_Operation) and \
                token.ast_link.short_circuit:
-                mh.style_issue(token.location,
-                               "implicit short-circuit operation due to"
-                               " expression being contained in if/while guard",
-                               True)
-                token.fix.make_shortcircuit_explicit = True
+                # This rule is *disabled* for now since it does not
+                # work in all circumstances. Curiously, this bug is
+                # shared by mlint which also mis-classifies & when
+                # applied to arrays.
+                #
+                # To fix this we need to perform semantic analysis and
+                # type inference. We're leaving this in for
+                # compatibility with miss_hit.cfg files that contain
+                # reference to this rules.
+                #
+                # mh.style_issue(token.location,
+                #                "implicit short-circuit operation due to"
+                #                " expression being contained in "
+                #                " if/while guard",
+                #                True)
+                # token.fix.make_shortcircuit_explicit = True
+                pass
 
         elif token.kind == "ANNOTATION":
             if config.active(cfg, "annotation_whitespace"):

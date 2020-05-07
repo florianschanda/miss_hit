@@ -95,6 +95,14 @@ class MATLAB_Parser:
         self.in_shortcircuit_context = False
         # Some places change the meaning of & and |, we use this to
         # keep track of it.
+        #
+        # Note: this is not always correct, in some cases & means &
+        # even inside a top level if. Specifically if either operand
+        # is an array (see test parser/bug_139). For now this does not
+        # matter (the style rule that would make use of this has been
+        # disabled) but we need to sort this out in semantic analysis.
+        #
+        # Curiously mlint seems to share this bug.
 
         # pylint: disable=invalid-name
         self.ct = None
@@ -106,6 +114,23 @@ class MATLAB_Parser:
 
         self.next()
         self.next()
+
+    def sc_context(self, enabled):
+        assert isinstance(enabled, bool)
+
+        class CM:
+            def __init__(self, parser, current_value, new_value):
+                self.parser    = parser
+                self.old_value = current_value
+                self.new_value = new_value
+
+            def __enter__(self):
+                self.parser.in_shortcircuit_context = self.new_value
+
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                self.parser.in_shortcircuit_context = self.old_value
+
+        return CM(self, self.in_shortcircuit_context, enabled)
 
     def push_context(self, kind):
         assert kind in ("function", "classdef",
@@ -1347,10 +1372,12 @@ class MATLAB_Parser:
             return expr
 
         elif self.peek("M_BRA"):
-            return self.parse_matrix()
+            with self.sc_context(False):
+                return self.parse_matrix()
 
         elif self.peek("C_BRA"):
-            return self.parse_cell()
+            with self.sc_context(False):
+                return self.parse_cell()
 
         elif self.peek("COLON"):
             self.match("COLON")
@@ -1365,7 +1392,8 @@ class MATLAB_Parser:
             return Metaclass(tok, self.parse_simple_name())
 
         else:
-            return self.parse_name(allow_void=False)
+            with self.sc_context(False):
+                return self.parse_name(allow_void=False)
 
     # 2. Transpose (.'), power (.^), complex conjugate transpose ('),
     #    matrix power (^)
@@ -1729,9 +1757,8 @@ class MATLAB_Parser:
         self.match("KEYWORD", "if")
         self.push_context("if")
         n_action = Action(self.ct)
-        self.in_shortcircuit_context = True
-        n_action.set_expression(self.parse_expression())
-        self.in_shortcircuit_context = False
+        with self.sc_context(True):
+            n_action.set_expression(self.parse_expression())
         self.match_eos(n_action, allow_nothing=True)
         n_action.set_body(self.parse_delimited_input())
         actions.append(n_action)
@@ -1739,9 +1766,8 @@ class MATLAB_Parser:
         while self.peek("KEYWORD", "elseif"):
             self.match("KEYWORD", "elseif")
             n_action = Action(self.ct)
-            self.in_shortcircuit_context = True
-            n_action.set_expression(self.parse_expression())
-            self.in_shortcircuit_context = False
+            with self.sc_context(True):
+                n_action.set_expression(self.parse_expression())
             self.match_eos(n_action, allow_nothing=True)
             n_action.set_body(self.parse_delimited_input())
             actions.append(n_action)
@@ -1884,9 +1910,8 @@ class MATLAB_Parser:
         self.match("KEYWORD", "while")
         self.push_context("loop")
         t_kw = self.ct
-        self.in_shortcircuit_context = True
-        n_guard = self.parse_expression()
-        self.in_shortcircuit_context = False
+        with self.sc_context(True):
+            n_guard = self.parse_expression()
         rv = While_Statement(t_kw, n_guard)
         self.match_eos(rv)
 

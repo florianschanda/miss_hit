@@ -1,0 +1,35 @@
+----------------------------------------------------------------------
+--  Parse tree for test_03.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <test_03>
+      Inputs: Identifier <a>
+      Inputs: Identifier <b>
+      Inputs: Identifier <c>
+      Inputs: Identifier <d>
+      Outputs: Identifier <r>
+    Body: Sequence_Of_Statements
+      Statements: If_Statement
+        Action: If Action
+          Guard: Binary_Logical_Operation &
+            Short-Circuit: True
+            LHS: Binary_Logical_Operation |
+              Short-Circuit: True
+              LHS: Identifier <a>
+              RHS: Identifier <b>
+            RHS: Binary_Logical_Operation |
+              Short-Circuit: True
+              LHS: Identifier <c>
+              RHS: Identifier <d>
+          Body: Sequence_Of_Statements
+            Statements: Simple_Assignment_Statement
+              LHS: Identifier <r>
+              RHS: Char_Array_Literal 'a'
+        Action: Else Action
+          Body: Sequence_Of_Statements
+            Statements: Simple_Assignment_Statement
+              LHS: Identifier <r>
+              RHS: Char_Array_Literal 'b'
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

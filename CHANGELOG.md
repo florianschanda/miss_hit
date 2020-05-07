@@ -2,6 +2,12 @@
 
 ## 0.9.5-dev
 
+* Disabled (but not removed) the `implicit_shortcircuit` rule. It
+  turns out that in some cases `&` really does mean `&`, even inside
+  an if guard. Curiously, mlint/checkcode shares this bug. To properly
+  resolve this we need semantic analysis and type inference; so until
+  then this rule just does nothing.
+
 ### Known issues
 
 #### Tooling

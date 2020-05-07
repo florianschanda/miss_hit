@@ -262,26 +262,10 @@ def cyclomatic_complexity(node):
     class Cyclomatic_Complexity_Visitor(AST_Visitor):
         def __init__(self):
             self.metric = 1
-            self.in_guard_expression = False
 
         def visit(self, node, n_parent, relation):
-            if isinstance(n_parent, Action) and \
-               relation == "Guard" and \
-               n_parent.kind() in ("if", "elseif"):
-                self.in_guard_expression = True
-            elif isinstance(n_parent, While_Statement) and \
-                 relation == "Guard":
-                self.in_guard_expression = True
-
-            if isinstance(node, Binary_Operation):
-                if node.t_op.value in ("&&", "||"):
-                    self.metric += 1
-                elif node.t_op.value in ("&", "|") and \
-                     self.in_guard_expression:
-                    # When you use the element-wise & and | operators
-                    # in the context of an if or while loop expression
-                    # (and only in that context), they use
-                    # short-circuiting to evaluate expressions.
+            if isinstance(node, Binary_Logical_Operation):
+                if node.short_circuit:
                     self.metric += 1
             elif isinstance(node, (For_Loop_Statement,
                                    While_Statement,
@@ -297,15 +281,6 @@ def cyclomatic_complexity(node):
                     self.metric += len(node.l_actions) - 1
                 else:
                     self.metric += len(node.l_actions)
-
-        def visit_end(self, node, n_parent, relation):
-            if isinstance(n_parent, Action) and \
-               relation == "Guard" and \
-               n_parent.kind() in ("if", "elseif"):
-                self.in_guard_expression = False
-            elif isinstance(n_parent, While_Statement) and \
-                 relation == "Guard":
-                self.in_guard_expression = False
 
     cvis = Cyclomatic_Complexity_Visitor()
 
