@@ -17,6 +17,8 @@
 \lstset{commentstyle=\scriptsize\tt\color{black!60}}
 
 \newcommand{\mh}[0]{{\sc\structure{Miss\_Hit}}}
+\newcommand{\matlab}[0]{MATLAB\textsuperscript{\tiny\textregistered}}
+\newcommand{\simulink}[0]{Simulink\textsuperscript{\tiny\textregistered}}
 
 \author{Florian Schanda}
 \title{What is {\sc Miss\_Hit}?}
@@ -46,10 +48,9 @@
 \begin{frame}{Overview}
   \mh~is:
   \begin{itemize}
-  \item A free-software compiler framework for full
-    MATLAB\texttrademark\ and most of GNU Octave
-    \pause
-  \item A supplementary tool-suite for MATLAB\texttrademark\ and GNU
+  \item A free-software compiler framework for the full \matlab\
+    language and most of the GNU Octave language \pause
+  \item A supplementary tool-suite for \matlab, \simulink\ and GNU
     Octave
     \begin{itemize}
     \item A \structure{style checker}
@@ -65,8 +66,8 @@
   \item Licensed under GPLv3
     \pause
   \item Requires only Python 3.6+
-  \item Does \emph{not} require a working MATLAB\texttrademark\ or GNU
-    Octave environment
+  \item Does \emph{not} require a working \matlab\ or GNU Octave
+    environment
   \end{itemize}
 \end{frame}
 
@@ -171,6 +172,8 @@ function rv = foo (x)
   \item Number of persistent variables
   \item Line count for each function
   \end{itemize}
+  \pause
+  Also works for embedded code inside \simulink\ models!
 \end{frame}
 
 \begin{frame}{Tool overview}{Code metric tool}
@@ -241,10 +244,13 @@ function function_file_justified
 \begin{frame}{Roadmap}
   Some ideas for the future:
   \begin{itemize}
-  \item Analyse embedded code inside SIMULINK\texttrademark\ models
   \item Linter tool
+    \begin{itemize}
+    \item Semantic analysis
+    \item Data and information flow analysis
+    \end{itemize}
   \item More GNU Octave support
-  \item GNU Octave / MATLAB\texttrademark\ compatibility check
+  \item GNU Octave / \matlab\ compatibility check
   \item Tool qualification for e.g. ISO 26262
     \pause
   \item \structure{Anything else users suggest!}
@@ -254,9 +260,10 @@ function function_file_justified
 \subsection{Summary}
 \begin{frame}{Conclusion}
   \begin{itemize}
-  \item \mh~is the only free-software parser for full
-    MATLAB\texttrademark\ I'm aware of
-  \item Fills holes in the MATLAB\texttrademark\ eco-system
+  \item \mh~is the only free-software parser for full \matlab\ I'm
+    aware of
+  \item Works for code embedded in \simulink\ models
+  \item Fills holes in the \matlab\ eco-system
     \begin{itemize}
     \item Reliable code formatting
     \item Metrics
