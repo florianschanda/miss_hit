@@ -244,6 +244,8 @@ def main():
     ap.add_argument("--single",
                     action="store_true",
                     default=False)
+    ap.add_argument("--suite",
+                    default=None)
 
     options = ap.parse_args()
 
@@ -253,7 +255,12 @@ def main():
 
     tests = []
 
-    for kind in ("lexer", "parser", "simulink_parser", "style", "metrics"):
+    if options.suite:
+        suites = [options.suite]
+    else:
+        suites = ["lexer", "parser", "simulink_parser", "style", "metrics"]
+
+    for kind in suites:
         for t in os.listdir(kind):
             tests.append({"kind" : kind,
                           "test" : t})
