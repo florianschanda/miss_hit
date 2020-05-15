@@ -83,6 +83,14 @@ class SIMULINK_MATLAB_Block(SIMULINK_Block):
     def get_text(self):
         return self.xml_root_code.text
 
+    def set_text(self, text):
+        assert isinstance(text, str)
+        self.xml_root_code.text = text
+
+    def get_encoding(self):
+        # HACK for now, this can be found in the actual model
+        return "utf-8"
+
 
 class SIMULINK_Model:
     """Represents a SIMULINK file/model.
@@ -100,7 +108,6 @@ class SIMULINK_Model:
         self.mh = mh
 
         self.filename = filename
-        self.mh.register_file(filename)
         # The actual file-name
 
         self.modelname = os.path.basename(filename).replace(".slx", "")
@@ -265,6 +272,7 @@ def sanity_test(mh, filename, show_bt):
     # pylint: enable=import-outside-toplevel
 
     try:
+        mh.register_file(filename)
         smdl = SIMULINK_Model(mh, filename)
         mh.info(smdl.loc(),
                 "model contains %u MATLAB function blocks" %

@@ -29,13 +29,12 @@
 
 import os
 import re
-import multiprocessing
 
 from abc import ABCMeta, abstractmethod
 
+import work_package
 import command_line
 import config
-import file_util
 import g_cfg
 
 from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
@@ -789,133 +788,142 @@ def stage_3_analysis(mh, cfg, tbuf):
                                    True)
 
 
-def analyze(work_package):
-    mh, filename, options, extra_options, cfg = work_package
-    rule_set = extra_options["rule_set"]
-    autofix  = options.fix
-    fd_tree  = extra_options["fd_tree"]
-    debug_validate_links = options.debug_validate_links
+class MH_Style_Result(work_package.Result):
+    def __init__(self, wp):
+        super().__init__(wp, True)
 
-    assert isinstance(filename, str)
-    assert isinstance(autofix, bool)
 
-    if filename.endswith(".slx"):
-        autofix = False
-        return False, filename, mh
+class MH_Style(command_line.MISS_HIT_Back_End):
+    def __init__(self):
+        super().__init__("MH Style")
 
-    # Check config first, since we might want to skip this file
-    if not cfg["enable"]:
-        mh.register_exclusion(filename)
-        return False, filename, mh
-
-    # Build rule library
-    rule_lib = build_library(cfg, rule_set)
-
-    # Load file content
-
-    content = file_util.load_local_file(mh, filename, "cp1252")
-    if content is None:
-        return True, filename, mh
-
-    # Create lexer
-
-    lexer = MATLAB_Lexer(mh, content, filename)
-    if cfg["octave"]:
-        lexer.set_octave_mode()
-    if cfg["ignore_pragmas"]:
-        lexer.process_pragmas = False
-
-    # We're dealing with an empty file here. Lets just not do anything
-
-    if len(lexer.text.strip()) == 0:
-        return True, filename, mh
-
-    # Stage 1 - rules around the file itself
-
-    for rule in rule_lib["on_file"]:
-        rule.apply(mh, cfg, lexer.filename, lexer.text, lexer.context_line)
-
-    # Stage 2 - rules around raw text lines
-
-    for line_no, line in enumerate(lexer.context_line, 1):
-        for rule in rule_lib["on_line"]:
-            rule.apply(mh, cfg, lexer.filename, line_no, line)
-
-    # Tabs are just super annoying, and they require special
-    # treatment. There is a known but obscure bug here, in that tabs
-    # in strings are replaced as if they were part of normal
-    # text. This is probably not intentional. For example:
-    #
-    # "a<tab>b"
-    #    "a<tab>b"
-    #
-    # Will right now come out as
-    #
-    # "a   b"
-    # "  a b"
-    #
-    # This is probably not correct. Fixing this is will require a very
-    # different kind of lexing (which I am not in the mood for, I have
-    # suffered enough to deal with ') or a 2-pass solution (which is
-    # slow): first we lex and then fix up tabs inside tokens; and then
-    # we do the global replacement and lex again before we proceed.
-
-    if autofix:
-        lexer.correct_tabs(cfg["tab_width"])
-
-    # Create tokenbuffer
-
-    try:
-        tbuf = Token_Buffer(lexer, cfg)
-    except Error:
-        # If there are lex errors, we can stop here
-        return True, filename, mh
-
-    # Create parse tree
-
-    try:
-        parser = MATLAB_Parser(mh, tbuf, cfg)
-        parse_tree = parser.parse_file()
-        parse_tree.sty_check_naming(mh, cfg)
-
-        if debug_validate_links:
-            tbuf.debug_validate_links()
-
-        if fd_tree:
-            fd_tree.write("-- Parse tree for %s\n" % filename)
-            parse_tree.pp_node(fd_tree)
-            fd_tree.write("\n\n")
-
-    except Error:
-        parse_tree = None
-
-    # Create CFG for debugging purposes
-
-    if parse_tree and options.debug_cfg:
-        g_cfg.debug_cfg(parse_tree, mh)
-
-    # Stage 3 - rules around individual tokens
-
-    stage_3_analysis(mh, cfg, tbuf)
-
-    # Stage 4 - rules involving the parse tree
-
-    # TODO
-
-    # Re-write the file, with issues fixed
-
-    if autofix:
-        if not parse_tree:
-            mh.error(lexer.get_file_loc(),
-                     "file is not auto-fixed because it contains parse errors",
-                     fatal=False)
+    @classmethod
+    def process_wp(cls, wp):
+        rule_set = wp.extra_options["rule_set"]
+        if isinstance(wp, work_package.MATLAB_File_WP):
+            autofix = wp.options.fix
         else:
-            with open(filename, "w", encoding="cp1252") as fd:
-                tbuf.replay(fd)
+            autofix = False
+        fd_tree = wp.extra_options["fd_tree"]
+        debug_validate_links = wp.options.debug_validate_links
 
-    # Return final results
+        # Build rule library
 
-    return True, filename, mh
+        rule_lib = build_library(wp.cfg, rule_set)
+
+        # Load file content
+
+        content = wp.get_content()
+
+        # Create lexer
+
+        lexer = MATLAB_Lexer(wp.mh, content, wp.filename, wp.blockname)
+        if wp.cfg["octave"]:
+            lexer.set_octave_mode()
+        if wp.cfg["ignore_pragmas"]:
+            lexer.process_pragmas = False
+
+        # We're dealing with an empty file here. Lets just not do anything
+
+        if len(lexer.text.strip()) == 0:
+            return MH_Style_Result(wp)
+
+        # Stage 1 - rules around the file itself
+
+        for rule in rule_lib["on_file"]:
+            rule.apply(wp.mh, wp.cfg,
+                       lexer.filename,
+                       lexer.text,
+                       lexer.context_line)
+
+        # Stage 2 - rules around raw text lines
+
+        for line_no, line in enumerate(lexer.context_line, 1):
+            for rule in rule_lib["on_line"]:
+                rule.apply(wp.mh, wp.cfg,
+                           lexer.filename,
+                           line_no,
+                           line)
+
+        # Tabs are just super annoying, and they require special
+        # treatment. There is a known but obscure bug here, in that tabs
+        # in strings are replaced as if they were part of normal
+        # text. This is probably not intentional. For example:
+        #
+        # "a<tab>b"
+        #    "a<tab>b"
+        #
+        # Will right now come out as
+        #
+        # "a   b"
+        # "  a b"
+        #
+        # This is probably not correct. Fixing this is will require a very
+        # different kind of lexing (which I am not in the mood for, I have
+        # suffered enough to deal with ') or a 2-pass solution (which is
+        # slow): first we lex and then fix up tabs inside tokens; and then
+        # we do the global replacement and lex again before we proceed.
+
+        if autofix:
+            lexer.correct_tabs(wp.cfg["tab_width"])
+
+        # Create tokenbuffer
+
+        try:
+            tbuf = Token_Buffer(lexer, wp.cfg)
+        except Error:
+            # If there are lex errors, we can stop here
+            return MH_Style_Result(wp)
+
+        # Create parse tree
+
+        try:
+            parser = MATLAB_Parser(wp.mh, tbuf, wp.cfg)
+            parse_tree = parser.parse_file()
+
+            # Check naming (we do this after parsing, not during,
+            # since we may beed to re-write functions without end).
+            parse_tree.sty_check_naming(wp.mh, wp.cfg)
+
+            if debug_validate_links:
+                tbuf.debug_validate_links()
+
+            if fd_tree:
+                fd_tree.write("-- Parse tree for %s\n" % wp.filename)
+                parse_tree.pp_node(fd_tree)
+                fd_tree.write("\n\n")
+
+        except Error:
+            parse_tree = None
+
+        # Create CFG for debugging purposes
+
+        if parse_tree and wp.options.debug_cfg:
+            g_cfg.debug_cfg(parse_tree, wp.mh)
+
+        # Stage 3 - rules around individual tokens
+
+        stage_3_analysis(wp.mh, wp.cfg, tbuf)
+
+        # Stage 4 - rules involving the parse tree
+
+        # TODO
+
+        # Possibly re-write the file, with issues fixed
+
+        if autofix:
+            if not parse_tree:
+                wp.mh.error(lexer.get_file_loc(),
+                            "file is not auto-fixed because it contains"
+                            " parse errors",
+                            fatal=False)
+            else:
+                # TODO: call modify()
+                wp.write_modified(tbuf.replay())
+
+        # Return results
+
+        return MH_Style_Result(wp)
 
 
 def main():
@@ -927,6 +935,15 @@ def main():
                            default=False,
                            help=("Automatically fix issues where the fix"
                                  " is obvious"))
+
+    clp["ap"].add_argument("--process-slx",
+                           action="store_true",
+                           default=False,
+                           help=("Style-check (but not yet auto-fix) code"
+                                 " inside SIMULINK models. This option is"
+                                 " temporary, and will be removed in"
+                                 " future once the feature is good enough"
+                                 " to be enabled by default."))
 
     # Extra output options
     clp["output_options"].add_argument(
@@ -998,27 +1015,13 @@ def main():
     if options.debug_dump_tree:
         extra_options["fd_tree"] = open(options.debug_dump_tree, "w")
 
-    work_list = command_line.read_config(mh, options, extra_options)
-
-    if options.single:
-        for processed, filename, result in map(analyze, work_list):
-            mh.integrate(result)
-            if processed:
-                mh.finalize_file(filename)
-
-    else:
-        pool = multiprocessing.Pool()
-        for processed, filename, result in pool.imap(analyze,
-                                                     work_list,
-                                                     5):
-            mh.integrate(result)
-            if processed:
-                mh.finalize_file(filename)
+    style_backend = MH_Style()
+    command_line.execute(mh, options, extra_options,
+                         style_backend,
+                         options.process_slx)
 
     if options.debug_dump_tree:
         extra_options["fd_tree"].close()
-
-    mh.summary_and_exit()
 
 
 if __name__ == "__main__":

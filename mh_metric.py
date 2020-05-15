@@ -29,18 +29,16 @@
 import os
 import sys
 import html
-import multiprocessing
 import functools
 
 import command_line
+import work_package
 import config
-import file_util
 
 from errors import Error, ICE, Message_Handler
 from m_ast import *
 from m_lexer import MATLAB_Lexer
 from m_parser import MATLAB_Parser
-from s_parser import SIMULINK_Model
 
 MEASURE = {m : None for m in config.METRICS}
 
@@ -512,47 +510,6 @@ def collect_metrics(mh, cfg, content, filename, blockname):
     return metrics
 
 
-def process_wp(args):
-    mh, filename, _, _, cfg = args
-    assert isinstance(filename, str)
-
-    processed = True
-    metrics = {filename: {"errors"    : False,
-                          "metrics"   : {},
-                          "functions" : {}}}
-
-    if not cfg["enable"]:
-        # This file is excluded from analysis
-        mh.register_exclusion(filename)
-        processed = False
-
-    elif filename.endswith(".slx"):
-        # This is a modern SIMULINK model
-        metrics = {}
-        try:
-            smdl = SIMULINK_Model(mh, filename)
-            for block in smdl.matlab_blocks:
-                metrics.update(collect_metrics(mh, cfg,
-                                               block.get_text(),
-                                               filename,
-                                               block.local_name()))
-        except Error:
-            metrics[filename]["errors"] = True
-
-    else:
-        # This is a normal MATLAB / Octave file
-        content = file_util.load_local_file(mh, filename, "cp1252")
-        if content is None:
-            metrics[filename]["errors"] = True
-        else:
-            metrics.update(collect_metrics(mh, cfg,
-                                           content,
-                                           filename,
-                                           None))
-
-    return processed, filename, mh, metrics
-
-
 def write_text_report(fd, all_metrics, worst_offenders):
     first = True
 
@@ -860,6 +817,120 @@ def build_worst_offenders_table(all_metrics, count):
     return wot
 
 
+class MH_Metric_Result(work_package.Result):
+    def __init__(self, wp, metrics):
+        super().__init__(wp, True)
+        self.metrics = metrics
+
+
+class MH_Metric(command_line.MISS_HIT_Back_End):
+    def __init__(self, options):
+        super().__init__("MH Metric")
+
+        self.options = options
+
+        self.metrics = {}
+        # file -> { metrics -> {}
+        #           functions -> {name -> {}} }
+
+    @classmethod
+    def process_wp(cls, wp):
+        if wp.blockname is None:
+            full_name = wp.filename
+        else:
+            full_name = wp.filename + "/" + wp.blockname
+
+        metrics = {full_name: {"errors"    : False,
+                               "metrics"   : {},
+                               "functions" : {}}}
+
+        # Create lexer
+
+        lexer = MATLAB_Lexer(wp.mh, wp.get_content(),
+                             wp.filename, wp.blockname)
+        if wp.cfg["octave"]:
+            lexer.set_octave_mode()
+        if wp.cfg["ignore_pragmas"]:
+            lexer.process_pragmas = False
+
+        # We're dealing with an empty file here. Lets just not do anything
+
+        if len(lexer.text.strip()) == 0:
+            return MH_Metric_Result(wp, metrics)
+
+        # Create parse tree
+
+        try:
+            parser = MATLAB_Parser(wp.mh, lexer, wp.cfg)
+            parse_tree = parser.parse_file()
+        except Error:
+            metrics[wp.filename]["errors"] = True
+            return MH_Metric_Result(wp, metrics)
+
+        # File metrics
+
+        metrics[full_name]["metrics"] = {
+            "file_length" : {"measure" : lexer.line_count(),
+                             "limit"   : None,
+                             "reason"  : None}
+        }
+        justifications = {full_name : get_file_justifications(wp.mh,
+                                                              parse_tree)}
+
+        # Check+justify file metrics
+
+        for file_metric in config.FILE_METRICS:
+            check_metric(wp.mh, wp.cfg, lexer.get_file_loc(), file_metric,
+                         metrics[full_name]["metrics"],
+                         justifications[full_name])
+
+        # Collect, check, and justify function metrics
+
+        metrics[full_name]["functions"] = get_function_metrics(wp.mh,
+                                                               wp.cfg,
+                                                               parse_tree)
+
+        # Complain about unused justifications
+
+        warn_unused_justifications(wp.mh, parse_tree)
+
+        return MH_Metric_Result(wp, metrics)
+
+    def process_result(self, result):
+        assert isinstance(result, work_package.Result)
+
+        if isinstance(result, MH_Metric_Result):
+            assert result.processed
+            self.metrics.update(result.metrics)
+
+        else:
+            assert not result.processed
+
+    def post_process(self):
+        # Build worst offenders table, if requested
+
+        if self.options.worst_offenders:
+            worst_offenders = build_worst_offenders_table(
+                self.metrics,
+                self.options.worst_offenders)
+        else:
+            worst_offenders = None
+
+        # Generate report
+
+        if self.options.html:
+            with open(self.options.html, "w") as fd:
+                write_html_report(fd,
+                                  self.options.html,
+                                  self.metrics,
+                                  worst_offenders)
+        elif self.options.text:
+            with open(self.options.text, "w") as fd:
+                write_text_report(fd, self.metrics, worst_offenders)
+        elif not self.options.ci:
+            write_text_report(sys.stdout, self.metrics, worst_offenders)
+
+
 def main():
     clp = command_line.create_basic_clp()
 
@@ -918,53 +989,8 @@ def main():
     mh.show_style   = False
     mh.autofix      = False
 
-    work_list = command_line.read_config(mh, options, {})
-
-    all_metrics = {}
-    # file -> { metrics -> {}
-    #           functions -> {name -> {}} }
-
-    if options.single:
-        for processed, filename, result, metrics in map(process_wp,
-                                                        work_list):
-            mh.integrate(result)
-            if processed:
-                mh.finalize_file(filename)
-                all_metrics.update(metrics)
-
-    else:
-        pool = multiprocessing.Pool()
-        for processed, filename, result, metrics in pool.imap(process_wp,
-                                                              work_list,
-                                                              5):
-            mh.integrate(result)
-            if processed:
-                mh.finalize_file(filename)
-                all_metrics.update(metrics)
-
-    # Postprocess
-
-    if options.worst_offenders:
-        worst_offenders = build_worst_offenders_table(all_metrics,
-                                                      options.worst_offenders)
-    else:
-        worst_offenders = None
-
-    # Generate report
-
-    if options.html:
-        with open(options.html, "w") as fd:
-            write_html_report(fd,
-                              options.html,
-                              all_metrics,
-                              worst_offenders)
-    elif options.text:
-        with open(options.text, "w") as fd:
-            write_text_report(fd, all_metrics, worst_offenders)
-    elif not options.ci:
-        write_text_report(sys.stdout, all_metrics, worst_offenders)
-
-    mh.summary_and_exit()
+    metric_backend = MH_Metric(options)
+    command_line.execute(mh, options, {}, metric_backend)
 
 
 if __name__ == "__main__":

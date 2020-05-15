@@ -27,11 +27,11 @@
 import os
 import traceback
 
-import file_util
-from m_lexer import Token_Generator, MATLAB_Lexer, Token_Buffer
-from errors import ICE, Error, Message_Handler
 import config
+
+from errors import ICE, Error, Message_Handler
 from m_ast import *
+from m_lexer import Token_Generator, MATLAB_Lexer, Token_Buffer
 
 
 IGNORED_TOKENS = frozenset(["COMMENT"])
@@ -2079,8 +2079,10 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
                 else:
                     cfg.debug_write_dot(node.name)
 
+    mh.register_file(filename)
+    with open(filename, "r") as fd:
+        content = fd.read()
     try:
-        content = file_util.load_local_file(mh, filename)
         lexer = MATLAB_Lexer(mh, content, filename)
         tbuf = Token_Buffer(lexer, config.BASE_CONFIG)
         parser = MATLAB_Parser(mh,

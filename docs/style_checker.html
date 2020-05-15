@@ -34,8 +34,21 @@
       </div>
 
       <div>
-        To analyse a single file:
+        To analyse one or more files:
+
         <pre>$ mh_style.py my_file.m</pre>
+      </div>
+
+      <div>
+        It is possible to also style-check code embedded inside
+        Simulink models. To do you need to use a special command-line
+        flag. Once the feature is stable enough, this flag will be
+        removed.
+
+        <pre>$ mh_style.py --process-slx my_model.slx</pre>
+
+        Please note that embdedded code cannot yet be auto-fixed (but
+        it is planend to add this feature in the near future).
       </div>
 
       <div>

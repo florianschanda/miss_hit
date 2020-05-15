@@ -156,9 +156,9 @@ class Message_Handler:
         self.warnings = 0
         self.errors = 0
         self.justified = 0
-        self.file_count = 0
         self.files = set()
         self.excluded_files = set()
+        self.seen_files = set()
 
         self.autofix = False
         self.colour = False
@@ -168,6 +168,9 @@ class Message_Handler:
 
         self.messages = {}        # file -> line -> [message]
         self.justifications = {}  # file -> line -> [justification]
+
+    def reset_seen(self):
+        self.seen_files = set()
 
     def fork(self):
         rv = Message_Handler(self.tool_id)
@@ -192,9 +195,9 @@ class Message_Handler:
         self.warnings              += other.warnings
         self.errors                += other.errors
         self.justified             += other.justified
-        self.file_count            += other.file_count
         self.files                 |= other.files
         self.excluded_files        |= other.excluded_files
+        self.seen_files            |= other.seen_files
 
         for filename in other.messages:
             if filename not in self.messages:
@@ -221,6 +224,7 @@ class Message_Handler:
         assert canonical_filename not in self.excluded_files
 
         self.files.add(canonical_filename)
+        self.seen_files.add(canonical_filename)
         self.messages[canonical_filename] = {}
         self.justifications[canonical_filename] = {}
 
@@ -322,7 +326,7 @@ class Message_Handler:
 
     def emit_summary(self):
         tmp = "MISS_HIT %s Summary: " % self.tool_id.capitalize()
-        stats = ["%u file(s) analysed" % self.file_count]
+        stats = ["%u file(s) analysed" % len(self.seen_files)]
         if self.style_issues:
             stats.append("%u style issue(s)" % self.style_issues)
         if self.metric_issues:
@@ -469,7 +473,6 @@ class Message_Handler:
 
         # Remove file
         self.unregister_file(canonical_filename)
-        self.file_count += 1
 
     def summary_and_exit(self):
         files = list(self.messages)

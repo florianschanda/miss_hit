@@ -30,9 +30,13 @@ import sys
 import argparse
 import traceback
 import textwrap
+import multiprocessing
+import functools
 
 import config_files
 import errors
+import work_package
+import s_parser
 from version import GITHUB_ISSUES, VERSION, FULL_NAME
 
 
@@ -121,7 +125,57 @@ def parse_args(clp):
     return options
 
 
-def read_config(mh, options, extra_options):
+class MISS_HIT_Back_End:
+    def __init__(self, name):
+        assert isinstance(name, str)
+        self.name = name
+
+    @classmethod
+    def process_wp(cls, wp):
+        raise errors.ICE("unimplemented process_wp function")
+
+    def process_result(self, result):
+        pass
+
+    def post_process(self):
+        pass
+
+
+def dispatch_wp(process_fn, wp):
+    results = []
+
+    try:
+        if not wp.cfg["enable"]:
+            wp.mh.register_exclusion(wp.filename)
+            results.append(work_package.Result(wp, False))
+
+        elif isinstance(wp, work_package.SIMULINK_File_WP):
+            wp.register_file()
+            smdl = s_parser.SIMULINK_Model(wp.mh, wp.filename)
+            for block in smdl.matlab_blocks:
+                block_wp = work_package.Embedded_MATLAB_WP(wp, block)
+                results.append(process_fn(block_wp))
+
+        elif isinstance(wp, work_package.MATLAB_File_WP):
+            wp.register_file()
+            results.append(process_fn(wp))
+
+        else:
+            raise errors.ICE("unknown work package kind %s" %
+                             wp.__class__.__name__)
+
+    except errors.Error:
+        raise errors.ICE("uncaught Error in process_wp")
+
+    return results
+
+
+def execute(mh, options, extra_options, back_end, process_slx=True):
+    assert isinstance(mh, errors.Message_Handler)
+    assert isinstance(back_end, MISS_HIT_Back_End)
+
+    process_fn = functools.partial(dispatch_wp, back_end.process_wp)
+
     try:
         for item in options.files:
             if os.path.isdir(item):
@@ -149,22 +203,47 @@ def read_config(mh, options, extra_options):
                     path = ""
                 dirs.sort()
                 for f in sorted(files):
-                    if f.endswith(".m") or f.endswith(".slx"):
-                        canonical_name = os.path.normpath(os.path.join(path,
-                                                                       f))
-                        cfg = config_files.get_config(canonical_name)
+                    if f.endswith(".m") or (f.endswith(".slx") and
+                                            process_slx):
                         work_list.append(
-                            (mh.fork(),
-                             canonical_name,
-                             options,
-                             extra_options,
-                             cfg))
+                            work_package.create(os.path.join(path, f),
+                                                "cp1252",
+                                                mh,
+                                                options, extra_options))
+
+        elif item.endswith(".m") or (item.endswith(".slx") and process_slx):
+            work_list.append(work_package.create(item,
+                                                 "cp1252",
+                                                 mh,
+                                                 options, extra_options))
 
         else:
-            cfg = config_files.get_config(item)
-            work_list.append((mh.fork(), item, options, extra_options, cfg))
+            pass
 
-    return work_list
+    if options.single:
+        for wp in work_list:
+            for result in process_fn(wp):
+                assert isinstance(result, work_package.Result)
+                mh.integrate(result.wp.mh)
+                if result.processed:
+                    mh.finalize_file(result.wp.filename)
+                    back_end.process_result(result)
+
+    else:
+        pool = multiprocessing.Pool()
+        for results in pool.imap(process_fn,
+                                 work_list,
+                                 5):
+            for result in results:
+                assert isinstance(result, work_package.Result)
+                mh.integrate(result.wp.mh)
+                if result.processed:
+                    mh.finalize_file(result.wp.filename)
+                    back_end.process_result(result)
+
+    back_end.post_process()
+
+    mh.summary_and_exit()
 
 
 def ice_handler(main_function):

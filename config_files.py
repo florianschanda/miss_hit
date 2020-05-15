@@ -29,7 +29,6 @@ import re
 from copy import deepcopy
 
 import config
-import file_util
 import m_lexer
 
 from errors import ICE, Error, Location
@@ -44,10 +43,12 @@ class Config_Parser:
     def __init__(self, mh, config_file):
         self.filename = config_file
         self.dirname = os.path.dirname(config_file)
-        content = file_util.load_local_file(mh, config_file)
+        self.mh = mh
+        self.mh.register_file(self.filename)
+        with open(config_file, "r") as fd:
+            content = fd.read()
         self.lexer = m_lexer.MATLAB_Lexer(mh, content, self.filename)
         self.lexer.set_config_file_mode()
-        self.mh = mh
 
         # pylint: disable=invalid-name
         self.ct = None
@@ -255,7 +256,10 @@ def load_config(mh, cfg_file, cfg):
         # from the list of files known to the error handler
         mh.unregister_file(rel_name)
     except Error:
+        mh.reset_seen()
         mh.summary_and_exit()
+
+    mh.reset_seen()
 
 
 def register_tree(mh, dirname, options):

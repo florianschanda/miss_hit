@@ -30,7 +30,7 @@ from abc import ABCMeta, abstractmethod
 
 import config
 import m_ast
-import file_util
+
 from errors import Location, Error, Message_Handler, ICE
 from m_language import KEYWORDS, ANNOTATION_KEYWORDS
 
@@ -1249,7 +1249,7 @@ class Token_Buffer(Token_Generator):
             else:
                 token.fix.ensure_maxgap_before = True
 
-    def replay(self, fd):
+    def replay(self):
         # Strip all tokens marked with delete
         new_tokens = []
         token_deleted = False
@@ -1344,6 +1344,7 @@ class Token_Buffer(Token_Generator):
 
         # Regurgitate the processed tokens to re-create the source
         # file, including comments
+        rv = ""
         for n, token in enumerate(new_tokens):
             if n + 1 < len(new_tokens):
                 next_token = new_tokens[n + 1]
@@ -1357,9 +1358,9 @@ class Token_Buffer(Token_Generator):
             if token.first_in_line:
                 if config.active(self.cfg, "indentation") and \
                    token.fix.correct_indent is not None:
-                    fd.write(" " * token.fix.correct_indent)
+                    rv += " " * token.fix.correct_indent
                 else:
-                    fd.write(" " * token.location.col_start)
+                    rv += " " * token.location.col_start
 
             if token.kind == "NEWLINE":
                 amount = min(2, token.raw_text.count("\n"))
@@ -1368,14 +1369,14 @@ class Token_Buffer(Token_Generator):
                     # newline. This newline is inserted manually at
                     # the end
                     amount = 0
-                fd.write("\n" * amount)
+                rv += "\n" * amount
             elif token.kind == "CONTINUATION":
-                fd.write(token.raw_text.rstrip() + "\n")
+                rv += token.raw_text.rstrip() + "\n"
             else:
-                fd.write(token.raw_text.rstrip())
+                rv += token.raw_text.rstrip()
 
             if token.fix.add_semicolon_after:
-                fd.write(";")
+                rv += ";"
 
             if next_in_line and next_in_line.kind != "NEWLINE":
                 gap = (next_in_line.location.col_start -
@@ -1406,8 +1407,10 @@ class Token_Buffer(Token_Generator):
                     else:
                         gap = min(gap, 1)
 
-                fd.write(" " * gap)
-        fd.write("\n")
+                rv += " " * gap
+        rv += "\n"
+
+        return rv
 
     def debug_validate_links(self):
         for token in self.tokens:
@@ -1424,8 +1427,10 @@ class Token_Buffer(Token_Generator):
 
 
 def sanity_test(mh, filename):
+    mh.register_file(filename)
+    with open(filename, "r") as fd:
+        content = fd.read()
     try:
-        content = file_util.load_local_file(mh, filename)
         lexer = MATLAB_Lexer(mh, content, filename)
         lexer.debug_comma = True
         while True:

@@ -7,8 +7,9 @@ you're stuck. Unfortunately, there are no style checkers or "good"
 static analysis tools for MATLAB. This project attempts to fill this
 gap.
 
-If you have MATLAB in your production code and want to improve code
-quality then this tool-suite is for you.
+If you have MATLAB or MATLAB embedded in Simulink models in your
+production code and want to improve code quality then this tool-suite
+is for you.
 
 ## Tools & Documentation
 
@@ -24,13 +25,15 @@ for a summary of recent changes and known issues.
 
 * Style Checker `mh_style.py`
 
-  A simple coding style checker and code formatter for MATLAB or Octave
-  code. See https://florianschanda.github.io/miss_hit/style_checker.html
-  for more information and a user manual.
+  A simple coding style checker and code formatter for MATLAB or
+  Octave code, including MATLAB embedded inside Simulink models. See
+  https://florianschanda.github.io/miss_hit/style_checker.html for
+  more information and a user manual.
 
 * Code Metrics `mh_metric.py`
 
-  A simple code metric tool for MATLAB or Octave code. See
+  A simple code metric tool for MATLAB or Octave code, including
+  MATLAB embedded inside Simulink models. See
   https://florianschanda.github.io/miss_hit/metrics.html for more
   information and a user manual.
 
@@ -45,9 +48,10 @@ for a summary of recent changes and known issues.
 Just check out the repository and put it on your path. That's
 it. MISS_HIT does not require *any* python packages or libraries.
 
-To use MISS_HIT you just give it a set of files to process.
+To use MISS_HIT you just give it a set of files to process, for example:
 ```
 $ mh_style.py my_file.m
+$ mh_style.py --process-slx my_model.slx
 ```
 Configuration is described in the user manual(s).
 
