@@ -343,10 +343,14 @@ KEYWORDS_WITH_WS = frozenset([
 ])
 
 
-def stage_3_analysis(mh, cfg, tbuf):
+def stage_3_analysis(mh, cfg, tbuf, is_embedded):
+    assert isinstance(mh, Message_Handler)
     assert isinstance(tbuf, Token_Buffer)
+    assert isinstance(is_embedded, bool)
 
-    in_copyright_notice = config.active(cfg, "copyright_notice")
+    in_copyright_notice = (config.active(cfg, "copyright_notice") and
+                           (not is_embedded or
+                            cfg["copyright_in_embedded_code"]))
     company_copyright_found = False
     generic_copyright_found = False
     copyright_token = None
@@ -900,7 +904,9 @@ class MH_Style(command_line.MISS_HIT_Back_End):
 
         # Stage 3 - rules around individual tokens
 
-        stage_3_analysis(wp.mh, wp.cfg, tbuf)
+        stage_3_analysis(wp.mh, wp.cfg,
+                         tbuf,
+                         isinstance(wp, work_package.Embedded_MATLAB_WP))
 
         # Stage 4 - rules involving the parse tree
 

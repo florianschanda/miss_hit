@@ -7,6 +7,11 @@
   `--process-slx`. This flag is temporary and will be removed in the
   future once this feature is stable enough.
 
+* New configuration option `copyright_in_embedded_code` which is
+  turned off by default. By default the `copyright_notice` rule does
+  not apply to embedded code, and this option can be used to control
+  that behaviour.
+
 ## 0.9.5
 
 * Disabled (but not removed) the `implicit_shortcircuit` rule. It

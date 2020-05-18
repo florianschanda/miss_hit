@@ -29,20 +29,21 @@ DEFAULT_NAMING_SCHEME = "([A-Z]+|[A-Z][a-z]*)(_([A-Z]+|[A-Z][a-z]*|[0-9]+))*"
 # "Kitten_Class" or "LASER", but not "potatoFarmer".
 
 BASE_CONFIG = {
-    "enable"              : True,
-    "octave"              : False,
-    "ignore_pragmas"      : False,
-    "copyright_entity"    : set(),
-    "exclude_dir"         : set(),
-    "suppress_rule"       : set(),
-    "regex_class_name"    : DEFAULT_NAMING_SCHEME,
-    "regex_function_name" : DEFAULT_NAMING_SCHEME,
-    "regex_nested_name"   : DEFAULT_NAMING_SCHEME,
-    "regex_method_name"   : "[a-z]+(_[a-z]+)*",
-    "file_length"         : 1000,
-    "line_length"         : 80,
-    "tab_width"           : 4,
-    "metrics"             : {}
+    "enable"                     : True,
+    "octave"                     : False,
+    "ignore_pragmas"             : False,
+    "copyright_entity"           : set(),
+    "copyright_in_embedded_code" : False,
+    "exclude_dir"                : set(),
+    "suppress_rule"              : set(),
+    "regex_class_name"           : DEFAULT_NAMING_SCHEME,
+    "regex_function_name"        : DEFAULT_NAMING_SCHEME,
+    "regex_nested_name"          : DEFAULT_NAMING_SCHEME,
+    "regex_method_name"          : "[a-z]+(_[a-z]+)*",
+    "file_length"                : 1000,
+    "line_length"                : 80,
+    "tab_width"                  : 4,
+    "metrics"                    : {}
 }
 
 STYLE_RULES = {
