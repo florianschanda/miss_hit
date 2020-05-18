@@ -40,10 +40,10 @@
       </div>
 
       <div>
-        It is possible to also style-check and fix code embedded inside
-        Simulink models. To do you need to use a special command-line
-        flag. Once the feature is stable enough, this flag will be
-        removed.
+        It is possible to also style-check and fix code embedded
+        inside Simulink&reg; models. To do you need to use a special
+        command-line flag. Once the feature is stable enough, this
+        flag will be removed.
 
         <pre>$ mh_style.py --process-slx --fix my_model.slx</pre>
       </div>
@@ -371,10 +371,11 @@ enable_rule: "file_length"
 
       <h4>Trailing whitespace</h4>
       <div>
-        This rule enforces that there is no trailing whitespace in your files.
-        You *really* want to do this, even if the MATLAB default editor makes
-        this really hard. The reason is that it minimises conflicts when using
-        modern version control systems.
+        This rule enforces that there is no trailing whitespace in
+        your files.  You *really* want to do this, even if the
+        MATLAB&reg; default editor makes this really hard. The reason
+        is that it minimises conflicts when using modern version
+        control systems.
       </div>
 
       <!-- END HOOK: MANDATORY RULES -->
@@ -466,10 +467,10 @@ end
 
       <div>
         This rule identifies continuations that are one code change
-        away from introducing difficult to find bugs. In MATLAB /
-        Octave statements are usually terminated by a ; and a newline,
-        but there are a few places where nothing is required. Consider
-        this example:
+        away from introducing difficult to find bugs. In the MATLAB
+        and Octave language statements are usually terminated by a ;
+        and a newline, but there are a few places where nothing is
+        required. Consider this example:
       </div>
 
       <div>
@@ -540,11 +541,12 @@ end;            % useless semicolon
 
       <div>
         While indentation is usually a popular religious flame-war
-        topic, in MATLAB there is not so much room for creativity. The
-        main reason for this is that the language lacks brackets for
-        blocks. If you do feel that you have a specific indentation
-        style that is not catered for here please raise an issue and I
-        will see what I can do. For now there is just one style.
+        topic, for the MATLAB language there is not so much room for
+        creativity. The main reason for this is that the language
+        lacks brackets for blocks. If you do feel that you have a
+        specific indentation style that is not catered for here please
+        raise an issue and I will see what I can do. For now there is
+        just one style.
       </div>
 
       <div>
@@ -629,7 +631,7 @@ end
         This rule make sure that when logical operations & and | are
         not used in if/while
         guards. The <a href="https://www.mathworks.com/help/matlab/ref/logicaloperatorsshortcircuit.html">semantics
-        of MATLAB are confusing here</a> in that in those contexts &
+        of the MATLAB language are confusing here</a> in that in those contexts &
         behaves like &&, and | behaves like ||.
 
         <pre>if a & b</pre>
@@ -688,12 +690,12 @@ end
       <h4>Shadowing of built-in functions ("builtin_shadow")</h4>
 
       <div>
-        This rule attempts to find cases where we assign to a MATLAB
-        builtin function (e.g. re-defining false to be 1). Note: this
-        rule works on a hand-curated list of "high impact" built-in
-        functions, where it is likely this re-definition will result
-        in confusion. So we complain e.g. about "true", but we do not
-        complain about "bar".
+        This rule attempts to find cases where we assign to a
+        MATLAB&reg; builtin function (e.g. re-defining false to be
+        1). Note: this rule works on a hand-curated list of "high
+        impact" built-in functions, where it is likely this
+        re-definition will result in confusion. So we complain
+        e.g. about "true", but we do not complain about "bar".
       </div>
 
       <h4>Naming scheme for classes ("naming_classes")</h4>
