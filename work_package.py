@@ -55,7 +55,7 @@ class SIMULINK_File_WP(Work_Package):
         self.cfg = config_files.get_config(self.filename)
 
     def write_modified(self, content):
-        raise ICE("Not supported yet")
+        raise ICE("logic error - must not be called for SL File WP")
 
     def register_file(self):
         self.mh.register_file(self.filename)

@@ -2,11 +2,10 @@
 
 ## 0.9.6-dev
 
-* MH Style can now process (but not yet rewrite) code inside Simulink
-  models. This new functionality must be enabled with the new command-line
-  flag `--process-slx`. This flag is temporary and will be removed in
-  the future once this feature is stable enough and can fix code inside
-  Simulink files too.
+* MH Style can now analyse (and fix) code inside Simulink models. This
+  new functionality must be enabled with the new command-line flag
+  `--process-slx`. This flag is temporary and will be removed in the
+  future once this feature is stable enough.
 
 ## 0.9.5
 

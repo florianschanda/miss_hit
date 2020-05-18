@@ -114,6 +114,7 @@ class SIMULINK_Model:
         # The model name is the base filename with the extension
         # stripped.
 
+        self.other_content      = {}
         self.xml_blockdiagram   = None
         self.xml_stateflow      = None
         self.xml_coreproperties = None
@@ -130,18 +131,20 @@ class SIMULINK_Model:
         self.matlab_blocks = []
         # A list of SIMULINK_MATLAB_Blocks
 
-        # Read all files
+        # Read all files, and parse three we care about. The rest we
+        # need to save as well, since we might have to re-create the
+        # zip file again if we write any changes.
         with zipfile.ZipFile(self.filename) as zf:
-            names = zf.namelist()
-            if "metadata/coreProperties.xml" in names:
-                with zf.open("metadata/coreProperties.xml") as fd:
-                    self.xml_coreproperties = ET.parse(fd)
-            if "simulink/blockdiagram.xml" in names:
-                with zf.open("simulink/blockdiagram.xml") as fd:
-                    self.xml_blockdiagram = ET.parse(fd)
-            if "simulink/stateflow.xml" in names:
-                with zf.open("simulink/stateflow.xml") as fd:
-                    self.xml_stateflow = ET.parse(fd)
+            for name in zf.namelist():
+                with zf.open(name) as fd:
+                    if name == "metadata/coreProperties.xml":
+                        self.xml_coreproperties = ET.parse(fd)
+                    elif name == "simulink/blockdiagram.xml":
+                        self.xml_blockdiagram = ET.parse(fd)
+                    elif name == "simulink/stateflow.xml":
+                        self.xml_stateflow = ET.parse(fd)
+                    else:
+                        self.other_content[name] = fd.read()
 
         # Parse blocks. If there is no stateflow file, there won't be
         # any embedded code, so there is nothing to do in that case.
@@ -150,6 +153,18 @@ class SIMULINK_Model:
 
     def loc(self):
         return Location(self.filename)
+
+    def save_and_close(self):
+        with zipfile.ZipFile(self.filename, mode="w") as zf:
+            with zf.open("simulink/stateflow.xml", mode="w") as fd:
+                self.xml_stateflow.write(fd)
+            with zf.open("simulink/blockdiagram.xml", mode="w") as fd:
+                self.xml_blockdiagram.write(fd)
+            with zf.open("metadata/coreProperties.xml", mode="w") as fd:
+                self.xml_coreproperties.write(fd)
+            for name in self.other_content:
+                with zf.open(name, mode="w") as fd:
+                    fd.write(self.other_content[name])
 
     @staticmethod
     def _get_properties(xml_node):

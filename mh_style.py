@@ -800,10 +800,7 @@ class MH_Style(command_line.MISS_HIT_Back_End):
     @classmethod
     def process_wp(cls, wp):
         rule_set = wp.extra_options["rule_set"]
-        if isinstance(wp, work_package.MATLAB_File_WP):
-            autofix = wp.options.fix
-        else:
-            autofix = False
+        autofix = wp.options.fix
         fd_tree = wp.extra_options["fd_tree"]
         debug_validate_links = wp.options.debug_validate_links
 

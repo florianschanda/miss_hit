@@ -155,6 +155,8 @@ def dispatch_wp(process_fn, wp):
             for block in smdl.matlab_blocks:
                 block_wp = work_package.Embedded_MATLAB_WP(wp, block)
                 results.append(process_fn(block_wp))
+            if wp.modified:
+                smdl.save_and_close()
 
         elif isinstance(wp, work_package.MATLAB_File_WP):
             wp.register_file()

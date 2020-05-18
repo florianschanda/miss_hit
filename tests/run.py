@@ -17,16 +17,19 @@ def execute_style_test(name):
                           name))
 
     m_files = []
+    slx_files = []
     for path, _, files in os.walk("."):
         for f in files:
             if f.endswith(".m"):
                 m_files.append(os.path.join(path, f))
+            elif f.endswith(".slx"):
+                slx_files.append(os.path.join(path, f))
 
     # Take a copy of the original file
     orig = {}
     fixed = {}
-    for f in m_files:
-        with open(f, "r") as fd:
+    for f in m_files + slx_files:
+        with open(f, "rb") as fd:
             orig[f] = fd.read()
 
     # Run in HTML mode
@@ -34,6 +37,7 @@ def execute_style_test(name):
                         "../../../mh_style.py",
                         ".",
                         "--single",
+                        "--process-slx",
                         "--html=expected_out.html"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
@@ -48,6 +52,7 @@ def execute_style_test(name):
                         "--debug-cfg",
                         ".",
                         "--single",
+                        "--process-slx",
                         "--fix"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
@@ -56,10 +61,10 @@ def execute_style_test(name):
     plain_out = r.stdout
 
     # Write the fixed file to foo.m_fixed
-    for f in m_files:
-        with open(f, "r") as fd:
+    for f in m_files + slx_files:
+        with open(f, "rb") as fd:
             fixed[f] = fd.read()
-        with open(f + "_fixed", "w") as fd:
+        with open(f + "_fixed", "wb") as fd:
             fd.write(fixed[f])
 
     # Run in plaintext mode, again, to see if more things need fixing
@@ -67,6 +72,7 @@ def execute_style_test(name):
                         "../../../mh_style.py",
                         ".",
                         "--single",
+                        "--process-slx",
                         "--fix"],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
@@ -76,15 +82,15 @@ def execute_style_test(name):
 
     # Check if fixed files not "fixed" again
     broken_fixes = set()
-    for f in m_files:
-        with open(f, "r") as fd:
+    for f in m_files + slx_files:
+        with open(f, "rb") as fd:
             tmp = fd.read()
         if tmp != fixed[f]:
             broken_fixes.add(f)
 
     # Restore original output
-    for f in m_files:
-        with open(f, "w") as fd:
+    for f in m_files + slx_files:
+        with open(f, "wb") as fd:
             fd.write(orig[f])
 
     # Save stdout
