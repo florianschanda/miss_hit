@@ -23,7 +23,6 @@
 \author{Florian Schanda}
 \title{What is {\sc Miss\_Hit}?}
 \subtitle{A quick overview}
-\date{April 23, 2020}
 
 \begin{document}
 
@@ -82,7 +81,8 @@
     \item Naming of variables, functions, classes
     \item etc.
     \end{itemize}
-  \item Highly configurable through config files
+  \item Highly configurable through config files, geared towards large
+    projects and CI
   \item Justification mechanism for messages
   \end{itemize}
 \end{frame}
@@ -108,6 +108,7 @@ In test.m, line 7
   \begin{itemize}
   \item Almost all issues can be automatically fixed
   \item Just use the {\tt --fix} option
+  \item Also fixes code inside \simulink~models
   \end{itemize}
 \end{frame}
 
@@ -212,7 +213,7 @@ function function_file_justified
 \end{lstlisting}
   \end{block}
   \pause
-  Justification is included in report.
+  Justification is then included in the report.
 \end{frame}
 
 \begin{frame}{Optimised for CI}
@@ -255,6 +256,19 @@ function function_file_justified
     \pause
   \item \structure{Anything else users suggest!}
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tool preview}{Linter}
+  Future lint tool can detect deeper problems:
+  \begin{block}{Example of confusing semantics}
+    \scriptsize
+\begin{verbatim}
+In test.m, line 7
+| if lower_bound < x < upper_bound
+|                    ^ warning: chained relation does not work the way
+|                               you think it does
+\end{verbatim}
+  \end{block}
 \end{frame}
 
 \subsection{Summary}
