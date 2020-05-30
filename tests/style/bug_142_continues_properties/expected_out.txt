@@ -1,0 +1,23 @@
+=== PLAIN MODE ===
+In Potato.m, line 6
+|         foo, ...
+|            ^ style: end this with just a newline [fixed]
+In Potato.m, line 7
+|         bar (1, 1), ...
+|                   ^ style: end this with just a newline [fixed]
+In Potato.m, line 8
+|         bar (1, 1), ...
+|         ^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+In Potato.m, line 8
+|         baz = 5; ...
+|                ^ style: end this with just a newline [fixed]
+In Potato.m, line 10
+|         baz = 5; ...
+|         ^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+In Potato.m, line 12
+|         bork single
+|         ^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+MISS_HIT Style Summary: 1 file(s) analysed, 6 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 1 file(s) analysed, 6 style issue(s)
