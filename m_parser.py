@@ -352,6 +352,7 @@ class MATLAB_Parser:
         while self.peek_eos():
             self.next()
             self.ct.set_ast(n_ast)
+            self.ct.fix.statement_terminator = True
             terminator_tokens.append(self.ct)
             if self.ct.kind == "NEWLINE" and first_newline is None:
                 first_newline = len(terminator_tokens) - 1
@@ -359,6 +360,7 @@ class MATLAB_Parser:
         while self.peek_eos():  # and not self.peek("NEWLINE"):
             self.next()
             self.ct.set_ast(n_ast)
+            self.ct.fix.statement_terminator = True
             terminator_tokens.append(self.ct)
 
         if not terminator_tokens:

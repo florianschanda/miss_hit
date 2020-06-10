@@ -12,6 +12,23 @@
   not apply to embedded code, and this option can be used to control
   that behaviour.
 
+* Expand the `useless_continuation` rule to also apply to
+  continuations that begin statements.
+
+### Known issues
+
+#### Tooling
+
+* #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
+
+* #142 [line continuations starting statements](https://github.com/florianschanda/miss_hit/issues/142)
+  has a remaining issue where multiple starting continuations are not
+  correctly removed in one run of mh_style.
+
+#### Language support
+
+None known. Should be compatible with up to MATLAB 2019b.
+
 ## 0.9.5
 
 * Disabled (but not removed) the `implicit_shortcircuit` rule. It
@@ -23,16 +40,6 @@
 * MH Metric can now process and produce metrics for code inside modern
   SIMULINK models (slx files). This does not work yet in MH Style, but
   I plan to also support this there.
-
-### Known issues
-
-#### Tooling
-
-* #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
-
-#### Language support
-
-None known. Should be compatible with up to MATLAB 2019b.
 
 ## 0.9.4
 

@@ -91,6 +91,11 @@ class Autofix_Instruction:
         # Classification if this token is a unary or binary
         # operator. Only set for OPERATOR tokens.
 
+        self.statement_terminator = False
+        # Classification if this comma/semicolon token actually ends a
+        # statement. I.e. not true for the punctuation inside matrices
+        # or cells.
+
         self.flag_continuations = False
         # Set in cases where continuations following this token would
         # be highly problematic

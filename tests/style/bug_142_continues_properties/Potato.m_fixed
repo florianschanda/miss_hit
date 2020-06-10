@@ -4,12 +4,18 @@ classdef Potato
 
     properties
         foo
-        ...
-          bar (1, 1)
-        ...
-          baz = 5
-        ...
-          bork single
+        bar (1, 1)
+        baz = 5
+        bork single
+    end
+
+    properties
+        foo2
+        bar2 (1, 1)
+        ... comment3
+          baz2 = 5
+        ... comment5
+          bork2 single
     end
 
 end
