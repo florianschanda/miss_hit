@@ -255,8 +255,6 @@ In pragma.m, line 4
 * Function metric function_length:
   1. 7 (maybe_exception.m, function maybe_exception)
 
-* Function metric globals:
-
 * Function metric npath:
   1. 5 (complex_loop.m, function complex_loop)
   2. 4 (switch_with_default.m, function switch_with_default)
@@ -268,10 +266,6 @@ In pragma.m, line 4
   8. 2 (void_statements.m, function void_statements)
   9. 2 (switch_minimal.m, function switch_minimal)
   10. 2 (simple_while.m, function simple_while)
-
-* Function metric parameters:
-
-* Function metric persistent:
 
 MISS_HIT Metric Summary: 19 file(s) analysed, 1 warning(s)
 

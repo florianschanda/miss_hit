@@ -70,8 +70,6 @@
   4. 3 (test1.slx/Multiply)
   5. 3 (test1.slx/Add One)
 
-* Function metric cnest:
-
 * Function metric cyc:
   1. 1 (test2.slx/Potato, function fcn)
   2. 1 (test2.slx/My_Sub_System/Potato, function fcn)
@@ -86,8 +84,6 @@
   4. 3 (test1.slx/Multiply, function my_multiply)
   5. 3 (test1.slx/Add One, function add_one)
 
-* Function metric globals:
-
 * Function metric npath:
   1. 1 (test2.slx/Potato, function fcn)
   2. 1 (test2.slx/My_Sub_System/Potato, function fcn)
@@ -101,8 +97,6 @@
   3. 2 (test2.slx/My_Sub_System/Potato, function fcn)
   4. 2 (test1.slx/Sub One, function sub_one)
   5. 2 (test1.slx/Add One, function add_one)
-
-* Function metric persistent:
 
 MISS_HIT Metric Summary: 2 file(s) analysed, everything seemes fine
 

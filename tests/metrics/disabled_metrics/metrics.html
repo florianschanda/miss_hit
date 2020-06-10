@@ -20,9 +20,9 @@
 <tr>
   <td>Rank</td>
   <td>file_length</td>
+  <td>cnest</td>
   <td>cyc</td>
   <td>function_length</td>
-  <td>globals</td>
   <td>npath</td>
   <td>parameters</td>
 </tr>
@@ -30,38 +30,38 @@
 <tbody>
 <tr>
   <td>1</td>
-  <td class='tip' tip='setup.m'><a href='#setup.m'>9</a></td>
-  <td class='tip' tip='setup in file setup.m'><a href='#setup.m'>1</a></td>
-  <td class='tip' tip='f3 in file f3.m'><a href='#f3.m'>6</a></td>
-  <td class='tip' tip='setup in file setup.m'><a href='#setup.m'>2</a></td>
-  <td class='tip' tip='setup in file setup.m'><a href='#setup.m'>1</a></td>
-  <td class='tip' tip='f3 in file f3.m'><a href='#f3.m'>1</a></td>
+  <td class='tip' tip='foo.m'><a href='#useless_config/foo.m'>17</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#useless_config/foo.m'>1</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#useless_config/foo.m'>4</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#useless_config/foo.m'>15</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#useless_config/foo.m'>8</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#useless_config/foo.m'>2</a></td>
 </tr>
 <tr>
   <td>2</td>
-  <td class='tip' tip='f3.m'><a href='#f3.m'>8</a></td>
-  <td class='tip' tip='f3 in file f3.m'><a href='#f3.m'>1</a></td>
-  <td class='tip' tip='f2 in file f2.m'><a href='#f2.m'>4</a></td>
-  <td class='tip' tip='f3 in file f3.m'><a href='#f3.m'>2</a></td>
-  <td class='tip' tip='f3 in file f3.m'><a href='#f3.m'>1</a></td>
-  <td class='tip' tip='f2 in file f2.m'><a href='#f2.m'>1</a></td>
+  <td class='tip' tip='foo.m'><a href='#partial/foo.m'>17</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#partial/foo.m'>1</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#partial/foo.m'>4</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#partial/foo.m'>15</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#partial/foo.m'>8</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#partial/foo.m'>2</a></td>
 </tr>
 <tr>
   <td>3</td>
-  <td class='tip' tip='f2.m'><a href='#f2.m'>6</a></td>
-  <td class='tip' tip='f2 in file f2.m'><a href='#f2.m'>1</a></td>
-  <td class='tip' tip='f1 in file f1.m'><a href='#f1.m'>4</a></td>
-  <td class='tip' tip='f2 in file f2.m'><a href='#f2.m'>1</a></td>
-  <td class='tip' tip='f2 in file f2.m'><a href='#f2.m'>1</a></td>
-  <td class='tip' tip='f1 in file f1.m'><a href='#f1.m'>1</a></td>
+  <td class='tip' tip='foo.m'><a href='#no_function_metrics/foo.m'>17</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#no_file_metrics/foo.m'>1</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#no_file_metrics/foo.m'>4</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#no_file_metrics/foo.m'>15</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#no_file_metrics/foo.m'>8</a></td>
+  <td class='tip' tip='foo in file foo.m'><a href='#no_file_metrics/foo.m'>2</a></td>
 </tr>
 <tr>
   <td>4</td>
-  <td class='tip' tip='f1.m'><a href='#f1.m'>6</a></td>
-  <td class='tip' tip='f1 in file f1.m'><a href='#f1.m'>1</a></td>
   <td class='na'></td>
-  <td class='tip' tip='f1 in file f1.m'><a href='#f1.m'>1</a></td>
-  <td class='tip' tip='f1 in file f1.m'><a href='#f1.m'>1</a></td>
+  <td class='na'></td>
+  <td class='na'></td>
+  <td class='na'></td>
+  <td class='na'></td>
   <td class='na'></td>
 </tr>
 <tr>
@@ -128,12 +128,11 @@
 </div>
 <section>
 <div class='metrics'>
-<h2><a name='f1.m'>f1.m</a></h2>
+<h2><a name='no_file_metrics/foo.m'>no_file_metrics/foo.m</a></h2>
 <table>
 <thead>
 <tr>
   <td>Item</td>
-  <td>file_length</td>
   <td>cnest</td>
   <td>cyc</td>
   <td>function_length</td>
@@ -145,8 +144,8 @@
 </thead>
 <tbody>
 <tr>
-  <td>f1.m</td>
-<td class='ok'>6</td>  <td class='na'></td>
+  <td>foo.m</td>
+  <td class='na'></td>
   <td class='na'></td>
   <td class='na'></td>
   <td class='na'></td>
@@ -155,21 +154,40 @@
   <td class='na'></td>
 </tr>
 <tr>
-  <td><a name='f1'></a>f1</td>
-  <td class='na'></td>
-  <td class='ok'>0</td>
+  <td><a name='foo'></a>foo</td>
   <td class='ok'>1</td>
   <td class='ok'>4</td>
-  <td class='ok'>1</td>
-  <td class='ok'>1</td>
-  <td class='ok'>1</td>
+  <td class='ok'>15</td>
+  <td class='ok'>0</td>
+  <td class='ok'>8</td>
+  <td class='ok'>2</td>
   <td class='ok'>0</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class='metrics'>
-<h2><a name='f2.m'>f2.m</a></h2>
+<h2><a name='no_function_metrics/foo.m'>no_function_metrics/foo.m</a></h2>
+<table>
+<thead>
+<tr>
+  <td>Item</td>
+  <td>file_length</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>foo.m</td>
+<td class='ok'>17</td></tr>
+<tr>
+  <td><a name='foo'></a>foo</td>
+  <td class='na'></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class='metrics'>
+<h2><a name='partial/foo.m'>partial/foo.m</a></h2>
 <table>
 <thead>
 <tr>
@@ -178,39 +196,33 @@
   <td>cnest</td>
   <td>cyc</td>
   <td>function_length</td>
-  <td>globals</td>
   <td>npath</td>
   <td>parameters</td>
-  <td>persistent</td>
 </tr>
 </thead>
 <tbody>
 <tr>
-  <td>f2.m</td>
-<td class='ok'>6</td>  <td class='na'></td>
-  <td class='na'></td>
-  <td class='na'></td>
+  <td>foo.m</td>
+<td class='ok'>17</td>  <td class='na'></td>
   <td class='na'></td>
   <td class='na'></td>
   <td class='na'></td>
   <td class='na'></td>
 </tr>
 <tr>
-  <td><a name='f2'></a>f2</td>
+  <td><a name='foo'></a>foo</td>
   <td class='na'></td>
-  <td class='ok'>0</td>
   <td class='ok'>1</td>
   <td class='ok'>4</td>
-  <td class='ok'>1</td>
-  <td class='ok'>1</td>
-  <td class='ok'>1</td>
-  <td class='ok'>0</td>
+  <td class='ok'>15</td>
+  <td class='ok'>8</td>
+  <td class='ok'>2</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class='metrics'>
-<h2><a name='f3.m'>f3.m</a></h2>
+<h2><a name='useless_config/foo.m'>useless_config/foo.m</a></h2>
 <table>
 <thead>
 <tr>
@@ -227,8 +239,8 @@
 </thead>
 <tbody>
 <tr>
-  <td>f3.m</td>
-<td class='ok'>8</td>  <td class='na'></td>
+  <td>foo.m</td>
+<td class='ok'>17</td>  <td class='na'></td>
   <td class='na'></td>
   <td class='na'></td>
   <td class='na'></td>
@@ -237,55 +249,14 @@
   <td class='na'></td>
 </tr>
 <tr>
-  <td><a name='f3'></a>f3</td>
+  <td><a name='foo'></a>foo</td>
   <td class='na'></td>
-  <td class='ok'>0</td>
   <td class='ok'>1</td>
-  <td class='ok'>6</td>
+  <td class='ok'>4</td>
+  <td class='ok'>15</td>
+  <td class='ok'>0</td>
+  <td class='ok'>8</td>
   <td class='ok'>2</td>
-  <td class='ok'>1</td>
-  <td class='ok'>1</td>
-  <td class='ok'>0</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class='metrics'>
-<h2><a name='setup.m'>setup.m</a></h2>
-<table>
-<thead>
-<tr>
-  <td>Item</td>
-  <td>file_length</td>
-  <td>cnest</td>
-  <td>cyc</td>
-  <td>function_length</td>
-  <td>globals</td>
-  <td>npath</td>
-  <td>parameters</td>
-  <td>persistent</td>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>setup.m</td>
-<td class='ok'>9</td>  <td class='na'></td>
-  <td class='na'></td>
-  <td class='na'></td>
-  <td class='na'></td>
-  <td class='na'></td>
-  <td class='na'></td>
-  <td class='na'></td>
-</tr>
-<tr>
-  <td><a name='setup'></a>setup</td>
-  <td class='na'></td>
-  <td class='ok'>0</td>
-  <td class='ok'>1</td>
-  <td class='na'></td>
-  <td class='ok'>2</td>
-  <td class='ok'>1</td>
-  <td class='ok'>0</td>
   <td class='ok'>0</td>
 </tr>
 </tbody>

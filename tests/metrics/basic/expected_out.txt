@@ -112,8 +112,6 @@
   6. 3 (file_2.m, function potato)
   7. 3 (file_2.m, function kitten::cat)
 
-* Function metric globals:
-
 * Function metric npath:
   1. 8 (npath.m, function ifs)
   2. 3 (npath.m, function loops_2)
@@ -126,8 +124,6 @@
 
 * Function metric parameters:
   1. 1 (npath.m, function ifs)
-
-* Function metric persistent:
 
 MISS_HIT Metric Summary: 3 file(s) analysed, everything seemes fine
 

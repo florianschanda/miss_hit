@@ -1,0 +1,78 @@
+=== PLAIN MODE ===
+=== Code metric by file:
+
+* Code metrics for file no_file_metrics/foo.m:
+
+  Code metrics for function foo:
+    cnest: 1
+    cyc: 4
+    function_length: 15
+    globals: 0
+    npath: 8
+    parameters: 2
+    persistent: 0
+
+* Code metrics for file no_function_metrics/foo.m:
+  file_length: 17
+
+  Code metrics for function foo:
+
+* Code metrics for file partial/foo.m:
+  file_length: 17
+
+  Code metrics for function foo:
+    cnest: 1
+    cyc: 4
+    function_length: 15
+    npath: 8
+    parameters: 2
+
+* Code metrics for file useless_config/foo.m:
+  file_length: 17
+
+  Code metrics for function foo:
+    cnest: 1
+    cyc: 4
+    function_length: 15
+    globals: 0
+    npath: 8
+    parameters: 2
+    persistent: 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric file_length:
+  1. 17 (useless_config/foo.m)
+  2. 17 (partial/foo.m)
+  3. 17 (no_function_metrics/foo.m)
+
+* Function metric cnest:
+  1. 1 (useless_config/foo.m, function foo)
+  2. 1 (partial/foo.m, function foo)
+  3. 1 (no_file_metrics/foo.m, function foo)
+
+* Function metric cyc:
+  1. 4 (useless_config/foo.m, function foo)
+  2. 4 (partial/foo.m, function foo)
+  3. 4 (no_file_metrics/foo.m, function foo)
+
+* Function metric function_length:
+  1. 15 (useless_config/foo.m, function foo)
+  2. 15 (partial/foo.m, function foo)
+  3. 15 (no_file_metrics/foo.m, function foo)
+
+* Function metric npath:
+  1. 8 (useless_config/foo.m, function foo)
+  2. 8 (partial/foo.m, function foo)
+  3. 8 (no_file_metrics/foo.m, function foo)
+
+* Function metric parameters:
+  1. 2 (useless_config/foo.m, function foo)
+  2. 2 (partial/foo.m, function foo)
+  3. 2 (no_file_metrics/foo.m, function foo)
+
+MISS_HIT Metric Summary: 4 file(s) analysed, everything seemes fine
+
+
+=== HTML MODE ===
+MISS_HIT Metric Summary: 4 file(s) analysed, everything seemes fine

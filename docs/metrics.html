@@ -69,13 +69,35 @@ $ mh_metrics src --html=metrics.html
     </section>
 
     <section>
-      <h2>Configuring and enforcing limits</h2>
+      <h2>Enabling and disabling metrics</h2>
       <div>
-        By default metrics are just reported. If you want to enforce
-        limits on a metric you can do this in the configuration files.
+        To turn off limit checking for a specific metric (the default
+        for all metrics), you can use the report directive in the
+        config files:
+        <pre>metric "npath": report</pre>
       </div>
 
       <div>
+        To completely disable a metric (it will not be measured, nor
+        turn up in the final report), you can use the disable
+        directive:
+        <pre>metric "npath": disable</pre>
+      </div>
+
+      <div>
+        To completely disable or enable all metrics (useful for large
+        projects using complicated hierarchical configurations), you
+        can use the wildcard directive with report and disable:
+        <pre>metric *: disable</pre>
+        <pre>metric *: report</pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Configuring and enforcing limits</h2>
+      <div>
+        As indicated above, by default metrics are just
+        reported. However you canb also enforce limits on any metric.
         For example, to limit the number of paths for each function,
         you add this this to your configuration file:
         <pre>metric "npath": limit 5</pre>
@@ -85,13 +107,6 @@ $ mh_metrics src --html=metrics.html
         As with other configuration, these limits propagate to
         sub-directories. You can change these limits on a more local
         bases (just like with style rules).
-      </div>
-
-      <div>
-        To turn off limit checking for a specific metric (the default
-        for all metrics), you can use the report directive:
-        <pre>metric "npath": report</pre> A future release will
-        include a mechanism to completely disable a metric as well.
       </div>
 
       <div>

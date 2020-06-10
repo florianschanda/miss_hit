@@ -27,12 +27,8 @@
 * Function metric function_length:
   1. 7 (test_01.m, function test_01)
 
-* Function metric globals:
-
 * Function metric npath:
   1. 2 (test_01.m, function test_01)
-
-* Function metric parameters:
 
 * Function metric persistent:
   1. 3 (test_01.m, function test_01)

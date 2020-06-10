@@ -15,6 +15,12 @@
 * Expand the `useless_continuation` rule to also apply to
   continuations that begin statements.
 
+* New configuration option to completely disable a named software
+  metric. You do this with `disable` for a named metric, e.g.
+  `metric "function_length": disable`. With this option the metric
+  doesn't even appear in the final report (as opposed to the default
+  where we measure a metric, but not complain about it).
+
 ### Known issues
 
 #### Tooling

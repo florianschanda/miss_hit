@@ -188,19 +188,28 @@ class Config_Parser:
     def parse_metric_entry(self, cfg):
         self.match("IDENTIFIER", "metric")
 
-        self.match("STRING")
-        metric_name = self.ct.value
-
-        if metric_name in config.METRICS:
-            metric_info = config.METRICS[metric_name]
+        if self.peek("OPERATOR", "*"):
+            self.match("OPERATOR", "*")
+            metric_name = None
         else:
-            self.mh.error(self.ct.location,
-                          "unknown metric '%s'" % metric_name)
+            self.match("STRING")
+            metric_name = self.ct.value
+
+            if metric_name in config.METRICS:
+                metric_info = config.METRICS[metric_name]
+            else:
+                self.mh.error(self.ct.location,
+                              "unknown metric '%s'" % metric_name)
 
         self.match("COLON")
 
         self.match("IDENTIFIER")
         if self.ct.value == "limit":
+            if metric_name is None:
+                self.mh.error(self.ct.location,
+                              "cannot specify limit for all metrics"
+                              " simultaneously")
+
             self.match("NUMBER")
             if metric_info["type"] != "int":
                 raise ICE("logic error: metric that is not an int")
@@ -216,9 +225,19 @@ class Config_Parser:
 
             cfg["metrics"][metric_name] = {"max" : value}
 
+        elif self.ct.value == "disable":
+            if metric_name is None:
+                cfg["metrics"] = {m: {"disable": True}
+                                  for m in config.METRICS}
+            else:
+                cfg["metrics"][metric_name] = {"disable": True}
+
         elif self.ct.value == "report":
-            if metric_name in cfg["metrics"]:
-                del cfg["metrics"][metric_name]
+            if metric_name is None:
+                cfg["metrics"] = {}
+            else:
+                if metric_name in cfg["metrics"]:
+                    del cfg["metrics"][metric_name]
 
         else:
             self.mh.error(self.ct.location,

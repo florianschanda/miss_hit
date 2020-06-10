@@ -146,12 +146,30 @@ def active(cfg, rule):
     return rule not in cfg["suppress_rule"]
 
 
-def metric_check(cfg, metric):
+def metric_enabled(cfg, metric):
+    """ Returns true if the given metric should be collected. """
     assert isinstance(cfg, dict)
     assert isinstance(metric, str)
     assert metric in METRICS
 
-    return metric in cfg["metrics"]
+    if metric not in cfg["metrics"]:
+        return True
+
+    return not cfg["metrics"][metric].get("disable", False)
+
+
+def metric_check(cfg, metric):
+    """ Returns true if the given metric should be checked
+        against some limit.
+    """
+    assert isinstance(cfg, dict)
+    assert isinstance(metric, str)
+    assert metric in METRICS
+
+    if metric not in cfg["metrics"]:
+        return False
+
+    return "max" in cfg["metrics"][metric]
 
 
 def metric_upper_limit(cfg, metric):

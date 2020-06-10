@@ -107,18 +107,12 @@ In script_file_justified.m, line 6
   1. 20 (function_file_justified.m, function function_file_justified)
   2. 20 (function_file.m, function function_file)
 
-* Function metric globals:
-
 * Function metric npath:
   1. 8 (script_file_justified.m, function script_file_justified)
   2. 8 (script_file.m, function script_file)
   3. 8 (function_file_justified.m, function function_file_justified)
   4. 8 (function_file.m, function function_file)
   5. 1 (multi_line.m, function multi_line)
-
-* Function metric parameters:
-
-* Function metric persistent:
 
 MISS_HIT Metric Summary: 6 file(s) analysed, 5 metric deviations(s), 4 warning(s), 5 justified metric deviations(s)
 

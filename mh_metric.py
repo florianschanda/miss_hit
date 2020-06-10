@@ -297,7 +297,10 @@ def cyclomatic_complexity(node):
 ##############################################################################
 
 def check_metric(mh, cfg, loc, metric, metrics, justifications):
-    if config.metric_check(cfg, metric):
+    if not config.metric_enabled(cfg, metric):
+        return
+
+    elif config.metric_check(cfg, metric):
         measure = metrics[metric]["measure"]
 
         if measure is None:
@@ -380,7 +383,8 @@ def get_function_metrics(mh, cfg, tree):
         metrics[name] = {m: {"measure" : MEASURE[m](n_fdef),
                              "limit"   : None,
                              "reason"  : None}
-                         for m in config.FUNCTION_METRICS}
+                         for m in config.FUNCTION_METRICS
+                         if config.metric_enabled(cfg, m)}
 
         justifications[name] = get_justifications(mh, n_fdef.n_body)
 
@@ -395,7 +399,8 @@ def get_function_metrics(mh, cfg, tree):
         metrics[name] = {m: {"measure" : MEASURE[m](n_script),
                              "limit"   : None,
                              "reason"  : None}
-                         for m in config.FUNCTION_METRICS}
+                         for m in config.FUNCTION_METRICS
+                         if config.metric_enabled(cfg, m)}
 
         justifications[name] = get_justifications(mh, n_script.n_statements)
 
@@ -449,67 +454,6 @@ def warn_unused_justifications(mh, n_cu):
     n_cu.visit(None, Justification_Visitor(), "Root")
 
 
-def collect_metrics(mh, cfg, content, filename, blockname):
-    if blockname is None:
-        full_name = filename
-    else:
-        full_name = filename + "/" + blockname
-
-    metrics = {full_name: {"errors"    : False,
-                           "metrics"   : {},
-                           "functions" : {}}}
-
-    # Create lexer
-
-    lexer = MATLAB_Lexer(mh, content, filename, blockname)
-    if cfg["octave"]:
-        lexer.set_octave_mode()
-    if cfg["ignore_pragmas"]:
-        lexer.process_pragmas = False
-
-    # We're dealing with an empty file here. Lets just not do anything
-
-    if len(lexer.text.strip()) == 0:
-        return metrics
-
-    # Create parse tree
-
-    try:
-        parser = MATLAB_Parser(mh, lexer, cfg)
-        parse_tree = parser.parse_file()
-    except Error:
-        metrics[filename]["errors"] = True
-        return metrics
-
-    # File metrics
-
-    metrics[full_name]["metrics"] = {
-        "file_length" : {"measure" : lexer.line_count(),
-                         "limit"   : None,
-                         "reason"  : None}
-    }
-    justifications = {full_name : get_file_justifications(mh, parse_tree)}
-
-    # Check+justify file metrics
-
-    for file_metric in config.FILE_METRICS:
-        check_metric(mh, cfg, lexer.get_file_loc(), file_metric,
-                     metrics[full_name]["metrics"],
-                     justifications[full_name])
-
-    # Collect, check, and justify function metrics
-
-    metrics[full_name]["functions"] = get_function_metrics(mh, cfg, parse_tree)
-
-    # Complain about unused justifications
-
-    warn_unused_justifications(mh, parse_tree)
-
-    # Return results
-
-    return metrics
-
-
 def write_text_report(fd, all_metrics, worst_offenders):
     first = True
 
@@ -528,6 +472,8 @@ def write_text_report(fd, all_metrics, worst_offenders):
             continue
 
         for file_metric in config.FILE_METRICS:
+            if file_metric not in metrics["metrics"]:
+                continue
             results = metrics["metrics"][file_metric]
             if results["measure"] is None:
                 continue
@@ -543,6 +489,8 @@ def write_text_report(fd, all_metrics, worst_offenders):
             fd.write("\n")
             fd.write("  Code metrics for function %s:\n" % function)
             for function_metric in config.FUNCTION_METRICS:
+                if function_metric not in metrics["functions"][function]:
+                    continue
                 results = metrics["functions"][function][function_metric]
                 if results["measure"] is None:
                     continue
@@ -559,6 +507,8 @@ def write_text_report(fd, all_metrics, worst_offenders):
         fd.write("\n=== Global summary of worst offenders by metric:\n\n")
 
         for file_metric in config.FILE_METRICS:
+            if file_metric not in worst_offenders:
+                continue
             fd.write("* File metric %s:\n" % file_metric)
             for rank, file_name in enumerate(worst_offenders[file_metric], 1):
                 if file_name:
@@ -569,6 +519,8 @@ def write_text_report(fd, all_metrics, worst_offenders):
             fd.write("\n")
 
         for function_metric in config.FUNCTION_METRICS:
+            if function_metric not in worst_offenders:
+                continue
             fd.write("* Function metric %s:\n" % function_metric)
             for rank, tup in enumerate(worst_offenders[function_metric], 1):
                 if tup:
@@ -619,9 +571,11 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
         fd.write("<tr>\n")
         fd.write("  <td>Rank</td>\n")
         for file_metric in config.FILE_METRICS:
-            fd.write("  <td>%s</td>\n" % file_metric)
+            if file_metric in worst_offenders:
+                fd.write("  <td>%s</td>\n" % file_metric)
         for function_metric in config.FUNCTION_METRICS:
-            fd.write("  <td>%s</td>\n" % function_metric)
+            if function_metric in worst_offenders:
+                fd.write("  <td>%s</td>\n" % function_metric)
         fd.write("</tr>\n")
         fd.write("</thead>\n")
         fd.write("<tbody>\n")
@@ -631,6 +585,8 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
             fd.write("<tr>\n")
             fd.write("  <td>%s</td>\n" % (rank + 1))
             for file_metric in config.FILE_METRICS:
+                if file_metric not in worst_offenders:
+                    continue
                 file_name = worst_offenders[file_metric][rank]
                 if file_name:
                     mdata = all_metrics[file_name]["metrics"][file_metric]
@@ -643,6 +599,8 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
                 else:
                     fd.write("  <td class='na'></td>\n")
             for function_metric in config.FUNCTION_METRICS:
+                if function_metric not in worst_offenders:
+                    continue
                 metric = worst_offenders[function_metric][rank]
                 if metric:
                     file_name, function_name = metric
@@ -678,6 +636,11 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
     for filename in sorted(all_metrics):
         metrics = all_metrics[filename]
 
+        n_active_file_metrics = len(set(config.FILE_METRICS) -
+                                    metrics["disabled"])
+        n_active_function_metrics = len(set(config.FUNCTION_METRICS) -
+                                        metrics["disabled"])
+
         fd.write("<div class='metrics'>\n")
         fd.write("<h2><a name='%s'>%s</a></h2>\n" % (filename,
                                                      filename))
@@ -687,8 +650,12 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
         fd.write("<tr>\n")
         fd.write("  <td>Item</td>\n")
         for file_metric in config.FILE_METRICS:
+            if file_metric in metrics["disabled"]:
+                continue
             fd.write("  <td>%s</td>\n" % file_metric)
         for function_metric in config.FUNCTION_METRICS:
+            if function_metric in metrics["disabled"]:
+                continue
             fd.write("  <td>%s</td>\n" % function_metric)
         fd.write("</tr>\n")
         fd.write("</thead>\n")
@@ -697,6 +664,8 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
         fd.write("<tr>\n")
         fd.write("  <td>%s</td>\n" % os.path.basename(filename))
         for file_metric in config.FILE_METRICS:
+            if file_metric in metrics["disabled"]:
+                continue
             results = metrics["metrics"][file_metric]
             if results["measure"] is None:
                 fd.write("  <td class='na'></td>\n")
@@ -709,15 +678,17 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
                          results["measure"])
             else:
                 fd.write("<td class='ok'>%u</td>" % results["measure"])
-        fd.write("  <td class='na'></td>\n" * len(config.FUNCTION_METRICS))
+        fd.write("  <td class='na'></td>\n" * n_active_function_metrics)
         fd.write("</tr>\n")
 
         for function in sorted(metrics["functions"]):
             fd.write("<tr>\n")
             fd.write("  <td><a name='%s'></a>%s</td>\n" % (function,
                                                            function))
-            fd.write("  <td class='na'></td>\n" * len(config.FILE_METRICS))
+            fd.write("  <td class='na'></td>\n" * n_active_file_metrics)
             for function_metric in config.FUNCTION_METRICS:
+                if function_metric in metrics["disabled"]:
+                    continue
                 results = metrics["functions"][function][function_metric]
                 if results["measure"] is None:
                     fd.write("  <td class='na'></td>\n")
@@ -784,7 +755,9 @@ def build_worst_offenders_table(all_metrics, count):
             metrics = all_metrics[file_name]
             if metrics["errors"]:
                 continue
-            if not metrics["metrics"][file_metric]["measure"]:
+            elif file_metric not in metrics["metrics"]:
+                continue
+            elif not metrics["metrics"][file_metric]["measure"]:
                 continue
             wot[file_metric].append(file_name)
         key_fn = functools.partial(key_file_metric,
@@ -799,7 +772,9 @@ def build_worst_offenders_table(all_metrics, count):
                 continue
             for function_name in metrics["functions"]:
                 function_metrics = metrics["functions"][function_name]
-                if not function_metrics[function_metric]["measure"]:
+                if function_metric not in function_metrics:
+                    continue
+                elif not function_metrics[function_metric]["measure"]:
                     continue
                 wot[function_metric].append((file_name, function_name))
         key_fn = functools.partial(key_function_metric,
@@ -808,11 +783,13 @@ def build_worst_offenders_table(all_metrics, count):
 
     # Make sure the length is as expected for each metric
     for metric in config.METRICS:
-        if len(wot[metric]) < count:
+        if len(wot[metric]) == 0:
+            del wot[metric]
+        elif len(wot[metric]) < count:
             wot[metric] += [None] * (count - len(wot[metric]))
         elif len(wot[metric]) > count:
             wot[metric] = wot[metric][:count]
-        assert len(wot[metric]) == count
+        assert metric not in wot or len(wot[metric]) == count
 
     return wot
 
@@ -840,9 +817,16 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
         else:
             full_name = wp.filename + "/" + wp.blockname
 
-        metrics = {full_name: {"errors"    : False,
-                               "metrics"   : {},
-                               "functions" : {}}}
+        metrics = {
+            full_name: {
+                "errors"    : False,
+                "metrics"   : {},
+                "functions" : {},
+                "disabled"  : set(m for m in config.METRICS
+                                  if not config.metric_enabled(wp.cfg, m))
+            }
+        }
+        justifications = {}
 
         # Create lexer
 
@@ -867,18 +851,19 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
             metrics[wp.filename]["errors"] = True
             return MH_Metric_Result(wp, metrics)
 
-        # File metrics
+        # Collect file metrics
 
-        metrics[full_name]["metrics"] = {
-            "file_length" : {"measure" : lexer.line_count(),
-                             "limit"   : None,
-                             "reason"  : None}
-        }
-        justifications = {full_name : get_file_justifications(wp.mh,
-                                                              parse_tree)}
+        if config.metric_enabled(wp.cfg, "file_length"):
+            metrics[full_name]["metrics"]["file_length"] = {
+                "measure" : lexer.line_count(),
+                "limit"   : None,
+                "reason"  : None
+            }
 
         # Check+justify file metrics
 
+        justifications = {full_name : get_file_justifications(wp.mh,
+                                                              parse_tree)}
         for file_metric in config.FILE_METRICS:
             check_metric(wp.mh, wp.cfg, lexer.get_file_loc(), file_metric,
                          metrics[full_name]["metrics"],

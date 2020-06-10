@@ -59,8 +59,6 @@
   2. 9 (test_03.m, function test_03)
   3. 9 (test_02.m, function test_02)
 
-* Function metric globals:
-
 * Function metric npath:
   1. 4 (test_01.m, function test_01)
   2. 2 (test_03.m, function test_03)
@@ -70,8 +68,6 @@
   1. 5 (test_03.m, function test_03)
   2. 5 (test_02.m, function test_02)
   3. 5 (test_01.m, function test_01)
-
-* Function metric persistent:
 
 MISS_HIT Metric Summary: 3 file(s) analysed, everything seemes fine
 

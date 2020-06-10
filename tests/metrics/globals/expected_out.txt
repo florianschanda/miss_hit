@@ -56,8 +56,6 @@
   3. 6 (f2.m)
   4. 6 (f1.m)
 
-* Function metric cnest:
-
 * Function metric cyc:
   1. 1 (setup.m, function setup)
   2. 1 (f3.m, function f3)
@@ -85,8 +83,6 @@
   1. 1 (f3.m, function f3)
   2. 1 (f2.m, function f2)
   3. 1 (f1.m, function f1)
-
-* Function metric persistent:
 
 MISS_HIT Metric Summary: 4 file(s) analysed, everything seemes fine
 

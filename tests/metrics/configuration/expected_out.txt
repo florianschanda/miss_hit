@@ -43,8 +43,6 @@ In test.m, line 12
   1. 14 (test.m, function test_2)
   2. 10 (test.m, function test_1)
 
-* Function metric globals:
-
 * Function metric npath:
   1. 8 (test.m, function test_2)
   2. 4 (test.m, function test_1)
@@ -52,8 +50,6 @@ In test.m, line 12
 * Function metric parameters:
   1. 2 (test.m, function test_2)
   2. 2 (test.m, function test_1)
-
-* Function metric persistent:
 
 MISS_HIT Metric Summary: 1 file(s) analysed, 2 metric deviations(s)
 
