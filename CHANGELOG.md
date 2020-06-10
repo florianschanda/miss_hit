@@ -21,6 +21,10 @@
   doesn't even appear in the final report (as opposed to the default
   where we measure a metric, but not complain about it).
 
+* New configuration option for MH Metric to enable or disable all
+  metrics. You do this by using `metric *: report` and `metric *: disable`
+  respectively.
+
 ### Known issues
 
 #### Tooling
