@@ -1,6 +1,22 @@
 # MISS_HIT Release Notes
 
-## 0.9.6-dev
+## 0.9.7-dev
+
+### Known issues
+
+#### Tooling
+
+* #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
+
+* #142 [line continuations starting statements](https://github.com/florianschanda/miss_hit/issues/142)
+  has a remaining issue where multiple starting continuations are not
+  correctly removed in one run of mh_style.
+
+#### Language support
+
+None known. Should be compatible with up to MATLAB 2019b.
+
+## 0.9.6
 
 * MH Style can now analyse (and fix) code inside Simulink models. This
   new functionality must be enabled with the new command-line flag
@@ -28,20 +44,6 @@
 
 * MH Metric now uses more human readable names for the metrics in both
   the HTML and text report.
-
-### Known issues
-
-#### Tooling
-
-* #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
-
-* #142 [line continuations starting statements](https://github.com/florianschanda/miss_hit/issues/142)
-  has a remaining issue where multiple starting continuations are not
-  correctly removed in one run of mh_style.
-
-#### Language support
-
-None known. Should be compatible with up to MATLAB 2019b.
 
 ## 0.9.5
 
