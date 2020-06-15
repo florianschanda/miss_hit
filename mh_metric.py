@@ -477,7 +477,8 @@ def write_text_report(fd, all_metrics, worst_offenders):
             results = metrics["metrics"][file_metric]
             if results["measure"] is None:
                 continue
-            fd.write("  %s: %u" % (file_metric, results["measure"]))
+            fd.write("  %s: %u" % (config.METRICS[file_metric]["name"],
+                                   results["measure"]))
             if results["reason"]:
                 fd.write(" (%s)\n" % results["reason"])
             elif results["limit"] and results["measure"] > results["limit"]:
@@ -488,13 +489,19 @@ def write_text_report(fd, all_metrics, worst_offenders):
         for function in sorted(metrics["functions"]):
             fd.write("\n")
             fd.write("  Code metrics for function %s:\n" % function)
+            max_len = max((len(config.METRICS[m]["name"])
+                           for m in metrics["functions"][function]),
+                          default=0)
             for function_metric in config.FUNCTION_METRICS:
                 if function_metric not in metrics["functions"][function]:
                     continue
                 results = metrics["functions"][function][function_metric]
                 if results["measure"] is None:
                     continue
-                fd.write("    %s: %u" % (function_metric, results["measure"]))
+                fd.write("    %-*s: %u" %
+                         (max_len,
+                          config.METRICS[function_metric]["name"],
+                          results["measure"]))
                 if results["reason"]:
                     fd.write(" (%s)\n" % results["reason"])
                 elif results["limit"] and \
@@ -509,7 +516,8 @@ def write_text_report(fd, all_metrics, worst_offenders):
         for file_metric in config.FILE_METRICS:
             if file_metric not in worst_offenders:
                 continue
-            fd.write("* File metric %s:\n" % file_metric)
+            fd.write("* File metric '%s':\n" %
+                     config.METRICS[file_metric]["name"])
             for rank, file_name in enumerate(worst_offenders[file_metric], 1):
                 if file_name:
                     mdata = all_metrics[file_name]["metrics"][file_metric]
@@ -521,7 +529,8 @@ def write_text_report(fd, all_metrics, worst_offenders):
         for function_metric in config.FUNCTION_METRICS:
             if function_metric not in worst_offenders:
                 continue
-            fd.write("* Function metric %s:\n" % function_metric)
+            fd.write("* Function metric '%s':\n" %
+                     config.METRICS[function_metric]["name"])
             for rank, tup in enumerate(worst_offenders[function_metric], 1):
                 if tup:
                     file_name, function_name = tup
@@ -572,10 +581,14 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
         fd.write("  <td>Rank</td>\n")
         for file_metric in config.FILE_METRICS:
             if file_metric in worst_offenders:
-                fd.write("  <td>%s</td>\n" % file_metric)
+                fd.write("  <td class='tip' tip='%s'>%s</td>\n" %
+                         (config.METRICS[file_metric]["help"],
+                          config.METRICS[file_metric]["name"]))
         for function_metric in config.FUNCTION_METRICS:
             if function_metric in worst_offenders:
-                fd.write("  <td>%s</td>\n" % function_metric)
+                fd.write("  <td class='tip' tip='%s'>%s</td>\n" %
+                         (config.METRICS[function_metric]["help"],
+                          config.METRICS[function_metric]["name"]))
         fd.write("</tr>\n")
         fd.write("</thead>\n")
         fd.write("<tbody>\n")
@@ -652,11 +665,15 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
         for file_metric in config.FILE_METRICS:
             if file_metric in metrics["disabled"]:
                 continue
-            fd.write("  <td>%s</td>\n" % file_metric)
+            fd.write("  <td class='tip' tip='%s'>%s</td>\n" %
+                     (config.METRICS[file_metric]["help"],
+                      config.METRICS[file_metric]["name"]))
         for function_metric in config.FUNCTION_METRICS:
             if function_metric in metrics["disabled"]:
                 continue
-            fd.write("  <td>%s</td>\n" % function_metric)
+            fd.write("  <td class='tip' tip='%s'>%s</td>\n" %
+                     (config.METRICS[function_metric]["help"],
+                      config.METRICS[function_metric]["name"]))
         fd.write("</tr>\n")
         fd.write("</thead>\n")
         fd.write("<tbody>\n")

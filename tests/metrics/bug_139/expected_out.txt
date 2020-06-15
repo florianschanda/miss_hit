@@ -2,69 +2,69 @@
 === Code metric by file:
 
 * Code metrics for file test_01.m:
-  file_length: 13
+  File lines: 13
 
   Code metrics for function test_01:
-    cnest: 1
-    cyc: 5
-    function_length: 13
-    globals: 0
-    npath: 4
-    parameters: 5
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 5
+    Function lines       : 13
+    Globals              : 0
+    Number of paths      : 4
+    Parameters           : 5
+    Persistents          : 0
 
 * Code metrics for file test_02.m:
-  file_length: 9
+  File lines: 9
 
   Code metrics for function test_02:
-    cnest: 1
-    cyc: 2
-    function_length: 9
-    globals: 0
-    npath: 2
-    parameters: 5
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 2
+    Function lines       : 9
+    Globals              : 0
+    Number of paths      : 2
+    Parameters           : 5
+    Persistents          : 0
 
 * Code metrics for file test_03.m:
-  file_length: 9
+  File lines: 9
 
   Code metrics for function test_03:
-    cnest: 1
-    cyc: 5
-    function_length: 9
-    globals: 0
-    npath: 2
-    parameters: 5
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 5
+    Function lines       : 9
+    Globals              : 0
+    Number of paths      : 2
+    Parameters           : 5
+    Persistents          : 0
 
 === Global summary of worst offenders by metric:
 
-* File metric file_length:
+* File metric 'File lines':
   1. 13 (test_01.m)
   2. 9 (test_03.m)
   3. 9 (test_02.m)
 
-* Function metric cnest:
+* Function metric 'Control nesting':
   1. 1 (test_03.m, function test_03)
   2. 1 (test_02.m, function test_02)
   3. 1 (test_01.m, function test_01)
 
-* Function metric cyc:
+* Function metric 'Cyclomatic complexity':
   1. 5 (test_03.m, function test_03)
   2. 5 (test_01.m, function test_01)
   3. 2 (test_02.m, function test_02)
 
-* Function metric function_length:
+* Function metric 'Function lines':
   1. 13 (test_01.m, function test_01)
   2. 9 (test_03.m, function test_03)
   3. 9 (test_02.m, function test_02)
 
-* Function metric npath:
+* Function metric 'Number of paths':
   1. 4 (test_01.m, function test_01)
   2. 2 (test_03.m, function test_03)
   3. 2 (test_02.m, function test_02)
 
-* Function metric parameters:
+* Function metric 'Parameters':
   1. 5 (test_03.m, function test_03)
   2. 5 (test_02.m, function test_02)
   3. 5 (test_01.m, function test_01)

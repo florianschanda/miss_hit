@@ -2,84 +2,84 @@
 === Code metric by file:
 
 * Code metrics for file f1.m:
-  file_length: 6
+  File lines: 6
 
   Code metrics for function f1:
-    cnest: 0
-    cyc: 1
-    function_length: 4
-    globals: 1
-    npath: 1
-    parameters: 1
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 4
+    Globals              : 1
+    Number of paths      : 1
+    Parameters           : 1
+    Persistents          : 0
 
 * Code metrics for file f2.m:
-  file_length: 6
+  File lines: 6
 
   Code metrics for function f2:
-    cnest: 0
-    cyc: 1
-    function_length: 4
-    globals: 1
-    npath: 1
-    parameters: 1
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 4
+    Globals              : 1
+    Number of paths      : 1
+    Parameters           : 1
+    Persistents          : 0
 
 * Code metrics for file f3.m:
-  file_length: 8
+  File lines: 8
 
   Code metrics for function f3:
-    cnest: 0
-    cyc: 1
-    function_length: 6
-    globals: 2
-    npath: 1
-    parameters: 1
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 6
+    Globals              : 2
+    Number of paths      : 1
+    Parameters           : 1
+    Persistents          : 0
 
 * Code metrics for file setup.m:
-  file_length: 9
+  File lines: 9
 
   Code metrics for function setup:
-    cnest: 0
-    cyc: 1
-    globals: 2
-    npath: 1
-    parameters: 0
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 2
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
 
 === Global summary of worst offenders by metric:
 
-* File metric file_length:
+* File metric 'File lines':
   1. 9 (setup.m)
   2. 8 (f3.m)
   3. 6 (f2.m)
   4. 6 (f1.m)
 
-* Function metric cyc:
+* Function metric 'Cyclomatic complexity':
   1. 1 (setup.m, function setup)
   2. 1 (f3.m, function f3)
   3. 1 (f2.m, function f2)
   4. 1 (f1.m, function f1)
 
-* Function metric function_length:
+* Function metric 'Function lines':
   1. 6 (f3.m, function f3)
   2. 4 (f2.m, function f2)
   3. 4 (f1.m, function f1)
 
-* Function metric globals:
+* Function metric 'Globals':
   1. 2 (setup.m, function setup)
   2. 2 (f3.m, function f3)
   3. 1 (f2.m, function f2)
   4. 1 (f1.m, function f1)
 
-* Function metric npath:
+* Function metric 'Number of paths':
   1. 1 (setup.m, function setup)
   2. 1 (f3.m, function f3)
   3. 1 (f2.m, function f2)
   4. 1 (f1.m, function f1)
 
-* Function metric parameters:
+* Function metric 'Parameters':
   1. 1 (f3.m, function f3)
   2. 1 (f2.m, function f2)
   3. 1 (f1.m, function f1)

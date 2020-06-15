@@ -2,98 +2,98 @@
 === Code metric by file:
 
 * Code metrics for file file_1.m:
-  file_length: 18
+  File lines: 18
 
   Code metrics for function file_1:
-    cnest: 0
-    cyc: 1
-    globals: 0
-    npath: 1
-    parameters: 0
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
 
 * Code metrics for file file_2.m:
-  file_length: 11
+  File lines: 11
 
   Code metrics for function kitten:
-    cnest: 0
-    cyc: 1
-    function_length: 7
-    globals: 0
-    npath: 1
-    parameters: 0
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 7
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
 
   Code metrics for function kitten::cat:
-    cnest: 0
-    cyc: 1
-    function_length: 3
-    globals: 0
-    npath: 1
-    parameters: 0
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
 
   Code metrics for function potato:
-    cnest: 0
-    cyc: 1
-    function_length: 3
-    globals: 0
-    npath: 1
-    parameters: 0
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
 
 * Code metrics for file npath.m:
-  file_length: 30
+  File lines: 30
 
   Code metrics for function ifs:
-    cnest: 1
-    cyc: 4
-    function_length: 11
-    globals: 0
-    npath: 8
-    parameters: 1
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 4
+    Function lines       : 11
+    Globals              : 0
+    Number of paths      : 8
+    Parameters           : 1
+    Persistents          : 0
 
   Code metrics for function loops_1:
-    cnest: 1
-    cyc: 2
-    function_length: 5
-    globals: 0
-    npath: 2
-    parameters: 0
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 2
+    Function lines       : 5
+    Globals              : 0
+    Number of paths      : 2
+    Parameters           : 0
+    Persistents          : 0
 
   Code metrics for function loops_2:
-    cnest: 2
-    cyc: 3
-    function_length: 7
-    globals: 0
-    npath: 3
-    parameters: 0
-    persistent: 0
+    Control nesting      : 2
+    Cyclomatic complexity: 3
+    Function lines       : 7
+    Globals              : 0
+    Number of paths      : 3
+    Parameters           : 0
+    Persistents          : 0
 
   Code metrics for function sequence:
-    cnest: 0
-    cyc: 1
-    function_length: 4
-    globals: 0
-    npath: 1
-    parameters: 0
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 4
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
 
 === Global summary of worst offenders by metric:
 
-* File metric file_length:
+* File metric 'File lines':
   1. 30 (npath.m)
   2. 18 (file_1.m)
   3. 11 (file_2.m)
 
-* Function metric cnest:
+* Function metric 'Control nesting':
   1. 2 (npath.m, function loops_2)
   2. 1 (npath.m, function loops_1)
   3. 1 (npath.m, function ifs)
 
-* Function metric cyc:
+* Function metric 'Cyclomatic complexity':
   1. 4 (npath.m, function ifs)
   2. 3 (npath.m, function loops_2)
   3. 2 (npath.m, function loops_1)
@@ -103,7 +103,7 @@
   7. 1 (file_2.m, function kitten)
   8. 1 (file_1.m, function file_1)
 
-* Function metric function_length:
+* Function metric 'Function lines':
   1. 11 (npath.m, function ifs)
   2. 7 (npath.m, function loops_2)
   3. 7 (file_2.m, function kitten)
@@ -112,7 +112,7 @@
   6. 3 (file_2.m, function potato)
   7. 3 (file_2.m, function kitten::cat)
 
-* Function metric npath:
+* Function metric 'Number of paths':
   1. 8 (npath.m, function ifs)
   2. 3 (npath.m, function loops_2)
   3. 2 (npath.m, function loops_1)
@@ -122,7 +122,7 @@
   7. 1 (file_2.m, function kitten)
   8. 1 (file_1.m, function file_1)
 
-* Function metric parameters:
+* Function metric 'Parameters':
   1. 1 (npath.m, function ifs)
 
 MISS_HIT Metric Summary: 3 file(s) analysed, everything seemes fine

@@ -21,68 +21,68 @@ In script_file_justified.m, line 6
 === Code metric by file:
 
 * Code metrics for file class_file.m:
-  file_length: 13 (seems OK)
+  File lines: 13 (seems OK)
 
 * Code metrics for file function_file.m:
-  file_length: 24 (!not justified!)
+  File lines: 24 (!not justified!)
 
   Code metrics for function function_file:
-    cnest: 1
-    cyc: 4
-    function_length: 20
-    globals: 0
-    npath: 8 (!not justified!)
-    parameters: 0
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 4
+    Function lines       : 20
+    Globals              : 0
+    Number of paths      : 8 (!not justified!)
+    Parameters           : 0
+    Persistents          : 0
 
 * Code metrics for file function_file_justified.m:
-  file_length: 24 (for testing purposes)
+  File lines: 24 (for testing purposes)
 
   Code metrics for function function_file_justified:
-    cnest: 1
-    cyc: 4
-    function_length: 20
-    globals: 0
-    npath: 8 (for testing purposes)
-    parameters: 0
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 4
+    Function lines       : 20
+    Globals              : 0
+    Number of paths      : 8 (for testing purposes)
+    Parameters           : 0
+    Persistents          : 0
 
 * Code metrics for file multi_line.m:
-  file_length: 11 (this is a very long justification over many lines)
+  File lines: 11 (this is a very long justification over many lines)
 
   Code metrics for function multi_line:
-    cnest: 0
-    cyc: 1
-    globals: 0
-    npath: 1
-    parameters: 0
-    persistent: 0
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
 
 * Code metrics for file script_file.m:
-  file_length: 19 (!not justified!)
+  File lines: 19 (!not justified!)
 
   Code metrics for function script_file:
-    cnest: 1
-    cyc: 4
-    globals: 0
-    npath: 8 (!not justified!)
-    parameters: 0
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 4
+    Globals              : 0
+    Number of paths      : 8 (!not justified!)
+    Parameters           : 0
+    Persistents          : 0
 
 * Code metrics for file script_file_justified.m:
-  file_length: 22 (!not justified!)
+  File lines: 22 (!not justified!)
 
   Code metrics for function script_file_justified:
-    cnest: 1
-    cyc: 4
-    globals: 0
-    npath: 8 (this seems fine)
-    parameters: 0
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 4
+    Globals              : 0
+    Number of paths      : 8 (this seems fine)
+    Parameters           : 0
+    Persistents          : 0
 
 === Global summary of worst offenders by metric:
 
-* File metric file_length:
+* File metric 'File lines':
   1. 24 (function_file_justified.m)
   2. 24 (function_file.m)
   3. 22 (script_file_justified.m)
@@ -90,24 +90,24 @@ In script_file_justified.m, line 6
   5. 13 (class_file.m)
   6. 11 (multi_line.m)
 
-* Function metric cnest:
+* Function metric 'Control nesting':
   1. 1 (script_file_justified.m, function script_file_justified)
   2. 1 (script_file.m, function script_file)
   3. 1 (function_file_justified.m, function function_file_justified)
   4. 1 (function_file.m, function function_file)
 
-* Function metric cyc:
+* Function metric 'Cyclomatic complexity':
   1. 4 (script_file_justified.m, function script_file_justified)
   2. 4 (script_file.m, function script_file)
   3. 4 (function_file_justified.m, function function_file_justified)
   4. 4 (function_file.m, function function_file)
   5. 1 (multi_line.m, function multi_line)
 
-* Function metric function_length:
+* Function metric 'Function lines':
   1. 20 (function_file_justified.m, function function_file_justified)
   2. 20 (function_file.m, function function_file)
 
-* Function metric npath:
+* Function metric 'Number of paths':
   1. 8 (script_file_justified.m, function script_file_justified)
   2. 8 (script_file.m, function script_file)
   3. 8 (function_file_justified.m, function function_file_justified)

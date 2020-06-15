@@ -25,6 +25,9 @@
   metrics. You do this by using `metric *: report` and `metric *: disable`
   respectively.
 
+* MH Metric now uses more human readable names for the metrics in both
+  the HTML and text report.
+
 ### Known issues
 
 #### Tooling

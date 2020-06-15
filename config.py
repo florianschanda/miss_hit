@@ -93,42 +93,50 @@ METRICS = {
         "kind" : "file",
         "type" : "int",
         "help" : "Number of lines in each file.",
+        "name" : "File lines",
     },
     "function_length" : {
         "kind" : "function",
         "type" : "int",
         "help" : "Number for lines for each function.",
+        "name" : "Function lines",
     },
     "npath" : {
         "kind" : "function",
         "type" : "int",
         "help" : ("Approximation for maximum number of paths in"
                   " function."),
+        "name" : "Number of paths",
     },
     "cnest" : {
         "kind" : "function",
         "type" : "int",
-        "help" : "Maximum nesting of control structures."
+        "help" : "Maximum nesting of control structures.",
+        "name" : "Control nesting",
     },
     "parameters" : {
         "kind" : "function",
         "type" : "int",
-        "help" : "Number of input/output parameters."
+        "help" : "Number of input/output parameters.",
+        "name" : "Parameters",
     },
     "globals" : {
         "kind" : "function",
         "type" : "int",
-        "help" : "Number of direct (non-transitive) global variables."
+        "help" : "Number of direct (non-transitive) global variables.",
+        "name" : "Globals",
     },
     "persistent" : {
         "kind" : "function",
         "type" : "int",
-        "help" : "Number of persistent variables."
+        "help" : "Number of persistent variables.",
+        "name" : "Persistents",
     },
     "cyc" : {
         "kind" : "function",
         "type" : "int",
-        "help" : "The McCabe cyclomatic complexity metric."
+        "help" : "The McCabe cyclomatic complexity metric.",
+        "name" : "Cyclomatic complexity",
     },
 }
 FILE_METRICS = sorted(metric

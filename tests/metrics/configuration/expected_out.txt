@@ -6,48 +6,48 @@ In test.m, line 12
 === Code metric by file:
 
 * Code metrics for file test.m:
-  file_length: 25 (!not justified!)
+  File lines: 25 (!not justified!)
 
   Code metrics for function test_1:
-    cnest: 1
-    cyc: 3
-    function_length: 10
-    globals: 0
-    npath: 4
-    parameters: 2
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 3
+    Function lines       : 10
+    Globals              : 0
+    Number of paths      : 4
+    Parameters           : 2
+    Persistents          : 0
 
   Code metrics for function test_2:
-    cnest: 1
-    cyc: 4
-    function_length: 14
-    globals: 0
-    npath: 8 (!not justified!)
-    parameters: 2
-    persistent: 0
+    Control nesting      : 1
+    Cyclomatic complexity: 4
+    Function lines       : 14
+    Globals              : 0
+    Number of paths      : 8 (!not justified!)
+    Parameters           : 2
+    Persistents          : 0
 
 === Global summary of worst offenders by metric:
 
-* File metric file_length:
+* File metric 'File lines':
   1. 25 (test.m)
 
-* Function metric cnest:
+* Function metric 'Control nesting':
   1. 1 (test.m, function test_2)
   2. 1 (test.m, function test_1)
 
-* Function metric cyc:
+* Function metric 'Cyclomatic complexity':
   1. 4 (test.m, function test_2)
   2. 3 (test.m, function test_1)
 
-* Function metric function_length:
+* Function metric 'Function lines':
   1. 14 (test.m, function test_2)
   2. 10 (test.m, function test_1)
 
-* Function metric npath:
+* Function metric 'Number of paths':
   1. 8 (test.m, function test_2)
   2. 4 (test.m, function test_1)
 
-* Function metric parameters:
+* Function metric 'Parameters':
   1. 2 (test.m, function test_2)
   2. 2 (test.m, function test_1)
 
