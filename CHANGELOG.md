@@ -7,23 +7,24 @@
   `--process-slx`. This flag is temporary and will be removed in the
   future once this feature is stable enough.
 
-* New configuration option `copyright_in_embedded_code` which is
-  turned off by default. By default the `copyright_notice` rule does
-  not apply to embedded code, and this option can be used to control
-  that behaviour.
+* MH Style has a new configuration option `copyright_in_embedded_code`
+  which is turned off by default. By default the `copyright_notice`
+  rule does not apply to embedded code, and this option can be used to
+  control that behaviour.
 
-* Expand the `useless_continuation` rule to also apply to
-  continuations that begin statements.
+* MH Style has a wider definition of a `useless_continuation`. This
+  rule now also applies to continuations that begin statements.
 
-* New configuration option to completely disable a named software
-  metric. You do this with `disable` for a named metric, e.g.
-  `metric "function_length": disable`. With this option the metric
-  doesn't even appear in the final report (as opposed to the default
-  where we measure a metric, but not complain about it).
+* MH Metric has a new syntax in configuration files to completely
+  disable a named software metric. You do this with `disable` for a
+  named metric, e.g. `metric "function_length": disable`. With this
+  option the metric doesn't even appear in the final report (as
+  opposed to the default where we measure a metric, but not complain
+  about it).
 
-* New configuration option for MH Metric to enable or disable all
-  metrics. You do this by using `metric *: report` and `metric *: disable`
-  respectively.
+* MH Metric has new syntax in configuration files to enable or disable
+  all metrics. You do this by using `metric *: report` and
+  `metric *: disable` respectively.
 
 * MH Metric now uses more human readable names for the metrics in both
   the HTML and text report.
