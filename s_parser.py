@@ -100,9 +100,10 @@ class SIMULINK_Model:
     information contained within; just enough to process embedded
     scripts for now.
     """
-    def __init__(self, mh, filename):
+    def __init__(self, mh, filename, note_harness=True):
         assert isinstance(mh, Message_Handler)
         assert isinstance(filename, str)
+        assert isinstance(note_harness, bool)
         assert filename.endswith(".slx")
 
         self.mh = mh
@@ -131,6 +132,13 @@ class SIMULINK_Model:
         self.matlab_blocks = []
         # A list of SIMULINK_MATLAB_Blocks
 
+        self.block_kinds = set()
+        # A set of all block kinds in this model
+
+        self.note_harness = note_harness
+        # If true (the default) emit a note that we're not touching
+        # this externally saved harness.
+
         # Read all files, and parse three we care about. The rest we
         # need to save as well, since we might have to re-create the
         # zip file again if we write any changes.
@@ -148,8 +156,7 @@ class SIMULINK_Model:
 
         # Parse blocks. If there is no stateflow file, there won't be
         # any embedded code, so there is nothing to do in that case.
-        if self.xml_stateflow is not None:
-            self.parse_root()
+        self.parse_root()
 
     def loc(self):
         return Location(self.filename)
@@ -192,7 +199,9 @@ class SIMULINK_Model:
             m_props = self._get_properties(mdl)
 
             if "HarnessUUID" in m_props:
-                self.mh.info(self.loc(), "skipping externally saved harness")
+                if self.note_harness:
+                    self.mh.info(self.loc(),
+                                 "skipping externally saved harness")
                 continue
 
             if system is not None:
@@ -270,8 +279,12 @@ class SIMULINK_Model:
             b_name = block.attrib["Name"]
             b_props = self._get_properties(block)
 
+            # Record (for debugging purposes) each block type
+            self.block_kinds.add(block.attrib["BlockType"])
+
             # Check if this block is an embedded MATLAB function
-            if b_props.get("SFBlockType", None) == "MATLAB Function":
+            if self.xml_stateflow and \
+               b_props.get("SFBlockType", None) == "MATLAB Function":
                 self.parse_matlab_block(system_name + "/" + b_name)
 
             # Recuse into nested systems
