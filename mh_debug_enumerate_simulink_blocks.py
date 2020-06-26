@@ -31,22 +31,26 @@ import os
 import argparse
 
 import command_line
-from s_parser import *
-
-# pylint: disable=invalid-name
-all_block_kinds = set()
+import config
+from errors import Message_Handler
+from s_parser import Simulink_SLX_Parser
 
 
 def process(mh, root_dir, file_name):
-    # pylint: disable=global-statement
     # pylint: disable=unused-argument
-    global all_block_kinds
     # short_name = file_name[len(root_dir.rstrip("/")) + 1:]
 
     mh.register_file(file_name)
 
-    smdl = SIMULINK_Model(mh, file_name, note_harness=False)
-    all_block_kinds |= smdl.block_kinds
+    rv = set()
+
+    slp = Simulink_SLX_Parser(mh, file_name, config.BASE_CONFIG)
+    n_container = slp.parse_file()
+    if n_container:
+        for n_block in n_container.iter_all_blocks():
+            rv.add(n_block.kind)
+
+    return rv
 
 
 def main():
@@ -58,10 +62,14 @@ def main():
     mh = Message_Handler("debug")
     mh.sort_messages = False
 
+    all_block_kinds = set()
+
     for path, _, files in os.walk(options.root_dir):
         for f in files:
             if f.endswith(".slx"):
-                process(mh, options.root_dir, os.path.join(path, f))
+                all_block_kinds |= process(mh,
+                                           options.root_dir,
+                                           os.path.join(path, f))
 
     print("Sorted list of all Simulink blocks types (%u) present:" %
           len(all_block_kinds))

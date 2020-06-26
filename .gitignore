@@ -3,3 +3,9 @@ __pycache__
 
 *.pdf
 *.dot
+
+# Unpacked Simulink models
+*_unpacked
+
+# Simulink local stuff
+slprj

@@ -37,6 +37,7 @@ import config_files
 import errors
 import work_package
 import s_parser
+import s_ast
 from version import GITHUB_ISSUES, VERSION, FULL_NAME
 
 
@@ -151,12 +152,15 @@ def dispatch_wp(process_fn, wp):
 
         elif isinstance(wp, work_package.SIMULINK_File_WP):
             wp.register_file()
-            smdl = s_parser.SIMULINK_Model(wp.mh, wp.filename)
-            for block in smdl.matlab_blocks:
-                block_wp = work_package.Embedded_MATLAB_WP(wp, block)
-                results.append(process_fn(block_wp))
+            slp = s_parser.Simulink_SLX_Parser(wp.mh, wp.filename, wp.cfg)
+            n_content = slp.parse_file()
+            if n_content:
+                for block in n_content.iter_all_blocks():
+                    if isinstance(block, s_ast.Matlab_Function):
+                        block_wp = work_package.Embedded_MATLAB_WP(wp, block)
+                        results.append(process_fn(block_wp))
             if wp.modified:
-                smdl.save_and_close()
+                slp.save_and_close()
 
         elif isinstance(wp, work_package.MATLAB_File_WP):
             wp.register_file()

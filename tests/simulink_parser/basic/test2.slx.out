@@ -1,4 +1,4 @@
-test2.slx: info: model contains 2 MATLAB function blocks
+=== Parsing test2.slx ===
 test2.slx/My_Sub_System/Potato: info: block contains 3 lines of MATLAB
 In test2.slx/My_Sub_System/Potato, line 1
 | function y = fcn(u)
@@ -91,4 +91,31 @@ In test2.slx/Potato, line 3
 In test2.slx/Potato, line 3
 | y = u;
 |       ^ info: NEWLINE
+ Model
+  System
+   Block Inport ('In1')
+   Block L2MatlabFunction ('Potato')
+   ------------------------------------------------------------
+   | function y = fcn(u)
+   | % This is in test2
+   | y = u;
+   ------------------------------------------------------------
+   Block SubSystem ('My_Sub_System')
+    System
+     Block L2MatlabFunction ('Potato')
+     ------------------------------------------------------------
+     | function y = fcn(u)
+     | % This is in the subsystem
+     | y = u;
+     ------------------------------------------------------------
+     Block Inport ('In1')
+     Block Outport ('Out1')
+   Block Outport ('Out1')
+   Block Outport ('Out2')
+
+=== Summary of misc. children ===
+Children in Inport
+Children in Outport
+Children in SubSystem
+   * System
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

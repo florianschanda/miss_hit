@@ -213,7 +213,6 @@ def execute_simulink_parser_test(name):
     for f in files:
         r = subprocess.run([sys.executable,
                             "../../../s_parser.py",
-                            "--no-tb",
                             f],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT,

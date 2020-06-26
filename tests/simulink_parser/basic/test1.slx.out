@@ -1,4 +1,4 @@
-test1.slx: info: model contains 3 MATLAB function blocks
+=== Parsing test1.slx ===
 test1.slx/Add One: info: block contains 3 lines of MATLAB
 In test1.slx/Add One, line 1
 | function y = add_one(u)
@@ -143,4 +143,33 @@ In test1.slx/Sub One, line 3
 In test1.slx/Sub One, line 3
 | y = u - 1;
 |           ^ info: NEWLINE
+ Model
+  System
+   Block Inport ('In1')
+   Block Inport ('In2')
+   Block L2MatlabFunction ('Add One')
+   ------------------------------------------------------------
+   | function y = add_one(u)
+   |
+   | y = u + 1;
+   ------------------------------------------------------------
+   Block L2MatlabFunction ('Sub One')
+   ------------------------------------------------------------
+   | function y = sub_one(u)
+   |
+   | y = u - 1;
+   ------------------------------------------------------------
+   Block L2MatlabFunction ('Multiply')
+   ------------------------------------------------------------
+   | function y = my_multiply(u, v)
+   |
+   | y = u * v;
+   ------------------------------------------------------------
+   Block Outport ('Out1')
+
+=== Summary of misc. children ===
+Children in Inport
+Children in Outport
+Children in SubSystem
+   * System
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

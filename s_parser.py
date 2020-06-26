@@ -29,122 +29,55 @@ new style slx models, support for old style mdl files will come
 later).
 """
 
-import xml.etree.ElementTree as ET
 import os.path
 import zipfile
+import xml.etree.ElementTree as ET
 
-from errors import ICE, Error, Location, Message_Handler
+from abc import ABCMeta, abstractmethod
 
+import config
 
-class SIMULINK_Block:
-    def __init__(self, model, name):
-        assert isinstance(model, SIMULINK_Model)
-        assert isinstance(name, str)
+from s_ast import *
+from errors import Message_Handler, ICE
 
-        self.model = model
-        # A link back to the model(file) containing this block
-
-        self.name = name
-        # Full name that can be used to identify the block/function in
-        # error messages. Should be something like
-        # filename/subsystem/blockname
-
-    def full_name(self):
-        """ Returns the full name for this block """
-        return self.name
-
-    def local_name(self):
-        """ Returns a shorter name for this block
-
-        For example if the full name is "test1/myblock/potato" then the short
-        name is "myblock/potato".
-        """
-        return self.name[len(self.model.modelname) + 1:]
-
-    def loc(self):
-        return Location(self.model.filename,
-                        blockname = self.local_name())
+# pylint: disable=invalid-name
+anatomy = {}
+# pylint: enable=invalid-name
 
 
-class SIMULINK_MATLAB_Block(SIMULINK_Block):
-    """Represents a SIMULINK "MATLAB Function" block.
-
-    This block contains MATLAB code directly embedded inside the
-    SIMULINK model, which should be processed by MISS_HIT.
-    """
-    def __init__(self, model, name, xml_root_code):
-        super().__init__(model, name)
-        assert isinstance(xml_root_code, ET.Element)
-        assert xml_root_code.tag == "P"
-
-        self.xml_root_code = xml_root_code
-        # Pointer to the P tag containing the actual script
-
-    def get_text(self):
-        return self.xml_root_code.text
-
-    def set_text(self, text):
-        assert isinstance(text, str)
-        self.xml_root_code.text = text
-
-    def get_encoding(self):
-        # HACK for now, this can be found in the actual model
-        return "utf-8"
-
-
-class SIMULINK_Model:
-    """Represents a SIMULINK file/model.
-
-    A modern SIMULINK model is just a zip file containing undocumented
-    XML. This is a very high level and incomplete interface to the
-    information contained within; just enough to process embedded
-    scripts for now.
-    """
-    def __init__(self, mh, filename, note_harness=True):
+class Simulink_Parser(metaclass=ABCMeta):
+    def __init__(self, mh, filename, cfg):
         assert isinstance(mh, Message_Handler)
         assert isinstance(filename, str)
-        assert isinstance(note_harness, bool)
-        assert filename.endswith(".slx")
+        assert isinstance(cfg, dict)
 
-        self.mh = mh
-
+        self.mh       = mh
         self.filename = filename
-        # The actual file-name
+        self.cfg      = cfg
+        # Basic properties
 
-        self.modelname = os.path.basename(filename).replace(".slx", "")
-        # The model name is the base filename with the extension
-        # stripped.
+    @abstractmethod
+    def parse_file(self):
+        pass
 
-        self.other_content      = {}
+    @abstractmethod
+    def save_and_close(self):
+        pass
+
+
+class Simulink_SLX_Parser(Simulink_Parser):
+    def __init__(self, mh, filename, cfg):
+        super().__init__(mh, filename, cfg)
+
         self.xml_blockdiagram   = None
         self.xml_stateflow      = None
         self.xml_coreproperties = None
-        # There are three XML files of particular interest:
-        #
-        #   * the core properties contain version information and a
-        #     "last updated" field we might want to change
-        #
-        #   * the blockdiagram contains all blocks and subsystems, but
-        #     does not contain any embedded code
-        #
-        #   * the stateflow file contains embedded code
+        # ETree nodes for the relevant files
 
-        self.matlab_blocks = []
-        # A list of SIMULINK_MATLAB_Blocks
-
-        self.block_kinds = set()
-        # A set of all block kinds in this model
-
-        self.note_harness = note_harness
-        # If true (the default) emit a note that we're not touching
-        # this externally saved harness.
-
-        # Read all files, and parse three we care about. The rest we
-        # need to save as well, since we might have to re-create the
-        # zip file again if we write any changes.
-        with zipfile.ZipFile(self.filename) as zf:
-            for name in zf.namelist():
-                with zf.open(name) as fd:
+        self.other_content = {}
+        with zipfile.ZipFile(self.filename) as zfd:
+            for name in zfd.namelist():
+                with zfd.open(name) as fd:
                     if name == "metadata/coreProperties.xml":
                         self.xml_coreproperties = ET.parse(fd)
                     elif name == "simulink/blockdiagram.xml":
@@ -153,207 +86,454 @@ class SIMULINK_Model:
                         self.xml_stateflow = ET.parse(fd)
                     else:
                         self.other_content[name] = fd.read()
+        # Read entire zipfile, storing content here. The two XML files
+        # we're interested in we already parse with ETree. The rest of
+        # the parsing happens in parse_file.
 
-        # Parse blocks. If there is no stateflow file, there won't be
-        # any embedded code, so there is nothing to do in that case.
-        self.parse_root()
+        self.sf_names = {}
+        # Dictionary for Stateflow items mapping from string names to
+        # ET.Element nodes for the Stateflow charts.
 
-    def loc(self):
-        return Location(self.filename)
+        self.is_external_harness = False
+        # Set to true once if we determine that this an external
+        # harness. An external harness requires the main model to be
+        # used sensibly. In particular any MATLAB functions referenced
+        # from the main model likely won't be present in its own
+        # Stateflow file.
+        #
+        # For now we basically ignore external harnesses.
+
+        self.name_stack = []
+        # As we go deeper into a model, we need to know the full chain
+        # of subsystem names. Althought the tree eventually contains
+        # this information, we don't have all the links set up during
+        # parsing.
+
+    ######################################################################
+    # Generic functions
+    ######################################################################
+
+    @staticmethod
+    def parse_p_tags(et_item):
+        assert isinstance(et_item, ET.Element)
+
+        properties = {}
+
+        for et_child in et_item:
+            if et_child.tag == "P":
+                properties[et_child.attrib["Name"]] = et_child.text
+
+        return properties
+
+    def parse_file(self):
+        # Parse stateflow XML first, since we want to refer to it from
+        # the blockdiagram.
+        if self.xml_stateflow:
+            self.parse_stateflow(self.xml_stateflow.getroot())
+
+        # Parse blockdiagram and return the AST.
+        return self.parse_blockdiagram(self.xml_blockdiagram.getroot())
 
     def save_and_close(self):
-        with zipfile.ZipFile(self.filename, mode="w") as zf:
-            with zf.open("simulink/stateflow.xml", mode="w") as fd:
-                self.xml_stateflow.write(fd)
-            with zf.open("simulink/blockdiagram.xml", mode="w") as fd:
-                self.xml_blockdiagram.write(fd)
-            with zf.open("metadata/coreProperties.xml", mode="w") as fd:
-                self.xml_coreproperties.write(fd)
-            for name in self.other_content:
-                with zf.open(name, mode="w") as fd:
+        # Write back the (potentially modified) tree.
+        with zipfile.ZipFile(self.filename, mode="w") as zfd:
+            if self.xml_blockdiagram:
+                with zfd.open("simulink/blockdiagram.xml", mode="w") as fd:
+                    self.xml_blockdiagram.write(fd)
+            if self.xml_stateflow:
+                with zfd.open("simulink/stateflow.xml", mode="w") as fd:
+                    self.xml_stateflow.write(fd)
+            if self.xml_coreproperties:
+                with zfd.open("metadata/coreProperties.xml", mode="w") as fd:
+                    self.xml_coreproperties.write(fd)
+            for name in sorted(self.other_content):
+                with zfd.open(name, mode="w") as fd:
                     fd.write(self.other_content[name])
 
-    @staticmethod
-    def _get_properties(xml_node):
-        """Gets a dictionary of all property tags, as strings."""
-        assert isinstance(xml_node, ET.Element)
-        return {prop.attrib["Name"]: prop.text
-                for prop in xml_node.findall("P")}
+    def loc(self):
+        return Location(self.filename,
+                        blockname = "/".join(self.name_stack))
 
-    @staticmethod
-    def _get_properties_with_node(xml_node):
-        """Gets a dictionary of all property tags, as tuples.
+    ######################################################################
+    # Stateflow parsing
+    ######################################################################
 
-        The tuple contains the property text and its node."""
-        assert isinstance(xml_node, ET.Element)
-        return {prop.attrib["Name"]: (prop.text, prop)
-                for prop in xml_node.findall("P")}
+    def parse_stateflow(self, et_stateflow):
+        assert isinstance(et_stateflow, ET.Element)
+        assert et_stateflow.tag == "Stateflow"
 
-    def parse_root(self):
-        root = self.xml_blockdiagram.getroot()
-        system = None
-        for mdl in root:
-            if mdl.tag not in ("Model", "Library"):
+        d_instances = {}
+        # A dictionary for name_str -> (machine, chart)
+
+        d_machines  = {}
+        # A dictionary for machine_id -> chart_id -> etree
+
+        for et_item in et_stateflow:
+            if et_item.tag == "machine":
+                item_id = int(et_item.attrib["id"])
+                d_machines[item_id] = self.parse_machine(et_item)
+            elif et_item.tag == "instance":
+                name, info = self.parse_instance(et_item)
+                d_instances[name] = info
+            else:
+                self.mh.error(self.loc(),
+                              "unknown top-level stateflow item %s" %
+                              et_item.tag)
+
+        for name in d_instances:
+            machine_id, chart_id = d_instances[name]
+            self.sf_names[name] = d_machines[machine_id][chart_id]
+
+    def parse_instance(self, et_instance):
+        assert isinstance(et_instance, ET.Element)
+        assert et_instance.tag == "instance"
+
+        props = self.parse_p_tags(et_instance)
+
+        # Sanity check we have nothing but properties
+        for et_item in et_instance:
+            if et_item.tag != "P":
+                self.mh.error(self.loc(),
+                              "unknown item %s in instance" % et_item.tag)
+
+        return props["name"], (int(props["machine"]),
+                               int(props["chart"]))
+
+    def parse_machine(self, et_machine):
+        assert isinstance(et_machine, ET.Element)
+        assert et_machine.tag == "machine"
+
+        d_machine = {}
+
+        # We expect to have a single tag called 'Children'.
+        et_children = None
+        for et_item in et_machine:
+            if et_item.tag == "P":
+                pass
+            elif et_item.tag == "Children":
+                if et_children:
+                    raise ICE("multiple children in Stateflow machine")
+                et_children = et_item
+            elif et_item.tag == "debug":
+                # TODO: Unclear what the presence of this does. To
+                # investigate.
+                pass
+            else:
+                self.mh.error(self.loc(),
+                              "Unknown item %s in machine" % et_item.tag)
+
+        for et_item in et_children:
+            if et_item.tag == "target":
+                # TODO: Unclear what exactly this does right now.
+                pass
+            elif et_item.tag == "chart":
+                chart_id = int(et_item.attrib["id"])
+                d_machine[chart_id] = et_item
+            else:
+                self.mh.error(self.loc(),
+                              "Unknown item %s in Children" % et_item.tag)
+
+        return d_machine
+
+    ######################################################################
+    # Simulink parsing
+    ######################################################################
+
+    def parse_block_matlab_function(self, et_block, props):
+        assert isinstance(et_block, ET.Element)
+        assert isinstance(props, dict)
+        assert et_block.tag == "Block"
+        assert et_block.attrib["BlockType"] == "SubSystem"
+        assert props.get("SFBlockType", None) == "MATLAB Function"
+        assert not self.is_external_harness
+
+        # To find the program text for this, we need to look into the
+        # Stateflow XML. First we construct a name by chaining
+        # together all system names (except the top-level one) with /.
+        sf_base_name = "/".join(self.name_stack + [et_block.attrib["Name"]])
+
+        # Get Stateflow chart
+        if sf_base_name in self.sf_names:
+            et_chart = self.sf_names[sf_base_name]
+        else:
+            self.mh.error(self.loc(),
+                          "Could not find %s in Stateflow" % sf_base_name)
+
+        # Quickly rifle through Children to find the relevant eml
+        # block. This could be more structured, and should be if we do
+        # more stateflow support in the future.
+        is_eml    = False
+        et_script = None
+        for et_eml in et_chart.find("Children").iter("eml"):
+            for et_item in et_eml:
+                if et_item.tag == "P":
+                    if et_item.attrib["Name"] == "isEML":
+                        is_eml = bool(et_item.text)
+                    elif et_item.attrib["Name"] == "script":
+                        if et_script:
+                            raise ICE("multiple scripts in eml tag")
+                        et_script = et_item
+                else:
+                    self.mh.error(self.loc(),
+                                  "Unexpected child %s of eml" % et_item.tag)
+                if et_script and not is_eml:
+                    raise ICE("script found, but isEML is not true")
+        if et_script is None:
+            raise ICE("referenced script for %s not found" % sf_base_name)
+
+        n_block = Matlab_Function(et_block.attrib["SID"],
+                                  et_block.attrib["Name"],
+                                  SLX_Reference(et_script))
+
+        return n_block
+
+    def parse_block_subsystem(self, et_block):
+        assert isinstance(et_block, ET.Element)
+        assert et_block.tag == "Block"
+        assert et_block.attrib["BlockType"] == "SubSystem"
+
+        n_system    = None
+        system_name = et_block.attrib["Name"]
+
+        props = self.parse_p_tags(et_block)
+
+        if props.get("SFBlockType", None) == "MATLAB Function":
+            # This could be a special "MATLAB Function" sub-system, in
+            # which case we special case
+            n_block = self.parse_block_matlab_function(et_block, props)
+
+        else:
+            # This is a normal sub-system. First we're finding the system
+            # nested.
+            for et_item in et_block:
+                if et_item.tag == "System":
+                    if n_system:
+                        raise ICE("multiple systems in subsytem")
+                    self.name_stack.append(system_name)
+                    n_system = self.parse_system(et_item)
+                    self.name_stack.pop()
+
+            # Then we build a sub-system block referencing the system
+            n_block = Sub_System(et_block.attrib["SID"],
+                                 system_name,
+                                 n_system)
+
+        return n_block
+
+    def parse_block(self, et_block):
+        assert isinstance(et_block, ET.Element)
+        assert et_block.tag == "Block"
+
+        block_type = et_block.attrib["BlockType"]
+
+        # Debug: Maintain anatomy
+
+        if block_type not in anatomy:
+            anatomy[block_type] = set()
+        for et_child in et_block:
+            if et_child.tag not in ("P", "Port"):
+                anatomy[block_type].add(et_child.tag)
+
+        # Parse block
+
+        if block_type == "SubSystem":
+            n_block = self.parse_block_subsystem(et_block)
+        else:
+            # Some other generic block
+            n_block = Block(et_block.attrib["SID"],
+                            et_block.attrib["Name"],
+                            block_type)
+
+        return n_block
+
+    def parse_system(self, et_system):
+        assert isinstance(et_system, ET.Element)
+        assert et_system.tag == "System"
+
+        n_system = System()
+
+        block_items = []
+        line_items = []
+        anno_items = []
+
+        # First we go over all items, but we need to process them in a
+        # sensible order...
+        for et_item in et_system:
+            if et_item.tag == "P":
                 continue
+            elif et_item.tag == "Block":
+                block_items.append(et_item)
+            elif et_item.tag == "Line":
+                line_items.append(et_item)
+            elif et_item.tag == "Annotation":
+                anno_items.append(et_item)
+            elif et_item.tag == "Connector":
+                pass
+            else:
+                self.mh.error(self.loc(),
+                              "Unknown child %s in system" % et_item.tag)
 
-            m_props = self._get_properties(mdl)
+        # Blocks first
+        for et_block in block_items:
+            n_block = self.parse_block(et_block)
+            n_system.add_block(n_block)
 
-            if "HarnessUUID" in m_props:
-                if self.note_harness:
-                    self.mh.info(self.loc(),
-                                 "skipping externally saved harness")
-                continue
+        return n_system
 
-            if system is not None:
-                raise ICE("%s contains both a model and library" %
-                          self.filename)
+    def parse_model(self, et_model):
+        assert isinstance(et_model, ET.Element)
+        assert et_model.tag == "Model"
 
-            system = mdl.findall("System")
-            if len(system) != 1:
-                raise ICE("%s contains more than one top-level system" %
-                          self.filename)
-            system = system[0]
+        n_model = Model(self.filename)
 
-            self.parse_system(self.modelname,
-                              system)
+        n_system = None
 
-    def parse_matlab_block(self, function_name):
-        assert self.xml_stateflow is not None
-        assert isinstance(function_name, str)
+        for et_item in et_model:
+            if et_item.tag == "System":
+                if n_system:
+                    raise ICE("multiple systems in Model")
+                n_system = self.parse_system(et_item)
 
-        # Produce shortened block name, which used to index into the
-        # stateflow xml
-        sf_name = function_name[len(self.modelname) + 1:]
+        n_model.set_system(n_system)
 
-        root = self.xml_stateflow.getroot()
-        machine_id = None
-        chart_id = None
-        for instance in root.findall("instance"):
-            i_props = self._get_properties(instance)
-            if i_props.get("name", None) == sf_name:
-                chart_id = int(i_props["chart"])
-                machine_id = int(i_props["machine"])
-        if chart_id is None:
-            raise ICE("could not find any matching chart_id in for %s" %
-                      sf_name)
+        return n_model
 
-        chart_xml = None
-        for machine in root.findall("machine"):
-            if int(machine.attrib["id"]) != machine_id:
-                continue
+    def parse_library(self, et_library):
+        assert isinstance(et_library, ET.Element)
+        assert et_library.tag == "Library"
 
-            for chart in machine.find("Children").findall("chart"):
-                if int(chart.attrib["id"]) != chart_id:
-                    continue
+        n_library = Library(self.filename)
 
-                chart_xml = chart
-                break
+        n_system = None
 
-            if chart_xml:
-                break
-        if chart_xml is None:
-            raise ICE("could not find any chart node %u in %s" %
-                      (chart_id, self.modelname))
+        for et_item in et_library:
+            if et_item.tag == "System":
+                if n_system:
+                    raise ICE("multiple systems in Library")
+                n_system = self.parse_system(et_item)
 
-        matlab_block = None
-        for eml in chart_xml.find("Children").iter("eml"):
-            eml_props = self._get_properties_with_node(eml)
-            if not bool(eml_props["isEML"][0]):
-                raise ICE("eml block for %s does not have isEML property set" %
-                          sf_name)
-            if matlab_block is not None:
-                raise ICE("found more than one script tag for %s" %
-                          sf_name)
+        n_library.set_system(n_system)
 
-            matlab_block = SIMULINK_MATLAB_Block(self,
-                                                 function_name,
-                                                 eml_props["script"][1])
+        return n_library
 
-        self.matlab_blocks.append(matlab_block)
+    def parse_blockdiagram(self, et_node):
+        assert isinstance(et_node, ET.Element)
+        assert et_node.tag == "ModelInformation"
 
-    def parse_system(self, system_name, system_tree):
-        assert isinstance(system_name, str)
-        assert isinstance(system_tree, ET.Element)
+        top_object = None
 
-        for block in system_tree.findall("Block"):
-            b_name = block.attrib["Name"]
-            b_props = self._get_properties(block)
+        props = self.parse_p_tags(et_node)
 
-            # Record (for debugging purposes) each block type
-            self.block_kinds.add(block.attrib["BlockType"])
+        if "HarnessUUID" in props:
+            self.is_external_harness = True
 
-            # Check if this block is an embedded MATLAB function
-            if self.xml_stateflow and \
-               b_props.get("SFBlockType", None) == "MATLAB Function":
-                self.parse_matlab_block(system_name + "/" + b_name)
+            # TODO: We do not yet support this, so just return
+            # nothing.
+            return None
 
-            # Recuse into nested systems
-            for sub_system in block.findall("System"):
-                self.parse_system(system_name + "/" + b_name,
-                                  sub_system)
+        # Sometimes we can have the stateflow file embedded in the
+        # diagram. In this case we need to make sure to parse it
+        # first.
+        for item in et_node:
+            if item.tag == "Stateflow":
+                self.parse_stateflow(item)
+
+        for item in et_node:
+            if item.tag == "Model":
+                if top_object:
+                    self.mh.error(self.loc(),
+                                  "more than one model/library in file")
+                top_object = self.parse_model(item)
+            elif item.tag == "Library":
+                if top_object:
+                    self.mh.error(self.loc(),
+                                  "more than one model/library in file")
+                top_object = self.parse_library(item)
+            elif item.tag == "Stateflow":
+                pass
+            else:
+                self.mh.error(self.loc(),
+                              "I do not understand top-level item %s" %
+                              item.tag)
+
+        # Set encoding on top-level container
+        if "SavedCharacterEncoding" in props:
+            top_object.set_encoding(props["SavedCharacterEncoding"])
+
+        return top_object
 
 
-def sanity_test(mh, filename, show_bt):
+def sanity_test(mh, filename, _):
     # pylint: disable=import-outside-toplevel
-    import traceback
     import m_lexer
     # pylint: enable=import-outside-toplevel
 
-    try:
-        mh.register_file(filename)
-        smdl = SIMULINK_Model(mh, filename)
-        mh.info(smdl.loc(),
-                "model contains %u MATLAB function blocks" %
-                len(smdl.matlab_blocks))
+    print("=== Parsing %s ===" % filename)
 
-        for block in smdl.matlab_blocks:
-            mh.info(block.loc(),
-                    "block contains %u lines of MATLAB" %
-                    len(block.get_text().splitlines()))
-            lexer = m_lexer.MATLAB_Lexer(mh,
-                                         block.get_text(),
-                                         filename,
-                                         block.local_name())
-            while True:
-                token = lexer.token()
-                if token is None:
-                    break
-                mh.info(token.location, token.kind)
+    mh.register_file(filename)
+    slp = Simulink_SLX_Parser(mh, filename, config.BASE_CONFIG)
 
-    except Error:
-        if show_bt:
-            traceback.print_exc()
+    if slp.is_external_harness:
+        print("   > Ignored external harness")
+        return
 
-    except ICE as ice:
-        if show_bt:
-            traceback.print_exc()
-        print("ICE:", ice.reason)
+    n_container = slp.parse_file()
 
+    # Dump lexing of matlab blocks
+    for n_block in n_container.iter_all_blocks():
+        if not isinstance(n_block, Matlab_Function):
+            continue
+
+        mh.info(n_block.loc(),
+                "block contains %u lines of MATLAB" %
+                len(n_block.get_text().splitlines()))
+        lexer = m_lexer.MATLAB_Lexer(mh,
+                                     n_block.get_text(),
+                                     filename,
+                                     n_block.local_name())
+        while True:
+            token = lexer.token()
+            if token is None:
+                break
+            mh.info(token.location, token.kind)
     mh.finalize_file(filename)
 
+    # Dump model hierarchy
+    n_container.dump_hierarchy()
 
-def sanity_test_main():
+
+def main():
     # pylint: disable=import-outside-toplevel
     from argparse import ArgumentParser
     # pylint: enable=import-outside-toplevel
+
     ap = ArgumentParser()
-    ap.add_argument("file")
-    ap.add_argument("--no-tb",
-                    action="store_true",
-                    default=False,
-                    help="Do not show debug-style backtrace")
+    ap.add_argument("name", metavar="FILE|DIR")
     options = ap.parse_args()
 
     mh = Message_Handler("debug")
     mh.sort_messages = False
-    mh.colour = False
+    mh.colour        = False
 
-    sanity_test(mh,
-                options.file,
-                not options.no_tb)
+    if os.path.isfile(options.name):
+        sanity_test(mh, options.name, options)
+    elif os.path.isdir(options.name):
+        for path, _, files in os.walk(options.name):
+            for f in files:
+                if f.endswith(".slx"):
+                    sanity_test(mh, os.path.join(path, f), options)
+    else:
+        ap.error("%s is neither a file or directory" % options.name)
+
+    print()
+    print("=== Summary of misc. children ===")
+    for block_type in sorted(anatomy):
+        print("Children in %s" % block_type)
+        for tag in sorted(anatomy[block_type]):
+            print("   * %s" % tag)
 
     mh.summary_and_exit()
 
 
 if __name__ == "__main__":
-    sanity_test_main()
+    main()

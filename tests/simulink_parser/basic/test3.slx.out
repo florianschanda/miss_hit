@@ -1,0 +1,10 @@
+=== Parsing test3.slx ===
+ Model
+  System
+   Block Inport ('In1')
+   Block Outport ('Out1')
+
+=== Summary of misc. children ===
+Children in Inport
+Children in Outport
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

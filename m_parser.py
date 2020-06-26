@@ -106,8 +106,8 @@ class MATLAB_Parser:
         # Curiously mlint seems to share this bug.
 
         # pylint: disable=invalid-name
-        self.ct = None
-        self.nt = None
+        self.ct  = None
+        self.nt  = None
         self.nnt = None
         # pylint: enable=invalid-name
 

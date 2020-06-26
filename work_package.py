@@ -25,7 +25,7 @@
 
 import os.path
 
-import s_parser
+import s_ast
 import config_files
 
 from errors import Message_Handler, ICE, Location
@@ -128,8 +128,11 @@ class Embedded_MATLAB_WP(MATLAB_Work_Package):
     # MATLAB code that is embedded in a slx-file somewhere
     def __init__(self, simulink_wp, simulink_block):
         assert isinstance(simulink_wp, SIMULINK_File_WP)
-        assert isinstance(simulink_block, s_parser.SIMULINK_MATLAB_Block)
-        super().__init__(simulink_block.model.filename,
+        assert isinstance(simulink_block, s_ast.Matlab_Function)
+
+        n_container = simulink_block.get_container()
+
+        super().__init__(n_container.filename,
                          simulink_block.local_name(),
                          simulink_block.get_encoding(),
                          simulink_wp.mh,
