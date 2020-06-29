@@ -1,0 +1,37 @@
+=== Parsing powerwindow.slx ===
+ Model
+  System
+   Block Mux ('Mux')
+   Block Display ('Display1')
+   Block Scope ('Scope')
+   Block DiscretePulseGenerator ('TT')
+   Block Constant ('Constant')
+   Block Constant ('Constant1')
+   Block ManualSwitch ('IGN')
+   Block ManualSwitch ('UP')
+   Block ManualSwitch ('DOWN')
+   Block SubSystem ('PowerWindow Stateflow')
+    System
+     Block TriggerPort (' input events ')
+     Block Outport ('DIR')
+     Block Outport ('POS')
+     Block S-Function (' SFunction ')
+     Block Demux (' Demux ')
+     Block Terminator (' Terminator ')
+   Block Display ('Display')
+
+=== Summary of misc. children ===
+Children in Constant
+Children in Demux
+Children in DiscretePulseGenerator
+Children in Display
+Children in ManualSwitch
+Children in Mux
+Children in Outport
+Children in S-Function
+Children in Scope
+Children in SubSystem
+   * System
+Children in Terminator
+Children in TriggerPort
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
