@@ -89,6 +89,7 @@ the same license:
 
 * Zenuity AB
 * Alina Boboc
+* Benedikt Schmid
 
 ### Copyright of octave tests
 
