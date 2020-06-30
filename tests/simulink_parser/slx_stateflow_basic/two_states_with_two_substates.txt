@@ -1,0 +1,141 @@
+= init
+
+top_state = big_kitten
+minor_state = kitten
+y = 0
+
+= step (by-event)
+
+input: event
+input: x
+output: y
+
+(( cyc = 11/14 ))
+
+if event = a
+   if top_state = big_kitten
+      top_state = big_potato
+      minor_state = fish
+      y = 2
+   elif top_state = big_potato
+      top_state = big_kitten
+      minor_state = kitten
+      y = 0
+   end
+
+elif event = b
+   if top_state = big_kitten
+      if minor_state = kitten
+         minor_state = potato
+         y = 1
+      elif minor_state = potato
+         pass
+      end
+   elif top_state = big_potato
+      if minor_state = fish
+         if x > 0
+            minor_state = horse
+            y = x
+         elif x < 0
+            minor_state = lemon
+            y = -x
+         end
+      elif minor_state = horse
+         pass
+      elif minor_state = lemon
+         pass
+      end
+   end
+end
+
+
+= step (by state)
+(( cyc = 17 ))
+
+if top_state = big_kitten
+   if minor_state = kitten
+      if event = a
+         top_state = big_potato
+         minor_state = fish
+         y = 2
+      elif event = b
+         minor_state = potato
+         y = 1
+      end
+   elif minor_state = potato
+      if event = a
+         top_state = big_potato
+         minor_state = fish
+         y = 2
+      end
+   end
+
+elif top_state = big_potato
+   if minor_state = fish
+      if event = a
+         top_state = big_kitten
+         minor_state = kitten
+         y = 0
+      elif event = b
+         if x > 0
+            minor_state = horse
+            y = x
+         elif x < 0
+            minor_state = lemon
+            y = -x
+         end
+      end
+   elif minor_state = horse
+      if event = a
+         top_state = big_kitten
+         minor_state = kitten
+         y = 0
+      end
+   elif minor_state = lemon
+      if event = a
+         top_state = big_kitten
+         minor_state = kitten
+         y = 0
+      end
+   end
+end
+
+
+== step (interleaved, state first events attached)
+(( cyc = 11/13 ))
+
+if top_state = big_kitten
+   if event = a
+      top_state = big_potato
+      minor_state = fish
+      y = 2
+   elif minor_state = kitten
+      if event = b
+         minor_state = potato
+         y = 1
+      end
+   elif minor_state = potato
+      pass
+   end
+
+elif top_state = big_potato
+   if event = a
+      top_state = big_kitten
+      minor_state = kitten
+      y = 0
+   elif minor_state = fish
+      if event = b
+         if x > 0
+            minor_state = horse
+            y = x
+         elif x < 0
+            minor_state = lemon
+            y = -x
+         end
+      end
+   elif minor_state = horse
+      pass
+   elif minor_state = lemon
+      pass
+   end
+end
