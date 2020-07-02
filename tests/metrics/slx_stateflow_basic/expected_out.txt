@@ -1,0 +1,8 @@
+=== PLAIN MODE ===
+=== Code metric by file:
+
+MISS_HIT Metric Summary: 0 file(s) analysed, everything seemes fine
+
+
+=== HTML MODE ===
+MISS_HIT Metric Summary: 0 file(s) analysed, everything seemes fine
