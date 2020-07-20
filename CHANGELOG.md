@@ -2,6 +2,14 @@
 
 ## 0.9.7-dev
 
+* #148 MISS_HIT is now a PyPI package. This change should also make
+  it much easier to re-use the compiler framework of MISS_HIT in other
+  tools.  You can still use it by just checking out the code, but be
+  aware that some entry points have changed:
+  * most source code lives in the miss_hit package (not the top-level)
+  * the top-level script `mh_metric.py` is now called `mh_metric`
+  * the top-level script `mh_style.py` is now called `mh_style`
+
 ### Known issues
 
 #### Tooling

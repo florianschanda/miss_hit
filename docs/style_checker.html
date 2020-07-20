@@ -16,7 +16,7 @@
   <main>
     <div class="section">
       <a href="index.html">MISS_HIT</a> includes a simple style
-      checker (<span class="file">mh_style.py</span>). It can detect
+      checker (<span class="file">mh_style</span>). It can detect
       and correct (when the --fix options given) a number of coding
       style issues, most of which are configurable.
     </div>
@@ -36,7 +36,7 @@
       <div>
         To analyse one or more files:
 
-        <pre>$ mh_style.py my_file.m</pre>
+        <pre>$ mh_style my_file.m</pre>
       </div>
 
       <div>
@@ -45,12 +45,12 @@
         command-line flag. Once the feature is stable enough, this
         flag will be removed.
 
-        <pre>$ mh_style.py --process-slx --fix my_model.slx</pre>
+        <pre>$ mh_style --process-slx --fix my_model.slx</pre>
       </div>
 
       <div>
         To analyse all files in a directory tree:
-        <pre>$ mh_style.py src/</pre>
+        <pre>$ mh_style src/</pre>
       </div>
 
       <h3>Setting up configuration in your project (a worked example)</h3>
@@ -307,7 +307,7 @@ enable_rule: "file_length"
         autofixing these. If you pay me an excessive amount of money I
         could look into this but I'd rather keep the lexer vaguely
         sane. All of them are automatically fixed
-        by <span class="file">mh_style.py</span> when the --fix option
+        by <span class="file">mh_style</span> when the --fix option
         is specified.
       </div>
 
@@ -384,7 +384,7 @@ enable_rule: "file_length"
       <h2>Autofix rules</h2>
       <div>
         The following rules are automatically fixed
-        by <span class="file">mh_style.py</span> when the --fix option
+        by <span class="file">mh_style</span> when the --fix option
         is specified.
       </div>
 

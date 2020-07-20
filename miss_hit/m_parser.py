@@ -27,11 +27,11 @@
 import os
 import traceback
 
-import config
+from miss_hit import config
 
-from errors import ICE, Error, Message_Handler
-from m_ast import *
-from m_lexer import Token_Generator, MATLAB_Lexer, Token_Buffer
+from miss_hit.errors import ICE, Error, Message_Handler
+from miss_hit.m_ast import *
+from miss_hit.m_lexer import Token_Generator, MATLAB_Lexer, Token_Buffer
 
 
 IGNORED_TOKENS = frozenset(["COMMENT"])
@@ -2068,7 +2068,7 @@ class MATLAB_Parser:
 
 def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
     # pylint: disable=import-outside-toplevel
-    import g_cfg
+    from miss_hit import g_cfg
     # pylint: enable=import-outside-toplevel
 
     class CFG_Visitor(AST_Visitor):

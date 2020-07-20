@@ -1,4 +1,29 @@
 #!/usr/bin/env python3
+##############################################################################
+##                                                                          ##
+##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
+##                                                                          ##
+##              Copyright (C) 2019-2020, Florian Schanda                    ##
+##                                                                          ##
+##  This file is part of MISS_HIT.                                          ##
+##                                                                          ##
+##  MATLAB Independent, Small & Safe, High Integrity Tools (MISS_HIT) is    ##
+##  free software: you can redistribute it and/or modify it under the       ##
+##  terms of the GNU General Public License as published by the Free        ##
+##  Software Foundation, either version 3 of the License, or (at your       ##
+##  option) any later version.                                              ##
+##                                                                          ##
+##  MISS_HIT is distributed in the hope that it will be useful,             ##
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of          ##
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ##
+##  GNU General Public License for more details.                            ##
+##                                                                          ##
+##  You should have received a copy of the GNU General Public License       ##
+##  along with MISS_HIT. If not, see <http://www.gnu.org/licenses/>.        ##
+##                                                                          ##
+##############################################################################
+
+# Main test driver
 
 import os
 import sys
@@ -10,6 +35,8 @@ import argparse
 TEST_ROOT = os.getcwd()
 TEST_ENV = copy.copy(os.environ)
 TEST_ENV["PYTHONIOENCODING"] = "UTF-8"
+TEST_ENV["PYTHONPATH"] = os.path.normpath(os.path.join(TEST_ROOT, ".."))
+
 
 def execute_style_test(name):
     os.chdir(os.path.join(TEST_ROOT,
@@ -34,7 +61,7 @@ def execute_style_test(name):
 
     # Run in HTML mode
     r = subprocess.run([sys.executable,
-                        "../../../mh_style.py",
+                        "../../../mh_style",
                         ".",
                         "--single",
                         "--process-slx",
@@ -47,7 +74,7 @@ def execute_style_test(name):
 
     # Run in plaintext mode and fix
     r = subprocess.run([sys.executable,
-                        "../../../mh_style.py",
+                        "../../../mh_style",
                         "--debug-validate-links",
                         "--debug-cfg",
                         ".",
@@ -69,7 +96,7 @@ def execute_style_test(name):
 
     # Run in plaintext mode, again, to see if more things need fixing
     r = subprocess.run([sys.executable,
-                        "../../../mh_style.py",
+                        "../../../mh_style",
                         ".",
                         "--single",
                         "--process-slx",
@@ -117,7 +144,7 @@ def execute_metric_test(name):
 
     # Run
     r = subprocess.run([sys.executable,
-                        "../../../mh_metric.py",
+                        "../../../mh_metric",
                         "--single",
                         ".",],
                        stdout=subprocess.PIPE,
@@ -128,7 +155,7 @@ def execute_metric_test(name):
 
     # HTML
     r = subprocess.run([sys.executable,
-                        "../../../mh_metric.py",
+                        "../../../mh_metric",
                         "--single",
                         "--html=metrics.html",
                         ".",],
@@ -160,7 +187,8 @@ def execute_lexer_test(name):
 
     for f in files:
         r = subprocess.run([sys.executable,
-                            "../../../m_lexer.py",
+                            "-m"
+                            "miss_hit.m_lexer",
                             f],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT,
@@ -185,7 +213,8 @@ def execute_parser_test(name):
 
     for f in files:
         r = subprocess.run([sys.executable,
-                            "../../../m_parser.py",
+                            "-m"
+                            "miss_hit.m_parser",
                             "--no-tb",
                             "--tree",
                             f],
@@ -212,7 +241,8 @@ def execute_simulink_parser_test(name):
 
     for f in files:
         r = subprocess.run([sys.executable,
-                            "../../../s_parser.py",
+                            "-m"
+                            "miss_hit.s_parser",
                             f],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT,
@@ -255,7 +285,8 @@ def main():
     options = ap.parse_args()
 
     # Make sure we're in the right directory
-    assert os.path.isfile("../mh_style.py")
+    assert os.path.isfile("../mh_style")
+    assert os.path.isdir("../miss_hit")
     root = os.getcwd()
 
     tests = []

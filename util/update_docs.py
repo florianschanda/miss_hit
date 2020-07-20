@@ -4,7 +4,7 @@ import sys
 import html
 sys.path.append("..")
 
-import mh_style
+from miss_hit import mh_style
 
 def offset(section):
     offsets = []

@@ -33,12 +33,13 @@ import textwrap
 import multiprocessing
 import functools
 
-import config_files
-import errors
-import work_package
-import s_parser
-import s_ast
-from version import GITHUB_ISSUES, VERSION, FULL_NAME
+from miss_hit import config_files
+from miss_hit import errors
+from miss_hit import work_package
+from miss_hit import s_parser
+from miss_hit import s_ast
+
+from miss_hit.version import GITHUB_ISSUES, VERSION, FULL_NAME
 
 
 def create_basic_clp():

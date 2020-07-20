@@ -9,3 +9,8 @@ __pycache__
 
 # Simulink local stuff
 slprj
+
+# Python packaging
+build
+dist
+miss_hit.egg-info

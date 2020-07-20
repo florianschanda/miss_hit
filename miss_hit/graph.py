@@ -27,7 +27,7 @@
 
 import os
 
-from errors import ICE
+from miss_hit.errors import ICE
 
 
 class Vertex_Root:

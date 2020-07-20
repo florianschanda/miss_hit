@@ -25,10 +25,10 @@
 
 import os.path
 
-import s_ast
-import config_files
+from miss_hit import s_ast
+from miss_hit import config_files
 
-from errors import Message_Handler, ICE, Location
+from miss_hit.errors import Message_Handler, ICE, Location
 
 
 class Work_Package:

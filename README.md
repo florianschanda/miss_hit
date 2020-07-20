@@ -23,14 +23,14 @@ for more information.
 Please refer to the [release notes](https://github.com/florianschanda/miss_hit/blob/master/CHANGELOG.md)
 for a summary of recent changes and known issues.
 
-* Style Checker `mh_style.py`
+* Style Checker `mh_style`
 
   A simple coding style checker and code formatter for MATLAB or
   Octave code, including MATLAB embedded inside Simulink models. See
   https://florianschanda.github.io/miss_hit/style_checker.html for
   more information and a user manual.
 
-* Code Metrics `mh_metric.py`
+* Code Metrics `mh_metric`
 
   A simple code metric tool for MATLAB or Octave code, including
   MATLAB embedded inside Simulink models. See
@@ -50,8 +50,8 @@ it. MISS_HIT does not require *any* python packages or libraries.
 
 To use MISS_HIT you just give it a set of files to process, for example:
 ```
-$ mh_style.py my_file.m
-$ mh_style.py --process-slx my_model.slx
+$ mh_style my_file.m
+$ mh_style --process-slx my_model.slx
 ```
 Configuration is described in the user manual(s).
 
@@ -61,13 +61,27 @@ features.
 
 ### Installation via pip
 
-I am working on this.
+```
+$ pip3 install --user miss_hit
+```
+
+This installation also adds two executable scripts `mh_style` and
+`mh_metric` into `.local/bin`, so please make sure that this is on
+your `PATH`.
+
+You can also use the `python -m` syntax to directly invoke the
+program. This might be useful if you're on a heavily locked-down
+corporate Windows environment:
+```
+$ python3 -m miss_hit.mh_style
+```
 
 ### Additional requirements for developing MISS_HIT
 
-If you want to help develop, you will also need Pylint and
-PyCodeStyle. Install as follows:
+If you want to help develop, you will also need Pylint, PyCodeStyle
+and Graphviz. Install as follows:
 ```
+$ apt-get install graphviz
 $ pip3 install --user pylint pycodestyle
 ```
 

@@ -23,61 +23,6 @@
 ##                                                                          ##
 ##############################################################################
 
-# This is a small helper tool that, when given a directory, will
-# display all Simulink block types in all slx models in that
-# directory.
+from miss_hit import mh_metric
 
-import os
-import argparse
-
-import command_line
-import config
-from errors import Message_Handler
-from s_parser import Simulink_SLX_Parser
-
-
-def process(mh, root_dir, file_name):
-    # pylint: disable=unused-argument
-    # short_name = file_name[len(root_dir.rstrip("/")) + 1:]
-
-    mh.register_file(file_name)
-
-    rv = set()
-
-    slp = Simulink_SLX_Parser(mh, file_name, config.BASE_CONFIG)
-    n_container = slp.parse_file()
-    if n_container:
-        for n_block in n_container.iter_all_blocks():
-            rv.add(n_block.kind)
-
-    return rv
-
-
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("root_dir")
-
-    options = ap.parse_args()
-
-    mh = Message_Handler("debug")
-    mh.sort_messages = False
-
-    all_block_kinds = set()
-
-    for path, _, files in os.walk(options.root_dir):
-        for f in files:
-            if f.endswith(".slx"):
-                all_block_kinds |= process(mh,
-                                           options.root_dir,
-                                           os.path.join(path, f))
-
-    print("Sorted list of all Simulink blocks types (%u) present:" %
-          len(all_block_kinds))
-    for block_type in sorted(all_block_kinds):
-        print("   %s" % block_type)
-
-    mh.summary_and_exit()
-
-
-if __name__ == "__main__":
-    command_line.ice_handler(main)
+mh_metric.main()

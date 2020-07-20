@@ -32,15 +32,16 @@ import re
 
 from abc import ABCMeta, abstractmethod
 
-import work_package
-import command_line
-import config
-import g_cfg
+from miss_hit import work_package
+from miss_hit import command_line
+from miss_hit import config
+from miss_hit import g_cfg
 
-from errors import Location, Error, ICE, Message_Handler, HTML_Message_Handler
-from m_ast import *
-from m_lexer import MATLAB_Lexer, Token_Buffer
-from m_parser import MATLAB_Parser
+from miss_hit.errors import (Location, Error, ICE,
+                             Message_Handler, HTML_Message_Handler)
+from miss_hit.m_ast import *
+from miss_hit.m_lexer import MATLAB_Lexer, Token_Buffer
+from miss_hit.m_parser import MATLAB_Parser
 
 
 COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"
@@ -933,7 +934,7 @@ class MH_Style(command_line.MISS_HIT_Back_End):
         return MH_Style_Result(wp)
 
 
-def main():
+def main_handler():
     rule_set = get_rules()
     clp = command_line.create_basic_clp()
 
@@ -1031,5 +1032,9 @@ def main():
         extra_options["fd_tree"].close()
 
 
+def main():
+    command_line.ice_handler(main_handler)
+
+
 if __name__ == "__main__":
-    command_line.ice_handler(main)
+    main()

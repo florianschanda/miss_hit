@@ -26,10 +26,10 @@
 import subprocess
 import re
 
-import config
-from m_language import TOKEN_KINDS
-from m_language_builtins import HIGH_IMPACT_BUILTIN_FUNCTIONS
-from errors import ICE, Location
+from miss_hit import config
+from miss_hit.m_language import TOKEN_KINDS
+from miss_hit.m_language_builtins import HIGH_IMPACT_BUILTIN_FUNCTIONS
+from miss_hit.errors import ICE, Location
 
 
 ##############################################################################

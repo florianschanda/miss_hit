@@ -28,10 +28,10 @@ import os
 import re
 from copy import deepcopy
 
-import config
-import m_lexer
+from miss_hit import config
+from miss_hit import m_lexer
 
-from errors import ICE, Error, Location
+from miss_hit.errors import ICE, Error, Location
 
 
 CONFIG_FILENAMES = ["miss_hit.cfg", ".miss_hit"]

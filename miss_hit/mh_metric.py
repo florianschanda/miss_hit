@@ -31,14 +31,14 @@ import sys
 import html
 import functools
 
-import command_line
-import work_package
-import config
+from miss_hit import command_line
+from miss_hit import work_package
+from miss_hit import config
 
-from errors import Error, ICE, Message_Handler
-from m_ast import *
-from m_lexer import MATLAB_Lexer
-from m_parser import MATLAB_Parser
+from miss_hit.errors import Error, ICE, Message_Handler
+from miss_hit.m_ast import *
+from miss_hit.m_lexer import MATLAB_Lexer
+from miss_hit.m_parser import MATLAB_Parser
 
 MEASURE = {m : None for m in config.METRICS}
 
@@ -933,7 +933,7 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
             write_text_report(sys.stdout, self.metrics, worst_offenders)
 
 
-def main():
+def main_handler():
     clp = command_line.create_basic_clp()
 
     clp["output_options"].add_argument(
@@ -995,5 +995,9 @@ def main():
     command_line.execute(mh, options, {}, metric_backend)
 
 
+def main():
+    command_line.ice_handler(main_handler)
+
+
 if __name__ == "__main__":
-    command_line.ice_handler(main)
+    main()

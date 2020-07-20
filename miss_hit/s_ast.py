@@ -31,7 +31,7 @@ import xml.etree.ElementTree as ET
 
 import os.path
 
-from errors import Location
+from miss_hit.errors import Location
 
 
 class Source_Reference(metaclass=ABCMeta):
