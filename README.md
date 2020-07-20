@@ -59,8 +59,17 @@ The version of Python I am using is `3.6.9` but any earlier or later
 version should also work. I am not using any overly fancy language
 features.
 
-If you want to help develop, you will also need Pylint (at least
-version `2.4.2`).
+### Installation via pip
+
+I am working on this.
+
+### Additional requirements for developing MISS_HIT
+
+If you want to help develop, you will also need Pylint and
+PyCodeStyle. Install as follows:
+```
+$ pip3 install --user pylint pycodestyle
+```
 
 ## Challenges
 
