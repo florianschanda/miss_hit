@@ -269,5 +269,5 @@ def ice_handler(main_function):
         print("- MISS_HIT version: %s" % VERSION)
         print("-")
         lines = textwrap.wrap(internal_compiler_error.reason)
-        print("\n".join("- %s" % l for l in lines))
+        print("\n".join("- %s" % line for line in lines))
         print("-" * 70)
