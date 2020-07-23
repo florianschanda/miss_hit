@@ -1,6 +1,24 @@
 # MISS_HIT Release Notes
 
-## 0.9.7-dev
+## Known issues
+
+### Tooling
+
+* #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
+
+* #142 [line continuations starting statements](https://github.com/florianschanda/miss_hit/issues/142)
+  has a remaining issue where multiple starting continuations are not
+  correctly removed in one run of mh_style.
+
+### Language support
+
+None known. Should be compatible with up to MATLAB 2019b.
+
+## Changelog
+
+### 0.9.8-dev
+
+### 0.9.7
 
 * #148 MISS_HIT is now a PyPI package. This change should also make
   it much easier to re-use the compiler framework of MISS_HIT in other
@@ -15,21 +33,7 @@
   the way for producing code metrics on the Simulink model itself (and
   not just embedded MATLAB code).
 
-### Known issues
-
-#### Tooling
-
-* #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
-
-* #142 [line continuations starting statements](https://github.com/florianschanda/miss_hit/issues/142)
-  has a remaining issue where multiple starting continuations are not
-  correctly removed in one run of mh_style.
-
-#### Language support
-
-None known. Should be compatible with up to MATLAB 2019b.
-
-## 0.9.6
+### 0.9.6
 
 * MH Style can now analyse (and fix) code inside Simulink models. This
   new functionality must be enabled with the new command-line flag
@@ -58,7 +62,7 @@ None known. Should be compatible with up to MATLAB 2019b.
 * MH Metric now uses more human readable names for the metrics in both
   the HTML and text report.
 
-## 0.9.5
+### 0.9.5
 
 * Disabled (but not removed) the `implicit_shortcircuit` rule. It
   turns out that in some cases `&` really does mean `&`, even inside
@@ -70,9 +74,9 @@ None known. Should be compatible with up to MATLAB 2019b.
   SIMULINK models (slx files). This does not work yet in MH Style, but
   I plan to also support this there.
 
-## 0.9.4
+### 0.9.4
 
-### Features
+#### Features
 * MH Style has a new (autofixed) rule `no_starting_newline` to make
   sure files do not start with just whitespace.
 
@@ -84,7 +88,7 @@ None known. Should be compatible with up to MATLAB 2019b.
   ones that are highly questionable like "import", "end", or
   "arguments".
 
-### Fixes
+#### Fixes
 * #131 The parser now allows the end of statement (newline, comma, or
   semicolon) after an enumeration keyword to be optional. I.e. we can
   now process this code fragment correctly:
@@ -94,26 +98,26 @@ None known. Should be compatible with up to MATLAB 2019b.
   end
   ```
 
-## 0.9.3
+### 0.9.3
 
-### Features
+#### Features
 * MH Metric can now measure cyclomatic complexity. We've aimed for
   producing the same numbers as mlint does, even if it's wrong.
 
 * MH Metric produces an (optional) table of "worst offenders" for each
   metric. This can be used to get a quick overview of code smell.
 
-### Fixes
+#### Fixes
 * Fix for #133: resolved multi-threading issues on Windows. To be
   honest, this seems more like a Python bug.
 
-## 0.9.2
+### 0.9.2
 
-### Fixes
+#### Fixes
 * Workaround for #133. Until I can work what the root cause of this
   is, multi-threading is disabled on Windows platforms.
 
-## 0.9.1
+### 0.9.1
 
 This is the first "release", previously it was all just one
 development stream. This release contains two tools:
