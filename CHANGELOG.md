@@ -10,6 +10,11 @@
   * the top-level script `mh_metric.py` is now called `mh_metric`
   * the top-level script `mh_style.py` is now called `mh_style`
 
+* Reworked Simulink parser to provide a much deeper parsing. While
+  there is no user-visible effect of this change right now, it paves
+  the way for producing code metrics on the Simulink model itself (and
+  not just embedded MATLAB code).
+
 ### Known issues
 
 #### Tooling
