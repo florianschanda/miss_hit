@@ -157,20 +157,32 @@ class MATLAB_Parser:
         return False
 
     def next(self):
+        def should_skip(token):
+            # Returns true iff this token should be completely passed
+            # over by the parser. We do this since the lexer produces
+            # tokens for whitespace and comments (needed for pretty
+            # printing in mh_style).
+
+            if not token:
+                # Never skip EOF
+                return False
+            elif token.kind in ("COMMENT",
+                                "CONTINUATION",
+                                "ANNOTATION"):
+                # Skip all of these in all cases
+                return True
+            elif token.annotation and token.kind == "NEWLINE":
+                # In MATLAB newlines are important. In MISS_HIT
+                # annotations they are not, so if we're in an
+                # annotation we can just ignore them.
+                return True
+            else:
+                # Otherwise don't skip
+                return False
+
         self.ct = self.nt
         self.nt = self.nnt
         self.nnt = self.lexer.token()
-
-        def should_skip(token):
-            if not token:
-                return False
-            if token.kind in ("COMMENT",
-                              "CONTINUATION",
-                              "ANNOTATION"):
-                return True
-            if token.annotation and token.kind == "NEWLINE":
-                return True
-            return False
 
         while self.nnt:
             # Skip comments, continuations and annotation indications
@@ -480,19 +492,16 @@ class MATLAB_Parser:
         # easier.
         if self.peek("OPERATOR", "~") and allow_void:
             self.match("OPERATOR")
-            return Identifier(self.ct)
         elif self.peek("KEYWORD", "end"):
             self.match("KEYWORD", "end")
-            return Identifier(self.ct)
         elif allow_some_keywords and self.peek("KEYWORD", "import"):
             self.match("KEYWORD", "import")
-            return Identifier(self.ct)
         elif allow_some_keywords and self.peek("KEYWORD", "arguments"):
             self.match("KEYWORD", "arguments")
-            return Identifier(self.ct)
         else:
             self.match("IDENTIFIER")
-            return Identifier(self.ct)
+
+        return Identifier(self.ct)
 
     def parse_name(self, allow_void):
         # superclass_ref ::= simple_name '@' function_reference
@@ -635,14 +644,12 @@ class MATLAB_Parser:
 
         l_functions, l_more_pragmas = self.parse_function_list()
 
-        rv = Script_File(os.path.basename(self.lexer.filename),
-                         self.lexer.get_file_loc(),
-                         self.lexer.line_count(),
-                         Sequence_Of_Statements(statements),
-                         l_functions,
-                         l_pragmas + l_more_pragmas)
-
-        return rv
+        return Script_File(os.path.basename(self.lexer.filename),
+                           self.lexer.get_file_loc(),
+                           self.lexer.line_count(),
+                           Sequence_Of_Statements(statements),
+                           l_functions,
+                           l_pragmas + l_more_pragmas)
 
     def parse_class_file(self, l_pragmas):
         self.functions_require_end = True
@@ -650,13 +657,12 @@ class MATLAB_Parser:
         n_classdef                  = self.parse_classdef()
         l_functions, l_more_pragmas = self.parse_function_list()
 
-        rv = Class_File(os.path.basename(self.lexer.filename),
-                        self.lexer.get_file_loc(),
-                        self.lexer.line_count(),
-                        n_classdef,
-                        l_functions,
-                        l_pragmas + l_more_pragmas)
-        return rv
+        return Class_File(os.path.basename(self.lexer.filename),
+                          self.lexer.get_file_loc(),
+                          self.lexer.line_count(),
+                          n_classdef,
+                          l_functions,
+                          l_pragmas + l_more_pragmas)
 
     def parse_function_list(self):
         l_functions = []
@@ -702,10 +708,8 @@ class MATLAB_Parser:
             out_brackets = True
             self.match("A_BRA")
             self.ct.set_ast(rv)
-            if self.peek("A_KET"):
-                self.match("A_KET")
-                self.ct.set_ast(rv)
-            else:
+
+            if not self.peek("A_KET"):
                 while True:
                     l_outputs.append(self.parse_identifier(allow_void=True))
                     if self.peek("COMMA"):
@@ -713,8 +717,9 @@ class MATLAB_Parser:
                         self.ct.set_ast(rv)
                     else:
                         break
-                self.match("A_KET")
-                self.ct.set_ast(rv)
+
+            self.match("A_KET")
+            self.ct.set_ast(rv)
 
         else:
             out_brackets = False
@@ -743,10 +748,8 @@ class MATLAB_Parser:
         if self.peek("BRA"):
             self.match("BRA")
             self.ct.set_ast(rv)
-            if self.peek("KET"):
-                self.match("KET")
-                self.ct.set_ast(rv)
-            else:
+
+            if not self.peek("KET"):
                 while True:
                     l_inputs.append(self.parse_identifier(allow_void=True))
                     if self.peek("COMMA"):
@@ -754,8 +757,9 @@ class MATLAB_Parser:
                         self.ct.set_ast(rv)
                     else:
                         break
-                self.match("KET")
-                self.ct.set_ast(rv)
+
+            self.match("KET")
+            self.ct.set_ast(rv)
 
         rv.set_name(n_name)
         rv.set_inputs(l_inputs)

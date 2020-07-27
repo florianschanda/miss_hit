@@ -266,16 +266,12 @@ class MATLAB_Lexer(Token_Generator):
                            else "unexpected character %s" % repr(self.cc)))
 
     def contains_block_open(self, string):
-        for c in self.comment_char:
-            if c + "{" in string:
-                return True
-        return False
+        return any(c + "{" in string
+                   for c in self.comment_char)
 
     def contains_block_close(self, string):
-        for c in self.comment_char:
-            if c + "}" in string:
-                return True
-        return False
+        return any(c + "}" in string
+                   for c in self.comment_char)
 
     def __token(self):
         # If we've been instructed to add an anonymous comma, we do

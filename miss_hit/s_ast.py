@@ -106,8 +106,7 @@ class Container(Node):
         return Location(self.filename)
 
     def iter_all_blocks(self):
-        for n_block in self.n_system.iter_all_blocks():
-            yield n_block
+        yield from self.n_system.iter_all_blocks()
 
 
 class Model(Container):
@@ -147,8 +146,7 @@ class System(Node):
 
     def iter_all_blocks(self):
         for n_block in self.d_blocks.values():
-            for item in n_block.iter_all_blocks():
-                yield item
+            yield from n_block.iter_all_blocks()
 
 
 class Block(Node):
@@ -224,8 +222,7 @@ class Sub_System(Block):
 
     def iter_all_blocks(self):
         yield self
-        for n_block in self.n_system.iter_all_blocks():
-            yield n_block
+        yield from self.n_system.iter_all_blocks()
 
 
 class Matlab_Function(Block):

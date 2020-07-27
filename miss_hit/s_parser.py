@@ -281,11 +281,9 @@ class Simulink_SLX_Parser(Simulink_Parser):
         if et_script is None:
             raise ICE("referenced script for %s not found" % sf_base_name)
 
-        n_block = Matlab_Function(et_block.attrib["SID"],
-                                  et_block.attrib["Name"],
-                                  SLX_Reference(et_script))
-
-        return n_block
+        return Matlab_Function(et_block.attrib["SID"],
+                               et_block.attrib["Name"],
+                               SLX_Reference(et_script))
 
     def parse_block_subsystem(self, et_block):
         assert isinstance(et_block, ET.Element)
