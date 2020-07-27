@@ -55,9 +55,9 @@ class Config_Parser:
         self.nt = None
         # pylint: enable=invalid-name
 
-        self.next()
+        self.skip()
 
-    def next(self):
+    def skip(self):
         self.ct = self.nt
         self.nt = self.lexer.token()
 
@@ -76,7 +76,7 @@ class Config_Parser:
                 break
 
     def match(self, kind, value=None):
-        self.next()
+        self.skip()
         if self.ct is None:
             self.mh.error(self.lexer.get_file_loc(),
                           "expected %s, reached EOF instead" % kind)
@@ -90,7 +90,7 @@ class Config_Parser:
                           (kind, value, self.ct.kind, self.ct.value))
 
     def match_eof(self):
-        self.next()
+        self.skip()
         if self.ct is not None:
             self.mh.error(self.ct.location,
                           "expected end of file, found %s instead" %

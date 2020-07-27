@@ -113,8 +113,8 @@ class MATLAB_Parser:
 
         self.debug_tree = False
 
-        self.next()
-        self.next()
+        self.skip()
+        self.skip()
 
     def sc_context(self, enabled):
         assert isinstance(enabled, bool)
@@ -156,7 +156,7 @@ class MATLAB_Parser:
                 return False
         return False
 
-    def next(self):
+    def skip(self):
         def should_skip(token):
             # Returns true iff this token should be completely passed
             # over by the parser. We do this since the lexer produces
@@ -200,7 +200,7 @@ class MATLAB_Parser:
 
     def match(self, kind, value=None):
         assert kind in TOKEN_KINDS
-        self.next()
+        self.skip()
         if self.ct is None:
             self.mh.error(self.lexer.get_file_loc(),
                           "expected %s, reached EOF instead" % kind)
@@ -226,7 +226,7 @@ class MATLAB_Parser:
 
     def amatch(self, kind, value=None):
         assert kind in TOKEN_KINDS
-        self.next()
+        self.skip()
         if self.ct is None:
             self.mh.error(self.lexer.get_file_loc(),
                           "expected %s, reached EOF instead" % kind)
@@ -251,7 +251,7 @@ class MATLAB_Parser:
                           (kind, value, self.ct.kind, self.ct.value))
 
     def match_eof(self):
-        self.next()
+        self.skip()
         if self.ct is not None:
             if self.ct.annotation:
                 self.mh.error(self.ct.location,
@@ -362,7 +362,7 @@ class MATLAB_Parser:
         terminator_tokens = []
         first_newline = None
         while self.peek_eos():
-            self.next()
+            self.skip()
             self.ct.set_ast(n_ast)
             self.ct.fix.statement_terminator = True
             terminator_tokens.append(self.ct)
@@ -370,7 +370,7 @@ class MATLAB_Parser:
                 first_newline = len(terminator_tokens) - 1
                 break
         while self.peek_eos():  # and not self.peek("NEWLINE"):
-            self.next()
+            self.skip()
             self.ct.set_ast(n_ast)
             self.ct.fix.statement_terminator = True
             terminator_tokens.append(self.ct)
@@ -606,7 +606,7 @@ class MATLAB_Parser:
         l_pragmas = []
         while self.peek("NEWLINE") or self.apeek("KEYWORD", "pragma"):
             if self.peek("NEWLINE"):
-                self.next()
+                self.skip()
             else:
                 l_pragmas.append(self.parse_annotation_pragma())
 
@@ -1193,7 +1193,7 @@ class MATLAB_Parser:
             raise ICE("failed to unset sc context")
 
         while self.peek("NEWLINE"):
-            self.next()
+            self.skip()
 
         if self.peek("KEYWORD"):
             if self.nt.value == "for":

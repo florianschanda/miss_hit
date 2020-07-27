@@ -230,7 +230,7 @@ class MATLAB_Lexer(Token_Generator):
         self.nc = self.text[0] if len(self.text) > 0 else "\0"
         self.nnc = self.text[1] if len(self.text) > 1 else "\0"
 
-    def next(self):
+    def skip(self):
         self.lexpos += 1
         if self.cc == "\n":
             self.col_offset = self.lexpos
@@ -244,7 +244,7 @@ class MATLAB_Lexer(Token_Generator):
     def advance(self, n):
         assert isinstance(n, int) and n >= 0
         for _ in range(n):
-            self.next()
+            self.skip()
 
     def match_re(self, regex):
         match = re.match("^" + regex,
@@ -302,14 +302,14 @@ class MATLAB_Lexer(Token_Generator):
         # we're in block comment mode
         preceeding_ws = False
         while not self.block_comment:
-            self.next()
+            self.skip()
             if self.cc in (" ", "\t"):
                 preceeding_ws = True
             else:
                 break
 
         if self.block_comment:
-            self.next()
+            self.skip()
 
         kind = None
         value = None
@@ -331,7 +331,7 @@ class MATLAB_Lexer(Token_Generator):
             else:
                 kind = "COMMENT"
                 while self.nc not in ("\n", "\0"):
-                    self.next()
+                    self.skip()
 
         elif self.command_mode:
             # Lexing in command mode
@@ -339,13 +339,13 @@ class MATLAB_Lexer(Token_Generator):
                 # Comments go until the end of the line
                 kind = "COMMENT"
                 while self.nc not in ("\n", "\0"):
-                    self.next()
+                    self.skip()
 
             elif self.cc == "\n":
                 # Newlines are summarised into one token
                 kind = "NEWLINE"
                 while self.nc in ("\n", " ", "\t"):
-                    self.next()
+                    self.skip()
 
             elif self.cc == ";":
                 kind = "SEMICOLON"
@@ -360,7 +360,7 @@ class MATLAB_Lexer(Token_Generator):
                 # We now need to eat everything until and including
                 # the next line
                 while self.cc not in ("\n", "\0"):
-                    self.next()
+                    self.skip()
 
             else:
                 # Everything else in command form is converted into a
@@ -394,7 +394,7 @@ class MATLAB_Lexer(Token_Generator):
                             # single quotes. We skip one extra
                             # character ahead.
                             value += "'"
-                            self.next()
+                            self.skip()
 
                         elif self.nc == "'":
                             # Leave string mode
@@ -466,7 +466,7 @@ class MATLAB_Lexer(Token_Generator):
                             # string, so add the character.
                             value += self.nc
 
-                    self.next()
+                    self.skip()
 
         else:
             # Ordinary lexing
@@ -478,13 +478,13 @@ class MATLAB_Lexer(Token_Generator):
                 # '%|' on its own in a new line begins an annotation.
                 self.in_annotation = True
                 kind = "ANNOTATION"
-                self.next()
+                self.skip()
 
             elif self.cc in self.comment_char:
                 # Comments go until the end of the line
                 kind = "COMMENT"
                 while self.nc not in ("\n", "\0"):
-                    self.next()
+                    self.skip()
 
             elif self.cc == "\n":
                 # Newlines are summarised into one token, except if
@@ -494,22 +494,22 @@ class MATLAB_Lexer(Token_Generator):
                     pass
                 else:
                     while self.nc in ("\n", " ", "\t"):
-                        self.next()
+                        self.skip()
 
             elif self.cc == ";":
                 kind = "SEMICOLON"
 
             elif not self.in_annotation and self.cc == "." and self.nc == ".":
                 # This is a continuation
-                self.next()
+                self.skip()
                 if self.nc == ".":
                     kind = "CONTINUATION"
-                    self.next()
+                    self.skip()
 
                     # We now need to eat everything until and including
                     # the next line
                     while self.cc not in ("\n", "\0"):
-                        self.next()
+                        self.skip()
 
                 else:
                     self.lex_error("expected . to complete continuation token")
@@ -518,7 +518,7 @@ class MATLAB_Lexer(Token_Generator):
                 # Could be an identifier or keyword
                 kind = "IDENTIFIER"
                 while self.nc.isalnum() or self.nc == "_":
-                    self.next()
+                    self.skip()
 
             elif self.cc.isnumeric() or \
                  self.cc == "." and self.nc.isnumeric():
@@ -540,7 +540,7 @@ class MATLAB_Lexer(Token_Generator):
                 # This is either a boolean relation, negation, or the
                 # assignment
                 if self.nc == "=":
-                    self.next()
+                    self.skip()
                     kind = "OPERATOR"
                 elif self.cc == "=":
                     kind = "ASSIGNMENT"
@@ -553,15 +553,15 @@ class MATLAB_Lexer(Token_Generator):
             elif self.cc in ("&", "|"):
                 kind = "OPERATOR"
                 if self.nc == self.cc:
-                    self.next()
+                    self.skip()
 
             elif self.cc == "." and self.nc in ("*", "/", "\\", "^", "'"):
                 kind = "OPERATOR"
-                self.next()
+                self.skip()
 
             elif self.cc == "." and self.nc == "?":
                 kind = "NVP_DELEGATE"
-                self.next()
+                self.skip()
 
             elif self.cc == "'":
                 # This is either a single-quoted string or the
@@ -594,9 +594,9 @@ class MATLAB_Lexer(Token_Generator):
 
                 if kind == "CARRAY":
                     while True:
-                        self.next()
+                        self.skip()
                         if self.cc == "'" and self.nc == "'":
-                            self.next()
+                            self.skip()
                         elif self.cc == "'":
                             break
                         elif self.cc in ("\n", "\0"):
@@ -606,9 +606,9 @@ class MATLAB_Lexer(Token_Generator):
                 kind = "STRING"
                 contains_quotes = True
                 while True:
-                    self.next()
+                    self.skip()
                     if self.cc == '"' and self.nc == '"':
-                        self.next()
+                        self.skip()
                     elif self.cc == '"':
                         break
                     elif self.cc in ("\n", "\0"):
@@ -656,7 +656,7 @@ class MATLAB_Lexer(Token_Generator):
             elif self.cc == "!":
                 # Shell escapes go up to the end of the line
                 while self.nc not in ("\n", "\0"):
-                    self.next()
+                    self.skip()
                 kind = "BANG"
 
             elif self.cc == "?":
