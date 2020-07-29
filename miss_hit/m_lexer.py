@@ -28,7 +28,7 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 
-from miss_hit import config
+from miss_hit.config import Config
 from miss_hit import m_ast
 
 from miss_hit.errors import Location, Error, Message_Handler, ICE
@@ -1123,7 +1123,7 @@ class MATLAB_Lexer(Token_Generator):
 class Token_Buffer(Token_Generator):
     def __init__(self, lexer, cfg):
         assert isinstance(lexer, MATLAB_Lexer)
-        assert isinstance(cfg, dict)
+        assert isinstance(cfg, Config)
         super().__init__(lexer.filename, lexer.blockname)
 
         self.cfg = cfg
@@ -1279,11 +1279,11 @@ class Token_Buffer(Token_Generator):
 
                     # We might have to fix up indentation
                     if new_tokens[-1].first_in_statement and \
-                       config.active(self.cfg, "indentation"):
+                       self.cfg.active("indentation"):
                         if new_tokens[-1].ast_link:
                             new_tokens[-1].fix.correct_indent = (
                                 new_tokens[-1].ast_link.get_indentation() *
-                                self.cfg["tab_width"])
+                                self.cfg.style_config["tab_width"])
 
         # Add newlines
         tmp_tokens = new_tokens
@@ -1302,15 +1302,15 @@ class Token_Buffer(Token_Generator):
                 newline_added = False
                 token.first_in_line = True
                 token.first_in_statement = True
-                if config.active(self.cfg, "indentation"):
+                if self.cfg.active("indentation"):
                     if token.ast_link:
                         token.fix.correct_indent = (
                             token.ast_link.get_indentation() *
-                            self.cfg["tab_width"])
+                            self.cfg.style_config["tab_width"])
                     else:
                         token.fix.correct_indent = (
                             previous_token.ast_link.get_indentation() *
-                            self.cfg["tab_width"])
+                            self.cfg.style_config["tab_width"])
 
             # This token requires a newline to be inserted.
             if token.fix.add_newline:
@@ -1352,7 +1352,7 @@ class Token_Buffer(Token_Generator):
                 next_in_line = None
 
             if token.first_in_line:
-                if config.active(self.cfg, "indentation") and \
+                if self.cfg.active("indentation") and \
                    token.fix.correct_indent is not None:
                     rv += " " * token.fix.correct_indent
                 else:

@@ -4,26 +4,27 @@
 This little hack draws a hierarchy of the AST nodes in GraphViz format.
 """
 
-import sys
-sys.path.append(".")
-
 import inspect
-import m_ast
-import s_ast
 import argparse
+
+import miss_hit.m_ast
+import miss_hit.s_ast
+import miss_hit.cfg_ast
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("component", metavar="s|m")
+    ap.add_argument("component", metavar="s|m|cfg")
     options = ap.parse_args()
 
-    if options.component not in ("s", "m"):
-        ap.error("component must be either s or m")
+    if options.component == "s":
+        module = miss_hit.s_ast
     elif options.component == "m":
-        module = m_ast
+        module = miss_hit.m_ast
+    elif options.component == "cfg":
+        module = miss_hit.cfg_ast
     else:
-        module = s_ast
+        ap.error("component must be either s(imulink), m(atlab), or cfg")
 
     print("digraph {")
     print('rankdir="LR";')

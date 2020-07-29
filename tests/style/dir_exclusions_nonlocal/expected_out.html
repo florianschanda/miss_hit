@@ -12,7 +12,10 @@
 <h1>Issues identified</h1>
 <section>
 <h2>miss_hit.cfg</h2>
-<div class="message"><a href="matlab:opentoline('miss_hit.cfg', 1, 14)">miss_hit.cfg: line 1:</a> error: must be a valid local directory</div>
+<div class="message"><a href="matlab:opentoline('miss_hit.cfg')">miss_hit.cfg:</a> error: config file contains errors</div>
+<div class="message"><a href="matlab:opentoline('miss_hit.cfg', 1, 14)">miss_hit.cfg: line 1:</a> error: must local (non-relative) directory</div>
+<h2>.</h2>
+<div class="message"><a href="matlab:opentoline('.')">.:</a> error: cannot find project root because the config file contains errors: please add a config file with the &#x27;project_root&#x27; directive</div>
 </section>
 </main>
 </body>

@@ -1,0 +1,29 @@
+MISS_HIT configuration file
+  Global MH Disable
+  Style configuration line_length
+    Value: 100
+  Style configuration file_length
+    Value: 1000
+  Style configuration copyright_entity
+    Value: Potato Inc.
+  Style configuration copyright_entity
+    Value: Kittens AG
+  Style application for naming_classes
+    Enabled: False
+  Style application for naming_functions
+    Enabled: False
+  Style configuration regex_class_name
+    Value: [A-Z]\w*
+  Style configuration regex_function_name
+    Value: [A-Z]\w*
+  Style configuration regex_method_name
+    Value: \w+
+  Style configuration regex_nested_name
+    Value: \w+
+  Style application for operator_after_continuation
+    Enabled: False
+  Style application for operator_whitespace
+    Enabled: False
+  Style application for end_of_statements
+    Enabled: False
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

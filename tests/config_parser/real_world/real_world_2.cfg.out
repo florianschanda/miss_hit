@@ -1,0 +1,9 @@
+MISS_HIT configuration file
+  Global MH Activation
+  Style configuration line_length
+    Value: 150
+  Style application for operator_whitespace
+    Enabled: True
+  Directory exclusion
+    Excluded: testing
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

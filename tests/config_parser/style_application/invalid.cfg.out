@@ -1,0 +1,11 @@
+In invalid.cfg, line 1
+| enable_rule: "filelength"
+|              ^^^^^^^^^^^^ error: expected valid style rule name (did you mean file_length?)
+In invalid.cfg, line 2
+| suppress_rule: *
+|                ^ error: expected STRING, found OPERATOR instead
+In invalid.cfg, line 3
+| enable_rule: "tab_width"
+|              ^^^^^^^^^^^ error: expected valid style rule name
+invalid.cfg: error: config file contains errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 4 error(s)

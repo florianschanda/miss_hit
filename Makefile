@@ -23,11 +23,14 @@ upload_test: package
 upload_main: package
 	python3 -m twine upload --repository pypi dist/*
 
-m_ast_picture.pdf: m_ast.py util/mk_ast_hierarchy.py
-	./util/mk_ast_hierarchy.py m | dot -Tpdf > m_ast_picture.pdf
+m_ast_picture.pdf: miss_hit/m_ast.py util/mk_ast_hierarchy.py
+	python3 -m util.mk_ast_hierarchy m | dot -Tpdf > m_ast_picture.pdf
 
-s_ast_picture.pdf: s_ast.py util/mk_ast_hierarchy.py
-	./util/mk_ast_hierarchy.py s | dot -Tpdf > s_ast_picture.pdf
+s_ast_picture.pdf: miss_hit/s_ast.py util/mk_ast_hierarchy.py
+	python3 -m util.mk_ast_hierarchy s | dot -Tpdf > s_ast_picture.pdf
+
+cfg_ast_picture.pdf: miss_hit/cfg_ast.py util/mk_ast_hierarchy.py
+	python3 -m util.mk_ast_hierarchy cfg | dot -Tpdf > cfg_ast_picture.pdf
 
 .PHONY: doc test lint style
 .PHONY: package upload_test upload_main

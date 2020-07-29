@@ -2,7 +2,7 @@
 In inc/test.m, line 3
 | _not_fine_;
 | ^ lex error: unexpected character '_'
-MISS_HIT Style Summary: 2 file(s) analysed, 1 error(s); 2 file(s) excluded from analysis
+MISS_HIT Style Summary: 2 file(s) analysed, 1 error(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 2 file(s) analysed, 1 error(s); 2 file(s) excluded from analysis
+MISS_HIT Style Summary: 2 file(s) analysed, 1 error(s)

@@ -18,6 +18,26 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ### 0.9.8-dev
 
+* #151 Rewrote configuration file mechanism. The change is backwards
+  compatible, so existing files will continue to work.
+  * Fixed an issue where broken configuration files higher up the
+    directory tree (and unrelated to the project you're analysing)
+	impacted analysis.
+  * Fixed an issue where files in directories hard-excluded (i.e. using
+    `exclude_dir` as opposed to `enable: 0`) counted as files excluded
+	from analysis. This seems weird, but the intention was that excluded
+	directories were effectively considered deleted and would not influence
+	anything, ever.
+  * We no longer enter any directory starting with `.` when searching for
+    files to analyse.
+  * New config directive `project_root` that effectively resets all
+    configuration and starts from a blank slate.
+  * Any directory containing the `.git` directory is also considered a project
+    root. This means checkout out sub-projects are not influenced by your
+	configuration file. I plan to make this behaviour configurable in the
+	future.
+  * Proper [documentation for configuration files](https://florianschanda.github.io/miss_hit/configuration.html)
+
 ### 0.9.7
 
 * #148 MISS_HIT is now a PyPI package. This change should also make

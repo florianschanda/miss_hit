@@ -1,5 +1,5 @@
 === PLAIN MODE ===
-directory .: error: cannot have both a miss_hit.cfg and .miss_hit config file
+.: error: multiple config files found; cannot find project root: please add a config file with the 'project_root' directive
 MISS_HIT Style Summary: 1 file(s) analysed, 1 error(s)
 
 === HTML MODE ===

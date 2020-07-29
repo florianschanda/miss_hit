@@ -1,0 +1,8 @@
+MISS_HIT configuration file
+  Style configuration tab_width
+    Value: 5
+  Style configuration copyright_entity
+    Value: potato
+  Style configuration regex_class_name
+    Value: [a-z]+
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

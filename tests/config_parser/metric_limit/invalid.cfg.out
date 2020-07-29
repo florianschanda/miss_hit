@@ -1,0 +1,20 @@
+In invalid.cfg, line 2
+| metric "cycl": limit 10
+|        ^^^^^^ error: expected valid code metric or '*' (did you mean cyc?)
+In invalid.cfg, line 5
+| metric *: limit 10
+|           ^^^^^ error: cannot apply limit to all metrics
+In invalid.cfg, line 6
+| metric "npath": limit -1
+|                       ^ error: expected NUMBER, found OPERATOR instead
+In invalid.cfg, line 7
+| metric "npath": limit potato
+|                       ^^^^^^ error: expected NUMBER, found IDENTIFIER instead
+In invalid.cfg, line 10
+| metric *: potato
+|           ^^^^^^ error: expected disable|report
+In invalid.cfg, line 11
+| metric "npath": potato
+|                 ^^^^^^ error: expected disable|report|limit
+invalid.cfg: error: config file contains errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 7 error(s)

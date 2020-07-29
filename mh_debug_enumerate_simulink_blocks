@@ -31,7 +31,7 @@ import os
 import argparse
 
 from miss_hit import command_line
-from miss_hit import config
+from miss_hit.config import Config
 from miss_hit.errors import Message_Handler
 from miss_hit.s_parser import Simulink_SLX_Parser
 
@@ -44,7 +44,7 @@ def process(mh, root_dir, file_name):
 
     rv = set()
 
-    slp = Simulink_SLX_Parser(mh, file_name, config.BASE_CONFIG)
+    slp = Simulink_SLX_Parser(mh, file_name, Config())
     n_container = slp.parse_file()
     if n_container:
         for n_block in n_container.iter_all_blocks():

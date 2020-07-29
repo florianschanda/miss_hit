@@ -1,0 +1,29 @@
+In invalid.cfg, line 1
+| enable: 1.0
+|         ^^^ error: expected an integer number
+In invalid.cfg, line 2
+| enable: potato
+|         ^^^^^^ error: expected true or false
+In invalid.cfg, line 3
+| enable: "true"
+|         ^^^^^^ error: expected true or false
+In invalid.cfg, line 4
+| enable: if
+|         ^^ error: expected true or false
+In invalid.cfg, line 5
+| enable: enable
+|         ^^^^^^ error: expected true or false
+In invalid.cfg, line 6
+| enable: 1 enable: 0
+|           ^^^^^^ error: expected NEWLINE, found IDENTIFIER instead
+In invalid.cfg, line 7
+| enable: 2
+|         ^ error: expected true or false
+In invalid.cfg, line 8
+| enable: -1
+|         ^ error: expected true or false
+In invalid.cfg, line 9
+| enable: # potato
+|                 ^ error: expected true or false
+invalid.cfg: error: config file contains errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 10 error(s)

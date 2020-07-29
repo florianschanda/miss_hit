@@ -1,0 +1,20 @@
+In invalid.cfg, line 2
+| tab_width: 1
+|            ^ error: tab_width must be at least 2
+In invalid.cfg, line 3
+| tab_width: "potato"
+|            ^^^^^^^^ error: expected NUMBER, found STRING instead
+In invalid.cfg, line 6
+| copyright_entity: 1
+|                   ^ error: expected STRING, found NUMBER instead
+In invalid.cfg, line 7
+| copyright_entity: false
+|                   ^^^^^ error: expected STRING, found IDENTIFIER instead
+In invalid.cfg, line 10
+| regex_function_name: "[a-z+"
+|                       ^ error: unterminated character set
+In invalid.cfg, line 13
+| tab_length: 4
+| ^^^^^^^^^^ error: expected valid style configuration name (did you mean line_length?)
+invalid.cfg: error: config file contains errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 7 error(s)

@@ -26,7 +26,7 @@
 import os.path
 
 from miss_hit import s_ast
-from miss_hit import config_files
+from miss_hit import cfg_tree
 
 from miss_hit.errors import Message_Handler, ICE, Location
 
@@ -52,7 +52,7 @@ class SIMULINK_File_WP(Work_Package):
     # Embedded_MATLAB_WP instances.
     def __init__(self, filename, mh, options, extra_options):
         super().__init__(filename, mh, options, extra_options)
-        self.cfg = config_files.get_config(self.filename)
+        self.cfg = cfg_tree.get_config(self.filename)
 
     def write_modified(self, content):
         raise ICE("logic error - must not be called for SL File WP")
@@ -91,7 +91,7 @@ class MATLAB_File_WP(MATLAB_Work_Package):
         super().__init__(filename, None,
                          encoding,
                          mh, options, extra_options)
-        self.cfg = config_files.get_config(self.filename)
+        self.cfg = cfg_tree.get_config(self.filename)
 
     def write_modified(self, content):
         assert isinstance(content, str)

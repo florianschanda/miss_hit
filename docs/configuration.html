@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    MISS_HIT - MATLAB independent, small & safe, high integrity tools
+  </title>
+</head>
+
+<body>
+  <header>MISS_HIT 0.9.8-dev Configuration Files</header>
+
+  <main>
+    <div class="section">
+      The behaviour of the <a href="index.html">MISS_HIT</a> tools can
+      be controlled with configuration files. This document describes
+      the syntax and semantics of these files.
+    </div>
+
+    <div class="title">
+      <img src="assets/file-text.svg" alt="Picture of text" />
+      <h1>Naming and Scope</h1>
+    </div>
+
+    <section>
+      <h2>Naming</h2>
+      <div>
+	A configuration file must have one of the following names:
+	<ul>
+	  <li><tt>miss_hit.cfg</tt></li>
+	  <li><tt>.miss_hit</tt></li>
+	</ul>
+	It is recommended to use <tt>miss_hit.cfg</tt>, except for the
+	root directory of your project.
+      </div>
+      <div></div>
+
+      <h2>Scope</h2>
+      <div>
+	Configuration files apply to all files in the directory they
+	are placed in (including any files in sub-directories).
+      </div>
+      <div>
+	A configuration file in a sub-directory inherits all options
+	valid in the parent directory, and then subsequently
+	over-rides any options it wants to.
+      </div>
+      <div></div>
+
+      <h2>Project Root</h2>
+      <div>
+	A project root is the basic configuration and is initially set
+	to all default values.
+      </div>
+      <div>
+	A project root is any directory that fulfils one or more of
+	the following:
+	<ul>
+	  <li>Contains a directory named <tt>.git</tt></li>
+	  <li>
+	    Contains configuration file with the <tt>project_root</tt>
+	    directive
+	  </li>
+	  <li>
+	    Was excluded by a <tt>exclude_dir</tt> directive
+	  </li>
+	</ul>
+      </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/file-text.svg" alt="Picture of text" />
+      <h1>Examples and tutorial</h1>
+    </div>
+
+    <section>
+      <h2>Coming soon...</h2>
+    </section>
+
+    <div class="title">
+      <img src="assets/file-text.svg" alt="Picture of text" />
+      <h1>Reference</h1>
+    </div>
+
+    <section>
+      <h2>Syntax</h2>
+      <div>
+	Grammar:
+<pre>
+TERMINATED_DIRECTIVE ::= DIRECTIVE ( NEWLINE {NEWLINE} | END_OF_FILE )
+
+DIRECTIVE ::= PROJECT_ROOT
+            | GLOBAL_ENABLE
+            | STYLE_APPLICATION
+            | STYLE_CONFIGURATION
+            | METRIC_LIMIT
+            | DIALECT
+            | EXCLUSION
+
+CONFIG_FILE ::= { TERMINATED_DIRECTIVE }
+</pre>
+      </div>
+      <div>
+	A configuration contains comments (starting with <tt>#</tt>)
+	and configuration directives. Each directive is terminated by
+	one or more new lines (and you cannot continue lines).
+      </div>
+      <div>
+	Configuration directives are processed sequentially. I.e. if
+	two directives conflict, then the latest one takes precedence.
+      </div>
+      <div></div>
+
+      <h2>Values</h2>
+      <div>
+	Directives often contain values, typeset in all-caps. This
+	section defines the syntax for each value.
+      </div>
+
+      <h3>BOOLEAN</h3>
+      <div>
+	Grammar: <pre>BOOLEAN ::= false | true | 0 | 1</pre>
+      </div>
+      <div>
+	Note the numeric form is here for backwards-compatibility. It
+	is recommended to use the <tt>false</tt> and <tt>true</tt>
+	literals instead.
+      </div>
+
+      <h3>STRING</h3>
+      <div>
+	Grammar: <pre>STRING ::= &lt;double-quoted-string&gt;</pre>
+      </div>
+
+      <h3>INTEGER</h3>
+      <div>
+	Grammar: <pre>STRING ::= &lt;non-negative-integer&gt;</pre>
+      </div>
+
+
+      <h2>Directives</h2>
+
+      <h3>Project Root</h3>
+      <div>
+	Grammar: <pre>PROJECT_ROOT ::= project_root</pre>
+      </div>
+      <div>
+	This directive means we do not inherit configuration from our
+	parent directory, but instead we start from a clean (default)
+	slate. It is recommended to place this directive in the top
+	level of your project.
+      </div>
+
+      <h3>Global enable/disable</h3>
+      <div>
+	Grammar: <pre>GLOBAL_ENABLE ::= enable ':' BOOLEAN </pre>
+      </div>
+      <div>
+	This directive completely enables or disables all miss_hit
+	tools. This is especially useful if you have a large legacy
+	code-base that you're slowly transitioning. In this use-case
+	you have <tt>enable: false</tt> in your project root, and
+	individual components overwrite it again with <tt>enable:
+	true</tt> on a case-by-case basis.
+      </div>
+
+      <h3>Style rule application</h3>
+      <div>
+	Grammar:
+<pre>
+STYLE_APPLICATION ::= enable_rule ':' STRING
+                    | suppress_rule ':' STRING
+</pre>
+      </div>
+      <div>
+	This directive turns style rules on or off. The given string
+	must refer to a <a href="style_checker.html">valid style
+	rule</a>.
+      </div>
+      <div>
+	Please note that any configuration associatd with a style rule
+	is not affected by this directive. For example you can
+	set <tt>line_length</tt> and then turn the corresponding rule
+	on and off without having to re-specify the acceptable line
+	length.
+      </div>
+
+      <h3>Style configuration application</h3>
+      <div>
+	Grammar:
+<pre>
+STYLE_CONFIGURATION ::= IDENTIFIER ':' STRING
+                      | IDENTIFIER ':' INTEGER
+                      | IDENTIFIER ':' BOOLEAN
+</pre>
+      </div>
+      <div>
+	This directive configures a particular style rule. The
+	identifier must refer to a <a href="style_checker.html">valid
+	rule parameter</a>.
+      </div>
+
+      <h3>Metric configuration</h3>
+      <div>
+	Grammar:
+<pre>
+METRIC_NAME ::= STRING
+METRIC_OR_WC ::= METRIC_NAME | '*'
+METRIC_LIMIT ::= metric METRIC_OR_WC ':' report
+               | metric METRIC_OR_WC ':' ignore
+               | metric METRIC_NAME  ':' limit INTEGER
+</pre>
+      </div>
+      <div>
+	This directive configures a particular code metric. The metric
+	name must refer to a <a href="metrics.html">valid code
+	metric</a>. Using the wild-card means this directive applies
+	to all metrics MISS_HIT supports.
+      </div>
+      <div>
+	When <tt>report</tt> is specified, a metric is measured and
+	included in the final report, but no limits are checked or
+	enforced.
+      </div>
+      <div>
+	When <tt>ignore</tt> is specified, a metric is not measured
+	and not included in the final report. Use this to completely
+	remove metrics you don't care about.
+      </div>
+      <div>
+	When <tt>limit</tt> is specified, the measured metric must be
+	less than or equal to the given number; otherwise a message is
+	generated by mh_metric. (But these can be justified by special
+	comments in the code, please refer to
+	the <a href="metrics.html">mh_metric manual</a>.)
+      </div>
+
+      <h3>Language dialect</h3>
+      <div>
+	Grammar: <pre>DIALECT ::= octave ':' BOOLEAN</pre>
+      </div>
+      <div>
+	This directive controls which language is processed by
+	MISS_HIT. By default we process MATLAB, but if this is set to
+	true we instead process Octave.
+      </div>
+      <div>
+	Please note that Octave support is limited right now, but I
+	consider it a medium/long term priority.
+      </div>
+
+      <h3>Directory exclusion</h3>
+      <div>
+	Grammar: <pre>EXCLUSION ::= exclude_dir ':' STRING</pre>
+      </div>
+      <div>
+	This directive completely removes a directory from
+	consideration, and makes them project roots.
+      </div>
+      <div>
+	MISS_HIT will not enter such directories, unless explicitly
+	demanded. For example, consider this directory structure:
+<pre>
+root
+  / miss_hit.cfg (which excludes kitten)
+  / potato
+      / foo.m
+      / bar.m
+  / kitten
+      / baz.m
+</pre>
+      </div>
+      <div>
+	Assume the user is in <tt>root</tt>.
+	<pre>$ mh_style .</pre>
+	This command will analyse two files, <tt>foo.m</tt> and <tt>bar.m</tt>.
+
+	<pre>$ mh_style kitten/baz.m</pre>
+	This command will analyse one
+	file, <tt>baz.m</tt>. Furthermore, because <tt>kitten</tt> is
+	considered a project root, any configuration
+	from <tt>root</tt> is entirely ignored.
+      </div>
+    </section>
+
+
+
+  </main>
+
+  <footer>
+    Content &copy; 2020 Florian Schanda<br>
+    Style &copy; 2019-2020 Alina Boboc<br>
+    MISS_HIT is licensed under the GPLv3
+  </footer>
+</body>
+
+</html>

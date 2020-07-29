@@ -26,10 +26,10 @@
 import subprocess
 import re
 
-from miss_hit import config
+from miss_hit.config import Config
 from miss_hit.m_language import TOKEN_KINDS
 from miss_hit.m_language_builtins import HIGH_IMPACT_BUILTIN_FUNCTIONS
-from miss_hit.errors import ICE, Location
+from miss_hit.errors import Message_Handler, ICE, Location
 
 
 ##############################################################################
@@ -312,7 +312,8 @@ class Name(Expression):
         return False
 
     def sty_check_builtin_shadow(self, mh, cfg):
-        pass
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
 
 
 class Literal(Expression):
@@ -387,6 +388,8 @@ class Compilation_Unit(Node):
         raise ICE("compilation unit cannot have a parent")
 
     def sty_check_naming(self, mh, cfg):
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
         raise ICE("compilation unit root implements no checks")
 
 
@@ -438,6 +441,8 @@ class Script_File(Compilation_Unit):
         self._visit_end(parent, function, relation)
 
     def sty_check_naming(self, mh, cfg):
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
         for n_function in self.l_functions:
             n_function.sty_check_naming(mh, cfg)
 
@@ -482,6 +487,8 @@ class Function_File(Compilation_Unit):
         self._visit_end(parent, function, relation)
 
     def sty_check_naming(self, mh, cfg):
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
         for n_function in self.l_functions:
             n_function.sty_check_naming(mh, cfg)
 
@@ -537,6 +544,8 @@ class Class_File(Compilation_Unit):
         self._visit_end(parent, function, relation)
 
     def sty_check_naming(self, mh, cfg):
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
         self.n_classdef.sty_check_naming(mh, cfg)
         for n_function in self.l_functions:
             n_function.sty_check_naming(mh, cfg)
@@ -635,7 +644,9 @@ class Class_Definition(Definition):
         n_block.set_parent(self)
 
     def sty_check_naming(self, mh, cfg):
-        if config.active(cfg, "naming_classes"):
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
+        if cfg.active("naming_classes"):
             self.n_name.sty_check_naming(mh, cfg, "class")
         for n_block in self.l_methods:
             for n_function in n_block.l_items:
@@ -721,6 +732,8 @@ class Function_Definition(Definition):
         self._visit_end(parent, function, relation)
 
     def sty_check_naming(self, mh, cfg):
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
         self.n_sig.sty_check_naming(mh, cfg)
         for n_function in self.l_nested:
             n_function.sty_check_naming(mh, cfg)
@@ -803,13 +816,16 @@ class Function_Signature(Node):
         self._visit_end(parent, function, relation)
 
     def sty_check_naming(self, mh, cfg):
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
+
         # We need to work out what we are. Options are:
         # 1. Ordinary function
         # 2. Nested function
         # 3. Class method (separate or otherwise)
         # 4. Naked signature in class as forward declaration
 
-        if not config.active(cfg, "naming_functions"):
+        if not cfg.active("naming_functions"):
             return
 
         n_fdef = self.n_parent
@@ -1367,12 +1383,18 @@ class Identifier(Name):
         return self.t_ident.kind == "IDENTIFIER"
 
     def sty_check_naming(self, mh, cfg, kind):
-        regex = cfg["regex_" + kind + "_name"]
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
+
+        regex = cfg.style_config["regex_" + kind + "_name"]
         if not re.match("^(" + regex + ")$", self.t_ident.value):
             mh.style_issue(self.t_ident.location,
                            "violates naming scheme for %s" % kind)
 
     def sty_check_builtin_shadow(self, mh, cfg):
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
+
         if self.t_ident.value in HIGH_IMPACT_BUILTIN_FUNCTIONS:
             mh.style_issue(self.t_ident.location,
                            "redefining this builtin is very naughty")

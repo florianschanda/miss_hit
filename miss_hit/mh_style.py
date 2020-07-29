@@ -85,22 +85,23 @@ class Rule_File_Length(Style_Rule_File):
             "type"    : int,
             "metavar" : "N",
             "help"    : ("Maximum lines in a file, %u by default." %
-                         config.BASE_CONFIG["file_length"]),
+                         config.STYLE_CONFIGURATION["file_length"].default)
         }
     }
 
     defaults = {
-        "file_length" : config.BASE_CONFIG["file_length"],
+        "file_length" : config.STYLE_CONFIGURATION["file_length"].default,
     }
 
     def __init__(self):
         super().__init__("file_length")
 
     def apply(self, mh, cfg, filename, full_text, lines):
-        if len(lines) > cfg["file_length"]:
+        if len(lines) > cfg.style_config["file_length"]:
             mh.style_issue(Location(filename,
                                     len(lines)),
-                           "file exceeds %u lines" % cfg["file_length"],
+                           "file exceeds %u lines" %
+                           cfg.style_config["file_length"],
                            self.autofix)
 
 
@@ -145,25 +146,26 @@ class Rule_Line_Length(Style_Rule_Line):
             "type"    : int,
             "metavar" : "N",
             "help"    : ("Maximum characters per line, %u by default." %
-                         config.BASE_CONFIG["line_length"]),
+                         config.STYLE_CONFIGURATION["line_length"].default),
         }
     }
 
     defaults = {
-        "line_length" : config.BASE_CONFIG["line_length"],
+        "line_length" : config.STYLE_CONFIGURATION["line_length"].default,
     }
 
     def __init__(self):
         super().__init__("line_length", False)
 
     def apply(self, mh, cfg, filename, line_no, line):
-        if len(line) > cfg["line_length"]:
+        if len(line) > cfg.style_config["line_length"]:
             mh.style_issue(Location(filename,
                                     line_no,
-                                    cfg["line_length"],
+                                    cfg.style_config["line_length"],
                                     len(line),
                                     line),
-                           "line exceeds %u characters" % cfg["line_length"],
+                           "line exceeds %u characters" %
+                           cfg.style_config["line_length"],
                            self.autofix)
 
 
@@ -222,12 +224,12 @@ class Rule_Line_Tabs(Style_Rule_Line):
             "type"    : int,
             "metavar" : "N",
             "help"    : ("Tab-width, by default %u." %
-                         config.BASE_CONFIG["tab_width"]),
+                         config.STYLE_CONFIGURATION["tab_width"].default),
         }
     }
 
     defaults = {
-        "tab_width" : config.BASE_CONFIG["tab_width"],
+        "tab_width" : config.STYLE_CONFIGURATION["tab_width"].default,
     }
 
     def __init__(self):
@@ -314,7 +316,7 @@ def build_library(cfg, rules):
     for kind in rules:
         for rule in rules[kind]:
             inst = rule()
-            if inst.mandatory or config.active(cfg, inst.name):
+            if inst.mandatory or cfg.active(inst.name):
                 lib[kind].append(inst)
 
     return lib
@@ -349,9 +351,10 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
     assert isinstance(tbuf, Token_Buffer)
     assert isinstance(is_embedded, bool)
 
-    in_copyright_notice = (config.active(cfg, "copyright_notice") and
+    in_copyright_notice = (cfg.active("copyright_notice") and
                            (not is_embedded or
-                            cfg["copyright_in_embedded_code"]))
+                            cfg.style_config["copyright_in_embedded_code"]))
+    entities = cfg.style_config["copyright_entity"]
     company_copyright_found = False
     generic_copyright_found = False
     copyright_token = None
@@ -440,13 +443,13 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     # We have a sane copyright string
                     copyright_token = token
                     generic_copyright_found = True
-                    if match.group("org").strip() in cfg["copyright_entity"]:
+                    if match.group("org").strip() in entities:
                         company_copyright_found = True
 
                 elif copyright_token is None:
                     # We might find something that could look like a
                     # copyright, but is not quite right
-                    for org in cfg["copyright_entity"]:
+                    for org in entities:
                         if org.lower() in token.value.lower():
                             copyright_token = token
                             break
@@ -474,10 +477,10 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     # If we have something basic, we only raise an
                     # issue if we're supposed to have something
                     # specific.
-                    if cfg["copyright_entity"]:
+                    if entities:
                         mh.style_issue(copyright_token.location,
                                        "Copyright does not mention one of %s" %
-                                       (" or ".join(cfg["copyright_entity"])))
+                                       (" or ".join(entities)))
                 elif copyright_token:
                     # We found something that might be a copyright,
                     # but is not in a sane format
@@ -493,7 +496,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
         # end_of_statements rule, which is much more strict and
         # complete.
         if token.kind == "COMMA":
-            if config.active(cfg, "whitespace_comma"):
+            if cfg.active("whitespace_comma"):
                 token.fix.ensure_trim_before = True
                 token.fix.ensure_ws_after = True
 
@@ -505,7 +508,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                                    True)
 
         elif token.kind == "COLON":
-            if config.active(cfg, "whitespace_colon"):
+            if cfg.active("whitespace_colon"):
                 if prev_in_line and prev_in_line.kind == "COMMA":
                     pass
                     # We don't deal with this here. If anything it's the
@@ -530,7 +533,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
 
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
         elif token.kind == "ASSIGNMENT":
-            if config.active(cfg, "whitespace_assignment"):
+            if cfg.active("whitespace_assignment"):
                 token.fix.ensure_ws_before = True
                 token.fix.ensure_ws_after = True
 
@@ -546,7 +549,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
         # Corresponds to the old CodeChecker ParenthesisWhitespace and
         # BracketsWhitespace rules
         elif token.kind in ("BRA", "A_BRA", "M_BRA"):
-            if config.active(cfg, "whitespace_brackets") and \
+            if cfg.active("whitespace_brackets") and \
                next_in_line and ws_after > 0 and \
                next_in_line.kind != "CONTINUATION":
                 mh.style_issue(token.location,
@@ -556,7 +559,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                 token.fix.ensure_trim_after = True
 
         elif token.kind in ("KET", "A_KET", "M_KET"):
-            if config.active(cfg, "whitespace_brackets") and \
+            if cfg.active("whitespace_brackets") and \
                prev_in_line and ws_before > 0:
                 mh.style_issue(token.location,
                                "%s must not be preceeded by whitespace" %
@@ -567,7 +570,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
         # Corresponds to the old CodeChecker KeywordWhitespace rule
         elif (token.kind == "KEYWORD" and
               token.value in KEYWORDS_WITH_WS):
-            if config.active(cfg, "whitespace_keywords") and \
+            if cfg.active("whitespace_keywords") and \
                next_in_line and ws_after == 0:
                 mh.style_issue(token.location,
                                "keyword must be succeeded by whitespace",
@@ -576,7 +579,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
 
         # Corresponds to the old CodeChecker CommentWhitespace rule
         elif token.kind == "COMMENT":
-            if config.active(cfg, "whitespace_comments"):
+            if cfg.active("whitespace_comments"):
                 comment_char = token.raw_text[0]
                 comment_body = token.raw_text.lstrip(comment_char)
                 if re.match("^%#[a-zA-Z]", token.raw_text):
@@ -638,14 +641,14 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
 
         elif token.kind == "CONTINUATION":
             # Make sure we have whitespace before each line continuation
-            if config.active(cfg, "whitespace_continuation") and \
+            if cfg.active("whitespace_continuation") and \
                prev_in_line and ws_before == 0:
                 mh.style_issue(token.location,
                                "continuation must be preceeded by whitespace",
                                True)
                 token.fix.ensure_ws_before = True
 
-            if config.active(cfg, "operator_after_continuation") and \
+            if cfg.active("operator_after_continuation") and \
                next_token and next_token.first_in_line and \
                next_token.kind == "OPERATOR" and \
                next_token.fix.binary_operator:
@@ -655,7 +658,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                                "continuations should not start with binary "
                                "operators")
 
-            if config.active(cfg, "useless_continuation"):
+            if cfg.active("useless_continuation"):
                 if next_token and next_token.kind in ("NEWLINE", "COMMENT"):
                     # Continuations followed immediately by a new-line
                     # or comment are not actually helpful at all.
@@ -670,7 +673,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     token.fix.delete = True
 
         elif token.kind == "OPERATOR":
-            if not config.active(cfg, "operator_whitespace"):
+            if not cfg.active("operator_whitespace"):
                 pass
             elif token.fix.unary_operator:
                 if (prev_in_line and ws_before > 0) and \
@@ -707,7 +710,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                         token.fix.ensure_ws_before = True
                         token.fix.ensure_ws_after = True
 
-            if config.active(cfg, "implicit_shortcircuit") and \
+            if cfg.active("implicit_shortcircuit") and \
                token.value in ("&", "|") and \
                token.ast_link and \
                isinstance(token.ast_link, Binary_Logical_Operation) and \
@@ -731,7 +734,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                 pass
 
         elif token.kind == "ANNOTATION":
-            if config.active(cfg, "annotation_whitespace"):
+            if cfg.active("annotation_whitespace"):
                 token.fix.ensure_ws_after = True
 
                 if next_in_line and ws_after == 0:
@@ -741,7 +744,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                                    True)
 
         elif token.kind == "NEWLINE":
-            if n == 0 and config.active(cfg, "no_starting_newline"):
+            if n == 0 and cfg.active("no_starting_newline"):
                 # Files should not *start* with newline(s)
                 mh.style_issue(token.location,
                                "files should not start with a newline",
@@ -753,7 +756,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
            next_in_line and next_in_line.kind == "CONTINUATION":
             fixed = False
             token.fix.add_newline = False
-            if config.active(cfg, "dangerous_continuation"):
+            if cfg.active("dangerous_continuation"):
                 next_in_line.fix.replace_with_newline = True
                 fixed = True
             mh.style_issue(next_in_line.location,
@@ -761,7 +764,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                            fixed)
 
         # Complain about indentation
-        if config.active(cfg, "indentation") and token.kind != "NEWLINE":
+        if cfg.active("indentation") and token.kind != "NEWLINE":
             if token.first_in_line and not token.block_comment:
                 if token.first_in_statement:
                     if token.ast_link:
@@ -783,9 +786,11 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     # the line, since previously it was not offset
                     # at all.
                     if offset <= 0:
-                        offset = cfg["tab_width"] // 2
+                        offset = cfg.style_config["tab_width"] // 2
 
-                correct_spaces = cfg["tab_width"] * current_indent + offset
+                correct_spaces = (cfg.style_config["tab_width"] *
+                                  current_indent +
+                                  offset)
                 token.fix.correct_indent = correct_spaces
 
                 if token.location.col_start != correct_spaces:
@@ -824,9 +829,9 @@ class MH_Style(command_line.MISS_HIT_Back_End):
         # Create lexer
 
         lexer = MATLAB_Lexer(wp.mh, content, wp.filename, wp.blockname)
-        if wp.cfg["octave"]:
+        if wp.cfg.octave:
             lexer.set_octave_mode()
-        if wp.cfg["ignore_pragmas"]:
+        if not wp.cfg.pragmas:
             lexer.process_pragmas = False
 
         # We're dealing with an empty file here. Lets just not do anything
@@ -871,7 +876,7 @@ class MH_Style(command_line.MISS_HIT_Back_End):
         # we do the global replacement and lex again before we proceed.
 
         if autofix:
-            lexer.correct_tabs(wp.cfg["tab_width"])
+            lexer.correct_tabs(wp.cfg.style_config["tab_width"])
 
         # Create tokenbuffer
 

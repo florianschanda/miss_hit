@@ -1,0 +1,12 @@
+MISS_HIT configuration file
+  Metric limit for npath
+    Metric: report
+  Metric limit for npath
+    Metric: ignore
+  Metric limit for *
+    Metric: ignore
+  Metric limit for *
+    Metric: report
+  Metric limit for npath
+    Metric: limit to 20
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine

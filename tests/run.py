@@ -256,6 +256,33 @@ def execute_simulink_parser_test(name):
     return "Ran simulink parser test %s" % name
 
 
+def execute_config_parser_test(name):
+    os.chdir(os.path.join(TEST_ROOT,
+                          "config_parser",
+                          name))
+
+    files = [f
+             for f in os.listdir(".")
+             if f.endswith(".cfg")]
+
+    for f in files:
+        r = subprocess.run([sys.executable,
+                            "-m"
+                            "miss_hit.cfg_parser",
+                            "--no-tb",
+                            f],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT,
+                           encoding="utf-8",
+                           env=TEST_ENV)
+        plain_out = r.stdout
+
+        with open(f + ".out", "w") as fd:
+            fd.write(plain_out)
+
+    return "Ran config parser test %s" % name
+
+
 def run_test(test):
     if os.path.exists(os.path.join(TEST_ROOT,
                                    test["kind"],
@@ -270,6 +297,7 @@ def run_test(test):
         "lexer"           : execute_lexer_test,
         "parser"          : execute_parser_test,
         "simulink_parser" : execute_simulink_parser_test,
+        "config_parser"   : execute_config_parser_test,
     }
     return fn[test["kind"]](test["test"])
 
@@ -294,7 +322,9 @@ def main():
     if options.suite:
         suites = [options.suite]
     else:
-        suites = ["lexer", "parser", "simulink_parser", "style", "metrics"]
+        suites = ["lexer", "parser", "simulink_parser",
+                  "config_parser",
+                  "style", "metrics"]
 
     for kind in suites:
         for t in os.listdir(kind):

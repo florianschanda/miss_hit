@@ -1,0 +1,8 @@
+In invalid.cfg, line 1
+| exclude_dir: "dir_b"
+|              ^^^^^^^ error: does not exist
+In invalid.cfg, line 2
+| exclude_dir: "../dir_exclusion"
+|              ^^^^^^^^^^^^^^^^^^ error: must local (non-relative) directory
+invalid.cfg: error: config file contains errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 3 error(s)

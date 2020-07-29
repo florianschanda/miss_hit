@@ -1,8 +1,10 @@
 === PLAIN MODE ===
+miss_hit.cfg: error: config file contains errors
 In miss_hit.cfg, line 1
 | exclude_dir: "foo/bar"
-|              ^^^^^^^^^ error: must be a valid local directory
-MISS_HIT Style Summary: 0 file(s) analysed, 1 error(s)
+|              ^^^^^^^^^ error: must local (non-relative) directory
+.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Style Summary: 2 file(s) analysed, 3 error(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 0 file(s) analysed, 1 error(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 3 error(s)

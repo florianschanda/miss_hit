@@ -27,8 +27,7 @@
 import os
 import traceback
 
-from miss_hit import config
-
+from miss_hit.config import Config, METRICS
 from miss_hit.errors import ICE, Error, Message_Handler
 from miss_hit.m_ast import *
 from miss_hit.m_lexer import Token_Generator, MATLAB_Lexer, Token_Buffer
@@ -81,7 +80,7 @@ class MATLAB_Parser:
     def __init__(self, mh, lexer, cfg):
         assert isinstance(mh, Message_Handler)
         assert isinstance(lexer, Token_Generator)
-        assert isinstance(cfg, dict)
+        assert isinstance(cfg, Config)
 
         self.lexer = lexer
         self.mh    = mh
@@ -320,7 +319,7 @@ class MATLAB_Parser:
         assert isinstance(n_expr, Expression), \
             "required expression, not %s" % n_expr.__class__.__name__
 
-        if config.active(self.cfg, "redundant_brackets") and \
+        if self.cfg.active("redundant_brackets") and \
            n_expr.t_bracket_open:
             self.mh.style_issue(n_expr.t_bracket_open.location,
                                 "redundant parenthesis",
@@ -380,17 +379,17 @@ class MATLAB_Parser:
             # most cases.
             if allow_nothing:
                 ending_token.fix.flag_continuations = True
-                if config.active(self.cfg, "end_of_statements"):
+                if self.cfg.active("end_of_statements"):
                     if semi:
                         ending_token.add_semicolon_after = True
-                        if config.active(self.cfg, "indentation"):
+                        if self.cfg.active("indentation"):
                             ending_token.fix.add_newline = True
                         self.mh.style_issue(ending_token.location,
                                             "end this with a ; and newline",
                                             True)
                     else:
                         fixed = False
-                        if config.active(self.cfg, "indentation"):
+                        if self.cfg.active("indentation"):
                             ending_token.fix.add_newline = True
                             fixed = True
                         self.mh.style_issue(ending_token.location,
@@ -407,7 +406,7 @@ class MATLAB_Parser:
             raise ICE("logic error")
         assert len(terminator_tokens) >= 1
 
-        if not config.active(self.cfg, "end_of_statements"):
+        if not self.cfg.active("end_of_statements"):
             return
 
         if semi:
@@ -432,7 +431,7 @@ class MATLAB_Parser:
 
             if first_newline is None:
                 fixed = False
-                if config.active(self.cfg, "indentation"):
+                if self.cfg.active("indentation"):
                     terminator_tokens[0].fix.add_newline = True
                     fixed = True
                 self.mh.style_issue(terminator_tokens[0].location,
@@ -442,7 +441,7 @@ class MATLAB_Parser:
         else:
             # Exactly one token is required and useful. The first new
             # line.
-            if not config.active(self.cfg, "indentation") and \
+            if not self.cfg.active("indentation") and \
                terminator_tokens[0].kind == "COMMA":
                 # The statement was ended with a comma. Ideally we
                 # just have a newline, but since we're not fixing
@@ -459,7 +458,7 @@ class MATLAB_Parser:
                 if first_newline is None:
                     # We can only fix a missing newline if indentation
                     # fixing is active.
-                    if config.active(self.cfg, "indentation"):
+                    if self.cfg.active("indentation"):
                         terminator_tokens[0].fix.delete = True
                         ending_token.fix.add_newline = True
                         fixed = True
@@ -1159,7 +1158,7 @@ class MATLAB_Parser:
         self.amatch("STRING")
         t_param = self.ct
 
-        if t_param.value not in config.METRICS:
+        if t_param.value not in METRICS:
             self.mh.warning(t_param.location,
                             "unknown metric '%s'" % t_param.value)
 
@@ -1261,7 +1260,7 @@ class MATLAB_Parser:
                                   " Name, found %s instead" %
                                   rv.__class__.__name__)
                 rhs = self.parse_nested_expression()
-                if config.active(self.cfg, "builtin_shadow"):
+                if self.cfg.active("builtin_shadow"):
                     rv.sty_check_builtin_shadow(self.mh, self.cfg)
                 rv = Simple_Assignment_Statement(t_eq, rv, rhs)
 
@@ -1314,7 +1313,7 @@ class MATLAB_Parser:
             if self.peek("OPERATOR", "~"):
                 require_comma = True
             target = self.parse_name(allow_void=True)
-            if config.active(self.cfg, "builtin_shadow"):
+            if self.cfg.active("builtin_shadow"):
                 target.sty_check_builtin_shadow(self.mh, self.cfg)
             lhs.append(target)
             if (self.peek("COMMA") or require_comma) and \
@@ -2090,10 +2089,10 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
         content = fd.read()
     try:
         lexer = MATLAB_Lexer(mh, content, filename)
-        tbuf = Token_Buffer(lexer, config.BASE_CONFIG)
+        tbuf = Token_Buffer(lexer, Config())
         parser = MATLAB_Parser(mh,
                                tbuf,
-                               config.BASE_CONFIG)
+                               Config())
         parser.debug_tree = show_dot
         tree = parser.parse_file()
         if show_tree:

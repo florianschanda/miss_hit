@@ -33,7 +33,7 @@ import textwrap
 import multiprocessing
 import functools
 
-from miss_hit import config_files
+from miss_hit import cfg_tree
 from miss_hit import errors
 from miss_hit import work_package
 from miss_hit import s_parser
@@ -65,7 +65,7 @@ def create_basic_clp():
                     action="store_true",
                     default=False,
                     help=("Ignore all %s files." %
-                          " or ".join(config_files.CONFIG_FILENAMES)))
+                          " or ".join(cfg_tree.CONFIG_FILENAMES)))
 
     output_options = ap.add_argument_group("output options")
     rv["output_options"] = output_options
@@ -147,7 +147,7 @@ def dispatch_wp(process_fn, wp):
     results = []
 
     try:
-        if not wp.cfg["enable"]:
+        if not wp.cfg.enabled:
             wp.mh.register_exclusion(wp.filename)
             results.append(work_package.Result(wp, False))
 
@@ -185,19 +185,11 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
 
     try:
         for item in options.files:
-            if os.path.isdir(item):
-                config_files.register_tree(mh,
-                                           os.path.abspath(item),
-                                           options)
-
-            elif os.path.isfile(item):
-                config_files.register_tree(
-                    mh,
-                    os.path.dirname(os.path.abspath(item)),
-                    options)
-
-        config_files.build_config_tree(mh,
+            if os.path.isdir(item) or os.path.isfile(item):
+                cfg_tree.register_item(mh,
+                                       os.path.abspath(item),
                                        options)
+        mh.reset_seen()
 
     except errors.Error:
         mh.summary_and_exit()
@@ -206,9 +198,16 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
     for item in options.files:
         if os.path.isdir(item):
             for path, dirs, files in os.walk(item):
+                dirs.sort()
+                for excluded_dir in cfg_tree.get_excluded_directories(path):
+                    dirs.remove(excluded_dir)
+                hidden_dirs = [d for d in dirs if d.startswith(".")]
+                for hidden_dir in hidden_dirs:
+                    dirs.remove(hidden_dir)
+
                 if path == ".":
                     path = ""
-                dirs.sort()
+
                 for f in sorted(files):
                     if f.endswith(".m") or (f.endswith(".slx") and
                                             process_slx):

@@ -35,8 +35,7 @@ import xml.etree.ElementTree as ET
 
 from abc import ABCMeta, abstractmethod
 
-from miss_hit import config
-
+from miss_hit.config import Config
 from miss_hit.s_ast import *
 from miss_hit.errors import Message_Handler, ICE
 
@@ -49,7 +48,7 @@ class Simulink_Parser(metaclass=ABCMeta):
     def __init__(self, mh, filename, cfg):
         assert isinstance(mh, Message_Handler)
         assert isinstance(filename, str)
-        assert isinstance(cfg, dict)
+        assert isinstance(cfg, Config)
 
         self.mh       = mh
         self.filename = filename
@@ -469,7 +468,7 @@ def sanity_test(mh, filename, _):
     print("=== Parsing %s ===" % filename)
 
     mh.register_file(filename)
-    slp = Simulink_SLX_Parser(mh, filename, config.BASE_CONFIG)
+    slp = Simulink_SLX_Parser(mh, filename, Config())
 
     if slp.is_external_harness:
         print("   > Ignored external harness")
