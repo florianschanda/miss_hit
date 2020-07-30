@@ -16,7 +16,7 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ## Changelog
 
-### 0.9.8-dev
+### 0.9.8
 
 * #151 Rewrote configuration file mechanism. The change is backwards
   compatible, so existing files will continue to work.
