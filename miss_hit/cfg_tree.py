@@ -168,10 +168,9 @@ def apply_config(mh, options, dirname, exclusions_only=False):
                     if DEBUG_TRACE_TREE:
                         print("  > Excluding %s" % edir)
                     excluded_path = os.path.join(dirname, edir)
-                    if excluded_path not in tree:
-                        register_parent(mh, options, excluded_path)
                     node.excluded_children.add(edir)
-                    tree[excluded_path].project_root = True
+                    if excluded_path in tree:
+                        tree[excluded_path].project_root = True
 
             elif exclusions_only:
                 continue

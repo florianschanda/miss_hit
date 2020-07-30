@@ -16,6 +16,11 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ## Changelog
 
+### 0.9.9
+
+* Minor fix for the case where an excluded_dir contains a broken
+  config file.
+
 ### 0.9.8
 
 * #151 Rewrote configuration file mechanism. The change is backwards
