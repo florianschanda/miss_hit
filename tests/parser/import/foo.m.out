@@ -10,4 +10,4 @@ Root: Function_File
       Statements: Import_Statement for PackageName.ClassName.staticMethodName
       Statements: Import_Statement for PackageName.*
 ----------------------------------------------------------------------
-MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

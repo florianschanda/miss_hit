@@ -84,8 +84,8 @@
   2. 1 (f2.m, function f2)
   3. 1 (f1.m, function f1)
 
-MISS_HIT Metric Summary: 4 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 4 file(s) analysed, everything seems fine
 
 
 === HTML MODE ===
-MISS_HIT Metric Summary: 4 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 4 file(s) analysed, everything seems fine

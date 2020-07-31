@@ -125,8 +125,8 @@
 * Function metric 'Parameters':
   1. 1 (npath.m, function ifs)
 
-MISS_HIT Metric Summary: 3 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 3 file(s) analysed, everything seems fine
 
 
 === HTML MODE ===
-MISS_HIT Metric Summary: 3 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 3 file(s) analysed, everything seems fine

@@ -67,8 +67,8 @@
   3. 1 (test_01.m, function b)
   4. 1 (test_01.m, function a)
 
-MISS_HIT Metric Summary: 2 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine
 
 
 === HTML MODE ===
-MISS_HIT Metric Summary: 2 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine

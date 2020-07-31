@@ -71,8 +71,8 @@
   2. 2 (partial/foo.m, function foo)
   3. 2 (no_file_metrics/foo.m, function foo)
 
-MISS_HIT Metric Summary: 4 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 4 file(s) analysed, everything seems fine
 
 
 === HTML MODE ===
-MISS_HIT Metric Summary: 4 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 4 file(s) analysed, everything seems fine

@@ -119,4 +119,4 @@ In test_01.m, line 13
 | end
 |    ^ info: NEWLINE
 test_01.m: lexed OK
-MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

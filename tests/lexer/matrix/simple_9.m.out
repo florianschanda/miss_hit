@@ -62,4 +62,4 @@ In simple_9.m, line 2
 | [~ data{k}] = potato
 |                     ^ info: NEWLINE
 simple_9.m: lexed OK
-MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

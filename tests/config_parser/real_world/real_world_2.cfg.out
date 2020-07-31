@@ -6,4 +6,4 @@ MISS_HIT configuration file
     Enabled: True
   Directory exclusion
     Excluded: testing
-MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

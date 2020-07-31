@@ -98,8 +98,8 @@
   4. 2 (test1.slx/Sub One, function sub_one)
   5. 2 (test1.slx/Add One, function add_one)
 
-MISS_HIT Metric Summary: 2 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine
 
 
 === HTML MODE ===
-MISS_HIT Metric Summary: 2 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine

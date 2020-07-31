@@ -62,4 +62,4 @@ Root: Function_File
                 Name: Identifier <error>
                 Arguments: Char_Array_Literal 'Size of first input must equal size of second input'
 ----------------------------------------------------------------------
-MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

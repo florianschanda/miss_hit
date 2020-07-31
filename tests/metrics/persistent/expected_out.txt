@@ -33,8 +33,8 @@
 * Function metric 'Persistents':
   1. 3 (test_01.m, function test_01)
 
-MISS_HIT Metric Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 1 file(s) analysed, everything seems fine
 
 
 === HTML MODE ===
-MISS_HIT Metric Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Metric Summary: 1 file(s) analysed, everything seems fine

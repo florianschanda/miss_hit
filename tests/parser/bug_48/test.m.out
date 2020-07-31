@@ -18,4 +18,4 @@ Root: Script_File
           LHS: Identifier <y>
           RHS: Number_Literal <5>
 ----------------------------------------------------------------------
-MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

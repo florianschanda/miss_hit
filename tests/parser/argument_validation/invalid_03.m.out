@@ -12,4 +12,4 @@ Root: Script_File
           Arguments: Number_Literal <4>
         Arguments: Number_Literal <144>
 ----------------------------------------------------------------------
-MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

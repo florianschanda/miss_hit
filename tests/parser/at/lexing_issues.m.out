@@ -72,4 +72,4 @@ Root: Function_File
                 LHS: Identifier <x>
                 RHS: Number_Literal <1>
 ----------------------------------------------------------------------
-MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

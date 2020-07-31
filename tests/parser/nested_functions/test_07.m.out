@@ -33,4 +33,4 @@ Root: Function_File
                 RHS: Identifier <x>
             RHS: Identifier <c>
 ----------------------------------------------------------------------
-MISS_HIT Debug Summary: 1 file(s) analysed, everything seemes fine
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine
