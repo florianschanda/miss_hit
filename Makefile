@@ -26,6 +26,13 @@ upload_main: package
 release:
 	python3 -m util.release
 
+github_release:
+	git push
+	python3 -m util.github_release
+
+bump:
+	python3 -m util.bump_version_post_release
+
 m_ast_picture.pdf: miss_hit/m_ast.py util/mk_ast_hierarchy.py
 	python3 -m util.mk_ast_hierarchy m | dot -Tpdf > m_ast_picture.pdf
 
