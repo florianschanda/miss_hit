@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 
+# Helper script to remove "-dev" from current version; update
+# changelog/docs; and commit.
+
 import os
+
+import util.changelog
 
 # Update version.py to remove the -dev (or if given) use a different
 # version number.
@@ -18,49 +23,13 @@ with open("miss_hit/version.py", "w") as fd:
 from miss_hit.version import VERSION
 print(VERSION)
 
-# Update last CHANGELOG entry to use the new version. We also extract
-# the items in the last entry to be used in our commmit message.
+# Update last CHANGELOG entry and documentation to use the new
+# version.
 
-tmp = ""
-relevant_log = ""
-mode = "searching for changelog"
-with open("CHANGELOG.md", "r") as fd:
-    for raw_line in fd:
-        if mode == "searching for changelog":
-            if raw_line.startswith("## Changelog"):
-                mode = "searching for first entry"
-        elif mode == "searching for first entry":
-            if raw_line.startswith("### "):
-                raw_line = "### %s\n" % VERSION
-                mode = "eating log"
-        elif mode == "eating log":
-            if raw_line.startswith("### "):
-                mode = "done"
-            else:
-                relevant_log += raw_line
-        else:
-            pass
-        tmp += raw_line
-with open("CHANGELOG.md", "w") as fd:
-    fd.write(tmp)
-
-# Run documentation update
-
+util.changelog.set_current_title(VERSION)
 os.system("make doc")
-
-# Write commit message to file
-
-with open("commit_msg", "w") as fd:
-    fd.write("release-%s\n\n" % VERSION)
-    fd.write(relevant_log.strip())
-    fd.write("\n")
 
 # Commit & tag
 
 os.system("git add CHANGELOG.md docs miss_hit/version.py")
-os.system("git commit -F commit_msg")
-os.system("git tag release-%s" % VERSION)
-
-# Clean up
-
-os.unlink("commit_msg")
+os.system('git commit -m "Release %s"' % VERSION)

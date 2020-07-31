@@ -25,3 +25,24 @@ def current_section():
             tmp += raw_line
 
     return relevant_log.strip()
+
+def set_current_title(new_title):
+    """ Update last CHANGELOG entry to the given title. """
+    assert isinstance(new_title, str)
+
+    tmp = ""
+    mode = "searching for changelog"
+    with open("CHANGELOG.md", "r") as fd:
+        for raw_line in fd:
+            if mode == "searching for changelog":
+                if raw_line.startswith("## Changelog"):
+                    mode = "searching for first entry"
+            elif mode == "searching for first entry":
+                if raw_line.startswith("### "):
+                    raw_line = "### %s\n" % new_title
+                    mode = "done"
+            else:
+                pass
+            tmp += raw_line
+    with open("CHANGELOG.md", "w") as fd:
+        fd.write(tmp)
