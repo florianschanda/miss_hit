@@ -107,8 +107,8 @@ we've faced and how we've resolved them.
 
 ## Copyright
 
-MISS_HIT is licensed under the GNU GPL version 3 as described in
-LICENSE.
+MISS_HIT is licensed under the GNU GPL version 3 (or later) as
+described in LICENSE.
 
 The vast majority of this work is (C) Florian Schanda. Contributions
 from the following people and entities are under their copyright, with
