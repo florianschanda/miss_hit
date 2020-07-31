@@ -82,11 +82,16 @@ $ python3 -m miss_hit.mh_style
 
 ### Additional requirements for developing MISS_HIT
 
-If you want to help develop, you will also need Pylint, PyCodeStyle
+If you want to help develop, you will also need Pylint, PyCodeStyle,
 and Graphviz. Install as follows:
 ```
 $ apt-get install graphviz
-$ pip3 install --user pylint pycodestyle
+$ pip3 install --user --upgrade pylint pycodestyle
+```
+
+For publishing releases (to GitHub and PyPI) you will also need:
+```
+$ pip3 install --user --upgrade setuptools wheel requests
 ```
 
 ## Challenges
