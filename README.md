@@ -1,3 +1,7 @@
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3967056.svg)](https://doi.org/10.5281/zenodo.3967056)
+
+
 # MATLAB Independent, Small & Safe, High Integrity Tools
 
 MATLAB is a popular programming language in many engineering

@@ -336,7 +336,7 @@ class Message_Handler:
         if self.errors:
             stats.append("%u error(s)" % self.errors)
         if len(stats) == 1:
-            stats.append("everything seemes fine")
+            stats.append("everything seems fine")
         if self.justified > 0:
             stats.append("%u justified message(s)" % self.justified)
         if self.metric_justifications > 0:
