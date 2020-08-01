@@ -1,6 +1,4 @@
-
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3967056.svg)](https://doi.org/10.5281/zenodo.3967056)
-
 
 # MATLAB Independent, Small & Safe, High Integrity Tools
 
@@ -112,8 +110,14 @@ we've faced and how we've resolved them.
 
 ## Copyright
 
-MISS_HIT is licensed under the GNU GPL version 3 (or later) as
-described in LICENSE.
+The basic framework, style checker and code metrics tool of MISS_HIT
+are licensed under the GNU GPL version 3 (or later) as described in
+[LICENSE](https://github.com/florianschanda/miss_hit/blob/master/LICENSE).
+
+The advanced analysis tools of MISS_HIT (everything under
+`miss_hit_agpl`) are licensed under the GNU Affero GPL version 3 (or
+later) as described in
+[LICENSE.AGPL](https://github.com/florianschanda/miss_hit/blob/master/LICENSE.AGPL).
 
 The vast majority of this work is (C) Florian Schanda. Contributions
 from the following people and entities are under their copyright, with

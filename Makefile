@@ -8,7 +8,7 @@ test:
 	@cd tests; ./run.py
 
 lint: style
-	@python3 -m pylint --rcfile=pylint3.cfg --reports=no mh_* miss_hit
+	@python3 -m pylint --rcfile=pylint3.cfg --reports=no mh_* miss_hit miss_hit_agpl
 
 style:
 	@python3 -m pycodestyle mh_* miss_hit
