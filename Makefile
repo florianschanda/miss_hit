@@ -15,7 +15,11 @@ style:
 
 package:
 	@git clean -xdf
+	@cp setup_gpl.py setup.py
 	@python3 setup.py sdist bdist_wheel
+	@cp setup_agpl.py setup.py
+	@python3 setup.py sdist bdist_wheel
+	@rm setup.py
 
 upload_test: package
 	python3 -m twine upload --repository testpypi dist/*
