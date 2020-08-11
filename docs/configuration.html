@@ -11,18 +11,156 @@
 </head>
 
 <body>
-  <header>MISS_HIT 0.9.10-dev Configuration Files</header>
+  <header>MISS_HIT 0.9.10-dev Configuration System</header>
 
   <main>
     <div class="section">
       The behaviour of the <a href="index.html">MISS_HIT</a> tools can
       be controlled with configuration files. This document describes
-      the syntax and semantics of these files.
+      the syntax and semantics of these files, and provides a more
+      general explanation of how to set up and configure MISS_HIT for
+      your projects.
     </div>
 
     <div class="title">
       <img src="assets/file-text.svg" alt="Picture of text" />
-      <h1>Naming and Scope</h1>
+      <h1>Setting up MISS_HIT</h1>
+    </div>
+
+    <section>
+      <h2>Setting up a new project</h2>
+      <div>
+	For new projects we recommend to apply MISS_HIT
+	project-wide. Create a configuration file
+	named <tt>miss_hit.cfg</tt> and place it at the root of the
+	project containing:
+<pre>
+project_root
+copyright_entity: "Your Name"
+</pre>
+        This configuration file applies to all files in this directory
+        and any sub-directories.
+      </div>
+      <div>
+	Individual sub-directories can be separately
+	configured. Configuration files placed in sub-directories
+	inherit all settings from their parent directory, except for
+	the ones changed by such a file. For example if you have a
+	directory containing auto-generated code
+	(called <tt>src/autogen</tt>) that you do not want to check
+	you can selectively disable analysis by creating a new
+	configuration file <tt>src/autogen/miss_hit.cfg</tt>
+	containing:
+	<pre>enable: false</pre>
+      </div>
+      <div>
+	The configuration files apply to all MISS_HIT tools. The
+	general file format and syntax is described in this
+	document. The specific settings applicable to each tool are
+	described in the user manuals of each tool.
+      </div>
+    </section>
+
+    <section>
+      <h2>Applying MISS_HIT to an existing project</h2>
+      <div>
+	MISS_HIT has special support for legacy projects. The
+	following process is recommended:
+	<ol>
+	  <li>
+	    Create top-level configuration file setting up all
+	    rules, but turning MISS_HIT off. For example:
+<pre>
+project_root
+enable: false
+copyright_entity: "Potato AG"
+line_length: 100
+suppress_rule: "operator_whitespace"
+</pre>
+	  </li>
+	  <li>
+	    Turn MISS_HIT on again in selected sub-directories. As
+	    time progresses, gradually enable for more and more
+	    sub-directories.
+<pre>
+enable: true
+</pre>
+	  </li>
+	  <li>
+	    Eventually remove all individual config files and turn
+	    MISS_HIT on in the top-level configuration.
+	  </li>
+	</ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>Dealing with external projects</h2>
+      <div>
+	Larger, more complex projects may include source code from
+	other projects or repositories. MISS_HIT includes several
+	features to deal with this.
+      </div>
+      <div>
+	There are essentially two scenarios:
+	<ul>
+	  <li>
+	    Cooperating - the included source, project, or
+	    repository also uses MISS_HIT.
+	  </li>
+	  <li>
+	    Non-cooperating - the included source, project, or
+	    repository does not use MISS_HIT, or uses a much older
+	    version (newer versions likely generate more messages).
+	  </li>
+	</ul>
+      </div>
+      <div>
+	If the included code has its own <tt>miss_hit.cfg</tt> file
+	with a <tt>project_root</tt> directive, then everything will
+	work without further action: the <tt>project_root</tt>
+	directive will stop the inheriting mechanism of configuration
+	files, so any files in this included project will be analysed
+	in their intended way.
+      </div>
+      <div>
+	If a project is not cooperating then the best option is to
+	place a configuration file in the parent directory, excluding
+	the non-cooperating project from analysis. For example if the
+	directory structure is as follows:
+<pre>
+/
+  src
+  external
+    other_a
+    other_b
+</pre>
+        Then add the following to the root configuration file:
+        <pre>exclude_dir: "external"</pre>
+      </div>
+      <div>
+	This will cause any MISS_HIT tools to completely skip these
+	directories.
+      </div>
+    </section>
+
+    <section>
+      <h2>Integrating MISS_HIT into CI/CD</h2>
+
+      <h3>Analyze early and often</h3>
+      <div>WIP/TODO</div>
+
+      <h3>Git Hooks</h3>
+      <div>WIP/TODO</div>
+
+      <h3>Travis</h3>
+      <div>WIP/TODO</div>
+    </section>
+
+
+    <div class="title">
+      <img src="assets/file-text.svg" alt="Picture of text" />
+      <h1>Configuration file Reference</h1>
     </div>
 
     <section>
@@ -36,8 +174,9 @@
 	It is recommended to use <tt>miss_hit.cfg</tt>, except for the
 	root directory of your project.
       </div>
-      <div></div>
+    </section>
 
+    <section>
       <h2>Scope</h2>
       <div>
 	Configuration files apply to all files in the directory they
@@ -48,8 +187,9 @@
 	valid in the parent directory, and then subsequently
 	over-rides any options it wants to.
       </div>
-      <div></div>
+    </section>
 
+    <section>
       <h2>Project Root</h2>
       <div>
 	A project root is the basic configuration and is initially set
@@ -70,20 +210,6 @@
 	</ul>
       </div>
     </section>
-
-    <div class="title">
-      <img src="assets/file-text.svg" alt="Picture of text" />
-      <h1>Examples and tutorial</h1>
-    </div>
-
-    <section>
-      <h2>Coming soon...</h2>
-    </section>
-
-    <div class="title">
-      <img src="assets/file-text.svg" alt="Picture of text" />
-      <h1>Reference</h1>
-    </div>
 
     <section>
       <h2>Syntax</h2>
@@ -112,8 +238,9 @@ CONFIG_FILE ::= { TERMINATED_DIRECTIVE }
 	Configuration directives are processed sequentially. I.e. if
 	two directives conflict, then the latest one takes precedence.
       </div>
-      <div></div>
+    </section>
 
+    <section>
       <h2>Values</h2>
       <div>
 	Directives often contain values, typeset in all-caps. This
@@ -139,8 +266,9 @@ CONFIG_FILE ::= { TERMINATED_DIRECTIVE }
       <div>
 	Grammar: <pre>STRING ::= &lt;non-negative-integer&gt;</pre>
       </div>
+    </section>
 
-
+    <section>
       <h2>Directives</h2>
 
       <h3>Project Root</h3>
@@ -285,8 +413,6 @@ root
 	from <tt>root</tt> is entirely ignored.
       </div>
     </section>
-
-
 
   </main>
 
