@@ -26,4 +26,6 @@
 
 from miss_hit_agpl import mh_lint
 
-mh_lint.main()
+
+if __name__ == "__main__":
+    mh_lint.main()

@@ -19,6 +19,7 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ### 0.9.10-dev
 
+* Fixed another Windows multi-threading issue
 
 ### 0.9.9
 

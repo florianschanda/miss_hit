@@ -25,4 +25,6 @@
 
 from miss_hit import mh_metric
 
-mh_metric.main()
+
+if __name__ == "__main__":
+    mh_metric.main()
