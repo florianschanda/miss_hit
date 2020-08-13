@@ -50,12 +50,13 @@
 
       <div>
         Metrics are reported on standard out. You can also produce a
-        HTML report or write the metrics to a text-file:
+        JSON report, HTML report or write the metrics to a text-file:
 <pre>
 $ mh_metrics src --text=metrics.txt
 $ mh_metrics src --html=metrics.html
+$ mh_metrics src --json=metrics.json
 </pre>
-        In a future release more formats (json, csv, etc.) will be
+        In a future release more formats (e.g. csv, etc.) will be
         supported.
       </div>
 
@@ -286,7 +287,127 @@ end
         MATLAB, more so than globals; so it is a really good idea to
         not have too many of them.
       </div>
+    </section>
 
+    <div class="title">
+      <img src="assets/file-text.svg" alt="JSON Schema" />
+      <h1>JSON Report Schema</h1>
+    </div>
+
+    <section>
+      <h2>Purpose</h2>
+      <div>
+	The purpose of the JSON report (unlike the text or HTML
+	report) is to be easily machine-parseable. It is not intended
+	for human consumption. The report schema is guaranteed to be
+	stable between minor releases: i.e. function processing a
+	report from <tt>a.b.*</tt> should also be able to process a
+	report from <tt>a.c.*</tt> as long as c > b.
+      </div>
+    </section>
+
+    <section>
+      <h2>Schema</h2>
+      <h3>Top-level</h3>
+      <div>
+	The entire report is a single JSON object containing two
+	members:
+	<ul>
+	  <li>metrics</li>
+	  <li>worst_case</li>
+	</ul>
+      </div>
+
+      <h3>metrics</h3>
+      <div>
+	The metric member is a JSON object one member per file. The
+	value of each member is another JSON object with the following
+	members:
+	<ul>
+	  <li>file_metrics</li>
+	  <li>function_metrics</li>
+	</ul>
+      </div>
+
+      <h3>file_metrics</h3>
+      <div>
+	A file_metrics member is a JSON object containing members for
+	each file metric (e.g. "file_length"). Each value is a
+	metrics_result object described below.
+      </div>
+
+      <h3>function_metrics</h3>
+      <div>
+	A function_metrics member is a JSON object containing members
+	for each function, which in turn are JSON objects containing
+	members for each function metric (e.g. "cyc"). Each value is a
+	metrics_result object described below.
+      </div>
+
+      <h3>metrics_result</h3>
+      <div>
+	A metrics_result is a JSON object containing the following
+	members:
+	<ul>
+	  <li>
+	    status - will be one of the following strings:
+	    <ul>
+	      <li>
+		"measured only" - this metric was measured, but no limit
+		was enforced
+	      </li>
+	      <li>
+		"checked: ok" - this metric was measured, and is equal
+		to or below the configured limit
+	      </li>
+	      <li>
+		"checked: justified" - this metric was measured, and
+		was above the configured limit; but a justification
+		was supplied
+	      </li>
+	      <li>
+		"checked: fail" - this metric was measured, and was
+		above the configured limit
+	      </li>
+	    </ul>
+	  </li>
+	  <li>
+	    measure - an integer indicating the measured value of the
+	    metric
+	  </li>
+	  <li>
+	    limit - (only for checked metrics) - an integer indicating
+	    the configured limit
+	  </li>
+	  <li>
+	    justification - (only for checked: justified metrics) - a
+	    string containing the justification supplied
+	  </li>
+	</ul>
+      </div>
+
+      <h3>worst_case</h3>
+      <div>
+	The worst case table is JSON object where each member
+	described a metric (function or file). The value of each is a
+	list with augmented metric_result objects.
+      </div>
+
+      <h3>augmented metric_result</h3>
+      <div>
+	As metric_result (see above), but with on or two additional
+	members:
+	<ul>
+	  <li>
+	    file - a string indicating the file where the metric was
+	    measured
+	  </li>
+	  <li>
+	    function - (only for function metrics) - a string
+	    indicating the function where the metric was measured
+	  </li>
+	</ul>
+      </div>
     </section>
 
   </main>

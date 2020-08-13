@@ -1,0 +1,383 @@
+{
+    "metrics": {
+        "class_file.m": {
+            "file_metrics": {
+                "file_length": {
+                    "justification": "seems OK",
+                    "limit": 10,
+                    "measure": 13,
+                    "status": "checked: justified"
+                }
+            },
+            "function_metrics": {}
+        },
+        "function_file.m": {
+            "file_metrics": {
+                "file_length": {
+                    "limit": 10,
+                    "measure": 24,
+                    "status": "checked: fail"
+                }
+            },
+            "function_metrics": {
+                "function_file": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 20,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "limit": 5,
+                        "measure": 8,
+                        "status": "checked: fail"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "function_file_justified.m": {
+            "file_metrics": {
+                "file_length": {
+                    "justification": "for testing purposes",
+                    "limit": 10,
+                    "measure": 24,
+                    "status": "checked: justified"
+                }
+            },
+            "function_metrics": {
+                "function_file_justified": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 20,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "justification": "for testing purposes",
+                        "limit": 5,
+                        "measure": 8,
+                        "status": "checked: justified"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "multi_line.m": {
+            "file_metrics": {
+                "file_length": {
+                    "justification": "this is a very long justification over many lines",
+                    "limit": 10,
+                    "measure": 11,
+                    "status": "checked: justified"
+                }
+            },
+            "function_metrics": {
+                "multi_line": {
+                    "cnest": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": null,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "limit": 5,
+                        "measure": 1,
+                        "status": "checked: ok"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "script_file.m": {
+            "file_metrics": {
+                "file_length": {
+                    "limit": 10,
+                    "measure": 19,
+                    "status": "checked: fail"
+                }
+            },
+            "function_metrics": {
+                "script_file": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": null,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "limit": 5,
+                        "measure": 8,
+                        "status": "checked: fail"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "script_file_justified.m": {
+            "file_metrics": {
+                "file_length": {
+                    "limit": 10,
+                    "measure": 22,
+                    "status": "checked: fail"
+                }
+            },
+            "function_metrics": {
+                "script_file_justified": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": null,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "justification": "this seems fine",
+                        "limit": 5,
+                        "measure": 8,
+                        "status": "checked: justified"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        }
+    },
+    "worst_case": {
+        "cnest": [
+            {
+                "file": "script_file_justified.m",
+                "function": "script_file_justified",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "script_file.m",
+                "function": "script_file",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "function_file_justified.m",
+                "function": "function_file_justified",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "function_file.m",
+                "function": "function_file",
+                "measure": 1,
+                "status": "measured only"
+            }
+        ],
+        "cyc": [
+            {
+                "file": "script_file_justified.m",
+                "function": "script_file_justified",
+                "measure": 4,
+                "status": "measured only"
+            },
+            {
+                "file": "script_file.m",
+                "function": "script_file",
+                "measure": 4,
+                "status": "measured only"
+            },
+            {
+                "file": "function_file_justified.m",
+                "function": "function_file_justified",
+                "measure": 4,
+                "status": "measured only"
+            },
+            {
+                "file": "function_file.m",
+                "function": "function_file",
+                "measure": 4,
+                "status": "measured only"
+            },
+            {
+                "file": "multi_line.m",
+                "function": "multi_line",
+                "measure": 1,
+                "status": "measured only"
+            }
+        ],
+        "file_length": [
+            {
+                "file": "function_file_justified.m",
+                "justification": "for testing purposes",
+                "limit": 10,
+                "measure": 24,
+                "status": "checked: justified"
+            },
+            {
+                "file": "function_file.m",
+                "limit": 10,
+                "measure": 24,
+                "status": "checked: fail"
+            },
+            {
+                "file": "script_file_justified.m",
+                "limit": 10,
+                "measure": 22,
+                "status": "checked: fail"
+            },
+            {
+                "file": "script_file.m",
+                "limit": 10,
+                "measure": 19,
+                "status": "checked: fail"
+            },
+            {
+                "file": "class_file.m",
+                "justification": "seems OK",
+                "limit": 10,
+                "measure": 13,
+                "status": "checked: justified"
+            },
+            {
+                "file": "multi_line.m",
+                "justification": "this is a very long justification over many lines",
+                "limit": 10,
+                "measure": 11,
+                "status": "checked: justified"
+            }
+        ],
+        "function_length": [
+            {
+                "file": "function_file_justified.m",
+                "function": "function_file_justified",
+                "measure": 20,
+                "status": "measured only"
+            },
+            {
+                "file": "function_file.m",
+                "function": "function_file",
+                "measure": 20,
+                "status": "measured only"
+            }
+        ],
+        "npath": [
+            {
+                "file": "script_file_justified.m",
+                "function": "script_file_justified",
+                "justification": "this seems fine",
+                "limit": 5,
+                "measure": 8,
+                "status": "checked: justified"
+            },
+            {
+                "file": "script_file.m",
+                "function": "script_file",
+                "limit": 5,
+                "measure": 8,
+                "status": "checked: fail"
+            },
+            {
+                "file": "function_file_justified.m",
+                "function": "function_file_justified",
+                "justification": "for testing purposes",
+                "limit": 5,
+                "measure": 8,
+                "status": "checked: justified"
+            },
+            {
+                "file": "function_file.m",
+                "function": "function_file",
+                "limit": 5,
+                "measure": 8,
+                "status": "checked: fail"
+            },
+            {
+                "file": "multi_line.m",
+                "function": "multi_line",
+                "limit": 5,
+                "measure": 1,
+                "status": "checked: ok"
+            }
+        ]
+    }
+}

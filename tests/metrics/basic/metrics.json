@@ -1,0 +1,465 @@
+{
+    "metrics": {
+        "file_1.m": {
+            "file_metrics": {
+                "file_length": {
+                    "measure": 18,
+                    "status": "measured only"
+                }
+            },
+            "function_metrics": {
+                "file_1": {
+                    "cnest": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": null,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "file_2.m": {
+            "file_metrics": {
+                "file_length": {
+                    "measure": 11,
+                    "status": "measured only"
+                }
+            },
+            "function_metrics": {
+                "kitten": {
+                    "cnest": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 7,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                },
+                "kitten::cat": {
+                    "cnest": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 3,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                },
+                "potato": {
+                    "cnest": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 3,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "npath.m": {
+            "file_metrics": {
+                "file_length": {
+                    "measure": 30,
+                    "status": "measured only"
+                }
+            },
+            "function_metrics": {
+                "ifs": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 11,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 8,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                },
+                "loops_1": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 5,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                },
+                "loops_2": {
+                    "cnest": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 3,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 7,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 3,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                },
+                "sequence": {
+                    "cnest": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        }
+    },
+    "worst_case": {
+        "cnest": [
+            {
+                "file": "npath.m",
+                "function": "loops_2",
+                "measure": 2,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "loops_1",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "ifs",
+                "measure": 1,
+                "status": "measured only"
+            }
+        ],
+        "cyc": [
+            {
+                "file": "npath.m",
+                "function": "ifs",
+                "measure": 4,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "loops_2",
+                "measure": 3,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "loops_1",
+                "measure": 2,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "sequence",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "function": "potato",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "function": "kitten::cat",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "function": "kitten",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "file_1.m",
+                "function": "file_1",
+                "measure": 1,
+                "status": "measured only"
+            }
+        ],
+        "file_length": [
+            {
+                "file": "npath.m",
+                "measure": 30,
+                "status": "measured only"
+            },
+            {
+                "file": "file_1.m",
+                "measure": 18,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "measure": 11,
+                "status": "measured only"
+            }
+        ],
+        "function_length": [
+            {
+                "file": "npath.m",
+                "function": "ifs",
+                "measure": 11,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "loops_2",
+                "measure": 7,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "function": "kitten",
+                "measure": 7,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "loops_1",
+                "measure": 5,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "sequence",
+                "measure": 4,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "function": "potato",
+                "measure": 3,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "function": "kitten::cat",
+                "measure": 3,
+                "status": "measured only"
+            }
+        ],
+        "npath": [
+            {
+                "file": "npath.m",
+                "function": "ifs",
+                "measure": 8,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "loops_2",
+                "measure": 3,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "loops_1",
+                "measure": 2,
+                "status": "measured only"
+            },
+            {
+                "file": "npath.m",
+                "function": "sequence",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "function": "potato",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "function": "kitten::cat",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "file_2.m",
+                "function": "kitten",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "file_1.m",
+                "function": "file_1",
+                "measure": 1,
+                "status": "measured only"
+            }
+        ],
+        "parameters": [
+            {
+                "file": "npath.m",
+                "function": "ifs",
+                "measure": 1,
+                "status": "measured only"
+            }
+        ]
+    }
+}

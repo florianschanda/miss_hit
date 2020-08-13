@@ -6,3 +6,7 @@ MISS_HIT Metric Summary: 0 file(s) analysed, everything seems fine
 
 === HTML MODE ===
 MISS_HIT Metric Summary: 0 file(s) analysed, everything seems fine
+
+
+=== JSON MODE ===
+MISS_HIT Metric Summary: 0 file(s) analysed, everything seems fine

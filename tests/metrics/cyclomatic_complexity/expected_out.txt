@@ -275,3 +275,10 @@ In pragma.m, line 4
 | %| pragma Justify (metric, "cyc", "this is fine");
 |    ^^^^^^ warning: this justification does not apply to anything
 MISS_HIT Metric Summary: 19 file(s) analysed, 1 warning(s)
+
+
+=== JSON MODE ===
+In pragma.m, line 4
+| %| pragma Justify (metric, "cyc", "this is fine");
+|    ^^^^^^ warning: this justification does not apply to anything
+MISS_HIT Metric Summary: 19 file(s) analysed, 1 warning(s)

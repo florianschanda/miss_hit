@@ -103,3 +103,7 @@ MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine
 
 === HTML MODE ===
 MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine
+
+
+=== JSON MODE ===
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine

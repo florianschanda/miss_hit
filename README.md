@@ -123,6 +123,7 @@ The vast majority of this work is (C) Florian Schanda. Contributions
 from the following people and entities are under their copyright, with
 the same license:
 
+* Veoneer AB
 * Zenuity AB
 * Alina Boboc
 * Benedikt Schmid

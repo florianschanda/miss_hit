@@ -1,0 +1,159 @@
+{
+    "metrics": {
+        "test.m": {
+            "file_metrics": {
+                "file_length": {
+                    "limit": 10,
+                    "measure": 25,
+                    "status": "checked: fail"
+                }
+            },
+            "function_metrics": {
+                "test_1": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 3,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 10,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "limit": 5,
+                        "measure": 4,
+                        "status": "checked: ok"
+                    },
+                    "parameters": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                },
+                "test_2": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 14,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "limit": 5,
+                        "measure": 8,
+                        "status": "checked: fail"
+                    },
+                    "parameters": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        }
+    },
+    "worst_case": {
+        "cnest": [
+            {
+                "file": "test.m",
+                "function": "test_2",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "test.m",
+                "function": "test_1",
+                "measure": 1,
+                "status": "measured only"
+            }
+        ],
+        "cyc": [
+            {
+                "file": "test.m",
+                "function": "test_2",
+                "measure": 4,
+                "status": "measured only"
+            },
+            {
+                "file": "test.m",
+                "function": "test_1",
+                "measure": 3,
+                "status": "measured only"
+            }
+        ],
+        "file_length": [
+            {
+                "file": "test.m",
+                "limit": 10,
+                "measure": 25,
+                "status": "checked: fail"
+            }
+        ],
+        "function_length": [
+            {
+                "file": "test.m",
+                "function": "test_2",
+                "measure": 14,
+                "status": "measured only"
+            },
+            {
+                "file": "test.m",
+                "function": "test_1",
+                "measure": 10,
+                "status": "measured only"
+            }
+        ],
+        "npath": [
+            {
+                "file": "test.m",
+                "function": "test_2",
+                "limit": 5,
+                "measure": 8,
+                "status": "checked: fail"
+            },
+            {
+                "file": "test.m",
+                "function": "test_1",
+                "limit": 5,
+                "measure": 4,
+                "status": "checked: ok"
+            }
+        ],
+        "parameters": [
+            {
+                "file": "test.m",
+                "function": "test_2",
+                "measure": 2,
+                "status": "measured only"
+            },
+            {
+                "file": "test.m",
+                "function": "test_1",
+                "measure": 2,
+                "status": "measured only"
+            }
+        ]
+    }
+}

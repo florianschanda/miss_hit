@@ -1,0 +1,243 @@
+{
+    "metrics": {
+        "test_01.m": {
+            "file_metrics": {
+                "file_length": {
+                    "measure": 13,
+                    "status": "measured only"
+                }
+            },
+            "function_metrics": {
+                "test_01": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 5,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 13,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 5,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "test_02.m": {
+            "file_metrics": {
+                "file_length": {
+                    "measure": 9,
+                    "status": "measured only"
+                }
+            },
+            "function_metrics": {
+                "test_02": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 9,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 5,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "test_03.m": {
+            "file_metrics": {
+                "file_length": {
+                    "measure": 9,
+                    "status": "measured only"
+                }
+            },
+            "function_metrics": {
+                "test_03": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 5,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 9,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 5,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        }
+    },
+    "worst_case": {
+        "cnest": [
+            {
+                "file": "test_03.m",
+                "function": "test_03",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "test_02.m",
+                "function": "test_02",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "test_01.m",
+                "function": "test_01",
+                "measure": 1,
+                "status": "measured only"
+            }
+        ],
+        "cyc": [
+            {
+                "file": "test_03.m",
+                "function": "test_03",
+                "measure": 5,
+                "status": "measured only"
+            },
+            {
+                "file": "test_01.m",
+                "function": "test_01",
+                "measure": 5,
+                "status": "measured only"
+            },
+            {
+                "file": "test_02.m",
+                "function": "test_02",
+                "measure": 2,
+                "status": "measured only"
+            }
+        ],
+        "file_length": [
+            {
+                "file": "test_01.m",
+                "measure": 13,
+                "status": "measured only"
+            },
+            {
+                "file": "test_03.m",
+                "measure": 9,
+                "status": "measured only"
+            },
+            {
+                "file": "test_02.m",
+                "measure": 9,
+                "status": "measured only"
+            }
+        ],
+        "function_length": [
+            {
+                "file": "test_01.m",
+                "function": "test_01",
+                "measure": 13,
+                "status": "measured only"
+            },
+            {
+                "file": "test_03.m",
+                "function": "test_03",
+                "measure": 9,
+                "status": "measured only"
+            },
+            {
+                "file": "test_02.m",
+                "function": "test_02",
+                "measure": 9,
+                "status": "measured only"
+            }
+        ],
+        "npath": [
+            {
+                "file": "test_01.m",
+                "function": "test_01",
+                "measure": 4,
+                "status": "measured only"
+            },
+            {
+                "file": "test_03.m",
+                "function": "test_03",
+                "measure": 2,
+                "status": "measured only"
+            },
+            {
+                "file": "test_02.m",
+                "function": "test_02",
+                "measure": 2,
+                "status": "measured only"
+            }
+        ],
+        "parameters": [
+            {
+                "file": "test_03.m",
+                "function": "test_03",
+                "measure": 5,
+                "status": "measured only"
+            },
+            {
+                "file": "test_02.m",
+                "function": "test_02",
+                "measure": 5,
+                "status": "measured only"
+            },
+            {
+                "file": "test_01.m",
+                "function": "test_01",
+                "measure": 5,
+                "status": "measured only"
+            }
+        ]
+    }
+}

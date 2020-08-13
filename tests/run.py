@@ -165,6 +165,18 @@ def execute_metric_test(name):
                        env=TEST_ENV)
     html_out = r.stdout
 
+    # JSON
+    r = subprocess.run([sys.executable,
+                        "../../../mh_metric",
+                        "--single",
+                        "--json=metrics.json",
+                        ".",],
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.STDOUT,
+                       encoding="utf-8",
+                       env=TEST_ENV)
+    json_out = r.stdout
+
     # Save stdout
     with open("expected_out.txt", "w") as fd:
         fd.write("=== PLAIN MODE ===\n")
@@ -172,6 +184,9 @@ def execute_metric_test(name):
 
         fd.write("\n\n=== HTML MODE ===\n")
         fd.write(html_out)
+
+        fd.write("\n\n=== JSON MODE ===\n")
+        fd.write(json_out)
 
     return "Ran metrics test %s" % name
 

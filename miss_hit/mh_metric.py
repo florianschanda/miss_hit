@@ -4,6 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020, Veoneer AB                              ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -30,6 +31,7 @@ import os
 import sys
 import html
 import functools
+import json
 
 from miss_hit import command_line
 from miss_hit import work_package
@@ -738,6 +740,74 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
     fd.write("</html>\n")
 
 
+def build_json_report(all_metrics, worst_offenders):
+    rv = {"metrics" : {},
+          "worst_case" : {}}
+
+    def format_metrics_result(mres):
+        if mres["limit"] is None:
+            return {"status"  : "measured only",
+                    "measure" : mres["measure"]}
+        elif mres["measure"] <= mres["limit"]:
+            return {"status"  : "checked: ok",
+                    "measure" : mres["measure"],
+                    "limit"   : mres["limit"]}
+        elif mres["reason"]:
+            return {"status"        : "checked: justified",
+                    "measure"       : mres["measure"],
+                    "limit"         : mres["limit"],
+                    "justification" : mres["reason"]}
+        else:
+            return {"status"        : "checked: fail",
+                    "measure"       : mres["measure"],
+                    "limit"         : mres["limit"]}
+
+    def format_ml(mlst):
+        return {name: format_metrics_result(mlst[name])
+                for name in mlst}
+
+    for filename in all_metrics:
+        if all_metrics[filename]["errors"]:
+            continue
+        rv["metrics"][filename] = {
+            "file_metrics" : format_ml(all_metrics[filename]["metrics"]),
+            "function_metrics" : {
+                fn: format_ml(all_metrics[filename]["functions"][fn])
+                for fn in all_metrics[filename]["functions"]
+            },
+        }
+
+    if worst_offenders:
+        for file_metric in config.FILE_METRICS:
+            if file_metric not in worst_offenders:
+                continue
+            rv["worst_case"][file_metric] = []
+            for file_name in worst_offenders[file_metric]:
+                if not file_name:
+                    break
+                mdata = all_metrics[file_name]["metrics"][file_metric]
+                tmp = format_metrics_result(mdata)
+                tmp["file"] = file_name
+                rv["worst_case"][file_metric].append(tmp)
+
+        for function_metric in config.FUNCTION_METRICS:
+            if function_metric not in worst_offenders:
+                continue
+            rv["worst_case"][function_metric] = []
+            for tup in worst_offenders[function_metric]:
+                if not tup:
+                    break
+                file_name, function_name = tup
+                mdata = (all_metrics[file_name]["functions"]
+                         [function_name][function_metric])
+                tmp = format_metrics_result(mdata)
+                tmp["file"] = file_name
+                tmp["function"] = function_name
+                rv["worst_case"][function_metric].append(tmp)
+
+    return rv
+
+
 def worst_offender_count(worst_offenders):
     for metric in worst_offenders:
         return len(worst_offenders[metric])
@@ -922,16 +992,26 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
 
         # Generate report
 
-        if self.options.html:
+        if self.options.text:
+            with open(self.options.text, "w") as fd:
+                write_text_report(fd, self.metrics, worst_offenders)
+        elif self.options.html:
             with open(self.options.html, "w") as fd:
                 write_html_report(fd,
                                   self.options.html,
                                   self.metrics,
                                   worst_offenders)
-        elif self.options.text:
-            with open(self.options.text, "w") as fd:
-                write_text_report(fd, self.metrics, worst_offenders)
-        elif not self.options.ci:
+        elif self.options.json:
+            with open(self.options.json, "w") as fd:
+                json.dump(build_json_report(self.metrics, worst_offenders),
+                          fd,
+                          indent=4,
+                          sort_keys=True)
+        elif self.options.ci:
+            # In the CI mode we don't produce any report at all
+            pass
+        else:
+            # write to stdout
             write_text_report(sys.stdout, self.metrics, worst_offenders)
 
 
@@ -966,24 +1046,41 @@ def main_handler():
         metavar="FILE",
         help=("Write HTML metrics report to the file."))
 
+    clp["output_options"].add_argument(
+        "--json",
+        default=None,
+        metavar="FILE",
+        help=("Create JSON metrics report in the given file."))
+
     options = command_line.parse_args(clp)
 
     if options.text:
         if os.path.exists(options.text) and not os.path.isfile(options.text):
             clp["ap"].error("cannot write metrics to %s, it exists and is"
                             " not a file" % options.text)
+        if options.html or options.json:
+            clp["ap"].error("the text option is mutually exclusive with other"
+                            " output options")
 
     if options.html:
         if os.path.exists(options.html) and not os.path.isfile(options.html):
             clp["ap"].error("cannot write metrics to %s, it exists and is"
                             " not a file" % options.text)
+        if options.text or options.json:
+            clp["ap"].error("the html option is mutually exclusive with other"
+                            " output options")
 
-    if options.text and options.html:
-        clp["ap"].error("the text and html options are mutually exclusive")
+    if options.json:
+        if os.path.exists(options.json) and not os.path.isfile(options.json):
+            clp["ap"].error("cannot write metrics to %s, it exists and is"
+                            " not a file" % options.text)
+        if options.text or options.html:
+            clp["ap"].error("the json option is mutually exclusive with other"
+                            " output options")
 
-    if options.ci and (options.text or options.html):
-        clp["ap"].error("the CI mode and and text/html options are mutually "
-                        "exclusive")
+    if options.ci and (options.text or options.html or options.json):
+        clp["ap"].error("the CI mode and and text/html/json options are"
+                        "mutually exclusive")
 
     if options.worst_offenders < 0:
         clp["ap"].error("the worst-offender option cannot be negative")

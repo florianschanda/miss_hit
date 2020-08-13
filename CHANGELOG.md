@@ -21,6 +21,9 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 * Fixed another Windows multi-threading issue
 
+* MH Metric can now produce reports in JSON using the new `--json`
+  option.
+
 ### 0.9.9
 
 * Minor fix for the case where an excluded_dir contains a broken

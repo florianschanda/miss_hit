@@ -1,0 +1,243 @@
+{
+    "metrics": {
+        "no_file_metrics/foo.m": {
+            "file_metrics": {},
+            "function_metrics": {
+                "foo": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 15,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 8,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "no_function_metrics/foo.m": {
+            "file_metrics": {
+                "file_length": {
+                    "measure": 17,
+                    "status": "measured only"
+                }
+            },
+            "function_metrics": {
+                "foo": {}
+            }
+        },
+        "partial/foo.m": {
+            "file_metrics": {
+                "file_length": {
+                    "measure": 17,
+                    "status": "measured only"
+                }
+            },
+            "function_metrics": {
+                "foo": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "limit": 5,
+                        "measure": 4,
+                        "status": "checked: ok"
+                    },
+                    "function_length": {
+                        "measure": 15,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 8,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 2,
+                        "status": "measured only"
+                    }
+                }
+            }
+        },
+        "useless_config/foo.m": {
+            "file_metrics": {
+                "file_length": {
+                    "measure": 17,
+                    "status": "measured only"
+                }
+            },
+            "function_metrics": {
+                "foo": {
+                    "cnest": {
+                        "measure": 1,
+                        "status": "measured only"
+                    },
+                    "cyc": {
+                        "measure": 4,
+                        "status": "measured only"
+                    },
+                    "function_length": {
+                        "measure": 15,
+                        "status": "measured only"
+                    },
+                    "globals": {
+                        "measure": 0,
+                        "status": "measured only"
+                    },
+                    "npath": {
+                        "measure": 8,
+                        "status": "measured only"
+                    },
+                    "parameters": {
+                        "measure": 2,
+                        "status": "measured only"
+                    },
+                    "persistent": {
+                        "measure": 0,
+                        "status": "measured only"
+                    }
+                }
+            }
+        }
+    },
+    "worst_case": {
+        "cnest": [
+            {
+                "file": "useless_config/foo.m",
+                "function": "foo",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "partial/foo.m",
+                "function": "foo",
+                "measure": 1,
+                "status": "measured only"
+            },
+            {
+                "file": "no_file_metrics/foo.m",
+                "function": "foo",
+                "measure": 1,
+                "status": "measured only"
+            }
+        ],
+        "cyc": [
+            {
+                "file": "useless_config/foo.m",
+                "function": "foo",
+                "measure": 4,
+                "status": "measured only"
+            },
+            {
+                "file": "partial/foo.m",
+                "function": "foo",
+                "limit": 5,
+                "measure": 4,
+                "status": "checked: ok"
+            },
+            {
+                "file": "no_file_metrics/foo.m",
+                "function": "foo",
+                "measure": 4,
+                "status": "measured only"
+            }
+        ],
+        "file_length": [
+            {
+                "file": "useless_config/foo.m",
+                "measure": 17,
+                "status": "measured only"
+            },
+            {
+                "file": "partial/foo.m",
+                "measure": 17,
+                "status": "measured only"
+            },
+            {
+                "file": "no_function_metrics/foo.m",
+                "measure": 17,
+                "status": "measured only"
+            }
+        ],
+        "function_length": [
+            {
+                "file": "useless_config/foo.m",
+                "function": "foo",
+                "measure": 15,
+                "status": "measured only"
+            },
+            {
+                "file": "partial/foo.m",
+                "function": "foo",
+                "measure": 15,
+                "status": "measured only"
+            },
+            {
+                "file": "no_file_metrics/foo.m",
+                "function": "foo",
+                "measure": 15,
+                "status": "measured only"
+            }
+        ],
+        "npath": [
+            {
+                "file": "useless_config/foo.m",
+                "function": "foo",
+                "measure": 8,
+                "status": "measured only"
+            },
+            {
+                "file": "partial/foo.m",
+                "function": "foo",
+                "measure": 8,
+                "status": "measured only"
+            },
+            {
+                "file": "no_file_metrics/foo.m",
+                "function": "foo",
+                "measure": 8,
+                "status": "measured only"
+            }
+        ],
+        "parameters": [
+            {
+                "file": "useless_config/foo.m",
+                "function": "foo",
+                "measure": 2,
+                "status": "measured only"
+            },
+            {
+                "file": "partial/foo.m",
+                "function": "foo",
+                "measure": 2,
+                "status": "measured only"
+            },
+            {
+                "file": "no_file_metrics/foo.m",
+                "function": "foo",
+                "measure": 2,
+                "status": "measured only"
+            }
+        ]
+    }
+}
