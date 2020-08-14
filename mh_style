@@ -23,7 +23,7 @@
 ##                                                                          ##
 ##############################################################################
 
-from miss_hit import mh_style
+from miss_hit_core import mh_style
 
 
 if __name__ == "__main__":

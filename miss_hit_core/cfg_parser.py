@@ -37,15 +37,15 @@ import difflib
 import os.path
 from copy import deepcopy
 
-from miss_hit import m_lexer
-from miss_hit.errors import ICE, Error, Location, Message_Handler
-from miss_hit.config import (STYLE_RULES, STYLE_CONFIGURATION,
-                             METRICS,
-                             Boolean_Style_Configuration,
-                             Integer_Style_Configuration,
-                             Regex_Style_Configuration,
-                             Set_Style_Configuration)
-from miss_hit.cfg_ast import *
+from miss_hit_core import m_lexer
+from miss_hit_core.errors import ICE, Error, Location, Message_Handler
+from miss_hit_core.config import (STYLE_RULES, STYLE_CONFIGURATION,
+                                  METRICS,
+                                  Boolean_Style_Configuration,
+                                  Integer_Style_Configuration,
+                                  Regex_Style_Configuration,
+                                  Set_Style_Configuration)
+from miss_hit_core.cfg_ast import *
 
 
 class Config_Parser:

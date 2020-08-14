@@ -6,7 +6,7 @@ import re
 import html
 sys.path.append("..")
 
-from miss_hit import version
+from miss_hit_core import version
 
 def process(filename):
     tmp = []

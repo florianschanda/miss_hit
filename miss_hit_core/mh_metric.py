@@ -33,14 +33,14 @@ import html
 import functools
 import json
 
-from miss_hit import command_line
-from miss_hit import work_package
-from miss_hit import config
+from miss_hit_core import command_line
+from miss_hit_core import work_package
+from miss_hit_core import config
 
-from miss_hit.errors import Error, ICE, Message_Handler
-from miss_hit.m_ast import *
-from miss_hit.m_lexer import MATLAB_Lexer
-from miss_hit.m_parser import MATLAB_Parser
+from miss_hit_core.errors import Error, ICE, Message_Handler
+from miss_hit_core.m_ast import *
+from miss_hit_core.m_lexer import MATLAB_Lexer
+from miss_hit_core.m_parser import MATLAB_Parser
 
 MEASURE = {m : None for m in config.METRICS}
 

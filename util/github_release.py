@@ -10,7 +10,7 @@ import json
 
 import requests
 
-from miss_hit.version import VERSION
+from miss_hit_core.version import VERSION
 import util.changelog
 
 def main():

@@ -19,10 +19,15 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ### 0.9.10-dev
 
-* Fixed another Windows multi-threading issue
+* Fixed another Windows multi-threading issue.
 
 * MH Metric can now produce reports in JSON using the new `--json`
   option.
+
+* Rename packages (`miss_hit_agpl` is now `miss_hit`, and `miss_hit`
+  is now `miss_hit_core`). It's likely this is not the last renaming,
+  sorry. I can only promise that it will be stable after 1.0 is
+  released.
 
 ### 0.9.9
 

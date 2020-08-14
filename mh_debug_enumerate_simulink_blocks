@@ -30,10 +30,10 @@
 import os
 import argparse
 
-from miss_hit import command_line
-from miss_hit.config import Config
-from miss_hit.errors import Message_Handler
-from miss_hit.s_parser import Simulink_SLX_Parser
+from miss_hit_core import command_line
+from miss_hit_core.config import Config
+from miss_hit_core.errors import Message_Handler
+from miss_hit_core.s_parser import Simulink_SLX_Parser
 
 
 def process(mh, root_dir, file_name):

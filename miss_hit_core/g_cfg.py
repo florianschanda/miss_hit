@@ -23,9 +23,9 @@
 ##                                                                          ##
 ##############################################################################
 
-from miss_hit.graph import Graph, Vertex_Root
-from miss_hit.m_ast import *
-from miss_hit.errors import Message_Handler, ICE
+from miss_hit_core.graph import Graph, Vertex_Root
+from miss_hit_core.m_ast import *
+from miss_hit_core.errors import Message_Handler, ICE
 
 
 class Vertex(Vertex_Root):

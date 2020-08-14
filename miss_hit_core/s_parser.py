@@ -35,9 +35,9 @@ import xml.etree.ElementTree as ET
 
 from abc import ABCMeta, abstractmethod
 
-from miss_hit.config import Config
-from miss_hit.s_ast import *
-from miss_hit.errors import Message_Handler, ICE
+from miss_hit_core.config import Config
+from miss_hit_core.s_ast import *
+from miss_hit_core.errors import Message_Handler, ICE
 
 # pylint: disable=invalid-name
 anatomy = {}
@@ -462,7 +462,7 @@ class Simulink_SLX_Parser(Simulink_Parser):
 
 def sanity_test(mh, filename, _):
     # pylint: disable=import-outside-toplevel
-    from miss_hit import m_lexer
+    from miss_hit_core import m_lexer
     # pylint: enable=import-outside-toplevel
 
     print("=== Parsing %s ===" % filename)

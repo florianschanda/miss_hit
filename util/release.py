@@ -11,16 +11,16 @@ import util.changelog
 # version number.
 
 tmp = ""
-with open("miss_hit/version.py", "r") as fd:
+with open("miss_hit_core/version.py", "r") as fd:
     for raw_line in fd:
         if raw_line.startswith("VERSION_SUFFIX"):
             raw_line = 'VERSION_SUFFIX = ""\n'
 
         tmp += raw_line
-with open("miss_hit/version.py", "w") as fd:
+with open("miss_hit_core/version.py", "w") as fd:
     fd.write(tmp)
 
-from miss_hit.version import VERSION
+from miss_hit_core.version import VERSION
 print(VERSION)
 
 # Update last CHANGELOG entry and documentation to use the new
@@ -31,5 +31,5 @@ os.system("make doc")
 
 # Commit & tag
 
-os.system("git add CHANGELOG.md docs miss_hit/version.py")
+os.system("git add CHANGELOG.md docs miss_hit_core/version.py")
 os.system('git commit -m "Release %s"' % VERSION)

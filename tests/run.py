@@ -203,7 +203,7 @@ def execute_lexer_test(name):
     for f in files:
         r = subprocess.run([sys.executable,
                             "-m"
-                            "miss_hit.m_lexer",
+                            "miss_hit_core.m_lexer",
                             f],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT,
@@ -229,7 +229,7 @@ def execute_parser_test(name):
     for f in files:
         r = subprocess.run([sys.executable,
                             "-m"
-                            "miss_hit.m_parser",
+                            "miss_hit_core.m_parser",
                             "--no-tb",
                             "--tree",
                             f],
@@ -257,7 +257,7 @@ def execute_simulink_parser_test(name):
     for f in files:
         r = subprocess.run([sys.executable,
                             "-m"
-                            "miss_hit.s_parser",
+                            "miss_hit_core.s_parser",
                             f],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT,
@@ -283,7 +283,7 @@ def execute_config_parser_test(name):
     for f in files:
         r = subprocess.run([sys.executable,
                             "-m"
-                            "miss_hit.cfg_parser",
+                            "miss_hit_core.cfg_parser",
                             "--no-tb",
                             f],
                            stdout=subprocess.PIPE,
@@ -329,7 +329,7 @@ def main():
 
     # Make sure we're in the right directory
     assert os.path.isfile("../mh_style")
-    assert os.path.isdir("../miss_hit")
+    assert os.path.isdir("../miss_hit_core")
     root = os.getcwd()
 
     tests = []

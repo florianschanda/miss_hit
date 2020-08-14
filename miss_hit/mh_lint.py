@@ -24,9 +24,10 @@
 ##                                                                          ##
 ##############################################################################
 
-from miss_hit import command_line
-from miss_hit import work_package
-from miss_hit.errors import Message_Handler
+from miss_hit_core import command_line
+from miss_hit_core import work_package
+from miss_hit_core.errors import Message_Handler
+
 
 class MH_Lint_Result(work_package.Result):
     def __init__(self, wp):

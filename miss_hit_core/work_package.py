@@ -25,10 +25,10 @@
 
 import os.path
 
-from miss_hit import s_ast
-from miss_hit import cfg_tree
+from miss_hit_core import s_ast
+from miss_hit_core import cfg_tree
 
-from miss_hit.errors import Message_Handler, ICE, Location
+from miss_hit_core.errors import Message_Handler, ICE, Location
 
 
 class Work_Package:

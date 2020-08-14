@@ -6,7 +6,7 @@ import re
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
-from m_language import KEYWORDS
+from miss_hit_core.m_language import KEYWORDS
 
 high_impact_builtins = set([
     "cd",

@@ -8,10 +8,10 @@ test:
 	@cd tests; ./run.py
 
 lint: style
-	@python3 -m pylint --rcfile=pylint3.cfg --reports=no mh_* miss_hit miss_hit_agpl
+	@python3 -m pylint --rcfile=pylint3.cfg --reports=no mh_* miss_hit_core miss_hit
 
 style:
-	@python3 -m pycodestyle mh_* miss_hit
+	@python3 -m pycodestyle mh_* miss_hit_core miss_hit
 
 package:
 	@git clean -xdf

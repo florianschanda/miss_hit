@@ -3,13 +3,13 @@
 import sys
 import setuptools
 
-import miss_hit.version
+import miss_hit_core.version
 
 with open("README.md", "r") as fd:
     long_description = fd.read()
 
 setuptools.setup(
-    name="miss_hit",
+    name="miss_hit_core",
     version=miss_hit.version.VERSION,
     author="Florian Schanda",
     author_email="florian@schanda.org.uk",
@@ -23,7 +23,7 @@ setuptools.setup(
         "Source Code"   : "https://github.com/florianschanda/miss_hit",
     },
     license="GNU General Public License v3",
-    packages=["miss_hit"],
+    packages=["miss_hit_core"],
     python_requires=">=3.6, <4",
     classifiers=[
         "Development Status :: 4 - Beta",

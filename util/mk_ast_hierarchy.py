@@ -7,9 +7,9 @@ This little hack draws a hierarchy of the AST nodes in GraphViz format.
 import inspect
 import argparse
 
-import miss_hit.m_ast
-import miss_hit.s_ast
-import miss_hit.cfg_ast
+import miss_hit_core.m_ast
+import miss_hit_core.s_ast
+import miss_hit_core.cfg_ast
 
 
 def main():

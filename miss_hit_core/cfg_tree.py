@@ -31,9 +31,9 @@
 
 import os
 
-from miss_hit.cfg_parser import load_config
-from miss_hit.errors import ICE, Error, Location, Message_Handler
-from miss_hit.cfg_ast import *
+from miss_hit_core.cfg_parser import load_config
+from miss_hit_core.errors import ICE, Error, Location, Message_Handler
+from miss_hit_core.cfg_ast import *
 
 DEBUG_TRACE_TREE = False
 # Enable to get spammed about where/how we build the config tree.

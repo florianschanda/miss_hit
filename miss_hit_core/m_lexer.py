@@ -28,11 +28,11 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 
-from miss_hit.config import Config
-from miss_hit import m_ast
+from miss_hit_core.config import Config
+from miss_hit_core import m_ast
 
-from miss_hit.errors import Location, Error, Message_Handler, ICE
-from miss_hit.m_language import KEYWORDS, ANNOTATION_KEYWORDS
+from miss_hit_core.errors import Location, Error, Message_Handler, ICE
+from miss_hit_core.m_language import KEYWORDS, ANNOTATION_KEYWORDS
 
 # The 1999 technical report "The Design and Implementation of a Parser
 # and Scanner for the MATLAB Language in the MATCH Compiler" is a key

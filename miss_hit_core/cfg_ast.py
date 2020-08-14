@@ -27,13 +27,13 @@
 
 from abc import ABCMeta, abstractmethod
 
-from miss_hit.errors import Message_Handler, ICE
-from miss_hit.config import (Config,
-                             Boolean_Style_Configuration,
-                             Integer_Style_Configuration,
-                             String_Style_Configuration,
-                             Set_Style_Configuration,
-                             STYLE_RULES, STYLE_CONFIGURATION, METRICS)
+from miss_hit_core.errors import Message_Handler, ICE
+from miss_hit_core.config import (Config,
+                                  Boolean_Style_Configuration,
+                                  Integer_Style_Configuration,
+                                  String_Style_Configuration,
+                                  Set_Style_Configuration,
+                                  STYLE_RULES, STYLE_CONFIGURATION, METRICS)
 
 
 class Node(metaclass=ABCMeta):

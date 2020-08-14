@@ -32,16 +32,16 @@ import re
 
 from abc import ABCMeta, abstractmethod
 
-from miss_hit import work_package
-from miss_hit import command_line
-from miss_hit import config
-from miss_hit import g_cfg
+from miss_hit_core import work_package
+from miss_hit_core import command_line
+from miss_hit_core import config
+from miss_hit_core import g_cfg
 
-from miss_hit.errors import (Location, Error, ICE,
-                             Message_Handler, HTML_Message_Handler)
-from miss_hit.m_ast import *
-from miss_hit.m_lexer import MATLAB_Lexer, Token_Buffer
-from miss_hit.m_parser import MATLAB_Parser
+from miss_hit_core.errors import (Location, Error, ICE,
+                                  Message_Handler, HTML_Message_Handler)
+from miss_hit_core.m_ast import *
+from miss_hit_core.m_lexer import MATLAB_Lexer, Token_Buffer
+from miss_hit_core.m_parser import MATLAB_Parser
 
 
 COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"

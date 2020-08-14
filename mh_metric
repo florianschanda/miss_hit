@@ -23,7 +23,7 @@
 ##                                                                          ##
 ##############################################################################
 
-from miss_hit import mh_metric
+from miss_hit_core import mh_metric
 
 
 if __name__ == "__main__":

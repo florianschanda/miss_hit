@@ -4,7 +4,7 @@ import os
 
 import util.changelog
 
-from miss_hit.version import VERSION_TUPLE
+from miss_hit_core.version import VERSION_TUPLE
 
 major, minor, release = VERSION_TUPLE
 release += 1
