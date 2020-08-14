@@ -4,7 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2020, Florian Schanda                         ##
-##              Copyright (C) 2020, Veoneer AB                              ##
+##              Copyright (C) 2020, Veoneer System Software GmbH            ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
