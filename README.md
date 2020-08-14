@@ -108,25 +108,26 @@ We've [documented the key
 issues](https://github.com/florianschanda/miss_hit/blob/master/CHALLENGES.md)
 we've faced and how we've resolved them.
 
-## Copyright
+## Copyright & License
 
 The basic framework, style checker and code metrics tool of MISS_HIT
-are licensed under the GNU GPL version 3 (or later) as described in
+(everything under `miss_hit_core`) are licensed under the GNU GPL
+version 3 (or later) as described in
 [LICENSE](https://github.com/florianschanda/miss_hit/blob/master/LICENSE).
 
-The advanced analysis tools of MISS_HIT (everything under
-`miss_hit_agpl`) are licensed under the GNU Affero GPL version 3 (or
-later) as described in
+The advanced analysis tools of MISS_HIT (everything under `miss_hit`)
+are licensed under the GNU Affero GPL version 3 (or later) as
+described in
 [LICENSE.AGPL](https://github.com/florianschanda/miss_hit/blob/master/LICENSE.AGPL).
 
 The vast majority of this work is (C) Florian Schanda. Contributions
 from the following people and entities are under their copyright, with
 the same license:
 
-* Veoneer System Software GmbH
-* Zenuity AB
-* Alina Boboc
-* Benedikt Schmid
+* Alina Boboc (Documentation)
+* Benedikt Schmid (MATLAB integration)
+* Veoneer System Software GmbH (JSON Metrics)
+* Zenuity AB (Key parts of the lexer)
 
 ### Copyright of octave tests
 
