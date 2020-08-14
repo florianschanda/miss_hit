@@ -12,7 +12,7 @@ release += 1
 # Bump version and update version.py
 
 tmp = ""
-with open("miss_hit/version.py", "r") as fd:
+with open("miss_hit_core/version.py", "r") as fd:
     for raw_line in fd:
         if raw_line.startswith("VERSION_TUPLE"):
             raw_line = 'VERSION_TUPLE = (%u, %u, %u)\n' % (major,
@@ -22,7 +22,7 @@ with open("miss_hit/version.py", "r") as fd:
             raw_line = 'VERSION_SUFFIX = "dev"\n'
 
         tmp += raw_line
-with open("miss_hit/version.py", "w") as fd:
+with open("miss_hit_core/version.py", "w") as fd:
     fd.write(tmp)
 
 VERSION = "%u.%u.%u-dev" % (major, minor, release)
@@ -34,5 +34,5 @@ os.system("make doc")
 
 # Assemble commit
 
-os.system("git add miss_hit/version.py CHANGELOG.md docs")
+os.system("git add miss_hit_core/version.py CHANGELOG.md docs")
 # os.system('git commit -m "Bump version to %s after release"' % VERSION)
