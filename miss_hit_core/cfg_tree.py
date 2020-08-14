@@ -41,7 +41,7 @@ DEBUG_TRACE_TREE = False
 CONFIG_FILENAMES = ["miss_hit.cfg", ".miss_hit"]
 # Valid config file names. Any directory is allowed at most one.
 
-USE_DOT_GIT = True
+USE_DOT_GIT = False
 # Consider a directory containing ".git" a project root. In the future
 # this will be configurable through some global configuration
 # mechanism.

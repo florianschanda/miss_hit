@@ -21,6 +21,11 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 * Fixed another Windows multi-threading issue.
 
+* Reverted new behaviour to consider all directories containing `.git`
+  as a project root. It is useful, but until it can be configured
+  ([#156](https://github.com/florianschanda/miss_hit/issues/156)) it can
+  be really disruptive.
+
 * MH Metric can now produce reports in JSON using the new `--json`
   option.
 
