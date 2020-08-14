@@ -10,7 +10,7 @@ with open("README.md", "r") as fd:
 
 setuptools.setup(
     name="miss_hit_core",
-    version=miss_hit.version.VERSION,
+    version=miss_hit_core.version.VERSION,
     author="Florian Schanda",
     author_email="florian@schanda.org.uk",
     description="Code formatting and code metrics for programs written in the MATLAB/Simulink and Octave languages.",
@@ -38,8 +38,8 @@ setuptools.setup(
     ],
     entry_points={
         "console_scripts": [
-            "mh_style = miss_hit.mh_style:main",
-            "mh_metric = miss_hit.mh_metric:main",
+            "mh_style = miss_hit_core.mh_style:main",
+            "mh_metric = miss_hit_core.mh_metric:main",
         ],
     },
 )

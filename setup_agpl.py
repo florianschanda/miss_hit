@@ -10,7 +10,7 @@ with open("README.md", "r") as fd:
 
 setuptools.setup(
     name="miss_hit",
-    version=miss_hit.version.VERSION,
+    version=miss_hit_core.version.VERSION,
     author="Florian Schanda",
     author_email="florian@schanda.org.uk",
     description="Static analysis for programs written in the MATLAB/Simulink and Octave languages.",
@@ -24,7 +24,7 @@ setuptools.setup(
     },
     license="GNU Affero General Public License v3",
     packages=["miss_hit"],
-    install_requires=["miss_hit==%s" % miss_hit.version.VERSION],
+    install_requires=["miss_hit_core==%s" % miss_hit_core.version.VERSION],
     python_requires=">=3.6, <4",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
@@ -39,7 +39,7 @@ setuptools.setup(
     ],
     entry_points={
         "console_scripts": [
-            "mh_lint = miss_hit_agpl.mh_lint:main",
+            "mh_lint = miss_hit.mh_lint:main",
         ],
     },
 )
