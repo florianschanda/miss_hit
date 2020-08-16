@@ -19,7 +19,7 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ### 0.9.11-dev
 
-
+* Added [GitHub and Travis CI templates](https://florianschanda.github.io/miss_hit/configuration.html#cicd) to the documentation. Thank you Remi Gau for your contribution.
 
 ### 0.9.10
 

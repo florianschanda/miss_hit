@@ -145,7 +145,7 @@ enable: true
     </section>
 
     <section>
-      <h2>Integrating MISS_HIT into CI/CD</h2>
+      <h2><a name="cicd">Integrating MISS_HIT into CI/CD</a></h2>
 
       <h3>Analyze early and often</h3>
       <div>WIP/TODO</div>
@@ -154,7 +154,80 @@ enable: true
       <div>WIP/TODO</div>
 
       <h3>Travis</h3>
-      <div>WIP/TODO</div>
+      <div>
+        This is an example <tt>.travis.yml</tt> to use check your
+        entire repository.
+<pre>
+# Linux distribution (bionic beaver)
+dist: bionic
+
+# Language and version
+language: python
+python:
+  - "3.6" # current default Python on Travis CI
+
+cache:
+  apt: true # only works with Pro version
+
+# Install miss_hit
+before_install:
+  - pip3 install miss_hit
+
+# Lists all the tasks we will do
+jobs:
+  include:
+    - name: "miss_hit: checking code quality"
+      script: mh_metric --ci .
+    - name: "miss_hit: checking code style"
+      script: mh_style .
+</pre>
+      </div>
+
+      <h3>GitHub action</h3>
+      <div>
+        This example GitHub action can be used to check your entire
+        repository.
+<pre>
+name: miss_hit
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: '*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 1
+
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools
+        pip3 install install miss_hit
+
+    - name: Miss_hit code quality
+      run: |
+        mh_metric --ci .
+
+    - name: Miss_hit code style
+      run: |
+        mh_style .
+</pre>
+      </div>
     </section>
 
 

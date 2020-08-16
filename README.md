@@ -126,6 +126,7 @@ the same license:
 
 * Alina Boboc (Documentation)
 * Benedikt Schmid (MATLAB integration)
+* Remi Gau (CI/CD templates)
 * Veoneer System Software GmbH (JSON Metrics)
 * Zenuity AB (Key parts of the lexer)
 
