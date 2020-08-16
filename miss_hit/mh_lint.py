@@ -26,7 +26,9 @@
 
 from miss_hit_core import command_line
 from miss_hit_core import work_package
-from miss_hit_core.errors import Message_Handler
+from miss_hit_core.errors import Message_Handler, Error
+from miss_hit_core.m_lexer import MATLAB_Lexer
+from miss_hit_core.m_parser import MATLAB_Parser
 
 
 class MH_Lint_Result(work_package.Result):
@@ -40,6 +42,25 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
 
     @classmethod
     def process_wp(cls, wp):
+        # Create lexer
+        lexer = MATLAB_Lexer(wp.mh,
+                             wp.get_content(),
+                             wp.filename,
+                             wp.blockname)
+        if wp.cfg.octave:
+            lexer.set_octave_mode()
+        if not wp.cfg.pragmas:
+            lexer.process_pragmas = False
+        if len(lexer.text.strip()) == 0:
+            return MH_Lint_Result(wp)
+
+        # Create parse tree
+        try:
+            parser = MATLAB_Parser(wp.mh, lexer, wp.cfg)
+            parser.parse_file()
+        except Error:
+            return MH_Lint_Result(wp)
+
         return MH_Lint_Result(wp)
 
 
@@ -50,6 +71,7 @@ def main_handler():
     mh = Message_Handler("lint")
     mh.show_context = not options.brief
     mh.show_style   = False
+    mh.show_checks  = True
     mh.autofix      = False
 
     lint_backend = MH_Lint(options)

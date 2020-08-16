@@ -191,6 +191,45 @@ def execute_metric_test(name):
     return "Ran metrics test %s" % name
 
 
+def execute_lint_test(name):
+    os.chdir(os.path.join(TEST_ROOT,
+                          "lint",
+                          name))
+
+    # Run
+    r = subprocess.run([sys.executable,
+                        "../../../mh_lint",
+                        "--single",
+                        ".",],
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.STDOUT,
+                       encoding="utf-8",
+                       env=TEST_ENV)
+    plain_out = r.stdout
+
+    # # HTML
+    # r = subprocess.run([sys.executable,
+    #                     "../../../mh_lint",
+    #                     "--single",
+    #                     "--html=lint.html",
+    #                     ".",],
+    #                    stdout=subprocess.PIPE,
+    #                    stderr=subprocess.STDOUT,
+    #                    encoding="utf-8",
+    #                    env=TEST_ENV)
+    # html_out = r.stdout
+
+    # Save stdout
+    with open("expected_out.txt", "w") as fd:
+        fd.write("=== PLAIN MODE ===\n")
+        fd.write(plain_out)
+
+        # fd.write("\n\n=== HTML MODE ===\n")
+        # fd.write(html_out)
+
+    return "Ran lint test %s" % name
+
+
 def execute_lexer_test(name):
     os.chdir(os.path.join(TEST_ROOT,
                           "lexer",
@@ -309,6 +348,7 @@ def run_test(test):
     fn = {
         "style"           : execute_style_test,
         "metrics"         : execute_metric_test,
+        "lint"            : execute_lint_test,
         "lexer"           : execute_lexer_test,
         "parser"          : execute_parser_test,
         "simulink_parser" : execute_simulink_parser_test,
@@ -339,7 +379,7 @@ def main():
     else:
         suites = ["lexer", "parser", "simulink_parser",
                   "config_parser",
-                  "style", "metrics"]
+                  "style", "metrics", "lint"]
 
     for kind in suites:
         for t in os.listdir(kind):

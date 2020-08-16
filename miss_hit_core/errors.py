@@ -115,8 +115,13 @@ class Style_Justification(Justification):
 class Message:
     def __init__(self, location, kind, message, fatal, autofixed):
         assert isinstance(location, Location)
-        assert kind in ("info", "style", "metric",
-                        "warning", "lex error", "error")
+        assert kind in ("info",       # diagnostics and information
+                        "style",      # style issues (from mh_style)
+                        "metric",     # code metrics (from mh_metric)
+                        "check",      # defects (from mh_lint and mh_prove)
+                        "warning",    # other issues
+                        "lex error",  # errors in the lexing phase
+                        "error")      # other errors
         assert isinstance(message, str)
         assert isinstance(fatal, bool)
         assert isinstance(autofixed, bool)
@@ -125,6 +130,7 @@ class Message:
 
         self.location  = location
         self.kind      = kind
+        self.severity  = "medium"  # can be low, medium, high
         self.message   = message
         self.fixed     = autofixed
         self.fatal     = fatal
@@ -143,6 +149,17 @@ class Message:
                 justification.used = True
 
 
+class Check_Message(Message):
+    def __init__(self, location, severity, message):
+        super().__init__(location  = location,
+                         kind      = "check",
+                         message   = message,
+                         fatal     = False,
+                         autofixed = False)
+        assert severity in ("low", "medium", "high")
+        self.severity = severity
+
+
 class Message_Handler:
     """ All messages should be routed through this class """
     def __init__(self, tool_id):
@@ -153,6 +170,7 @@ class Message_Handler:
         self.style_issues = 0
         self.metric_issues = 0
         self.metric_justifications = 0
+        self.checks = 0
         self.warnings = 0
         self.errors = 0
         self.justified = 0
@@ -164,6 +182,7 @@ class Message_Handler:
         self.colour = False
         self.show_context = True
         self.show_style = True
+        self.show_checks = False
         self.sort_messages = True
 
         self.messages = {}        # file -> line -> [message]
@@ -178,6 +197,7 @@ class Message_Handler:
         rv.colour        = self.colour
         rv.show_context  = self.show_context
         rv.show_style    = self.show_style
+        rv.show_checks   = self.show_checks
         rv.sort_messages = self.sort_messages
         return rv
 
@@ -192,6 +212,7 @@ class Message_Handler:
         self.style_issues          += other.style_issues
         self.metric_issues         += other.metric_issues
         self.metric_justifications += other.metric_justifications
+        self.checks                += other.checks
         self.warnings              += other.warnings
         self.errors                += other.errors
         self.justified             += other.justified
@@ -259,6 +280,11 @@ class Message_Handler:
                 return
         elif message.kind == "metric":
             self.metric_issues += 1
+        elif message.kind == "check":
+            if self.show_checks:
+                self.checks += 1
+            else:
+                return
         elif message.kind == "warning":
             self.warnings += 1
         elif message.kind in ("lex error", "error"):
@@ -275,8 +301,20 @@ class Message_Handler:
                 kstring = "\033[31;1m%s\033[0m" % message.kind
             elif message.kind == "warning":
                 kstring = "\033[31m%s\033[0m" % message.kind
+            elif message.kind == "check":
+                if message.severity == "low":
+                    kstring = "%s (\033[34m%s\033[0m)" % (message.kind,
+                                                          message.severity)
+                elif message.severity == "high":
+                    kstring = "%s (\033[31;1m%s\033[0m)" % (message.kind,
+                                                            message.severity)
+                else:
+                    kstring = "%s (\033[33m%s\033[0m)" % (message.kind,
+                                                          message.severity)
             else:
                 kstring = message.kind
+        elif message.kind == "check":
+            kstring = message.kind + " (" + message.severity + ")"
         else:
             kstring = message.kind
 
@@ -331,6 +369,8 @@ class Message_Handler:
             stats.append("%u style issue(s)" % self.style_issues)
         if self.metric_issues:
             stats.append("%u metric deviations(s)" % self.metric_issues)
+        if self.checks:
+            stats.append("%u check(s)" % self.checks)
         if self.warnings:
             stats.append("%u warning(s)" % self.warnings)
         if self.errors:
@@ -430,6 +470,12 @@ class Message_Handler:
                       autofixed = False)
         self.register_message(msg)
 
+    def check(self, location, message, severity="medium"):
+        msg = Check_Message(location = location,
+                            severity = severity,
+                            message  = message)
+        self.register_message(msg)
+
     def warning(self, location, message):
         msg = Message(location  = location,
                       kind      = "warning",
@@ -503,6 +549,7 @@ class HTML_Message_Handler(Message_Handler):
         rv.colour        = self.colour
         rv.show_context  = self.show_context
         rv.show_style    = self.show_style
+        rv.show_checks   = self.show_checks
         rv.sort_messages = self.sort_messages
         return rv
 
@@ -564,7 +611,12 @@ class HTML_Message_Handler(Message_Handler):
             self.fd.write("%s:" % message.location.filename)
         self.fd.write("</a>")
 
-        self.fd.write(" %s:" % message.kind)
+        if message.kind == "check":
+            self.fd.write(" %s (%s):" % (message.kind,
+                                         message.severity))
+        else:
+            self.fd.write(" %s:" % message.kind)
+
         self.fd.write(" %s" % html.escape(message.message))
 
         self.fd.write("</div>\n")

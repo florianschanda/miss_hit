@@ -1,9 +1,3 @@
-In test_08.m, line 10
-|   %} potato
-| ^^^^^^^^^^^ warning: ignored block comment end: no text must appear around the block comment marker %}
-In test_08.m, line 12
-|   %} %}
-| ^^^^^^^ warning: ignored block comment end: no text must appear around the block comment marker %}
 ----------------------------------------------------------------------
 --  Parse tree for test_08.m
 Root: Script_File
@@ -13,4 +7,4 @@ Root: Script_File
         Name: Identifier <disp>
         Arguments: String_Literal "1"
 ----------------------------------------------------------------------
-MISS_HIT Debug Summary: 1 file(s) analysed, 2 warning(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

@@ -24,9 +24,6 @@ In test_02.m, line 3
 |             ^ info: [S ] NEWLINE
 In test_02.m, line 4
 | %{ not valid
-| ^^^^^^^^^^^^ [31mwarning[0m: ignored block comment: no text must appear after the {
-In test_02.m, line 4
-| %{ not valid
 | ^^^^^^^^^^^^ info: [SL] COMMENT '{ not valid'
 In test_02.m, line 4
 | %{ not valid
@@ -74,4 +71,4 @@ In test_02.m, line 7
 | disp("baz");
 |             ^ info: [S ] NEWLINE
 test_02.m: lexed OK
-MISS_HIT Debug Summary: 1 file(s) analysed, 1 warning(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

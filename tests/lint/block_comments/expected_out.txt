@@ -1,0 +1,23 @@
+=== PLAIN MODE ===
+In test_02.m, line 4
+| %{ not valid
+| ^^^^^^^^^^^^ check (low): ignored block comment: no text must appear after the {
+In test_03.m, line 3
+| disp("foo"); %{
+|              ^^ check (low): ignored block comment: it must not be preceded by program text
+In test_04.m, line 6
+| %} potato
+| ^^^^^^^^^ check (low): ignored block comment end: no text must appear around the block comment marker %}
+In test_06.m, line 8
+|   %{ potato
+| ^^^^^^^^^^^ check (low): ignored block comment: no text must appear around the block comment marker
+In test_07.m, line 10
+|   %} potato
+| ^^^^^^^^^^^ check (low): ignored block comment end: no text must appear around the block comment marker %}
+In test_08.m, line 10
+|   %} potato
+| ^^^^^^^^^^^ check (low): ignored block comment end: no text must appear around the block comment marker %}
+In test_08.m, line 12
+|   %} %}
+| ^^^^^^^ check (low): ignored block comment end: no text must appear around the block comment marker %}
+MISS_HIT Lint Summary: 8 file(s) analysed, 7 check(s)

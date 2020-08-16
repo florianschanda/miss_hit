@@ -39,6 +39,13 @@ for a summary of recent changes and known issues.
   https://florianschanda.github.io/miss_hit/metrics.html for more
   information and a user manual.
 
+* Bug finding `mh_lint`
+
+  A simple linter for MATLAB or Octave code, including
+  MATLAB embedded inside Simulink models. See
+  https://florianschanda.github.io/miss_hit/lint.html for more
+  information and a user manual.
+
 * Pragmas understood by MISS_HIT tools
 
   The tools can be controlled with some special pragmas. See

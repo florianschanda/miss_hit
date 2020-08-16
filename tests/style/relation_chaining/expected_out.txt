@@ -1,8 +1,0 @@
-=== PLAIN MODE ===
-In test.m, line 7
-| if x < y < z
-|          ^ warning: chained relation does not work the way you think it does
-MISS_HIT Style Summary: 1 file(s) analysed, 1 warning(s)
-
-=== HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 1 warning(s)

@@ -54,9 +54,6 @@ In test_08.m, line 9
 |               ^ info: NEWLINE
 In test_08.m, line 10
 |   %} potato
-| ^^^^^^^^^^^ [31mwarning[0m: ignored block comment end: no text must appear around the block comment marker %}
-In test_08.m, line 10
-|   %} potato
 | ^^^^^^^^^^^ info: [SL] COMMENT '%} potato'
 In test_08.m, line 10
 |   %} potato
@@ -67,9 +64,6 @@ In test_08.m, line 11
 In test_08.m, line 11
 |   disp("4");
 |             ^ info: NEWLINE
-In test_08.m, line 12
-|   %} %}
-| ^^^^^^^ [31mwarning[0m: ignored block comment end: no text must appear around the block comment marker %}
 In test_08.m, line 12
 |   %} %}
 | ^^^^^^^ info: [SL] COMMENT '%} %}'
@@ -83,4 +77,4 @@ In test_08.m, line 13
 | disp("5");
 |           ^ info: NEWLINE
 test_08.m: lexed OK
-MISS_HIT Debug Summary: 1 file(s) analysed, 2 warning(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

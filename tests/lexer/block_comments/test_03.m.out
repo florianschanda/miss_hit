@@ -21,9 +21,6 @@ In test_03.m, line 3
 |            ^ info: SEMICOLON
 In test_03.m, line 3
 | disp("foo"); %{
-|              ^^ [31mwarning[0m: ignored block comment: it must not be preceded by program text
-In test_03.m, line 3
-| disp("foo"); %{
 |              ^^ info: [S ] COMMENT '{'
 In test_03.m, line 3
 | disp("foo"); %{
@@ -71,4 +68,4 @@ In test_03.m, line 6
 | disp("baz");
 |             ^ info: [S ] NEWLINE
 test_03.m: lexed OK
-MISS_HIT Debug Summary: 1 file(s) analysed, 1 warning(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

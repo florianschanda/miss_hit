@@ -21,6 +21,10 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 * Added [GitHub and Travis CI templates](https://florianschanda.github.io/miss_hit/configuration.html#cicd) to the documentation. Thank you Remi Gau for your contribution.
 
+* MH Lint now contains the two lint-like messages that were part of MH
+  Style previously (block comments and relation chaining). MH Style no
+  longer issues these messages.
+
 ### 0.9.10
 
 * Fixed another Windows multi-threading issue.

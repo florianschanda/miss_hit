@@ -1,6 +1,3 @@
-In test_02.m, line 4
-| %{ not valid
-| ^^^^^^^^^^^^ warning: ignored block comment: no text must appear after the {
 ----------------------------------------------------------------------
 --  Parse tree for test_02.m
 Root: Script_File
@@ -18,4 +15,4 @@ Root: Script_File
         Name: Identifier <disp>
         Arguments: String_Literal "baz"
 ----------------------------------------------------------------------
-MISS_HIT Debug Summary: 1 file(s) analysed, 1 warning(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

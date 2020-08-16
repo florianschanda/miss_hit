@@ -882,18 +882,21 @@ class MATLAB_Lexer(Token_Generator):
              self.contains_block_open(token.raw_text))):
 
             if not token.first_in_line and self.block_comment == 0:
-                self.mh.warning(token.location,
-                                "ignored block comment: it must not be"
-                                " preceded by program text")
+                self.mh.check(token.location,
+                              "ignored block comment: it must not be"
+                              " preceded by program text",
+                              "low")
             elif token.value.strip() != "{" and self.block_comment == 0:
-                self.mh.warning(token.location,
-                                "ignored block comment: no text must appear"
-                                " after the {")
+                self.mh.check(token.location,
+                              "ignored block comment: no text must appear"
+                              " after the {",
+                              "low")
             elif token.raw_text.strip() not in ["%s{" % c
                                                 for c in self.comment_char]:
-                self.mh.warning(token.location,
-                                "ignored block comment: no text must appear"
-                                " around the block comment marker")
+                self.mh.check(token.location,
+                              "ignored block comment: no text must appear"
+                              " around the block comment marker",
+                              "low")
             else:
                 self.block_comment += 1
 
@@ -904,10 +907,11 @@ class MATLAB_Lexer(Token_Generator):
                     if token.raw_text.strip() == marker:
                         self.block_comment -= 1
                     else:
-                        self.mh.warning(token.location,
-                                        "ignored block comment end: no text"
-                                        " must appear around the block comment"
-                                        " marker %s" % marker)
+                        self.mh.check(token.location,
+                                      "ignored block comment end: no text"
+                                      " must appear around the block comment"
+                                      " marker %s" % marker,
+                                      "low")
 
         self.last_kind = kind
         self.last_value = raw_text

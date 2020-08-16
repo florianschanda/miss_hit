@@ -1521,9 +1521,10 @@ class MATLAB_Parser:
             rv = Binary_Operation(8, t_op, rv, rhs)
 
             if chain_length > 2:
-                self.mh.warning(t_op.location,
-                                "chained relation does not work the"
-                                " way you think it does")
+                self.mh.check(t_op.location,
+                              "chained relation does not work the"
+                              " way you think it does",
+                              "high")
 
         return rv
 
