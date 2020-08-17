@@ -58,7 +58,7 @@ note the trailing whitespace here, its intentional.
 foo b)ar baz % potato
 ```
 
-### Comamnd form quotation
+### Command form quotation
 
 To add to this, you can single-quote strings in command form, and they
 disappear.
@@ -180,7 +180,7 @@ they are painful to parse and lex correctly. Inside matrices
 whitespace matters. The lexer needs to keep track of all brackets so
 that it can always know if we're inside a matrix (or cell) or not.
 
-The canonical way to write a 2x2 identify matrix is this:
+The canonical way to write a 2x2 identity matrix is this:
 ```
 m = [1, 0; 0, 1];
 ```
