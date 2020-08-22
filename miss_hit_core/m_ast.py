@@ -1396,8 +1396,8 @@ class Identifier(Name):
         assert isinstance(cfg, Config)
 
         if self.t_ident.value in HIGH_IMPACT_BUILTIN_FUNCTIONS:
-            mh.style_issue(self.t_ident.location,
-                           "redefining this builtin is very naughty")
+            mh.check(self.t_ident.location,
+                     "redefining this builtin is very naughty")
 
 
 class Selection(Name):

@@ -42,7 +42,33 @@
     </div>
 
     <section>
-      <h2>Incomplete block comments</h2>
+      <h2>Classification</h2>
+      <div>
+        MISS_HIT Lint issues "check" messages for any potential
+        problem it detects. These are further classified into three
+        categories:
+        <ul>
+          <li>
+            <b>low</b> - These are problems that MISS_HIT is somewhat
+            unsure about if it is a problem or not, or problems that -
+            if they manifest - are unlikely to be silently undetected
+            bugs. Something that makes your entire program crash or
+            obviously doesn't work is not as bad as something that
+            quitely mis-behaves.
+          </li>
+          <li>
+            <b>high</b> - These are problems that MISS_HIT very sure
+            will cause major problems. Fix these!
+          </li>
+          <li>
+            <b>medium</b> - Anything else.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Checks</h2>
+
+      <h3>Incomplete block comments</h3>
       <div>
         Block comments are special comments that span multiple
         lines. The documentation states that they must appear on their
@@ -69,10 +95,8 @@ disp 5;
         The output of this code is 1, 4, 5 which is maybe not what you
         would expect.
       </div>
-    </section>
 
-    <section>
-      <h2>Chaining relational operators</h2>
+      <h3>Chaining relational operators</h3>
       <div>
         It is possible to chain operators, e.g. 1 + 2 + 3 which
         performs as expected. However it is also possible to chain
@@ -102,7 +126,17 @@ end
         MH Lint emits a check on all chained relations.
       </div>
 
+      <h3>Shadowing of built-in functions ("builtin_shadow")</h3>
+      <div>
+        This rule attempts to find cases where we assign to a
+        MATLAB&reg; builtin function (e.g. re-defining false to be
+        1). Note: this rule works on a hand-curated list of "high
+        impact" built-in functions, where it is likely this
+        re-definition will result in confusion. So we complain
+        e.g. about "true", but we do not complain about "bar".
+      </div>
     </section>
+
 
   </main>
 

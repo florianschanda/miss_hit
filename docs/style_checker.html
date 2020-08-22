@@ -289,7 +289,7 @@ x=5; % mh:ignore_style
 
       <div>
 <pre>
-suppress_rule: "builtin_shadow"
+suppress_rule: "operator_whitespace"
 enable_rule: "file_length"
 </pre>
       </div>
@@ -684,17 +684,6 @@ end
             embedded code tool.
           </li>
         </ul>
-      </div>
-
-      <h4>Shadowing of built-in functions ("builtin_shadow")</h4>
-
-      <div>
-        This rule attempts to find cases where we assign to a
-        MATLAB&reg; builtin function (e.g. re-defining false to be
-        1). Note: this rule works on a hand-curated list of "high
-        impact" built-in functions, where it is likely this
-        re-definition will result in confusion. So we complain
-        e.g. about "true", but we do not complain about "bar".
       </div>
 
       <h4>Naming scheme for classes ("naming_classes")</h4>
