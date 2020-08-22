@@ -2031,19 +2031,32 @@ class Import_Statement(Simple_Statement):
                 for t in self.l_chain]
 
 
-class Metric_Justification_Pragma(Pragma):
-    def __init__(self, t_pragma, t_kind, t_tool, t_metric, n_reason):
+class Justification_Pragma(Pragma):
+    def __init__(self, t_pragma, t_kind, t_tool):
         super().__init__(t_pragma, t_kind)
         assert isinstance(t_tool, MATLAB_Token)
-        assert t_tool.kind == "IDENTIFIER" and t_tool.value == "metric"
-        assert isinstance(t_metric, MATLAB_Token)
-        assert t_metric.kind == "STRING"
-        assert isinstance(n_reason, (String_Literal, Binary_Operation))
+        assert t_tool.kind == "IDENTIFIER"
 
         self.t_tool = t_tool
         self.t_tool.set_ast(self)
         # The tool. Will always be 'metric' in this case. This will
         # move out to general justification pragmas once we get there.
+
+        self.applies = False
+        # Is set to true by mh_metric if this pragma successfully
+        # justifies a metrics violation. That way we can do a tree
+        # walk at the end and complain about all pragmas that don't
+        # actually do something.
+
+
+class Metric_Justification_Pragma(Justification_Pragma):
+    def __init__(self, t_pragma, t_kind, t_tool, t_metric, n_reason):
+        super().__init__(t_pragma, t_kind, t_tool)
+        assert isinstance(t_tool, MATLAB_Token)
+        assert t_tool.kind == "IDENTIFIER" and t_tool.value == "metric"
+        assert isinstance(t_metric, MATLAB_Token)
+        assert t_metric.kind == "STRING"
+        assert isinstance(n_reason, (String_Literal, Binary_Operation))
 
         self.t_metric = t_metric
         self.t_metric.set_ast(self)
@@ -2053,12 +2066,6 @@ class Metric_Justification_Pragma(Pragma):
         self.n_reason.set_parent(self)
         # The reason why this deviation is OK. Currently just a string
         # literal, but can be a string expression in the future.
-
-        self.applies = False
-        # Is set to true by mh_metric if this pragma successfully
-        # justifies a metrics violation. That way we can do a tree
-        # walk at the end and complain about all pragmas that don't
-        # actually do something.
 
     def metric(self):
         return self.t_metric.value

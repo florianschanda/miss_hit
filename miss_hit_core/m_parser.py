@@ -1138,9 +1138,9 @@ class MATLAB_Parser:
         self.amatch("IDENTIFIER")
         t_pragma_kind = self.ct
         if t_pragma_kind.value not in ("Justify", ):
-            self.mh.warning(t_pragma_kind.location,
-                            "unknown miss_hit pragma '%s'" %
-                            t_pragma_kind.value)
+            self.mh.error(t_pragma_kind.location,
+                          "unknown miss_hit pragma '%s'" %
+                          t_pragma_kind.value)
 
         self.amatch("BRA")
         punctuation.append(self.ct)
@@ -1148,9 +1148,9 @@ class MATLAB_Parser:
         self.amatch("IDENTIFIER")
         t_tool = self.ct
 
-        if t_tool.value not in ("metric" ,):
-            self.mh.warning(t_tool.location,
-                            "unknown miss_hit tool '%s'" % t_tool.value)
+        if t_tool.value != "metric":
+            self.mh.error(t_tool.location,
+                          "unknown miss_hit tool '%s'" % t_tool.value)
 
         self.amatch("COMMA")
         punctuation.append(self.ct)
@@ -1175,6 +1175,7 @@ class MATLAB_Parser:
 
         rv = Metric_Justification_Pragma(t_pragma, t_pragma_kind,
                                          t_tool, t_param, n_reason)
+
         for token in punctuation:
             token.set_ast(rv)
 

@@ -1,0 +1,18 @@
+=== PLAIN MODE ===
+test_02.m: error: file is not auto-fixed because it contains parse errors
+In test_02.m, line 4
+|     %| pragma Justify (metrics, "cyc", "typo in tool");
+|     ^^ style: indentation not correct, should be 0 spaces, not 4
+In test_02.m, line 4
+|     %| pragma Justify (metrics, "cyc", "typo in tool");
+|                        ^^^^^^^ error: unknown miss_hit tool 'metrics'
+In test_04.m, line 5
+|       %|                 "this is a multi-line " +
+|       ^^ style: indentation not correct, should be 4 spaces, not 6 [fixed]
+In test_04.m, line 6
+|       %|                 "justification");
+|       ^^ style: indentation not correct, should be 4 spaces, not 6 [fixed]
+MISS_HIT Style Summary: 4 file(s) analysed, 3 style issue(s), 2 error(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 4 file(s) analysed, 3 style issue(s), 1 error(s)

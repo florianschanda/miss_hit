@@ -25,6 +25,14 @@ None known. Should be compatible with up to MATLAB 2019b.
   Style previously (block comments and relation chaining). MH Style no
   longer issues these messages.
 
+* MH Style now correctly vertically aligns annotations. One-line
+  annotaion blocks were always OK, but multi-line annotations were
+  considered continuations.
+
+* MH Style should now only print `[fixed]` for problems that really
+  are fixed. Specifically in files that contain parse errors, we now
+  no longer pretend the problems are fixed.
+
 ### 0.9.10
 
 * Fixed another Windows multi-threading issue.

@@ -346,10 +346,11 @@ KEYWORDS_WITH_WS = frozenset([
 ])
 
 
-def stage_3_analysis(mh, cfg, tbuf, is_embedded):
+def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
     assert isinstance(mh, Message_Handler)
     assert isinstance(tbuf, Token_Buffer)
     assert isinstance(is_embedded, bool)
+    assert isinstance(fixed, bool)
 
     in_copyright_notice = (cfg.active("copyright_notice") and
                            (not is_embedded or
@@ -505,7 +506,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     mh.style_issue(token.location,
                                    "comma cannot be preceeded by whitespace "
                                    "and must be followed by whitespace",
-                                   True)
+                                   fixed)
 
         elif token.kind == "COLON":
             if cfg.active("whitespace_colon"):
@@ -521,7 +522,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                         token.fix.ensure_trim_before = True
                         mh.style_issue(token.location,
                                        "no whitespace before colon",
-                                       True)
+                                       fixed)
                 elif (prev_in_line and ws_before > 0) or \
                      (next_in_line and ws_after > 0):
                     token.fix.ensure_trim_before = True
@@ -529,7 +530,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     mh.style_issue(token.location,
                                    "no whitespace around colon"
                                    " allowed",
-                                   True)
+                                   fixed)
 
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
         elif token.kind == "ASSIGNMENT":
@@ -540,11 +541,11 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                 if prev_in_line and ws_before == 0:
                     mh.style_issue(token.location,
                                    "= must be preceeded by whitespace",
-                                   True)
+                                   fixed)
                 elif next_in_line and ws_after == 0:
                     mh.style_issue(token.location,
                                    "= must be succeeded by whitespace",
-                                   True)
+                                   fixed)
 
         # Corresponds to the old CodeChecker ParenthesisWhitespace and
         # BracketsWhitespace rules
@@ -555,7 +556,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                 mh.style_issue(token.location,
                                "%s must not be followed by whitespace" %
                                token.raw_text,
-                               True)
+                               fixed)
                 token.fix.ensure_trim_after = True
 
         elif token.kind in ("KET", "A_KET", "M_KET"):
@@ -564,7 +565,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                 mh.style_issue(token.location,
                                "%s must not be preceeded by whitespace" %
                                token.raw_text,
-                               True)
+                               fixed)
                 token.fix.ensure_trim_before = True
 
         # Corresponds to the old CodeChecker KeywordWhitespace rule
@@ -574,7 +575,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                next_in_line and ws_after == 0:
                 mh.style_issue(token.location,
                                "keyword must be succeeded by whitespace",
-                               True)
+                               fixed)
                 token.fix.ensure_ws_after = True
 
         # Corresponds to the old CodeChecker CommentWhitespace rule
@@ -608,7 +609,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     mh.style_issue(token.location,
                                    "MATLAB pragma must not contain whitespace "
                                    "between %# and the pragma",
-                                   True)
+                                   fixed)
                     token.raw_text = "%#" + token.raw_text[2:].strip()
 
                 elif re.match("^% +#[a-zA-Z]", token.raw_text):
@@ -617,7 +618,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     mh.style_issue(token.location,
                                    "MATLAB pragma must not contain whitespace "
                                    "between % and the pragma",
-                                   True)
+                                   fixed)
                     token.raw_text = "%#" + token.raw_text.split("#", 1)[1]
 
                 elif comment_body and not comment_body.startswith(" "):
@@ -626,7 +627,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                                    "comment body must be separated with "
                                    "whitespace from the starting %s" %
                                    comment_char,
-                                   True)
+                                   fixed)
                     token.raw_text = (comment_char * (len(token.raw_text) -
                                                       len(comment_body)) +
                                       " " +
@@ -636,7 +637,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                 if prev_in_line and ws_before == 0:
                     mh.style_issue(token.location,
                                    "comment must be preceeded by whitespace",
-                                   True)
+                                   fixed)
                     token.fix.ensure_ws_before = True
 
         elif token.kind == "CONTINUATION":
@@ -645,7 +646,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                prev_in_line and ws_before == 0:
                 mh.style_issue(token.location,
                                "continuation must be preceeded by whitespace",
-                               True)
+                               fixed)
                 token.fix.ensure_ws_before = True
 
             if cfg.active("operator_after_continuation") and \
@@ -664,12 +665,12 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     # or comment are not actually helpful at all.
                     mh.style_issue(token.location,
                                    "useless line continuation",
-                                   True)
+                                   fixed)
                     token.fix.replace_with_newline = True
                 elif prev_token and prev_token.fix.statement_terminator:
                     mh.style_issue(token.location,
                                    "useless line continuation",
-                                   True)
+                                   fixed)
                     token.fix.delete = True
 
         elif token.kind == "OPERATOR":
@@ -681,14 +682,14 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     mh.style_issue(token.location,
                                    "suffix operator must not be preceeded by"
                                    " whitespace",
-                                   True)
+                                   fixed)
                     token.fix.ensure_trim_before = True
                 elif (next_in_line and ws_after > 0) and \
                      token.value not in (".'", "'"):
                     mh.style_issue(token.location,
                                    "unary operator must not be followed by"
                                    " whitespace",
-                                   True)
+                                   fixed)
                     token.fix.ensure_trim_after = True
             elif token.fix.binary_operator:
                 if token.value in (".^", "^"):
@@ -697,7 +698,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                         mh.style_issue(token.location,
                                        "power binary operator"
                                        " must not be surrounded by whitespace",
-                                       True)
+                                       fixed)
                         token.fix.ensure_trim_before = True
                         token.fix.ensure_trim_after = True
                 else:
@@ -706,7 +707,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                         mh.style_issue(token.location,
                                        "non power binary operator"
                                        " must be surrounded by whitespace",
-                                       True)
+                                       fixed)
                         token.fix.ensure_ws_before = True
                         token.fix.ensure_ws_after = True
 
@@ -741,27 +742,27 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     mh.style_issue(token.location,
                                    "annotation indication must be succeeded"
                                    " by whitespace",
-                                   True)
+                                   fixed)
 
         elif token.kind == "NEWLINE":
             if n == 0 and cfg.active("no_starting_newline"):
                 # Files should not *start* with newline(s)
                 mh.style_issue(token.location,
                                "files should not start with a newline",
-                               True)
+                               fixed)
                 token.fix.delete = True
 
         # Check some specific problems with continuations
         if token.fix.flag_continuations and \
            next_in_line and next_in_line.kind == "CONTINUATION":
-            fixed = False
+            continuation_is_fixed = False
             token.fix.add_newline = False
             if cfg.active("dangerous_continuation"):
                 next_in_line.fix.replace_with_newline = True
-                fixed = True
+                continuation_is_fixed = True
             mh.style_issue(next_in_line.location,
                            "this continuation is dangerously misleading",
-                           fixed)
+                           fixed and continuation_is_fixed)
 
         # Complain about indentation
         if cfg.active("indentation") and token.kind != "NEWLINE":
@@ -781,12 +782,20 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                     offset = token.location.col_start - \
                         statement_start_token.location.col_start
 
-                    # If positive, we can just add it. If 0 or
-                    # negative, then we add 1/2 tabs to continue
-                    # the line, since previously it was not offset
-                    # at all.
-                    if offset <= 0:
+                    if offset <= 0 and not token.annotation:
+                        # If positive, we can just add it. If 0 or
+                        # negative, then we add 1/2 tabs to continue
+                        # the line, since previously it was not offset
+                        # at all.
                         offset = cfg.style_config["tab_width"] // 2
+                    elif token.annotation:
+                        # However, for annotations, the correct offset
+                        # is to always align with the opening %|
+                        # token. Ideally we will also do indentation
+                        # for the stuff inside annotation block, but
+                        # since we just have pragmas right now, this
+                        # can wait. But this will be nasty. :(
+                        offset = 0
 
                 correct_spaces = (cfg.style_config["tab_width"] *
                                   current_indent +
@@ -799,7 +808,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded):
                                    " %u spaces, not %u" %
                                    (correct_spaces,
                                     token.location.col_start),
-                                   True)
+                                   fixed)
 
 
 class MH_Style_Result(work_package.Result):
@@ -893,7 +902,7 @@ class MH_Style(command_line.MISS_HIT_Back_End):
             parse_tree = parser.parse_file()
 
             # Check naming (we do this after parsing, not during,
-            # since we may beed to re-write functions without end).
+            # since we may need to re-write functions without end).
             parse_tree.sty_check_naming(wp.mh, wp.cfg)
 
             if debug_validate_links:
@@ -914,9 +923,12 @@ class MH_Style(command_line.MISS_HIT_Back_End):
 
         # Stage 3 - rules around individual tokens
 
-        stage_3_analysis(wp.mh, wp.cfg,
-                         tbuf,
-                         isinstance(wp, work_package.Embedded_MATLAB_WP))
+        stage_3_analysis(
+            mh          = wp.mh,
+            cfg         = wp.cfg,
+            tbuf        = tbuf,
+            is_embedded = isinstance(wp, work_package.Embedded_MATLAB_WP),
+            fixed       = parse_tree is not None)
 
         # Stage 4 - rules involving the parse tree
 
