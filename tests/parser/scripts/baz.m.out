@@ -1,6 +1,3 @@
-In baz.m, line 1
-| false = 42;
-| ^^^^^ style: redefining this builtin is very naughty
 ----------------------------------------------------------------------
 --  Parse tree for baz.m
 Root: Script_File
@@ -9,4 +6,4 @@ Root: Script_File
       LHS: Identifier <false>
       RHS: Number_Literal <42>
 ----------------------------------------------------------------------
-MISS_HIT Debug Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine
