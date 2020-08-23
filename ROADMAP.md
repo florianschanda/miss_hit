@@ -5,6 +5,11 @@ on being sufficiently similar by many philosophers). Progress will not
 be amazingly fast. Things I intend to publish, not necessarily in this
 order:
 
+* A data-flow analysis tool to detect e.g. unused or uninitalised
+  variables.
+
+* Support for Simulink and Stateflow complexity metrics.
+
 * A formal grammar for the language accepted by MATLAB (R) or Octave.
 
 * A language subset called MISS_HIT. The MATLAB (R) code generator
@@ -17,9 +22,6 @@ order:
   real ones. This means that they may be much stricter than what you
   might be able to do, but if the tool indicates it's safe here then
   it's safe for real too.
-
-* A data-flow analysis tool to detect e.g. unused or uninitalised
-  variables.
 
 * A code generator (intended targets are C, C++, and SPARK) that
   precisely follows the documented semi-formal semantics.
