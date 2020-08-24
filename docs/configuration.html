@@ -180,6 +180,8 @@ jobs:
       script: mh_metric --ci .
     - name: "miss_hit: checking code style"
       script: mh_style .
+    - name: "miss_hit: finding bugs"
+      script: mh_lint .
 </pre>
       </div>
 
@@ -219,13 +221,17 @@ jobs:
         python -m pip install --upgrade pip setuptools
         pip3 install install miss_hit
 
-    - name: Miss_hit code quality
+    - name: MISS_HIT Metrics
       run: |
         mh_metric --ci .
 
-    - name: Miss_hit code style
+    - name: MISS_HIT Code style
       run: |
         mh_style .
+
+    - name: MISS_HIT Bug finder
+      run: |
+        mh_lint .
 </pre>
       </div>
     </section>
