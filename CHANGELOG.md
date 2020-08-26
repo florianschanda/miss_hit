@@ -16,7 +16,7 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ## Changelog
 
-### 0.9.11-dev
+### 0.9.11
 
 * MH Lint now contains the three lint-like messages that were part of
   MH Style previously (block comments, relation chaining, and builtin
