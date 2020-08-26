@@ -35,4 +35,4 @@ os.system("make doc")
 # Assemble commit
 
 os.system("git add miss_hit_core/version.py CHANGELOG.md docs")
-# os.system('git commit -m "Bump version to %s after release"' % VERSION)
+os.system('git commit -m "Bump version to %s after release"' % VERSION)
