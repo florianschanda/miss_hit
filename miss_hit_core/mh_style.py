@@ -514,6 +514,19 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                                "this comma is not required and can be removed",
                                fixed)
 
+        elif token.kind == "SEMICOLON":
+            if cfg.active("whitespace_semicolon"):
+                token.fix.ensure_trim_before = True
+                token.fix.ensure_ws_after = True
+
+                if (next_in_line and ws_after == 0) or \
+                   (prev_in_line and ws_before > 0):
+                    mh.style_issue(token.location,
+                                   "semicolon cannot be preceeded by "
+                                   "whitespace and must be followed by "
+                                   "whitespace",
+                                   fixed)
+
         elif token.kind == "COLON":
             if cfg.active("whitespace_colon"):
                 if prev_in_line and prev_in_line.kind == "COMMA":

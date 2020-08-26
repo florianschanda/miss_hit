@@ -42,6 +42,10 @@ None known. Should be compatible with up to MATLAB 2019b.
   trailing or starting commas in matrix and cell expressions (for
   example: `[,1,2,]`)
 
+* MH Style has a new rule "whitespace_semicolon" which does the same
+  as "whitespace_comma", but for semicolons; this means one-line
+  matrix expressions are now nicely formatted.
+
 * MH Style should now only print `[fixed]` for problems that really
   are fixed. Specifically in files that contain parse errors, we now
   no longer pretend the problems are fixed.

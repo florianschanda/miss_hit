@@ -259,7 +259,12 @@ STYLE_RULES = {
         "Ensures files do not start with newlines."),
 
     "whitespace_comma" : Style_Rule(
-        "Ensures there is no whitespace before a comma and whitespace after."),
+        "Ensures there is no whitespace before a comma and whitespace (or a"
+        " newline) after."),
+
+    "whitespace_semicolon" : Style_Rule(
+        "Ensures there is no whitespace before a semicolon and whitespace"
+        " (or a newline) after."),
 
     "spurious_row_comma" : Style_Rule(
         "Ensures there are no unnecessary leading or trailing commas in a"

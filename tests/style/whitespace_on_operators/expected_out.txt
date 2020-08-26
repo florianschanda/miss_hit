@@ -47,7 +47,10 @@ In codechecker_tests.m, line 86
 In codechecker_tests.m, line 88
 | x = a ^ b
 |       ^ style: power binary operator must not be surrounded by whitespace [fixed]
-MISS_HIT Style Summary: 2 file(s) analysed, 16 style issue(s)
+In codechecker_tests.m, line 90
+| import PackageName.* ;
+|                      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+MISS_HIT Style Summary: 2 file(s) analysed, 17 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 2 file(s) analysed, 16 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 17 style issue(s)

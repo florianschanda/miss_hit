@@ -52,6 +52,9 @@ In test_02.m, line 3
 |                                                                     ^ style: end this with just a newline [fixed]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
+|                                                                     ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 3
+| function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
 |                                                                         ^ style: end this with just a newline [fixed]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
@@ -68,6 +71,9 @@ In test_02.m, line 6
 In test_02.m, line 7
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
 |                                                              ^ style: end statement with a newline [fixed]
+In test_02.m, line 7
+| function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
+|                                                              ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
 |          ^^^^^^^ style: violates naming scheme for function
@@ -92,6 +98,9 @@ In test_03.m, line 3
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
 |                       ^ style: unnecessary statement terminator [fixed]
+In test_03.m, line 3
+| function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
+|                       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
 |                        ^ style: unnecessary statement terminator [fixed]
@@ -149,6 +158,9 @@ In test_03.m, line 6
 In test_03.m, line 7
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
 |                                                             ^ style: end statement with a newline [fixed]
+In test_03.m, line 7
+| function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
+|                                                             ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_04.m, line 3
 | function test_04(x);
 |          ^^^^^^^ style: violates naming scheme for function
@@ -182,7 +194,7 @@ In test_04.m, line 8
 In test_04.m, line 7
 | end,
 |    ^ style: end this with just a newline [fixed]
-MISS_HIT Style Summary: 4 file(s) analysed, 61 style issue(s)
+MISS_HIT Style Summary: 4 file(s) analysed, 65 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 4 file(s) analysed, 61 style issue(s)
+MISS_HIT Style Summary: 4 file(s) analysed, 65 style issue(s)

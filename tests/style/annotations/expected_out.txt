@@ -17,10 +17,13 @@ In basic.m, line 4
 In basic.m, line 4
 | %|pragma Justify( metric,"npath","reason" )     ;
 |                                           ^ style: ) must not be preceeded by whitespace [fixed]
+In basic.m, line 4
+| %|pragma Justify( metric,"npath","reason" )     ;
+|                                                 ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In basic.m, line 5
 | %|
 | ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 7 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 8 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 7 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 8 style issue(s)
