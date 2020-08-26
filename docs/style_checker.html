@@ -615,6 +615,20 @@ end
 </pre>
       </div>
 
+      <h4>Spurious commas inside cells and rows ("spurious_row_comma")</h4>
+
+      <div>
+        This rule complains about unnecessary commas inside matrix and
+        cell expressions. Specifically, both of these mean the same
+        thing, but the trailing and starting comma for <tt>a</tt>
+        and <tt>b</tt> respectively are spurious.
+<pre>
+a = [1, 2,];
+b = [, 1, 2];
+</pre>
+      </div>
+
+
       <h4>Annotation whitespace ("annotation_whitespace")</h4>
 
       <div>

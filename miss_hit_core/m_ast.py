@@ -91,6 +91,10 @@ class Autofix_Instruction:
         # Classification if this token is a unary or binary
         # operator. Only set for OPERATOR tokens.
 
+        self.spurious = False
+        # Classification for spurious tokens. Specifically this can be
+        # set on commas so that mh_style can remove them.
+
         self.statement_terminator = False
         # Classification if this comma/semicolon token actually ends a
         # statement. I.e. not true for the punctuation inside matrices

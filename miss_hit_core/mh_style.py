@@ -508,6 +508,12 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                                    "and must be followed by whitespace",
                                    fixed)
 
+            if cfg.active("spurious_row_comma") and token.fix.spurious:
+                token.fix.delete = True
+                mh.style_issue(token.location,
+                               "this comma is not required and can be removed",
+                               fixed)
+
         elif token.kind == "COLON":
             if cfg.active("whitespace_colon"):
                 if prev_in_line and prev_in_line.kind == "COMMA":

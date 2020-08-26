@@ -1597,14 +1597,7 @@ class MATLAB_Parser:
                 if self.peek("COMMA"):
                     self.match("COMMA")
                     self.ct.set_ast(rv)
-
-            if (self.peek("SEMICOLON") or
-                self.peek("NEWLINE") or
-                self.peek("C_KET") or
-                self.peek("M_KET")):
-                # Bad style, but you can have a trailing comma in your
-                # matrix, e.g. [1,2,] which is the same as [1, 2]
-                break
+                    self.ct.fix.spurious = True
 
             rv.add_item(self.parse_nested_expression())
 
@@ -1617,6 +1610,16 @@ class MATLAB_Parser:
             else:
                 self.match("COMMA")
                 self.ct.set_ast(rv)
+
+                if (self.peek("SEMICOLON") or
+                    self.peek("NEWLINE") or
+                    self.peek("C_KET") or
+                    self.peek("M_KET")):
+                    # Bad style, but you can have a trailing comma in
+                    # your matrix, e.g. [1,2,] which is the same as
+                    # [1, 2]. We specifically detect it here, so we
+                    # can possibly issue a message.
+                    self.ct.fix.spurious = True
 
         return rv
 
