@@ -159,6 +159,7 @@ def dispatch_wp(process_fn, wp):
                 for block in n_content.iter_all_blocks():
                     if isinstance(block, s_ast.Matlab_Function):
                         block_wp = work_package.Embedded_MATLAB_WP(wp, block)
+                        block_wp.register_file()
                         results.append(process_fn(block_wp))
             if wp.modified:
                 slp.save_and_close()
@@ -183,6 +184,9 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
 
     process_fn = functools.partial(dispatch_wp, back_end.process_wp)
 
+    # Loop over files/directories from the command-line and parse
+    # configuration.
+
     try:
         for item in options.files:
             if os.path.isdir(item) or os.path.isfile(item):
@@ -193,6 +197,9 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
 
     except errors.Error:
         mh.summary_and_exit()
+
+    # Loop over files/directories from the command-line again, and
+    # build a list of work packages.
 
     work_list = []
     for item in options.files:
@@ -226,6 +233,9 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
         else:
             pass
 
+    # Resolve all work packages, using single or multi-threading (the
+    # default) as demanded.
+
     if options.single:
         for wp in work_list:
             for result in process_fn(wp):
@@ -237,9 +247,7 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
 
     else:
         pool = multiprocessing.Pool()
-        for results in pool.imap(process_fn,
-                                 work_list,
-                                 5):
+        for results in pool.imap(process_fn, work_list, 5):
             for result in results:
                 assert isinstance(result, work_package.Result)
                 mh.integrate(result.wp.mh)
@@ -247,8 +255,9 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                     mh.finalize_file(result.wp.filename)
                     back_end.process_result(result)
 
-    back_end.post_process()
+    # Call hook for final work and issue summary message
 
+    back_end.post_process()
     mh.summary_and_exit()
 
 

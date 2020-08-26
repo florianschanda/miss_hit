@@ -42,6 +42,9 @@ None known. Should be compatible with up to MATLAB 2019b.
   are fixed. Specifically in files that contain parse errors, we now
   no longer pretend the problems are fixed.
 
+* Fixed an issue for all MISS_HIT tools where any issue in embedded
+  MATLAB code could be reported multiple times.
+
 ### 0.9.10
 
 * Fixed another Windows multi-threading issue.

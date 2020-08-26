@@ -80,7 +80,7 @@ class MATLAB_Work_Package(Work_Package):
         raise ICE("somhow called root class method")
 
     def register_file(self):
-        raise ICE("somhow called root class method")
+        self.mh.register_file(self.filename)
 
 
 class MATLAB_File_WP(MATLAB_Work_Package):
@@ -120,9 +120,6 @@ class MATLAB_File_WP(MATLAB_Work_Package):
             self.mh.error(Location(self.filename),
                           "cannot read file, encoding error")
 
-    def register_file(self):
-        self.mh.register_file(self.filename)
-
 
 class Embedded_MATLAB_WP(MATLAB_Work_Package):
     # MATLAB code that is embedded in a slx-file somewhere
@@ -135,7 +132,7 @@ class Embedded_MATLAB_WP(MATLAB_Work_Package):
         super().__init__(n_container.filename,
                          simulink_block.local_name(),
                          simulink_block.get_encoding(),
-                         simulink_wp.mh,
+                         simulink_wp.mh.fork(),
                          simulink_wp.options,
                          simulink_wp.extra_options)
 
@@ -151,9 +148,6 @@ class Embedded_MATLAB_WP(MATLAB_Work_Package):
 
     def get_content(self):
         return self.block.get_text()
-
-    def register_file(self):
-        pass
 
 
 class Result:

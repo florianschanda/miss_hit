@@ -70,6 +70,11 @@ class Location:
             self.col_end = max(col_start, col_end)
         self.context = context
 
+    def __str__(self):
+        return "Location(%s,l=%s,b=%s)" % (self.filename,
+                                           self.line,
+                                           self.blockname)
+
     def __lt__(self, other):
         assert isinstance(other, Location)
 
@@ -136,6 +141,11 @@ class Message:
         self.fatal     = fatal
         self.justified = False
 
+    def __str__(self):
+        return "Message(%s,%s,%s)" % (self.location,
+                                      self.kind,
+                                      repr(self.message))
+
     def __lt__(self, other):
         assert isinstance(other, Message)
 
@@ -187,6 +197,15 @@ class Message_Handler:
 
         self.messages = {}        # file -> line -> [message]
         self.justifications = {}  # file -> line -> [justification]
+
+    def debug_dump(self):
+        print("Debug dump for Message_Handler object")
+        for file_name in self.messages:
+            print("> File name: %s" % file_name)
+            for line in sorted(self.messages[file_name]):
+                print("  Line: %u" % line)
+                for msg in self.messages[file_name][line]:
+                    print("    ", str(msg))
 
     def reset_seen(self):
         self.seen_files = set()
