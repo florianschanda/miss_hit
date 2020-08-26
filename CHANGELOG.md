@@ -16,14 +16,16 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ## Changelog
 
-
 ### 0.9.11-dev
-
-* Added [GitHub and Travis CI templates](https://florianschanda.github.io/miss_hit/configuration.html#cicd) to the documentation. Thank you Remi Gau for your contribution.
 
 * MH Lint now contains the three lint-like messages that were part of
   MH Style previously (block comments, relation chaining, and builtin
   redefinition). MH Style no longer issues these messages.
+
+  Note that MH Lint currently operators on a file-by-file basis like,
+  just like the other MISS_HIT tools. However this will definitely
+  change in the future, as we move to a "per project" analysis for the
+  linter. But for now MH Lint can be use just like the other tools.
 
 * The configuration directive "style rule" for "builtin_redefinition"
   is now a lint rule; while this change is not documented yet properly
@@ -34,9 +36,11 @@ None known. Should be compatible with up to MATLAB 2019b.
 * Added documentation for lint checks, explaining the meaning of
   "low", "medium", and "high" checks.
 
+* Added [GitHub and Travis CI templates](https://florianschanda.github.io/miss_hit/configuration.html#cicd) to the documentation. Thank you Remi Gau for your contribution.
+
 * MH Style now correctly vertically aligns annotations. One-line
-  annotaion blocks were always OK, but multi-line annotations were
-  considered continuations.
+  annotation blocks were always OK, but multi-line annotations were
+  considered continuations (and thus indented in an unnatural way).
 
 * MH Style has a new rule "spurious_row_comma" which complains about
   trailing or starting commas in matrix and cell expressions (for
