@@ -1599,6 +1599,15 @@ class MATLAB_Parser:
                     self.ct.set_ast(rv)
                     self.ct.fix.spurious = True
 
+                    if (self.peek("SEMICOLON") or
+                        self.peek("NEWLINE") or
+                        self.peek("C_KET") or
+                        self.peek("M_KET")):
+                        # Bad style, but you can have list with just a
+                        # single comma, i.e. [,]
+                        self.ct.fix.spurious = True
+                        break
+
             rv.add_item(self.parse_nested_expression())
 
             if self.peek("SEMICOLON"):

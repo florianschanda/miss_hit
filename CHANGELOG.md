@@ -16,9 +16,10 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ## Changelog
 
-
 ### 0.9.12-dev
 
+* Fix parsing of `[,]`. This is a valid expression and is equivalent
+  to `[]`. Previously a syntax error was issued.
 
 ### 0.9.11
 

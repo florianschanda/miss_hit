@@ -1,78 +1,176 @@
 === PLAIN MODE ===
-test_01.m: error: file is not auto-fixed because it contains parse errors
 In test_01.m, line 3
 | a = [1; 2; ; 3];
-|            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_01.m, line 6
 | b = [;;1;;];
-|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_01.m, line 6
 | b = [;;1;;];
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_01.m, line 6
 | b = [;;1;;];
-|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_01.m, line 6
 | b = [;;1;;];
-|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_01.m, line 10
 |      3; 4;];
-|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_01.m, line 13
 | d = [1;;;2];
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_01.m, line 13
 | d = [1;;;2];
+|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 13
+| d = [1;;;2];
+|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|         ^ style: this comma is not required and can be removed [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|            ^ style: this comma is not required and can be removed [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|              ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|               ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|                ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|                  ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|                  ^ style: this comma is not required and can be removed [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|                   ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|                    ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 16
+| e = [1;;,;;,2;;;3,;;;];
+|                     ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 19
+| f = [,];
+|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_01.m, line 19
+| f = [,];
+|      ^ style: this comma is not required and can be removed [fixed]
+In test_02.m, line 3
+| a = [1; 2; ; 3];
+|            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 6
+| b = [; ; 1; ; ];
+|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 6
+| b = [; ; 1; ; ];
+|             ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 6
+| b = [; ; 1; ; ];
+|               ^ style: ] must not be preceeded by whitespace [fixed]
+In test_02.m, line 10
+|      3; 4; ];
+|            ^ style: ] must not be preceeded by whitespace [fixed]
+In test_02.m, line 13
+| d = [1; ; ; 2];
+|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 13
+| d = [1; ; ; 2];
+|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 16
+| e = [1; ; ; ; 2; ; ; 3; ; ; ];
+|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 16
+| e = [1; ; ; ; 2; ; ; 3; ; ; ];
+|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 16
+| e = [1; ; ; ; 2; ; ; 3; ; ; ];
+|             ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 16
+| e = [1; ; ; ; 2; ; ; 3; ; ; ];
+|                  ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 16
+| e = [1; ; ; ; 2; ; ; 3; ; ; ];
+|                    ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 16
+| e = [1; ; ; ; 2; ; ; 3; ; ; ];
+|                         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 16
+| e = [1; ; ; ; 2; ; ; 3; ; ; ];
+|                           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_02.m, line 16
+| e = [1; ; ; ; 2; ; ; 3; ; ; ];
+|                             ^ style: ] must not be preceeded by whitespace [fixed]
+test_03.m: error: file is not auto-fixed because it contains parse errors
+In test_03.m, line 3
+| x = [,,]
+|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+In test_03.m, line 3
+| x = [,,]
+|      ^ style: this comma is not required and can be removed
+In test_03.m, line 3
+| x = [,,]
+|       ^ error: expected IDENTIFIER, found COMMA instead
+In test_03.m, line 3
+| x = [,,]
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+test_04.m: error: file is not auto-fixed because it contains parse errors
+In test_04.m, line 3
+| x = [,,;]
+|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+In test_04.m, line 3
+| x = [,,;]
+|      ^ style: this comma is not required and can be removed
+In test_04.m, line 3
+| x = [,,;]
+|       ^ error: expected IDENTIFIER, found COMMA instead
+In test_04.m, line 3
+| x = [,,;]
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+In test_04.m, line 3
+| x = [,,;]
 |        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 13
-| d = [1;;;2];
-|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|         ^ style: this comma is not required and can be removed
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|          ^ error: expected IDENTIFIER, found SEMICOLON instead
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|              ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|               ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|                ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|                  ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|                   ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|                    ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-In test_01.m, line 16
-| e = [1;;,;;,2;;;3,;;;];
-|                     ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-MISS_HIT Style Summary: 1 file(s) analysed, 23 style issue(s), 2 error(s)
+test_05.m: error: file is not auto-fixed because it contains parse errors
+In test_05.m, line 3
+| x = [;,,]
+|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+In test_05.m, line 3
+| x = [;,,]
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+In test_05.m, line 3
+| x = [;,,]
+|       ^ style: this comma is not required and can be removed
+In test_05.m, line 3
+| x = [;,,]
+|        ^ error: expected IDENTIFIER, found COMMA instead
+In test_05.m, line 3
+| x = [;,,]
+|        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+MISS_HIT Style Summary: 5 file(s) analysed, 53 style issue(s), 6 error(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 23 style issue(s), 1 error(s)
+MISS_HIT Style Summary: 5 file(s) analysed, 53 style issue(s), 3 error(s)
