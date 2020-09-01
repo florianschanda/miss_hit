@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    MISS_HIT - MATLAB independent, small & safe, high integrity tools
+  </title>
+</head>
+
+<body>
+  <header>MISS_HIT 0.9.12-dev Bounded Model Checker</header>
+
+  <main>
+    <div class="section">
+      <a href="index.html">MISS_HIT</a> includes a BMC tool
+      (<span class="file">mh_bmc</span>).
+    </div>
+
+    <div class="title">
+      <img src="assets/settings.svg" alt="Gear icon" />
+      <h1>Bounded model checking for MATLAB / Octave</h1>
+    </div>
+
+    <section>
+      <h2>Work In Progress</h2>
+      <div>
+        This tool is extremely limited and incomplete. It is not going
+        to work correctly (e.g. it will consider any variable a signed
+        integer), if it works at all (almost all language constructs
+        are not supported). As such this documentation is more
+        academic in nature, and should not be considered a user manual
+        yet.
+      </div>
+
+      <div>
+        This tool is planned to translate programs written in MATLAB
+        or Octave to a
+        <a href="http://cprover.diffblue.com/background-concepts.html">GOTO
+          symbol table</a>, and then using the <tt>cbmc</tt> tool from
+          the <a href="https://github.com/diffblue/cbmc">CPROVER</a>
+          tool-chain, and
+          the <a href="https://github.com/CVC4/cvc4">CVC4 SMT
+          Solver</a> to perform analysis. The results will then be
+          picked up by <tt>mh_bmc</tt> and translated back to the
+          original MATLAB or Octave source code.
+      </div>
+
+      <div>
+        Related work:
+        <ul>
+          <li>
+            <a href="https://github.com/diffblue/gnat2goto">gnat2goto</a>
+            which does the same thing, but for Ada.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Content &copy; 2020 Florian Schanda<br>
+    Style &copy; 2019-2020 Alina Boboc<br>
+    MISS_HIT is licensed under the GPLv3
+  </footer>
+</body>
+
+</html>

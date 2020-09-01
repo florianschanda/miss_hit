@@ -26,8 +26,9 @@ order:
 * A code generator (intended targets are C, C++, and SPARK) that
   precisely follows the documented semi-formal semantics.
 
-* A VC generation tool (either under-approximate BMC or deductive). To
-  be decided later.
+* A bounded model checker
+
+* A deductive verification tool
 
 * A qualification pack that maps the semi-formal semantics we decided
   to any specific MATLAB (R) version, demonstrating that the semantics

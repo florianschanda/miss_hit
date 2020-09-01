@@ -21,6 +21,11 @@ None known. Should be compatible with up to MATLAB 2019b.
 * Fix parsing of `[,]`. This is a valid expression and is equivalent
   to `[]`. Previously a syntax error was issued.
 
+* [MH BMC](https://florianschanda.github.io/miss_hit/bmc.html):
+  Started work on an experimental tool for bounded model
+  checking. This tool is not usable for anything yet, but is intended
+  as a proof-of-concept.
+
 ### 0.9.11
 
 * MH Lint now contains the three lint-like messages that were part of

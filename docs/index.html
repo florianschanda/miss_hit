@@ -15,8 +15,9 @@
   <main>
     <div class="section">
       MISS_HIT is a compiler framework for the MATLAB and Octave
-      programming languages, and a set of tools for code quality built
-      on top of it.
+      programming languages, and a set of tools for improving code
+      quality and correctness. MISS_HIT offers a variety of tools, for
+      any level of static analysis needed.
     </div>
 
     <div class="title">
@@ -25,6 +26,8 @@
     </div>
 
     <section>
+      MISS_HIT comes with two basic tools that are an essential basis
+      for code quality:
       <div>
         <ul>
           <li>
@@ -47,9 +50,41 @@
 
     <section>
       <div>
+        Static analysis tools can be classified by three
+        properties. Any tools can have up to two of these properties,
+        but it is impossible to have all three for non-trivial source
+        languages (i.e. languages that contain loops):
         <ul>
           <li>
-            <a href="lint.html">Linter</a> - a simple linter.
+            <b>automatic:</b> This means a tool does not require human
+            intervention, such as loop invariants or precondition
+            annotations.
+          </li>
+          <li>
+            <b>sound:</b> This means a tool will never miss a
+            bug. There could be false alarms, but every bug will be
+            found.
+          </li>
+          <li>
+            <b>complete:</b> This means a tool will never raise a
+            false alarm. Any issue found is a real issue; but there is
+            no guarantee that all issues will be found.
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        MISS_HIT offers a number of static analysis tools, depending
+        on your project needs:
+        <ul>
+          <li>
+            <a href="lint.html">Lint</a> - a simple linter. This
+            tool is automatic, but not sound, and not complete.
+          </li>
+          <li>
+            <a href="bmc.html">BMC</a> - a bounded model checker. This
+            tool is automatic and complete, but not sound. It is also
+            <b>highly experimental and should not be used yet</b>.
           </li>
         </ul>
       </div>

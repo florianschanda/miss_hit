@@ -173,7 +173,7 @@ class Check_Message(Message):
 class Message_Handler:
     """ All messages should be routed through this class """
     def __init__(self, tool_id):
-        assert tool_id in ("debug", "style", "metric", "lint")
+        assert tool_id in ("debug", "style", "metric", "lint", "bmc")
 
         self.tool_id = tool_id
 
