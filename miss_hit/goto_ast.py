@@ -35,6 +35,26 @@
 from abc import ABCMeta, abstractmethod
 
 
+class GOTO_Symbol_Table:
+    def __init__(self):
+        self.stab = {}
+
+        # Add the special initialize function
+        sym_init = Symbol("__CPROVER_initialize")
+        sym_init.value = Irep("nil")
+        sym_init.typ = Code_Type()
+        self.add_symbol(sym_init)
+
+    def add_symbol(self, sym):
+        assert isinstance(sym, Symbol)
+        assert sym.name not in self.stab
+        self.stab[sym.name] = sym
+
+    def to_json(self):
+        return {"symbolTable" : {name: self.stab[name].to_json()
+                                 for name in self.stab}}
+
+
 class Node(metaclass=ABCMeta):
     @abstractmethod
     def to_json(self):
@@ -46,6 +66,9 @@ class Symbol(Node):
     def __init__(self, name, pretty_name=None):
         assert isinstance(name, str)
         assert isinstance(pretty_name, str) or pretty_name is None
+
+        if pretty_name is None:
+            pretty_name = name
 
         self.name = name
         # (str) The unique identifier
@@ -62,7 +85,7 @@ class Symbol(Node):
         self.module = None
         # (str) Name of module the symbol belongs to
 
-        self.base_name = None
+        self.base_name = pretty_name
         # (str) Base (non-scoped) name
 
         self.pretty_name = pretty_name
@@ -209,6 +232,16 @@ class Parameters(Expr):
         super().__init__("")
 
 
+class Parameter(Expr):
+    def __init__(self, name, typ):
+        assert isinstance(name, str)
+        assert isinstance(typ, Type)
+        super().__init__("parameter")
+
+        self.set_attribute("#identifier", name)
+        self.named_sub["type"] = typ
+
+
 class Code_Type(Type):
     def __init__(self):
         super().__init__("code")
@@ -219,9 +252,9 @@ class Code_Type(Type):
         assert isinstance(return_type, Type)
         self.named_sub["return_type"] = return_type
 
-    def add_parameter_type(self, parameter_type):
-        assert isinstance(parameter_type, Type)
-        self.named_sub["parameters"].sub.append(parameter_type)
+    def add_parameter(self, parameter):
+        assert isinstance(parameter, Parameter)
+        self.named_sub["parameters"].sub.append(parameter)
 
 
 ##############################################################################
