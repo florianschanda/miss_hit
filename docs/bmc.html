@@ -59,6 +59,35 @@
       </div>
     </section>
 
+    <section>
+      <h2>Requirements</h2>
+      <div>
+        MH BMC has the following additional requirements:
+        <ul>
+          <li>It only works on Linux right now</li>
+          <li>It requires the following tools from CPROVER on your PATH
+            <ul>
+              <li><tt>cbmc</tt></li>
+              <li><tt>symtab2gb</tt></li>
+              <li><tt>goto-instrument</tt></li>
+            </ul>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Limitations</h2>
+      <div>
+        Currently almost nothing works, and many sweeping assumptions
+        are made:
+        <ul>
+          <li>Everything is considered a 32-bit signed integer</li>
+          <li>Nothing beyond a tiny set of operations work</li>
+          <li>Only functions returning exactly one value work</li>
+        </ul>
+      </div>
+    </section>
+
   </main>
 
   <footer>
