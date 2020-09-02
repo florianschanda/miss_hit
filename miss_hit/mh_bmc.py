@@ -29,11 +29,25 @@ import json
 from miss_hit_core import command_line
 from miss_hit_core import work_package
 from miss_hit_core import m_ast
-from miss_hit_core.errors import Message_Handler, Error
+from miss_hit_core.errors import Message_Handler, Error, Location
 from miss_hit_core.m_lexer import MATLAB_Lexer
 from miss_hit_core.m_parser import MATLAB_Parser
 
 from miss_hit import goto_ast
+
+
+def set_location(sym, loc):
+    assert isinstance(sym, goto_ast.Irep)
+    assert isinstance(loc, Location)
+
+    sloc = goto_ast.Irep("")
+    sloc.set_attribute("file", loc.filename)
+    if loc.line is not None:
+        sloc.set_attribute("line", str(loc.line))
+    if loc.col_start is not None:
+        sloc.set_attribute("column", str(loc.col_start))
+
+    sym.named_sub["#source_location"] = sloc
 
 
 def make_type():
@@ -54,6 +68,7 @@ def compile_name(mh, gst, stab, n_name):
         mangled_name = stab[pretty_name]
 
         sym = goto_ast.Symbol_Expr(typ, mangled_name)
+        set_location(sym, n_name.loc())
         return sym
 
     else:
@@ -74,6 +89,7 @@ def compile_expression(mh, gst, stab, n_expr):
         rhs = compile_expression(mh, gst, stab, n_expr.n_rhs)
         if n_expr.t_op.value == "+":
             sym = goto_ast.Plus_Expr(typ, [lhs, rhs])
+            set_location(sym, n_expr.t_op.location)
             return sym
         else:
             mh.error(n_expr.t_op.location,
@@ -91,6 +107,7 @@ def compile_expression(mh, gst, stab, n_expr):
                      "mh_bmc only supports integer literals so far")
         typ = make_type()
         sym = goto_ast.Constant_Expr(typ, "%x" % int_val)
+        set_location(sym, n_expr.t_value.location)
         return sym
 
     else:
