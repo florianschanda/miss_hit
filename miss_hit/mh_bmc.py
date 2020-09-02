@@ -36,6 +36,113 @@ from miss_hit_core.m_parser import MATLAB_Parser
 from miss_hit import goto_ast
 
 
+def make_type():
+    # One of the key limitations of the MVP: we assume that everything
+    # is a 32-bit signed integer.
+    return goto_ast.SignedBV_Type(32)
+
+
+def compile_name(mh, gst, stab, n_name):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(gst, goto_ast.GOTO_Symbol_Table)
+    assert isinstance(stab, dict)
+    assert isinstance(n_name, m_ast.Name)
+
+    if isinstance(n_name, m_ast.Identifier):
+        typ = make_type()
+        pretty_name = str(n_name)
+        mangled_name = stab[pretty_name]
+
+        sym = goto_ast.Symbol_Expr(typ, mangled_name)
+        return sym
+
+    else:
+        mh.error(n_name.loc(),
+                 "mh_bmc does not %s names yet" %
+                 n_name.__class__.__name__)
+
+
+def compile_expression(mh, gst, stab, n_expr):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(gst, goto_ast.GOTO_Symbol_Table)
+    assert isinstance(stab, dict)
+    assert isinstance(n_expr, m_ast.Expression)
+
+    if isinstance(n_expr, m_ast.Binary_Operation):
+        typ = make_type()
+        lhs = compile_expression(mh, gst, stab, n_expr.n_lhs)
+        rhs = compile_expression(mh, gst, stab, n_expr.n_rhs)
+        if n_expr.t_op.value == "+":
+            sym = goto_ast.Plus_Expr(typ, [lhs, rhs])
+            return sym
+        else:
+            mh.error(n_expr.t_op.location,
+                     "mh_bmc does not the binary %s operation yet" %
+                     n_expr.t_op.value)
+
+    elif isinstance(n_expr, m_ast.Name):
+        return compile_name(mh, gst, stab, n_expr)
+
+    elif isinstance(n_expr, m_ast.Number_Literal):
+        try:
+            int_val = int(n_expr.t_value.value)
+        except ValueError:
+            mh.error(n_expr.t_value.location,
+                     "mh_bmc only supports integer literals so far")
+        typ = make_type()
+        sym = goto_ast.Constant_Expr(typ, "%x" % int_val)
+        return sym
+
+    else:
+        mh.error(n_expr.loc(),
+                 "mh_bmc does not %s expressions yet" %
+                 n_expr.__class__.__name__)
+
+
+def compile_simple_assignment_statement(mh, gst, stab, n_stmt):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(gst, goto_ast.GOTO_Symbol_Table)
+    assert isinstance(stab, dict)
+    assert isinstance(n_stmt, m_ast.Simple_Assignment_Statement)
+
+    typ = make_type()
+    lhs = compile_name(mh, gst, stab, n_stmt.n_lhs)
+    rhs = compile_expression(mh, gst, stab, n_stmt.n_rhs)
+
+    sym_asn = goto_ast.Side_Effect_Expr_Assign(typ, lhs, rhs)
+    sym_code = goto_ast.Code_Expression(sym_asn)
+    return sym_code
+
+
+def compile_statement(mh, gst, stab, n_stmt):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(gst, goto_ast.GOTO_Symbol_Table)
+    assert isinstance(stab, dict)
+    assert isinstance(n_stmt, m_ast.Statement)
+
+    if isinstance(n_stmt, m_ast.Simple_Assignment_Statement):
+        return compile_simple_assignment_statement(mh, gst, stab, n_stmt)
+
+    else:
+        mh.error(n_stmt.loc(),
+                 "mh_bmc does not support %s yet" %
+                 n_stmt.__class__.__name__)
+
+
+def compile_sequence_of_statements(mh, gst, stab, n_seq):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(gst, goto_ast.GOTO_Symbol_Table)
+    assert isinstance(stab, dict)
+    assert isinstance(n_seq, m_ast.Sequence_Of_Statements)
+
+    sym = goto_ast.Code_Block()
+
+    for n_statement in n_seq.l_statements:
+        sym.add_statement(compile_statement(mh, gst, stab, n_statement))
+
+    return sym
+
+
 def compile_function(mh, gst, n_fdef):
     assert isinstance(mh, Message_Handler)
     assert isinstance(gst, goto_ast.GOTO_Symbol_Table)
@@ -44,9 +151,9 @@ def compile_function(mh, gst, n_fdef):
     function_name = str(n_fdef.n_sig.n_name)
 
     sym_fn_type = goto_ast.Code_Type()
+    stab = {}
 
     # Create names for the function inputs
-    inputs = {}
     for n_param in n_fdef.n_sig.l_inputs:
         pretty_name = str(n_param)
         mangled_name = "::".join([function_name, "in", pretty_name])
@@ -54,9 +161,9 @@ def compile_function(mh, gst, n_fdef):
         sym = goto_ast.Symbol(mangled_name, pretty_name)
         sym.is_parameter = True
         sym.value = goto_ast.Irep("nil")
-        sym.typ = goto_ast.SignedBV_Type(32)
+        sym.typ = make_type()
         sym.location = n_param.loc()
-        inputs[pretty_name] = mangled_name
+        stab[pretty_name] = mangled_name
         gst.add_symbol(sym)
 
         sym_fn_type.add_parameter(goto_ast.Parameter(mangled_name, sym.typ))
@@ -64,20 +171,21 @@ def compile_function(mh, gst, n_fdef):
     # Create names for the function outputs. Goto supports void
     # functions and functions with a single return. Right now we only
     # deal with non-void functions as that maps more or less 1:1.
-    outputs = {}
     if len(n_fdef.n_sig.l_outputs) != 1:
         mh.error(n_fdef.loc(),
                  "mh_bmc supports only functions returning exactly one value")
+    the_output = None
     for n_param in n_fdef.n_sig.l_outputs:
         pretty_name = str(n_param)
         mangled_name = "::".join([function_name, "out", pretty_name])
 
         sym = goto_ast.Symbol(mangled_name, pretty_name)
         sym.value = goto_ast.Irep("nil")
-        sym.typ = goto_ast.SignedBV_Type(32)
+        sym.typ = make_type()
         sym.location = n_param.loc()
-        outputs[pretty_name] = mangled_name
+        stab[pretty_name] = mangled_name
         gst.add_symbol(sym)
+        the_output = mangled_name
 
         sym_fn_type.set_return_type(sym.typ)
 
@@ -90,7 +198,12 @@ def compile_function(mh, gst, n_fdef):
     # Translate body
     sym = goto_ast.Symbol(function_name)
     sym.typ = sym_fn_type
-    sym.value = goto_ast.Code_Block()
+    sym.value = compile_sequence_of_statements(mh, gst, stab, n_fdef.n_body)
+
+    # Bolt on the function return
+    sym_ret = goto_ast.Code_Return(goto_ast.Symbol_Expr(make_type(),
+                                                        the_output))
+    sym.value.add_statement(sym_ret)
 
     # Add to the symbol table
     gst.add_symbol(sym)

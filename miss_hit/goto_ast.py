@@ -205,7 +205,19 @@ class Irep(Node):
 ##############################################################################
 
 class Expr(Irep):
-    pass
+    def __init__(self, id_str, typ=None):
+        assert isinstance(typ, Type) or typ is None
+        super().__init__(id_str)
+
+        if typ is not None:
+            self.set_type(typ)
+
+    def set_type(self, typ):
+        assert isinstance(typ, Type)
+        self.named_sub["type"] = typ
+
+    def get_type(self):
+        return self.named_sub["type"]
 
 
 ##############################################################################
@@ -258,6 +270,41 @@ class Code_Type(Type):
 
 
 ##############################################################################
+# From util/std_expr.h
+##############################################################################
+
+class Nullary_Expr(Expr):
+    pass
+
+
+class Multi_Ary_Expr(Expr):
+    pass
+
+
+class Constant_Expr(Expr):
+    def __init__(self, typ, value):
+        assert isinstance(value, str)
+        super().__init__("constant", typ)
+        self.set_attribute("value", value)
+
+
+class Symbol_Expr(Nullary_Expr):
+    def __init__(self, typ, name):
+        assert isinstance(name, str)
+        super().__init__("symbol", typ)
+        self.set_attribute("identifier", name)
+
+
+class Plus_Expr(Multi_Ary_Expr):
+    def __init__(self, typ, ops):
+        assert isinstance(ops, list)
+        super().__init__("+", typ)
+        for operand in ops:
+            assert isinstance(operand, Expr)
+            self.sub.append(operand)
+
+
+##############################################################################
 # From util/std_code.h
 ##############################################################################
 
@@ -271,18 +318,50 @@ class Code_Block(Code):
     def __init__(self):
         super().__init__()
         self.set_attribute("statement", "block")
-        self.statements = []
 
     def add_statement(self, stmt):
         assert isinstance(stmt, Code)
+        self.sub.append(stmt)
 
-        self.statements.append(stmt)
 
-
-class Code_Declaration(Code):
-    def __init__(self):
+class Code_Expression(Code):
+    def __init__(self, expr):
+        assert isinstance(expr, Expr)
         super().__init__()
-        self.set_attribute("statement", "decl")
+        self.set_attribute("statement", "expression")
+        self.sub.append(expr)
+
+
+class Side_Effect_Expr(Expr):
+    def __init__(self, typ, kind):
+        assert isinstance(kind, str)
+        super().__init__("side_effect", typ)
+        self.set_attribute("statement", kind)
+
+
+class Side_Effect_Expr_Assign(Side_Effect_Expr):
+    def __init__(self, typ, lhs, rhs):
+        assert isinstance(lhs, Expr)
+        assert isinstance(rhs, Expr)
+        super().__init__(typ, "assign")
+        self.sub.append(lhs)
+        self.sub.append(rhs)
+
+
+class Code_Return(Code):
+    def __init__(self, value=None):
+        assert isinstance(value, Expr) or value is None
+        super().__init__()
+        self.set_attribute("statement", "return")
+
+        if value is not None:
+            self.sub.append(value)
+
+
+# class Code_Declaration(Code):
+#     def __init__(self):
+#         super().__init__()
+#         self.set_attribute("statement", "decl")
 
 
 def sanity_test():
