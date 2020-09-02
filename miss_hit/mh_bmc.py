@@ -25,11 +25,12 @@
 ##############################################################################
 
 import json
+import subprocess
 
 from miss_hit_core import command_line
 from miss_hit_core import work_package
 from miss_hit_core import m_ast
-from miss_hit_core.errors import Message_Handler, Error, Location
+from miss_hit_core.errors import Message_Handler, Error, Location, ICE
 from miss_hit_core.m_lexer import MATLAB_Lexer
 from miss_hit_core.m_parser import MATLAB_Parser
 
@@ -243,6 +244,69 @@ def compile_file(mh, n_tree):
     return gst
 
 
+def analyze(mh, new_filename, lexer, n_file):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(new_filename, str)
+    assert new_filename.endswith(".json_symtab")
+    assert isinstance(lexer, MATLAB_Lexer)
+    assert isinstance(n_file, m_ast.Function_File)
+
+    for n_fdef in n_file.l_functions:
+        function_name = str(n_fdef.n_sig.n_name)
+
+        cmd = ["cbmc",
+               new_filename,
+               "--json-ui",
+               "--function", function_name,
+               "--bounds-check",
+               "--div-by-zero-check",
+               "--signed-overflow-check",
+               "--unsigned-overflow-check",
+               "--float-overflow-check",
+               "--nan-check"]
+        cbmc_result = subprocess.run(cmd,
+                                     check=False,
+                                     capture_output=True,
+                                     encoding="utf-8")
+        assert cbmc_result.stderr == ""
+
+        if cbmc_result.returncode == 0:
+            mh.info(n_fdef.loc(), "verification successful")
+            continue
+
+        cbmc_msg = json.loads(cbmc_result.stdout)
+
+        results = None
+        for msg in cbmc_msg:
+            if "result" in msg:
+                if results is None:
+                    results = msg["result"]
+                else:
+                    raise ICE("duplicate results")
+        if results is None:
+            raise ICE("result not found in cbmc output")
+
+        for item in results:
+            assert item["status"] == "FAILURE"
+            desc = item["description"]
+
+            fail_loc = item["trace"][-1]
+            assert fail_loc["stepType"] == "failure"
+
+            orig_file = fail_loc["sourceLocation"]["file"]
+            assert orig_file == lexer.filename
+            orig_line = int(fail_loc["sourceLocation"]["line"])
+            orig_col  = int(fail_loc["sourceLocation"]["column"])
+
+            loc = Location(
+                filename  = orig_file,
+                line      = orig_line,
+                col_start = orig_col,
+                context   = lexer.context_line[orig_line - 1])
+
+            mh.check(loc, desc)
+
+
 class MH_BMC_Result(work_package.Result):
     def __init__(self, wp):
         super().__init__(wp, True)
@@ -277,8 +341,10 @@ class MH_BMC(command_line.MISS_HIT_Back_End):
         new_filename = wp.filename.replace(".m", ".json_symtab")
         with open(new_filename, "w") as fd:
             json.dump(gst.to_json(), fd, indent=2)
-        wp.mh.info(n_tree.loc(),
-                   "wrote goto symbol table to %s" % new_filename)
+        # wp.mh.info(n_tree.loc(),
+        #            "wrote goto symbol table to %s" % new_filename)
+
+        analyze(wp.mh, new_filename, lexer, n_tree)
 
         return MH_BMC_Result(wp)
 
@@ -290,7 +356,7 @@ def main_handler():
     mh = Message_Handler("bmc")
     mh.show_context = not options.brief
     mh.show_style   = False
-    mh.show_checks  = False
+    mh.show_checks  = True
     mh.autofix      = False
 
     bmc_backend = MH_BMC(options)
