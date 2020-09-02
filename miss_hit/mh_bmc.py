@@ -46,7 +46,8 @@ def set_location(sym, loc):
     if loc.line is not None:
         sloc.set_attribute("line", str(loc.line))
     if loc.col_start is not None:
-        sloc.set_attribute("column", str(loc.col_start))
+        sloc.set_attribute("column", "%u:%u" % (loc.col_start,
+                                                loc.col_end))
 
     sym.named_sub["#source_location"] = sloc
 
@@ -251,6 +252,10 @@ def analyze(mh, new_filename, lexer, n_file):
     assert isinstance(lexer, MATLAB_Lexer)
     assert isinstance(n_file, m_ast.Function_File)
 
+    def fmt_value(trace_value):
+        assert trace_value["type"] == "int"
+        return trace_value["data"]
+
     for n_fdef in n_file.l_functions:
         function_name = str(n_fdef.n_sig.n_name)
 
@@ -296,15 +301,27 @@ def analyze(mh, new_filename, lexer, n_file):
             orig_file = fail_loc["sourceLocation"]["file"]
             assert orig_file == lexer.filename
             orig_line = int(fail_loc["sourceLocation"]["line"])
-            orig_col  = int(fail_loc["sourceLocation"]["column"])
+            orig_cols = fail_loc["sourceLocation"]["column"].split(":")
+            orig_col_start = int(orig_cols[0])
+            orig_col_end   = int(orig_cols[1])
 
             loc = Location(
                 filename  = orig_file,
                 line      = orig_line,
-                col_start = orig_col,
+                col_start = orig_col_start,
+                col_end   = orig_col_end,
                 context   = lexer.context_line[orig_line - 1])
 
             mh.check(loc, desc)
+
+            for trace in item["trace"][:-1]:
+                if trace["internal"] or trace["hidden"]:
+                    continue
+                if trace["stepType"] == "assignment":
+                    mh.info(loc,
+                            "counter-example trace: %s = %s" %
+                            (trace["lhs"],
+                             fmt_value(trace["value"])))
 
 
 class MH_BMC_Result(work_package.Result):
