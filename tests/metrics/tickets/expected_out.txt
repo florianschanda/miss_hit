@@ -1,0 +1,34 @@
+=== PLAIN MODE ===
+=== Code metric by file:
+
+* Code metrics for file github/test.m:
+
+  Code metrics for function test:
+    Function lines: 8 (to be fixed in #666 and #42)
+
+* Code metrics for file jira/test.m:
+
+  Code metrics for function test:
+    Function lines: 8 (to be fixed in POTATO-666 and KITTEN-42)
+
+=== Global summary of worst offenders by metric:
+
+* Function metric 'Function lines':
+  1. 8 (jira/test.m, function test)
+  2. 8 (github/test.m, function test)
+
+
+=== Summary of tickets mentioned in justifications:
+  #42: referenced once
+  #666: referenced once
+  KITTEN-42: referenced once
+  POTATO-666: referenced once
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine, 2 justified metric deviations(s)
+
+
+=== HTML MODE ===
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine, 2 justified metric deviations(s)
+
+
+=== JSON MODE ===
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine, 2 justified metric deviations(s)

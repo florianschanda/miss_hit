@@ -315,6 +315,7 @@ def check_metric(mh, cfg, loc, metric, metrics, justifications):
                 mh.metric_justifications += 1
                 justifications[metric].applies = True
                 metrics[metric]["reason"] = justifications[metric].reason()
+                metrics[metric]["tickets"] = justifications[metric].tickets
             else:
                 mh.metric_issue(loc,
                                 "exceeded %s: measured %u > limit %u" %
@@ -386,7 +387,8 @@ def get_function_metrics(mh, cfg, tree):
 
         metrics[name] = {m: {"measure" : MEASURE[m](n_fdef),
                              "limit"   : None,
-                             "reason"  : None}
+                             "reason"  : None,
+                             "tickets" : set()}
                          for m in config.FUNCTION_METRICS
                          if cfg.metric_enabled(m)}
 
@@ -402,7 +404,8 @@ def get_function_metrics(mh, cfg, tree):
 
         metrics[name] = {m: {"measure" : MEASURE[m](n_script),
                              "limit"   : None,
-                             "reason"  : None}
+                             "reason"  : None,
+                             "tickets" : set()}
                          for m in config.FUNCTION_METRICS
                          if cfg.metric_enabled(m)}
 
@@ -458,7 +461,10 @@ def warn_unused_justifications(mh, n_cu):
     n_cu.visit(None, Justification_Visitor(), "Root")
 
 
-def write_text_report(fd, all_metrics, worst_offenders):
+def write_text_report(fd,
+                      all_metrics,
+                      ticket_summary,
+                      worst_offenders):
     first = True
 
     fd.write("=== Code metric by file:\n\n")
@@ -547,8 +553,23 @@ def write_text_report(fd, all_metrics, worst_offenders):
                               function_name))
             fd.write("\n")
 
+    if ticket_summary:
+        fd.write("\n=== Summary of tickets mentioned in justifications:\n")
+        for ticket_id in sorted(ticket_summary):
+            if ticket_summary[ticket_id] > 1:
+                fd.write("  %s: referenced %u times\n" %
+                         (ticket_id,
+                          ticket_summary[ticket_id]))
+            else:
+                assert ticket_summary[ticket_id] == 1
+                fd.write("  %s: referenced once\n" % ticket_id)
 
-def write_html_report(fd, fd_name, all_metrics, worst_offenders):
+
+def write_html_report(fd,
+                      fd_name,
+                      all_metrics,
+                      ticket_summary,
+                      worst_offenders):
     docs_dir = os.path.dirname(os.path.relpath(
         os.path.join(sys.path[0], "docs", "style.css"),
         os.path.dirname(os.path.abspath(fd_name)))).replace("\\", "/")
@@ -640,6 +661,28 @@ def write_html_report(fd, fd_name, all_metrics, worst_offenders):
         fd.write("</table>\n")
         fd.write("</div>\n")
 
+        fd.write("</section>\n")
+
+    # Produce ticket overview
+    if ticket_summary:
+        fd.write("<div class='title'>\n")
+        fd.write("<img src='%s/assets/external-link.svg' alt='Tickets'>\n" %
+                 docs_dir)
+        fd.write("<h1>Tickets referenced in justifications</h1>\n")
+        fd.write("</div>\n")
+        fd.write("<section>\n")
+        fd.write("<div>\n")
+        fd.write("<ul>\n")
+        for ticket_id in sorted(ticket_summary):
+            if ticket_summary[ticket_id] > 1:
+                fd.write("<li>%s: referenced %u times</li>" %
+                         (ticket_id,
+                          ticket_summary[ticket_id]))
+            else:
+                assert ticket_summary[ticket_id] == 1
+                fd.write("<li>%s: referenced once</li>\n" % ticket_id)
+        fd.write("</ul>\n")
+        fd.write("</div>\n")
         fd.write("</section>\n")
 
     # Produce full list of metrics
@@ -883,6 +926,30 @@ def build_worst_offenders_table(all_metrics, count):
     return wot
 
 
+def build_ticket_summary(all_metrics):
+    ticket_map = {}
+
+    for filename in all_metrics:
+        metrics = all_metrics[filename]
+        for metric_name in metrics["metrics"]:
+            info = metrics["metrics"][metric_name]
+            for ticket_id in info["tickets"]:
+                if ticket_id not in ticket_map:
+                    ticket_map[ticket_id] = 1
+                else:
+                    ticket_map[ticket_id] += 1
+        for function_name in metrics["functions"]:
+            for metric_name in metrics["functions"][function_name]:
+                info = metrics["functions"][function_name][metric_name]
+                for ticket_id in info["tickets"]:
+                    if ticket_id not in ticket_map:
+                        ticket_map[ticket_id] = 1
+                    else:
+                        ticket_map[ticket_id] += 1
+
+    return ticket_map
+
+
 class MH_Metric_Result(work_package.Result):
     def __init__(self, wp, metrics):
         super().__init__(wp, True)
@@ -946,7 +1013,8 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
             metrics[full_name]["metrics"]["file_length"] = {
                 "measure" : lexer.line_count(),
                 "limit"   : None,
-                "reason"  : None
+                "reason"  : None,
+                "tickets" : set(),
             }
 
         # Check+justify file metrics
@@ -990,16 +1058,24 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
         else:
             worst_offenders = None
 
+        # Build ticket summary
+
+        ticket_summary = build_ticket_summary(self.metrics)
+
         # Generate report
 
         if self.options.text:
             with open(self.options.text, "w") as fd:
-                write_text_report(fd, self.metrics, worst_offenders)
+                write_text_report(fd,
+                                  self.metrics,
+                                  ticket_summary,
+                                  worst_offenders)
         elif self.options.html:
             with open(self.options.html, "w") as fd:
                 write_html_report(fd,
                                   self.options.html,
                                   self.metrics,
+                                  ticket_summary,
                                   worst_offenders)
         elif self.options.json:
             with open(self.options.json, "w") as fd:
@@ -1012,7 +1088,10 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
             pass
         else:
             # write to stdout
-            write_text_report(sys.stdout, self.metrics, worst_offenders)
+            write_text_report(sys.stdout,
+                              self.metrics,
+                              ticket_summary,
+                              worst_offenders)
 
 
 def main_handler():

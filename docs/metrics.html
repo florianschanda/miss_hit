@@ -122,6 +122,7 @@ $ mh_metrics src --json=metrics.json
     </div>
 
     <section>
+      <h2>Pragmas</h2>
       <div>
         Metrics can be justified by placing a justification pragma at
         the level of scope where the violation occurs. Please refer
@@ -146,6 +147,42 @@ $ mh_metrics src --json=metrics.json
 
       <div>
         Justifications that are useless generate a warning.
+      </div>
+
+      <div></div>
+      <h2>Integration with issue-tracking systems</h2>
+
+      <div>
+        A special configuration directive <tt>regex_tickets</tt> can
+        be placed in the MISS_HIT configuration file. When set, this
+        allows MISS_HIT to extract ticket identifiers from
+        justifications, which in turn appear in a special section in
+        the report.
+      </div>
+
+      <div>
+	For example, this is how you can integrate with JIRA:
+	<pre>regex_tickets: "\b[A-Z]{3,}-[0-9]+\b"</pre>
+
+	Or GitHub issues:
+	<pre>regex_tickets: "\B#[0-9]+\b"</pre>
+
+	(Other regular expressions are left as an exercise to the reader.)
+      </div>
+
+      <div>
+	You can mention tickets freely in justification text, for
+	example:
+<pre>
+%| pragma Justification (metric, "cyc",
+%|                       "to be fixed in POTATO-666 or KITTEN-42");
+</pre>
+      </div>
+
+      <div>
+	These then appear in the text or HTML report. This is helpful
+	if you want to produce a report that mentions when things are
+	going to be fixed.
       </div>
     </section>
 

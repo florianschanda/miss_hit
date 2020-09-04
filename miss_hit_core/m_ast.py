@@ -2054,13 +2054,15 @@ class Justification_Pragma(Pragma):
 
 
 class Metric_Justification_Pragma(Justification_Pragma):
-    def __init__(self, t_pragma, t_kind, t_tool, t_metric, n_reason):
+    def __init__(self, t_pragma, t_kind, t_tool, t_metric, n_reason,
+                 ticket_regex):
         super().__init__(t_pragma, t_kind, t_tool)
         assert isinstance(t_tool, MATLAB_Token)
         assert t_tool.kind == "IDENTIFIER" and t_tool.value == "metric"
         assert isinstance(t_metric, MATLAB_Token)
         assert t_metric.kind == "STRING"
         assert isinstance(n_reason, (String_Literal, Binary_Operation))
+        assert isinstance(ticket_regex, str)
 
         self.t_metric = t_metric
         self.t_metric.set_ast(self)
@@ -2070,6 +2072,11 @@ class Metric_Justification_Pragma(Justification_Pragma):
         self.n_reason.set_parent(self)
         # The reason why this deviation is OK. Currently just a string
         # literal, but can be a string expression in the future.
+
+        if ticket_regex:
+            self.tickets = frozenset(re.findall(ticket_regex, self.reason()))
+        else:
+            self.tickets = frozenset()
 
     def metric(self):
         return self.t_metric.value

@@ -21,6 +21,11 @@ None known. Should be compatible with up to MATLAB 2019b.
 * Fix parsing of `[,]`. This is a valid expression and is equivalent
   to `[]`. Previously a syntax error was issued.
 
+* New configuration option `regex_tickets` which can be used to
+  identify which text strings are tickets in your particular issue
+  tracking system. This information is used by MH Metric to produce a
+  report on all tickets referenced in justifications.
+
 * [MH BMC](https://florianschanda.github.io/miss_hit/bmc.html):
   Started work on an experimental tool for bounded model
   checking. This tool is not usable for anything yet, but is intended

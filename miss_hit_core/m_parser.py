@@ -1173,8 +1173,10 @@ class MATLAB_Parser:
         self.amatch("SEMICOLON")
         punctuation.append(self.ct)
 
-        rv = Metric_Justification_Pragma(t_pragma, t_pragma_kind,
-                                         t_tool, t_param, n_reason)
+        rv = Metric_Justification_Pragma(
+            t_pragma, t_pragma_kind,
+            t_tool, t_param, n_reason,
+            self.cfg.style_config["regex_tickets"])
 
         for token in punctuation:
             token.set_ast(rv)

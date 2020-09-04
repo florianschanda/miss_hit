@@ -359,6 +359,12 @@ STYLE_CONFIGURATION = {
 }
 # A flat list of all style configuration items
 
+STYLE_CONFIGURATION["regex_tickets"] = Regex_Style_Configuration(
+    "Regex for tickets in your issue tracking system",
+    default = "")
+# Add the special regex that identifies tickets (not part of any
+# rule).
+
 METRICS = {
     "file_length" : File_Metric(
         "File lines",
