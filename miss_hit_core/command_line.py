@@ -264,7 +264,7 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
 def ice_handler(main_function):
     try:
         main_function()
-    except errors.ICE as internal_compiler_error:
+    except errors.ICE as internal_compiler_error:  # pragma: no cover
         traceback.print_exc()
         print("-" * 70)
         print("- Encountered an internal compiler error. This is a tool")

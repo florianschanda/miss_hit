@@ -60,7 +60,11 @@ def execute_style_test(name):
             orig[f] = fd.read()
 
     # Run in HTML mode
-    r = subprocess.run([sys.executable,
+    r = subprocess.run(["coverage",
+                        "run",
+                        "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                     "coverage.cfg"),
+                        "--append",
                         "../../../mh_style",
                         ".",
                         "--single",
@@ -73,7 +77,11 @@ def execute_style_test(name):
     html_out = r.stdout
 
     # Run in plaintext mode and fix
-    r = subprocess.run([sys.executable,
+    r = subprocess.run(["coverage",
+                        "run",
+                        "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                     "coverage.cfg"),
+                        "--append",
                         "../../../mh_style",
                         "--debug-validate-links",
                         "--debug-cfg",
@@ -95,7 +103,11 @@ def execute_style_test(name):
             fd.write(fixed[f])
 
     # Run in plaintext mode, again, to see if more things need fixing
-    r = subprocess.run([sys.executable,
+    r = subprocess.run(["coverage",
+                        "run",
+                        "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                     "coverage.cfg"),
+                        "--append",
                         "../../../mh_style",
                         ".",
                         "--single",
@@ -133,6 +145,10 @@ def execute_style_test(name):
             for fail in sorted(broken_fixes):
                 fd.write("Fixing is not idempotent for %s\n" % fail)
 
+    os.rename(".coverage", os.path.join(TEST_ROOT,
+                                        ".".join([".coverage",
+                                                  "style",
+                                                  name])))
 
     return "Ran style test %s" % name
 
@@ -143,7 +159,11 @@ def execute_metric_test(name):
                           name))
 
     # Run
-    r = subprocess.run([sys.executable,
+    r = subprocess.run(["coverage",
+                        "run",
+                        "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                     "coverage.cfg"),
+                        "--append",
                         "../../../mh_metric",
                         "--single",
                         ".",],
@@ -154,7 +174,11 @@ def execute_metric_test(name):
     plain_out = r.stdout
 
     # HTML
-    r = subprocess.run([sys.executable,
+    r = subprocess.run(["coverage",
+                        "run",
+                        "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                     "coverage.cfg"),
+                        "--append",
                         "../../../mh_metric",
                         "--single",
                         "--html=metrics.html",
@@ -166,7 +190,11 @@ def execute_metric_test(name):
     html_out = r.stdout
 
     # JSON
-    r = subprocess.run([sys.executable,
+    r = subprocess.run(["coverage",
+                        "run",
+                        "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                     "coverage.cfg"),
+                        "--append",
                         "../../../mh_metric",
                         "--single",
                         "--json=metrics.json",
@@ -188,6 +216,11 @@ def execute_metric_test(name):
         fd.write("\n\n=== JSON MODE ===\n")
         fd.write(json_out)
 
+    os.rename(".coverage", os.path.join(TEST_ROOT,
+                                        ".".join([".coverage",
+                                                  "metrics",
+                                                  name])))
+
     return "Ran metrics test %s" % name
 
 
@@ -197,7 +230,11 @@ def execute_lint_test(name):
                           name))
 
     # Run
-    r = subprocess.run([sys.executable,
+    r = subprocess.run(["coverage",
+                        "run",
+                        "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                     "coverage.cfg"),
+                        "--append",
                         "../../../mh_lint",
                         "--single",
                         ".",],
@@ -227,6 +264,11 @@ def execute_lint_test(name):
         # fd.write("\n\n=== HTML MODE ===\n")
         # fd.write(html_out)
 
+    os.rename(".coverage", os.path.join(TEST_ROOT,
+                                        ".".join([".coverage",
+                                                  "lint",
+                                                  name])))
+
     return "Ran lint test %s" % name
 
 
@@ -240,18 +282,28 @@ def execute_lexer_test(name):
              if f.endswith(".m")]
 
     for f in files:
-        r = subprocess.run([sys.executable,
-                            "-m"
+        r = subprocess.run(["coverage",
+                            "run",
+                            "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                         "coverage.cfg"),
+                            "--append",
+                            "-m",
                             "miss_hit_core.m_lexer",
                             f],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT,
+
                            encoding="utf-8",
                            env=TEST_ENV)
         plain_out = r.stdout
 
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
+
+    os.rename(".coverage", os.path.join(TEST_ROOT,
+                                        ".".join([".coverage",
+                                                  "lexer",
+                                                  name])))
 
     return "Ran lexer test %s" % name
 
@@ -266,8 +318,12 @@ def execute_parser_test(name):
              if f.endswith(".m")]
 
     for f in files:
-        r = subprocess.run([sys.executable,
-                            "-m"
+        r = subprocess.run(["coverage",
+                            "run",
+                            "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                         "coverage.cfg"),
+                            "--append",
+                            "-m",
                             "miss_hit_core.m_parser",
                             "--no-tb",
                             "--tree",
@@ -280,6 +336,11 @@ def execute_parser_test(name):
 
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
+
+    os.rename(".coverage", os.path.join(TEST_ROOT,
+                                        ".".join([".coverage",
+                                                  "parser",
+                                                  name])))
 
     return "Ran parser test %s" % name
 
@@ -294,8 +355,12 @@ def execute_simulink_parser_test(name):
              if f.endswith(".slx")]
 
     for f in files:
-        r = subprocess.run([sys.executable,
-                            "-m"
+        r = subprocess.run(["coverage",
+                            "run",
+                            "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                         "coverage.cfg"),
+                            "--append",
+                            "-m",
                             "miss_hit_core.s_parser",
                             f],
                            stdout=subprocess.PIPE,
@@ -306,6 +371,12 @@ def execute_simulink_parser_test(name):
 
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
+
+    if files:
+        os.rename(".coverage", os.path.join(TEST_ROOT,
+                                            ".".join([".coverage",
+                                                      "simulink_parser",
+                                                      name])))
 
     return "Ran simulink parser test %s" % name
 
@@ -320,8 +391,12 @@ def execute_config_parser_test(name):
              if f.endswith(".cfg")]
 
     for f in files:
-        r = subprocess.run([sys.executable,
-                            "-m"
+        r = subprocess.run(["coverage",
+                            "run",
+                            "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                         "coverage.cfg"),
+                            "--append",
+                            "-m",
                             "miss_hit_core.cfg_parser",
                             "--no-tb",
                             f],
@@ -333,6 +408,11 @@ def execute_config_parser_test(name):
 
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
+
+    os.rename(".coverage", os.path.join(TEST_ROOT,
+                                        ".".join([".coverage",
+                                                  "config_parser",
+                                                  name])))
 
     return "Ran config parser test %s" % name
 
@@ -394,6 +474,11 @@ def main():
         pool = multiprocessing.Pool()
         for res in pool.imap_unordered(run_test, tests, 2):
             print(res)
+
+    os.chdir(TEST_ROOT)
+    os.system("coverage combine")
+    os.system("coverage html --rcfile=coverage.cfg")
+    os.system("coverage report --rcfile=coverage.cfg")
 
 
 if __name__ == "__main__":

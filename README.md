@@ -85,11 +85,13 @@ features.
 
 ### Additional requirements for developing MISS_HIT
 
-If you want to help develop, you will also need Pylint, PyCodeStyle,
-and Graphviz. Install as follows:
+If you want to help develop you will need Linux as the test-suite
+doesn't really work on Windows. You will also need Pylint,
+PyCodeStyle, Coverage, and Graphviz. Install as follows:
+
 ```
 $ apt-get install graphviz
-$ pip3 install --user --upgrade pylint pycodestyle
+$ pip3 install --user --upgrade pylint pycodestyle coverage
 ```
 
 For publishing releases (to GitHub and PyPI) you will also need:
