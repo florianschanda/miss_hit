@@ -293,10 +293,10 @@ def analyze(mh, new_filename, lexer, n_file):
 
         for item in results:
             assert item["status"] == "FAILURE"
-            desc = item["description"]
 
             fail_loc = item["trace"][-1]
             assert fail_loc["stepType"] == "failure"
+            assert fail_loc["property"] == "overflow.1"
 
             orig_file = fail_loc["sourceLocation"]["file"]
             assert orig_file == lexer.filename
@@ -312,7 +312,7 @@ def analyze(mh, new_filename, lexer, n_file):
                 col_end   = orig_col_end,
                 context   = lexer.context_line[orig_line - 1])
 
-            mh.check(loc, desc)
+            mh.check(loc, "operation saturates for some inputs")
 
             for trace in item["trace"][:-1]:
                 if trace["internal"] or trace["hidden"]:
