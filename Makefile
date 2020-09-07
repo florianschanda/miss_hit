@@ -37,13 +37,16 @@ github_release:
 bump:
 	python3 -m util.bump_version_post_release
 
-m_ast_picture.pdf: miss_hit/m_ast.py util/mk_ast_hierarchy.py
+m_ast_picture.pdf: miss_hit_core/m_ast.py util/mk_ast_hierarchy.py
 	python3 -m util.mk_ast_hierarchy m | dot -Tpdf > m_ast_picture.pdf
 
-s_ast_picture.pdf: miss_hit/s_ast.py util/mk_ast_hierarchy.py
+s_ast_picture.pdf: miss_hit_core/s_ast.py util/mk_ast_hierarchy.py
 	python3 -m util.mk_ast_hierarchy s | dot -Tpdf > s_ast_picture.pdf
 
-cfg_ast_picture.pdf: miss_hit/cfg_ast.py util/mk_ast_hierarchy.py
+m_types_picture.pdf: miss_hit_core/m_types.py util/mk_ast_hierarchy.py
+	python3 -m util.mk_ast_hierarchy t | dot -Tpdf > m_types_picture.pdf
+
+cfg_ast_picture.pdf: miss_hit_core/cfg_ast.py util/mk_ast_hierarchy.py
 	python3 -m util.mk_ast_hierarchy cfg | dot -Tpdf > cfg_ast_picture.pdf
 
 .PHONY: doc test lint style

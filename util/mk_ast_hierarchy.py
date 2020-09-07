@@ -10,6 +10,7 @@ import argparse
 import miss_hit_core.m_ast
 import miss_hit_core.s_ast
 import miss_hit_core.cfg_ast
+import miss_hit_core.m_types
 
 
 def main():
@@ -18,22 +19,28 @@ def main():
     options = ap.parse_args()
 
     if options.component == "s":
-        module = miss_hit.s_ast
+        module = miss_hit_core.s_ast
+        root = module.Node
     elif options.component == "m":
-        module = miss_hit.m_ast
+        module = miss_hit_core.m_ast
+        root = module.Node
+    elif options.component == "t":
+        module = miss_hit_core.m_types
+        root = module.Type
     elif options.component == "cfg":
-        module = miss_hit.cfg_ast
+        module = miss_hit_core.cfg_ast
+        root = module.Node
     else:
         ap.error("component must be either s(imulink), m(atlab), or cfg")
 
     print("digraph {")
     print('rankdir="LR";')
     for name, c in inspect.getmembers(module, inspect.isclass):
-        if not issubclass(c, module.Node):
+        if not issubclass(c, root):
             continue
         print('"%s";' % name)
         for b in c.__bases__:
-            if issubclass(b, module.Node):
+            if issubclass(b, root):
                 print('"%s" -> "%s";' % (b.__name__, name))
     print("}")
 
