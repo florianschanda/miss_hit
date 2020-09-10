@@ -45,7 +45,7 @@ def build_masks():
     }
 
     for name, c in inspect.getmembers(m_types, inspect.isclass):
-        if not issubclass(c, m_types.Type):
+        if not issubclass(c, m_types.Type):  # pragma: no cover
             continue
         nv_map[name] = graph.Vertex_Root(cls_graph, name)
     for name, c in inspect.getmembers(m_types, inspect.isclass):

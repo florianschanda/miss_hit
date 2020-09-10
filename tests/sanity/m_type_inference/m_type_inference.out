@@ -1,0 +1,16 @@
+Type inference
+  resolved: False
+  conflict: False
+  options:  Array_Type, Cell_Type, Character_Type, Class_Type, Floating_Point_Type, Function_Pointer_Type, Logical_Type, Signed_Integer_Type, String_Type, Structure_Type, Unsigned_Integer_Type
+Type inference
+  resolved: False
+  conflict: False
+  options:  Floating_Point_Type, Signed_Integer_Type, Unsigned_Integer_Type
+Type inference
+  resolved: True
+  conflict: False
+  options:  Floating_Point_Type
+Type inference
+  resolved: False
+  conflict: True
+  options:

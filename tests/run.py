@@ -33,9 +33,10 @@ import multiprocessing
 import argparse
 
 TEST_ROOT = os.getcwd()
+MH_ROOT = os.path.normpath(os.path.join(TEST_ROOT, ".."))
 TEST_ENV = copy.copy(os.environ)
 TEST_ENV["PYTHONIOENCODING"] = "UTF-8"
-TEST_ENV["PYTHONPATH"] = os.path.normpath(os.path.join(TEST_ROOT, ".."))
+TEST_ENV["PYTHONPATH"] = MH_ROOT
 
 
 def execute_style_test(name):
@@ -415,6 +416,42 @@ def execute_config_parser_test(name):
     return "Ran config parser test %s" % name
 
 
+def execute_sanity_test(name):
+    os.chdir(os.path.join(TEST_ROOT,
+                          "sanity",
+                          name))
+
+    if os.path.isfile(os.path.join(MH_ROOT, "miss_hit_core", name + ".py")):
+        module = "miss_hit_core"
+    elif os.path.isfile(os.path.join(MH_ROOT, "miss_hit", name + ".py")):
+        module = "miss_hit"
+    else:
+        return "FAILED sanity test %s (cannot find module)" % name
+
+    r = subprocess.run(["coverage",
+                        "run",
+                        "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                     "coverage.cfg"),
+                        "--append",
+                        "-m",
+                        "%s.%s" % (module, name)],
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.STDOUT,
+                       encoding="utf-8",
+                       env=TEST_ENV)
+    plain_out = r.stdout
+
+    with open("%s.out" % name, "w") as fd:
+        fd.write(plain_out.rstrip() + "\n")
+
+    os.rename(".coverage", os.path.join(TEST_ROOT,
+                                        ".".join([".coverage",
+                                                  "sanity",
+                                                  name])))
+
+    return "Ran sanity test %s" % name
+
+
 def run_test(test):
     if os.path.exists(os.path.join(TEST_ROOT,
                                    test["kind"],
@@ -431,6 +468,7 @@ def run_test(test):
         "parser"          : execute_parser_test,
         "simulink_parser" : execute_simulink_parser_test,
         "config_parser"   : execute_config_parser_test,
+        "sanity"          : execute_sanity_test,
     }
     return fn[test["kind"]](test["test"])
 
@@ -442,6 +480,9 @@ def main():
                     default=False)
     ap.add_argument("--suite",
                     default=None)
+    ap.add_argument("--no-summary",
+                    default=False,
+                    action="store_true")
 
     options = ap.parse_args()
 
@@ -457,12 +498,15 @@ def main():
     else:
         suites = ["lexer", "parser", "simulink_parser",
                   "config_parser",
-                  "style", "metrics", "lint"]
+                  "style", "metrics", "lint",
+                  "sanity"]
 
     for kind in suites:
         for t in os.listdir(kind):
             tests.append({"kind" : kind,
                           "test" : t})
+
+    os.system("coverage erase")
 
     if options.single:
         for t in tests:
@@ -475,8 +519,10 @@ def main():
 
     os.chdir(TEST_ROOT)
     os.system("coverage combine")
-    os.system("coverage html --rcfile=coverage.cfg")
-    os.system("coverage report --rcfile=coverage.cfg")
+
+    if not options.no_summary:
+        os.system("coverage html --rcfile=coverage.cfg")
+        os.system("coverage report --rcfile=coverage.cfg")
 
 
 if __name__ == "__main__":
