@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+##############################################################################
+##                                                                          ##
+##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
+##                                                                          ##
+##              Copyright (C) 2020, Florian Schanda                         ##
+##                                                                          ##
+##  This file is part of MISS_HIT.                                          ##
+##                                                                          ##
+##  MATLAB Independent, Small & Safe, High Integrity Tools (MISS_HIT) is    ##
+##  free software: you can redistribute it and/or modify                    ##
+##  it under the terms of the GNU Affero General Public License as          ##
+##  published by the Free Software Foundation, either version 3 of the      ##
+##  License, or (at your option) any later version.                         ##
+##                                                                          ##
+##  MISS_HIT is distributed in the hope that it will be useful,             ##
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of          ##
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ##
+##  GNU Afferto General Public License for more details.                    ##
+##                                                                          ##
+##  You should have received a copy of the GNU Affero General Public        ##
+##  License along with MISS_HIT. If not, see                                ##
+##  <http://www.gnu.org/licenses/>.                                         ##
+##                                                                          ##
+##############################################################################
+
+# This is a tiny wrapper around the parser for testing purposes
+
+import os
+import traceback
+
+from miss_hit_core.errors import Message_Handler, Error, ICE
+from miss_hit_core.m_lexer import MATLAB_Lexer, Token_Buffer
+from miss_hit_core.m_parser import MATLAB_Parser
+from miss_hit_core.m_ast import AST_Visitor, Function_Definition, Script_File
+from miss_hit_core.config import Config
+
+from miss_hit import g_cfg
+
+
+def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
+    class CFG_Visitor(AST_Visitor):
+        def visit(self, node, n_parent, relation):
+            if isinstance(node, (Function_Definition, Script_File)):
+                cfg = g_cfg.build_cfg(node)
+
+                if isinstance(node, Function_Definition):
+                    cfg.debug_write_dot(str(node.n_sig.n_name))
+                else:
+                    cfg.debug_write_dot(node.name)
+
+    mh.register_file(filename)
+    with open(filename, "r") as fd:
+        content = fd.read()
+    try:
+        lexer = MATLAB_Lexer(mh, content, filename)
+        tbuf = Token_Buffer(lexer, Config())
+        parser = MATLAB_Parser(mh,
+                               tbuf,
+                               Config())
+        parser.debug_tree = show_dot
+        tree = parser.parse_file()
+        if show_tree:
+            print("-" * 70)
+            print("--  Parse tree for %s" % os.path.basename(filename))
+            tree.pp_node()
+            print("-" * 70)
+
+        if show_cfg:
+            tree.visit(None, CFG_Visitor(), "Root")
+
+        tbuf.debug_validate_links()
+
+    except Error:
+        if show_bt:
+            traceback.print_exc()
+
+    except ICE as ice:
+        if show_bt:
+            traceback.print_exc()
+        print("ICE:", ice.reason)
+
+    mh.finalize_file(filename)
+
+
+def parser_test_main():
+    # pylint: disable=import-outside-toplevel
+    from argparse import ArgumentParser
+    # pylint: enable=import-outside-toplevel
+    ap = ArgumentParser()
+    ap.add_argument("file")
+    ap.add_argument("--no-tb",
+                    action="store_true",
+                    default=False,
+                    help="Do not show debug-style backtrace")
+    ap.add_argument("--tree",
+                    action="store_true",
+                    default=False,
+                    help="Print text-based parse tree")
+    ap.add_argument("--dot",
+                    action="store_true",
+                    default=False,
+                    help="Create parse tree with graphviz for each function")
+    ap.add_argument("--cfg",
+                    action="store_true",
+                    default=False,
+                    help="Create cfg with graphviz for each function")
+    options = ap.parse_args()
+
+    mh = Message_Handler("debug")
+    mh.sort_messages = False
+    mh.colour = False
+
+    sanity_test(mh, options.file,
+                not options.no_tb,
+                options.tree,
+                options.dot,
+                options.cfg)
+
+    mh.summary_and_exit()
+
+
+if __name__ == "__main__":
+    parser_test_main()

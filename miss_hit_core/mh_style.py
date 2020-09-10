@@ -35,7 +35,6 @@ from abc import ABCMeta, abstractmethod
 from miss_hit_core import work_package
 from miss_hit_core import command_line
 from miss_hit_core import config
-from miss_hit_core import g_cfg
 
 from miss_hit_core.errors import (Location, Error, ICE,
                                   Message_Handler, HTML_Message_Handler)
@@ -935,11 +934,6 @@ class MH_Style(command_line.MISS_HIT_Back_End):
         except Error:
             parse_tree = None
 
-        # Create CFG for debugging purposes
-
-        if parse_tree and wp.options.debug_cfg:
-            g_cfg.debug_cfg(parse_tree, wp.mh)
-
         # Stage 3 - rules around individual tokens
 
         stage_3_analysis(
@@ -1011,11 +1005,6 @@ def main_handler():
         action="store_true",
         default=False,
         help="Debug option to check AST links")
-    clp["debug_options"].add_argument(
-        "--debug-cfg",
-        action="store_true",
-        default=False,
-        help="Build CFG for every function")
 
     style_option = clp["ap"].add_argument_group("rule options")
 

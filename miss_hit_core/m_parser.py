@@ -25,12 +25,11 @@
 ##############################################################################
 
 import os
-import traceback
 
 from miss_hit_core.config import Config, METRICS
-from miss_hit_core.errors import ICE, Error, Message_Handler
+from miss_hit_core.errors import ICE, Message_Handler
 from miss_hit_core.m_ast import *
-from miss_hit_core.m_lexer import Token_Generator, MATLAB_Lexer, Token_Buffer
+from miss_hit_core.m_lexer import Token_Generator
 
 
 IGNORED_TOKENS = frozenset(["COMMENT"])
@@ -2083,93 +2082,3 @@ class MATLAB_Parser:
         self.pop_context()
 
         return rv
-
-
-def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
-    # pylint: disable=import-outside-toplevel
-    from miss_hit_core import g_cfg
-    # pylint: enable=import-outside-toplevel
-
-    class CFG_Visitor(AST_Visitor):
-        def visit(self, node, n_parent, relation):
-            if isinstance(node, (Function_Definition, Script_File)):
-                cfg = g_cfg.build_cfg(node)
-
-                if isinstance(node, Function_Definition):
-                    cfg.debug_write_dot(str(node.n_sig.n_name))
-                else:
-                    cfg.debug_write_dot(node.name)
-
-    mh.register_file(filename)
-    with open(filename, "r") as fd:
-        content = fd.read()
-    try:
-        lexer = MATLAB_Lexer(mh, content, filename)
-        tbuf = Token_Buffer(lexer, Config())
-        parser = MATLAB_Parser(mh,
-                               tbuf,
-                               Config())
-        parser.debug_tree = show_dot
-        tree = parser.parse_file()
-        if show_tree:
-            print("-" * 70)
-            print("--  Parse tree for %s" % os.path.basename(filename))
-            tree.pp_node()
-            print("-" * 70)
-
-        if show_cfg:
-            tree.visit(None, CFG_Visitor(), "Root")
-
-        tbuf.debug_validate_links()
-
-    except Error:
-        if show_bt:
-            traceback.print_exc()
-
-    except ICE as ice:
-        if show_bt:
-            traceback.print_exc()
-        print("ICE:", ice.reason)
-
-    mh.finalize_file(filename)
-
-
-def parser_test_main():
-    # pylint: disable=import-outside-toplevel
-    from argparse import ArgumentParser
-    # pylint: enable=import-outside-toplevel
-    ap = ArgumentParser()
-    ap.add_argument("file")
-    ap.add_argument("--no-tb",
-                    action="store_true",
-                    default=False,
-                    help="Do not show debug-style backtrace")
-    ap.add_argument("--tree",
-                    action="store_true",
-                    default=False,
-                    help="Print text-based parse tree")
-    ap.add_argument("--dot",
-                    action="store_true",
-                    default=False,
-                    help="Create parse tree with graphviz for each function")
-    ap.add_argument("--cfg",
-                    action="store_true",
-                    default=False,
-                    help="Create cfg with graphviz for each function")
-    options = ap.parse_args()
-
-    mh = Message_Handler("debug")
-    mh.sort_messages = False
-    mh.colour = False
-
-    sanity_test(mh, options.file,
-                not options.no_tb,
-                options.tree,
-                options.dot,
-                options.cfg)
-
-    mh.summary_and_exit()
-
-
-if __name__ == "__main__":
-    parser_test_main()

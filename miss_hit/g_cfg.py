@@ -8,22 +8,23 @@
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
 ##  MATLAB Independent, Small & Safe, High Integrity Tools (MISS_HIT) is    ##
-##  free software: you can redistribute it and/or modify it under the       ##
-##  terms of the GNU General Public License as published by the Free        ##
-##  Software Foundation, either version 3 of the License, or (at your       ##
-##  option) any later version.                                              ##
+##  free software: you can redistribute it and/or modify                    ##
+##  it under the terms of the GNU Affero General Public License as          ##
+##  published by the Free Software Foundation, either version 3 of the      ##
+##  License, or (at your option) any later version.                         ##
 ##                                                                          ##
 ##  MISS_HIT is distributed in the hope that it will be useful,             ##
 ##  but WITHOUT ANY WARRANTY; without even the implied warranty of          ##
 ##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ##
-##  GNU General Public License for more details.                            ##
+##  GNU Afferto General Public License for more details.                    ##
 ##                                                                          ##
-##  You should have received a copy of the GNU General Public License       ##
-##  along with MISS_HIT. If not, see <http://www.gnu.org/licenses/>.        ##
+##  You should have received a copy of the GNU Affero General Public        ##
+##  License along with MISS_HIT. If not, see                                ##
+##  <http://www.gnu.org/licenses/>.                                         ##
 ##                                                                          ##
 ##############################################################################
 
-from miss_hit_core.graph import Graph, Vertex_Root
+from miss_hit.graph import Graph, Vertex_Root
 from miss_hit_core.m_ast import *
 from miss_hit_core.errors import Message_Handler, ICE
 
