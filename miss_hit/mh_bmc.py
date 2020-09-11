@@ -380,6 +380,15 @@ def main_handler():
 
     options = command_line.parse_args(clp)
 
+    try:
+        subprocess.run(["cbmc", "--version"],
+                       check=True,
+                       capture_output=True,
+                       encoding="utf-8")
+    except FileNotFoundError:
+        clp["ap"].error("MH BMC needs 'cbmc' from the CPROVER tools on "
+                        "your PATH")
+
     mh = Message_Handler("bmc")
     mh.show_context = not options.brief
     mh.show_style   = False
