@@ -37,6 +37,7 @@ class Vertex_Root:
         assert name is None or isinstance(name, str)
 
         self.graph = graph
+        self.uid = graph.get_next_uid()
         self.out_edges = set()
         self.in_edges = set()
         self.name = name
@@ -55,13 +56,22 @@ class Vertex_Root:
         if self.name:
             return self.name
         else:
-            return "vertex %u" % hash(self)
+            return "vertex %u" % self.uid
+
+    def __lt__(self, other):
+        """Comparison for sorting vertices"""
+        return self.uid < other.uid
 
 
 class Graph:
     def __init__(self):
         self.vertices = set()
         self.names = {}
+        self.uid_counter = 0
+
+    def get_next_uid(self):
+        self.uid_counter += 1
+        return self.uid_counter
 
     def get_named_vertex(self, name):
         assert isinstance(name, str)
@@ -96,16 +106,19 @@ class Graph:
     def debug_write_dot(self, filename):
         with open(filename + ".dot", "w") as fd:
             fd.write("digraph G {\n")
-            for vert in self.vertices:
+            for vert in sorted(self.vertices):
                 fd.write("  %u [label=\"%s\"];\n" %
-                         (hash(vert),
+                         (vert.uid,
                           vert.dot_label()))
             fd.write("\n")
-            for src in self.vertices:
-                for dst in src.out_edges:
+            for src in sorted(self.vertices):
+                for dst in sorted(src.out_edges):
                     fd.write("  %u -> %u;\n" %
-                             (hash(src), hash(dst)))
+                             (src.uid, dst.uid))
             fd.write("}\n")
+
+    def debug_write_pdf(self, filename):  # pragma: no cover
+        self.debug_write_dot(filename)
         os.system("dot -Tpdf -o%s.pdf %s.dot" % (filename, filename))
 
     def count_vertices(self):
@@ -131,7 +144,15 @@ def sanity_check():
     graph.add_edge(v_start, v_0)
     graph.add_edge(v_0, v_end)
 
+    print("vertices: %u" % graph.count_vertices())
+    print("edges:    %u" % graph.count_edges())
     graph.debug_write_dot("test1")
+
+    graph.remove_edge(v_start, v_0)
+
+    print("vertices: %u" % graph.count_vertices())
+    print("edges:    %u" % graph.count_edges())
+    graph.debug_write_dot("test2")
 
 
 if __name__ == "__main__":
