@@ -1,0 +1,4 @@
+In add_zero.m, line 2
+| function rv = add_zero(x)
+|               ^^^^^^^^ info: verification successful
+MISS_HIT Bmc Summary: 1 file(s) analysed, everything seems fine

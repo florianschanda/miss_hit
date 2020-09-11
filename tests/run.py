@@ -464,6 +464,45 @@ def execute_sanity_test(name):
     return "Ran sanity test %s" % name
 
 
+def execute_bmc_test(name):
+    os.chdir(os.path.join(TEST_ROOT,
+                          "bmc",
+                          name))
+
+    m_files = []
+    for path, _, files in os.walk("."):
+        for f in files:
+            if f.endswith(".m"):
+                m_files.append(os.path.join(path, f))
+
+    for filename in m_files:
+        file_root = os.path.splitext(filename)[0]
+
+        r = subprocess.run(["coverage",
+                            "run",
+                            "--rcfile=%s" % os.path.join(TEST_ROOT,
+                                                         "coverage.cfg"),
+                            "--append",
+                            "../../../mh_bmc",
+                            "--single",
+                            filename],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT,
+                           encoding="utf-8",
+                           env=TEST_ENV)
+        plain_out = r.stdout
+
+        with open("%s.txt" % file_root, "w") as fd:
+            fd.write(plain_out.rstrip() + "\n")
+
+    os.rename(".coverage", os.path.join(TEST_ROOT,
+                                        ".".join([".coverage",
+                                                  "bmc",
+                                                  name])))
+
+    return "Ran bmc test %s" % name
+
+
 def run_test(test):
     if os.path.exists(os.path.join(TEST_ROOT,
                                    test["kind"],
@@ -476,6 +515,7 @@ def run_test(test):
         "style"           : execute_style_test,
         "metrics"         : execute_metric_test,
         "lint"            : execute_lint_test,
+        "bmc"             : execute_bmc_test,
         "lexer"           : execute_lexer_test,
         "parser"          : execute_parser_test,
         "simulink_parser" : execute_simulink_parser_test,
@@ -510,7 +550,7 @@ def main():
     else:
         suites = ["lexer", "parser", "simulink_parser",
                   "config_parser",
-                  "style", "metrics", "lint",
+                  "style", "metrics", "lint", "bmc",
                   "sanity"]
 
     for kind in suites:

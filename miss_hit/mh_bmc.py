@@ -24,6 +24,7 @@
 ##                                                                          ##
 ##############################################################################
 
+import os
 import json
 import subprocess
 
@@ -363,11 +364,20 @@ class MH_BMC(command_line.MISS_HIT_Back_End):
 
         analyze(wp.mh, new_filename, lexer, n_tree)
 
+        if not wp.options.keep:
+            os.unlink(new_filename)
+
         return MH_BMC_Result(wp)
 
 
 def main_handler():
     clp = command_line.create_basic_clp()
+    clp["debug_options"].add_argument(
+        "--keep",
+        help="do not delete intermediate files",
+        action="store_true",
+        default=False)
+
     options = command_line.parse_args(clp)
 
     mh = Message_Handler("bmc")
@@ -384,5 +394,5 @@ def main():
     command_line.ice_handler(main_handler)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
