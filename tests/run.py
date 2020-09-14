@@ -39,11 +39,44 @@ TEST_ENV["PYTHONIOENCODING"] = "UTF-8"
 TEST_ENV["PYTHONPATH"] = MH_ROOT
 
 
-def execute_style_test(name):
-    os.chdir(os.path.join(TEST_ROOT,
-                          "style",
-                          name))
+def run_command(command, args):
+    cmd = ["coverage",
+           "run",
+           "--rcfile=%s" % os.path.join(TEST_ROOT, "coverage.cfg"),
+           "--branch",
+           "--append"]
+    cmd.append(os.path.join("..", "..", "..", command))
+    cmd += args
 
+    rv = subprocess.run(cmd,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        encoding="utf-8",
+                        env=TEST_ENV)
+
+    return rv
+
+
+def run_module(module, args):
+    cmd = ["coverage",
+           "run",
+           "--rcfile=%s" % os.path.join(TEST_ROOT, "coverage.cfg"),
+           "--branch",
+           "--append",
+           "-m",
+           module]
+    cmd += args
+
+    rv = subprocess.run(cmd,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        encoding="utf-8",
+                        env=TEST_ENV)
+
+    return rv
+
+
+def execute_style_test(name):
     m_files = []
     slx_files = []
     for path, _, files in os.walk("."):
@@ -61,40 +94,20 @@ def execute_style_test(name):
             orig[f] = fd.read()
 
     # Run in HTML mode
-    r = subprocess.run(["coverage",
-                        "run",
-                        "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                     "coverage.cfg"),
-                        "--branch",
-                        "--append",
-                        "../../../mh_style",
-                        ".",
-                        "--single",
-                        "--process-slx",
-                        "--html=expected_out.html"],
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8",
-                       env=TEST_ENV)
+    r = run_command("mh_style",
+                    [".",
+                     "--single",
+                     "--process-slx",
+                     "--html=expected_out.html"])
     html_out = r.stdout
 
     # Run in plaintext mode and fix
-    r = subprocess.run(["coverage",
-                        "run",
-                        "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                     "coverage.cfg"),
-                        "--branch",
-                        "--append",
-                        "../../../mh_style",
-                        "--debug-validate-links",
-                        ".",
-                        "--single",
-                        "--process-slx",
-                        "--fix"],
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8",
-                       env=TEST_ENV)
+    r = run_command("mh_style",
+                    [".",
+                     "--debug-validate-links",
+                     "--single",
+                     "--process-slx",
+                     "--fix"])
     plain_out = r.stdout
 
     # Write the fixed file to foo.m_fixed
@@ -105,21 +118,11 @@ def execute_style_test(name):
             fd.write(fixed[f])
 
     # Run in plaintext mode, again, to see if more things need fixing
-    r = subprocess.run(["coverage",
-                        "run",
-                        "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                     "coverage.cfg"),
-                        "--branch",
-                        "--append",
-                        "../../../mh_style",
-                        ".",
-                        "--single",
-                        "--process-slx",
-                        "--fix"],
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8",
-                       env=TEST_ENV)
+    r = run_command("mh_style",
+                    [".",
+                     "--single",
+                     "--process-slx",
+                     "--fix"])
     plain_out_again = r.stdout
 
     # Check if fixed files not "fixed" again
@@ -148,67 +151,28 @@ def execute_style_test(name):
             for fail in sorted(broken_fixes):
                 fd.write("Fixing is not idempotent for %s\n" % fail)
 
-    os.rename(".coverage", os.path.join(TEST_ROOT,
-                                        ".".join([".coverage",
-                                                  "style",
-                                                  name])))
-
     return "Ran style test %s" % name
 
 
 def execute_metric_test(name):
-    os.chdir(os.path.join(TEST_ROOT,
-                          "metrics",
-                          name))
-
     # Run
-    r = subprocess.run(["coverage",
-                        "run",
-                        "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                     "coverage.cfg"),
-                        "--append",
-                        "--branch",
-                        "../../../mh_metric",
-                        "--single",
-                        ".",],
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8",
-                       env=TEST_ENV)
+    r = run_command("mh_metric",
+                    [".",
+                     "--single"])
     plain_out = r.stdout
 
     # HTML
-    r = subprocess.run(["coverage",
-                        "run",
-                        "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                     "coverage.cfg"),
-                        "--append",
-                        "--branch",
-                        "../../../mh_metric",
-                        "--single",
-                        "--html=metrics.html",
-                        ".",],
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8",
-                       env=TEST_ENV)
+    r = run_command("mh_metric",
+                    [".",
+                     "--single",
+                     "--html=metrics.html"])
     html_out = r.stdout
 
     # JSON
-    r = subprocess.run(["coverage",
-                        "run",
-                        "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                     "coverage.cfg"),
-                        "--append",
-                        "--branch",
-                        "../../../mh_metric",
-                        "--single",
-                        "--json=metrics.json",
-                        ".",],
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8",
-                       env=TEST_ENV)
+    r = run_command("mh_metric",
+                    [".",
+                     "--single",
+                     "--json=metrics.json"])
     json_out = r.stdout
 
     # Save stdout
@@ -222,33 +186,14 @@ def execute_metric_test(name):
         fd.write("\n\n=== JSON MODE ===\n")
         fd.write(json_out)
 
-    os.rename(".coverage", os.path.join(TEST_ROOT,
-                                        ".".join([".coverage",
-                                                  "metrics",
-                                                  name])))
-
     return "Ran metrics test %s" % name
 
 
 def execute_lint_test(name):
-    os.chdir(os.path.join(TEST_ROOT,
-                          "lint",
-                          name))
-
     # Run
-    r = subprocess.run(["coverage",
-                        "run",
-                        "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                     "coverage.cfg"),
-                        "--append",
-                        "--branch",
-                        "../../../mh_lint",
-                        "--single",
-                        ".",],
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8",
-                       env=TEST_ENV)
+    r = run_command("mh_lint",
+                    [".",
+                     "--single"])
     plain_out = r.stdout
 
     # # HTML
@@ -271,167 +216,75 @@ def execute_lint_test(name):
         # fd.write("\n\n=== HTML MODE ===\n")
         # fd.write(html_out)
 
-    os.rename(".coverage", os.path.join(TEST_ROOT,
-                                        ".".join([".coverage",
-                                                  "lint",
-                                                  name])))
-
     return "Ran lint test %s" % name
 
 
 def execute_lexer_test(name):
-    os.chdir(os.path.join(TEST_ROOT,
-                          "lexer",
-                          name))
-
     files = [f
              for f in os.listdir(".")
              if f.endswith(".m")]
 
     for f in files:
-        r = subprocess.run(["coverage",
-                            "run",
-                            "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                         "coverage.cfg"),
-                            "--append",
-                            "--branch",
-                            "-m",
-                            "miss_hit_core.m_lexer",
-                            f],
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT,
-
-                           encoding="utf-8",
-                           env=TEST_ENV)
+        r = run_module("miss_hit_core.m_lexer", [f])
         plain_out = r.stdout
 
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
-
-    os.rename(".coverage", os.path.join(TEST_ROOT,
-                                        ".".join([".coverage",
-                                                  "lexer",
-                                                  name])))
 
     return "Ran lexer test %s" % name
 
 
 def execute_parser_test(name):
-    os.chdir(os.path.join(TEST_ROOT,
-                          "parser",
-                          name))
-
     files = [f
              for f in os.listdir(".")
              if f.endswith(".m")]
 
     for f in files:
-        r = subprocess.run(["coverage",
-                            "run",
-                            "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                         "coverage.cfg"),
-                            "--append",
-                            "--branch",
-                            "../../../mh_debug_parser",
-                            "--no-tb",
-                            "--tree",
-                            f],
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT,
-                           encoding="utf-8",
-                           env=TEST_ENV)
+        r = run_command("mh_debug_parser",
+                        ["--no-tb",
+                         "--tree",
+                         f])
         plain_out = r.stdout
 
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
-
-    os.rename(".coverage", os.path.join(TEST_ROOT,
-                                        ".".join([".coverage",
-                                                  "parser",
-                                                  name])))
 
     return "Ran parser test %s" % name
 
 
 def execute_simulink_parser_test(name):
-    os.chdir(os.path.join(TEST_ROOT,
-                          "simulink_parser",
-                          name))
-
     files = [f
              for f in os.listdir(".")
              if f.endswith(".slx")]
 
     for f in files:
-        r = subprocess.run(["coverage",
-                            "run",
-                            "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                         "coverage.cfg"),
-                            "--append",
-                            "--branch",
-                            "-m",
-                            "miss_hit_core.s_parser",
-                            f],
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT,
-                           encoding="utf-8",
-                           env=TEST_ENV)
+        r = run_module("miss_hit_core.s_parser", [f])
         plain_out = r.stdout
 
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
-
-    if files:
-        os.rename(".coverage", os.path.join(TEST_ROOT,
-                                            ".".join([".coverage",
-                                                      "simulink_parser",
-                                                      name])))
 
     return "Ran simulink parser test %s" % name
 
 
 def execute_config_parser_test(name):
-    os.chdir(os.path.join(TEST_ROOT,
-                          "config_parser",
-                          name))
-
     files = [f
              for f in os.listdir(".")
              if f.endswith(".cfg")]
 
     for f in files:
-        r = subprocess.run(["coverage",
-                            "run",
-                            "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                         "coverage.cfg"),
-                            "--append",
-                            "--branch",
-                            "-m",
-                            "miss_hit_core.cfg_parser",
-                            "--no-tb",
-                            f],
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT,
-                           encoding="utf-8",
-                           env=TEST_ENV)
+        r = run_module("miss_hit_core.cfg_parser",
+                       ["--no-tb",
+                        f])
         plain_out = r.stdout
 
         with open(f + ".out", "w") as fd:
             fd.write(plain_out)
 
-    os.rename(".coverage", os.path.join(TEST_ROOT,
-                                        ".".join([".coverage",
-                                                  "config_parser",
-                                                  name])))
-
     return "Ran config parser test %s" % name
 
 
 def execute_sanity_test(name):
-    os.chdir(os.path.join(TEST_ROOT,
-                          "sanity",
-                          name))
-
     if os.path.isfile(os.path.join(MH_ROOT, "miss_hit_core", name + ".py")):
         module = "miss_hit_core"
     elif os.path.isfile(os.path.join(MH_ROOT, "miss_hit", name + ".py")):
@@ -439,27 +292,11 @@ def execute_sanity_test(name):
     else:
         return "FAILED sanity test %s (cannot find module)" % name
 
-    r = subprocess.run(["coverage",
-                        "run",
-                        "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                     "coverage.cfg"),
-                        "--append",
-                        "--branch",
-                        "-m",
-                        "%s.%s" % (module, name)],
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT,
-                       encoding="utf-8",
-                       env=TEST_ENV)
+    r = run_module("%s.%s" % (module, name), [])
     plain_out = r.stdout
 
     with open("%s.out" % name, "w") as fd:
         fd.write(plain_out.rstrip() + "\n")
-
-    os.rename(".coverage", os.path.join(TEST_ROOT,
-                                        ".".join([".coverage",
-                                                  "sanity",
-                                                  name])))
 
     return "Ran sanity test %s" % name
 
@@ -478,27 +315,13 @@ def execute_bmc_test(name):
     for filename in m_files:
         file_root = os.path.splitext(filename)[0]
 
-        r = subprocess.run(["coverage",
-                            "run",
-                            "--rcfile=%s" % os.path.join(TEST_ROOT,
-                                                         "coverage.cfg"),
-                            "--append",
-                            "../../../mh_bmc",
-                            "--single",
-                            filename],
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT,
-                           encoding="utf-8",
-                           env=TEST_ENV)
+        r = run_command("mh_bmc",
+                        ["--single",
+                         filename])
         plain_out = r.stdout
 
         with open("%s.txt" % file_root, "w") as fd:
             fd.write(plain_out.rstrip() + "\n")
-
-    os.rename(".coverage", os.path.join(TEST_ROOT,
-                                        ".".join([".coverage",
-                                                  "bmc",
-                                                  name])))
 
     return "Ran bmc test %s" % name
 
@@ -511,6 +334,12 @@ def run_test(test):
         if sys.platform != "linux":
             return "SKIPPED linux-only test %s" % test["test"]
 
+    # Set up in the correct directory
+    os.chdir(os.path.join(TEST_ROOT,
+                          test["kind"],
+                          test["test"]))
+
+    # Execute test
     fn = {
         "style"           : execute_style_test,
         "metrics"         : execute_metric_test,
@@ -522,7 +351,16 @@ def run_test(test):
         "config_parser"   : execute_config_parser_test,
         "sanity"          : execute_sanity_test,
     }
-    return fn[test["kind"]](test["test"])
+    test_result = fn[test["kind"]](test["test"])
+
+    # Move coverage results
+    if os.path.isfile(".coverage"):
+        os.rename(".coverage", os.path.join(TEST_ROOT,
+                                            ".".join([".coverage",
+                                                      test["kind"],
+                                                      test["test"]])))
+
+    return test_result
 
 
 def main():
