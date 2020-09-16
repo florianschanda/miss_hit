@@ -31,6 +31,15 @@ None known. Should be compatible with up to MATLAB 2019b.
   checking. This tool is not usable for anything yet, but is intended
   as a proof-of-concept.
 
+* Also provide the `--html` option for MH Lint.
+
+* New `--json` option for MH Style and MH Lint to produce message
+  using JSON. In the future the `--html` option from MH Style and MH
+  Lint will disappear and be replaced by a small set of tools that
+  render JSON messages in plain text, HTML, or post mesages as gerrit
+  review comments. The exact schema of this JSON file is not stable
+  yet.
+
 ### 0.9.11
 
 * MH Lint now contains the three lint-like messages that were part of

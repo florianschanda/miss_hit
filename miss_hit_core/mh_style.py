@@ -37,7 +37,9 @@ from miss_hit_core import command_line
 from miss_hit_core import config
 
 from miss_hit_core.errors import (Location, Error, ICE,
-                                  Message_Handler, HTML_Message_Handler)
+                                  Message_Handler,
+                                  HTML_Message_Handler,
+                                  JSON_Message_Handler)
 from miss_hit_core.m_ast import *
 from miss_hit_core.m_lexer import MATLAB_Lexer, Token_Buffer
 from miss_hit_core.m_parser import MATLAB_Parser
@@ -989,6 +991,10 @@ def main_handler():
         default=None,
         help="Write report to given file as HTML")
     clp["output_options"].add_argument(
+        "--json",
+        default=None,
+        help="Produce JSON report")
+    clp["output_options"].add_argument(
         "--no-style",
         action="store_true",
         default=False,
@@ -1029,10 +1035,17 @@ def main_handler():
     options = command_line.parse_args(clp)
 
     if options.html:
+        if options.json:
+            clp["ap"].error("Cannot produce JSON and HTML at the same time")
         if os.path.exists(options.html) and not os.path.isfile(options.html):
             clp["ap"].error("Cannot write to %s: it is not a file" %
                             options.html)
         mh = HTML_Message_Handler("style", options.html)
+    elif options.json:
+        if os.path.exists(options.json) and not os.path.isfile(options.json):
+            clp["ap"].error("Cannot write to %s: it is not a file" %
+                            options.json)
+        mh = JSON_Message_Handler("style", options.json)
     else:
         mh = Message_Handler("style")
 

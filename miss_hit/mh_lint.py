@@ -24,9 +24,14 @@
 ##                                                                          ##
 ##############################################################################
 
+import os
+
 from miss_hit_core import command_line
 from miss_hit_core import work_package
-from miss_hit_core.errors import Message_Handler, Error
+from miss_hit_core.errors import (Error,
+                                  Message_Handler,
+                                  HTML_Message_Handler,
+                                  JSON_Message_Handler)
 from miss_hit_core.m_lexer import MATLAB_Lexer
 from miss_hit_core.m_parser import MATLAB_Parser
 
@@ -66,9 +71,34 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
 
 def main_handler():
     clp = command_line.create_basic_clp()
+
+    # Extra output options
+    clp["output_options"].add_argument(
+        "--html",
+        default=None,
+        help="Write report to given file as HTML")
+    clp["output_options"].add_argument(
+        "--json",
+        default=None,
+        help="Produce JSON report")
+
     options = command_line.parse_args(clp)
 
-    mh = Message_Handler("lint")
+    if options.html:
+        if options.json:
+            clp["ap"].error("Cannot produce JSON and HTML at the same time")
+        if os.path.exists(options.html) and not os.path.isfile(options.html):
+            clp["ap"].error("Cannot write to %s: it is not a file" %
+                            options.html)
+        mh = HTML_Message_Handler("lint", options.html)
+    elif options.json:
+        if os.path.exists(options.json) and not os.path.isfile(options.json):
+            clp["ap"].error("Cannot write to %s: it is not a file" %
+                            options.json)
+        mh = JSON_Message_Handler("lint", options.json)
+    else:
+        mh = Message_Handler("lint")
+
     mh.show_context = not options.brief
     mh.show_style   = False
     mh.show_checks  = True

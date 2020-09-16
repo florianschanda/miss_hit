@@ -27,6 +27,7 @@
 import os
 import sys
 import html
+import json
 
 
 class Location:
@@ -84,6 +85,20 @@ class Location:
             (other.filename,
              other.line if other.line else 0,
              other.col_start if other.col_start else -1)
+
+    def to_json(self):
+        rv = {"filename": self.filename}
+        if self.blockname:
+            rv["block"] = self.blockname
+        if self.line:
+            rv["line"] = self.line
+        if self.col_start:
+            rv["col_start"] = self.col_start
+        if self.col_end:
+            rv["col_end"] = self.col_end
+        if self.context:
+            rv["context"] = self.context
+        return rv
 
 
 class ICE(Exception):
@@ -158,6 +173,14 @@ class Message:
                 self.justified = True
                 justification.used = True
 
+    def to_json(self):
+        return {"location"  : self.location.to_json(),
+                "kind"      : self.kind,
+                "severity"  : self.severity,
+                "message"   : self.message,
+                "fixable"   : self.fixed,
+                "fatal"     : self.fatal}
+
 
 class Check_Message(Message):
     def __init__(self, location, severity, message):
@@ -212,13 +235,16 @@ class Message_Handler:
 
     def fork(self):
         rv = Message_Handler(self.tool_id)
-        rv.autofix       = self.autofix
-        rv.colour        = self.colour
-        rv.show_context  = self.show_context
-        rv.show_style    = self.show_style
-        rv.show_checks   = self.show_checks
-        rv.sort_messages = self.sort_messages
+        self.fork_copy_attributes(rv)
         return rv
+
+    def fork_copy_attributes(self, other):
+        other.autofix       = self.autofix
+        other.colour        = self.colour
+        other.show_context  = self.show_context
+        other.show_style    = self.show_style
+        other.show_checks   = self.show_checks
+        other.sort_messages = self.sort_messages
 
     def integrate(self, other):
         assert isinstance(other, Message_Handler)
@@ -555,21 +581,27 @@ class Message_Handler:
             sys.exit(0)
 
 
-class HTML_Message_Handler(Message_Handler):
+class File_Based_Message_Handler(Message_Handler):
     def __init__(self, tool_id, filename):
         super().__init__(tool_id)
         self.filename = filename
-        self.fd = None
+        self.fd       = None
+
+    def fork(self):
+        raise ICE("unimplemented abstract class")
+
+    def setup_fd(self):
+        raise ICE("unimplemented abstract class")
+
+
+class HTML_Message_Handler(File_Based_Message_Handler):
+    def __init__(self, tool_id, filename):
+        super().__init__(tool_id, filename)
         self.last_file = None
 
     def fork(self):
         rv = HTML_Message_Handler(self.tool_id, self.filename)
-        rv.autofix       = self.autofix
-        rv.colour        = self.colour
-        rv.show_context  = self.show_context
-        rv.show_style    = self.show_style
-        rv.show_checks   = self.show_checks
-        rv.sort_messages = self.sort_messages
+        self.fork_copy_attributes(rv)
         return rv
 
     def setup_fd(self):
@@ -651,3 +683,36 @@ class HTML_Message_Handler(Message_Handler):
         self.fd.write("</html>\n")
         self.fd.close()
         self.fd = None
+
+
+class JSON_Message_Handler(File_Based_Message_Handler):
+    def __init__(self, tool_id, filename):
+        super().__init__(tool_id, filename)
+        self.blob = None
+
+    def fork(self):
+        rv = JSON_Message_Handler(self.tool_id, self.filename)
+        self.fork_copy_attributes(rv)
+        return rv
+
+    def setup_fd(self):
+        if self.fd is not None:
+            return
+
+        self.fd = open(self.filename, "w")
+        self.blob = {}
+
+    def emit_message(self, message):
+        self.setup_fd()
+
+        if message.location.filename not in self.blob:
+            self.blob[message.location.filename] = []
+
+        self.blob[message.location.filename].append(message.to_json())
+
+    def emit_summary(self):
+        self.setup_fd()
+        super().emit_summary()
+        json.dump(self.blob, self.fd, indent=2)
+        self.fd.write("\n")
+        self.fd.close()
