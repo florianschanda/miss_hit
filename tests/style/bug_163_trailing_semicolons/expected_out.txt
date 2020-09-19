@@ -170,17 +170,22 @@ In test_05.m, line 3
 In test_05.m, line 3
 | x = [;,,]
 |        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
-test_07.m: error: file is not auto-fixed because it contains parse errors
 In test_07.m, line 6
 |      ;;1]
-|      ^ error: expected M_KET, found SEMICOLON instead
+|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_07.m, line 6
 |      ;;1]
-|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In test_07.m, line 6
 |      ;;1]
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
-MISS_HIT Style Summary: 6 file(s) analysed, 55 style issue(s), 8 error(s)
+|         ^ style: end statement with a semicolon [fixed]
+In test_07.m, line 10
+|      1]
+|       ^ style: end statement with a semicolon [fixed]
+In test_07.m, line 19
+|     ]
+|     ^ style: end statement with a semicolon [fixed]
+MISS_HIT Style Summary: 6 file(s) analysed, 58 style issue(s), 6 error(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 6 file(s) analysed, 55 style issue(s), 4 error(s)
+MISS_HIT Style Summary: 6 file(s) analysed, 58 style issue(s), 3 error(s)

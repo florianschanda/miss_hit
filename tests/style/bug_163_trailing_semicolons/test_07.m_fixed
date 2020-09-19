@@ -3,11 +3,11 @@
 % Valid code that is currently rejected by the parser
 
 a = [;
-     ;;1]
+     ; ; 1];
 % a = 1
 
 b = [
-     1]
+     1];
 % b = 1
 
 c = [
@@ -16,5 +16,5 @@ c = [
 
     1
     ;
-    ]
+    ];
 % c = 1

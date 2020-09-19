@@ -1587,6 +1587,15 @@ class MATLAB_Parser:
 
         first = True
 
+        # Bad style, but there may be leading semicolons or newlines,
+        # e.g {;;3} which is the same as {3}.
+        while self.peek("SEMICOLON") or self.peek("NEWLINE"):
+            if self.peek("SEMICOLON"):
+                self.match("SEMICOLON")
+                self.ct.set_ast(rv)
+            else:
+                self.skip()
+
         while not (self.peek("SEMICOLON") or
                    self.peek("NEWLINE") or
                    self.peek("C_KET") or
@@ -1637,29 +1646,25 @@ class MATLAB_Parser:
         self.match("M_BRA")
         rv = Matrix_Expression(self.ct)
 
-        # Bad style, but there may be leading semicolons, e.g [;;3]
-        # which is the same as [3].
-        while self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-            self.ct.set_ast(rv)
-
         if not self.peek("M_KET"):
             rv.add_row(self.parse_matrix_row())
-            while self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-                self.ct.set_ast(rv)
-            if self.peek("NEWLINE"):
-                self.match("NEWLINE")
+            while self.peek("SEMICOLON") or self.peek("NEWLINE"):
+                if self.peek("SEMICOLON"):
+                    self.match("SEMICOLON")
+                    self.ct.set_ast(rv)
+                else:
+                    self.match("NEWLINE")
 
             while not (self.peek("SEMICOLON") or
                        self.peek("NEWLINE") or
                        self.peek("M_KET")):
                 rv.add_row(self.parse_matrix_row())
-                while self.peek("SEMICOLON"):
-                    self.match("SEMICOLON")
-                    self.ct.set_ast(rv)
-                if self.peek("NEWLINE"):
-                    self.match("NEWLINE")
+                while self.peek("SEMICOLON") or self.peek("NEWLINE"):
+                    if self.peek("SEMICOLON"):
+                        self.match("SEMICOLON")
+                        self.ct.set_ast(rv)
+                    else:
+                        self.match("NEWLINE")
 
         self.match("M_KET")
         rv.set_closing_bracket(self.ct)
@@ -1669,29 +1674,25 @@ class MATLAB_Parser:
         self.match("C_BRA")
         rv = Cell_Expression(self.ct)
 
-        # Bad style, but there may be leading semicolons, e.g {;;3}
-        # which is the same as {3}.
-        while self.peek("SEMICOLON"):
-            self.match("SEMICOLON")
-            self.ct.set_ast(rv)
-
         if not self.peek("C_KET"):
             rv.add_row(self.parse_matrix_row())
-            while self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-                self.ct.set_ast(rv)
-            if self.peek("NEWLINE"):
-                self.match("NEWLINE")
+            while self.peek("SEMICOLON") or self.peek("NEWLINE"):
+                if self.peek("SEMICOLON"):
+                    self.match("SEMICOLON")
+                    self.ct.set_ast(rv)
+                else:
+                    self.match("NEWLINE")
 
             while not (self.peek("SEMICOLON") or
                        self.peek("NEWLINE") or
                        self.peek("C_KET")):
                 rv.add_row(self.parse_matrix_row())
-                while self.peek("SEMICOLON"):
-                    self.match("SEMICOLON")
-                    self.ct.set_ast(rv)
-                if self.peek("NEWLINE"):
-                    self.match("NEWLINE")
+                while self.peek("SEMICOLON") or self.peek("NEWLINE"):
+                    if self.peek("SEMICOLON"):
+                        self.match("SEMICOLON")
+                        self.ct.set_ast(rv)
+                    else:
+                        self.match("NEWLINE")
 
         self.match("C_KET")
         rv.set_closing_bracket(self.ct)

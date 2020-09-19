@@ -21,6 +21,10 @@ None known. Should be compatible with up to MATLAB 2019b.
 * Fix parsing of `[,]`. This is a valid expression and is equivalent
   to `[]`. Previously a syntax error was issued.
 
+* Fix parsing of `[;;1]` and similar expressions where leading or
+  trailing semicolons or newlines were present in a matrix or
+  cell. Previously a syntax error was issued.
+
 * New configuration option `regex_tickets` which can be used to
   identify which text strings are tickets in your particular issue
   tracking system. This information is used by MH Metric to produce a
