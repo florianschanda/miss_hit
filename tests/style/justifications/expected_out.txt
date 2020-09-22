@@ -4,8 +4,11 @@ In test.m, line 7
 |        ^^^^^^^^^^^^^^^^^ warning: style justification does not apply
 In test.m, line 10
 |   potato ];
+|   ^^^^^^ style: indentation not correct, should be 1 spaces, not 2 [fixed]
+In test.m, line 10
+|   potato ];
 |          ^ style: ] must not be preceeded by whitespace [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s), 1 warning(s), 2 justified message(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s), 1 warning(s), 2 justified message(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s), 1 warning(s), 2 justified message(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s), 1 warning(s), 2 justified message(s)

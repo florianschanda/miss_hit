@@ -25,8 +25,16 @@ None known. Should be compatible with up to MATLAB 2019b.
   trailing semicolons or newlines were present in a matrix or
   cell. Previously a syntax error was issued.
 
-* New style rule `spurious_row_semicolon` which removes useless
-  semicolons from matrix or cell expressions.
+* MH Style has a New rule `spurious_row_semicolon` which removes
+  useless semicolons from matrix or cell expressions.
+
+* MH Style now indents matrix and cell expressions in a more sensible
+  way (aligning with the opening brace). This means you will now get
+  something like this:
+  ```
+  potato = [1 0
+            0 1]
+  ```
 
 * New configuration option `regex_tickets` which can be used to
   identify which text strings are tickets in your particular issue

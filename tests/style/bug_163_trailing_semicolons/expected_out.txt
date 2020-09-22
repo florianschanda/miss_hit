@@ -344,19 +344,31 @@ In test_07_c.m, line 4
 In test_07_d.m, line 4
 |     ;
 |     ^ style: this semicolon is not required and can be removed [fixed]
+In test_07_d.m, line 4
+|     ;
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
 In test_07_d.m, line 5
+|     ;
+|     ^ style: this semicolon is not required and can be removed [fixed]
+In test_07_d.m, line 5
+|     ;
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+In test_07_d.m, line 7
+|     1
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+In test_07_d.m, line 8
 |     ;
 |     ^ style: this semicolon is not required and can be removed [fixed]
 In test_07_d.m, line 8
 |     ;
-|     ^ style: this semicolon is not required and can be removed [fixed]
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
 In test_07_d.m, line 9
 |     ]
 |     ^ style: end statement with a semicolon [fixed]
-MISS_HIT Style Summary: 10 file(s) analysed, 114 style issue(s), 6 error(s)
+MISS_HIT Style Summary: 10 file(s) analysed, 118 style issue(s), 6 error(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 10 file(s) analysed, 114 style issue(s), 3 error(s)
+MISS_HIT Style Summary: 10 file(s) analysed, 118 style issue(s), 3 error(s)
 
 === ! BROKEN FIXES ! ===
 Fixing is not idempotent for ./test_07_a.m

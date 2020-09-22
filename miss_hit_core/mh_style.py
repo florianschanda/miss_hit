@@ -366,6 +366,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
     statement_start_token = None
     current_indent = 0
     enclosing_ast = None
+    mc_stack = []
 
     for n, token in enumerate(tbuf.tokens):
         if n - 1 >= 0:
@@ -801,6 +802,21 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                         current_indent = enclosing_ast.get_indentation() + 1
                     offset = 0
 
+                elif mc_stack:
+                    # For stuff inside a matrix or cell expression, we
+                    # align it with the opening brace + 1, except for
+                    # the closing brace, that one we align exactly
+                    # with the opening brace
+                    if mc_stack[-1].fix.correct_indent is not None:
+                        offset = mc_stack[-1].fix.correct_indent - \
+                            statement_start_token.location.col_start
+                    else:
+                        offset = mc_stack[-1].location.col_start - \
+                            statement_start_token.location.col_start
+
+                    if token.kind not in ("M_KET", "C_KET"):
+                        offset += 1
+
                 else:
                     # This is a continued line. We try to preserve
                     # the offset. We work out how much extra space
@@ -836,6 +852,16 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                                    (correct_spaces,
                                     token.location.col_start),
                                    fixed)
+
+        # Keep track of matrix and cell expressions. Again, required
+        # for indentation. We do this *after* the fixing so we have a
+        # chance to deal with the closing brackets while knowing the
+        # opening brace, and the opening braces considering the
+        # context we're currently in.
+        if token.kind in ("M_BRA", "C_BRA"):
+            mc_stack.append(token)
+        elif token.kind in ("M_KET", "C_KET"):
+            mc_stack.pop()
 
 
 class MH_Style_Result(work_package.Result):

@@ -1,0 +1,38 @@
+=== PLAIN MODE ===
+In test_01.m, line 4
+|        3 4];
+|        ^ style: indentation not correct, should be 5 spaces, not 7 [fixed]
+In test_01.m, line 10
+| 3 4];
+| ^ style: indentation not correct, should be 5 spaces, not 0 [fixed]
+In test_02.m, line 4
+|        3 4};
+|        ^ style: indentation not correct, should be 5 spaces, not 7 [fixed]
+In test_02.m, line 10
+| 3 4};
+| ^ style: indentation not correct, should be 5 spaces, not 0 [fixed]
+In test_03.m, line 5
+|   'bar' 2 3
+|   ^^^^^ style: indentation not correct, should be 3 spaces, not 2 [fixed]
+In test_04.m, line 6
+| function test_04(a, b, c)
+|          ^^^^^^^ style: violates naming scheme for function
+In test_04.m, line 8
+|       x = 1;
+|       ^ style: indentation not correct, should be 8 spaces, not 6 [fixed]
+In test_04.m, line 12
+|     [3]);
+| ^ style: tab is not allowed [fixed]
+In test_06.m, line 6
+|  2 [3
+|  ^ style: indentation not correct, should be 5 spaces, not 1 [fixed]
+In test_06.m, line 7
+|  4]];
+|  ^ style: indentation not correct, should be 4 spaces, not 1 [fixed]
+MISS_HIT Style Summary: 6 file(s) analysed, 10 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 6 file(s) analysed, 11 style issue(s)
+
+=== ! BROKEN FIXES ! ===
+Fixing is not idempotent for ./test_06.m
