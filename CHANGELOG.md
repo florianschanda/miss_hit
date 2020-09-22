@@ -18,6 +18,14 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ### 0.9.12-dev
 
+* [_CORRECTNESS_] Fix lexing of `1./b`. This was a critical bug that
+  caused the expression to be incorrectly formatted as `1. / b`
+  (i.e. using `/` instead of `./`).
+
+  The main user-visible problem is that the style rule
+  `operator_whitespace` could then re-write expressions and change
+  semantics of the re-written code.
+
 * Fix parsing of `[,]`. This is a valid expression and is equivalent
   to `[]`. Previously a syntax error was issued.
 

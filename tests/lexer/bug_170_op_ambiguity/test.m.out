@@ -1,0 +1,80 @@
+In test.m, line 1
+| % (c) Copyright 2020 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2020 Florian Schanda'
+In test.m, line 1
+| % (c) Copyright 2020 Florian Schanda
+|                                     ^ info: NEWLINE
+In test.m, line 3
+| x = 1./b
+| ^ info: [SL] IDENTIFIER
+In test.m, line 3
+| x = 1./b
+|   ^ info: ASSIGNMENT
+In test.m, line 3
+| x = 1./b
+|     ^ info: NUMBER
+In test.m, line 3
+| x = 1./b
+|      ^^ info: OPERATOR
+In test.m, line 3
+| x = 1./b
+|        ^ info: IDENTIFIER
+In test.m, line 3
+| x = 1./b
+|         ^ info: NEWLINE
+In test.m, line 5
+| y = 1. /b
+| ^ info: [SL] IDENTIFIER
+In test.m, line 5
+| y = 1. /b
+|   ^ info: ASSIGNMENT
+In test.m, line 5
+| y = 1. /b
+|     ^^ info: NUMBER
+In test.m, line 5
+| y = 1. /b
+|        ^ info: OPERATOR
+In test.m, line 5
+| y = 1. /b
+|         ^ info: IDENTIFIER
+In test.m, line 5
+| y = 1. /b
+|          ^ info: NEWLINE
+In test.m, line 7
+| z = 1 ./b
+| ^ info: [SL] IDENTIFIER
+In test.m, line 7
+| z = 1 ./b
+|   ^ info: ASSIGNMENT
+In test.m, line 7
+| z = 1 ./b
+|     ^ info: NUMBER
+In test.m, line 7
+| z = 1 ./b
+|       ^^ info: OPERATOR
+In test.m, line 7
+| z = 1 ./b
+|         ^ info: IDENTIFIER
+In test.m, line 7
+| z = 1 ./b
+|          ^ info: NEWLINE
+In test.m, line 9
+| w = 1./ b
+| ^ info: [SL] IDENTIFIER
+In test.m, line 9
+| w = 1./ b
+|   ^ info: ASSIGNMENT
+In test.m, line 9
+| w = 1./ b
+|     ^ info: NUMBER
+In test.m, line 9
+| w = 1./ b
+|      ^^ info: OPERATOR
+In test.m, line 9
+| w = 1./ b
+|         ^ info: IDENTIFIER
+In test.m, line 9
+| w = 1./ b
+|          ^ info: NEWLINE
+test.m: lexed OK
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

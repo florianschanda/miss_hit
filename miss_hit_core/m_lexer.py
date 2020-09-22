@@ -527,7 +527,32 @@ class MATLAB_Lexer(Token_Generator):
                 tmp = self.match_re(
                     r"([0-9]+(\.[0-9]*)?([eE][+-]?[0-9]+)?[iIjJ]?)|"
                     r"(\.[0-9]+([eE][+-]?[0-9]+)?[iIjJ]?)")
-                self.advance(len(tmp) - 1)
+
+                if tmp.endswith("."):
+                    # See bug #170. This is kinda a weird case. A
+                    # trailing '.' is consumed by a number token, but
+                    # not if the . belongs to one of the .-starting
+                    # operators (i.e: . followed by one of /\*'^)
+                    #
+                    # So first we remove the .
+                    self.advance(len(tmp) - 2)
+
+                    # At this point this is our lexing state:
+                    #   cc  = some number
+                    #   nc  = '.'
+                    #   nnc = ?
+                    if self.nnc not in ("/", "\\", "*", "'", "^"):
+                        # This is the case where we do not have an
+                        # operator, which lexes stronger than
+                        # e.g. "1." So we can eat the '.' and include
+                        # it in our number.
+                        #
+                        # This disambiguates "1./b" to "1" "./" "b",
+                        # as opposed to "1." "/" "b".
+                        self.skip()
+
+                else:
+                    self.advance(len(tmp) - 1)
 
                 # We need to make sure we now have something that
                 # isn't a number to stop any stupidity such as "1.1.1"

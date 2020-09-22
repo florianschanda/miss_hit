@@ -1,0 +1,59 @@
+=== PLAIN MODE ===
+In test_01.m, line 3
+| b = [1 2 3]
+|           ^ style: end statement with a semicolon [fixed]
+In test_01.m, line 5
+| x = 1./b
+|      ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_01.m, line 5
+| x = 1./b
+|        ^ style: end statement with a semicolon [fixed]
+In test_01.m, line 7
+| y = 1. /b
+|        ^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_01.m, line 7
+| y = 1. /b
+|         ^ style: end statement with a semicolon [fixed]
+In test_01.m, line 9
+| z = 1 ./b
+|       ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_01.m, line 9
+| z = 1 ./b
+|         ^ style: end statement with a semicolon [fixed]
+In test_01.m, line 11
+| w = 1./ b
+|      ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_01.m, line 11
+| w = 1./ b
+|         ^ style: end statement with a semicolon [fixed]
+In test_02.m, line 3
+| b = [1 2 3]
+|           ^ style: end statement with a semicolon [fixed]
+In test_02.m, line 5
+| x = [1./b]
+|       ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_02.m, line 5
+| x = [1./b]
+|          ^ style: end statement with a semicolon [fixed]
+In test_02.m, line 7
+| y = [1. /b]
+|         ^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_02.m, line 7
+| y = [1. /b]
+|           ^ style: end statement with a semicolon [fixed]
+In test_02.m, line 9
+| z = [1 ./b]
+|        ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_02.m, line 9
+| z = [1 ./b]
+|           ^ style: end statement with a semicolon [fixed]
+In test_02.m, line 11
+| w = [1./ b]
+|       ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_02.m, line 11
+| w = [1./ b]
+|           ^ style: end statement with a semicolon [fixed]
+MISS_HIT Style Summary: 2 file(s) analysed, 18 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 2 file(s) analysed, 18 style issue(s)

@@ -138,6 +138,16 @@ In older versions of MATLAB (R) this used to parse, but now thankfully
 it doesn't. But you still need to add a special error checking for
 number lexing to raise an error in this specific case.
 
+Also note that the `./` operator (and the other 4 operators that start
+with a '.') create an ambiguity here. The following expression:
+```
+x = 1./b
+```
+
+In MATLAB and Octave this appears to be resolved by giving the `./`
+higher precedence, so the individual tokens here should be `1`, `./`,
+and `b`.
+
 ## Single-quoted strings
 
 The single quote has two meanings. It can either be a transpose
