@@ -5,36 +5,40 @@ Root: Script_File
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <1>
-          Items: Number_Literal <2>
-          Items: Number_Literal <3>
+        Content: Row_List
+          Items: Row
+            Items: Number_Literal <1>
+            Items: Number_Literal <2>
+            Items: Number_Literal <3>
     Statements: Simple_Assignment_Statement
       LHS: Reference
         Name: Identifier <x>
         Arguments: Matrix_Expression
-          Rows: Row
-            Items: Binary_Operation -
-              LHS: Identifier <end>
-              RHS: Number_Literal <1>
-            Items: Identifier <end>
+          Content: Row_List
+            Items: Row
+              Items: Binary_Operation -
+                LHS: Identifier <end>
+                RHS: Number_Literal <1>
+              Items: Identifier <end>
       RHS: Reference
         Name: Identifier <x>
         Arguments: Matrix_Expression
-          Rows: Row
-            Items: Identifier <end>
-            Items: Binary_Operation -
-              LHS: Identifier <end>
-              RHS: Number_Literal <1>
+          Content: Row_List
+            Items: Row
+              Items: Identifier <end>
+              Items: Binary_Operation -
+                LHS: Identifier <end>
+                RHS: Number_Literal <1>
     Statements: Naked_Expression_Statement
       Expression: Reference
         Name: Identifier <assert>
         Arguments: Binary_Operation ==
           LHS: Identifier <x>
           RHS: Matrix_Expression
-            Rows: Row
-              Items: Number_Literal <1>
-              Items: Number_Literal <3>
-              Items: Number_Literal <2>
+            Content: Row_List
+              Items: Row
+                Items: Number_Literal <1>
+                Items: Number_Literal <3>
+                Items: Number_Literal <2>
 ----------------------------------------------------------------------
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

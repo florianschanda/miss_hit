@@ -21,49 +21,62 @@ Root: Script_File
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <3>
+        Content: Row_List
+          Items: Row
+            Items: Number_Literal <3>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <y>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <4>
+        Content: Row_List
+          Items: Row
+            Items: Number_Literal <4>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <z>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <5>
+        Content: Row_List
+          Items: Row
+            Items: Number_Literal <5>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <6>
+        Content: Row_List
+          Items: Row
+            Items: Number_Literal <6>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <y>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <7>
+        Content: Row_List
+          Items: Row
+          Items: Row
+            Items: Number_Literal <7>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <z>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <8>
+        Content: Row_List
+          Items: Row
+          Items: Row
+            Items: Number_Literal <8>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <9>
+        Content: Row_List
+          Items: Row
+            Items: Number_Literal <9>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <y>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <10>
+        Content: Row_List
+          Items: Row
+          Items: Row
+            Items: Number_Literal <10>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <z>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <11>
-        Rows: Row
-          Items: Number_Literal <12>
+        Content: Row_List
+          Items: Row
+          Items: Row
+            Items: Number_Literal <11>
+          Items: Row
+            Items: Number_Literal <12>
 ----------------------------------------------------------------------
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

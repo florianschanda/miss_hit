@@ -528,6 +528,13 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                                    "whitespace",
                                    fixed)
 
+            if cfg.active("spurious_row_semicolon") and token.fix.spurious:
+                token.fix.delete = True
+                mh.style_issue(token.location,
+                               "this semicolon is not required and can "
+                               "be removed",
+                               fixed)
+
         elif token.kind == "COLON":
             if cfg.active("whitespace_colon"):
                 if prev_in_line and prev_in_line.kind == "COMMA":

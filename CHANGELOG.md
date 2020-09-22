@@ -25,6 +25,9 @@ None known. Should be compatible with up to MATLAB 2019b.
   trailing semicolons or newlines were present in a matrix or
   cell. Previously a syntax error was issued.
 
+* New style rule `spurious_row_semicolon` which removes useless
+  semicolons from matrix or cell expressions.
+
 * New configuration option `regex_tickets` which can be used to
   identify which text strings are tickets in your particular issue
   tracking system. This information is used by MH Metric to produce a

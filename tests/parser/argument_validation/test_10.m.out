@@ -25,9 +25,10 @@ Root: Function_File
           Name: Identifier <mustBeMember>
           Arguments: Identifier <option>
           Arguments: Matrix_Expression
-            Rows: Row
-              Items: String_Literal "linear"
-              Items: String_Literal "cubic"
+            Content: Row_List
+              Items: Row
+                Items: String_Literal "linear"
+                Items: String_Literal "cubic"
     Body: Sequence_Of_Statements
       Statements: Simple_Assignment_Statement
         LHS: Identifier <xCell>

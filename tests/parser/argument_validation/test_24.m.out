@@ -42,9 +42,10 @@ Root: Function_File
             Prefix: Identifier <propArgs>
             Field: Identifier <FaceColor>
           Arguments: Cell_Expression
-            Rows: Row
-              Items: Char_Array_Literal 'red'
-              Items: Char_Array_Literal 'blue'
+            Content: Row_List
+              Items: Row
+                Items: Char_Array_Literal 'red'
+                Items: Char_Array_Literal 'blue'
         Default: String_Literal "blue"
     Body: Sequence_Of_Statements
       Statements: Simple_Assignment_Statement

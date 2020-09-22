@@ -33,10 +33,11 @@ Root: Function_File
           Name: Identifier <mustBeMember>
           Arguments: Identifier <method>
           Arguments: Cell_Expression
-            Rows: Row
-              Items: Char_Array_Literal 'linear'
-              Items: Char_Array_Literal 'cubic'
-              Items: Char_Array_Literal 'spline'
+            Content: Row_List
+              Items: Row
+                Items: Char_Array_Literal 'linear'
+                Items: Char_Array_Literal 'cubic'
+                Items: Char_Array_Literal 'spline'
         Default: Char_Array_Literal 'linear'
     Body: Sequence_Of_Statements
   Functions: Function_Definition

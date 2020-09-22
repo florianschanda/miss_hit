@@ -11,12 +11,13 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <b>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Number_Literal <1>
-            Items: Number_Literal <2>
-            Items: Number_Literal <3>
-            Items: Number_Literal <4>
-            Items: Number_Literal <5>
+          Content: Row_List
+            Items: Row
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+              Items: Number_Literal <3>
+              Items: Number_Literal <4>
+              Items: Number_Literal <5>
       Statements: Naked_Expression_Statement
         Expression: Reference
           Name: Identifier <assert>

@@ -1295,9 +1295,17 @@ class Token_Buffer(Token_Generator):
         newline_added = False
         shift_lines = 0
         previous_token = None
+        current_block_indent = None
         for token in tmp_tokens:
             token.location.line += shift_lines
             new_tokens.append(token)
+
+            # See bug_163 tests. This is hacky and probably due a
+            # re-write.
+            if token.first_in_statement and \
+               self.cfg.active("indentation") and \
+               token.ast_link:
+                current_block_indent = token.ast_link.get_indentation()
 
             # We've previously added a new-line. This means we need to
             # tidy up this token (specifically we need to indent it
@@ -1311,9 +1319,13 @@ class Token_Buffer(Token_Generator):
                         token.fix.correct_indent = (
                             token.ast_link.get_indentation() *
                             self.cfg.style_config["tab_width"])
-                    else:
+                    elif previous_token.ast_link:
                         token.fix.correct_indent = (
                             previous_token.ast_link.get_indentation() *
+                            self.cfg.style_config["tab_width"])
+                    else:
+                        token.fix.correct_indent = (
+                            current_block_indent *
                             self.cfg.style_config["tab_width"])
 
             # This token requires a newline to be inserted.

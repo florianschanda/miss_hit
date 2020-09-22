@@ -24,10 +24,11 @@ Root: Script_File
             RHS: Number_Literal <3>
       Action: Case Action
         Guard: Cell_Expression
-          Rows: Row
-            Items: Number_Literal <2>
-            Items: Number_Literal <3>
-            Items: Number_Literal <4>
+          Content: Row_List
+            Items: Row
+              Items: Number_Literal <2>
+              Items: Number_Literal <3>
+              Items: Number_Literal <4>
         Body: Sequence_Of_Statements
           Statements: Simple_Assignment_Statement
             LHS: Identifier <x>

@@ -14,25 +14,27 @@ Root: Function_File
         Action: If Action
           Guard: Binary_Operation ==
             LHS: Matrix_Expression
-              Rows: Row
-                Items: Binary_Logical_Operation |
-                  Short-Circuit: False
-                  LHS: Identifier <a>
-                  RHS: Identifier <b>
-                Items: Binary_Logical_Operation &
-                  Short-Circuit: False
-                  LHS: Identifier <b>
-                  RHS: Identifier <c>
+              Content: Row_List
+                Items: Row
+                  Items: Binary_Logical_Operation |
+                    Short-Circuit: False
+                    LHS: Identifier <a>
+                    RHS: Identifier <b>
+                  Items: Binary_Logical_Operation &
+                    Short-Circuit: False
+                    LHS: Identifier <b>
+                    RHS: Identifier <c>
             RHS: Matrix_Expression
-              Rows: Row
-                Items: Binary_Logical_Operation |
-                  Short-Circuit: False
-                  LHS: Identifier <b>
-                  RHS: Identifier <c>
-                Items: Binary_Logical_Operation &
-                  Short-Circuit: False
-                  LHS: Identifier <c>
-                  RHS: Identifier <d>
+              Content: Row_List
+                Items: Row
+                  Items: Binary_Logical_Operation |
+                    Short-Circuit: False
+                    LHS: Identifier <b>
+                    RHS: Identifier <c>
+                  Items: Binary_Logical_Operation &
+                    Short-Circuit: False
+                    LHS: Identifier <c>
+                    RHS: Identifier <d>
           Body: Sequence_Of_Statements
             Statements: Simple_Assignment_Statement
               LHS: Identifier <r>

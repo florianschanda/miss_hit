@@ -34,6 +34,15 @@ from miss_hit_core.m_lexer import Token_Generator
 
 IGNORED_TOKENS = frozenset(["COMMENT"])
 
+# A general note on the embedded grammar fragments: we're using Ada RM
+# style grammar. This means:
+#
+#   ::=               indicates a production
+#   [ grammar ]       means zero or one
+#   { grammar }       means zero or more repeating
+#   ( grammar )       groups a grammar fragment (usually a disjunction)
+#   '{'               means the token {
+#   |                 means an alternative production
 
 # Operator precedence as of MATLAB 2019b
 # https://www.mathworks.com/help/matlab/matlab_prog/operator-precedence.html
@@ -1582,90 +1591,143 @@ class MATLAB_Parser:
 
         return rv
 
-    def parse_matrix_row(self):
-        rv = Row()
+    def parse_row_list(self):
+        # Parse the contents of a matrix or cell expression.
 
-        first = True
+        # matrix_expression ::= '[' row_list ']'
+        # cell_expression ::= '{' row_list '}'
+        #
+        # row_list ::= row { row_separation {row_separation} row_list }
+        #
+        # row_separation ::=  ';' | '\n'
 
-        # Bad style, but there may be leading semicolons or newlines,
-        # e.g {;;3} which is the same as {3}.
-        while self.peek("SEMICOLON") or self.peek("NEWLINE"):
-            if self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-                self.ct.set_ast(rv)
-            else:
-                self.skip()
+        rv = Row_List()
 
-        while not (self.peek("SEMICOLON") or
-                   self.peek("NEWLINE") or
+        # Loop until we hit the end
+        while not (self.peek_eof() or
                    self.peek("C_KET") or
                    self.peek("M_KET")):
-            if first:
-                first = False
-                # Very bad style, but you can start a matrix with a
-                # comma, e.g. [,1,2] which is the same as [1, 2]
-                if self.peek("COMMA"):
-                    self.match("COMMA")
+            # row
+            current_row = self.parse_row()
+            rv.add_item(current_row)
+
+            # row_separation {row_separation}
+
+            # We keep a track of all semicolons so we can remove
+            # some/all of them as spurious. We should also do that to
+            # new-lines, but right now adding/removing lines is really
+            # iffy.
+            separation_tokens = []
+            first_semi = None
+            first_nl = None
+            if self.peek("NEWLINE") or self.peek("SEMICOLON"):
+                while self.peek("NEWLINE") or self.peek("SEMICOLON"):
+                    if self.peek("NEWLINE") and first_nl is None:
+                        first_nl = self.nt
+                    elif self.peek("SEMICOLON"):
+                        if first_semi is None:
+                            first_semi = self.nt
+                        separation_tokens.append(self.nt)
+                    self.skip()
                     self.ct.set_ast(rv)
-                    self.ct.fix.spurious = True
+            else:
+                # Any other token means we did not find a row
+                # separation, so the row-list is over
+                break
 
-                    if (self.peek("SEMICOLON") or
-                        self.peek("NEWLINE") or
-                        self.peek("C_KET") or
-                        self.peek("M_KET")):
-                        # Bad style, but you can have list with just a
-                        # single comma, i.e. [,]
-                        self.ct.fix.spurious = True
-                        break
+            # there are two canonical forms to separate rows:
+            #   * a single newline
+            #   * a single semicolon
+            # we prefer the first if there is at least one new-line
 
+            if first_nl is not None or \
+               current_row.is_empty() or \
+               self.peek_eof() or \
+               self.peek("C_KET") or \
+               self.peek("M_KET"):
+                # This is the case where we are already at the end of
+                # the matrix/cell, or we had an entirely empty row, or
+                # we have a newline: any semicolon is spurious
+                for token in separation_tokens:
+                    token.fix.spurious = True
+            else:
+                # All tokens except the first semicolon are spurious
+                for token in separation_tokens:
+                    if token is first_semi:
+                        pass
+                    else:
+                        token.fix.spurious = True
+
+        return rv
+
+    def parse_row(self):
+        # At most one trailing and leading comma is allowed. Otherwise
+        # this is just a comma-separated list.
+        #
+        # col_separation ::= ','
+        #
+        # expression_list ::= expression { col_separation expression }
+        #
+        # row ::= [col_separation] [expression_list [col_separation]]
+        #
+        # So this means all of the following are valid row examples:
+        #   *     (the empty row)
+        #   * ,   (a degenerate case)
+        #   * ,1  (leading comma)
+        #   * 1,  (trailing comma)
+        #   * ,1, (leading and trailing comma)
+        #   * 1,2 (normal case)
+        #
+        # But the following are not valid:
+        #   * ,,
+        #   * ,,1
+        #   * 1,,
+
+        rv = Row()
+
+        # Detect the entirely blank row
+        if self.peek("NEWLINE") or \
+           self.peek("SEMICOLON") or \
+           self.peek("C_KET") or \
+           self.peek("M_KET"):
+            return rv
+
+        if self.peek("COMMA"):
+            self.match("COMMA")
+            self.ct.set_ast(rv)
+            self.ct.fix.spurious = True
+
+            # We'll parse an expression, unless it looks like we hit
+            # the end of the matrix or cell, or the end of a row
+            if self.peek("NEWLINE") or \
+               self.peek("SEMICOLON") or \
+               self.peek("COMMA") or \
+               self.peek("C_KET") or \
+               self.peek("M_KET"):
+                return rv
+
+        # Parse the expression list itself
+        while True:
             rv.add_item(self.parse_nested_expression())
 
-            if self.peek("SEMICOLON"):
-                pass
-            elif self.peek("NEWLINE"):
-                pass
-            elif self.peek("C_KET") or self.peek("M_KET"):
-                pass
-            else:
+            if self.peek("COMMA"):
                 self.match("COMMA")
                 self.ct.set_ast(rv)
 
-                if (self.peek("SEMICOLON") or
-                    self.peek("NEWLINE") or
-                    self.peek("C_KET") or
-                    self.peek("M_KET")):
-                    # Bad style, but you can have a trailing comma in
-                    # your matrix, e.g. [1,2,] which is the same as
-                    # [1, 2]. We specifically detect it here, so we
-                    # can possibly issue a message.
-                    self.ct.fix.spurious = True
+            # Detect trailing comma
+            if self.peek("NEWLINE") or \
+               self.peek("SEMICOLON") or \
+               self.peek("C_KET") or \
+               self.peek("M_KET"):
+                self.ct.fix.spurious = True
+                break
 
         return rv
 
     def parse_matrix(self):
         self.match("M_BRA")
         rv = Matrix_Expression(self.ct)
-
-        if not self.peek("M_KET"):
-            rv.add_row(self.parse_matrix_row())
-            while self.peek("SEMICOLON") or self.peek("NEWLINE"):
-                if self.peek("SEMICOLON"):
-                    self.match("SEMICOLON")
-                    self.ct.set_ast(rv)
-                else:
-                    self.match("NEWLINE")
-
-            while not (self.peek("SEMICOLON") or
-                       self.peek("NEWLINE") or
-                       self.peek("M_KET")):
-                rv.add_row(self.parse_matrix_row())
-                while self.peek("SEMICOLON") or self.peek("NEWLINE"):
-                    if self.peek("SEMICOLON"):
-                        self.match("SEMICOLON")
-                        self.ct.set_ast(rv)
-                    else:
-                        self.match("NEWLINE")
-
+        rv.set_content(self.parse_row_list())
         self.match("M_KET")
         rv.set_closing_bracket(self.ct)
         return rv
@@ -1673,27 +1735,7 @@ class MATLAB_Parser:
     def parse_cell(self):
         self.match("C_BRA")
         rv = Cell_Expression(self.ct)
-
-        if not self.peek("C_KET"):
-            rv.add_row(self.parse_matrix_row())
-            while self.peek("SEMICOLON") or self.peek("NEWLINE"):
-                if self.peek("SEMICOLON"):
-                    self.match("SEMICOLON")
-                    self.ct.set_ast(rv)
-                else:
-                    self.match("NEWLINE")
-
-            while not (self.peek("SEMICOLON") or
-                       self.peek("NEWLINE") or
-                       self.peek("C_KET")):
-                rv.add_row(self.parse_matrix_row())
-                while self.peek("SEMICOLON") or self.peek("NEWLINE"):
-                    if self.peek("SEMICOLON"):
-                        self.match("SEMICOLON")
-                        self.ct.set_ast(rv)
-                    else:
-                        self.match("NEWLINE")
-
+        rv.set_content(self.parse_row_list())
         self.match("C_KET")
         rv.set_closing_bracket(self.ct)
         return rv

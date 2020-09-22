@@ -63,13 +63,14 @@ Root: Function_File
               Expression: Reference
                 Name: Identifier <disp>
                 Arguments: Matrix_Expression
-                  Rows: Row
-                    Items: Char_Array_Literal 'Not logging. '
-                    Items: Reference
-                      Name: Identifier <num2str>
-                      Arguments: Reference
-                        Name: Identifier <seconds>
-                        Arguments: Identifier <dt>
-                    Items: Char_Array_Literal ' sec since last log.'
+                  Content: Row_List
+                    Items: Row
+                      Items: Char_Array_Literal 'Not logging. '
+                      Items: Reference
+                        Name: Identifier <num2str>
+                        Arguments: Reference
+                          Name: Identifier <seconds>
+                          Arguments: Identifier <dt>
+                      Items: Char_Array_Literal ' sec since last log.'
 ----------------------------------------------------------------------
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

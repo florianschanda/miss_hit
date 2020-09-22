@@ -45,55 +45,57 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <f>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Lambda_Function
-              Parameters: Identifier <x>
-              Body: Binary_Operation .^
-                LHS: Identifier <x>
-                RHS: Number_Literal <2>
-          Rows: Row
-            Items: Lambda_Function
-              Parameters: Identifier <y>
-              Body: Binary_Operation +
-                LHS: Identifier <y>
-                RHS: Number_Literal <10>
-          Rows: Row
-            Items: Lambda_Function
-              Parameters: Identifier <x>
-              Parameters: Identifier <y>
-              Body: Binary_Operation +
-                LHS: Binary_Operation +
-                  LHS: Binary_Operation .^
-                    LHS: Identifier <x>
-                    RHS: Number_Literal <2>
-                  RHS: Identifier <y>
-                RHS: Number_Literal <10>
+          Content: Row_List
+            Items: Row
+              Items: Lambda_Function
+                Parameters: Identifier <x>
+                Body: Binary_Operation .^
+                  LHS: Identifier <x>
+                  RHS: Number_Literal <2>
+            Items: Row
+              Items: Lambda_Function
+                Parameters: Identifier <y>
+                Body: Binary_Operation +
+                  LHS: Identifier <y>
+                  RHS: Number_Literal <10>
+            Items: Row
+              Items: Lambda_Function
+                Parameters: Identifier <x>
+                Parameters: Identifier <y>
+                Body: Binary_Operation +
+                  LHS: Binary_Operation +
+                    LHS: Binary_Operation .^
+                      LHS: Identifier <x>
+                      RHS: Number_Literal <2>
+                    RHS: Identifier <y>
+                  RHS: Number_Literal <10>
       Statements: Simple_Assignment_Statement
         LHS: Identifier <f>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Lambda_Function
-              Parameters: Identifier <x>
-              Body: Binary_Operation .^
-                LHS: Identifier <x>
-                RHS: Number_Literal <2>
-          Rows: Row
-            Items: Lambda_Function
-              Parameters: Identifier <y>
-              Body: Binary_Operation +
-                LHS: Identifier <y>
-                RHS: Number_Literal <10>
-          Rows: Row
-            Items: Lambda_Function
-              Parameters: Identifier <x>
-              Parameters: Identifier <y>
-              Body: Binary_Operation +
-                LHS: Binary_Operation +
-                  LHS: Binary_Operation .^
-                    LHS: Identifier <x>
-                    RHS: Number_Literal <2>
-                  RHS: Identifier <y>
-                RHS: Number_Literal <10>
+          Content: Row_List
+            Items: Row
+              Items: Lambda_Function
+                Parameters: Identifier <x>
+                Body: Binary_Operation .^
+                  LHS: Identifier <x>
+                  RHS: Number_Literal <2>
+            Items: Row
+              Items: Lambda_Function
+                Parameters: Identifier <y>
+                Body: Binary_Operation +
+                  LHS: Identifier <y>
+                  RHS: Number_Literal <10>
+            Items: Row
+              Items: Lambda_Function
+                Parameters: Identifier <x>
+                Parameters: Identifier <y>
+                Body: Binary_Operation +
+                  LHS: Binary_Operation +
+                    LHS: Binary_Operation .^
+                      LHS: Identifier <x>
+                      RHS: Number_Literal <2>
+                    RHS: Identifier <y>
+                  RHS: Number_Literal <10>
       Statements: Simple_Assignment_Statement
         LHS: Identifier <x>
         RHS: Reference
@@ -123,28 +125,29 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <f>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Lambda_Function
-              Parameters: Identifier <x>
-              Body: Binary_Operation .^
-                LHS: Identifier <x>
-                RHS: Number_Literal <2>
-          Rows: Row
-            Items: Lambda_Function
-              Parameters: Identifier <y>
-              Body: Binary_Operation +
-                LHS: Identifier <y>
-                RHS: Number_Literal <10>
-          Rows: Row
-            Items: Lambda_Function
-              Parameters: Identifier <x>
-              Parameters: Identifier <y>
-              Body: Binary_Operation +
-                LHS: Binary_Operation +
-                  LHS: Binary_Operation .^
-                    LHS: Identifier <x>
-                    RHS: Number_Literal <2>
-                  RHS: Identifier <y>
-                RHS: Number_Literal <10>
+          Content: Row_List
+            Items: Row
+              Items: Lambda_Function
+                Parameters: Identifier <x>
+                Body: Binary_Operation .^
+                  LHS: Identifier <x>
+                  RHS: Number_Literal <2>
+            Items: Row
+              Items: Lambda_Function
+                Parameters: Identifier <y>
+                Body: Binary_Operation +
+                  LHS: Identifier <y>
+                  RHS: Number_Literal <10>
+            Items: Row
+              Items: Lambda_Function
+                Parameters: Identifier <x>
+                Parameters: Identifier <y>
+                Body: Binary_Operation +
+                  LHS: Binary_Operation +
+                    LHS: Binary_Operation .^
+                      LHS: Identifier <x>
+                      RHS: Number_Literal <2>
+                    RHS: Identifier <y>
+                  RHS: Number_Literal <10>
 ----------------------------------------------------------------------
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

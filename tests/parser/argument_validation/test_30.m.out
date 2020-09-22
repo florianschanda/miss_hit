@@ -23,9 +23,10 @@ Root: Function_File
           Name: Identifier <mustBeSize>
           Arguments: Identifier <b>
           Arguments: Matrix_Expression
-            Rows: Row
-              Items: Number_Literal <5>
-              Items: Number_Literal <3>
+            Content: Row_List
+              Items: Row
+                Items: Number_Literal <5>
+                Items: Number_Literal <3>
     Body: Sequence_Of_Statements
   Functions: Function_Definition
     Signature: Function_Signature
@@ -65,11 +66,12 @@ Root: Function_File
               Expression: Reference
                 Name: Identifier <error>
                 Arguments: Matrix_Expression
-                  Rows: Row
-                    Items: Char_Array_Literal 'Input must be of size '
-                    Items: Reference
-                      Name: Identifier <num2str>
-                      Arguments: Identifier <sizeDims>
+                  Content: Row_List
+                    Items: Row
+                      Items: Char_Array_Literal 'Input must be of size '
+                      Items: Reference
+                        Name: Identifier <num2str>
+                        Arguments: Identifier <sizeDims>
   Functions: Function_Definition
     Signature: Function_Signature
       Name: Identifier <mustBeDims>
@@ -92,11 +94,12 @@ Root: Function_File
               Expression: Reference
                 Name: Identifier <error>
                 Arguments: Matrix_Expression
-                  Rows: Row
-                    Items: Char_Array_Literal 'Input must have '
-                    Items: Reference
-                      Name: Identifier <num2str>
-                      Arguments: Identifier <numDims>
-                    Items: Char_Array_Literal ' dimensions.'
+                  Content: Row_List
+                    Items: Row
+                      Items: Char_Array_Literal 'Input must have '
+                      Items: Reference
+                        Name: Identifier <num2str>
+                        Arguments: Identifier <numDims>
+                      Items: Char_Array_Literal ' dimensions.'
 ----------------------------------------------------------------------
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

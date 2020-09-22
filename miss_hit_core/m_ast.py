@@ -1259,7 +1259,38 @@ class Row(Node):
         # Members of this row
 
     def loc(self):
-        raise ICE("cannot attach error to matrix rows")
+        raise ICE("cannot attach error to matrix/cell rows")
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, Row_List)
+        super().set_parent(n_parent)
+
+    def add_item(self, n_item):
+        assert isinstance(n_item, Expression)
+
+        n_item.set_parent(self)
+        self.l_items.append(n_item)
+
+    def visit(self, parent, function, relation):
+        self._visit(parent, function, relation)
+        self._visit_list(self.l_items, function, "Items")
+        self._visit_end(parent, function, relation)
+
+    def is_empty(self):
+        return not bool(self.l_items)
+
+
+class Row_List(Node):
+    """ AST for matrix or cell contents. """
+
+    def __init__(self):
+        super().__init__()
+
+        self.l_items = []
+        # List of rows
+
+    def loc(self):
+        raise ICE("cannot attach error to matrix/cell contents")
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Matrix_Expression,
@@ -1267,7 +1298,7 @@ class Row(Node):
         super().set_parent(n_parent)
 
     def add_item(self, n_item):
-        assert isinstance(n_item, Expression)
+        assert isinstance(n_item, Row)
 
         n_item.set_parent(self)
         self.l_items.append(n_item)
@@ -2247,17 +2278,17 @@ class Matrix_Expression(Expression):
         self.t_close = None
         # The tokens for [ and ]
 
-        self.l_rows = []
+        self.n_content = None
         # Matrix rows
 
     def loc(self):
         return self.t_open.location
 
-    def add_row(self, n_row):
-        assert isinstance(n_row, Row)
+    def set_content(self, n_content):
+        assert isinstance(n_content, Row_List)
 
-        n_row.set_parent(self)
-        self.l_rows.append(n_row)
+        n_content.set_parent(self)
+        self.n_content = n_content
 
     def set_closing_bracket(self, t_close):
         assert isinstance(t_close, MATLAB_Token)
@@ -2268,7 +2299,7 @@ class Matrix_Expression(Expression):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self._visit_list(self.l_rows, function, "Rows")
+        self.n_content.visit(self, function, "Content")
         self._visit_end(parent, function, relation)
 
 
@@ -2283,17 +2314,16 @@ class Cell_Expression(Expression):
         self.t_close = None
         # The tokens for { and }
 
-        self.l_rows = []
-        # Cell rows
+        self.n_content = None
 
     def loc(self):
         return self.t_open.location
 
-    def add_row(self, n_row):
-        assert isinstance(n_row, Row)
+    def set_content(self, n_content):
+        assert isinstance(n_content, Row_List)
 
-        n_row.set_parent(self)
-        self.l_rows.append(n_row)
+        n_content.set_parent(self)
+        self.n_content = n_content
 
     def set_closing_bracket(self, t_close):
         assert isinstance(t_close, MATLAB_Token)
@@ -2304,7 +2334,7 @@ class Cell_Expression(Expression):
 
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
-        self._visit_list(self.l_rows, function, "Rows")
+        self.n_content.visit(self, function, "Content")
         self._visit_end(parent, function, relation)
 
 

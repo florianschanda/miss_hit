@@ -270,6 +270,10 @@ STYLE_RULES = {
         "Ensures there are no unnecessary leading or trailing commas in a"
         " matrix or cell."),
 
+    "spurious_row_semicolon" : Style_Rule(
+        "Ensures there are no unnecessary leading or trailing semicolons in a"
+        " matrix or cell."),
+
     "whitespace_colon" : Style_Rule(
         "Ensures there is no whitespace around colons except if they come"
         " after a comma."),

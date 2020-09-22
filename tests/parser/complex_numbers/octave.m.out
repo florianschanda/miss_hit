@@ -5,27 +5,29 @@ Root: Script_File
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <0>
-          Items: Identifier <i>
-          Items: Binary_Operation +
-            LHS: Number_Literal <1>
-            RHS: Identifier <i>
-          Items: Number_Literal <2>
-          Items: Number_Literal <3i>
-          Items: Binary_Operation +
-            LHS: Number_Literal <3>
-            RHS: Number_Literal <4i>
+        Content: Row_List
+          Items: Row
+            Items: Number_Literal <0>
+            Items: Identifier <i>
+            Items: Binary_Operation +
+              LHS: Number_Literal <1>
+              RHS: Identifier <i>
+            Items: Number_Literal <2>
+            Items: Number_Literal <3i>
+            Items: Binary_Operation +
+              LHS: Number_Literal <3>
+              RHS: Number_Literal <4i>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Number_Literal <1>
-          Items: Unary_Operation -
-            Expression: Number_Literal <1>
-          Items: Identifier <i>
-          Items: Unary_Operation -
-            Expression: Identifier <i>
+        Content: Row_List
+          Items: Row
+            Items: Number_Literal <1>
+            Items: Unary_Operation -
+              Expression: Number_Literal <1>
+            Items: Identifier <i>
+            Items: Unary_Operation -
+              Expression: Identifier <i>
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Identifier <i>

@@ -25,12 +25,14 @@ Root: Function_File
         RHS: Reference
           Name: Identifier <reshape>
           Arguments: Matrix_Expression
-            Rows: Row
-              Items: Identifier <x>
-            Rows: Row
-              Items: Identifier <y>
+            Content: Row_List
+              Items: Row
+                Items: Identifier <x>
+              Items: Row
+                Items: Identifier <y>
           Arguments: Number_Literal <1>
           Arguments: Matrix_Expression
+            Content: Row_List
       Statements: If_Statement
         Action: If Action
           Guard: Unary_Operation ~

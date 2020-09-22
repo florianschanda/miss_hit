@@ -5,11 +5,12 @@ Root: Script_File
     Statements: Simple_Assignment_Statement
       LHS: Identifier <x>
       RHS: Matrix_Expression
-        Rows: Row
-          Items: Unary_Operation -
-            Expression: Number_Literal <.1>
-          Items: Unary_Operation -
-            Expression: Number_Literal <.1>
-          Items: Number_Literal <.1>
+        Content: Row_List
+          Items: Row
+            Items: Unary_Operation -
+              Expression: Number_Literal <.1>
+            Items: Unary_Operation -
+              Expression: Number_Literal <.1>
+            Items: Number_Literal <.1>
 ----------------------------------------------------------------------
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

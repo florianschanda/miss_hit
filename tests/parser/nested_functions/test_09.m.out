@@ -8,6 +8,7 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <X>
         RHS: Matrix_Expression
+          Content: Row_List
       Statements: Naked_Expression_Statement
         Expression: Identifier <nestedfx>
     Nested: Function_Definition

@@ -9,24 +9,26 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <myCell>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Number_Literal <1>
-            Items: Number_Literal <2>
-            Items: Number_Literal <3>
-          Rows: Row
-            Items: Char_Array_Literal 'text'
-            Items: Reference
-              Name: Identifier <rand>
-              Arguments: Number_Literal <5>
-              Arguments: Number_Literal <10>
-              Arguments: Number_Literal <2>
-            Items: Cell_Expression
-              Rows: Row
-                Items: Number_Literal <11>
-              Rows: Row
-                Items: Number_Literal <22>
-              Rows: Row
-                Items: Number_Literal <33>
+          Content: Row_List
+            Items: Row
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+              Items: Number_Literal <3>
+            Items: Row
+              Items: Char_Array_Literal 'text'
+              Items: Reference
+                Name: Identifier <rand>
+                Arguments: Number_Literal <5>
+                Arguments: Number_Literal <10>
+                Arguments: Number_Literal <2>
+              Items: Cell_Expression
+                Content: Row_List
+                  Items: Row
+                    Items: Number_Literal <11>
+                  Items: Row
+                    Items: Number_Literal <22>
+                  Items: Row
+                    Items: Number_Literal <33>
   Functions: Function_Definition
     Signature: Function_Signature
       Name: Identifier <test_02>
@@ -35,6 +37,7 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <C>
         RHS: Cell_Expression
+          Content: Row_List
   Functions: Function_Definition
     Signature: Function_Signature
       Name: Identifier <test_03>
@@ -43,10 +46,11 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <C>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Number_Literal <1>
-            Items: Number_Literal <2>
-            Items: Number_Literal <3>
+          Content: Row_List
+            Items: Row
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+              Items: Number_Literal <3>
       Statements: Simple_Assignment_Statement
         LHS: Cell_Reference
           Name: Identifier <C>
@@ -59,6 +63,7 @@ Root: Function_File
           Arguments: Number_Literal <5>
           Arguments: Number_Literal <5>
         RHS: Matrix_Expression
+          Content: Row_List
   Functions: Function_Definition
     Signature: Function_Signature
       Name: Identifier <test_04>
@@ -68,42 +73,47 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <C1>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Number_Literal <1>
-            Items: Number_Literal <2>
-            Items: Number_Literal <3>
+          Content: Row_List
+            Items: Row
+              Items: Number_Literal <1>
+              Items: Number_Literal <2>
+              Items: Number_Literal <3>
       Statements: Simple_Assignment_Statement
         LHS: Identifier <C2>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Char_Array_Literal 'A'
-            Items: Char_Array_Literal 'B'
-            Items: Char_Array_Literal 'C'
+          Content: Row_List
+            Items: Row
+              Items: Char_Array_Literal 'A'
+              Items: Char_Array_Literal 'B'
+              Items: Char_Array_Literal 'C'
       Statements: Simple_Assignment_Statement
         LHS: Identifier <C3>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Number_Literal <10>
-            Items: Number_Literal <20>
-            Items: Number_Literal <30>
+          Content: Row_List
+            Items: Row
+              Items: Number_Literal <10>
+              Items: Number_Literal <20>
+              Items: Number_Literal <30>
       Statements: Simple_Assignment_Statement
         LHS: Identifier <C4>
         RHS: Matrix_Expression
-          Rows: Row
-            Items: Identifier <C1>
-          Rows: Row
-            Items: Identifier <C2>
-          Rows: Row
-            Items: Identifier <C3>
+          Content: Row_List
+            Items: Row
+              Items: Identifier <C1>
+            Items: Row
+              Items: Identifier <C2>
+            Items: Row
+              Items: Identifier <C3>
       Statements: Simple_Assignment_Statement
         LHS: Identifier <C5>
         RHS: Cell_Expression
-          Rows: Row
-            Items: Identifier <C1>
-          Rows: Row
-            Items: Identifier <C2>
-          Rows: Row
-            Items: Identifier <C3>
+          Content: Row_List
+            Items: Row
+              Items: Identifier <C1>
+            Items: Row
+              Items: Identifier <C2>
+            Items: Row
+              Items: Identifier <C3>
   Functions: Function_Definition
     Signature: Function_Signature
       Name: Identifier <test_05>
@@ -112,14 +122,16 @@ Root: Function_File
       Statements: Simple_Assignment_Statement
         LHS: Identifier <A>
         RHS: Matrix_Expression
-          Rows: Row
-            Items: Number_Literal <100>
-            Items: Cell_Expression
-              Rows: Row
-                Items: Reference
-                  Name: Identifier <uint8>
-                  Arguments: Number_Literal <200>
-                Items: Number_Literal <300>
-            Items: Char_Array_Literal 'MATLAB'
+          Content: Row_List
+            Items: Row
+              Items: Number_Literal <100>
+              Items: Cell_Expression
+                Content: Row_List
+                  Items: Row
+                    Items: Reference
+                      Name: Identifier <uint8>
+                      Arguments: Number_Literal <200>
+                    Items: Number_Literal <300>
+              Items: Char_Array_Literal 'MATLAB'
 ----------------------------------------------------------------------
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

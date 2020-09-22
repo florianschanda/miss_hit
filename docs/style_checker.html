@@ -635,6 +635,20 @@ b = [, 1, 2];
 </pre>
       </div>
 
+      <h4>
+	Spurious semicolons inside cells and rows ("spurious_row_semicolon")
+      </h4>
+
+      <div>
+        This rule complains about unnecessary semicolons inside matrix
+        and cell expressions. For example here the semicolon in the
+        first row is useless, because the newline also introduces a
+        new row.
+<pre>
+a = [1, 0;
+     0, 1];
+</pre>
+      </div>
 
       <h4>Annotation whitespace ("annotation_whitespace")</h4>
 
