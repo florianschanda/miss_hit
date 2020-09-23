@@ -19,8 +19,11 @@ In test.m, line 4
 |       ^ style: end statement with a semicolon [fixed]
 In test.m, line 6
 |    42)
+|    ^^ style: indentation not correct, should be 4 spaces, not 3 [fixed]
+In test.m, line 6
+|    42)
 |      ^ style: end statement with a semicolon [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 7 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 8 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 7 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 8 style issue(s)

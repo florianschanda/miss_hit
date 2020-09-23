@@ -342,7 +342,13 @@ STYLE_RULES = {
             "tab_width": Integer_Style_Configuration(
                 "Number of spaces to indent by.",
                 lower_limit = 2,
-                default = 4)
+                default = 4),
+            "align_round_brackets" : Boolean_Style_Configuration(
+                "Align continuations inside normal brackets.",
+                default = True),
+            "align_other_brackets" : Boolean_Style_Configuration(
+                "Align continuations inside matrix and cell expressions.",
+                default = True)
         }),
 
     "redundant_brackets" : Style_Rule(

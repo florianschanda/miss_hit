@@ -18,7 +18,7 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ### 0.9.12-dev
 
-* [_CORRECTNESS_] Fix lexing of `1./b`. This was a critical bug that
+* [*CORRECTNESS*] Fix lexing of `1./b`. This was a critical bug that
   caused the expression to be incorrectly formatted as `1. / b`
   (i.e. using `/` instead of `./`).
 
@@ -36,13 +36,19 @@ None known. Should be compatible with up to MATLAB 2019b.
 * MH Style has a New rule `spurious_row_semicolon` which removes
   useless semicolons from matrix or cell expressions.
 
-* MH Style now indents matrix and cell expressions in a more sensible
-  way (aligning with the opening brace). This means you will now get
-  something like this:
+* MH Style now aligns any continuations in a more sensible way if the
+  expression is inside brackets. This works for normal brackets, but
+  also matrix and cell expressions:
   ```
   potato = [1 0
-            0 1]
+            0 1];
+  kitten = foo(bar, ...
+               baz);
   ```
+
+  There are two new configuration options to control this behaviour:
+  `align_round_brackets` and `align_other_brackets` for `(` and `[{`
+  respectively.
 
 * New configuration option `regex_tickets` which can be used to
   identify which text strings are tickets in your particular issue

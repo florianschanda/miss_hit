@@ -565,13 +565,25 @@ end
       </div>
 
       <div>
-        In this example there is no indentation for the if since it is
-        the top-level statement in a script. The call to disp is
+        In the above example there is no indentation for the if since
+        it is the top-level statement in a script. The call to disp is
         indented, since it is part of a compound statement. The
-        continuation is indented to the same level, but the extra
-        offset (7 spaces in this example) is preserved. If you change
-        the setting of tab_width at any point, this means that the
-        continuation is still properly aligned.
+        continuation is indented to the level of the opening square
+        bracket.
+      </div>
+
+      <div>
+<pre>
+x = some + ...
+   expression;
+</pre>
+      </div>
+
+      <div>
+        The continuation in the above example is offset 3 spaces, and
+        this offset will be preserved. If you change the setting of
+        tab_width at any point, this means that the continuation is
+        still properly aligned as chosen by the programmer.
       </div>
 
       <div>
@@ -591,6 +603,16 @@ end
           <li>
             <b>tab_width</b>: Indent by this many spaces. By default
             this is 4.
+          </li>
+          <li>
+            <b>align_round_brackets</b>: Align continuations inside
+            normal brackets to the opening brace. By default this is
+            true.
+          </li>
+          <li>
+            <b>align_other_brackets</b>: Align continuations inside
+            matrix or cell expressions to the opening brace. By
+            default this is true.
           </li>
         </ul>
       </div>

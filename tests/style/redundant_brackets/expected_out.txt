@@ -39,3 +39,6 @@ MISS_HIT Style Summary: 2 file(s) analysed, 12 style issue(s)
 
 === HTML MODE ===
 MISS_HIT Style Summary: 2 file(s) analysed, 12 style issue(s)
+
+=== ! BROKEN FIXES ! ===
+Fixing is not idempotent for ./expr.m

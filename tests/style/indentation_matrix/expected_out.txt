@@ -23,13 +23,16 @@ In test_04.m, line 8
 In test_04.m, line 12
 |     [3]);
 | ^ style: tab is not allowed [fixed]
+In test_04.m, line 12
+|        [3]);
+|        ^ style: indentation not correct, should be 11 spaces, not 7 [fixed]
 In test_06.m, line 6
 |  2 [3
 |  ^ style: indentation not correct, should be 5 spaces, not 1 [fixed]
 In test_06.m, line 7
 |  4]];
 |  ^ style: indentation not correct, should be 4 spaces, not 1 [fixed]
-MISS_HIT Style Summary: 6 file(s) analysed, 10 style issue(s)
+MISS_HIT Style Summary: 6 file(s) analysed, 11 style issue(s)
 
 === HTML MODE ===
 MISS_HIT Style Summary: 6 file(s) analysed, 11 style issue(s)

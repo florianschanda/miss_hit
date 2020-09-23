@@ -9,7 +9,7 @@ function test_04(a, b, c)
     end
 
     wibble(1, ...
-       [3]);
+           [3]);
 
     % This comment is special
 
