@@ -16,7 +16,7 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ## Changelog
 
-### 0.9.12-dev
+### 0.9.12
 
 * [*CORRECTNESS*] Fix lexing of `1./b`. This was a critical bug that
   caused the expression to be incorrectly formatted as `1. / b`
