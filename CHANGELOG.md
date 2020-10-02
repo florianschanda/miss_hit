@@ -16,9 +16,12 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ## Changelog
 
-
 ### 0.9.13-dev
 
+* Fix minor issue with `regex_tickets` where regular expressions with
+  brackets only matched what was inside the brackets. For example a
+  ticket regex with `(a|b)-[0-9]` should match both `a-5` and `b-2`,
+  but the ticket mentioned in the report was only `a` and `b`.
 
 ### 0.9.12
 

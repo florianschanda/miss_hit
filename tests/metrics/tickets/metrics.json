@@ -25,10 +25,31 @@
                     }
                 }
             }
+        },
+        "special/test.m": {
+            "file_metrics": {},
+            "function_metrics": {
+                "test": {
+                    "function_length": {
+                        "justification": "to be fixed in POTATO-666 and KITTEN-42",
+                        "limit": 1,
+                        "measure": 8,
+                        "status": "checked: justified"
+                    }
+                }
+            }
         }
     },
     "worst_case": {
         "function_length": [
+            {
+                "file": "special/test.m",
+                "function": "test",
+                "justification": "to be fixed in POTATO-666 and KITTEN-42",
+                "limit": 1,
+                "measure": 8,
+                "status": "checked: justified"
+            },
             {
                 "file": "jira/test.m",
                 "function": "test",

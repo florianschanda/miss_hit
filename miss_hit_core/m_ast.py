@@ -2105,7 +2105,11 @@ class Metric_Justification_Pragma(Justification_Pragma):
         # literal, but can be a string expression in the future.
 
         if ticket_regex:
-            self.tickets = frozenset(re.findall(ticket_regex, self.reason()))
+            # re.findall does not work if there are groups in the
+            # user-supplied regular expression. See #174.
+            self.tickets = frozenset(match.group(0)
+                                     for match in re.finditer(ticket_regex,
+                                                              self.reason()))
         else:
             self.tickets = frozenset()
 

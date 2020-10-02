@@ -25,15 +25,15 @@
 <tbody>
 <tr>
   <td>1</td>
-  <td class='tip' tip='test in file test.m'><a href='#jira/test.m'>8</a></td>
+  <td class='tip' tip='test in file test.m'><a href='#special/test.m'>8</a></td>
 </tr>
 <tr>
   <td>2</td>
-  <td class='tip' tip='test in file test.m'><a href='#github/test.m'>8</a></td>
+  <td class='tip' tip='test in file test.m'><a href='#jira/test.m'>8</a></td>
 </tr>
 <tr>
   <td>3</td>
-  <td class='na'></td>
+  <td class='tip' tip='test in file test.m'><a href='#github/test.m'>8</a></td>
 </tr>
 <tr>
   <td>4</td>
@@ -76,9 +76,7 @@
 <ul>
 <li>#42: referenced once</li>
 <li>#666: referenced once</li>
-<li>KITTEN-42: referenced once</li>
-<li>POTATO-666: referenced once</li>
-</ul>
+<li>KITTEN-42: referenced 2 times</li><li>POTATO-666: referenced 2 times</li></ul>
 </div>
 </section>
 <div class='title'>
@@ -109,6 +107,27 @@
 </div>
 <div class='metrics'>
 <h2><a name='jira/test.m'>jira/test.m</a></h2>
+<table>
+<thead>
+<tr>
+  <td>Item</td>
+  <td class='tip' tip='Number for lines for each function.'>Function lines</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>test.m</td>
+  <td class='na'></td>
+</tr>
+<tr>
+  <td><a name='test'></a>test</td>
+  <td class='ok_justified tip' tip='Justification: to be fixed in POTATO-666 and KITTEN-42'>8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class='metrics'>
+<h2><a name='special/test.m'>special/test.m</a></h2>
 <table>
 <thead>
 <tr>
