@@ -1,0 +1,44 @@
+In test.m, line 1
+| % See https://uk.mathworks.com/help/releases/R2019b/matlab/matlab_prog/specify-hexadecimal-and-binary-numbers.html
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT 'See https://uk.mathworks.com/help/releases/R2019b/matlab/matlab_prog/specify-hexadecimal-and-binary-numbers.html'
+In test.m, line 1
+| % See https://uk.mathworks.com/help/releases/R2019b/matlab/matlab_prog/specify-hexadecimal-and-binary-numbers.html
+|                                                                                                                   ^ info: NEWLINE
+In test.m, line 3
+| 0x2A
+| ^ info: [SL] NUMBER
+In test.m, line 3
+| 0x2A
+|  ^^^ info: IDENTIFIER
+In test.m, line 3
+| 0x2A
+|     ^ info: NEWLINE
+In test.m, line 4
+| 0b101010
+| ^ info: [SL] NUMBER
+In test.m, line 4
+| 0b101010
+|  ^^^^^^^ info: IDENTIFIER
+In test.m, line 4
+| 0b101010
+|         ^ info: NEWLINE
+In test.m, line 5
+| 0x2As32
+| ^ info: [SL] NUMBER
+In test.m, line 5
+| 0x2As32
+|  ^^^^^^ info: IDENTIFIER
+In test.m, line 5
+| 0x2As32
+|        ^ info: NEWLINE
+In test.m, line 6
+| 0xFFs8
+| ^ info: [SL] NUMBER
+In test.m, line 6
+| 0xFFs8
+|  ^^^^^ info: IDENTIFIER
+In test.m, line 6
+| 0xFFs8
+|       ^ info: NEWLINE
+test.m: lexed OK
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

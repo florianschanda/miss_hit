@@ -12,7 +12,10 @@
 
 ### Language support
 
-None known. Should be compatible with up to MATLAB 2019b.
+Compatible with up to MATLAB 2020b, except for:
+* #177 [hex/binary literals](https://github.com/florianschanda/miss_hit/issues/177) are not supported yet
+
+Not quite compatible with Octave yet. See #43 [octave support](https://github.com/florianschanda/miss_hit/issues/43) for more information.
 
 ## Changelog
 
