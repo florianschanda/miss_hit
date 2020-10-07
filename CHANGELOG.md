@@ -18,6 +18,10 @@ None known. Should be compatible with up to MATLAB 2019b.
 
 ### 0.9.13-dev
 
+* All tools can now run without parameters. By default we analyse the
+  current directory, i.e. the default behaviour of `mh_style` is now
+  the same as `mh_style .`
+
 * Fix minor issue with `regex_tickets` where regular expressions with
   brackets only matched what was inside the brackets. For example a
   ticket regex with `(a|b)-[0-9]` should match both `a-5` and `b-2`,

@@ -117,9 +117,6 @@ def parse_args(clp):
         print("   LC_ALL=en_GB.UTF-8 (or something similar)")
         print("   PYTHONIOENCODING=UTF-8")
 
-    if not options.files:
-        clp["ap"].error("at least one file or directory is required")
-
     for item in options.files:
         if not (os.path.isdir(item) or os.path.isfile(item)):
             clp["ap"].error("%s is neither a file nor directory" % item)
@@ -187,8 +184,13 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
     # Loop over files/directories from the command-line and parse
     # configuration.
 
+    if options.files:
+        item_list = list(options.files)
+    else:
+        item_list = ["."]
+
     try:
-        for item in options.files:
+        for item in item_list:
             if os.path.isdir(item) or os.path.isfile(item):
                 cfg_tree.register_item(mh,
                                        os.path.abspath(item),
@@ -202,7 +204,7 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
     # build a list of work packages.
 
     work_list = []
-    for item in options.files:
+    for item in item_list:
         if os.path.isdir(item):
             for path, dirs, files in os.walk(item):
                 dirs.sort()
