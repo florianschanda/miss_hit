@@ -1,0 +1,5 @@
+In wrong_02.m, line 1
+| 0b   % no digits
+|  ^ [31;1mlex error[0m: at least one binary digit required
+wrong_02.m: lexed with errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

@@ -520,6 +520,62 @@ class MATLAB_Lexer(Token_Generator):
                 while self.nc.isalnum() or self.nc == "_":
                     self.skip()
 
+            elif self.cc == "0" and self.nc in ("x", "X", "b", "B"):
+                # Hex and binary literals are quite a bit different to
+                # normal numbers. If we see the starting 2 characters
+                # we definitely try to lex or error, which seems
+                # consistent with how MathWorks are doing it.
+                #
+                # This means "0x" will produce an error, as will
+                # "0b1.0".
+                kind = "NUMBER"
+                self.skip()
+
+                if self.cc in ("x", "X"):
+                    allowed_digits = "0123456789aAbBcCdDeEfF"
+                    bits_per_digit = 4
+                else:
+                    allowed_digits = "01"
+                    bits_per_digit = 1
+
+                digits = ""
+                while self.nc in allowed_digits:
+                    self.skip()
+                    digits += self.cc
+
+                if len(digits) == 0:
+                    self.lex_error(
+                        "at least one %s digit required" %
+                        "binary" if bits_per_digit == 1 else "hex")
+
+                if self.nc in ("u", "U", "s", "S"):
+                    self.skip()
+                    suffix = ""
+                    while self.nc in "0123456789":
+                        self.skip()
+                        suffix += self.cc
+
+                    if suffix not in ("8", "16", "32", "64"):
+                        self.lex_error("suffix must be 8, 16, 32, or 64")
+                    else:
+                        max_digits = int(suffix) / bits_per_digit
+                else:
+                    max_digits = 64 / bits_per_digit
+
+                if len(digits) > max_digits:
+                    self.lex_error(
+                        "too many digits for %u-bit %s literal" %
+                        (max_digits * bits_per_digit,
+                         "binary" if bits_per_digit == 1 else "hex"))
+
+                # We need to make sure we now have something that
+                # isn't a number to stop any stupidity such as "1.1.1"
+                # lexing as "1.1" and ".1"
+                if self.nc.isnumeric() or \
+                   self.nc == "." and self.nnc.isnumeric():
+                    self.skip()
+                    self.lex_error()
+
             elif self.cc.isnumeric() or \
                  self.cc == "." and self.nc.isnumeric():
                 # Its some kind of number
@@ -559,6 +615,7 @@ class MATLAB_Lexer(Token_Generator):
                 # lexing as "1.1" and ".1"
                 if self.nc.isnumeric() or \
                    self.nc == "." and self.nnc.isnumeric():
+                    self.skip()
                     self.lex_error()
 
             elif self.cc in ("<", ">", "=", "~"):

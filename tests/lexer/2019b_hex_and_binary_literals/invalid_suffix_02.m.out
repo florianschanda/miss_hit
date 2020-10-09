@@ -1,0 +1,5 @@
+In invalid_suffix_02.m, line 1
+| 0x123s8
+|       ^ [31;1mlex error[0m: too many digits for 8-bit hex literal
+invalid_suffix_02.m: lexed with errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

@@ -12,8 +12,7 @@
 
 ### Language support
 
-Compatible with up to MATLAB 2020b, except for:
-* #177 [hex/binary literals](https://github.com/florianschanda/miss_hit/issues/177) are not supported yet
+Compatible with up to MATLAB 2020b.
 
 Not quite compatible with Octave yet. See #43 [octave support](https://github.com/florianschanda/miss_hit/issues/43) for more information.
 
@@ -29,6 +28,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   brackets only matched what was inside the brackets. For example a
   ticket regex with `(a|b)-[0-9]` should match both `a-5` and `b-2`,
   but the ticket mentioned in the report was only `a` and `b`.
+
+* Support hex and binary literals (e.g. `0x12s64`) from MATLAB
+  2019b. This resolves the one outstanding compatibility issue, and we
+  should now be compatible with up to and including MATLAB 2020b.
 
 ### 0.9.12
 

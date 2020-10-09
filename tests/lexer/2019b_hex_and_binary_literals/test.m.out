@@ -6,37 +6,25 @@ In test.m, line 1
 |                                                                                                                   ^ info: NEWLINE
 In test.m, line 3
 | 0x2A
-| ^ info: [SL] NUMBER
-In test.m, line 3
-| 0x2A
-|  ^^^ info: IDENTIFIER
+| ^^^^ info: [SL] NUMBER
 In test.m, line 3
 | 0x2A
 |     ^ info: NEWLINE
 In test.m, line 4
 | 0b101010
-| ^ info: [SL] NUMBER
-In test.m, line 4
-| 0b101010
-|  ^^^^^^^ info: IDENTIFIER
+| ^^^^^^^^ info: [SL] NUMBER
 In test.m, line 4
 | 0b101010
 |         ^ info: NEWLINE
 In test.m, line 5
 | 0x2As32
-| ^ info: [SL] NUMBER
-In test.m, line 5
-| 0x2As32
-|  ^^^^^^ info: IDENTIFIER
+| ^^^^^^^ info: [SL] NUMBER
 In test.m, line 5
 | 0x2As32
 |        ^ info: NEWLINE
 In test.m, line 6
 | 0xFFs8
-| ^ info: [SL] NUMBER
-In test.m, line 6
-| 0xFFs8
-|  ^^^^^ info: IDENTIFIER
+| ^^^^^^ info: [SL] NUMBER
 In test.m, line 6
 | 0xFFs8
 |       ^ info: NEWLINE

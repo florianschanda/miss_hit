@@ -1,0 +1,5 @@
+In wrong_01.m, line 1
+| [0b1.1]
+|     ^ [31;1mlex error[0m: unexpected character '.'
+wrong_01.m: lexed with errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)
