@@ -77,19 +77,9 @@ class Config_Parser:
         self.ct = self.nt
         self.nt = self.lexer.token()
 
-        while self.nt:
-            # Skip comments
-            while self.nt and self.nt.kind == "COMMENT":
-                self.nt = self.lexer.token()
-
-            # Join new-lines
-            if (self.nt and
-                self.ct and
-                self.nt.kind == "NEWLINE" and
-                self.ct.kind == "NEWLINE"):
-                self.nt = self.lexer.token()
-            else:
-                break
+        # Skip comments and newlines
+        while self.nt and self.nt.kind in ("COMMENT", "NEWLINE"):
+            self.nt = self.lexer.token()
 
     def match(self, kind, value=None):
         self.skip()
@@ -132,21 +122,18 @@ class Config_Parser:
         has_errors = False
 
         while not self.peek_eof():
-            if self.peek("NEWLINE"):
-                self.match("NEWLINE")
-            else:
-                try:
-                    n_item = self.parse_config_item()
-                except Error:
-                    # On errors, we skip tokens until we get to a
-                    # newline
-                    has_errors = True
-                    n_item = None
-                    while not (self.peek_eof() or self.peek("NEWLINE")):
-                        self.skip()
+            try:
+                n_item = self.parse_config_item()
+            except Error:
+                # On errors, we skip tokens until we get to a
+                # newline
+                has_errors = True
+                n_item = None
+                while not self.peek_eof() and not self.nt.first_in_line:
+                    self.skip()
 
-                if n_item:
-                    n_file.add_item(n_item)
+            if n_item:
+                n_file.add_item(n_item)
 
         self.match_eof()
 
@@ -179,6 +166,12 @@ class Config_Parser:
         elif self.peek("IDENTIFIER", "octave"):
             n_item = self.parse_octave_mode()
 
+        elif self.peek("IDENTIFIER", "entrypoint"):
+            n_item = self.parse_entrypoint()
+
+        elif self.peek("IDENTIFIER", "library"):
+            n_item = self.parse_library()
+
         elif self.peek("IDENTIFIER"):
             n_item = self.parse_style_configuration()
 
@@ -187,12 +180,6 @@ class Config_Parser:
             self.mh.error(self.ct.location,
                           "expected valid config entry, found %s instead" %
                           (self.ct.kind))
-
-        # Each item is terminated with a newline (or EOF)
-        if self.peek_eof():
-            pass
-        else:
-            self.match("NEWLINE")
 
         return n_item
 
@@ -402,6 +389,59 @@ class Config_Parser:
         self.match("COLON")
         value = self.parse_boolean()
         return Octave_Mode(value)
+
+    def parse_entrypoint(self):
+        self.match("IDENTIFIER", "entrypoint")
+        self.match("STRING")
+        self.match("C_BRA")
+
+        while not (self.peek("C_KET") or self.peek_eof()):
+            if self.peek("IDENTIFIER", "libraries"):
+                self.parse_lib_dependencies()
+            else:
+                self.mh.error(self.nt.location,
+                              "expected library dependency")
+
+        self.match("C_KET")
+
+    def parse_library(self):
+        self.match("IDENTIFIER", "library")
+
+        if self.peek("STRING"):
+            self.match("STRING")
+
+        self.match("C_BRA")
+
+        while not (self.peek("C_KET") or self.peek_eof()):
+            if self.peek("IDENTIFIER", "paths"):
+                self.parse_lib_paths()
+            else:
+                self.mh.error(self.nt.location,
+                              "expected library dependency")
+
+        self.match("C_KET")
+
+    def parse_lib_dependencies(self):
+        self.match("IDENTIFIER", "libraries")
+        self.match("C_BRA")
+        while self.peek("STRING"):
+            self.match("STRING")
+            if self.peek("COMMA"):
+                self.match("COMMA")
+            else:
+                break
+        self.match("C_KET")
+
+    def parse_lib_paths(self):
+        self.match("IDENTIFIER", "paths")
+        self.match("C_BRA")
+        while self.peek("STRING"):
+            self.match("STRING")
+            if self.peek("COMMA"):
+                self.match("COMMA")
+            else:
+                break
+        self.match("C_KET")
 
 
 def load_config(mh, filename):

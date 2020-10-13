@@ -3,4 +3,7 @@ MISS_HIT configuration file
   Global MH Activation
   Global MH Disable
   Global MH Disable
+  Global MH Activation
+  Global MH Activation
+  Global MH Disable
 MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

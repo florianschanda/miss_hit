@@ -24,6 +24,11 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   current directory, i.e. the default behaviour of `mh_style` is now
   the same as `mh_style .`
 
+* Config file directive no longer _have_ to be separated by
+  newlines. While this is still encouraged for readability, it is no
+  longer an error to write a single directive over multiple lines or
+  multiple directives on the same line.
+
 * Fix minor issue with `regex_tickets` where regular expressions with
   brackets only matched what was inside the brackets. For example a
   ticket regex with `(a|b)-[0-9]` should match both `a-5` and `b-2`,

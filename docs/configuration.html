@@ -294,8 +294,6 @@ jobs:
       <div>
 	Grammar:
 <pre>
-TERMINATED_DIRECTIVE ::= DIRECTIVE ( NEWLINE {NEWLINE} | END_OF_FILE )
-
 DIRECTIVE ::= PROJECT_ROOT
             | GLOBAL_ENABLE
             | STYLE_APPLICATION
@@ -304,13 +302,13 @@ DIRECTIVE ::= PROJECT_ROOT
             | DIALECT
             | EXCLUSION
 
-CONFIG_FILE ::= { TERMINATED_DIRECTIVE }
+CONFIG_FILE ::= { DIRECTIVE } EOF_OF_FILE
 </pre>
       </div>
       <div>
 	A configuration contains comments (starting with <tt>#</tt>)
-	and configuration directives. Each directive is terminated by
-	one or more new lines (and you cannot continue lines).
+	and configuration directives. Each directive ideally should be
+	separated by one or more new lines (but this is optional).
       </div>
       <div>
 	Configuration directives are processed sequentially. I.e. if

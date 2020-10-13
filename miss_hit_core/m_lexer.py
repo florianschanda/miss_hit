@@ -1026,7 +1026,8 @@ class MATLAB_Lexer(Token_Generator):
 
         # Determine if whitespace is currently significant (i.e. we're
         # in a matrix).
-        ws_is_significant = (self.bracket_stack and
+        ws_is_significant = (not self.config_file_mode and
+                             self.bracket_stack and
                              self.bracket_stack[-1].kind in ("M_BRA",
                                                              "C_BRA") and
                              self.bracket_stack[-1] != token)

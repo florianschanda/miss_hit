@@ -1,75 +1,112 @@
 === STYLE ===
-miss_hit.cfg: error: config file contains errors
-In miss_hit.cfg, line 2
-| entrypoint "example.m" {
-| ^^^^^^^^^^ error: expected valid style configuration name
-In miss_hit.cfg, line 3
-|     libraries {
-|     ^^^^^^^^^ error: expected valid style configuration name
-In miss_hit.cfg, line 4
-|         "my_library",
-|         ^^^^^^^^^^^^ error: expected valid config entry, found STRING instead
-In miss_hit.cfg, line 5
-|         "common",
-|         ^^^^^^^^ error: expected valid config entry, found STRING instead
-In miss_hit.cfg, line 6
-|         "kitten"
-|         ^^^^^^^^ error: expected valid config entry, found STRING instead
-In miss_hit.cfg, line 7
-|     }
-|     ^ error: expected valid config entry, found C_KET instead
-In miss_hit.cfg, line 8
-| }
-| ^ error: expected valid config entry, found C_KET instead
-.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
-MISS_HIT Style Summary: 2 file(s) analysed, 9 error(s)
+MISS_HIT Style Summary: 6 file(s) analysed, everything seems fine
 === LINT ===
-miss_hit.cfg: error: config file contains errors
-In miss_hit.cfg, line 2
-| entrypoint "example.m" {
-| ^^^^^^^^^^ error: expected valid style configuration name
-In miss_hit.cfg, line 3
-|     libraries {
-|     ^^^^^^^^^ error: expected valid style configuration name
-In miss_hit.cfg, line 4
-|         "my_library",
-|         ^^^^^^^^^^^^ error: expected valid config entry, found STRING instead
-In miss_hit.cfg, line 5
-|         "common",
-|         ^^^^^^^^ error: expected valid config entry, found STRING instead
-In miss_hit.cfg, line 6
-|         "kitten"
-|         ^^^^^^^^ error: expected valid config entry, found STRING instead
-In miss_hit.cfg, line 7
-|     }
-|     ^ error: expected valid config entry, found C_KET instead
-In miss_hit.cfg, line 8
-| }
-| ^ error: expected valid config entry, found C_KET instead
-.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
-MISS_HIT Lint Summary: 2 file(s) analysed, 9 error(s)
+MISS_HIT Lint Summary: 6 file(s) analysed, everything seems fine
 === METRICS ===
-miss_hit.cfg: error: config file contains errors
-In miss_hit.cfg, line 2
-| entrypoint "example.m" {
-| ^^^^^^^^^^ error: expected valid style configuration name
-In miss_hit.cfg, line 3
-|     libraries {
-|     ^^^^^^^^^ error: expected valid style configuration name
-In miss_hit.cfg, line 4
-|         "my_library",
-|         ^^^^^^^^^^^^ error: expected valid config entry, found STRING instead
-In miss_hit.cfg, line 5
-|         "common",
-|         ^^^^^^^^ error: expected valid config entry, found STRING instead
-In miss_hit.cfg, line 6
-|         "kitten"
-|         ^^^^^^^^ error: expected valid config entry, found STRING instead
-In miss_hit.cfg, line 7
-|     }
-|     ^ error: expected valid config entry, found C_KET instead
-In miss_hit.cfg, line 8
-| }
-| ^ error: expected valid config entry, found C_KET instead
-.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
-MISS_HIT Metric Summary: 2 file(s) analysed, 9 error(s)
+=== Code metric by file:
+
+* Code metrics for file collection/lib_a/wibble.m:
+  File lines: 5
+
+  Code metrics for function wibble:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file collection/lib_b/wobble.m:
+  File lines: 5
+
+  Code metrics for function wobble:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file example.m:
+  File lines: 3
+
+  Code metrics for function example:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file my_library/+potato/fun.m:
+  File lines: 5
+
+  Code metrics for function fun:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file other_library/+potato/fun.m:
+  File lines: 5
+
+  Code metrics for function fun:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file other_library/+potato/sad.m:
+  File lines: 5
+
+  Code metrics for function sad:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric 'File lines':
+  1. 5 (other_library/+potato/sad.m)
+  2. 5 (other_library/+potato/fun.m)
+  3. 5 (my_library/+potato/fun.m)
+  4. 5 (collection/lib_b/wobble.m)
+  5. 5 (collection/lib_a/wibble.m)
+  6. 3 (example.m)
+
+* Function metric 'Cyclomatic complexity':
+  1. 1 (other_library/+potato/sad.m, function sad)
+  2. 1 (other_library/+potato/fun.m, function fun)
+  3. 1 (my_library/+potato/fun.m, function fun)
+  4. 1 (example.m, function example)
+  5. 1 (collection/lib_b/wobble.m, function wobble)
+  6. 1 (collection/lib_a/wibble.m, function wibble)
+
+* Function metric 'Function lines':
+  1. 3 (other_library/+potato/sad.m, function sad)
+  2. 3 (other_library/+potato/fun.m, function fun)
+  3. 3 (my_library/+potato/fun.m, function fun)
+  4. 3 (collection/lib_b/wobble.m, function wobble)
+  5. 3 (collection/lib_a/wibble.m, function wibble)
+
+* Function metric 'Number of paths':
+  1. 1 (other_library/+potato/sad.m, function sad)
+  2. 1 (other_library/+potato/fun.m, function fun)
+  3. 1 (my_library/+potato/fun.m, function fun)
+  4. 1 (example.m, function example)
+  5. 1 (collection/lib_b/wobble.m, function wobble)
+  6. 1 (collection/lib_a/wibble.m, function wibble)
+
+MISS_HIT Metric Summary: 6 file(s) analysed, everything seems fine
