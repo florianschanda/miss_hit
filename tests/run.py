@@ -302,10 +302,6 @@ def execute_sanity_test(name):
 
 
 def execute_bmc_test(name):
-    os.chdir(os.path.join(TEST_ROOT,
-                          "bmc",
-                          name))
-
     m_files = []
     for path, _, files in os.walk("."):
         for f in files:
@@ -324,6 +320,26 @@ def execute_bmc_test(name):
             fd.write(plain_out.rstrip() + "\n")
 
     return "Ran bmc test %s" % name
+
+
+def execute_project_test(name):
+    with open("output.txt", "w") as fd:
+        fd.write("=== STYLE ===\n")
+        r = run_command("mh_style", ["--single"])
+        plain_out = r.stdout
+        fd.write(plain_out.rstrip() + "\n")
+
+        fd.write("=== LINT ===\n")
+        r = run_command("mh_lint", ["--single"])
+        plain_out = r.stdout
+        fd.write(plain_out.rstrip() + "\n")
+
+        fd.write("=== METRICS ===\n")
+        r = run_command("mh_metric", ["--single"])
+        plain_out = r.stdout
+        fd.write(plain_out.rstrip() + "\n")
+
+    return "Ran project test %s" % name
 
 
 def run_test(test):
@@ -350,6 +366,7 @@ def run_test(test):
         "simulink_parser" : execute_simulink_parser_test,
         "config_parser"   : execute_config_parser_test,
         "sanity"          : execute_sanity_test,
+        "projects"        : execute_project_test,
     }
     test_result = fn[test["kind"]](test["test"])
 
@@ -389,6 +406,7 @@ def main():
         suites = ["lexer", "parser", "simulink_parser",
                   "config_parser",
                   "style", "metrics", "lint", "bmc",
+                  "projects",
                   "sanity"]
 
     for kind in suites:

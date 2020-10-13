@@ -1,0 +1,75 @@
+=== STYLE ===
+miss_hit.cfg: error: config file contains errors
+In miss_hit.cfg, line 2
+| entrypoint "example.m" {
+| ^^^^^^^^^^ error: expected valid style configuration name
+In miss_hit.cfg, line 3
+|     libraries {
+|     ^^^^^^^^^ error: expected valid style configuration name
+In miss_hit.cfg, line 4
+|         "my_library",
+|         ^^^^^^^^^^^^ error: expected valid config entry, found STRING instead
+In miss_hit.cfg, line 5
+|         "common",
+|         ^^^^^^^^ error: expected valid config entry, found STRING instead
+In miss_hit.cfg, line 6
+|         "kitten"
+|         ^^^^^^^^ error: expected valid config entry, found STRING instead
+In miss_hit.cfg, line 7
+|     }
+|     ^ error: expected valid config entry, found C_KET instead
+In miss_hit.cfg, line 8
+| }
+| ^ error: expected valid config entry, found C_KET instead
+.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Style Summary: 2 file(s) analysed, 9 error(s)
+=== LINT ===
+miss_hit.cfg: error: config file contains errors
+In miss_hit.cfg, line 2
+| entrypoint "example.m" {
+| ^^^^^^^^^^ error: expected valid style configuration name
+In miss_hit.cfg, line 3
+|     libraries {
+|     ^^^^^^^^^ error: expected valid style configuration name
+In miss_hit.cfg, line 4
+|         "my_library",
+|         ^^^^^^^^^^^^ error: expected valid config entry, found STRING instead
+In miss_hit.cfg, line 5
+|         "common",
+|         ^^^^^^^^ error: expected valid config entry, found STRING instead
+In miss_hit.cfg, line 6
+|         "kitten"
+|         ^^^^^^^^ error: expected valid config entry, found STRING instead
+In miss_hit.cfg, line 7
+|     }
+|     ^ error: expected valid config entry, found C_KET instead
+In miss_hit.cfg, line 8
+| }
+| ^ error: expected valid config entry, found C_KET instead
+.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Lint Summary: 2 file(s) analysed, 9 error(s)
+=== METRICS ===
+miss_hit.cfg: error: config file contains errors
+In miss_hit.cfg, line 2
+| entrypoint "example.m" {
+| ^^^^^^^^^^ error: expected valid style configuration name
+In miss_hit.cfg, line 3
+|     libraries {
+|     ^^^^^^^^^ error: expected valid style configuration name
+In miss_hit.cfg, line 4
+|         "my_library",
+|         ^^^^^^^^^^^^ error: expected valid config entry, found STRING instead
+In miss_hit.cfg, line 5
+|         "common",
+|         ^^^^^^^^ error: expected valid config entry, found STRING instead
+In miss_hit.cfg, line 6
+|         "kitten"
+|         ^^^^^^^^ error: expected valid config entry, found STRING instead
+In miss_hit.cfg, line 7
+|     }
+|     ^ error: expected valid config entry, found C_KET instead
+In miss_hit.cfg, line 8
+| }
+| ^ error: expected valid config entry, found C_KET instead
+.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Metric Summary: 2 file(s) analysed, 9 error(s)
