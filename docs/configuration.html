@@ -301,6 +301,7 @@ DIRECTIVE ::= PROJECT_ROOT
             | METRIC_LIMIT
             | DIALECT
             | EXCLUSION
+            | PROJECT_DIRECTIVE
 
 CONFIG_FILE ::= { DIRECTIVE } EOF_OF_FILE
 </pre>
@@ -488,6 +489,45 @@ root
 	considered a project root, any configuration
 	from <tt>root</tt> is entirely ignored.
       </div>
+
+      <h3>Projects</h3>
+      <div>
+	Grammar:
+<pre>
+PROJECT_DIRECTIVE ::= LIBRARY_DECLARATION
+                    | ENTRYPOINT_DECLARATION
+
+LIBRARY_DECLARATION ::= library [ STRING ] LIBRARY_PROPERTIES
+LIBRARY_PROPERTIES ::= '{' [ LIBRARY_PROPERTY { ',' LIBRARY_PROPERTY } ] '}
+
+ENTRYPOINT_DECLARATION ::= entrypoint STRING ENTRYPOINT_PROPERTIES
+ENTRYPOINT_PROPERTIES ::= '{' [ ENTRYPOINT_PROPERTY { ',' ENTRYPOINT_PROPERTY } ] '}'
+
+OPTIONAL_STRING_LIST ::= [ STRING_LIST ]
+STRING_LIST ::= STRING { ',' STRING }
+
+LIBRARY_PROPERTY ::= paths '{' OPTIONAL_STRING_LIST '}
+
+ENTRYPOINT_PROPERTY ::= libraries '{' OPTIONAL_STRING_LIST '}'
+</pre>
+      </div>
+
+      <div>
+	A library declaration defines (an optionally named) library,
+	which is essentially a set of paths that will be searched for
+	functions and classes. If no name is given, the name of the
+	library defaults to the directory name. By default only the
+	directory containing the configuration directive is searched,
+	but this can be overridden by a path list.
+      </div>
+
+      <div>
+	An entrypoint declaration names a matlab function file, which
+	will be considered an entrypoint for the purpose of static
+	analysis. An optional list of libraries can be provided that
+	the function depends on.
+      </div>
+
     </section>
 
   </main>
