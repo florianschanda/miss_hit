@@ -45,7 +45,7 @@ from miss_hit_core.m_lexer import MATLAB_Lexer, Token_Buffer
 from miss_hit_core.m_parser import MATLAB_Parser
 
 
-COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d *(?P<org>.*)"
+COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d( by)? *(?P<org>.*)"
 
 
 class Style_Rule(metaclass=ABCMeta):

@@ -38,6 +38,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   2019b. This resolves the one outstanding compatibility issue, and we
   should now be compatible with up to and including MATLAB 2020b.
 
+* MH Style now accepts a slightly wider form of copyright statements
+  (specifically you can now include the word 'by' before the legal
+  entity).
+
 ### 0.9.12
 
 * [*CORRECTNESS*] Fix lexing of `1./b`. This was a critical bug that
