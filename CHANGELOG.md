@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ## Changelog
 
-### 0.9.13-dev
+### 0.9.13
 
 * All tools can now run without parameters. By default we analyse the
   current directory, i.e. the default behaviour of `mh_style` is now
