@@ -40,6 +40,7 @@ setuptools.setup(
     entry_points={
         "console_scripts": [
             "mh_lint = miss_hit.mh_lint:main",
+            "mh_diff = miss_hit.mh_diff:main",
         ],
     },
 )

@@ -34,6 +34,12 @@ https://florianschanda.github.io/miss_hit/
   A simple linter for MATLAB or Octave code, including
   MATLAB embedded inside Simulink models.
 
+* Diff helper `mh_diff`
+
+  A tool for diffing MATLAB code inside Simulink models. Note that
+  other changes (e.g. different connections) are not detected; this is
+  only working for embedded MATLAB.
+
 Please refer to the [release notes](https://github.com/florianschanda/miss_hit/blob/master/CHANGELOG.md)
 for a summary of recent changes and known issues.
 
@@ -49,9 +55,9 @@ for more information.
 $ pip3 install --user miss_hit
 ```
 
-This installation also adds three executable scripts `mh_style`,
-`mh_metric`, and `mh_lint` into `.local/bin`, so please make sure that
-this is on your `PATH`.
+This installation also adds four executable scripts `mh_style`,
+`mh_metric`, `mh_lint`, and `mh_diff` into `.local/bin`, so please
+make sure that this is on your `PATH`.
 
 You can also use the `python -m` syntax to directly invoke the
 program. This might be useful if you're on a heavily locked-down
