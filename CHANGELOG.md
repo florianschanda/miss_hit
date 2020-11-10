@@ -24,6 +24,14 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   current directory, i.e. the default behaviour of `mh_style` is now
   the same as `mh_style .`
 
+* [MH Diff](https://florianschanda.github.io/miss_hit/diff.html):
+  A new tool, that can be used to diff the code embedded
+  inside Simulink models. The best way to use it is through `git`, for
+  example: `git difftool HEAD^ -yx "mh_diff" Potato.slx`
+
+  You can also provide the option `--kdiff3` to show a visual diff (on
+  systems that have `kdiff3` installed).
+
 * Config file directive no longer _have_ to be separated by
   newlines. While this is still encouraged for readability, it is no
   longer an error to write a single directive over multiple lines or

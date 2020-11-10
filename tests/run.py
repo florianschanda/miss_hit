@@ -151,6 +151,15 @@ def execute_style_test(name):
             for fail in sorted(broken_fixes):
                 fd.write("Fixing is not idempotent for %s\n" % fail)
 
+    # Write diff for Simulink files
+    for slx_file in slx_files:
+        r = run_command("mh_diff",
+                        ["--allow-weird-names",
+                         slx_file,
+                         slx_file + "_fixed"])
+        with open(slx_file + ".diff", "w") as fd:
+            fd.write(r.stdout)
+
     return "Ran style test %s" % name
 
 

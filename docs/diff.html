@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    MISS_HIT - MATLAB independent, small & safe, high integrity tools
+  </title>
+</head>
+
+<body>
+  <header>MISS_HIT 0.9.13-dev Diff Tool</header>
+
+  <main>
+    <div class="section">
+      <a href="index.html">MISS_HIT</a> includes a diff tool for
+      Simulink models (<span class="file">mh_diff</span>).
+    </div>
+
+    <div class="title">
+      <img src="assets/settings.svg" alt="Gear icon" />
+      <h1>Simulink diff utility for git</h1>
+    </div>
+
+    <section>
+      <h2>Work In Progress</h2>
+      <div>
+        This tool is work in progress, but should work well enough to
+        be used. However please do not yet rely on its output or
+        completeness to identify all parts of a changed model in
+        safety related contexts.
+
+	Specifically only <i>MATLAB code blocks</i> are considered,
+	any other change in the model is <i>ignored</i>.
+      </div>
+    </section>
+
+    <section>
+      <h2>Usage</h2>
+      <div>
+        The intended way to use this tool is through <tt>git
+          difftool</tt>. For example:
+	<pre>git difftool HEAD^ -yx mh_diff Potato.slx</pre>
+
+	If you
+	have <a href="https://invent.kde.org/sdk/kdiff3">KDiff3</a>
+	installed, you can also use the <tt>--kdiff3</tt> option to
+	show a graphical diff:
+	<pre>git difftool HEAD^ -yx "mh_diff --kdiff3" Potato.slx</pre>
+
+	It is possible to use the tool directly; in which case two
+	arguments must be supplied: two files to diff. For example:
+	<pre>mh_diff --kdiff3 Basic_Potato.slx Custom_Potato.slx</pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Limitations</h2>
+      <div>
+        <ul>
+          <li>
+	    The key limitation is that only MATLAB code blocks are
+            considered. All other differences in the model are ignored.
+	  </li>
+          <li>
+	    Renamed blocks are not dealt with correctly (they are
+	    shown as 2 diffs, a removed block and an added block).
+	  </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Content &copy; 2020 Florian Schanda<br>
+    Style &copy; 2019-2020 Alina Boboc<br>
+    MISS_HIT is licensed under the GPLv3
+  </footer>
+</body>
+
+</html>
