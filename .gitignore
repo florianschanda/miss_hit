@@ -13,4 +13,4 @@ slprj
 build
 dist
 miss_hit.egg-info
-miss_hit_agpl.egg-info
+miss_hit_core.egg-info
