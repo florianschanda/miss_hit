@@ -393,55 +393,73 @@ class Config_Parser:
     def parse_entrypoint(self):
         self.match("IDENTIFIER", "entrypoint")
         self.match("STRING")
+        rv = Entrypoint_Declaration(self.ct.location,
+                                    self.dirname,
+                                    self.ct.value)
         self.match("C_BRA")
 
         while not (self.peek("C_KET") or self.peek_eof()):
             if self.peek("IDENTIFIER", "libraries"):
-                self.parse_lib_dependencies()
+                for t_lib in self.parse_lib_dependencies():
+                    rv.add_lib_dependency(self.mh, t_lib)
             else:
                 self.mh.error(self.nt.location,
                               "expected library dependency")
 
         self.match("C_KET")
+        return rv
 
     def parse_library(self):
         self.match("IDENTIFIER", "library")
-
         if self.peek("STRING"):
             self.match("STRING")
+            name = self.ct.value
+        else:
+            name = None
+        rv = Library_Declaration(self.ct.location,
+                                 self.dirname,
+                                 name)
 
         self.match("C_BRA")
 
         while not (self.peek("C_KET") or self.peek_eof()):
             if self.peek("IDENTIFIER", "paths"):
-                self.parse_lib_paths()
+                for t_path in self.parse_lib_paths():
+                    rv.add_path(self.mh, t_path)
             else:
                 self.mh.error(self.nt.location,
                               "expected library dependency")
 
         self.match("C_KET")
+        return rv
 
     def parse_lib_dependencies(self):
+        rv = []
         self.match("IDENTIFIER", "libraries")
         self.match("C_BRA")
         while self.peek("STRING"):
             self.match("STRING")
+            rv.append(self.ct)
             if self.peek("COMMA"):
                 self.match("COMMA")
             else:
                 break
         self.match("C_KET")
+        return rv
 
     def parse_lib_paths(self):
+        rv = []
         self.match("IDENTIFIER", "paths")
         self.match("C_BRA")
         while self.peek("STRING"):
             self.match("STRING")
+            rv.append(self.ct)
             if self.peek("COMMA"):
                 self.match("COMMA")
             else:
                 break
         self.match("C_KET")
+        return rv
 
 
 def load_config(mh, filename):

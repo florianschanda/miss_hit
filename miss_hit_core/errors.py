@@ -100,6 +100,12 @@ class Location:
             rv["context"] = self.context
         return rv
 
+    def short_string(self):
+        rv = self.filename
+        if self.line:
+            rv += ":%u" % self.line
+        return rv
+
 
 class ICE(Exception):
     """ Internal compiler errors """
@@ -544,6 +550,11 @@ class Message_Handler:
                       fatal     = fatal,
                       autofixed = False)
         self.register_message(msg)
+
+    def config_error(self, location, message):
+        # This is for raising errors in config files _only_.
+        self.register_file(location.filename)
+        self.error(location, message)
 
     def finalize_file(self, filename):
         assert isinstance(filename, str)

@@ -332,19 +332,27 @@ def execute_bmc_test(name):
 
 
 def execute_project_test(name):
+    flags = ["--single"]
+    if os.path.isfile("cmdline"):
+        with open("cmdline", "r") as fd:
+            for raw_flag in fd.readlines():
+                flag = raw_flag.strip()
+                if flag:
+                    flags.append(flag)
+
     with open("output.txt", "w") as fd:
         fd.write("=== STYLE ===\n")
-        r = run_command("mh_style", ["--single"])
+        r = run_command("mh_style", flags)
         plain_out = r.stdout
         fd.write(plain_out.rstrip() + "\n")
 
         fd.write("=== LINT ===\n")
-        r = run_command("mh_lint", ["--single"])
+        r = run_command("mh_lint", flags)
         plain_out = r.stdout
         fd.write(plain_out.rstrip() + "\n")
 
         fd.write("=== METRICS ===\n")
-        r = run_command("mh_metric", ["--single"])
+        r = run_command("mh_metric", flags)
         plain_out = r.stdout
         fd.write(plain_out.rstrip() + "\n")
 

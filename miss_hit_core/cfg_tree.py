@@ -47,7 +47,10 @@ USE_DOT_GIT = False
 # mechanism.
 
 tree = {}
-# Our database
+# Our database for configuration
+
+project_names = {}
+# Our symbol table for project configuration
 
 
 class Tree_Node:
@@ -67,6 +70,18 @@ class Tree_Node:
         self.ast = ast
         if self.ast.is_project_root:
             self.project_root = True
+
+
+def register_project_name(mh, n_item):
+    assert isinstance(n_item, (Library_Declaration,
+                               Entrypoint_Declaration))
+
+    if n_item.name in project_names:
+        mh.config_error(n_item.location,
+                        "duplicate definition, previous definition at %s" %
+                        project_names[n_item.name].location.short_string())
+
+    project_names[n_item.name] = n_item
 
 
 def register_parent(mh, options, dirname):
@@ -102,11 +117,10 @@ def register_parent(mh, options, dirname):
     tree[dirname] = Tree_Node(found_root, config_files)
 
     if len(config_files) > 1:
-        mh.register_file(os.path.relpath(dirname))
-        mh.error(Location(os.path.relpath(dirname)),
-                 "multiple config files found; cannot find project root:"
-                 " please add a config file with the 'project_root'"
-                 " directive")
+        mh.config_error(Location(os.path.relpath(dirname)),
+                        "multiple config files found; cannot find project"
+                        " root: please add a config file with the"
+                        " 'project_root' directive")
 
     elif config_files:
         try:
@@ -118,11 +132,10 @@ def register_parent(mh, options, dirname):
             cfg_file_ast = None
 
         if cfg_file_ast is None:
-            mh.register_file(os.path.relpath(dirname))
-            mh.error(Location(os.path.relpath(dirname)),
-                     "cannot find project root because the config file"
-                     " contains errors: please add a config file with"
-                     " the 'project_root' directive")
+            mh.config_error(Location(os.path.relpath(dirname)),
+                            "cannot find project root because the config file"
+                            " contains errors: please add a config file with"
+                            " the 'project_root' directive")
 
     if not tree[dirname].project_root:
         register_parent(mh, options, parent_dirname)
@@ -179,6 +192,10 @@ def apply_config(mh, options, dirname, exclusions_only=False):
                 # This will have been previously applied. We can ignore
                 # this.
                 pass
+
+            elif isinstance(n_item, (Library_Declaration,
+                                     Entrypoint_Declaration)):
+                register_project_name(mh, n_item)
 
             else:
                 n_item.evaluate(mh, node.config)
@@ -296,7 +313,7 @@ def register_dir(mh, options, dirname, register_subdirs):
 
 
 ##############################################################################
-# Public AP
+# Public API
 ##############################################################################
 
 def get_excluded_directories(dirname):
@@ -350,6 +367,24 @@ def register_item(mh, name, options):
 
     else:
         raise ICE("%s is neither a file or directory")
+
+
+def get_root(name):
+    assert isinstance(name, str)
+
+    dirname = os.path.abspath(name)
+    if dirname not in tree:
+        raise ICE("%s was not registered" % dirname)
+
+    while not tree[dirname].project_root:
+        dirname = os.path.dirname(dirname)
+
+    return dirname
+
+
+def validate_project_config(mh):
+    for n_item in project_names.values():
+        n_item.validate(mh, project_names)
 
 
 ##############################################################################

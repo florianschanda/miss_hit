@@ -25,9 +25,12 @@
 
 # Tiny AST for the MISS_HIT configuration files
 
+import os
+
 from abc import ABCMeta, abstractmethod
 
-from miss_hit_core.errors import Message_Handler, ICE
+from miss_hit_core.m_ast import MATLAB_Token
+from miss_hit_core.errors import Location, Message_Handler, ICE
 from miss_hit_core.config import (Config,
                                   Boolean_Style_Configuration,
                                   Integer_Style_Configuration,
@@ -265,3 +268,105 @@ class Octave_Mode(Config_Item):
         assert isinstance(config, Config)
 
         config.octave = self.enabled
+
+
+class Library_Declaration(Config_Item):
+    def __init__(self, location, directory, name=None):
+        super().__init__()
+
+        assert isinstance(location, Location)
+        self.location = location
+
+        assert isinstance(directory, str)
+        self.directory = directory
+        # The directory this library is rooted in
+
+        if name is None:
+            self.name = os.path.basename(os.path.abspath(directory))
+        else:
+            assert isinstance(name, str)
+            self.name = name
+        # Name of the library
+
+        self.l_paths = []
+        self.s_paths = set()
+        # List of string tokens of paths to search. Tokens, because we
+        # might need to later complain about things not existing, so
+        # we do need an error location.
+
+    def __str__(self):
+        return "Library(%s)" % self.name
+
+    def add_path(self, mh, t_path):
+        assert isinstance(t_path, MATLAB_Token)
+
+        if t_path.value in self.s_paths:
+            mh.config_error(t_path.location,
+                            "duplicate path")
+        elif not os.path.isdir(os.path.join(self.directory, t_path.value)):
+            mh.config_error(t_path.location,
+                            "is not a directory")
+
+        self.s_paths.add(t_path.value)
+        self.l_paths.append(t_path)
+
+    def dump(self):
+        print("  Library Declaration (%s)" % self.name)
+        for t_path in self.l_paths:
+            print("    Path: %s" % t_path.value)
+
+    def evaluate(self, mh, config):
+        raise ICE("logic error - called evaluate() for project directive")
+
+    def validate(self, mh, symbol_table):
+        pass
+
+
+class Entrypoint_Declaration(Config_Item):
+    def __init__(self, location, directory, name):
+        super().__init__()
+
+        assert isinstance(location, Location)
+        self.location = location
+
+        assert isinstance(directory, str)
+        self.directory = directory
+        # The directory this entrypoint is rooted in
+
+        assert isinstance(name, str)
+        self.name = name
+        # The name (m-file) that defines the entry-point
+
+        self.l_libraries = []
+        self.s_libraries = set()
+        # Libraries that this entry-point depends on. Initially this
+        # is a list of tokens, but after validation is replaced with a
+        # list of Library_Declaration nodes.
+
+    def add_lib_dependency(self, mh, t_lib):
+        assert isinstance(t_lib, MATLAB_Token)
+
+        if t_lib.value in self.s_libraries:
+            mh.config_error(t_lib.location,
+                            "duplicate library")
+
+        self.s_libraries.add(t_lib.value)
+        self.l_libraries.append(t_lib)
+
+    def dump(self):
+        print("  Entrypoint Declaration (%s)" % self.name)
+        for t_lib in self.l_libraries:
+            print("    Requires library: %s" % t_lib)
+
+    def evaluate(self, mh, config):
+        raise ICE("logic error - called evaluate() for project directive")
+
+    def validate(self, mh, symbol_table):
+        resolved_library_list = []
+        for t_lib in self.l_libraries:
+            if t_lib.value not in symbol_table:
+                mh.config_error(t_lib.location,
+                                "cannot find library")
+            else:
+                resolved_library_list.append(symbol_table[t_lib.value])
+        self.l_libraries = resolved_library_list

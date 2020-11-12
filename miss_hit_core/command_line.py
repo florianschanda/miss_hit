@@ -56,7 +56,12 @@ def create_basic_clp():
     ap.add_argument("files",
                     metavar="FILE|DIR",
                     nargs="*",
-                    help="MATLAB/SIMULINK files or directories to analyze")
+                    help="MATLAB/Simulink files or directories to analyze")
+    ap.add_argument("--entry-point",
+                    metavar="ENTRY_POINT_NAME",
+                    default=None,
+                    help=("Set MATLAB entry point. Required for any advanced"
+                          " static analysis."))
     ap.add_argument("--single",
                     action="store_true",
                     default=False,
@@ -179,22 +184,43 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
     assert isinstance(mh, errors.Message_Handler)
     assert isinstance(back_end, MISS_HIT_Back_End)
 
-    process_fn = functools.partial(dispatch_wp, back_end.process_wp)
-
-    # Loop over files/directories from the command-line and parse
-    # configuration.
-
-    if options.files:
-        item_list = list(options.files)
-    else:
-        item_list = ["."]
-
     try:
-        for item in item_list:
-            if os.path.isdir(item) or os.path.isfile(item):
-                cfg_tree.register_item(mh,
-                                       os.path.abspath(item),
-                                       options)
+        if options.entry_point:
+            # If an entry point is specified, config parsing is quite
+            # different. We go find the project root and from there
+            # build a config tree.
+            item_list = []
+
+            cfg_tree.register_item(mh,
+                                   os.path.abspath("."),
+                                   options)
+            prj_root = cfg_tree.get_root(os.path.abspath("."))
+            cfg_tree.register_item(mh,
+                                   prj_root,
+                                   options)
+            cfg_tree.validate_project_config(mh)
+
+            print("=" * 80)
+            print("= Entry Points are not functional yet")
+            print("=" * 80)
+
+        else:
+            # Without an entry point, we build a minimally sufficient
+            # tree to analyse what we have. We loop over
+            # files/directories from the command-line and parse
+            # configuration.
+
+            if options.files:
+                item_list = list(options.files)
+            else:
+                item_list = ["."]
+
+            for item in item_list:
+                if os.path.isdir(item) or os.path.isfile(item):
+                    cfg_tree.register_item(mh,
+                                           os.path.abspath(item),
+                                           options)
+
         mh.reset_seen()
 
     except errors.Error:
@@ -237,6 +263,8 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
 
     # Resolve all work packages, using single or multi-threading (the
     # default) as demanded.
+
+    process_fn = functools.partial(dispatch_wp, back_end.process_wp)
 
     if options.single:
         for wp in work_list:
