@@ -407,6 +407,9 @@ def main():
     ap.add_argument("--no-summary",
                     default=False,
                     action="store_true")
+    ap.add_argument("--no-clear",
+                    default=False,
+                    action="store_true")
 
     options = ap.parse_args()
 
@@ -431,7 +434,8 @@ def main():
             tests.append({"kind" : kind,
                           "test" : t})
 
-    os.system("coverage erase")
+    if not options.no_clear:
+        os.system("coverage erase")
 
     if options.single:
         for t in tests:
@@ -443,7 +447,10 @@ def main():
             print(res)
 
     os.chdir(TEST_ROOT)
-    os.system("coverage combine")
+    if options.no_clear:
+        os.system("coverage combine --append")
+    else:
+        os.system("coverage combine")
 
     if not options.no_summary:
         os.system("coverage html --rcfile=coverage.cfg")
