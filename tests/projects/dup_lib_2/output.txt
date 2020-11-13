@@ -1,0 +1,15 @@
+=== STYLE ===
+In foo_lib/miss_hit.cfg, line 1
+| library "lib_a" {}
+|         ^^^^^^^ error: duplicate definition, previous definition at bar_lib/miss_hit.cfg:1
+MISS_HIT Style Summary: 3 file(s) analysed, 1 error(s)
+=== LINT ===
+In foo_lib/miss_hit.cfg, line 1
+| library "lib_a" {}
+|         ^^^^^^^ error: duplicate definition, previous definition at bar_lib/miss_hit.cfg:1
+MISS_HIT Lint Summary: 3 file(s) analysed, 1 error(s)
+=== METRICS ===
+In foo_lib/miss_hit.cfg, line 1
+| library "lib_a" {}
+|         ^^^^^^^ error: duplicate definition, previous definition at bar_lib/miss_hit.cfg:1
+MISS_HIT Metric Summary: 3 file(s) analysed, 1 error(s)

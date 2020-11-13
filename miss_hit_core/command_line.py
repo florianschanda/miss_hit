@@ -200,6 +200,17 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                                    options)
             cfg_tree.validate_project_config(mh)
 
+            # Make sure the entry point specified exists
+            n_ep = cfg_tree.get_entry_point(options.entry_point)
+            if n_ep is None:
+                mh.command_line_error("Entry point or library '%s' does "
+                                      "not exist." %
+                                      options.entry_point)
+
+            print("PATH:")
+            for path in n_ep.get_path():
+                print("  %s" % os.path.relpath(path))
+
             print("=" * 80)
             print("= Entry Points are not functional yet")
             print("=" * 80)

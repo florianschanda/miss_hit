@@ -1,0 +1,15 @@
+=== STYLE ===
+In miss_hit.cfg, line 5
+|         "lib_b"
+|         ^^^^^^^ error: cannot find library
+MISS_HIT Style Summary: 2 file(s) analysed, 1 error(s)
+=== LINT ===
+In miss_hit.cfg, line 5
+|         "lib_b"
+|         ^^^^^^^ error: cannot find library
+MISS_HIT Lint Summary: 2 file(s) analysed, 1 error(s)
+=== METRICS ===
+In miss_hit.cfg, line 5
+|         "lib_b"
+|         ^^^^^^^ error: cannot find library
+MISS_HIT Metric Summary: 2 file(s) analysed, 1 error(s)

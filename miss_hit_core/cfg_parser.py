@@ -27,6 +27,7 @@
 # reasoning this is based on the MATLAB lexer:
 #   - increases complexity in the MATLAB lexer a bit, since it adds another
 #     lexing mode
+#   + we can re-use the error raising mechanism
 #   + we don't have to implement a separate lexer
 #   + we don't have to depend on e.g. PLY (which is not a bad thing, I love
 #     PLY, but since we have zero dependencies right now this would be
@@ -54,7 +55,7 @@ class Config_Parser:
         assert isinstance(config_file, str)
 
         self.filename = config_file
-        self.dirname = os.path.dirname(config_file)
+        self.dirname = os.path.dirname(os.path.abspath(config_file))
         self.mh = mh
 
         self.mh.register_file(self.filename)

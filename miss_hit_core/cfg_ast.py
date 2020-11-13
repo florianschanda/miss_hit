@@ -270,23 +270,42 @@ class Octave_Mode(Config_Item):
         config.octave = self.enabled
 
 
-class Library_Declaration(Config_Item):
-    def __init__(self, location, directory, name=None):
+class Project_Directive(Config_Item):
+    def __init__(self, location, directory, name):
         super().__init__()
 
         assert isinstance(location, Location)
         self.location = location
+        # Location if we need to raise errors
 
         assert isinstance(directory, str)
+        assert os.path.isdir(directory)
         self.directory = directory
-        # The directory this library is rooted in
+        # The directory this item is rooted in
 
+        assert isinstance(name, str)
+        self.name = name
+        # Name (also what will be used in the symbol table)
+
+    def evaluate(self, mh, config):
+        raise ICE("logic error - called evaluate() for project directive")
+
+    @abstractmethod
+    def validate(self, mh, symbol_table):
+        pass
+
+    @abstractmethod
+    def get_path(self):
+        # Get the actual PATH for this library. This decides the
+        # search order for user-defined functions and classes.
+        pass
+
+
+class Library_Declaration(Project_Directive):
+    def __init__(self, location, directory, name=None):
         if name is None:
-            self.name = os.path.basename(os.path.abspath(directory))
-        else:
-            assert isinstance(name, str)
-            self.name = name
-        # Name of the library
+            name = os.path.basename(os.path.abspath(directory))
+        super().__init__(location, directory, name)
 
         self.l_paths = []
         self.s_paths = set()
@@ -315,27 +334,25 @@ class Library_Declaration(Config_Item):
         for t_path in self.l_paths:
             print("    Path: %s" % t_path.value)
 
-    def evaluate(self, mh, config):
-        raise ICE("logic error - called evaluate() for project directive")
-
     def validate(self, mh, symbol_table):
         pass
 
+    def get_path(self):
+        if len(self.l_paths) == 0:
+            # We do not have any paths specified, then the only path
+            # is the item's directory.
+            return [self.directory]
 
-class Entrypoint_Declaration(Config_Item):
+        else:
+            # But this can be _overridden_. So instead our path list
+            # is just what is specified.
+            return [os.path.join(self.directory, t_path.value)
+                    for t_path in self.l_paths]
+
+
+class Entrypoint_Declaration(Project_Directive):
     def __init__(self, location, directory, name):
-        super().__init__()
-
-        assert isinstance(location, Location)
-        self.location = location
-
-        assert isinstance(directory, str)
-        self.directory = directory
-        # The directory this entrypoint is rooted in
-
-        assert isinstance(name, str)
-        self.name = name
-        # The name (m-file) that defines the entry-point
+        super().__init__(location, directory, name)
 
         self.l_libraries = []
         self.s_libraries = set()
@@ -358,9 +375,6 @@ class Entrypoint_Declaration(Config_Item):
         for t_lib in self.l_libraries:
             print("    Requires library: %s" % t_lib)
 
-    def evaluate(self, mh, config):
-        raise ICE("logic error - called evaluate() for project directive")
-
     def validate(self, mh, symbol_table):
         resolved_library_list = []
         for t_lib in self.l_libraries:
@@ -370,3 +384,13 @@ class Entrypoint_Declaration(Config_Item):
             else:
                 resolved_library_list.append(symbol_table[t_lib.value])
         self.l_libraries = resolved_library_list
+
+    def get_path(self):
+        # We start with the directory this entry point is in.
+        path = [self.directory]
+
+        # And now add, in order, the librarie's paths
+        for n_lib in self.l_libraries:
+            path += n_lib.get_path()
+
+        return path

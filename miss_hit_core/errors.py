@@ -553,7 +553,9 @@ class Message_Handler:
 
     def config_error(self, location, message):
         # This is for raising errors in config files _only_.
-        self.register_file(location.filename)
+        canonical_filename = location.filename.replace("\\", "/")
+        if canonical_filename not in self.files:
+            self.register_file(location.filename)
         self.error(location, message)
 
     def finalize_file(self, filename):
@@ -575,6 +577,10 @@ class Message_Handler:
 
         # Remove file
         self.unregister_file(canonical_filename)
+
+    def command_line_error(self, message):
+        print("%s: error: %s" % (os.path.basename(sys.argv[0]), message))
+        sys.exit(1)
 
     def summary_and_exit(self):
         files = list(self.messages)

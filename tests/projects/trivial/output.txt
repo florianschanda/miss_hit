@@ -1,14 +1,32 @@
 === STYLE ===
+PATH:
+  .
+  my_library
+  collection/lib_a
+  collection/lib_b
+  other_library
 ================================================================================
 = Entry Points are not functional yet
 ================================================================================
 MISS_HIT Style Summary: 0 file(s) analysed, everything seems fine
 === LINT ===
+PATH:
+  .
+  my_library
+  collection/lib_a
+  collection/lib_b
+  other_library
 ================================================================================
 = Entry Points are not functional yet
 ================================================================================
 MISS_HIT Lint Summary: 0 file(s) analysed, everything seems fine
 === METRICS ===
+PATH:
+  .
+  my_library
+  collection/lib_a
+  collection/lib_b
+  other_library
 ================================================================================
 = Entry Points are not functional yet
 ================================================================================

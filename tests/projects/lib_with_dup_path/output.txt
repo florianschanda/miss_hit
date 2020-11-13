@@ -1,0 +1,30 @@
+=== STYLE ===
+lib_a/miss_hit.cfg: error: config file contains errors
+In lib_a/miss_hit.cfg, line 4
+|         "."
+|         ^^^ error: duplicate path
+In lib_a/miss_hit.cfg, line 6
+| }
+| ^ error: expected valid config entry, found C_KET instead
+lib_a: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Style Summary: 3 file(s) analysed, 4 error(s)
+=== LINT ===
+lib_a/miss_hit.cfg: error: config file contains errors
+In lib_a/miss_hit.cfg, line 4
+|         "."
+|         ^^^ error: duplicate path
+In lib_a/miss_hit.cfg, line 6
+| }
+| ^ error: expected valid config entry, found C_KET instead
+lib_a: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Lint Summary: 3 file(s) analysed, 4 error(s)
+=== METRICS ===
+lib_a/miss_hit.cfg: error: config file contains errors
+In lib_a/miss_hit.cfg, line 4
+|         "."
+|         ^^^ error: duplicate path
+In lib_a/miss_hit.cfg, line 6
+| }
+| ^ error: expected valid config entry, found C_KET instead
+lib_a: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Metric Summary: 3 file(s) analysed, 4 error(s)

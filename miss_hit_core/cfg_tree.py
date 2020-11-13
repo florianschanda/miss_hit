@@ -387,6 +387,13 @@ def validate_project_config(mh):
         n_item.validate(mh, project_names)
 
 
+def get_entry_point(name):
+    # Get library or entry-point with the given name
+    if name not in project_names:
+        return None
+    return project_names[name]
+
+
 ##############################################################################
 # Sanity testing
 #############################################################################
