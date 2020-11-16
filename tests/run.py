@@ -174,6 +174,7 @@ def execute_metric_test(name):
     r = run_command("mh_metric",
                     [".",
                      "--single",
+                     "--portable-html",
                      "--html=metrics.html"])
     html_out = r.stdout
 

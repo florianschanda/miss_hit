@@ -18,9 +18,16 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ## Changelog
 
-
 ### 0.9.14-dev
 
+* Fixed bug in MH Metric HTML reports. When MH Metric was installed
+  via pip, the link to the assets and stylesheetds did not
+  resolve. This is now fixed.
+
+  In addition the new `--portable-html` option for MH Metric will
+  hotlink to the assets from https://florianschanda.github.io/miss_hit
+  instead of trying to use the ones from the locally installed
+  MISS_HIT.
 
 ### 0.9.13
 

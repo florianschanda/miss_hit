@@ -16,7 +16,11 @@ style:
 package:
 	@git clean -xdf
 	@cp setup_gpl.py setup.py
+	@mkdir -p miss_hit_core/resources/assets
+	@cp docs/style.css miss_hit_core/resources
+	@cp docs/assets/* miss_hit_core/resources/assets
 	@python3 setup.py sdist bdist_wheel
+	@rm -r miss_hit_core/resources
 	@cp setup_agpl.py setup.py
 	@python3 setup.py sdist bdist_wheel
 	@rm setup.py

@@ -37,6 +37,7 @@ from miss_hit_core import command_line
 from miss_hit_core import work_package
 from miss_hit_core import config
 
+from miss_hit_core.resources import PORTABLE_RES_URL, RES_URL
 from miss_hit_core.errors import Error, ICE, Message_Handler
 from miss_hit_core.m_ast import *
 from miss_hit_core.m_lexer import MATLAB_Lexer
@@ -566,13 +567,11 @@ def write_text_report(fd,
 
 
 def write_html_report(fd,
-                      fd_name,
+                      portable_html,
                       all_metrics,
                       ticket_summary,
                       worst_offenders):
-    docs_dir = os.path.dirname(os.path.relpath(
-        os.path.join(sys.path[0], "docs", "style.css"),
-        os.path.dirname(os.path.abspath(fd_name)))).replace("\\", "/")
+    base_url = PORTABLE_RES_URL if portable_html else RES_URL
 
     fd.write("<!DOCTYPE html>\n")
     fd.write("<html>\n")
@@ -580,8 +579,8 @@ def write_html_report(fd,
     fd.write("<meta charset=\"UTF-8\">\n")
     # Link style-sheet with a relative path based on where the
     # output report file will be
-    fd.write("<link rel=\"stylesheet\" href=\"file:%s/style.css\">\n" %
-             docs_dir)
+    fd.write("<link rel=\"stylesheet\" href=\"%s/style.css\">\n" %
+             base_url)
     fd.write("<title>MISS_HIT Report</title>\n")
     fd.write("</head>\n")
     fd.write("<body>\n")
@@ -593,7 +592,7 @@ def write_html_report(fd,
     if worst_offenders:
         fd.write("<div class='title'>\n")
         fd.write("<img src='%s/assets/alert-triangle.svg' alt='Warning'>\n" %
-                 docs_dir)
+                 base_url)
         fd.write("<h1>Worst offenders</h1>\n")
         fd.write("</div>\n")
         fd.write("<section>\n")
@@ -667,7 +666,7 @@ def write_html_report(fd,
     if ticket_summary:
         fd.write("<div class='title'>\n")
         fd.write("<img src='%s/assets/external-link.svg' alt='Tickets'>\n" %
-                 docs_dir)
+                 base_url)
         fd.write("<h1>Tickets referenced in justifications</h1>\n")
         fd.write("</div>\n")
         fd.write("<section>\n")
@@ -688,7 +687,7 @@ def write_html_report(fd,
     # Produce full list of metrics
     fd.write("<div class='title'>\n")
     fd.write("<img src='%s/assets/bar-chart-2.svg' alt='Warning'>\n" %
-             docs_dir)
+             base_url)
     fd.write("<h1>Code metrics by file</h1>\n")
     fd.write("</div>\n")
     fd.write("<section>\n")
@@ -1073,7 +1072,7 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
         elif self.options.html:
             with open(self.options.html, "w") as fd:
                 write_html_report(fd,
-                                  self.options.html,
+                                  self.options.portable_html,
                                   self.metrics,
                                   ticket_summary,
                                   worst_offenders)
@@ -1124,6 +1123,13 @@ def main_handler():
         default=None,
         metavar="FILE",
         help=("Write HTML metrics report to the file."))
+
+    clp["output_options"].add_argument(
+        "--portable-html",
+        default=False,
+        action="store_true",
+        help=("Use assets/stylesheets from the web instead of "
+              "the local MISS_HIT install."))
 
     clp["output_options"].add_argument(
         "--json",
