@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    MISS_HIT - MATLAB independent, small & safe, high integrity tools
+  </title>
+</head>
+
+<body>
+  <header>MISS_HIT 0.9.14-dev Command-line Interface</header>
+
+  <main>
+    <div class="section">
+      This document describes the common command-line interface to
+      all <a href="index.html">MISS_HIT</a> tools.
+    </div>
+
+    <div class="title">
+      <img src="assets/terminal.svg" alt="Command-line Interface" />
+      <h1>Command-line Interface</h1>
+    </div>
+
+    <section>
+      <h2>Using MISS_HIT Tools</h2>
+      <div>
+	All MISS_HIT tools (except mh_diff) are built on the same
+	framework, so they share many common aspects. For example
+	the <a href="configuration.html">configuration files</a>, but
+	also the command-line interface.
+      </div>
+
+      <div>
+	All tools have two operating modes:
+	<ul>
+	  <li>Ad-hoc mode (the default)</li>
+	  <li>Project mode</li>
+	</ul>
+      </div>
+
+      <h3>Ad-hoc mode</h3>
+      <div>
+        To analyse one or more files, you don't need to do anything
+        special. Just call the tool and provide the files you want to
+        analyze. For example, this style checks <tt>my_file.m</tt>:
+        <pre>$ mh_style my_file.m</pre>
+
+	You can also provide directories. In this example we use the
+	bug-finder to analyze <tt>other_file.m</tt>, and all
+	applicable files in <tt>some_directory</tt> or its
+	sub-directories:
+        <pre>$ mh_lint other_file.m some_directory</pre>
+
+	Finally, omitting files or directories will analyze all files
+	in the current working directory and all its
+	sub-directories. For example, this produces code metrics for
+	all files:
+        <pre>$ mh_metric</pre>
+      </div>
+
+      <h3>Project mode</h3>
+      <div>
+	Note: project mode is work in progress. Do not yet rely on it
+	working.
+      </div>
+      <div>
+	Project mode is intended for larger projects, or multiple
+	projects in one source tree (possibly sharing some common
+	code). Project mode <i>requires</i> one or
+	more <a href="configuration.html">configuration files</a>,
+	declaring at least one library or entry point. To analyze a
+	project, indicate its name with the <tt>--entry-point</tt>
+	parameter. For example, to produce code metrics for the potato
+	project:
+
+        <pre>$ mh_metric --entry-point=potato_app.m</pre>
+      </div>
+
+      <div>
+	Project mode will also be required for advanced static
+	analysis in mh_lint and mh_bmc (since it defines the search
+	order and location for user-defined functions and classes).
+      </div>
+
+      <div>
+	Project mode is also helpful for users that maintain a large
+	shared cope-base with multiple entry points. A common use case
+	is to produce a code metric report, but only for the bits
+	you're responsible for or are delivering: defining an
+	entry-point or library provides you with a convenient
+	short-hand instead of having to remember each time which
+	directories/files you're responsible for.
+      </div>
+
+      <h3>Common options</h3>
+      <div>
+	All MISS_HIT tools (except mh_diff) have these options. Some
+	MISS_HIT tools have command-line additional options, which are
+	described in the relevant tool user manuals.
+      </div>
+
+      <h4>--version</h4>
+      <div>
+	Displays tool version and quits.
+      </div>
+
+      <h4>FILE | DIRECTORY</h4>
+      <div>
+	Can be specified more than once. Causes tool to analyze the
+	given file or directory. If not given, causes the tool will
+	analyze the entire working directory and all its
+	sub-directories.
+      </div>
+
+      <h4>--entry-point=NAME</h4>
+      <div>
+	Specifies an entry point (as declared in a configuration
+	file). When combined with additional file or directory
+	arguments, the tool analyzes only that sub-set of the
+	specified entry-point.
+      </div>
+
+      <h4>--single</h4>
+      <div>
+	By default MISS_HIT uses multi-threaded analysis, which for
+	large projects can significantly speed up analysis time. Using
+	this option turns off this feature. This can be useful for
+	debugging.
+      </div>
+
+      <div>
+	Note: you do <i>not</i> need to use this option to get a
+	predictable report or error messages! Messages and reports are
+	always sorted.
+      </div>
+
+      <h4>--ignore-config</h4>
+      <div>
+	Do not attempt to parse configuration files.
+      </div>
+
+      <h4>--brief</h4>
+      <div>
+	By default error messages come with a bit of context to help
+	you identify the issue. For example:
+<pre>
+In add_one.m, line 3
+|     rv = x + 1;
+|            ^ check (medium): operation saturates for some inputs
+In add_one.m, line 3
+|     rv = x + 1;
+|            ^ info: counter-example trace: x = 2147483647
+</pre>
+	Using the brief option trims this down to one line per
+	message, as shown below. This is especially useful for
+        integration into IDEs.
+<pre>
+add_one.m:3:11: check (medium): operation saturates for some inputs
+add_one.m:3:11: info: counter-example trace: x = 2147483647
+</pre>
+      </div>
+
+      <h4>--octave</h4>
+      <div>
+	By default, MISS_HIT assumes a recent version of MATLAB. This
+	option adds some support for Octave, but please note that this
+	is quite limited. For now only the <tt>#</tt> comments are
+	supported.
+      </div>
+      <div>
+	Please
+	see <a href="https://github.com/florianschanda/miss_hit/issues/43">issue
+	  #43</a> for outstanding features.
+      </div>
+
+      <h4>--ignore-pragmas</h4>
+      <div>
+	Ignores the special <a href="pragmas.html">pragmas</a> that
+	MISS_HIT supports.
+      </div>
+
+      <h4>--debug-show-path</h4>
+      <div>
+	Debug/developer option. This displays the search PATH for
+	resolving user-defined functions and classes.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Content &copy; 2020 Florian Schanda<br>
+    Style &copy; 2019-2020 Alina Boboc<br>
+    MISS_HIT is licensed under the GPLv3
+  </footer>
+</body>
+
+</html>
