@@ -1,0 +1,34 @@
+=== STYLE ===
+MISS_HIT Style Summary: 1 file(s) analysed, everything seems fine
+=== LINT ===
+MISS_HIT Lint Summary: 1 file(s) analysed, everything seems fine
+=== METRICS ===
+=== Code metric by file:
+
+* Code metrics for file /home/flosch/miss_hit/tests/projects/only_analyze_stuff_on_path/dir_a/good.m:
+  File lines: 4
+
+  Code metrics for function good:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric 'File lines':
+  1. 4 (/home/flosch/miss_hit/tests/projects/only_analyze_stuff_on_path/dir_a/good.m)
+
+* Function metric 'Cyclomatic complexity':
+  1. 1 (/home/flosch/miss_hit/tests/projects/only_analyze_stuff_on_path/dir_a/good.m, function good)
+
+* Function metric 'Function lines':
+  1. 3 (/home/flosch/miss_hit/tests/projects/only_analyze_stuff_on_path/dir_a/good.m, function good)
+
+* Function metric 'Number of paths':
+  1. 1 (/home/flosch/miss_hit/tests/projects/only_analyze_stuff_on_path/dir_a/good.m, function good)
+
+MISS_HIT Metric Summary: 1 file(s) analysed, everything seems fine

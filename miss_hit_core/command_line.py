@@ -101,6 +101,12 @@ def create_basic_clp():
     debug_options = ap.add_argument_group("debugging options")
     rv["debug_options"] = debug_options
 
+    debug_options.add_argument("--debug-show-path",
+                               default=False,
+                               action="store_true",
+                               help=("Show PATH used for function/class"
+                                     " searching."))
+
     return rv
 
 
@@ -113,7 +119,8 @@ def parse_args(clp):
 
     # False alarm from pylint
     # pylint: disable=no-member
-    if not options.brief and sys.stdout.encoding.lower() != "utf-8":
+    if (not options.brief and
+        sys.stdout.encoding.lower() != "utf-8"):  # pragma: no cover
         print("WARNING: It looks like your environment is not set up quite")
         print("         right since python will encode to %s on stdout." %
               sys.stdout.encoding)
@@ -189,8 +196,6 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
             # If an entry point is specified, config parsing is quite
             # different. We go find the project root and from there
             # build a config tree.
-            item_list = []
-
             cfg_tree.register_item(mh,
                                    os.path.abspath("."),
                                    options)
@@ -207,13 +212,30 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                                       "not exist." %
                                       options.entry_point)
 
-            print("PATH:")
-            for path in n_ep.get_path():
-                print("  %s" % os.path.relpath(path))
+            if options.debug_show_path:
+                print("Using the following PATH:")
+                for path in n_ep.get_path():
+                    print("> %s" % os.path.relpath(path))
 
-            print("=" * 80)
-            print("= Entry Points are not functional yet")
-            print("=" * 80)
+            item_list = n_ep.get_path()
+
+            # If the user has supplied files/dirs to analyze, we only
+            # do that if they are part of _this_ entrypoint.
+            if options.files:
+                items_in_path = set()
+                for path_root in item_list:
+                    for path, _, files in os.walk(path_root):
+                        items_in_path.add(os.path.normpath(path))
+                        for f in files:
+                            items_in_path.add(
+                                os.path.normpath(os.path.join(path, f)))
+
+                item_list = list(options.files)
+                for item in item_list:
+                    if os.path.abspath(item) not in items_in_path:
+                        mh.command_line_error("'%s' is not part of "
+                                              "entry point %s" %
+                                              (item, options.entry_point))
 
         else:
             # Without an entry point, we build a minimally sufficient

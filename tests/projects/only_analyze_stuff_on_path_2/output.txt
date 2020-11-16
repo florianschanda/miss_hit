@@ -1,0 +1,6 @@
+=== STYLE ===
+mh_style: error: 'dir_b' is not part of entry point potato
+=== LINT ===
+mh_lint: error: 'dir_b' is not part of entry point potato
+=== METRICS ===
+mh_metric: error: 'dir_b' is not part of entry point potato
