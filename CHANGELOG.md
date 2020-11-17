@@ -39,6 +39,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   will be the basis for all advanced static analysis; since it
   provides the equivalent of path or matlabpath to the MISS_HIT tools.
 
+* New documentation for the
+  [common command-line interface](https://florianschanda.github.io/miss_hit/cli.html), which is shared between all MISS_HIT tools (except for MH Diff).
+
 * Fixed bug in MH Metric HTML reports. When MH Metric was installed
   via pip, the link to the assets and stylesheetds did not
   resolve. This is now fixed.
