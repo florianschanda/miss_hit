@@ -403,9 +403,12 @@ class Config_Parser:
             if self.peek("IDENTIFIER", "libraries"):
                 for t_lib in self.parse_lib_dependencies():
                     rv.add_lib_dependency(self.mh, t_lib)
+            elif self.peek("IDENTIFIER", "paths"):
+                for t_path in self.parse_lib_paths():
+                    rv.add_path(self.mh, t_path)
             else:
                 self.mh.error(self.nt.location,
-                              "expected library dependency")
+                              "expected libraries|paths property")
 
         self.match("C_KET")
         return rv
@@ -429,7 +432,7 @@ class Config_Parser:
                     rv.add_path(self.mh, t_path)
             else:
                 self.mh.error(self.nt.location,
-                              "expected library dependency")
+                              "expected paths property")
 
         self.match("C_KET")
         return rv

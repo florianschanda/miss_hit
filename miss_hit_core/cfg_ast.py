@@ -271,6 +271,51 @@ class Octave_Mode(Config_Item):
         config.octave = self.enabled
 
 
+class Path_List:
+    def __init__(self, root):
+        assert isinstance(root, str)
+        self.root = root
+
+        self.s_paths = set()
+        self.l_paths = []
+
+    def add_path(self, mh, t_path):
+        assert isinstance(t_path, MATLAB_Token)
+
+        names = [os.path.relpath(path, self.root)
+                 for path in glob(os.path.join(self.root,
+                                               t_path.value))]
+
+        if names:
+            for name in sorted(names):
+                if name in self.s_paths:
+                    mh.config_error(t_path.location,
+                                    "duplicate/overlapping path %s" % name)
+                elif not os.path.isdir(os.path.join(self.root, name)):
+                    mh.config_error(t_path.location,
+                                    "%s is not a directory" % name)
+
+                self.s_paths.add(name)
+                self.l_paths.append(name)
+        else:
+            # Python docs say "possibly empty list", not sure how
+            # though. If you don't match, it seems to return the
+            # wild-card verbatim.
+            mh.config_error(t_path.location,
+                            "does not exist")
+
+    def get_path(self):
+        if self.l_paths:
+            # Our path list is just what is specified, in order.
+            return [os.path.join(self.root, path)
+                    for path in self.l_paths]
+
+        else:
+            # If we do not have any paths specified, so the only path
+            # is the item's root.
+            return [self.root]
+
+
 class Project_Directive(Config_Item):
     def __init__(self, location, directory, name):
         super().__init__()
@@ -308,65 +353,40 @@ class Library_Declaration(Project_Directive):
             name = os.path.basename(os.path.abspath(directory))
         super().__init__(location, directory, name)
 
-        self.s_paths = set()
+        self.path_list = Path_List(directory)
 
     def __str__(self):
         return "Library(%s)" % self.name
 
     def add_path(self, mh, t_path):
-        assert isinstance(t_path, MATLAB_Token)
-
-        names = [os.path.relpath(path, self.directory)
-                 for path in glob(os.path.join(self.directory,
-                                               t_path.value))]
-
-        if names:
-            for name in names:
-                if name in self.s_paths:
-                    mh.config_error(t_path.location,
-                                    "duplicate/overlapping path %s" % name)
-                elif not os.path.isdir(os.path.join(self.directory, name)):
-                    mh.config_error(t_path.location,
-                                    "%s is not a directory" % name)
-
-                self.s_paths.add(name)
-        else:
-            # Python docs say "possibly empty list", not sure how
-            # though. If you don't match, it seems to return the
-            # wild-card verbatim.
-            mh.config_error(t_path.location,
-                            "does not exist")
+        self.path_list.add_path(mh, t_path)
 
     def dump(self):
         print("  Library Declaration (%s)" % self.name)
-        for t_path in sorted(self.s_paths):
+        for t_path in self.path_list.l_paths:
             print("    Path: %s" % t_path.value)
 
     def validate(self, mh, symbol_table):
         pass
 
     def get_path(self):
-        if len(self.s_paths) == 0:
-            # We do not have any paths specified, then the only path
-            # is the item's directory.
-            return [self.directory]
-
-        else:
-            # But this can be _overridden_. So instead our path list
-            # is just what is specified.
-            return [os.path.join(self.directory, path)
-                    for path in sorted(self.s_paths)]
+        return self.path_list.get_path()
 
 
 class Entrypoint_Declaration(Project_Directive):
     def __init__(self, location, directory, name):
         super().__init__(location, directory, name)
 
+        self.path_list = Path_List(directory)
+
         self.l_libraries = []
         self.s_libraries = set()
         # Libraries that this entry-point depends on. Initially this
         # is a list of tokens, but after validation is replaced with a
         # list of Library_Declaration nodes.
+
+    def add_path(self, mh, t_path):
+        self.path_list.add_path(mh, t_path)
 
     def add_lib_dependency(self, mh, t_lib):
         assert isinstance(t_lib, MATLAB_Token)
@@ -380,6 +400,8 @@ class Entrypoint_Declaration(Project_Directive):
 
     def dump(self):
         print("  Entrypoint Declaration (%s)" % self.name)
+        for t_path in self.path_list.l_paths:
+            print("    Path: %s" % t_path.value)
         for t_lib in self.l_libraries:
             print("    Requires library: %s" % t_lib)
 
@@ -395,9 +417,9 @@ class Entrypoint_Declaration(Project_Directive):
 
     def get_path(self):
         # We start with the directory this entry point is in.
-        path = [self.directory]
+        path = self.path_list.get_path()
 
-        # And now add, in order, the librarie's paths
+        # And now add, in order, the libraries' paths
         for n_lib in self.l_libraries:
             path += n_lib.get_path()
 

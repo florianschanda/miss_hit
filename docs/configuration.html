@@ -207,9 +207,12 @@ library "Common" {
       <div>
 	Next, we want to declare our two programs. To do this
 	for <tt>kitten</tt> program, we create an entry-point
-	in <tt>components/swc/kitten/src/miss_hit.cfg</tt>:
+	in <tt>components/swc/kitten/miss_hit.cfg</tt>:
 <pre>
 entrypoint "Kitten_SWC" {
+  paths {
+    "src"
+  }
   libraries {
     "Common"
   }
@@ -593,9 +596,12 @@ ENTRYPOINT_PROPERTIES ::= '{' [ ENTRYPOINT_PROPERTY { ',' ENTRYPOINT_PROPERTY } 
 OPTIONAL_STRING_LIST ::= [ STRING_LIST ]
 STRING_LIST ::= STRING { ',' STRING }
 
-LIBRARY_PROPERTY ::= paths '{' OPTIONAL_STRING_LIST '}
+PATH_LIST ::= paths '{' OPTIONAL_STRING_LIST '}
+
+LIBRARY_PROPERTY ::= PATH_LIST
 
 ENTRYPOINT_PROPERTY ::= libraries '{' OPTIONAL_STRING_LIST '}'
+                      | PATH_LIST
 </pre>
       </div>
 
