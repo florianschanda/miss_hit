@@ -490,7 +490,7 @@ root
 	from <tt>root</tt> is entirely ignored.
       </div>
 
-      <h3>Projects</h3>
+      <h3><a name="projects">Projects</a></h3>
       <div>
 	Grammar:
 <pre>
@@ -518,16 +518,27 @@ ENTRYPOINT_PROPERTY ::= libraries '{' OPTIONAL_STRING_LIST '}'
 	functions and classes. If no name is given, the name of the
 	library defaults to the directory name. By default only the
 	directory containing the configuration directive is searched,
-	but this can be overridden by a path list.
+	but this can be overridden by a path list. The items in the
+	path list may contain wild-cards.
       </div>
 
       <div>
-	An entrypoint declaration names a matlab function file, which
-	will be considered an entrypoint for the purpose of static
-	analysis. An optional list of libraries can be provided that
-	the function depends on.
+	An entrypoint declares a program or system, which may depend
+	on a list of libraries.
       </div>
 
+      <h4>Future plans</h4>
+      <div>
+	In the future an entry point will also be able to name a
+	specific function or member function that serves as the main
+	function for this system, allowing static analysis to detect
+	e.g. unused code.
+      </div>
+
+      <div>
+	Another planned feature are "global" libraries that are
+	automatically a dependency of every library or entry point.
+      </div>
     </section>
 
   </main>

@@ -2,7 +2,7 @@
 lib_a/miss_hit.cfg: error: config file contains errors
 In lib_a/miss_hit.cfg, line 3
 |         "potato"
-|         ^^^^^^^^ error: is not a directory
+|         ^^^^^^^^ error: does not exist
 In lib_a/miss_hit.cfg, line 5
 | }
 | ^ error: expected valid config entry, found C_KET instead
@@ -12,7 +12,7 @@ MISS_HIT Style Summary: 3 file(s) analysed, 4 error(s)
 lib_a/miss_hit.cfg: error: config file contains errors
 In lib_a/miss_hit.cfg, line 3
 |         "potato"
-|         ^^^^^^^^ error: is not a directory
+|         ^^^^^^^^ error: does not exist
 In lib_a/miss_hit.cfg, line 5
 | }
 | ^ error: expected valid config entry, found C_KET instead
@@ -22,7 +22,7 @@ MISS_HIT Lint Summary: 3 file(s) analysed, 4 error(s)
 lib_a/miss_hit.cfg: error: config file contains errors
 In lib_a/miss_hit.cfg, line 3
 |         "potato"
-|         ^^^^^^^^ error: is not a directory
+|         ^^^^^^^^ error: does not exist
 In lib_a/miss_hit.cfg, line 5
 | }
 | ^ error: expected valid config entry, found C_KET instead

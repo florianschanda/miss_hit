@@ -1,0 +1,30 @@
+=== STYLE ===
+miss_hit.cfg: error: config file contains errors
+In miss_hit.cfg, line 3
+|     "foo*"
+|     ^^^^^^ error: does not exist
+In miss_hit.cfg, line 5
+| }
+| ^ error: expected valid config entry, found C_KET instead
+.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Style Summary: 2 file(s) analysed, 4 error(s)
+=== LINT ===
+miss_hit.cfg: error: config file contains errors
+In miss_hit.cfg, line 3
+|     "foo*"
+|     ^^^^^^ error: does not exist
+In miss_hit.cfg, line 5
+| }
+| ^ error: expected valid config entry, found C_KET instead
+.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Lint Summary: 2 file(s) analysed, 4 error(s)
+=== METRICS ===
+miss_hit.cfg: error: config file contains errors
+In miss_hit.cfg, line 3
+|     "foo*"
+|     ^^^^^^ error: does not exist
+In miss_hit.cfg, line 5
+| }
+| ^ error: expected valid config entry, found C_KET instead
+.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Metric Summary: 2 file(s) analysed, 4 error(s)

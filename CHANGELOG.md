@@ -20,6 +20,24 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.14-dev
 
+* Support for projects. This is a major new feature for all MISS_HIT
+  tools, intended to make it easier to analyse specific programs in
+  large shared code repositories. For example instead of having to do:
+  ```
+  $ mh_lint shared_lib_1 shared_lib_2 my_potato_app my_potato_lib
+  ```
+  You can now instead simply do:
+  ```
+  $ mh_lint --entry-point=PotatoApp
+  ```
+
+  You can set up libraries and entrypoints and the dependencies
+  between them with new [configuration directives](https://florianschanda.github.io/miss_hit/configuration.html#projects).
+
+  Currently the functionality is limited, however in the future this
+  will be the basis for all advanced static analysis; since it
+  provides the equivalent of path or matlabpath to the MISS_HIT tools.
+
 * Fixed bug in MH Metric HTML reports. When MH Metric was installed
   via pip, the link to the assets and stylesheetds did not
   resolve. This is now fixed.
@@ -28,6 +46,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   hotlink to the assets from https://florianschanda.github.io/miss_hit
   instead of trying to use the ones from the locally installed
   MISS_HIT.
+
 
 ### 0.9.13
 

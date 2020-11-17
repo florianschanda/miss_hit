@@ -26,6 +26,7 @@
 # Tiny AST for the MISS_HIT configuration files
 
 import os
+from glob import glob
 
 from abc import ABCMeta, abstractmethod
 
@@ -307,11 +308,7 @@ class Library_Declaration(Project_Directive):
             name = os.path.basename(os.path.abspath(directory))
         super().__init__(location, directory, name)
 
-        self.l_paths = []
         self.s_paths = set()
-        # List of string tokens of paths to search. Tokens, because we
-        # might need to later complain about things not existing, so
-        # we do need an error location.
 
     def __str__(self):
         return "Library(%s)" % self.name
@@ -319,26 +316,37 @@ class Library_Declaration(Project_Directive):
     def add_path(self, mh, t_path):
         assert isinstance(t_path, MATLAB_Token)
 
-        if t_path.value in self.s_paths:
-            mh.config_error(t_path.location,
-                            "duplicate path")
-        elif not os.path.isdir(os.path.join(self.directory, t_path.value)):
-            mh.config_error(t_path.location,
-                            "is not a directory")
+        names = [os.path.relpath(path, self.directory)
+                 for path in glob(os.path.join(self.directory,
+                                               t_path.value))]
 
-        self.s_paths.add(t_path.value)
-        self.l_paths.append(t_path)
+        if names:
+            for name in names:
+                if name in self.s_paths:
+                    mh.config_error(t_path.location,
+                                    "duplicate/overlapping path %s" % name)
+                elif not os.path.isdir(os.path.join(self.directory, name)):
+                    mh.config_error(t_path.location,
+                                    "%s is not a directory" % name)
+
+                self.s_paths.add(name)
+        else:
+            # Python docs say "possibly empty list", not sure how
+            # though. If you don't match, it seems to return the
+            # wild-card verbatim.
+            mh.config_error(t_path.location,
+                            "does not exist")
 
     def dump(self):
         print("  Library Declaration (%s)" % self.name)
-        for t_path in self.l_paths:
+        for t_path in sorted(self.s_paths):
             print("    Path: %s" % t_path.value)
 
     def validate(self, mh, symbol_table):
         pass
 
     def get_path(self):
-        if len(self.l_paths) == 0:
+        if len(self.s_paths) == 0:
             # We do not have any paths specified, then the only path
             # is the item's directory.
             return [self.directory]
@@ -346,8 +354,8 @@ class Library_Declaration(Project_Directive):
         else:
             # But this can be _overridden_. So instead our path list
             # is just what is specified.
-            return [os.path.join(self.directory, t_path.value)
-                    for t_path in self.l_paths]
+            return [os.path.join(self.directory, path)
+                    for path in sorted(self.s_paths)]
 
 
 class Entrypoint_Declaration(Project_Directive):
