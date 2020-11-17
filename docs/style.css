@@ -73,8 +73,18 @@ h3 a:hover {
 }
 
 h4 {
+    color: black;
     border-left: 0.3em solid cornflowerblue;
     padding-left: 0.2em;
+}
+
+h4 a {
+    color: black;
+}
+
+h4 a:hover {
+    background-color: white;
+    border-radius: 0px;
 }
 
 a {

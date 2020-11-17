@@ -145,6 +145,93 @@ enable: true
     </section>
 
     <section>
+      <h2><a name="shared-code">Dealing with multiple programs and shared code</a></h2>
+
+      <div>
+	MISS_HIT has special support for large shared repositories
+	with multiple systems and shared code. While tools like MH
+	Style will likely be run on <i>all</i> code, all the time,
+	this does not make sense for other tools like MH
+	Metric. Instead here you will likely want to create multiple
+	reports, one for each component.
+      </div>
+
+      <div>
+	Consider for example a repository with the following layout:
+<pre>
+  /
+    components/
+      swc/
+        potato/
+          src/
+          test/
+        kitten/
+          src/
+          test/
+      libs/
+        common/
+          src/
+          test/
+</pre>
+      </div>
+
+      <div>
+	Both the <tt>potato</tt> and <tt>kitten</tt> program depend on
+	the <tt>common</tt> code. If I want to produce the code metric
+	report for just <tt>kitten</tt>, I would have to carefully
+	name each directory:
+	<pre>mh_metric components/swc/potato/src components/libs/common/src</pre>
+      </div>
+
+      <div>
+	With some configuration we can make this easier. First, we can
+	define a library by adding a config file
+	in <tt>components/libs/common/miss_hit.cfg</tt>:
+<pre>
+library "Common" {
+  paths {
+    "src"
+  }
+}
+</pre>
+      </div>
+
+      <div>
+	What this does is create a globally available library
+	called <tt>Common</tt>. It's deliverable code is
+	in <tt>src</tt>, but <tt>test</tt> is not. This is identical
+	to how you would set up your matlabpath (in MATLAB) or path
+	(in Octave).
+      </div>
+
+      <div>
+	Next, we want to declare our two programs. To do this
+	for <tt>kitten</tt> program, we create an entry-point
+	in <tt>components/swc/kitten/src/miss_hit.cfg</tt>:
+<pre>
+entrypoint "Kitten_SWC" {
+  libraries {
+    "Common"
+  }
+}
+</pre>
+      </div>
+
+      <div>
+	You can now analyze <tt>kitten</tt> anywhere by using
+	the <a href="cli.html#entry-point">entry-point</a>
+	command-line option:
+	<pre>mh_metric --entry-point=Kitten_SWC</pre>
+      </div>
+
+      <div>
+	Note: Currently this feature is just a nice shot-cut to
+	existing functionality. In the future, this will be required
+	for performing any kind of advanced static analysis.
+      </div>
+    </section>
+
+    <section>
       <h2><a name="cicd">Integrating MISS_HIT into CI/CD</a></h2>
 
       <h3>Analyze early and often</h3>

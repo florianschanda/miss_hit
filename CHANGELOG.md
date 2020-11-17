@@ -20,9 +20,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.14-dev
 
-* Support for projects. This is a major new feature for all MISS_HIT
-  tools, intended to make it easier to analyse specific programs in
-  large shared code repositories. For example instead of having to do:
+* Support for [projects](https://florianschanda.github.io/miss_hit/configuration.html#shared-code).
+  This is a major new feature for all MISS_HIT tools, intended to make it
+  easier to analyse specific programs in large shared code repositories.
+  For example instead of having to do:
   ```
   $ mh_lint shared_lib_1 shared_lib_2 my_potato_app my_potato_lib
   ```
