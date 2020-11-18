@@ -179,6 +179,10 @@ class Regex_Style_Configuration(String_Style_Configuration):
     pass
 
 
+class Encoding_Style_Configuration(String_Style_Configuration):
+    pass
+
+
 class Set_Style_Configuration(Style_Configuration):
     def __init__(self, description):
         super().__init__(description, set())
@@ -360,6 +364,18 @@ STYLE_RULES = {
     "implicit_shortcircuit": Style_Rule(
         "Complain about implicit short-circuit operations in"
         " if or while guards"),
+
+    "unicode": Style_Rule(
+        "Complain about non-conforming characters in source files",
+        {
+            "enforce_encoding": Encoding_Style_Configuration(
+                "Override the encoding to enforence, by default ASCII",
+                default = "ascii"),
+            "enforce_encoding_comments" : Boolean_Style_Configuration(
+                ("Also check comments/continuations for conforming to "
+                 "the encoding"),
+                default = True)
+        }),
 }
 
 STYLE_CONFIGURATION = {

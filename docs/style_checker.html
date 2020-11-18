@@ -813,6 +813,40 @@ a = [1, 0;
         </ul>
       </div>
 
+      <h4>Non-ASCII characters in source ("unicode")</h4>
+      <div>
+	This rule enforces source files to only contain ASCII
+	characters. This is generally a good idea, because allowing
+	non-ascii characters creates all sorts of annoying portability
+	issues.
+      </div>
+
+      <div>
+        Configuration parameters:
+        <ul>
+          <li>
+            <b>enforce_encoding</b>: A string that can
+            be <a href="https://docs.python.org/3/library/codecs.html#standard-encodings">any
+            valid Python encoding</a> to enforce. By default this is
+            "ASCII".
+          </li>
+          <li>
+            <b>enforce_encoding_comments</b>: A boolean, by default
+            true. This controls if the rule also checks comments and
+            continuations, not just program text.
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        Note: currently nothing can be auto-fixed here, but I plan to
+        add support to automatically convert from one valid encoding
+        to another. However even then, characters that are outside the
+        valid set will never be auto-fixed (e.g: it is impossible to
+        decide if &auml; should be translated as a or ae or something
+        else entirely).
+      </div>
+
       <!-- HOOK: RULES -->
       <h4>Maximum file length ("file_length")</h4>
       <div>

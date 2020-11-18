@@ -142,6 +142,20 @@
 	Do not attempt to parse configuration files.
       </div>
 
+      <h4>--input-encoding</h4>
+      <div>
+	By default this is cp1252. This option can be used to override
+	the input encoding we use to parse m files. Note that this is
+	not applicable to Simulink models, since they contain the
+	correct encoding to use.
+      </div>
+
+      <div>
+	You can specify
+	any <a href="https://docs.python.org/3/library/codecs.html#standard-encodings">valid
+	Python input encoding</a> here.
+      </div>
+
       <h4>--brief</h4>
       <div>
 	By default error messages come with a bit of context to help

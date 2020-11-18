@@ -45,6 +45,7 @@ from miss_hit_core.config import (STYLE_RULES, STYLE_CONFIGURATION,
                                   Boolean_Style_Configuration,
                                   Integer_Style_Configuration,
                                   Regex_Style_Configuration,
+                                  Encoding_Style_Configuration,
                                   Set_Style_Configuration)
 from miss_hit_core.cfg_ast import *
 
@@ -218,6 +219,17 @@ class Config_Parser:
 
         return value
 
+    def parse_encoding(self):
+        value = self.parse_string()
+
+        # We can use the Python regex module to sanity check it
+        try:
+            "potato".encode(value)
+        except LookupError:
+            self.mh.error(self.ct.location, "not a valid encoding")
+
+        return value
+
     def parse_boolean(self):
         if self.peek("NUMBER"):
             value = self.parse_integer_number()
@@ -304,6 +316,9 @@ class Config_Parser:
 
         elif isinstance(cfg_item, Regex_Style_Configuration):
             value = self.parse_regex()
+
+        elif isinstance(cfg_item, Encoding_Style_Configuration):
+            value = self.parse_encoding()
 
         elif isinstance(cfg_item, Set_Style_Configuration):
             value = self.parse_string()

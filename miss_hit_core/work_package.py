@@ -100,13 +100,22 @@ class MATLAB_File_WP(MATLAB_Work_Package):
             fd.write(content)
 
     def get_content(self):
+        # First we try to read the file with the suggested encoding.
         try:
             with open(self.filename, "r", encoding=self.encoding) as fd:
                 return fd.read()
         except UnicodeDecodeError:
             pass
 
-        if self.encoding != "utf-8":
+        if self.encoding.lower() == "utf-8":
+            # If that was UTF-8, we give up and ask for help.
+            self.mh.error(
+                Location(self.filename),
+                "encoding error, please specify correct encoding"
+                " on using --input-encoding",)
+        else:
+            # Otherwise, we issue a warning, and try once more with
+            # UTF-8.
             self.mh.warning(
                 Location(self.filename),
                 "encoding error for %s, assuming utf-8 instead" %
@@ -117,8 +126,10 @@ class MATLAB_File_WP(MATLAB_Work_Package):
             with open(self.filename, "r", encoding=self.encoding) as fd:
                 return fd.read()
         except UnicodeDecodeError:
-            self.mh.error(Location(self.filename),
-                          "cannot read file, encoding error")
+            self.mh.error(
+                Location(self.filename),
+                "encoding error, please specify correct encoding"
+                " on using --input-encoding",)
 
 
 class Embedded_MATLAB_WP(MATLAB_Work_Package):

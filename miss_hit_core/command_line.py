@@ -71,6 +71,10 @@ def create_basic_clp():
                     default=False,
                     help=("Ignore all %s files." %
                           " or ".join(cfg_tree.CONFIG_FILENAMES)))
+    ap.add_argument("--input-encoding",
+                    default="cp1252",
+                    help=("By default we use cp1252 to read m files, but this"
+                          " can be changed to any valid encoding."))
 
     output_options = ap.add_argument_group("output options")
     rv["output_options"] = output_options
@@ -132,6 +136,11 @@ def parse_args(clp):
     for item in options.files:
         if not (os.path.isdir(item) or os.path.isfile(item)):
             clp["ap"].error("%s is neither a file nor directory" % item)
+
+    try:
+        "potato".encode(options.input_encoding)
+    except LookupError:
+        clp["ap"].error("invalid encoding '%s'" % options.input_encoding)
 
     return options
 
@@ -281,13 +290,13 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                                             process_slx):
                         work_list.append(
                             work_package.create(os.path.join(path, f),
-                                                "cp1252",
+                                                options.input_encoding,
                                                 mh,
                                                 options, extra_options))
 
         elif item.endswith(".m") or (item.endswith(".slx") and process_slx):
             work_list.append(work_package.create(item,
-                                                 "cp1252",
+                                                 options.input_encoding,
                                                  mh,
                                                  options, extra_options))
 

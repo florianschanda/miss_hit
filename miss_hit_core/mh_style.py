@@ -29,6 +29,7 @@
 
 import os
 import re
+from copy import copy
 
 from abc import ABCMeta, abstractmethod
 
@@ -874,6 +875,20 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
             bracket_stack.append(token)
         elif token.kind in ("M_KET", "C_KET", "KET"):
             bracket_stack.pop()
+
+        # Finally, check for unicode problems.
+        if cfg.active("unicode") and \
+           (cfg.style_config["enforce_encoding_comments"] or
+            token.kind not in ("COMMENT", "CONTINUATION")):
+            try:
+                token.raw_text.encode(cfg.style_config["enforce_encoding"])
+            except UnicodeEncodeError as uee:
+                new_location = copy(token.location)
+                new_location.col_start = token.location.col_start + uee.start
+                new_location.col_end = token.location.col_start + (uee.end - 1)
+                mh.style_issue(new_location,
+                               "non-%s character in source" %
+                               cfg.style_config["enforce_encoding"])
 
 
 class MH_Style_Result(work_package.Result):

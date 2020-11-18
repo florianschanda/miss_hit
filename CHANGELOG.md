@@ -42,6 +42,22 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * New documentation for the
   [common command-line interface](https://florianschanda.github.io/miss_hit/cli.html), which is shared between all MISS_HIT tools (except for MH Diff).
 
+* New switch for all tools `--input-encoding` (which is by default
+  cp1252). You can use this to request a different input encoding to
+  be used when reading files.
+
+  Note: this is not applicable for Simulink models, since Simulink
+  models actually specify the input encoding to be used.
+
+* MH Style has a new rule `unicode` and two new configuration options
+  `enforce_encoding` and `enforce_encoding_comments` to make sure
+  source files only contain ASCII characters.
+
+  You can configure the encoding enforced using `enforce_encoding` to
+  e.g. `iso8859_15`, if that is what you want instead; and you can
+  optionally allow comments and line continuations to contain
+  anything.
+
 * Fixed bug in MH Metric HTML reports. When MH Metric was installed
   via pip, the link to the assets and stylesheetds did not
   resolve. This is now fixed.
@@ -101,7 +117,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   trailing semicolons or newlines were present in a matrix or
   cell. Previously a syntax error was issued.
 
-* MH Style has a New rule `spurious_row_semicolon` which removes
+* MH Style has a new rule `spurious_row_semicolon` which removes
   useless semicolons from matrix or cell expressions.
 
 * MH Style now aligns any continuations in a more sensible way if the
@@ -163,12 +179,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   annotation blocks were always OK, but multi-line annotations were
   considered continuations (and thus indented in an unnatural way).
 
-* MH Style has a new rule "spurious_row_comma" which complains about
+* MH Style has a new rule `spurious_row_comma` which complains about
   trailing or starting commas in matrix and cell expressions (for
   example: `[,1,2,]`)
 
-* MH Style has a new rule "whitespace_semicolon" which does the same
-  as "whitespace_comma", but for semicolons; this means one-line
+* MH Style has a new rule `whitespace_semicolon` which does the same
+  as `whitespace_comma`, but for semicolons; this means one-line
   matrix expressions are now nicely formatted.
 
 * MH Style should now only print `[fixed]` for problems that really
