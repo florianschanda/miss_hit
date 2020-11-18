@@ -567,24 +567,28 @@ def write_text_report(fd,
 
 
 def write_html_report(fd,
+                      entry_point,
                       portable_html,
                       all_metrics,
                       ticket_summary,
                       worst_offenders):
     base_url = PORTABLE_RES_URL if portable_html else RES_URL
 
+    if entry_point:
+        report_title = "MISS_HIT Report for %s" % entry_point
+    else:
+        report_title = "MISS_HIT Report"
+
     fd.write("<!DOCTYPE html>\n")
     fd.write("<html>\n")
     fd.write("<head>\n")
     fd.write("<meta charset=\"UTF-8\">\n")
-    # Link style-sheet with a relative path based on where the
-    # output report file will be
     fd.write("<link rel=\"stylesheet\" href=\"%s/style.css\">\n" %
              base_url)
-    fd.write("<title>MISS_HIT Report</title>\n")
+    fd.write("<title>%s</title>\n" % report_title)
     fd.write("</head>\n")
     fd.write("<body>\n")
-    fd.write("<header>MISS_HIT Report</header>\n")
+    fd.write("<header>%s</header>\n" % report_title)
     fd.write("<main>\n")
     fd.write("<div></div>\n")
 
@@ -1072,6 +1076,7 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
         elif self.options.html:
             with open(self.options.html, "w") as fd:
                 write_html_report(fd,
+                                  self.options.entry_point,
                                   self.options.portable_html,
                                   self.metrics,
                                   ticket_summary,
