@@ -221,30 +221,50 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                                       "not exist." %
                                       options.entry_point)
 
-            if options.debug_show_path:
-                print("Using the following PATH:")
-                for path in n_ep.get_path():
-                    print("> %s" % os.path.relpath(path))
-
+            # Get PATH
             item_list = n_ep.get_path()
 
-            # If the user has supplied files/dirs to analyze, we only
-            # do that if they are part of _this_ entrypoint.
-            if options.files:
-                items_in_path = set()
-                for path_root in item_list:
-                    for path, _, files in os.walk(path_root):
-                        items_in_path.add(os.path.normpath(path))
-                        for f in files:
-                            items_in_path.add(
-                                os.path.normpath(os.path.join(path, f)))
+            if options.debug_show_path:
+                print("Using the following PATH:")
+                for path in item_list:
+                    print("> %s" % os.path.relpath(path))
 
+            # Determine relevant files based on these
+            # directories. This is a bit more complex than
+            # "everything".
+            #
+            # See
+            # https://www.mathworks.com/help/matlab/matlab_env/files-and-folders-that-matlab-accesses.html
+
+            items_in_path = set()
+            files_in_path = set()
+            for path_root in item_list:
+                for path, dirs, files in os.walk(path_root):
+                    items_in_path.add(os.path.normpath(path))
+                    for f in files:
+                        if f.endswith(".m") or f.endswith(".slx"):
+                            files_in_path.add(
+                                os.path.normpath(os.path.join(path, f)))
+                    irrelevant_dirs = set(d for d in dirs
+                                          if not (d.startswith("+") or
+                                                  d.startswith("@")))
+                    for idir in irrelevant_dirs:
+                        dirs.remove(idir)
+            items_in_path |= files_in_path
+
+            if options.files:
+                # If the user has supplied files/dirs to analyze, we
+                # only do that if they are part of _this_ entrypoint.
                 item_list = list(options.files)
                 for item in item_list:
                     if os.path.abspath(item) not in items_in_path:
                         mh.command_line_error("'%s' is not part of "
                                               "entry point %s" %
                                               (item, options.entry_point))
+            else:
+                # Otherwise we look at all applicable files on the
+                # path.
+                item_list = list(sorted(files_in_path))
 
         else:
             # Without an entry point, we build a minimally sufficient

@@ -95,6 +95,58 @@
 	directories/files you're responsible for.
       </div>
 
+      <div>
+	Please note that MISS_HIT will <i>not</i> consider files and
+	directories that would be invisible to MATLAB in project
+	mode. Consider for example a projet layout like this:
+<pre>
+  /
+    miss_hit.cfg
+    file1.m
+    foo/
+      file2.m
+    +bar/
+      file3.m
+</pre>
+      </div>
+
+      <div>
+	The configuration file contains the following information:
+	<pre>entrypoint "Potato" {}</pre>
+      </div>
+
+      <div>
+	When running MISS_HIT without project mode, all files are
+	considered. However, when running MISS_HIT in project mode,
+	only files <tt>file1.m</tt> and <tt>file3.m</tt> are
+	considered. File <tt>file2.m</tt> is not considered because
+	directory <tt>foo</tt> is not on the path, as declared in our
+	entrypoint.
+      </div>
+
+      <div>
+	If you want to include <tt>file2.m</tt> in your analysis, then
+	you have to include that directory in your entry point, like
+	so:
+<pre>
+entrypoint "Potato" {
+  paths {
+    ".",
+    "foo"
+  }
+}
+</pre>
+      </div>
+
+      <div>
+	This behaviour is consistent with how MATLAB deals with its
+	search path. For more information consult:
+	<ul>
+	  <li><a href="https://www.mathworks.com/help/matlab/matlab_env/files-and-folders-that-matlab-accesses.html"><img src="assets/external-link.svg"> Files and Folders that MATLAB Accesses</a></li>
+	  <li><a href="https://www.mathworks.com/help/matlab/matlab_oop/organizing-classes-in-folders.html"><img src="assets/external-link.svg"> Folders Containing Class Definitions</a></li>
+	</ul>
+      </div>
+
       <h3>Common options</h3>
       <div>
 	All MISS_HIT tools (except mh_diff) have these options. Some

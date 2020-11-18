@@ -1,0 +1,11 @@
+=== STYLE ===
+MISS_HIT Style Summary: 2 file(s) analysed, everything seems fine
+=== LINT ===
+MISS_HIT Lint Summary: 2 file(s) analysed, everything seems fine
+=== METRICS ===
+=== Code metric by file:
+
+* Code metrics for file /home/flosch/miss_hit/tests/projects/irrelevant/+good/good.m:
+
+* Code metrics for file /home/flosch/miss_hit/tests/projects/irrelevant/@thing/thing.m:
+MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine
