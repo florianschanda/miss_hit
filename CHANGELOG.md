@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ## Changelog
 
-### 0.9.14-dev
+### 0.9.14
 
 * Support for [projects](https://florianschanda.github.io/miss_hit/configuration.html#shared-code).
   This is a major new feature for all MISS_HIT tools, intended to make it
