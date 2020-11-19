@@ -1,0 +1,12 @@
+-   id: mh-style
+    name: MATLAB style checker
+    description: "A simple coding style checker and code formatter for MATLAB or Octave code, including MATLAB embedded inside Simulink models."
+    entry: mh_style
+    language: python
+    files: \.m$
+-   id: mh-metric
+    name: MATLAB code metrics
+    description: "A simple code metric tool for MATLAB or Octave code, including MATLAB embedded inside Simulink models."
+    entry: mh_metric
+    language: python
+    files: \.m$
