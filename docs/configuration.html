@@ -243,6 +243,41 @@ entrypoint "Kitten_SWC" {
       <h3>Git Hooks</h3>
       <div>WIP/TODO</div>
 
+      <h3><a name="pre-commit">Hooks via pre-commit</a></h3>
+      <div>
+        The <a href="https://pre-commit.com">pre-commit</a> project is
+        an alternative way of unify running hooks in Git projects. You
+        can use the following configuration snippet in
+        your <tt>.pre-commit-config.yaml</tt>:
+      </div>
+      <div>
+<pre>
+repos:
+-   repo: local
+    hooks:
+    -   id: mh_style
+        name: mh_style
+        entry: mh_style
+        args: [--process-slx, --fix]
+        files: ^(.*\.(m|slx))$
+        language: python
+        additional_dependencies: [miss_hit_core]
+    -   id: mh_metric
+        name: mh_metric
+        entry: mh_metric
+        args: [--ci]
+        files: ^(.*\.(m|slx))$
+        language: python
+        additional_dependencies: [miss_hit_core]
+    -   id: mh_lint
+        name: mh_lint
+        entry: mh_lint
+        files: ^(.*\.(m|slx))$
+        language: python
+        additional_dependencies: [miss_hit]
+</pre>
+      </div>
+
       <h3>Travis</h3>
       <div>
         This is an example <tt>.travis.yml</tt> to use check your
@@ -267,11 +302,11 @@ before_install:
 jobs:
   include:
     - name: "miss_hit: checking code quality"
-      script: mh_metric --ci .
+      script: mh_metric --ci
     - name: "miss_hit: checking code style"
-      script: mh_style .
+      script: mh_style --process-slx
     - name: "miss_hit: finding bugs"
-      script: mh_lint .
+      script: mh_lint
 </pre>
       </div>
 
@@ -313,15 +348,15 @@ jobs:
 
     - name: MISS_HIT Metrics
       run: |
-        mh_metric --ci .
+        mh_metric --ci
 
     - name: MISS_HIT Code style
       run: |
-        mh_style .
+        mh_style --process-slx
 
     - name: MISS_HIT Bug finder
       run: |
-        mh_lint .
+        mh_lint
 </pre>
       </div>
     </section>

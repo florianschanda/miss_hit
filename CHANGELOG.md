@@ -21,6 +21,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.15-dev
 
+* Added [documentation](https://florianschanda.github.io/miss_hit/configuration.html#pre-commit) on how to use MISS_HIT through pre-commit hooks.
 
 ### 0.9.14
 
