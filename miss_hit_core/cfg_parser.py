@@ -174,6 +174,17 @@ class Config_Parser:
         elif self.peek("IDENTIFIER", "library"):
             n_item = self.parse_library()
 
+        elif self.peek("KEYWORD", "global"):
+            self.match("KEYWORD", "global")
+            if self.peek("IDENTIFIER", "library"):
+                n_item = self.parse_library()
+                n_item.set_global()
+            else:
+                self.skip()
+                self.mh.error(self.ct.location,
+                              "expected library, found %s instead" %
+                              (self.ct.kind))
+
         elif self.peek("IDENTIFIER"):
             n_item = self.parse_style_configuration()
 

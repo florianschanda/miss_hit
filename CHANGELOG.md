@@ -23,6 +23,11 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 * Added [documentation](https://florianschanda.github.io/miss_hit/configuration.html#pre-commit) on how to use MISS_HIT through pre-commit hooks.
 
+* Libraries can now be declared `global`, making them a dependency for
+  all other libraries and entry points. This is useful for larger
+  code-bases with shared code among all components (e.g. interface
+  definitions).
+
 ### 0.9.14
 
 * Support for [projects](https://florianschanda.github.io/miss_hit/configuration.html#shared-code).

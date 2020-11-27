@@ -394,6 +394,13 @@ def get_entry_point(name):
     return project_names[name]
 
 
+def get_global_libraries():
+    for n_item in project_names.values():
+        if isinstance(n_item, Library_Declaration) and \
+           n_item.is_global:
+            yield n_item
+
+
 ##############################################################################
 # Sanity testing
 #############################################################################

@@ -622,7 +622,7 @@ root
 PROJECT_DIRECTIVE ::= LIBRARY_DECLARATION
                     | ENTRYPOINT_DECLARATION
 
-LIBRARY_DECLARATION ::= library [ STRING ] LIBRARY_PROPERTIES
+LIBRARY_DECLARATION ::= [global] library [ STRING ] LIBRARY_PROPERTIES
 LIBRARY_PROPERTIES ::= '{' [ LIBRARY_PROPERTY { ',' LIBRARY_PROPERTY } ] '}
 
 ENTRYPOINT_DECLARATION ::= entrypoint STRING ENTRYPOINT_PROPERTIES
@@ -651,6 +651,13 @@ ENTRYPOINT_PROPERTY ::= libraries '{' OPTIONAL_STRING_LIST '}'
       </div>
 
       <div>
+	A global library is automatically a dependency for all
+	libraries and entry points. This is useful for projects with
+	code shared between all components (e.g. interfaces
+	definitions).
+      </div>
+
+      <div>
 	An entrypoint declares a program or system, which may depend
 	on a list of libraries.
       </div>
@@ -661,11 +668,6 @@ ENTRYPOINT_PROPERTY ::= libraries '{' OPTIONAL_STRING_LIST '}'
 	specific function or member function that serves as the main
 	function for this system, allowing static analysis to detect
 	e.g. unused code.
-      </div>
-
-      <div>
-	Another planned feature are "global" libraries that are
-	automatically a dependency of every library or entry point.
       </div>
     </section>
 

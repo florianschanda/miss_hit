@@ -354,6 +354,7 @@ class Library_Declaration(Project_Directive):
         super().__init__(location, directory, name)
 
         self.path_list = Path_List(directory)
+        self.is_global = False
 
     def __str__(self):
         return "Library(%s)" % self.name
@@ -371,6 +372,9 @@ class Library_Declaration(Project_Directive):
 
     def get_path(self):
         return self.path_list.get_path()
+
+    def set_global(self):
+        self.is_global = True
 
 
 class Entrypoint_Declaration(Project_Directive):

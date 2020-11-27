@@ -222,7 +222,10 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                                       options.entry_point)
 
             # Get PATH
-            item_list = n_ep.get_path()
+            item_list = []
+            for n_glib in cfg_tree.get_global_libraries():
+                item_list += n_glib.get_path()
+            item_list += n_ep.get_path()
 
             if options.debug_show_path:
                 print("Using the following PATH:")
