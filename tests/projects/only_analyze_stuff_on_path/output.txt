@@ -6,7 +6,7 @@ MISS_HIT Lint Summary: 1 file(s) analysed, everything seems fine
 === Code metric by file:
 
 * Code metrics for file /home/flosch/miss_hit/tests/projects/only_analyze_stuff_on_path/dir_a/good.m:
-  File lines: 4
+  File lines: 5
 
   Code metrics for function good:
     Control nesting      : 0
@@ -20,7 +20,7 @@ MISS_HIT Lint Summary: 1 file(s) analysed, everything seems fine
 === Global summary of worst offenders by metric:
 
 * File metric 'File lines':
-  1. 4 (/home/flosch/miss_hit/tests/projects/only_analyze_stuff_on_path/dir_a/good.m)
+  1. 5 (/home/flosch/miss_hit/tests/projects/only_analyze_stuff_on_path/dir_a/good.m)
 
 * Function metric 'Cyclomatic complexity':
   1. 1 (/home/flosch/miss_hit/tests/projects/only_analyze_stuff_on_path/dir_a/good.m, function good)

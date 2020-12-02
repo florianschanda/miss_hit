@@ -80,6 +80,9 @@ In Comments.m, line 33
 In Comments.m, line 34
 | % (J2) indented once
 | ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+In Comments.m, line 36
+| end
+| ^^^ style: function should be suceeded by an empty line [fixed]
 In Simple.m, line 1
 |     % (c) Copyright 2020 Florian Schanda
 |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
@@ -161,7 +164,7 @@ In awful.m, line 5
 In awful.m, line 5
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
 |                                                   ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
-MISS_HIT Style Summary: 3 file(s) analysed, 54 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 55 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 3 file(s) analysed, 54 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 55 style issue(s)

@@ -1,0 +1,32 @@
+=== PLAIN MODE ===
+In Test_01.m, line 5
+| end
+| ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_01.m, line 7
+| function Test_01_A
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_02.m, line 6
+| function Test_02_A
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_05.m, line 6
+|     function Potato
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_05.m, line 8
+|     end
+|     ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_06.m, line 6
+|     function Potato
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_06.m, line 7
+|     end;
+|        ^ style: end this with just a newline [fixed]
+In Test_06.m, line 8
+|     end;
+|     ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_06.m, line 9
+| end;
+|    ^ style: end this with just a newline [fixed]
+MISS_HIT Style Summary: 6 file(s) analysed, 9 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 6 file(s) analysed, 9 style issue(s)

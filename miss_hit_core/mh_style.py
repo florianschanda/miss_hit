@@ -607,15 +607,62 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                                fixed)
                 token.fix.ensure_trim_before = True
 
-        # Corresponds to the old CodeChecker KeywordWhitespace rule
-        elif (token.kind == "KEYWORD" and
-              token.value in KEYWORDS_WITH_WS):
-            if cfg.active("whitespace_keywords") and \
+        elif token.kind == "KEYWORD":
+            # Corresponds to the old CodeChecker KeywordWhitespace rule
+            if token.value in KEYWORDS_WITH_WS and \
+               cfg.active("whitespace_keywords") and \
                next_in_line and ws_after == 0:
                 mh.style_issue(token.location,
                                "keyword must be succeeded by whitespace",
                                fixed)
                 token.fix.ensure_ws_after = True
+
+            # Make sure we have whitespace _before_ the function
+            # keyword
+            if token.value == "function" and \
+               cfg.active("whitespace_around_functions") and \
+               prev_token and not (prev_token.location.line + 1 <
+                                   token.location.line):
+                prev_token.fix.add_newline = True
+                mh.style_issue(token.location,
+                               "function should be preceeded by an empty line",
+                               fixed)
+
+            # Make sure we have whitespace _after_ the function end
+            elif token.value == "end" and \
+                 cfg.active("whitespace_around_functions") and \
+                 isinstance(token.ast_link, Function_Definition):
+                # We first need to find the actual last token on this line
+                true_end_id = n
+                true_end_next = None
+                true_end_nl = None
+                for i in range(n + 1, len(tbuf.tokens)):
+                    if tbuf.tokens[i].kind == "NEWLINE":
+                        true_end_nl = tbuf.tokens[i]
+                        break
+                    elif tbuf.tokens[i].location.line == token.location.line:
+                        true_end_id = i
+                    else:
+                        break
+                true_end = tbuf.tokens[true_end_id]
+                for i in range(true_end_id + 1, len(tbuf.tokens)):
+                    if tbuf.tokens[i].kind == "NEWLINE":
+                        pass
+                    else:
+                        true_end_next = tbuf.tokens[i]
+                        break
+
+                if true_end_next and \
+                   not (true_end.location.line + 1 <
+                        true_end_next.location.line):
+                    mh.style_issue(token.location,
+                                   "function should be suceeded by an"
+                                   " empty line",
+                                   fixed)
+                    if true_end_nl:
+                        true_end_nl.fix.add_newline = True
+                    else:
+                        true_end.fix.add_newline = True
 
         # Corresponds to the old CodeChecker CommentWhitespace rule
         elif token.kind == "COMMENT":

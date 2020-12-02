@@ -516,6 +516,44 @@ y = x^2;
 </pre>
       </div>
 
+      <h4>Whitespace around functions ("whitespace_around_functions")</h4>
+
+      <div>
+        This rule makes sure functions (including nested functions and
+        class methods) are surrounded by whitespace. In other words:
+<pre>
+% (c) Copyright 2020 Florian Schanda
+function Test_05
+    x = 12;
+    function Potato
+        disp(x);
+    end
+    Potato;
+end
+</pre>
+      </div>
+
+      <div>
+        Is changed to this:
+<pre>
+% (c) Copyright 2020 Florian Schanda
+
+function Test_05
+    x = 12;
+
+    function Potato
+        disp(x);
+    end
+
+    Potato;
+end
+</pre>
+      </div>
+
+      <div>
+        This also works for functions without the end keyword.
+      </div>
+
       <h4>Consistent semicolons ("end_of_statements")</h4>
 
       <div>

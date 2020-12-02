@@ -1414,10 +1414,14 @@ class Token_Buffer(Token_Generator):
             # This token requires a newline to be inserted.
             if token.fix.add_newline:
                 newline_added = True
-                new_tokens.append(m_ast.MATLAB_Token("NEWLINE", "\n",
-                                                     token.location,
-                                                     False, False,
-                                                     anonymous = True))
+                if token.kind == "NEWLINE":
+                    token.raw_text += "\n"
+                    token.value += "\n"
+                else:
+                    new_tokens.append(m_ast.MATLAB_Token("NEWLINE", "\n",
+                                                         token.location,
+                                                         False, False,
+                                                         anonymous = True))
                 shift_lines += 1
 
             previous_token = token

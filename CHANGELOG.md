@@ -28,6 +28,11 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   code-bases with shared code among all components (e.g. interface
   definitions).
 
+* MH Style has a new rule `whitespace_around_functions` that makes
+  sure each function, nested function, or class method is separated by
+  one blank line from surrounding context. This also works for
+  function without an explicit `end` keyword.
+
 ### 0.9.14
 
 * Support for [projects](https://florianschanda.github.io/miss_hit/configuration.html#shared-code).

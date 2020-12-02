@@ -299,6 +299,9 @@ STYLE_RULES = {
         "Ensures whitespace before continuations and whitespace between"
         " the ... and any in-line comment."),
 
+    "whitespace_around_functions" : Style_Rule(
+        "Ensures there is whitespace around functions."),
+
     "operator_after_continuation" : Style_Rule(
         "Complains about operators after a line continuation."),
 

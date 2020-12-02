@@ -8,6 +8,7 @@ if x == 3 && ...
     do_something();
 end
 aVar = 3;
+
 function out = foo(in)
 end
 

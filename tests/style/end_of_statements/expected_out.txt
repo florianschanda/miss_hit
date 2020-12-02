@@ -11,58 +11,61 @@ In newlines.m, line 3
 In newlines.m, line 3
 |         x, y; z
 |             ^ style: end this with just a newline [fixed]
-In other.m, line 11
+In other.m, line 12
+| function out = foo(in)
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In other.m, line 12
 | function out = foo(in)
 |                ^^^ style: violates naming scheme for function
-In other.m, line 16
+In other.m, line 17
 | function [output1, output2, output3,...
 |                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
-In other.m, line 16
+In other.m, line 17
 | function [output1, output2, output3,...
 |                                     ^^^^ style: continuation must be preceeded by whitespace [fixed]
-In other.m, line 17
+In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
 |                                                        ^ style: = must be succeeded by whitespace [fixed]
-In other.m, line 17
+In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
 |                                                         ^^^^ style: continuation must be preceeded by whitespace [fixed]
-In other.m, line 18
+In other.m, line 19
 |          test_LineEndings(input1, input2,    ...
 |          ^^^^^^^^^^^^^^^^ style: violates naming scheme for function
 In other.m, line 20
 |     aVar = 3,;
+|              ^ style: unnecessary statement terminator [fixed]
+In other.m, line 21
+|     aVar = 3,;
 |             ^ style: end this with a semicolon instead of a comma [fixed]
-In other.m, line 20
+In other.m, line 21
 |     aVar = 3,;
 |             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
-In other.m, line 20
-|     aVar = 3,;
-|              ^ style: unnecessary statement terminator [fixed]
 In other.m, line 23
 |     ;
 |     ^ style: unnecessary statement terminator [fixed]
 In other.m, line 24
 |     ,
 |     ^ style: unnecessary statement terminator [fixed]
-In other.m, line 25
+In other.m, line 26
 |     if input1 > input2 output1=0, else output2=1; end
 |                 ^^^^^^ style: end statement with a newline [fixed]
-In other.m, line 26
-|     if input1 > input2 output1=0, else output2=1; end
-|                               ^ style: = must be preceeded by whitespace [fixed]
-In other.m, line 26
-|     if input1 > input2 output1=0, else output2=1; end
-|                                 ^ style: end this with a semicolon instead of a comma [fixed]
-In other.m, line 26
-|     if input1 > input2 output1=0, else output2=1; end
-|                                 ^ style: end statement with a newline [fixed]
 In other.m, line 27
 |     if input1 > input2 output1=0, else output2=1; end
-|                                   ^^^^ style: end statement with a newline [fixed]
+|                               ^ style: = must be preceeded by whitespace [fixed]
+In other.m, line 27
+|     if input1 > input2 output1=0, else output2=1; end
+|                                 ^ style: end this with a semicolon instead of a comma [fixed]
+In other.m, line 27
+|     if input1 > input2 output1=0, else output2=1; end
+|                                 ^ style: end statement with a newline [fixed]
 In other.m, line 28
 |     if input1 > input2 output1=0, else output2=1; end
+|                                   ^^^^ style: end statement with a newline [fixed]
+In other.m, line 29
+|     if input1 > input2 output1=0, else output2=1; end
 |                                               ^ style: = must be preceeded by whitespace [fixed]
-In other.m, line 28
+In other.m, line 29
 |     if input1 > input2 output1=0, else output2=1; end
 |                                                 ^ style: end statement with a newline [fixed]
 In other.m, line 26
@@ -74,16 +77,16 @@ In other.m, line 28
 In other.m, line 31
 |     end;
 |        ^ style: end this with just a newline [fixed]
-In other.m, line 31
+In other.m, line 32
 |         output1=0
 |                ^ style: = must be preceeded by whitespace [fixed]
-In other.m, line 31
+In other.m, line 32
 |         output1=0
 |                 ^ style: end statement with a semicolon [fixed]
-In other.m, line 33
+In other.m, line 34
 |         output2=1 ...
 |                ^ style: = must be preceeded by whitespace [fixed]
-In other.m, line 34
+In other.m, line 35
 |                     ,
 |                     ^ style: end this with a semicolon instead of a comma [fixed]
 In test.m, line 3
@@ -107,7 +110,7 @@ In test.m, line 7
 In test.m, line 9
 | spoon
 | ^^^^^ style: end statement with a semicolon [fixed]
-MISS_HIT Style Summary: 3 file(s) analysed, 36 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 37 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 3 file(s) analysed, 36 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 37 style issue(s)

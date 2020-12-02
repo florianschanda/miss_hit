@@ -81,7 +81,7 @@ class Autofix_Instruction:
         # Insert a new semicolon after this token
 
         self.add_newline = False
-        # Insert a newline after this token. DOES NOT WORK RIGHT NOW.
+        # Insert a newline after this token.
 
         # The following are not fixes as such, but extra annotation to
         # produce fixes.
