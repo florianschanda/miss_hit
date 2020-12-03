@@ -630,6 +630,8 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                         true_fstart_token = tbuf.tokens[i]
                         if i > 0:
                             true_fstart_prev_token = tbuf.tokens[i - 1]
+                        else:
+                            true_fstart_prev_token = None
                     elif tbuf.tokens[i].kind == "NEWLINE" and \
                          tbuf.tokens[i].value.count("\n") == 1:
                         pass

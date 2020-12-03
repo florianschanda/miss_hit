@@ -62,10 +62,13 @@ In Test_11.m, line 13
 In Test_11.m, line 19
 | end
 | ^^^ style: function should be suceeded by an empty line [fixed]
-MISS_HIT Style Summary: 11 file(s) analysed, 21 style issue(s)
+In Test_12.m, line 4
+|     b, c)
+|     ^ style: indentation not correct, should be 21 spaces, not 4 [fixed]
+MISS_HIT Style Summary: 12 file(s) analysed, 22 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 11 file(s) analysed, 21 style issue(s)
+MISS_HIT Style Summary: 12 file(s) analysed, 22 style issue(s)
 
 === ! BROKEN FIXES ! ===
 Fixing is not idempotent for ./Test_11.m

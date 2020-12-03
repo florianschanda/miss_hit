@@ -1,14 +1,11 @@
 === PLAIN MODE ===
-In test.m, line 3
-| function test
-| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
-In test.m, line 3
+In test.m, line 2
 | function test
 |          ^^^^ style: violates naming scheme for function
-In test.m, line 14
+In test.m, line 13
 |     % indented twice
 |     ^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
