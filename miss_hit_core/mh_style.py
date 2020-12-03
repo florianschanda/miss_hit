@@ -620,13 +620,30 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
             # Make sure we have whitespace _before_ the function
             # keyword
             if token.value == "function" and \
-               cfg.active("whitespace_around_functions") and \
-               prev_token and not (prev_token.location.line + 1 <
-                                   token.location.line):
-                prev_token.fix.add_newline = True
-                mh.style_issue(token.location,
-                               "function should be preceeded by an empty line",
-                               fixed)
+               cfg.active("whitespace_around_functions"):
+                # There is a special exception here for comments
+                # before functions
+                true_fstart_token = token
+                true_fstart_prev_token = prev_token
+                for i in reversed(range(0, n)):
+                    if tbuf.tokens[i].kind == "COMMENT":
+                        true_fstart_token = tbuf.tokens[i]
+                        if i > 0:
+                            true_fstart_prev_token = tbuf.tokens[i - 1]
+                    elif tbuf.tokens[i].kind == "NEWLINE" and \
+                         tbuf.tokens[i].value.count("\n") == 1:
+                        pass
+                    else:
+                        break
+
+                if true_fstart_prev_token and \
+                   not (true_fstart_prev_token.location.line + 1 <
+                        true_fstart_token.location.line):
+                    true_fstart_prev_token.fix.add_newline = True
+                    mh.style_issue(token.location,
+                                   "function should be preceeded by an empty"
+                                   " line",
+                                   fixed)
 
             # Make sure we have whitespace _after_ the function end
             elif token.value == "end" and \

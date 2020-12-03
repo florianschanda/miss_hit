@@ -1,0 +1,71 @@
+=== PLAIN MODE ===
+In Test_01.m, line 5
+| end
+| ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_01.m, line 7
+| function Test_01_A
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_02.m, line 6
+| function Test_02_A
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_05.m, line 6
+|     function Potato
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_05.m, line 8
+|     end
+|     ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_06.m, line 6
+|     function Potato
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_06.m, line 7
+|     end;
+|        ^ style: end this with just a newline [fixed]
+In Test_06.m, line 8
+|     end;
+|     ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_06.m, line 9
+| end;
+|    ^ style: end this with just a newline [fixed]
+In Test_07.m, line 6
+| end
+| ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_07.m, line 9
+| function Test_07_A
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_08.m, line 7
+| % This is another function
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+In Test_08.m, line 8
+| function Test_08_A
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_09.m, line 7
+|     function Potato
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_09.m, line 9
+|     end
+|     ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_10.m, line 10
+|     function Potato
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_10.m, line 12
+|     end
+|     ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_10.m, line 17
+| end
+| ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_11.m, line 11
+|     function Potato
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_11.m, line 13
+|     end
+|     ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_11.m, line 19
+| end
+| ^^^ style: function should be suceeded by an empty line [fixed]
+MISS_HIT Style Summary: 11 file(s) analysed, 21 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 11 file(s) analysed, 21 style issue(s)
+
+=== ! BROKEN FIXES ! ===
+Fixing is not idempotent for ./Test_11.m
