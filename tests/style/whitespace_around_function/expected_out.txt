@@ -71,10 +71,16 @@ In Test_13.m, line 10
 In Test_13.m, line 12
 |         end
 |         ^^^ style: function should be suceeded by an empty line [fixed]
-MISS_HIT Style Summary: 13 file(s) analysed, 24 style issue(s)
+In Test_14.m, line 6
+| end % of Test_14
+| ^^^ style: function should be suceeded by an empty line [fixed]
+In Test_14.m, line 9
+| function Test_14_A
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+MISS_HIT Style Summary: 14 file(s) analysed, 26 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 13 file(s) analysed, 24 style issue(s)
+MISS_HIT Style Summary: 14 file(s) analysed, 26 style issue(s)
 
 === ! BROKEN FIXES ! ===
 Fixing is not idempotent for ./Test_11.m

@@ -626,7 +626,8 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                 true_fstart_token = token
                 true_fstart_prev_token = prev_token
                 for i in reversed(range(0, n)):
-                    if tbuf.tokens[i].kind == "COMMENT":
+                    if tbuf.tokens[i].kind == "COMMENT" and \
+                       tbuf.tokens[i].first_in_line:
                         true_fstart_token = tbuf.tokens[i]
                         if i > 0:
                             true_fstart_prev_token = tbuf.tokens[i - 1]
