@@ -1402,7 +1402,8 @@ class Token_Buffer(Token_Generator):
                         token.fix.correct_indent = (
                             token.ast_link.get_indentation() *
                             self.cfg.style_config["tab_width"])
-                    elif previous_token.ast_link:
+                    elif previous_token.ast_link and \
+                         not previous_token.ast_link.causes_indentation():
                         token.fix.correct_indent = (
                             previous_token.ast_link.get_indentation() *
                             self.cfg.style_config["tab_width"])
@@ -1413,11 +1414,11 @@ class Token_Buffer(Token_Generator):
 
             # This token requires a newline to be inserted.
             if token.fix.add_newline:
-                newline_added = True
                 if token.kind == "NEWLINE":
                     token.raw_text += "\n"
                     token.value += "\n"
                 else:
+                    newline_added = True
                     new_tokens.append(m_ast.MATLAB_Token("NEWLINE", "\n",
                                                          token.location,
                                                          False, False,

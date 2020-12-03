@@ -65,10 +65,16 @@ In Test_11.m, line 19
 In Test_12.m, line 4
 |     b, c)
 |     ^ style: indentation not correct, should be 21 spaces, not 4 [fixed]
-MISS_HIT Style Summary: 12 file(s) analysed, 22 style issue(s)
+In Test_13.m, line 10
+|         function potato
+|         ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+In Test_13.m, line 12
+|         end
+|         ^^^ style: function should be suceeded by an empty line [fixed]
+MISS_HIT Style Summary: 13 file(s) analysed, 24 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 12 file(s) analysed, 22 style issue(s)
+MISS_HIT Style Summary: 13 file(s) analysed, 24 style issue(s)
 
 === ! BROKEN FIXES ! ===
 Fixing is not idempotent for ./Test_11.m
