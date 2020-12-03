@@ -1434,7 +1434,8 @@ class Token_Buffer(Token_Generator):
         for token in tmp_tokens:
             if old_token and \
                old_token.kind == "NEWLINE" and \
-               token.kind == "NEWLINE":
+               token.kind == "NEWLINE" and \
+               old_token.annotation == token.annotation:
                 if len(token.raw_text) == 1 and len(old_token.raw_text) == 1:
                     old_token.raw_text += "\n"
                     old_token.value += "\n"

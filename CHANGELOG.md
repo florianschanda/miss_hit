@@ -33,6 +33,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   one blank line from surrounding context. This also works for
   function without an explicit `end` keyword.
 
+* Fixed bug in MH Style where blank lines after annotations
+  (e.g. `pragma Justify`) could sometimes be deleted.
+
 ### 0.9.14
 
 * Support for [projects](https://florianschanda.github.io/miss_hit/configuration.html#shared-code).
