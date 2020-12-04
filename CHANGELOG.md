@@ -33,6 +33,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   one blank line from surrounding context. This also works for
   function without an explicit `end` keyword.
 
+* MH Lint has a new check to make sure the filename of a function or
+  class files match the function or class name declared within.
+
 * Fixed bug in MH Style where blank lines after annotations
   (e.g. `pragma Justify`) could sometimes be deleted.
 

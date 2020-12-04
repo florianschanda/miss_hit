@@ -135,8 +135,16 @@ end
         re-definition will result in confusion. So we complain
         e.g. about "true", but we do not complain about "bar".
       </div>
-    </section>
 
+      <h3>Filename matching entity within</h3>
+      <div>
+        A class or top-level function must match the name of the file
+        it is declared in: other functions can only reliably access it
+        if this is the case. If it does not match, you must use the
+        name of the file instead of the function or class name, which
+        is just not right.
+      </div>
+    </section>
 
   </main>
 

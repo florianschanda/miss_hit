@@ -28,12 +28,51 @@ import os
 
 from miss_hit_core import command_line
 from miss_hit_core import work_package
+from miss_hit_core.m_ast import *
 from miss_hit_core.errors import (Error,
                                   Message_Handler,
                                   HTML_Message_Handler,
                                   JSON_Message_Handler)
 from miss_hit_core.m_lexer import MATLAB_Lexer
 from miss_hit_core.m_parser import MATLAB_Parser
+
+
+class Stage_1_Linting(AST_Visitor):
+    """ Checks which do not require semantic analysis """
+    def __init__(self, mh):
+        self.mh = mh
+
+    def visit(self, node, n_parent, relation):
+        if isinstance(node, Compilation_Unit):
+            self.check_compilation_unit(node)
+
+    def check_compilation_unit(self, n_cu):
+        assert isinstance(n_cu, Compilation_Unit)
+
+        if isinstance(n_cu, Function_File):
+            self.check_filename(file_name = n_cu.name,
+                                kind      = "function",
+                                ent_name  = n_cu.l_functions[0].n_sig.n_name)
+        elif isinstance(n_cu, Class_File):
+            self.check_filename(file_name = n_cu.name,
+                                kind      = "class",
+                                ent_name  = n_cu.n_classdef.n_name)
+
+    def check_filename(self, file_name, kind, ent_name):
+        assert isinstance(file_name, str)
+        assert isinstance(ent_name, Name) and ent_name.is_simple_dotted_name()
+
+        base_filename, ext = os.path.splitext(file_name)
+
+        if ext != ".m":
+            # This check is not applicable for MATLAB embedded in
+            # Simulink models
+            pass
+        elif base_filename != str(ent_name):
+            self.mh.check(ent_name.loc(),
+                          "%s name does not match the filename %s" %
+                          (kind, base_filename),
+                          "low")
 
 
 class MH_Lint_Result(work_package.Result):
@@ -62,9 +101,11 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
         # Create parse tree
         try:
             parser = MATLAB_Parser(wp.mh, lexer, wp.cfg)
-            parser.parse_file()
+            n_cu = parser.parse_file()
         except Error:
             return MH_Lint_Result(wp)
+
+        n_cu.visit(None, Stage_1_Linting(wp.mh), "Root")
 
         return MH_Lint_Result(wp)
 

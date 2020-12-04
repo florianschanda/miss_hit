@@ -1,0 +1,8 @@
+=== PLAIN MODE ===
+In potato.m, line 3
+| function rv = Kitten
+|               ^^^^^^ check (low): function name does not match the filename potato
+In wibble.m, line 3
+| classdef Vector
+|          ^^^^^^ check (low): class name does not match the filename wibble
+MISS_HIT Lint Summary: 2 file(s) analysed, 2 check(s)
