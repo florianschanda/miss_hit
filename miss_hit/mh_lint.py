@@ -36,6 +36,8 @@ from miss_hit_core.errors import (Error,
 from miss_hit_core.m_lexer import MATLAB_Lexer
 from miss_hit_core.m_parser import MATLAB_Parser
 
+from miss_hit.m_sem import sem_pass1, Scope
+
 
 class Stage_1_Linting(AST_Visitor):
     """ Checks which do not require semantic analysis """
@@ -76,13 +78,17 @@ class Stage_1_Linting(AST_Visitor):
 
 
 class MH_Lint_Result(work_package.Result):
-    def __init__(self, wp):
+    def __init__(self, wp, sem=None):
         super().__init__(wp, True)
+        self.sem = sem
 
 
 class MH_Lint(command_line.MISS_HIT_Back_End):
-    def __init__(self, _):
+    def __init__(self, options):
         super().__init__("MH Lint")
+        self.perform_sem = options.entry_point is not None
+        self.debug_show_st = options.debug_show_global_symbol_table
+        self.global_st = Scope()
 
     @classmethod
     def process_wp(cls, wp):
@@ -105,9 +111,28 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
         except Error:
             return MH_Lint_Result(wp)
 
+        # Initial checks
         n_cu.visit(None, Stage_1_Linting(wp.mh), "Root")
 
-        return MH_Lint_Result(wp)
+        # First pass of semantic analysis
+        sem = sem_pass1(wp.mh, n_cu)
+
+        return MH_Lint_Result(wp, sem)
+
+    def process_result(self, result):
+        if not self.perform_sem:
+            return
+        if not isinstance(result, MH_Lint_Result):
+            return
+        if result.sem is None:
+            return
+
+        # Doesn't work yet, needs packages to work correctly
+        # self.global_st.import_visible_names(result.sem.scope)
+
+    def post_process(self):
+        if self.debug_show_st:
+            self.global_st.dump()
 
 
 def main_handler():
@@ -122,6 +147,13 @@ def main_handler():
         "--json",
         default=None,
         help="Produce JSON report")
+
+    # Extra debug options
+    clp["debug_options"].add_argument(
+        "--debug-show-global-symbol-table",
+        default=False,
+        action="store_true",
+        help="Show global symbol table")
 
     options = command_line.parse_args(clp)
 

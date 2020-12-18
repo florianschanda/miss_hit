@@ -1,0 +1,105 @@
+=== STYLE ===
+MISS_HIT Style Summary: 5 file(s) analysed, everything seems fine
+=== LINT ===
+MISS_HIT Lint Summary: 5 file(s) analysed, everything seems fine
+=== METRICS ===
+=== Code metric by file:
+
+* Code metrics for file Kitten.m:
+  File lines: 16
+
+  Code metrics for function Kitten::wibble:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 2
+    Persistents          : 0
+
+* Code metrics for file dir_a/+bar/Potato.m:
+  File lines: 5
+
+  Code metrics for function Potato:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 1
+    Persistents          : 0
+
+* Code metrics for file dir_a/+foo/Potato.m:
+  File lines: 5
+
+  Code metrics for function Potato:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 1
+    Persistents          : 0
+
+* Code metrics for file dir_b/+foo/Wibble.m:
+  File lines: 6
+
+  Code metrics for function Wibble:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 4
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 1
+    Persistents          : 0
+
+* Code metrics for file dir_b/+foo/Wobble.m:
+  File lines: 5
+
+  Code metrics for function Wobble:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 2
+    Persistents          : 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric 'File lines':
+  1. 16 (Kitten.m)
+  2. 6 (dir_b/+foo/Wibble.m)
+  3. 5 (dir_b/+foo/Wobble.m)
+  4. 5 (dir_a/+foo/Potato.m)
+  5. 5 (dir_a/+bar/Potato.m)
+
+* Function metric 'Cyclomatic complexity':
+  1. 1 (dir_b/+foo/Wobble.m, function Wobble)
+  2. 1 (dir_b/+foo/Wibble.m, function Wibble)
+  3. 1 (dir_a/+foo/Potato.m, function Potato)
+  4. 1 (dir_a/+bar/Potato.m, function Potato)
+  5. 1 (Kitten.m, function Kitten::wibble)
+
+* Function metric 'Function lines':
+  1. 4 (dir_b/+foo/Wibble.m, function Wibble)
+  2. 3 (dir_b/+foo/Wobble.m, function Wobble)
+  3. 3 (dir_a/+foo/Potato.m, function Potato)
+  4. 3 (dir_a/+bar/Potato.m, function Potato)
+  5. 3 (Kitten.m, function Kitten::wibble)
+
+* Function metric 'Number of paths':
+  1. 1 (dir_b/+foo/Wobble.m, function Wobble)
+  2. 1 (dir_b/+foo/Wibble.m, function Wibble)
+  3. 1 (dir_a/+foo/Potato.m, function Potato)
+  4. 1 (dir_a/+bar/Potato.m, function Potato)
+  5. 1 (Kitten.m, function Kitten::wibble)
+
+* Function metric 'Parameters':
+  1. 2 (dir_b/+foo/Wobble.m, function Wobble)
+  2. 2 (Kitten.m, function Kitten::wibble)
+  3. 1 (dir_b/+foo/Wibble.m, function Wibble)
+  4. 1 (dir_a/+foo/Potato.m, function Potato)
+  5. 1 (dir_a/+bar/Potato.m, function Potato)
+
+MISS_HIT Metric Summary: 5 file(s) analysed, everything seems fine

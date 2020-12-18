@@ -281,12 +281,6 @@ class Node:
 ##############################################################################
 
 
-class Entity(Node):
-    """ Not needed yet - but will become the special nodes we store
-        information about symbols.
-    """
-
-
 class Expression(Node):
     def __init__(self):
         super().__init__()
@@ -565,6 +559,9 @@ class Class_Definition(Definition):
         assert isinstance(t_classdef, MATLAB_Token)
         assert t_classdef.kind == "KEYWORD" and \
             t_classdef.value == "classdef"
+
+        self.entity = None
+        # Pointer to the class entity
 
         self.t_classdef = t_classdef
         self.t_classdef.set_ast(self)
