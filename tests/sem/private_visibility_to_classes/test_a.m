@@ -1,5 +1,3 @@
 % (c) Copyright 2020 Florian Schanda
 
-function Potato
-    Wibble();
-end
+tmp_a = foo.Class_A();

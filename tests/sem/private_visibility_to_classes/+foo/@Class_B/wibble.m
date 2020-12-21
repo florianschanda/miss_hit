@@ -1,5 +1,5 @@
 % (c) Copyright 2020 Florian Schanda
 
-function Potato
-    Wibble();
+function wibble(self, x)
+    disp(x);
 end
