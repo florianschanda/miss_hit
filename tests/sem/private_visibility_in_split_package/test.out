@@ -1,0 +1,6 @@
+Using the following PATH:
+> dir_a
+> dir_b
+Symbol table with 1 active scopes:
+=== Level 1 ===
+MISS_HIT Lint Summary: 3 file(s) analysed, everything seems fine

@@ -262,6 +262,19 @@ def execute_parser_test(name):
     return "Ran parser test %s" % name
 
 
+def execute_sem_test(name):
+    r = run_command("mh_lint",
+                    ["--entry-point=test",
+                     "--debug-show-global-symbol-table",
+                     "--debug-show-path"])
+    plain_out = r.stdout
+
+    with open("test.out", "w") as fd:
+        fd.write(plain_out)
+
+    return "Ran sem test %s" % name
+
+
 def execute_simulink_parser_test(name):
     files = [f
              for f in os.listdir(".")
@@ -381,6 +394,7 @@ def run_test(test):
         "bmc"             : execute_bmc_test,
         "lexer"           : execute_lexer_test,
         "parser"          : execute_parser_test,
+        "sem"             : execute_sem_test,
         "simulink_parser" : execute_simulink_parser_test,
         "config_parser"   : execute_config_parser_test,
         "sanity"          : execute_sanity_test,
@@ -424,7 +438,7 @@ def main():
     if options.suite:
         suites = [options.suite]
     else:
-        suites = ["lexer", "parser", "simulink_parser",
+        suites = ["lexer", "parser", "simulink_parser", "sem",
                   "config_parser",
                   "style", "metrics", "lint", "bmc",
                   "projects",
