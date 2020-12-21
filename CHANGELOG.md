@@ -21,7 +21,8 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.16-dev
 
-
+* Fix issue with entry points: private directories were ignored, they
+  are now considered correctly.
 
 ### 0.9.15
 

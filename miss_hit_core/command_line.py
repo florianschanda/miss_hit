@@ -250,7 +250,8 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                                 os.path.normpath(os.path.join(path, f)))
                     irrelevant_dirs = set(d for d in dirs
                                           if not (d.startswith("+") or
-                                                  d.startswith("@")))
+                                                  d.startswith("@") or
+                                                  d == "private"))
                     for idir in irrelevant_dirs:
                         dirs.remove(idir)
             items_in_path |= files_in_path
