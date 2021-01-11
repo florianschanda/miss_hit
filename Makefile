@@ -1,4 +1,7 @@
-pre-commit-checks: doc test lint
+pre-commit-checks: copyright doc test lint
+
+copyright:
+	@hook_scripts/copyright_year.py
 
 doc:
 	@cd util; ./update_docs.py
