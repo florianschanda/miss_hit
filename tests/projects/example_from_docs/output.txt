@@ -5,7 +5,7 @@ MISS_HIT Lint Summary: 2 file(s) analysed, everything seems fine
 === METRICS ===
 === Code metric by file:
 
-* Code metrics for file /home/flosch/miss_hit/tests/projects/example_from_docs/components/libs/common/src/do_stuff.m:
+* Code metrics for file components/libs/common/src/do_stuff.m:
 
-* Code metrics for file /home/flosch/miss_hit/tests/projects/example_from_docs/components/swc/kitten/src/main.m:
+* Code metrics for file components/swc/kitten/src/main.m:
 MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine

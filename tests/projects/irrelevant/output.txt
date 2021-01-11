@@ -5,7 +5,7 @@ MISS_HIT Lint Summary: 2 file(s) analysed, everything seems fine
 === METRICS ===
 === Code metric by file:
 
-* Code metrics for file /home/flosch/miss_hit/tests/projects/irrelevant/+good/good.m:
+* Code metrics for file +good/good.m:
 
-* Code metrics for file /home/flosch/miss_hit/tests/projects/irrelevant/@thing/thing.m:
+* Code metrics for file @thing/thing.m:
 MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine

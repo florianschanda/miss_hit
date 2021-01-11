@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -399,6 +399,16 @@ def get_global_libraries():
         if isinstance(n_item, Library_Declaration) and \
            n_item.is_global:
             yield n_item
+
+
+def get_path(n_item):
+    assert isinstance(n_item, (Library_Declaration,
+                               Entrypoint_Declaration))
+    item_list = []
+    for n_glib in get_global_libraries():
+        item_list += n_glib.get_path()
+    item_list += n_item.get_path()
+    return item_list
 
 
 ##############################################################################

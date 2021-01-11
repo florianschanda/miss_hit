@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -190,8 +190,8 @@ def dispatch_wp(process_fn, wp):
             raise errors.ICE("unknown work package kind %s" %
                              wp.__class__.__name__)
 
-    except errors.Error:
-        raise errors.ICE("uncaught Error in process_wp")
+    except errors.Error as err:
+        raise errors.ICE("uncaught Error in process_wp") from err
 
     return results
 
@@ -222,10 +222,7 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                                       options.entry_point)
 
             # Get PATH
-            item_list = []
-            for n_glib in cfg_tree.get_global_libraries():
-                item_list += n_glib.get_path()
-            item_list += n_ep.get_path()
+            item_list = cfg_tree.get_path(n_ep)
 
             if options.debug_show_path:
                 print("Using the following PATH:")
@@ -269,6 +266,9 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                 # Otherwise we look at all applicable files on the
                 # path.
                 item_list = list(sorted(files_in_path))
+
+            # Post-process to use relative directories
+            item_list = [os.path.relpath(item) for item in item_list]
 
         else:
             # Without an entry point, we build a minimally sufficient

@@ -1,5 +1,6 @@
 Using the following PATH:
 > .
+@Foo/@Wibble/Wibble.m: check (medium): cannot nest class directory inside a class directory
 Symbol table with 1 active scopes:
 === Level 1 ===
-MISS_HIT Lint Summary: 3 file(s) analysed, everything seems fine
+MISS_HIT Lint Summary: 3 file(s) analysed, 1 check(s)

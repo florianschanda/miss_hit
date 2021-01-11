@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2020, Florian Schanda                    ##
+##              Copyright (C) 2019-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -363,14 +363,19 @@ class Compound_Statement(Statement):
 
 class Compilation_Unit(Node):
     # pylint: disable=unused-argument
-    def __init__(self, name, loc, file_length):
+    def __init__(self, name, dirname, loc, file_length):
         super().__init__()
         assert isinstance(name, str)
+        assert isinstance(dirname, str)
         assert isinstance(loc, Location)
         assert isinstance(file_length, int) and file_length >= 0
 
         self.name = name
         # Not a node since it comes from the filename
+
+        self.dirname = dirname
+        # Name of the directory; relevant later to sort out which
+        # package we're part of
 
         self.error_location = loc
         # In case we need to attach a message to the compilation unit
@@ -378,6 +383,9 @@ class Compilation_Unit(Node):
 
         self.file_length = file_length
         # The number of lines in this file
+
+        self.scope = None
+        # Set by m_sem, will contain the symbol table for this unit
 
     def loc(self):
         return self.error_location
@@ -398,9 +406,9 @@ class Compilation_Unit(Node):
 
 class Script_File(Compilation_Unit):
     def __init__(self,
-                 name, loc, file_length,
+                 name, dirname, loc, file_length,
                  n_statements, l_functions, l_pragmas):
-        super().__init__(name, loc, file_length)
+        super().__init__(name, dirname, loc, file_length)
         assert isinstance(n_statements, Sequence_Of_Statements)
         assert isinstance(l_functions, list)
         for n_function in l_functions:
@@ -447,9 +455,9 @@ class Script_File(Compilation_Unit):
 
 class Function_File(Compilation_Unit):
     def __init__(self,
-                 name, loc, file_length,
+                 name, dirname, loc, file_length,
                  l_functions, is_separate, l_pragmas):
-        super().__init__(name, loc, file_length)
+        super().__init__(name, dirname, loc, file_length)
         assert isinstance(l_functions, list)
         assert len(l_functions) >= 1
         for n_function in l_functions:
@@ -493,9 +501,9 @@ class Function_File(Compilation_Unit):
 
 class Class_File(Compilation_Unit):
     def __init__(self,
-                 name, loc, file_length,
+                 name, dirname, loc, file_length,
                  n_classdef, l_functions, l_pragmas):
-        super().__init__(name, loc, file_length)
+        super().__init__(name, dirname, loc, file_length)
         assert isinstance(n_classdef, Class_Definition)
         assert isinstance(l_functions, list)
         for n_function in l_functions:

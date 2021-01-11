@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2020, Florian Schanda                    ##
+##              Copyright (C) 2019-2021, Florian Schanda                    ##
 ##              Copyright (C) 2019-2020, Zenuity AB                         ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -620,6 +620,8 @@ class MATLAB_Parser:
         if self.peek("KEYWORD", "function"):
             l_functions, l_more_pragmas = self.parse_function_list()
             cunit = Function_File(os.path.basename(self.lexer.filename),
+                                  os.path.dirname(
+                                      os.path.abspath(self.lexer.filename)),
                                   self.lexer.get_file_loc(),
                                   self.lexer.line_count(),
                                   l_functions,
@@ -652,6 +654,8 @@ class MATLAB_Parser:
         l_functions, l_more_pragmas = self.parse_function_list()
 
         return Script_File(os.path.basename(self.lexer.filename),
+                           os.path.dirname(
+                               os.path.abspath(self.lexer.filename)),
                            self.lexer.get_file_loc(),
                            self.lexer.line_count(),
                            Sequence_Of_Statements(statements),
@@ -665,6 +669,8 @@ class MATLAB_Parser:
         l_functions, l_more_pragmas = self.parse_function_list()
 
         return Class_File(os.path.basename(self.lexer.filename),
+                          os.path.dirname(
+                              os.path.abspath(self.lexer.filename)),
                           self.lexer.get_file_loc(),
                           self.lexer.line_count(),
                           n_classdef,

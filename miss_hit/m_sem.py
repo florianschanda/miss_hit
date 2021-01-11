@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -24,8 +24,12 @@
 ##                                                                          ##
 ##############################################################################
 
+import os
+
 from miss_hit_core.m_ast import *
 from miss_hit_core.errors import Message_Handler, ICE
+from miss_hit_core.cfg_ast import Library_Declaration, Entrypoint_Declaration
+from miss_hit_core import cfg_tree
 
 from miss_hit.m_entity import *
 
@@ -40,128 +44,7 @@ def treewalk(n_root, function):
     n_root.visit(None, Visitor(), "Root")
 
 
-class Scope:
-    # https://www.mathworks.com/help/matlab/matlab_prog/function-precedence-order.html
-    #
-    # Note that names (for functions) are resolved in this order:
-    #
-    #  1. Variable in the current workspace
-    #  2. Imported name
-    #  3. Nested functions in the current function
-    #  4. Local function in the current file
-    #  5. Wildcard imported name
-    #  6. Private function (functions in a directory 'private' relative
-    #     to the current file)
-    #  7. Object functions (todo: unclear. are these methods?)
-    #  8. Class constructors in @ directories (i.e. @foo/foo.m)
-    #  9. Loaded simulink models (todo: unclear what this means)
-    # 10. Functions in the current directory
-    # 11. Functions on path, based on the path ordering
-    #
-    # Since calling Simulink models in a context that is not the
-    # MATLAB command prompt, we can ignore (9).
-    #
-    # The 'current directory' (10) will be somwehat irrelevant as
-    # well, since a MISS_HIT entry-point should produce a sensible
-    # path.
-    #
-    # If there is a conflict within the same directory, it is resolved
-    # using this order of preference:
-    #
-    # 1. Built-in function
-    # 2. MEX function
-    # 3. Simulink models that are not loaded (preferring slx over mdl)
-    # 4. Stateflow chart with a .sfx extension
-    # 5. App file (.mlapp) created by the App Designer
-    # 6. mlx files
-    # 7. p files
-    # 8. m files
-    #
-    # Since the context of MISS_HIT is industrial, and generally
-    # assuming this are sane; any confliuct here will just trigger an
-    # error.
-    #
-    # Further, only (1) and (8) will be considered, since those are
-    # the only sane things we can analyze.
-    #
-    # Also see:
-    # https://www.mathworks.com/help/matlab/matlab_oop/scoping-classes-with-packages.html
-    def __init__(self):
-        self.names = [{}]
-
-    def dump(self):
-        print("Symbol table with %u active scopes:" % len(self.names))
-        for level, names in enumerate(self.names, 1):
-            print("=== Level %u ===" % level)
-            for name in sorted(names):
-                e_sym = names[name]
-                e_sym.dump()
-
-    def push(self):
-        self.names.append({})
-
-    def pop(self):
-        if self.names:
-            self.names.pop()
-        else:
-            raise ICE("tried to pop empty scope stack")
-
-    def register(self, mh, entity):
-        assert isinstance(mh, Message_Handler)
-        assert isinstance(entity, Entity)
-
-        if entity.name in self.names[-1]:
-            # TODO: improve error message
-            mh.error(entity.loc(),
-                     "duplicate definition")
-
-        else:
-            self.names[-1][entity.name] = entity
-
-    def lookup_str(self, name):
-        assert isinstance(name, str)
-        for layer in reversed(self.names):
-            if name in layer:
-                return layer[name]
-        return None
-
-    def lookup_token(self, mh, token, fatal=True):
-        assert isinstance(mh, Message_Handler)
-        assert isinstance(token, MATLAB_Token)
-        assert token.kind in ("IDENTIFIER", "KEYWORD")
-        assert isinstance(fatal, bool)
-
-        entity = self.lookup_str(token.value)
-
-        if fatal and entity is None:
-            mh.error(token.location,
-                     "unknown name")
-
-        return entity
-
-    def lookup_identifier(self, mh, n_ident, fatal=True):
-        assert isinstance(mh, Message_Handler)
-        assert isinstance(n_ident, Identifier)
-        assert isinstance(fatal, bool)
-
-        return self.lookup_token(n_ident.t_ident, fatal)
-
-    def import_visible_names(self, other):
-        assert isinstance(other, Scope)
-
-        # Very important assumption here is that any duplicate
-        # definitions have already been checked.
-
-        for e_sym in other.names[-1].values():
-            if not e_sym.is_externally_visible:
-                continue
-            if e_sym.name in self.names[-1]:
-                raise ICE("attempted to import already already known "
-                          "symbol %s" % e_sym.name)
-            self.names[-1][e_sym.name] = e_sym
-
-
-class Semantic_Analysis:
+class Semantic_Analysis_Pass_1:
     def __init__(self, mh):
         assert isinstance(mh, Message_Handler)
         self.mh    = mh
@@ -169,6 +52,8 @@ class Semantic_Analysis:
 
     def sem_compilation_unit(self, n_cu):
         assert isinstance(n_cu, Compilation_Unit)
+
+        n_cu.scope = self.scope
 
         if isinstance(n_cu, Class_File):
             self.sem_class_file(n_cu)
@@ -187,11 +72,90 @@ class Semantic_Analysis:
         self.scope.register(self.mh, e_cls)
 
 
-def sem_pass1(mh, n_cu):
+def sem_pass_1(mh, entrypoint, n_cu):
     assert isinstance(mh, Message_Handler)
     assert isinstance(n_cu, Compilation_Unit)
+    assert isinstance(entrypoint, (Library_Declaration,
+                                   Entrypoint_Declaration)) or \
+        entrypoint is None
 
-    rv = Semantic_Analysis(mh)
+    rv = Semantic_Analysis_Pass_1(mh)
     rv.sem_compilation_unit(n_cu)
 
-    return rv
+    global_pkg = Package_Entity("")
+
+    item = os.path.normpath(n_cu.dirname)
+    if entrypoint is None:
+        pass
+    else:
+        best_match = None
+        for path in cfg_tree.get_path(entrypoint):
+            search_item = os.path.normpath(path)
+            if item.startswith(search_item):
+                if best_match is None or len(best_match) < len(search_item):
+                    best_match = search_item
+        if best_match is None:
+            raise ICE("could not find %s on path" % n_cu.dirname)
+        packages = item[len(best_match) + 1:]
+        if os.sep != "/":
+            packages = packages.replace(os.sep, "/")
+        if packages:
+            packages = packages.split("/")
+        else:
+            packages = []
+
+        # We have an empty list, or a list of + directories, followed
+        # by at most one @ directory, followed optionally by a private
+        # directory.
+        global_dir = Global_Scope(best_match)
+        global_pkg.add_directory(global_dir)
+
+        pkg_ptr = global_pkg
+        dir_ptr = global_dir
+        current_dir = best_match
+        sequence = "package"
+
+        for item in packages:
+            current_dir = os.path.join(current_dir, item)
+            if item.startswith("+"):
+                if sequence == "package":
+                    pkg = Package_Entity(item[1:])
+                    dir_ptr = Package_Directory(current_dir)
+                    pkg.add_directory(dir_ptr)
+                    pkg_ptr.add_child_package(pkg)
+                else:
+                    mh.check(n_cu.loc(),
+                             "cannot nest package inside a %s" % sequence)
+                    return None
+
+            elif item.startswith("@"):
+                if sequence == "package":
+                    dir_ptr = Class_Directory(current_dir)
+                    pkg_ptr.add_class_directory(dir_ptr)
+                    sequence = "class directory"
+
+                else:
+                    mh.check(n_cu.loc(),
+                             "cannot nest class directory inside a %s" %
+                             sequence)
+                    return None
+
+            elif item == "private":
+                if sequence in ("package", "class directory"):
+                    pdir = Private_Directory(current_dir)
+                    dir_ptr.set_private_directory(pdir)
+                    dir_ptr = pdir
+                    sequence = "private directory"
+
+                else:
+                    mh.check(n_cu.loc(),
+                             "cannot private directory inside a %s" %
+                             sequence)
+
+            else:
+                mh.check(n_cu.loc(),
+                         "is not on path and cannot be accessed" %
+                         sequence)
+                return None
+
+    return global_pkg

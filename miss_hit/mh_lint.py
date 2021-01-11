@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -28,6 +28,7 @@ import os
 
 from miss_hit_core import command_line
 from miss_hit_core import work_package
+from miss_hit_core import cfg_tree
 from miss_hit_core.m_ast import *
 from miss_hit_core.errors import (Error,
                                   Message_Handler,
@@ -36,7 +37,8 @@ from miss_hit_core.errors import (Error,
 from miss_hit_core.m_lexer import MATLAB_Lexer
 from miss_hit_core.m_parser import MATLAB_Parser
 
-from miss_hit.m_sem import sem_pass1, Scope
+from miss_hit.m_sem import sem_pass_1
+from miss_hit.m_entity import Scope
 
 
 class Stage_1_Linting(AST_Visitor):
@@ -115,7 +117,8 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
         n_cu.visit(None, Stage_1_Linting(wp.mh), "Root")
 
         # First pass of semantic analysis
-        sem = sem_pass1(wp.mh, n_cu)
+        entrypoint = cfg_tree.get_entry_point(wp.options.entry_point)
+        sem = sem_pass_1(wp.mh, entrypoint, n_cu)
 
         return MH_Lint_Result(wp, sem)
 

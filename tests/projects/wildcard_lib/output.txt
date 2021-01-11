@@ -5,9 +5,9 @@ MISS_HIT Lint Summary: 3 file(s) analysed, everything seems fine
 === METRICS ===
 === Code metric by file:
 
-* Code metrics for file /home/flosch/miss_hit/tests/projects/wildcard_lib/dir_a/foo.m:
+* Code metrics for file dir_a/foo.m:
 
-* Code metrics for file /home/flosch/miss_hit/tests/projects/wildcard_lib/dir_b/bar.m:
+* Code metrics for file dir_b/bar.m:
 
-* Code metrics for file /home/flosch/miss_hit/tests/projects/wildcard_lib/dir_c/baz.m:
+* Code metrics for file dir_c/baz.m:
 MISS_HIT Metric Summary: 3 file(s) analysed, everything seems fine
