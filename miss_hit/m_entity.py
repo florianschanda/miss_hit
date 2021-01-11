@@ -81,8 +81,12 @@ class Scope:
     def __init__(self):
         self.names = [{}]
 
-    def dump(self):
-        print("Symbol table with %u active scopes:" % len(self.names))
+    def dump(self, filename=None):
+        title = "Symbol table"
+        if filename:
+            title += " for %s" % filename
+        title += " with %u active scopes:" % len(self.names)
+        print(title)
         for level, names in enumerate(self.names, 1):
             print("=== Level %u ===" % level)
             for name in sorted(names):

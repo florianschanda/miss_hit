@@ -1,5 +1,11 @@
 Using the following PATH:
 > .
-Symbol table with 1 active scopes:
+Symbol table for +foo/Potato.m with 1 active scopes:
+=== Level 1 ===
+Symbol table for Kitten.m with 1 active scopes:
+=== Level 1 ===
+Symbol table for script.m with 1 active scopes:
+=== Level 1 ===
+Symbol table for test.m with 1 active scopes:
 === Level 1 ===
 MISS_HIT Lint Summary: 4 file(s) analysed, everything seems fine

@@ -49,6 +49,7 @@ class Semantic_Analysis_Pass_1:
         assert isinstance(mh, Message_Handler)
         self.mh    = mh
         self.scope = Scope()
+        self.pkg   = []
 
     def sem_compilation_unit(self, n_cu):
         assert isinstance(n_cu, Compilation_Unit)
@@ -82,12 +83,8 @@ def sem_pass_1(mh, entrypoint, n_cu):
     rv = Semantic_Analysis_Pass_1(mh)
     rv.sem_compilation_unit(n_cu)
 
-    global_pkg = Package_Entity("")
-
     item = os.path.normpath(n_cu.dirname)
-    if entrypoint is None:
-        pass
-    else:
+    if entrypoint:
         best_match = None
         for path in cfg_tree.get_path(entrypoint):
             search_item = os.path.normpath(path)
@@ -101,17 +98,13 @@ def sem_pass_1(mh, entrypoint, n_cu):
             packages = packages.replace(os.sep, "/")
         if packages:
             packages = packages.split("/")
+            rv.pkg = packages
         else:
             packages = []
 
         # We have an empty list, or a list of + directories, followed
         # by at most one @ directory, followed optionally by a private
         # directory.
-        global_dir = Global_Scope(best_match)
-        global_pkg.add_directory(global_dir)
-
-        pkg_ptr = global_pkg
-        dir_ptr = global_dir
         current_dir = best_match
         sequence = "package"
 
@@ -119,10 +112,7 @@ def sem_pass_1(mh, entrypoint, n_cu):
             current_dir = os.path.join(current_dir, item)
             if item.startswith("+"):
                 if sequence == "package":
-                    pkg = Package_Entity(item[1:])
-                    dir_ptr = Package_Directory(current_dir)
-                    pkg.add_directory(dir_ptr)
-                    pkg_ptr.add_child_package(pkg)
+                    pass
                 else:
                     mh.check(n_cu.loc(),
                              "cannot nest package inside a %s" % sequence)
@@ -130,8 +120,6 @@ def sem_pass_1(mh, entrypoint, n_cu):
 
             elif item.startswith("@"):
                 if sequence == "package":
-                    dir_ptr = Class_Directory(current_dir)
-                    pkg_ptr.add_class_directory(dir_ptr)
                     sequence = "class directory"
 
                 else:
@@ -142,15 +130,13 @@ def sem_pass_1(mh, entrypoint, n_cu):
 
             elif item == "private":
                 if sequence in ("package", "class directory"):
-                    pdir = Private_Directory(current_dir)
-                    dir_ptr.set_private_directory(pdir)
-                    dir_ptr = pdir
                     sequence = "private directory"
 
                 else:
                     mh.check(n_cu.loc(),
                              "cannot private directory inside a %s" %
                              sequence)
+                    return None
 
             else:
                 mh.check(n_cu.loc(),
@@ -158,4 +144,4 @@ def sem_pass_1(mh, entrypoint, n_cu):
                          sequence)
                 return None
 
-    return global_pkg
+    return rv

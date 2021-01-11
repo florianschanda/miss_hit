@@ -2,6 +2,16 @@ Using the following PATH:
 > .
 > dir_a
 > dir_b
-Symbol table with 1 active scopes:
+Symbol table for Kitten.m with 1 active scopes:
+=== Level 1 ===
+Class Entity (Kitten)
+  definition: Location(Kitten.m,l=3,b=None)
+Symbol table for dir_a/+bar/Potato.m with 1 active scopes:
+=== Level 1 ===
+Symbol table for dir_a/+foo/Potato.m with 1 active scopes:
+=== Level 1 ===
+Symbol table for dir_b/+foo/Wibble.m with 1 active scopes:
+=== Level 1 ===
+Symbol table for dir_b/+foo/Wobble.m with 1 active scopes:
 === Level 1 ===
 MISS_HIT Lint Summary: 5 file(s) analysed, everything seems fine

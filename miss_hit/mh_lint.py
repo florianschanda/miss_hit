@@ -38,7 +38,6 @@ from miss_hit_core.m_lexer import MATLAB_Lexer
 from miss_hit_core.m_parser import MATLAB_Parser
 
 from miss_hit.m_sem import sem_pass_1
-from miss_hit.m_entity import Scope
 
 
 class Stage_1_Linting(AST_Visitor):
@@ -90,7 +89,6 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
         super().__init__("MH Lint")
         self.perform_sem = options.entry_point is not None
         self.debug_show_st = options.debug_show_global_symbol_table
-        self.global_st = Scope()
 
     @classmethod
     def process_wp(cls, wp):
@@ -130,12 +128,11 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
         if result.sem is None:
             return
 
-        # Doesn't work yet, needs packages to work correctly
-        # self.global_st.import_visible_names(result.sem.scope)
+        if self.debug_show_st:
+            result.sem.scope.dump(result.wp.filename)
 
     def post_process(self):
-        if self.debug_show_st:
-            self.global_st.dump()
+        pass
 
 
 def main_handler():

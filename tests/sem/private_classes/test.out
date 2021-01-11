@@ -1,5 +1,9 @@
 Using the following PATH:
 > .
-Symbol table with 1 active scopes:
+Symbol table for +foo/Potato.m with 1 active scopes:
 === Level 1 ===
+Symbol table for +foo/private/Class_A.m with 1 active scopes:
+=== Level 1 ===
+Class Entity (Class_A)
+  definition: Location(+foo/private/Class_A.m,l=3,b=None)
 MISS_HIT Lint Summary: 2 file(s) analysed, everything seems fine
