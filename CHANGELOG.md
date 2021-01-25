@@ -2,19 +2,18 @@
 
 ## Known issues
 
-### Tooling
-
-* #123 [formatting not always idempotent](https://github.com/florianschanda/miss_hit/issues/123)
-
-* #142 [line continuations starting statements](https://github.com/florianschanda/miss_hit/issues/142)
-  has a remaining issue where multiple starting continuations are not
-  correctly removed in one run of mh_style.
-
 ### Language support
 
 Compatible with up to MATLAB 2020b.
 
 Not quite compatible with Octave yet. See #43 [octave support](https://github.com/florianschanda/miss_hit/issues/43) for more information.
+
+### Tooling
+
+* In some cases MH Style will not fix everything in one run, and it
+  may be necessary to run the tool more than once. Issues like these
+  will be resolved with the planned MH Reformat tool, and will not be
+  fixed in MH Style.
 
 ## Changelog
 
