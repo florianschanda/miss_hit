@@ -24,6 +24,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * Fix issue with entry points: private directories were ignored, they
   are now considered correctly.
 
+* Fix issue in MH Style for name checking class methods: class
+  constructors should obviously follow the class naming scheme, not
+  the method naming scheme.
+
 ### 0.9.15
 
 * Added [documentation](https://florianschanda.github.io/miss_hit/configuration.html#pre-commit) on how to use MISS_HIT through pre-commit hooks.

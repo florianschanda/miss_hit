@@ -3,6 +3,15 @@
 Root: Class_File
   Classdef: Class_Definition
     Name: Identifier <test1>
+    Constructor: Function_Definition
+      Signature: Function_Signature
+        Name: Identifier <test1>
+        Outputs: Identifier <obj>
+      Body: Sequence_Of_Statements
+        Statements: Naked_Expression_Statement
+          Expression: Reference
+            Name: Identifier <disp>
+            Arguments: String_Literal "cons"
     Methods: Methods Special_Block
       Items: Function_Definition
         Signature: Function_Signature

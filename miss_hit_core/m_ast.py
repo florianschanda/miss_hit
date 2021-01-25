@@ -579,6 +579,10 @@ class Class_Definition(Definition):
         # Name of the class. Always a simple identifier, not even dots
         # are allowed here.
 
+        self.n_constructor     = None
+        self.n_constructor_sig = None
+        # Short-cut to constructor function (if it exists)
+
         self.l_attr = []
         # Optional list of class attributes
 
@@ -628,6 +632,12 @@ class Class_Definition(Definition):
     def visit(self, parent, function, relation):
         self._visit(parent, function, relation)
         self.n_name.visit(self, function, "Name")
+        if self.n_constructor:
+            self.n_constructor.visit(self, function, "Constructor")
+        elif self.n_constructor_sig:
+            self.n_constructor_sig.visit(self,
+                                         function,
+                                         "Constructor Signature")
         self._visit_list(self.l_super, function, "Superclasses")
         self._visit_list(self.l_attr, function, "Attributes")
         self._visit_list(self.l_properties, function, "Properties")
@@ -636,13 +646,38 @@ class Class_Definition(Definition):
         self._visit_list(self.l_methods, function, "Methods")
         self._visit_end(parent, function, relation)
 
-    def add_block(self, n_block):
+    def add_block(self, mh, n_block):
+        assert isinstance(mh, Message_Handler)
         assert isinstance(n_block, Special_Block)
 
         if n_block.kind() == "properties":
             self.l_properties.append(n_block)
         elif n_block.kind() == "methods":
             self.l_methods.append(n_block)
+            for n_item in n_block.l_items:
+                if isinstance(n_item, Function_Definition):
+                    n_con = n_item
+                    n_sig = n_item.n_sig
+                elif isinstance(n_item, Function_Signature):
+                    n_con = None
+                    n_sig = n_item
+                else:
+                    raise ICE("%s item in method block is not function"
+                              " signature or function definition" %
+                              n_item.__class__.__name__)
+
+                if str(n_sig.n_name) == str(self.n_name):
+                    if self.n_constructor_sig is None:
+                        self.n_constructor     = n_con
+                        self.n_constructor_sig = n_sig
+                        n_sig.is_constructor = True
+                    else:
+                        mh.error(n_item.loc(),
+                                 "class can only have one constructor,"
+                                 " previous declaration in line %u" %
+                                 self.n_constructor_sig.loc().line,
+                                 fatal=False)
+
         elif n_block.kind() == "events":
             self.l_events.append(n_block)
         elif n_block.kind() == "enumeration":
@@ -778,6 +813,10 @@ class Function_Signature(Node):
         self.l_outputs = None
         # List of outputs
 
+        self.is_constructor = False
+        # Set to true if this function signature refers to a
+        # class constructor
+
     def loc(self):
         if self.n_name:
             return self.n_name.loc()
@@ -786,6 +825,7 @@ class Function_Signature(Node):
 
     def set_name(self, n_name):
         assert isinstance(n_name, Name)
+        assert n_name.is_simple_dotted_name()
 
         self.n_name = n_name
         self.n_name.set_parent(self)
@@ -829,17 +869,26 @@ class Function_Signature(Node):
         assert isinstance(cfg, Config)
 
         # We need to work out what we are. Options are:
-        # 1. Ordinary function
-        # 2. Nested function
-        # 3. Class method (separate or otherwise)
-        # 4. Naked signature in class as forward declaration
+        # 1. Class constructor (needs to follow class naming scheme)
+        # 2. Ordinary function
+        # 3. Nested function
+        # 4. Class method (separate or otherwise)
+        # 5. Naked signature in class as forward declaration
 
         if not cfg.active("naming_functions"):
             return
 
         n_fdef = self.n_parent
 
-        if isinstance(n_fdef, Special_Block):
+        if self.is_constructor:
+            # This is the special case for class constructors: they
+            # need to follow the naming scheme of classes, not methods
+            if not isinstance(self.n_name, Identifier):
+                raise ICE("class constructor with %s node as name" %
+                          self.n_name.__class__.__name__)
+            self.n_name.sty_check_naming(mh, cfg, "class")
+
+        elif isinstance(n_fdef, Special_Block):
             # This is case 4: naked signature. Check as if it's
             # method.
             if not isinstance(self.n_name, Identifier):
@@ -1420,7 +1469,7 @@ class Identifier(Name):
             return self.t_ident.value
 
     def is_simple_dotted_name(self):
-        return self.t_ident.kind == "IDENTIFIER"
+        return self.t_ident.kind in ("IDENTIFIER", "KEYWORD")
 
     def sty_check_naming(self, mh, cfg, kind):
         assert isinstance(mh, Message_Handler)

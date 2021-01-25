@@ -1094,13 +1094,13 @@ class MATLAB_Parser:
 
         while True:
             if self.peek("KEYWORD", "properties"):
-                rv.add_block(self.parse_validation_block())
+                rv.add_block(self.mh, self.parse_validation_block())
             elif self.peek("KEYWORD", "methods"):
-                rv.add_block(self.parse_class_methods())
+                rv.add_block(self.mh, self.parse_class_methods())
             elif self.peek("KEYWORD", "events"):
-                rv.add_block(self.parse_class_events())
+                rv.add_block(self.mh, self.parse_class_events())
             elif self.peek("KEYWORD", "enumeration"):
-                rv.add_block(self.parse_enumeration())
+                rv.add_block(self.mh, self.parse_enumeration())
             elif self.peek("KEYWORD", "end"):
                 break
             else:

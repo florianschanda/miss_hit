@@ -3,6 +3,18 @@
 Root: Class_File
   Classdef: Class_Definition
     Name: Identifier <Bool>
+    Constructor: Function_Definition
+      Signature: Function_Signature
+        Name: Identifier <Bool>
+        Inputs: Identifier <val>
+        Outputs: Identifier <obj>
+      Body: Sequence_Of_Statements
+        Statements: Naked_Expression_Statement
+          Expression: Superclass_Reference
+            Prefix: Identifier <obj>
+            Reference: Reference
+              Name: Identifier <logical>
+              Arguments: Identifier <val>
     Superclasses: Identifier <logical>
     Enumerations: Enumeration Special_Block
       Items: Class_Enumeration
