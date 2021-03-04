@@ -40,6 +40,12 @@ https://florianschanda.github.io/miss_hit/
   other changes (e.g. different connections) are not detected; this is
   only working for embedded MATLAB.
 
+* Copyright notice helper `mh_copyright`
+
+  A tool that can update or adjust copyright notices in bulk. Helpful
+  if your company changes name, or you have year ranges that need
+  updating.
+
 Please refer to the [release notes](https://github.com/florianschanda/miss_hit/blob/master/CHANGELOG.md)
 for a summary of recent changes and known issues.
 

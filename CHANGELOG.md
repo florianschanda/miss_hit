@@ -20,6 +20,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.16-dev
 
+* New (placeholder) tool to update/adjust copyright notices in your
+  projects. This does nothing so far.
+
 * Fix issue with entry points: private directories were ignored, they
   are now considered correctly.
 

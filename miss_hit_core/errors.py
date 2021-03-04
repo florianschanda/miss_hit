@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2020, Florian Schanda                    ##
+##              Copyright (C) 2019-2021, Florian Schanda                    ##
 ##              Copyright (C) 2019, Zenuity AB                              ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -202,7 +202,9 @@ class Check_Message(Message):
 class Message_Handler:
     """ All messages should be routed through this class """
     def __init__(self, tool_id):
-        assert tool_id in ("debug", "style", "metric", "lint", "bmc", "diff")
+        assert tool_id in ("debug",
+                           "style", "metric",
+                           "lint", "bmc", "diff", "copyright")
 
         self.tool_id = tool_id
 

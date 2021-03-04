@@ -76,22 +76,64 @@ def run_module(module, args):
     return rv
 
 
-def execute_style_test(name):
-    m_files = []
-    slx_files = []
+def relevant_files():
+    rv = []
     for path, _, files in os.walk("."):
         for f in files:
-            if f.endswith(".m"):
-                m_files.append(os.path.join(path, f))
-            elif f.endswith(".slx"):
-                slx_files.append(os.path.join(path, f))
+            if f.endswith(".m") or f.endswith(".slx"):
+                rv.append(os.path.join(path, f))
+    return rv
 
-    # Take a copy of the original file
-    orig = {}
-    fixed = {}
-    for f in m_files + slx_files:
+
+def backup_files(files):
+    originals = {}
+    for f in files:
         with open(f, "rb") as fd:
-            orig[f] = fd.read()
+            originals[f] = fd.read()
+    return originals
+
+
+def rename_as_fixed(files):
+    fixed = {}
+    for f in files:
+        fixed_name = f + "_fixed"
+        with open(f, "rb") as fd:
+            fixed[f] = fd.read()
+        with open(fixed_name, "wb") as fd:
+            fd.write(fixed[f])
+    return fixed
+
+
+def detect_broken_fixes(files, fixed):
+    broken_fixes = set()
+    for f in files:
+        with open(f, "rb") as fd:
+            tmp = fd.read()
+        if tmp != fixed[f]:
+            broken_fixes.add(f)
+    return broken_fixes
+
+
+def restore_originals(files, originals):
+    for f in files:
+        with open(f, "wb") as fd:
+            fd.write(originals[f])
+
+
+def write_simulink_diffs(files):
+    for f in files:
+        if f.endswith(".slx"):
+            r = run_command("mh_diff",
+                            ["--allow-weird-names",
+                             f,
+                             f + "_fixed"])
+            with open(f + ".diff", "w") as fd:
+                fd.write(r.stdout)
+
+
+def execute_style_test(name):
+    files = relevant_files()
+    original_content = backup_files(files)
 
     # Run in HTML mode
     r = run_command("mh_style",
@@ -111,11 +153,7 @@ def execute_style_test(name):
     plain_out = r.stdout
 
     # Write the fixed file to foo.m_fixed
-    for f in m_files + slx_files:
-        with open(f, "rb") as fd:
-            fixed[f] = fd.read()
-        with open(f + "_fixed", "wb") as fd:
-            fd.write(fixed[f])
+    fixed_content = rename_as_fixed(files)
 
     # Run in plaintext mode, again, to see if more things need fixing
     r = run_command("mh_style",
@@ -125,18 +163,10 @@ def execute_style_test(name):
                      "--fix"])
     plain_out_again = r.stdout
 
-    # Check if fixed files not "fixed" again
-    broken_fixes = set()
-    for f in m_files + slx_files:
-        with open(f, "rb") as fd:
-            tmp = fd.read()
-        if tmp != fixed[f]:
-            broken_fixes.add(f)
-
-    # Restore original output
-    for f in m_files + slx_files:
-        with open(f, "wb") as fd:
-            fd.write(orig[f])
+    # Check if fixed files not "fixed" again, and then restore
+    # originals
+    broken_fixes = detect_broken_fixes(files, fixed_content)
+    restore_originals(files, original_content)
 
     # Save stdout
     with open("expected_out.txt", "w") as fd:
@@ -152,13 +182,7 @@ def execute_style_test(name):
                 fd.write("Fixing is not idempotent for %s\n" % fail)
 
     # Write diff for Simulink files
-    for slx_file in slx_files:
-        r = run_command("mh_diff",
-                        ["--allow-weird-names",
-                         slx_file,
-                         slx_file + "_fixed"])
-        with open(slx_file + ".diff", "w") as fd:
-            fd.write(r.stdout)
+    write_simulink_diffs(files)
 
     return "Ran style test %s" % name
 
@@ -373,6 +397,50 @@ def execute_project_test(name):
     return "Ran project test %s" % name
 
 
+def execute_copyright_test(name):
+    files = relevant_files()
+    original_content = backup_files(files)
+
+    flags = ["--single", "--process-slx"]
+    if os.path.isfile("cmdline"):
+        with open("cmdline", "r") as fd:
+            for raw_flag in fd.readlines():
+                flag = raw_flag.strip()
+                if flag:
+                    flags.append(flag)
+
+    # Run in plaintext mode and fix
+    r = run_command("mh_copyright", flags)
+    plain_out = r.stdout
+
+    # Write the fixed file to foo.m_fixed
+    fixed_content = rename_as_fixed(files)
+
+    # Run in plaintext mode, again, to see if more things need fixing
+    r = run_command("mh_copyright", flags)
+    plain_out_again = r.stdout
+
+    # Check if fixed files not "fixed" again, and then restore
+    # originals
+    broken_fixes = detect_broken_fixes(files, fixed_content)
+    restore_originals(files, original_content)
+
+    # Save stdout
+    with open("expected_out.txt", "w") as fd:
+        fd.write("=== PLAIN MODE ===\n")
+        fd.write(plain_out)
+        if broken_fixes:
+            fd.write("\n")
+            fd.write("=== ! BROKEN FIXES ! ===\n")
+            for fail in sorted(broken_fixes):
+                fd.write("Fixing is not idempotent for %s\n" % fail)
+
+    # Write diff for Simulink files
+    write_simulink_diffs(files)
+
+    return "Ran copyright test %s" % name
+
+
 def run_test(test):
     if os.path.exists(os.path.join(TEST_ROOT,
                                    test["kind"],
@@ -399,6 +467,7 @@ def run_test(test):
         "config_parser"   : execute_config_parser_test,
         "sanity"          : execute_sanity_test,
         "projects"        : execute_project_test,
+        "copyright"       : execute_copyright_test,
     }
     test_result = fn[test["kind"]](test["test"])
 
@@ -440,7 +509,7 @@ def main():
     else:
         suites = ["lexer", "parser", "simulink_parser", "sem",
                   "config_parser",
-                  "style", "metrics", "lint", "bmc",
+                  "style", "metrics", "lint", "bmc", "copyright",
                   "projects",
                   "sanity"]
 
