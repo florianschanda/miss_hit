@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -179,6 +179,10 @@ class Regex_Style_Configuration(String_Style_Configuration):
     pass
 
 
+class Copyright_Regex_Style_Configuration(Regex_Style_Configuration):
+    pass
+
+
 class Encoding_Style_Configuration(String_Style_Configuration):
     pass
 
@@ -251,8 +255,16 @@ STYLE_RULES = {
     "copyright_notice" : Style_Rule(
         "Ensures the first thing in each file is a copyright notice.",
         {
+            "copyright_regex": Copyright_Regex_Style_Configuration(
+                ("Regex for picking out copyright notice. Must include "
+                 "named groups: 'ystart', 'yend', and 'org'"),
+                default = (r"(\(c\) )?Copyright "
+                           r"((?P<ystart>\d\d\d\d)(-| - ))?(?P<yend>\d\d\d\d)"
+                           r"( by)? *(?P<org>.*)")),
             "copyright_entity": Set_Style_Configuration(
                 "Valid copyright holder."),
+            "copyright_3rd_party_entity": Set_Style_Configuration(
+                "Recognised 3rd-party copyright holder."),
             "copyright_in_embedded_code": Boolean_Style_Configuration(
                 ("Enforce copyright statements in code embedded in Simulink"
                  " models."),

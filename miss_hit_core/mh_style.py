@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2020, Florian Schanda                    ##
+##              Copyright (C) 2019-2021, Florian Schanda                    ##
 ##              Copyright (C) 2019-2020, Zenuity AB                         ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -44,9 +44,6 @@ from miss_hit_core.errors import (Location, Error, ICE,
 from miss_hit_core.m_ast import *
 from miss_hit_core.m_lexer import MATLAB_Lexer, Token_Buffer
 from miss_hit_core.m_parser import MATLAB_Parser
-
-
-COPYRIGHT_REGEX = r"(\(c\) )?Copyright (\d\d\d\d-)?\d\d\d\d( by)? *(?P<org>.*)"
 
 
 class Style_Rule(metaclass=ABCMeta):
@@ -357,7 +354,9 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
     in_copyright_notice = (cfg.active("copyright_notice") and
                            (not is_embedded or
                             cfg.style_config["copyright_in_embedded_code"]))
-    entities = cfg.style_config["copyright_entity"]
+    entities = (cfg.style_config["copyright_entity"] |
+                cfg.style_config["copyright_3rd_party_entity"])
+    copyright_regex = cfg.style_config["copyright_regex"]
     company_copyright_found = False
     generic_copyright_found = False
     copyright_token = None
@@ -452,7 +451,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
         # Corresponds to the old CodeChecker CopyrightCheck rule
         if in_copyright_notice:
             if token.kind == "COMMENT":
-                match = re.search(COPYRIGHT_REGEX, token.value)
+                match = re.search(copyright_regex, token.value)
                 if match:
                     # We have a sane copyright string
                     copyright_token = token

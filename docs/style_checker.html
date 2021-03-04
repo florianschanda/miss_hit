@@ -775,7 +775,16 @@ a = [1, 0;
         <ul>
           <li>
             <b>copyright_entity</b>: Can be specified more than
-            once. Make sure each copyright notice mentions one of these.
+            once. Make sure each copyright notice mentions one of
+            these. These should all be your legal entities.
+          </li>
+          <li>
+            <b>copyright_3rd_party_entity</b>: Can be specified more
+            than once. These are other copyright holders (e.g. for
+            other code that you have integrated into your
+            project). For the style checker this has no special
+            meaning (it means the same as above), but the copyright
+            utility treats these differently.
           </li>
           <li>
             <b>copyright_in_embedded_code</b>: Normally this rule is
@@ -783,6 +792,21 @@ a = [1, 0;
             models, since most models carry their copyright notice
             elsewhere. This flag can be used to turn on this rule for
             embedded code tool.
+          </li>
+          <li>
+            <b>copyright_regex</b>: The magic regex to detect
+            copyright and years. I very <strong>strongly</strong>
+            suggest that you do not change this. If you absolutely
+            must have a different notice than the default, then the
+            regex must include at least three groups: ystart, yend,
+            and org.
+
+            The default is the highly readable:
+            <pre>(\(c\) )?Copyright ((?P&lt;ystart&gt;\d\d\d\d)(-| - ))?(?P&lt;yend&gt;\d\d\d\d)( by)? *(?P&lt;org&gt;.*)</pre>
+
+            Again, please do not change this. Right now the tools
+            don't validate this and you will get strange behaviour if
+            you mess this up. Please. Just don't.
           </li>
         </ul>
       </div>

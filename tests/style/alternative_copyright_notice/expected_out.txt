@@ -1,0 +1,8 @@
+=== PLAIN MODE ===
+In test_2.m, line 1
+| % Copyright by Potato years 2021 through 2021
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: Copyright does not mention one of Florian Schanda
+MISS_HIT Style Summary: 2 file(s) analysed, 1 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 2 file(s) analysed, 1 style issue(s)
