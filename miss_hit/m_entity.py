@@ -233,9 +233,19 @@ class Private_Directory(Directory):
 # Entities
 ##############################################################################
 
-
 class Function_Entity(Entity):
-    pass
+    def __init__(self, n_fsig):
+        assert isinstance(n_fsig, Function_Signature)
+        super().__init__(name = str(n_fsig.n_name))
+
+        self.n_definition = None
+        # The actual function body.
+
+        self.n_declaration = n_fsig
+        # The original declaration. While usually n_definition.n_sig
+        # is n_declaration, this is not true for separates. In this
+        # case the decclaration refers to the signature in the main
+        # class file, and the definition refers to the separate body.
 
 
 class Class_Entity(Entity):
@@ -243,6 +253,7 @@ class Class_Entity(Entity):
         assert isinstance(n_classdef, Class_Definition)
         super().__init__(name               = str(n_classdef.n_name),
                          externally_visible = True)
+        # Note: it is not legal to have a local or private class.
 
         self.n_definition = n_classdef
         self.n_definition.entity = self

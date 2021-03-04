@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -27,7 +27,7 @@ from miss_hit_core.errors import ICE
 
 
 class Entity:
-    def __init__(self, name, externally_visible):
+    def __init__(self, name, externally_visible=False):
         assert isinstance(name, str)
         assert isinstance(externally_visible, bool)
         self.name = name
