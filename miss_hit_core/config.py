@@ -23,7 +23,7 @@
 ##                                                                          ##
 ##############################################################################
 
-from copy import copy
+from copy import deepcopy
 
 
 ##############################################################################
@@ -45,7 +45,7 @@ class Config:
             # All rules are enabled
 
             self.style_config = {
-                cfg_name: copy(STYLE_CONFIGURATION[cfg_name].default)
+                cfg_name: deepcopy(STYLE_CONFIGURATION[cfg_name].default)
                 for cfg_name in STYLE_CONFIGURATION
             }
             # All rule configuration is default
@@ -62,10 +62,10 @@ class Config:
             self.enabled         = other.enabled
             self.octave          = other.octave
             self.pragmas         = other.pragmas
-            self.style_rules     = copy(other.style_rules)
-            self.style_config    = copy(other.style_config)
-            self.enabled_metrics = copy(other.enabled_metrics)
-            self.metric_limits   = copy(other.metric_limits)
+            self.style_rules     = deepcopy(other.style_rules)
+            self.style_config    = deepcopy(other.style_config)
+            self.enabled_metrics = deepcopy(other.enabled_metrics)
+            self.metric_limits   = deepcopy(other.metric_limits)
 
     def dump(self, indent=0):
         items = ["MH Configuration object"]

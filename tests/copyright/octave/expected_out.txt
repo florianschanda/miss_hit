@@ -1,0 +1,2 @@
+=== PLAIN MODE ===
+MISS_HIT Copyright Summary: 2 file(s) analysed, everything seems fine

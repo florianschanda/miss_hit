@@ -42,11 +42,12 @@ from miss_hit_core import s_ast
 from miss_hit_core.version import GITHUB_ISSUES, VERSION, FULL_NAME
 
 
-def create_basic_clp():
+def create_basic_clp(epilog=None):
     rv = {}
 
     ap = argparse.ArgumentParser(
-        description="MATLAB Independent, Small & Safe, High Integrity Tools")
+        description="MATLAB Independent, Small & Safe, High Integrity Tools",
+        epilog=epilog)
     rv["ap"] = ap
 
     ap.add_argument("-v", "--version",

@@ -1,2 +1,9 @@
 === PLAIN MODE ===
-MISS_HIT Copyright Summary: 5 file(s) analysed, everything seems fine
+bar.m: info: no action taken
+bork.m: info: no action taken
+kitten.m: info: no action taken
+no_copyright.m: info: no action taken
+In year_wrong.m, line 1
+| % (c) Copyright 2025 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ error: end year is later than 2021
+MISS_HIT Copyright Summary: 10 file(s) analysed, 1 error(s)

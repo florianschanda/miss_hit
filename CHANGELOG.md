@@ -20,8 +20,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.16-dev
 
-* New (placeholder) tool to update/adjust copyright notices in your
-  projects. This does nothing so far.
+* New tool [MH Copyright](https://florianschanda.github.io/miss_hit/copyright.html) to update and change copyright notices in your
+  projects. This can perform one of four actions:
+  * update years
+  * replace one entity with another
+  * merge multiple entities into one
+  * add missing notices to files without one
 
 * New configuration options for the `copyright_notice` rule of MH
   Style. You can now change the magic regex to detect copyright
@@ -34,6 +38,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * Fix issue in MH Style for name checking class methods: class
   constructors should obviously follow the class naming scheme, not
   the method naming scheme.
+
+* Fix bug in all tools relating to `copyright_entity`. These could
+  be unexpectedly shared between different directory trees, this is
+  now fixed and is working as documented.
 
 ### 0.9.15
 

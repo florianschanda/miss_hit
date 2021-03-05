@@ -1,0 +1,3 @@
+=== PLAIN MODE ===
+test_3.m: info: no action taken
+MISS_HIT Copyright Summary: 4 file(s) analysed, everything seems fine

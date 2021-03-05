@@ -26,9 +26,184 @@
     </div>
 
     <section>
-      <h2>Work In Progress</h2>
+      <h2>Purpose</h2>
       <div>
-        This tool is planned for 0.9.16. Nothing works yet.
+        This tool aims assist developers with some common but annoying
+        maintenance tasks relating to copyright notices in large
+        projects. A simple search and replace is often not actually
+        that simple, or changes something in e.g. a string that should
+        not be changed. MH Copyright can perform some of these tasks
+        for you.
+      </div>
+
+      <div>
+        Note: this tool <b>must not</b> be run in CI. It is a tool
+        that assists you in one-off tasks, that must be reviewed (as
+        copyright notices are generally considered to be important
+        things).
+      </div>
+
+    </section>
+
+    <section>
+      <h2>Usage</h2>
+      <div>
+        The tool is configured and run from the command-line. It does
+        respect the usual MISS_HIT configuration files: in directories
+        where MISS_HIT is disabled, or directories that are excluded
+        no changes are made. If you want to just consider all files,
+        then use the <tt>--ignore-config</tt> common to all MISS_HIT
+        tools.
+      </div>
+
+      <div>
+        The general usage is this:
+
+        <pre>$ mh_copyright ACTION {OPTION} [FILES|DIRS]</pre>
+
+        At least one action must be specified, and most likely you
+        will want to provide one or more options.
+      </div>
+
+      <h3>Options</h3>
+      <div>
+        The following options are specific to MH Copyright.
+      </div>
+
+      <h4>--primary-entity</h4>
+      <div>
+        Defines the (primary) copyright holder. Depending on the
+        action this has different effects. For example for the update
+        year action, this identifies which notice to change; but for
+        the change entity action this identifies what the final result
+        should be.
+      </div>
+
+      <div>
+        If you use a configuration file, then MH Copyright will use
+        the <tt>copyright_entity</tt> set, if there is precisely one.
+      </div>
+
+      <h4>--year</h4>
+      <div>
+        Defines the year to which copyright notices should be updated
+        to. By default this is the current year.
+      </div>
+
+      <h4>--template</h4>
+      <div>
+        A string that will be used to create new or modify existing
+        copyright notices with a single year. By default this matches
+        the <tt>copyright_regex</tt>. We highly recommend to never
+        change or touch this. By default this is:
+        <pre>(c) Copyright %(yend)u %(org)s</pre>
+      </div>
+
+      <h4>--template-range</h4>
+      <div>
+        A string that will be used to create new or modify existing
+        copyright notices with a year range. By default this matches
+        the <tt>copyright_regex</tt>. We highly recommend to never
+        change or touch this. By default this is:
+        <pre>(c) Copyright %(ystart)-%(yend)u %(org)s</pre>
+      </div>
+
+      <h3>Actions</h3>
+      <div>
+        Note that only a single action can be performed. If you want
+        to do more, just invoke the tool twice.
+      </div>
+
+      <h4>--update-year</h4>
+      <div>
+	Updates the year for the primary copyright holder. For example
+	it might change this notice
+<pre>
+% (c) Copyright 2020 Potato Inc.
+% (c) Copyright 2020 Florian Schanda
+% (c) Copyright 2010-2019 ACME GmBh
+</pre>
+        To this:
+<pre>
+% (c) Copyright 2020 Potato Inc.
+% (c) Copyright 2020-2021 Florian Schanda
+% (c) Copyright 2010-2019 ACME GmBh
+</pre>
+      </div>
+
+      <h4>--change-entity=OLD_ENTITY</h4>
+      <div>
+        Replaces the old entity with the primary copyright
+        holder. Leaves year ranges unchanged. For example:
+
+<pre>
+% (c) Copyright 1998-2020 Old Company GmbH
+</pre>
+        Will be changed to this:
+<pre>
+% (c) Copyright 1998-2020 New Company GmbH
+</pre>
+      </div>
+
+      <h4>--merge</h4>
+      <div>
+        A more complex operation that merged multiple copyright
+        notices into a single one that spans the entire range of all
+        merged entities. The use case here is a company renaming
+        itself multiple times; and nobody having updated notices.
+      </div>
+
+      <div>
+        All <tt>copyright_entity</tt> entries from the configuration
+        are considered as candidates, except
+        for <tt>copyright_3rd_party_entity</tt>. All <tt>copyright_entity</tt>
+        entries will be rewritten to the primary copyright entity.
+      </div>
+
+      <div>
+        For example consider this <tt>miss_hit.cfg</tt> file:
+<pre>
+copyright_entity: "Florian Schanda"
+copyright_entity: "Potato GmbH"
+copyright_entity: "Kitten GmbH"
+copyright_3rd_party_entity: "Feature not a Bug Consulting Inc."
+</pre>
+      </div>
+
+      <div>
+        And now consider this set of copyright notices:
+<pre>
+% (c) Copyright 2020 Potato GmbH
+% (c) Copyright 1998-1999 Feature not a Bug Consulting Inc.
+% (c) Copyright 2021 Florian Schanda
+</pre>
+      </div>
+
+      <div>
+        If we run the tool, setting the primary copyright holder to
+        "Florian Schanda", we should get this:
+<pre>
+% (c) Copyright 1998-1999 Feature not a Bug Consulting Inc.
+% (c) Copyright 2020-2021 Florian Schanda
+</pre>
+      </div>
+
+      <div>
+        Note that the resulting set of notices will be chronologically
+        sorted.
+      </div>
+
+      <h4>--add-notice</h4>
+      <div>
+        Adds a new copyright notice with the current year and primary
+        copyright holder to files without a notice.
+      </div>
+
+      <div>
+        Please take <b>special care</b> when using this option, and
+        very carefully <b>review</b>; as adding copyright notices to
+        files that you cannot claim copyright over might have
+        interesting legal implications later on.
       </div>
     </section>
 

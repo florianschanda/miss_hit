@@ -1,0 +1,4 @@
+=== PLAIN MODE ===
+two/test_1.m: warning: unable to determine primary copyright entity, skipping this file
+zero/test_1.m: warning: unable to determine primary copyright entity, skipping this file
+MISS_HIT Copyright Summary: 3 file(s) analysed, 2 warning(s)
