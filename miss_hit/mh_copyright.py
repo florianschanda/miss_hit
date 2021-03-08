@@ -214,7 +214,7 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                     raise ICE("unexpected action %s" % action)
 
             # Final updates for the merge and add action
-            if action == "merge":
+            if action == "merge" and merged_copyright[1] is not None:
                 # Clean merged copyright
                 if merged_copyright[0] == merged_copyright[1]:
                     merged_copyright[0] = None
