@@ -39,6 +39,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   constructors should obviously follow the class naming scheme, not
   the method naming scheme.
 
+* Fix issue in MH Style where some confusing messages relating to
+  indentation would be emitted if there was a parse error in the file.
+
 * Fix bug in all tools relating to `copyright_entity`. These could
   be unexpectedly shared between different directory trees, this is
   now fixed and is working as documented.

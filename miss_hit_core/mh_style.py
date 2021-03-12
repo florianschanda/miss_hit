@@ -345,11 +345,12 @@ KEYWORDS_WITH_WS = frozenset([
 ])
 
 
-def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
+def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
     assert isinstance(mh, Message_Handler)
     assert isinstance(tbuf, Token_Buffer)
     assert isinstance(is_embedded, bool)
     assert isinstance(fixed, bool)
+    assert isinstance(valid_code, bool)
 
     in_copyright_notice = (cfg.active("copyright_notice") and
                            (not is_embedded or
@@ -414,7 +415,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
 
         # Keep track of statement starters. This is required for
         # indentation.
-        if token.first_in_statement:
+        if valid_code and token.first_in_statement:
             # We need to take special care of comments that are the
             # first thing after an open block. Since comments are not
             # attached to the AST (and it is not practical to do so),
@@ -648,7 +649,8 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                                    fixed)
 
             # Make sure we have whitespace _after_ the function end
-            elif token.value == "end" and \
+            elif valid_code and \
+                 token.value == "end" and \
                  cfg.active("whitespace_around_functions") and \
                  isinstance(token.ast_link, Function_Definition):
                 # We first need to find the actual last token on this line
@@ -816,7 +818,8 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                         token.fix.ensure_ws_before = True
                         token.fix.ensure_ws_after = True
 
-            if cfg.active("implicit_shortcircuit") and \
+            if valid_code and \
+               cfg.active("implicit_shortcircuit") and \
                token.value in ("&", "|") and \
                token.ast_link and \
                isinstance(token.ast_link, Binary_Logical_Operation) and \
@@ -870,7 +873,9 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed):
                            fixed and continuation_is_fixed)
 
         # Complain about indentation
-        if cfg.active("indentation") and token.kind != "NEWLINE":
+        if valid_code and \
+           cfg.active("indentation") and \
+           token.kind != "NEWLINE":
             if token.first_in_line and not token.block_comment:
                 if token.first_in_statement:
                     if token.ast_link:
@@ -1069,7 +1074,8 @@ class MH_Style(command_line.MISS_HIT_Back_End):
             cfg         = wp.cfg,
             tbuf        = tbuf,
             is_embedded = isinstance(wp, work_package.Embedded_MATLAB_WP),
-            fixed       = parse_tree is not None)
+            fixed       = parse_tree is not None,
+            valid_code  = parse_tree is not None)
 
         # Stage 4 - rules involving the parse tree
 
