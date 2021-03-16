@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -46,6 +46,7 @@ from miss_hit_core.config import (STYLE_RULES, STYLE_CONFIGURATION,
                                   Integer_Style_Configuration,
                                   Regex_Style_Configuration,
                                   Encoding_Style_Configuration,
+                                  String_Style_Configuration,
                                   Set_Style_Configuration)
 from miss_hit_core.cfg_ast import *
 
@@ -332,6 +333,9 @@ class Config_Parser:
             value = self.parse_encoding()
 
         elif isinstance(cfg_item, Set_Style_Configuration):
+            value = self.parse_string()
+
+        elif isinstance(cfg_item, String_Style_Configuration):
             value = self.parse_string()
 
         elif isinstance(cfg_item, Boolean_Style_Configuration):

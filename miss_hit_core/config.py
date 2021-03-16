@@ -263,6 +263,8 @@ STYLE_RULES = {
                            r"( by)? *(?P<org>.*)")),
             "copyright_entity": Set_Style_Configuration(
                 "Valid copyright holder."),
+            "copyright_primary_entity": String_Style_Configuration(
+                "Valid primary copyright holder."),
             "copyright_3rd_party_entity": Set_Style_Configuration(
                 "Recognised 3rd-party copyright holder."),
             "copyright_in_embedded_code": Boolean_Style_Configuration(

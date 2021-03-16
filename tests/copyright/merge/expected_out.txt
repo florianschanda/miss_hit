@@ -3,4 +3,4 @@ test_3.m: info: no action taken
 In test_7.m, line 1
 | % (c) Copyright 2007-2003 Kitten GmbH
 | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ error: initial year is later than end year
-MISS_HIT Copyright Summary: 7 file(s) analysed, 1 error(s)
+MISS_HIT Copyright Summary: 8 file(s) analysed, 1 error(s)

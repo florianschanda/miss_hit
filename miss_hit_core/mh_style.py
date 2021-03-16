@@ -357,6 +357,8 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                             cfg.style_config["copyright_in_embedded_code"]))
     entities = (cfg.style_config["copyright_entity"] |
                 cfg.style_config["copyright_3rd_party_entity"])
+    if cfg.style_config["copyright_primary_entity"]:
+        entities.add(cfg.style_config["copyright_primary_entity"])
     copyright_regex = cfg.style_config["copyright_regex"]
     company_copyright_found = False
     generic_copyright_found = False
@@ -491,10 +493,15 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     # If we have something basic, we only raise an
                     # issue if we're supposed to have something
                     # specific.
-                    if entities:
+                    if len(entities) == 1:
                         mh.style_issue(copyright_token.location,
-                                       "Copyright does not mention one of %s" %
-                                       (" or ".join(entities)))
+                                       "Copyright does not mention %s" %
+                                       list(entities)[0])
+                    elif len(entities) > 1:
+                        mh.style_issue(copyright_token.location,
+                                       "Copyright does not mention one of %s"
+                                       % " or ".join(entities))
+
                 elif copyright_token:
                     # We found something that might be a copyright,
                     # but is not in a sane format

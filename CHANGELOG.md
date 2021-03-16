@@ -30,7 +30,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * New configuration options for the `copyright_notice` rule of MH
   Style. You can now change the magic regex to detect copyright
   notices (`copyright_regex`), and add 3rd party copyright holders
-  (`copyright_3rd_party_entity`).
+  (`copyright_3rd_party_entity`), and indicate a key copyright holder
+  (`copyright_primary_entity`). These options are also considered by
+  the MH Copyright tool.
 
 * Fix issue with entry points: private directories were ignored, they
   are now considered correctly.

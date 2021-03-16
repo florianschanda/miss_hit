@@ -58,7 +58,9 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
         is_embedded = isinstance(wp, work_package.Embedded_MATLAB_WP)
 
         # Deal with command-line options
-        primary_entity = wp.options.primary_entity
+        primary_entity = wp.cfg.style_config["copyright_primary_entity"]
+        if wp.options.primary_entity:
+            primary_entity = wp.options.primary_entity
         old_entity = None
         if wp.options.update_year:
             action = "update_year"
@@ -108,6 +110,7 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                  wp.cfg.style_config["copyright_in_embedded_code"]))
             old_copyright_info = []
             file_start = 1
+            newlines = 1
             comment_char = "%"
             while in_copyright_notice:
                 token = lexer.token()
@@ -130,7 +133,7 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                         file_start = token.location.line
                         in_copyright_notice = False
                 elif token.kind == "NEWLINE":
-                    pass
+                    newlines = len(token.value)
                 else:
                     # Once we get a non-comment/non-copyright token,
                     # the header has ended. We then emit messages if
@@ -250,7 +253,8 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                         new_content.append("%s %s" %
                                            (comment_char,
                                             wp.options.template_range % sub))
-                new_content.append("")
+                if newlines >= 2 or action == "add_notice":
+                    new_content.append("")
                 new_content += lexer.context_line[file_start - 1:]
 
                 wp.write_modified("\n".join(new_content) + "\n")
