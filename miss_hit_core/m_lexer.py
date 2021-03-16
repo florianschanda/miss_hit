@@ -82,6 +82,12 @@ class Token_Generator(metaclass=ABCMeta):
                os.path.dirname(os.path.abspath(filename))).startswith("@")
         # Make a note if this file resides inside a @ directory
 
+        self.octave_mode = False
+        # If set to true, also deal with Octave's extensions to
+        # MATLAB.
+        #
+        # Note that this is highly incomplete right now.
+
     @abstractmethod
     def token(self):
         pass
@@ -176,12 +182,6 @@ class MATLAB_Lexer(Token_Generator):
         # perfectly valid (legacy) code, that accidentally includes
         # pragmas. Hence there is an option to turn this off. It is
         # also turned off in config file mode.
-
-        self.octave_mode = False
-        # If set to true, also deal with Octave's extensions to
-        # MATLAB.
-        #
-        # Note that this is highly incomplete right now.
 
         self.block_comment = 0
         # We're in a block comment and are ignore almost everything
@@ -1219,6 +1219,7 @@ class Token_Buffer(Token_Generator):
         self.mh = lexer.mh
         self.lines = lexer.line_count()
         self.comment_char = lexer.comment_char
+        self.octave_mode = lexer.octave_mode
 
         while True:
             tok = lexer.token()

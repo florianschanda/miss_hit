@@ -1,4 +1,4 @@
-In bar.m, line 7
-| kittens = 42; % Illegal
-| ^^^^^^^ error: expected end of file, found IDENTIFIER instead
+In bar.m, line 3
+| function y = foo(x)
+|              ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use the --octave mode
 MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

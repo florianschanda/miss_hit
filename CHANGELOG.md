@@ -46,6 +46,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   be unexpectedly shared between different directory trees, this is
   now fixed and is working as documented.
 
+* Support Octave script-global functions in `--octave` mode. These are
+  function definitions that are sprinkled in the middle of a script
+  file, instead of appearing at the end. Also vastly improve the error
+  message that appears when encountering this construct in MATLAB
+  mode.
+
 ### 0.9.15
 
 * Added [documentation](https://florianschanda.github.io/miss_hit/configuration.html#pre-commit) on how to use MISS_HIT through pre-commit hooks.

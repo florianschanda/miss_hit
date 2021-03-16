@@ -629,8 +629,18 @@ class MATLAB_Parser:
                                   l_pragmas + l_more_pragmas)
         elif self.peek("KEYWORD", "classdef") or self.lexer.in_class_directory:
             cunit = self.parse_class_file(l_pragmas)
+        elif self.lexer.octave_mode:
+            cunit = self.parse_octave_script_file(l_pragmas)
         else:
-            cunit = self.parse_script_file(l_pragmas)
+            cunit = self.parse_matlab_script_file(l_pragmas)
+
+            # Special detection of Octave inline globals in MATLAB
+            # mode (to improve the messages produced in #198).
+            if not self.peek_eof() and cunit.l_functions:
+                self.mh.error(cunit.l_functions[0].loc(),
+                              "script-global functions are an Octave-specific"
+                              " feature; move your functions to the end of"
+                              " the script file or use the --octave mode")
 
         if self.debug_tree:
             cunit.debug_parse_tree()
@@ -639,9 +649,14 @@ class MATLAB_Parser:
 
         return cunit
 
-    def parse_script_file(self, l_pragmas):
+    def parse_matlab_script_file(self, l_pragmas):
+        # A MATLAB script file is a bunch of statements, followed by
+        # zero or more private functions. This is distinct from Octave
+        # script files, which allow you to sprinkle functions anywhere
+        # in the top-level context.
+
         # At least in MATLAB 2017b script files cannot use the
-        # non-ended chained functions
+        # non-ended chained functions.
 
         self.functions_require_end = True
         statements = []
@@ -652,6 +667,42 @@ class MATLAB_Parser:
                 statements.append(self.parse_statement())
 
         l_functions, l_more_pragmas = self.parse_function_list()
+
+        return Script_File(os.path.basename(self.lexer.filename),
+                           os.path.dirname(
+                               os.path.abspath(self.lexer.filename)),
+                           self.lexer.get_file_loc(),
+                           self.lexer.line_count(),
+                           Sequence_Of_Statements(statements),
+                           l_functions,
+                           l_pragmas + l_more_pragmas)
+
+    def parse_octave_script_file(self, l_pragmas):
+        # An Octave script file is very similar to a MATLAB one,
+        # except they allow you to put functions everywhere (as long
+        # as it's not the first thing, because then you have a
+        # function file again). The semantics are weird as well,
+        # because all functions encountered this way are made global,
+        # as if they were in their own function files.
+
+        self.functions_require_end = True
+        statements = []
+        l_functions = []
+        l_more_pragmas = []
+
+        if not self.peek_eof():
+            # Script files _have_ to start with a statment
+            statements.append(self.parse_statement())
+
+        # Otherwise, in Octave, script files are a sequence of
+        # statements intermixed with (global) function definitions
+        while not self.peek_eof():
+            if self.peek("KEYWORD", "function"):
+                l_functions.append(self.parse_function_def())
+            elif self.peek("KEYWORD", "pragma"):
+                l_more_pragmas.append(self.parse_annotation_pragma())
+            else:
+                statements.append(self.parse_statement())
 
         return Script_File(os.path.basename(self.lexer.filename),
                            os.path.dirname(
