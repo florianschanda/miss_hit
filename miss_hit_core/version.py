@@ -27,8 +27,8 @@
 
 GITHUB_ISSUES = "https://github.com/florianschanda/miss_hit/issues"
 
-VERSION_TUPLE = (0, 9, 16)
-VERSION_SUFFIX = ""
+VERSION_TUPLE = (0, 9, 17)
+VERSION_SUFFIX = "dev"
 
 VERSION = ("%u.%u.%u" % VERSION_TUPLE) + \
           ("-%s" % VERSION_SUFFIX if VERSION_SUFFIX else "")

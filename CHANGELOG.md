@@ -18,6 +18,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
+### 0.9.17-dev
+
+
+
 ### 0.9.16
 
 * New tool [MH Copyright](https://florianschanda.github.io/miss_hit/copyright.html) to update and change copyright notices in your
