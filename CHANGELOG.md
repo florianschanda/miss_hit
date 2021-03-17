@@ -20,7 +20,8 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.17-dev
 
-
+* Fix wrapper class (`miss_hit.m`), I forgot to update the file names
+  when I remove the `.py` from the main entry points.
 
 ### 0.9.16
 
