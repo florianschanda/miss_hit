@@ -959,7 +959,7 @@ class Sequence_Of_Statements(Node):
 class Name_Value_Pair(Node):
     """ AST for items of the various attribute lists inside classdefs
 
-    For example (Access = protected)
+    For example (Access = protected) or in 2021a (foo(x=y))
     """
     def __init__(self, n_name):
         super().__init__()
@@ -991,9 +991,12 @@ class Name_Value_Pair(Node):
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Special_Block,
-                                     Class_Definition))
+                                     Class_Definition,
+                                     Reference))
         # Usually appears on the special blocks, but can also appear
-        # directly on a classdef.
+        # directly on a classdef. Since 2021a it can appear in
+        # function argument lists as well (which are initially parsed
+        # as references).
         super().set_parent(n_parent)
 
     def visit(self, parent, function, relation):
@@ -1391,7 +1394,12 @@ class Reference(Name):
     def set_arguments(self, l_args):
         assert isinstance(l_args, list)
         for n_arg in l_args:
-            assert isinstance(n_arg, Expression)
+            # Note that a NV pair imples that this reference will be a
+            # function call. This is a dumb MATLAB 2021a feature that
+            # actually provides a pair of arguments, an identifier
+            # transformed a la command form into a string; and another
+            # argument.
+            assert isinstance(n_arg, (Expression, Name_Value_Pair))
 
         self.l_args = l_args
         for n_arg in self.l_args:

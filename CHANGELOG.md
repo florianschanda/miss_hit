@@ -4,11 +4,9 @@
 
 ### Language support
 
-Compatible with up to MATLAB 2020b.
+Compatible with up to MATLAB 2021a.
 
 Not quite compatible with Octave yet. See #43 [octave support](https://github.com/florianschanda/miss_hit/issues/43) for more information.
-
-The name-value pairs of MATLAB 2021a are not supported yet.
 
 ### Tooling
 
@@ -20,6 +18,20 @@ The name-value pairs of MATLAB 2021a are not supported yet.
 ## Changelog
 
 ### 0.9.17-dev
+
+* Updated language support to MATLAB 2021a. The new feature supported
+  is the new (and extremely unwise) function name-value pairs. This
+  allows you to write `foo(bar=baz)` instead of two separate
+  arguments: `foo('bar', baz)`. Note very carfully that this is
+  totally different to all other programming languages out there, and
+  not what any reasonable person expects.
+
+  Further note that Octave actually does something worse here, in
+  Octave this would be a side-effect assinment to bar, and only a
+  single argument would be passed.
+
+* MH Lint has a new (low) check for discouraging the use of name-value
+  function arguments.
 
 * Fix wrapper class (`miss_hit.m`), I forgot to update the file names
   when I remove the `.py` from the main entry points.

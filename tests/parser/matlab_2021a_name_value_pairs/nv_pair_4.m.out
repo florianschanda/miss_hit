@@ -1,4 +1,4 @@
 In nv_pair_4.m, line 3
 | myFunction(name=value,posArgument);
-|                ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+|                       ^^^^^^^^^^^ error: positional argument is not permitted after a name-value pair
 MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

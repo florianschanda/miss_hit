@@ -285,18 +285,6 @@ class MATLAB_Parser:
         else:
             return False
 
-    def apeek(self, kind, value=None):
-        assert kind in TOKEN_KINDS
-        if self.nt and \
-           self.nt.kind == kind and \
-           self.nt.annotation:
-            if value is None:
-                return True
-            else:
-                return self.nt.value == value
-        else:
-            return False
-
     def peek2(self, kind, value=None):
         assert kind in TOKEN_KINDS
         if self.nnt and \
@@ -306,6 +294,18 @@ class MATLAB_Parser:
                 return True
             else:
                 return self.nnt.value == value
+        else:
+            return False
+
+    def apeek(self, kind, value=None):
+        assert kind in TOKEN_KINDS
+        if self.nt and \
+           self.nt.kind == kind and \
+           self.nt.annotation:
+            if value is None:
+                return True
+            else:
+                return self.nt.value == value
         else:
             return False
 
@@ -1840,12 +1840,45 @@ class MATLAB_Parser:
             return args
 
         while True:
-            args.append(self.parse_expression())
+            if not self.lexer.octave_mode and \
+               self.peek("IDENTIFIER") and self.peek2("ASSIGNMENT"):
+                # Special case for the 2021a MATLAB mis-feature of
+                # name-value pairs in function calls
+                nv_pair = Name_Value_Pair(
+                    self.parse_identifier(allow_void=False))
+                self.match("ASSIGNMENT")
+                t_eq = self.ct
+                # We immeditely issue a Lint message about the
+                # confusing semantics of = here.
+                self.mh.check(self.ct.location,
+                              "name-value pairs have extremely confusing"
+                              " semantics and should be avoided, use two"
+                              " arguments instead",
+                              severity="low")
+
+                nv_pair.set_value(t_eq, self.parse_expression())
+                args.append(nv_pair)
+
+            else:
+                args.append(self.parse_expression())
+
             if self.peek("COMMA"):
                 self.match("COMMA")
                 self.ct.set_ast(n_ast)
             elif self.peek("KET"):
                 break
+
+        # At this point we need to make sure that any name-value pairs
+        # provided are at the _end_ of the argument list.
+        only_nv_pairs_allowed_now = False
+        for n_arg in args:
+            if isinstance(n_arg, Name_Value_Pair):
+                only_nv_pairs_allowed_now = True
+            elif only_nv_pairs_allowed_now:
+                self.mh.error(n_arg.loc(),
+                              "positional argument is not permitted after"
+                              " a name-value pair")
+
         self.match("KET")
         self.ct.set_ast(n_ast)
         return args

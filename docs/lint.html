@@ -144,12 +144,52 @@ end
         name of the file instead of the function or class name, which
         is just not right.
       </div>
+
+      <h3>Name-value pairs in function calls</h3>
+      <div>
+        This is a new (since MATLAB 2021a) and extremely confusing use
+        of = in function calls. It means something completely
+        different to what it means in any other language, it also
+        clashes with Octave, and finally it is next to impossible to
+        parse correctly.
+      </div>
+      <div>
+        Consider for example: <pre>foo(a=b);</pre>
+      </div>
+      <div>
+        <ul>
+          <li>In MATLAB &lt; 2021a, this is just a syntax error.</li>
+          <li>
+            In MATLAB &gt;= 2021a, this is actually two arguments, and
+            is equivalent to <pre>foo('a', b)</pre>
+
+            Note that this is totally different to what you'd expect
+            if you come from e.g. Python or Ada.
+          </li>
+          <li>In Octave, this is a side-effect assignment to a, so is
+            equivalent to
+<pre>
+a = b;
+foo(b);
+</pre>
+          </li>
+        </ul>
+      </div>
+      <div>
+        It gets worse, when you consider how to parse or semantically
+        analyze the code fragment <pre>foo(a=b)</pre> Is it allowed or
+        not?
+
+        This may depend on the calling context, for example
+        if <tt>foo</tt> is a lambda function it would be fine, but if
+        it is an array, it is not.
+      </div>
     </section>
 
   </main>
 
   <footer>
-    Content &copy; 2020 Florian Schanda<br>
+    Content &copy; 2020-2021 Florian Schanda<br>
     Style &copy; 2019-2020 Alina Boboc<br>
     MISS_HIT Lint is licensed under the AGPLv3
   </footer>

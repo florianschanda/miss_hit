@@ -1,4 +1,19 @@
-In nv_pair_6.m, line 4
-| potato(a=5);
-|         ^ error: expected IDENTIFIER, found ASSIGNMENT instead
-MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)
+----------------------------------------------------------------------
+--  Parse tree for nv_pair_6.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <a>
+      RHS: Number_Literal <42>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <potato>
+        Arguments: Name_Value_Pair
+          Name: Identifier <a>
+          Value: Number_Literal <5>
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <disp>
+        Arguments: Identifier <a>
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

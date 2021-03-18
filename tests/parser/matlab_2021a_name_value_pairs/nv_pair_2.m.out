@@ -1,4 +1,16 @@
-In nv_pair_2.m, line 3
-| plot(x,y,"Color","red",LineWidth=2);
-|                                 ^ error: expected IDENTIFIER, found ASSIGNMENT instead
-MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)
+----------------------------------------------------------------------
+--  Parse tree for nv_pair_2.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Naked_Expression_Statement
+      Expression: Reference
+        Name: Identifier <plot>
+        Arguments: Identifier <x>
+        Arguments: Identifier <y>
+        Arguments: String_Literal "Color"
+        Arguments: String_Literal "red"
+        Arguments: Name_Value_Pair
+          Name: Identifier <LineWidth>
+          Value: Number_Literal <2>
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine
