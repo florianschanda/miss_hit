@@ -1,0 +1,4 @@
+In nv_pair_5.m, line 3
+| myFunction(a,(name=value));
+|                   ^ error: expected KET, found ASSIGNMENT instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

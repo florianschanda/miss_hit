@@ -1,0 +1,25 @@
+----------------------------------------------------------------------
+--  Parse tree for potato.m
+Root: Function_File
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <potato>
+      Inputs: Identifier <a>
+      Inputs: Identifier <b>
+    Body: Sequence_Of_Statements
+      Statements: Naked_Expression_Statement
+        Expression: Reference
+          Name: Identifier <disp>
+          Arguments: Identifier <a>
+      Statements: If_Statement
+        Action: If Action
+          Guard: Binary_Operation >
+            LHS: Identifier <nargin>
+            RHS: Number_Literal <1>
+          Body: Sequence_Of_Statements
+            Statements: Naked_Expression_Statement
+              Expression: Reference
+                Name: Identifier <disp>
+                Arguments: Identifier <b>
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

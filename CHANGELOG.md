@@ -8,6 +8,8 @@ Compatible with up to MATLAB 2020b.
 
 Not quite compatible with Octave yet. See #43 [octave support](https://github.com/florianschanda/miss_hit/issues/43) for more information.
 
+The name-value pairs of MATLAB 2021a are not supported yet.
+
 ### Tooling
 
 * In some cases MH Style will not fix everything in one run, and it
@@ -16,7 +18,6 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   fixed in MH Style.
 
 ## Changelog
-
 
 ### 0.9.17-dev
 
