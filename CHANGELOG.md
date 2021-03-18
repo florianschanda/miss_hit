@@ -17,7 +17,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ## Changelog
 
-### 0.9.17-dev
+### 0.9.17
 
 * Updated language support to MATLAB 2021a. The new feature supported
   is the new (and extremely unwise) function name-value pairs. This
