@@ -2,9 +2,6 @@
 In off/test.m, line 5
 |    # This is a comment
 |    ^ lex error: unexpected character '#'
-In on/test.m, line 1
-| % (c) 2019 Florian Schanda
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^ style: Copyright notice not in right format
 In on/test.m, line 3
 | function potato()
 |          ^^^^^^ style: violates naming scheme for function
@@ -23,7 +20,7 @@ In on/test.m, line 4
 In on/test.m, line 5
 |    # This is a comment
 |    ^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 3 [fixed]
-MISS_HIT Style Summary: 2 file(s) analysed, 7 style issue(s), 1 error(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 6 style issue(s), 1 error(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 2 file(s) analysed, 7 style issue(s), 1 error(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 6 style issue(s), 1 error(s)

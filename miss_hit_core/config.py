@@ -175,6 +175,17 @@ class String_Style_Configuration(Style_Configuration):
         super().__init__(description, default)
 
 
+class Choice_Style_Configuration(String_Style_Configuration):
+    def __init__(self, description, choices):
+        assert isinstance(choices, list)
+        assert len(choices) >= 1
+        for choice in choices:
+            assert isinstance(choice, str)
+        super().__init__(description, choices[0])
+
+        self.choices = choices
+
+
 class Regex_Style_Configuration(String_Style_Configuration):
     pass
 
@@ -255,6 +266,9 @@ STYLE_RULES = {
     "copyright_notice" : Style_Rule(
         "Ensures the first thing in each file is a copyright notice.",
         {
+            "copyright_location": Choice_Style_Configuration(
+                "Location of copyright statements",
+                ["docstring", "file_header"]),
             "copyright_regex": Copyright_Regex_Style_Configuration(
                 ("Regex for picking out copyright notice. Must include "
                  "named groups: 'ystart', 'yend', and 'org'"),

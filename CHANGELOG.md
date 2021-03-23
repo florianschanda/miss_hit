@@ -17,9 +17,30 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ## Changelog
 
-
 ### 0.9.18-dev
 
+* Completely new handling of copyright notices. New configuration
+  option `copyright_location` decides which approach to use. It can
+  take one of the following values:
+  * `file_header` - similar to the old behaviour, copyright notice
+    must be in the file header. However the tool is a bit more relaxed
+    where the copyright notice can appear, and it no longer must be
+    the first line in the file.
+  * `docstring` - the new (and default) approach, copyright notice
+    must be somewhere in the docstring of the class, function, or
+    script file.
+
+  Please note that this changes the *default* behaviour, if you like
+  something closer to the old approach use `file_header`. The
+  intention however is to make it possible to write sensible
+  docstrings for working with the MATLAB/Octave help functions; and
+  this new default achieves this.
+
+  Your current notices, if they exist, should be compatible with the
+  new default.
+
+  The MH Copyright tool does not yet deal with docstrings, it only
+  supports the old style (for now).
 
 ### 0.9.17
 

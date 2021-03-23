@@ -23,22 +23,19 @@ In expr.m, line 21
 In expr.m, line 30
 |         (2));
 |         ^ style: redundant parenthesis [fixed]
-In test.m, line 1
-| foo = 1;
-| ^^^ style: file does not appear to contain any copyright header
-In test.m, line 7
+In test.m, line 9
 | if (foo)
 |    ^ style: redundant parenthesis [fixed]
-In test.m, line 11
+In test.m, line 13
 | if ((foo))
 |    ^ style: redundant parenthesis [fixed]
-In test.m, line 11
+In test.m, line 13
 | if ((foo))
 |     ^ style: redundant parenthesis [fixed]
-MISS_HIT Style Summary: 2 file(s) analysed, 12 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 11 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 2 file(s) analysed, 12 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 11 style issue(s)
 
 === ! BROKEN FIXES ! ===
 Fixing is not idempotent for ./expr.m

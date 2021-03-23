@@ -106,13 +106,13 @@ In Simple.m, line 11
 | ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
 In awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-| ^^^^^^^^ style: file does not appear to contain any copyright header
-In awful.m, line 1
-| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
 |             ^ style: = must be preceeded by whitespace [fixed]
 In awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
 |               ^^^ style: violates naming scheme for function
+In awful.m, line 1
+| function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
+|               ^^^ style: Could not find any copyright notice
 In awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
 |                      ^ style: end this with just a newline [fixed]

@@ -1,0 +1,5 @@
+In invalid.cfg, line 1
+| copyright_location: "potato"
+|                     ^^^^^^^^ error: must be one of docstring or file_header
+invalid.cfg: error: config file contains errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 2 error(s)

@@ -1,10 +1,10 @@
 === PLAIN MODE ===
 In newlines.m, line 1
 | classdef newlines
-| ^^^^^^^^ style: file does not appear to contain any copyright header
+|          ^^^^^^^^ style: violates naming scheme for class
 In newlines.m, line 1
 | classdef newlines
-|          ^^^^^^^^ style: violates naming scheme for class
+|          ^^^^^^^^ style: Could not find any copyright notice
 In newlines.m, line 3
 |         x, y; z
 |          ^ style: end this with just a newline [fixed]

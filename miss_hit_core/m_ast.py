@@ -26,6 +26,8 @@
 import subprocess
 import re
 
+from copy import copy
+
 from miss_hit_core.config import Config
 from miss_hit_core.m_language import TOKEN_KINDS
 from miss_hit_core.m_language_builtins import HIGH_IMPACT_BUILTIN_FUNCTIONS
@@ -319,7 +321,18 @@ class Literal(Expression):
 
 
 class Definition(Node):
-    pass
+    def __init__(self):
+        super().__init__()
+
+        self.n_docstring = None
+        # Optional docstring (the first set of unbroken
+        # comments). Note that this is not produced by the parser, but
+        # can be set by other (comment aware) tools such as MH Style.
+
+    def set_docstring(self, n_docstring):
+        assert isinstance(n_docstring, Docstring)
+        self.n_docstring = n_docstring
+        self.n_docstring.set_parent(self)
 
 
 class Pragma(Node):
@@ -387,6 +400,11 @@ class Compilation_Unit(Node):
         self.scope = None
         # Set by m_sem, will contain the symbol table for this unit
 
+        self.n_docstring = None
+        # Optional docstring (the first set of unbroken
+        # comments). Note that this is not produced by the parser, but
+        # can be set by other (comment aware) tools such as MH Style.
+
     def loc(self):
         return self.error_location
 
@@ -398,6 +416,10 @@ class Compilation_Unit(Node):
         assert isinstance(cfg, Config)
         raise ICE("compilation unit root implements no checks")
 
+    def set_docstring(self, n_docstring):
+        assert isinstance(n_docstring, Docstring)
+        self.n_docstring = n_docstring
+        self.n_docstring.set_parent(self)
 
 ##############################################################################
 # Compilation units
@@ -798,6 +820,88 @@ class Function_Definition(Definition):
 ##############################################################################
 # Nodes
 ##############################################################################
+
+
+class Copyright_Info(Node):
+    def __init__(self, n_parent, t_comment, re_match):
+        super().__init__()
+        assert isinstance(t_comment, MATLAB_Token)
+        assert t_comment.kind == "COMMENT"
+        assert isinstance(re_match, re.Match)
+
+        self.t_comment = t_comment
+        self.match = re_match
+
+        self.set_parent(n_parent)
+
+    def get_org(self):
+        return self.match.group("org")
+
+    def get_ystart(self):
+        return int(self.match.group("ystart"))
+
+    def get_yend(self):
+        return int(self.match.group("yend"))
+
+    def get_range(self):
+        if self.match.group("ystart"):
+            return (self.get_ystart(), self.get_yend())
+        else:
+            return (self.get_yend(), self.get_yend())
+
+    def get_comment_text_loc(self):
+        # Get a location for the actual text of the comment. We need
+        # to carefully shift to account for the stripped value
+        rv = copy(self.t_comment.location)
+        rv.col_start += (len(self.t_comment.raw_text.rstrip()) -
+                         len(self.t_comment.value))
+        return rv
+
+    def loc_org(self):
+        rv = self.get_comment_text_loc()
+        rv.col_end = rv.col_start + (self.match.span("org")[1] - 1)
+        rv.col_start += self.match.span("org")[0]
+        return rv
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, Docstring)
+        super().set_parent(n_parent)
+
+
+class Docstring(Node):
+    def __init__(self, copyright_regex):
+        super().__init__()
+        assert isinstance(copyright_regex, str)
+        self.l_comments = []
+        self.re_copyright = re.compile(copyright_regex)
+
+        self.copyright_info = []
+
+    def loc(self):
+        if self.l_comments:
+            return self.l_comments[0].location
+        else:
+            return self.n_parent.loc()
+
+    def add_comment(self, t_comment):
+        assert isinstance(t_comment, MATLAB_Token)
+        assert t_comment.kind == "COMMENT"
+
+        self.l_comments.append(t_comment)
+        t_comment.ast_link = self
+
+        match = self.re_copyright.search(t_comment.value)
+        if match:
+            self.copyright_info.append(Copyright_Info(self, t_comment, match))
+
+    def set_parent(self, n_parent):
+        assert isinstance(n_parent, (Definition,
+                                     Compilation_Unit))
+        super().set_parent(n_parent)
+
+    def get_all_copyright_holders(self):
+        return set(n_info.get_org()
+                   for n_info in self.copyright_info)
 
 
 class Function_Signature(Node):

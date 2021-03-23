@@ -352,19 +352,6 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
     assert isinstance(fixed, bool)
     assert isinstance(valid_code, bool)
 
-    in_copyright_notice = (cfg.active("copyright_notice") and
-                           (not is_embedded or
-                            cfg.style_config["copyright_in_embedded_code"]))
-    entities = (cfg.style_config["copyright_entity"] |
-                cfg.style_config["copyright_3rd_party_entity"])
-    if cfg.style_config["copyright_primary_entity"]:
-        entities.add(cfg.style_config["copyright_primary_entity"])
-    copyright_regex = cfg.style_config["copyright_regex"]
-    company_copyright_found = False
-    generic_copyright_found = False
-    copyright_token = None
-    copyright_notice = []
-
     # Some state needed to fix indentation
     statement_start_token = None
     current_indent = 0
@@ -450,67 +437,6 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
         # Don't ever check anonymous tokens
         if token.anonymous:
             continue
-
-        # Corresponds to the old CodeChecker CopyrightCheck rule
-        if in_copyright_notice:
-            if token.kind == "COMMENT":
-                match = re.search(copyright_regex, token.value)
-                if match:
-                    # We have a sane copyright string
-                    copyright_token = token
-                    generic_copyright_found = True
-                    if match.group("org").strip() in entities:
-                        company_copyright_found = True
-
-                elif copyright_token is None:
-                    # We might find something that could look like a
-                    # copyright, but is not quite right
-                    for org in entities:
-                        if org.lower() in token.value.lower():
-                            copyright_token = token
-                            break
-                    for substr in ("(c)", "copyright"):
-                        if substr in token.value.lower():
-                            copyright_token = token
-                            break
-
-                copyright_notice.append(token.value)
-
-            else:
-                # Once we get a non-comment token, the header has
-                # ended. We then emit messages if we could not find
-                # anything.
-                in_copyright_notice = False
-
-                if len(copyright_notice) == 0:
-                    mh.style_issue(token.location,
-                                   "file does not appear to contain any"
-                                   " copyright header")
-                elif company_copyright_found:
-                    # Everything is fine
-                    pass
-                elif generic_copyright_found:
-                    # If we have something basic, we only raise an
-                    # issue if we're supposed to have something
-                    # specific.
-                    if len(entities) == 1:
-                        mh.style_issue(copyright_token.location,
-                                       "Copyright does not mention %s" %
-                                       list(entities)[0])
-                    elif len(entities) > 1:
-                        mh.style_issue(copyright_token.location,
-                                       "Copyright does not mention one of %s"
-                                       % " or ".join(entities))
-
-                elif copyright_token:
-                    # We found something that might be a copyright,
-                    # but is not in a sane format
-                    mh.style_issue(copyright_token.location,
-                                   "Copyright notice not in right format")
-                else:
-                    # We found nothing
-                    mh.style_issue(token.location,
-                                   "No copyright notice found in header")
 
         # Corresponds to the old CodeChecker CommaWhitespace
         # rule. CommaLineEndings is now folded into the new
@@ -656,10 +582,10 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                                    fixed)
 
             # Make sure we have whitespace _after_ the function end
-            elif valid_code and \
-                 token.value == "end" and \
-                 cfg.active("whitespace_around_functions") and \
-                 isinstance(token.ast_link, Function_Definition):
+            if valid_code and \
+               token.value == "end" and \
+               cfg.active("whitespace_around_functions") and \
+               isinstance(token.ast_link, Function_Definition):
                 # We first need to find the actual last token on this line
                 true_end_id = n
                 true_end_next = None
@@ -969,6 +895,137 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                                cfg.style_config["enforce_encoding"])
 
 
+def parse_docstrings(mh, cfg, parse_tree, tbuf):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(parse_tree, Compilation_Unit)
+    assert isinstance(tbuf, Token_Buffer)
+
+    approaching_docstring = False
+    in_docstring = tbuf.tokens and tbuf.tokens[0].kind == "COMMENT"
+    if in_docstring:
+        ast_node = Docstring(cfg.style_config["copyright_regex"])
+        parse_tree.set_docstring(ast_node)
+    else:
+        ast_node = None
+
+    for token in tbuf.tokens:
+        # Recognise function docstrings
+        if approaching_docstring:
+            if token.first_in_statement:
+                if token.kind == "COMMENT":
+                    in_docstring = True
+                approaching_docstring = False
+        elif in_docstring:
+            if token.kind == "COMMENT":
+                ast_node.add_comment(token)
+            elif token.kind == "NEWLINE" and token.value.count("\n") == 1:
+                pass
+            else:
+                in_docstring = False
+
+        if token.kind == "KEYWORD" and token.value in ("function",
+                                                       "classdef"):
+            # Recognise function docstrings
+            approaching_docstring = True
+            if token.ast_link is None:
+                raise ICE("keyword is not linked to AST")
+            elif not isinstance(token.ast_link, Definition):
+                raise ICE("AST link is %s and not a Definition" %
+                          token.ast_link.__class__.__name__)
+            ast_node = Docstring(cfg.style_config["copyright_regex"])
+            token.ast_link.set_docstring(ast_node)
+
+
+def check_copyright(mh, cfg, parse_tree, is_embedded):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(parse_tree, Compilation_Unit)
+    assert isinstance(is_embedded, bool)
+
+    # If the rule is turned off, do nothing
+    if not cfg.active("copyright_notice"):
+        return
+
+    # Embedded code is only checked if requested
+    if is_embedded and not cfg.style_config["copyright_in_embedded_code"]:
+        return
+
+    # Check copyright in docstrings. First we need to find the primary
+    # entity. Note that in the file_header setting we ignore the
+    # primary entities.
+    location_kind = "docstring"
+    if cfg.style_config["copyright_location"] == "file_header":
+        n_primary = parse_tree
+        n_docstring = parse_tree.n_docstring
+        location_kind = "file header"
+    elif isinstance(parse_tree, Function_File):
+        n_primary = parse_tree.l_functions[0]
+        n_docstring = n_primary.n_docstring
+    elif isinstance(parse_tree, Class_File):
+        n_primary = parse_tree.n_classdef
+        n_docstring = n_primary.n_docstring
+    else:
+        n_primary = parse_tree
+        n_docstring = parse_tree.n_docstring
+
+    # If we couldn't find one, we fall back on the file docstring
+    if n_docstring is None or not n_docstring.copyright_info:
+        n_docstring = parse_tree.n_docstring
+
+    # If we've called this function, we do check copyright notices. We
+    # expect to find at least a docstring of some kind
+    if n_docstring is None:
+        mh.style_issue(n_primary.loc(),
+                       "Could not find any copyright notice")
+        return
+
+    # We need to check that we only have one location with copyright
+    # information
+    if parse_tree.n_docstring:
+        if parse_tree.n_docstring != n_docstring and \
+           parse_tree.n_docstring.copyright_info and \
+           n_docstring.copyright_info:
+            mh.style_issue(n_primary.loc(),
+                           "Copyright info should be in EITHER file header"
+                           " or primary docstring, but not both")
+
+    mentioned_entities = n_docstring.get_all_copyright_holders()
+
+    # If we've called this function, we do check copyright notices. At
+    # the least, we require there to be any kind of statement.
+    if len(mentioned_entities) == 0:
+        mh.style_issue(n_docstring.loc(),
+                       "No copyright notice found in %s" % location_kind)
+        return
+
+    # If any copyright entities have been provided, we make sure that
+    # any notices do match these
+    allowed_entities = (cfg.style_config["copyright_entity"] |
+                        cfg.style_config["copyright_3rd_party_entity"])
+    if cfg.style_config["copyright_primary_entity"]:
+        allowed_entities.add(cfg.style_config["copyright_primary_entity"])
+    if len(allowed_entities) == 1:
+        choices = list(allowed_entities)[0]
+    elif len(allowed_entities) > 1:
+        sorted_choices = list(sorted(allowed_entities))
+        choices = ", ".join(sorted_choices[:-1])
+        choices = "one of %s, or %s" % (choices, sorted_choices[-1])
+
+    if allowed_entities:
+        for n_info in n_docstring.copyright_info:
+            if n_info.get_org() not in allowed_entities:
+                mh.style_issue(n_info.loc_org(),
+                               "Copyright entity '%s' is not %s"
+                               % (n_info.get_org(), choices))
+
+
+def stage_4_analysis(mh, cfg, parse_tree, is_embedded):
+    assert isinstance(mh, Message_Handler)
+    assert isinstance(parse_tree, Compilation_Unit)
+    assert isinstance(is_embedded, bool)
+
+    check_copyright(mh, cfg, parse_tree, is_embedded)
+
+
 class MH_Style_Result(work_package.Result):
     def __init__(self, wp):
         super().__init__(wp, True)
@@ -1063,6 +1120,9 @@ class MH_Style(command_line.MISS_HIT_Back_End):
             # since we may need to re-write functions without end).
             parse_tree.sty_check_naming(wp.mh, wp.cfg)
 
+            # Parse docstrings and attach them to the AST
+            parse_docstrings(wp.mh, wp.cfg, parse_tree, tbuf)
+
             if debug_validate_links:
                 tbuf.debug_validate_links()
 
@@ -1086,7 +1146,12 @@ class MH_Style(command_line.MISS_HIT_Back_End):
 
         # Stage 4 - rules involving the parse tree
 
-        # TODO
+        if parse_tree:
+            stage_4_analysis(
+                mh          = wp.mh,
+                cfg         = wp.cfg,
+                parse_tree  = parse_tree,
+                is_embedded = isinstance(wp, work_package.Embedded_MATLAB_WP))
 
         # Possibly re-write the file, with issues fixed
 

@@ -1,10 +1,10 @@
 === PLAIN MODE ===
 In test.m, line 1
 | % Example provided by Niklas Nylen   
-|                                   ^^^^ style: trailing whitespace [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: No copyright notice found in docstring
 In test.m, line 1
 | % Example provided by Niklas Nylen   
-|                                      ^ style: No copyright notice found in header
+|                                   ^^^^ style: trailing whitespace [fixed]
 In test.m, line 3
 | function testfile() 
 |          ^^^^^^^^ style: violates naming scheme for function

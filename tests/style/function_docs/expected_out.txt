@@ -1,0 +1,22 @@
+=== PLAIN MODE ===
+In docstring/Test_3.m, line 6
+|     %   (c) Copyright 2021 Mr Florian Schanda
+|                            ^^^^^^^^^^^^^^^^^^ style: Copyright entity 'Mr Florian Schanda' is not Florian Schanda
+In docstring/Test_5.m, line 6
+|     %   (c) Copyright 2021 Mr Florian Schanda
+|                            ^^^^^^^^^^^^^^^^^^ style: Copyright entity 'Mr Florian Schanda' is not Florian Schanda
+In docstring/Test_6.m, line 7
+|     %   (c) Copyright 2021 Mr Florian Schanda
+|                            ^^^^^^^^^^^^^^^^^^ style: Copyright entity 'Mr Florian Schanda' is not Florian Schanda
+In docstring/Test_7.m, line 3
+| classdef Test_7
+|          ^^^^^^ style: Copyright info should be in EITHER file header or primary docstring, but not both
+file_header/Test_1.m: style: Could not find any copyright notice
+file_header/Test_3.m: style: Could not find any copyright notice
+file_header/Test_4.m: style: Could not find any copyright notice
+file_header/Test_5.m: style: Could not find any copyright notice
+file_header/Test_6.m: style: Could not find any copyright notice
+MISS_HIT Style Summary: 14 file(s) analysed, 9 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 14 file(s) analysed, 9 style issue(s)

@@ -1,5 +1,5 @@
 === PLAIN MODE ===
-test.m:1:0: style: file does not appear to contain any copyright header
+test.m: style: Could not find any copyright notice
 test.m:1:0: style: files should not start with a newline [fixed]
 test.m:2: style: more than one consecutive blank line [fixed]
 test.m:3: style: more than one consecutive blank line [fixed]

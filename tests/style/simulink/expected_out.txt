@@ -1,28 +1,28 @@
 === PLAIN MODE ===
 In test1.slx/Add One, line 1
 | function y = add_one(u)
-| ^^^^^^^^ style: file does not appear to contain any copyright header
+|              ^^^^^^^ style: violates naming scheme for function
 In test1.slx/Add One, line 1
 | function y = add_one(u)
-|              ^^^^^^^ style: violates naming scheme for function
+|              ^^^^^^^ style: Could not find any copyright notice
 In test1.slx/Add One, line 3
 | y = u + 1;
 | ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
 In test1.slx/Multiply, line 1
 | function y = my_multiply(u, v)
-| ^^^^^^^^ style: file does not appear to contain any copyright header
+|              ^^^^^^^^^^^ style: violates naming scheme for function
 In test1.slx/Multiply, line 1
 | function y = my_multiply(u, v)
-|              ^^^^^^^^^^^ style: violates naming scheme for function
+|              ^^^^^^^^^^^ style: Could not find any copyright notice
 In test1.slx/Multiply, line 3
 | y = u * v;
 | ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
 In test1.slx/Sub One, line 1
 | function y = sub_one(u)
-| ^^^^^^^^ style: file does not appear to contain any copyright header
+|              ^^^^^^^ style: violates naming scheme for function
 In test1.slx/Sub One, line 1
 | function y = sub_one(u)
-|              ^^^^^^^ style: violates naming scheme for function
+|              ^^^^^^^ style: Could not find any copyright notice
 In test1.slx/Sub One, line 3
 | y = u - 1;
 | ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]

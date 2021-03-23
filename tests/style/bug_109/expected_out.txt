@@ -1,7 +1,5 @@
 === PLAIN MODE ===
-In test.m, line 1
-| x = foo(bar:...
-| ^ style: file does not appear to contain any copyright header
+test.m: style: Could not find any copyright notice
 In test.m, line 1
 | x = foo(bar:...
 |             ^^^^ style: continuation must be preceeded by whitespace [fixed]

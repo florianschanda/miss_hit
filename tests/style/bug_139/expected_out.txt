@@ -1,22 +1,22 @@
 === PLAIN MODE ===
 In test_01.m, line 1
 | function r = test_01(a, b, c, d)
-| ^^^^^^^^ style: file does not appear to contain any copyright header
+|              ^^^^^^^ style: violates naming scheme for function
 In test_01.m, line 1
 | function r = test_01(a, b, c, d)
-|              ^^^^^^^ style: violates naming scheme for function
-In test_02.m, line 1
-| function r = test_02(a, b, c, d)
-| ^^^^^^^^ style: file does not appear to contain any copyright header
+|              ^^^^^^^ style: Could not find any copyright notice
 In test_02.m, line 1
 | function r = test_02(a, b, c, d)
 |              ^^^^^^^ style: violates naming scheme for function
-In test_03.m, line 1
-| function r = test_03(a, b, c, d)
-| ^^^^^^^^ style: file does not appear to contain any copyright header
+In test_02.m, line 1
+| function r = test_02(a, b, c, d)
+|              ^^^^^^^ style: Could not find any copyright notice
 In test_03.m, line 1
 | function r = test_03(a, b, c, d)
 |              ^^^^^^^ style: violates naming scheme for function
+In test_03.m, line 1
+| function r = test_03(a, b, c, d)
+|              ^^^^^^^ style: Could not find any copyright notice
 MISS_HIT Style Summary: 3 file(s) analysed, 6 style issue(s)
 
 === HTML MODE ===

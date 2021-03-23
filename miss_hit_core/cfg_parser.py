@@ -47,6 +47,7 @@ from miss_hit_core.config import (STYLE_RULES, STYLE_CONFIGURATION,
                                   Regex_Style_Configuration,
                                   Encoding_Style_Configuration,
                                   String_Style_Configuration,
+                                  Choice_Style_Configuration,
                                   Set_Style_Configuration)
 from miss_hit_core.cfg_ast import *
 
@@ -337,6 +338,12 @@ class Config_Parser:
 
         elif isinstance(cfg_item, String_Style_Configuration):
             value = self.parse_string()
+
+            if isinstance(cfg_item, Choice_Style_Configuration):
+                if value not in cfg_item.choices:
+                    self.mh.error(self.ct.location,
+                                  "must be one of %s" %
+                                  " or ".join(cfg_item.choices))
 
         elif isinstance(cfg_item, Boolean_Style_Configuration):
             value = self.parse_boolean()
