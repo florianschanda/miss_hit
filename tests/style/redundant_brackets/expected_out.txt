@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+expr.m: style: violates naming scheme for scripts
 In expr.m, line 9
 | x = ((1 + 2)) * 3;
 |      ^ style: redundant parenthesis [fixed]
@@ -23,6 +24,7 @@ In expr.m, line 21
 In expr.m, line 30
 |         (2));
 |         ^ style: redundant parenthesis [fixed]
+test.m: style: violates naming scheme for scripts
 In test.m, line 9
 | if (foo)
 |    ^ style: redundant parenthesis [fixed]
@@ -32,10 +34,10 @@ In test.m, line 13
 In test.m, line 13
 | if ((foo))
 |     ^ style: redundant parenthesis [fixed]
-MISS_HIT Style Summary: 2 file(s) analysed, 11 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 13 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 2 file(s) analysed, 11 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 13 style issue(s)
 
 === ! BROKEN FIXES ! ===
 Fixing is not idempotent for ./expr.m

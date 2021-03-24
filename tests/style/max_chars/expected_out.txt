@@ -1,11 +1,12 @@
 === PLAIN MODE ===
+test.m: style: violates naming scheme for scripts
 In test.m, line 5
 | % This line is a bit too lengthy for this test.
 |                                               ^^ style: line exceeds 46 characters
 In test.m, line 6
 | % This line is way out what is normally acceptable.
 |                                               ^^^^^^ style: line exceeds 46 characters
-MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)

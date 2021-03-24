@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+test.m: style: violates naming scheme for scripts
 In test.m, line 3
 | ( 1 + 1 ) % not ok
 | ^ style: redundant parenthesis [fixed]
@@ -23,7 +24,7 @@ In test.m, line 6
 In test.m, line 6
 |    42)
 |      ^ style: end statement with a semicolon [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 8 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 9 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 8 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 9 style issue(s)

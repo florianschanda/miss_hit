@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+fail_1.m: style: violates naming scheme for scripts
 In fail_1.m, line 4
 | potato 
 | ^^^^^^ style: end statement with a semicolon [fixed]
@@ -15,7 +16,7 @@ In fail_1.m, line 9
 In fail_1.m, line 9
 | ... 
 |    ^^ style: trailing whitespace [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 6 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 7 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 6 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 7 style issue(s)

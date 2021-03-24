@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+test.m: style: violates naming scheme for scripts
 In test.m, line 6
 | if foo ...
 |    ^^^ style: end statement with a newline [fixed]
@@ -11,7 +12,7 @@ In test.m, line 12
 In test.m, line 12
 | if foo ... % comment
 |        ^^^^^^^^^^^^^^ style: this continuation is dangerously misleading [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 4 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 5 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 4 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 5 style issue(s)

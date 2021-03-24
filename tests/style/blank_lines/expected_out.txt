@@ -1,8 +1,9 @@
 === PLAIN MODE ===
+test.m: style: violates naming scheme for scripts
 test.m:5: style: more than one consecutive blank line [fixed]
 test.m:8: style: more than one consecutive blank line [fixed]
 test.m:9: style: more than one consecutive blank line [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 4 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 4 style issue(s)

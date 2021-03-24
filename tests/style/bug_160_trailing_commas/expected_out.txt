@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+test_01.m: style: violates naming scheme for scripts
 In test_01.m, line 3
 | a = [1,2,3,];
 |       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
@@ -56,6 +57,7 @@ In test_01.m, line 12
 In test_01.m, line 12
 | e = [1,2,;3,4,];
 |              ^ style: this comma is not required and can be removed [fixed]
+test_02.m: style: violates naming scheme for scripts
 In test_02.m, line 3
 | a = [1, 2, 3, ];
 |             ^ style: this comma is not required and can be removed [fixed]
@@ -86,7 +88,7 @@ In test_02.m, line 12
 In test_02.m, line 12
 | e = [1, 2, ;3, 4, ];
 |                   ^ style: ] must not be preceeded by whitespace [fixed]
-MISS_HIT Style Summary: 2 file(s) analysed, 29 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 31 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 2 file(s) analysed, 29 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 31 style issue(s)

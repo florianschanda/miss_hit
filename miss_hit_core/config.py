@@ -349,6 +349,14 @@ STYLE_RULES = {
         "Checks that assignments do not overwrite builtin functions such as"
         " true, false, or pi."),
 
+    "naming_scripts" : Style_Rule(
+        "Checks names of script files.",
+        {
+            "regex_script_name" : Regex_Style_Configuration(
+                "Regex for script names",
+                default = DEFAULT_NAMING_SCHEME),
+        }),
+
     "naming_functions" : Style_Rule(
         "Checks names of functions, nested functions, and class methods.",
         {

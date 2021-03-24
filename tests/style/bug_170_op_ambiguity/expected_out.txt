@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+test_01.m: style: violates naming scheme for scripts
 In test_01.m, line 3
 | b = [1 2 3]
 |           ^ style: end statement with a semicolon [fixed]
@@ -26,6 +27,7 @@ In test_01.m, line 11
 In test_01.m, line 11
 | w = 1./ b
 |         ^ style: end statement with a semicolon [fixed]
+test_02.m: style: violates naming scheme for scripts
 In test_02.m, line 3
 | b = [1 2 3]
 |           ^ style: end statement with a semicolon [fixed]
@@ -53,7 +55,7 @@ In test_02.m, line 11
 In test_02.m, line 11
 | w = [1./ b]
 |           ^ style: end statement with a semicolon [fixed]
-MISS_HIT Style Summary: 2 file(s) analysed, 18 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 20 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 2 file(s) analysed, 18 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 20 style issue(s)

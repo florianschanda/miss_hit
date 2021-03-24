@@ -945,6 +945,26 @@ end
         </ul>
       </div>
 
+      <h4>Naming scheme for scripts ("naming_scripts")</h4>
+
+      <div>
+        This rule enforces a consistent naming for all script
+        files. Note that function files and class files are not
+        covered by this rule, only pure script files.
+      </div>
+
+      <div>
+        Configuration parameters:
+        <ul>
+          <li>
+            <b>regex_script_name</b>: A regular expression that every
+            script file (without <tt>.m</tt> extension) must
+            match. The default is the same as it is for classes. (See
+            above.)
+          </li>
+        </ul>
+      </div>
+
       <h4>Non-ASCII characters in source ("unicode")</h4>
       <div>
 	This rule enforces source files to only contain ASCII

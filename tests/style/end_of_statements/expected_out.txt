@@ -11,6 +11,7 @@ In newlines.m, line 3
 In newlines.m, line 3
 |         x, y; z
 |             ^ style: end this with just a newline [fixed]
+other.m: style: violates naming scheme for scripts
 In other.m, line 12
 | function out = foo(in)
 | ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
@@ -89,6 +90,7 @@ In other.m, line 34
 In other.m, line 35
 |                     ,
 |                     ^ style: end this with a semicolon instead of a comma [fixed]
+test.m: style: violates naming scheme for scripts
 In test.m, line 3
 | foo = 1,
 |        ^ style: end this with a semicolon instead of a comma [fixed]
@@ -110,7 +112,7 @@ In test.m, line 7
 In test.m, line 9
 | spoon
 | ^^^^^ style: end statement with a semicolon [fixed]
-MISS_HIT Style Summary: 3 file(s) analysed, 37 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 39 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 3 file(s) analysed, 37 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 39 style issue(s)

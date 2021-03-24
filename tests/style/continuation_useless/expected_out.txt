@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+test.m: style: violates naming scheme for scripts
 In test.m, line 3
 | if potato ...
 |           ^^^^ style: useless line continuation [fixed]
@@ -8,7 +9,7 @@ In test.m, line 9
 In test.m, line 11
 | x = 12; ...
 |         ^^^^ style: useless line continuation [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 4 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 4 style issue(s)

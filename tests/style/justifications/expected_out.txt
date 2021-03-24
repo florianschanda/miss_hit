@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+test.m: style: violates naming scheme for scripts
 In test.m, line 7
 | sutff; % mh:ignore_style
 |        ^^^^^^^^^^^^^^^^^ warning: style justification does not apply
@@ -8,7 +9,7 @@ In test.m, line 10
 In test.m, line 10
 |   potato ];
 |          ^ style: ] must not be preceeded by whitespace [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s), 1 warning(s), 2 justified message(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s), 1 warning(s), 2 justified message(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s), 1 warning(s), 2 justified message(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s), 1 warning(s), 2 justified message(s)

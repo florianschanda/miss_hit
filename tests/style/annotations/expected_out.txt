@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+basic.m: style: violates naming scheme for scripts
 In basic.m, line 4
 | %|pragma Justify( metric,"npath","reason" )     ;
 | ^^ style: annotation indication must be succeeded by whitespace [fixed]
@@ -23,7 +24,7 @@ In basic.m, line 4
 In basic.m, line 5
 | %|
 | ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 8 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 9 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 8 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 9 style issue(s)

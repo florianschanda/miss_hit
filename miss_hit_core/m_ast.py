@@ -474,6 +474,13 @@ class Script_File(Compilation_Unit):
         for n_function in self.l_functions:
             n_function.sty_check_naming(mh, cfg)
 
+        if cfg.active("naming_scripts"):
+            regex = cfg.style_config["regex_script_name"]
+            file_root = self.name.rsplit(".", 1)[0]
+            if not re.match("^(" + regex + ")$", file_root):
+                mh.style_issue(self.loc(),
+                               "violates naming scheme for scripts")
+
 
 class Function_File(Compilation_Unit):
     def __init__(self,

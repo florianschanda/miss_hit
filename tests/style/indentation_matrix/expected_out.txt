@@ -1,16 +1,19 @@
 === PLAIN MODE ===
+test_01.m: style: violates naming scheme for scripts
 In test_01.m, line 4
 |        3 4];
 |        ^ style: indentation not correct, should be 5 spaces, not 7 [fixed]
 In test_01.m, line 10
 | 3 4];
 | ^ style: indentation not correct, should be 5 spaces, not 0 [fixed]
+test_02.m: style: violates naming scheme for scripts
 In test_02.m, line 4
 |        3 4};
 |        ^ style: indentation not correct, should be 5 spaces, not 7 [fixed]
 In test_02.m, line 10
 | 3 4};
 | ^ style: indentation not correct, should be 5 spaces, not 0 [fixed]
+test_03.m: style: violates naming scheme for scripts
 In test_03.m, line 5
 |   'bar' 2 3
 |   ^^^^^ style: indentation not correct, should be 3 spaces, not 2 [fixed]
@@ -26,16 +29,18 @@ In test_04.m, line 12
 In test_04.m, line 12
 |        [3]);
 |        ^ style: indentation not correct, should be 11 spaces, not 7 [fixed]
+test_05.m: style: violates naming scheme for scripts
+test_06.m: style: violates naming scheme for scripts
 In test_06.m, line 6
 |  2 [3
 |  ^ style: indentation not correct, should be 5 spaces, not 1 [fixed]
 In test_06.m, line 7
 |  4]];
 |  ^ style: indentation not correct, should be 4 spaces, not 1 [fixed]
-MISS_HIT Style Summary: 6 file(s) analysed, 11 style issue(s)
+MISS_HIT Style Summary: 6 file(s) analysed, 16 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 6 file(s) analysed, 11 style issue(s)
+MISS_HIT Style Summary: 6 file(s) analysed, 16 style issue(s)
 
 === ! BROKEN FIXES ! ===
 Fixing is not idempotent for ./test_06.m

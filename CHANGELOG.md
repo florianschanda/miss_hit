@@ -42,6 +42,13 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   The MH Copyright tool does not yet deal with docstrings, it only
   supports the old style (for now).
 
+* New rule for MH Style `naming_scripts` and associated configuration
+  option `regex_script_name`. The existing naming rules cover all
+  functions, classes and methods. However script escaped this because
+  they are _not_ functions as such. The default for this is the Ada
+  naming scheme (the same default as we have for functions and
+  classes).
+
 ### 0.9.17
 
 * Updated language support to MATLAB 2021a. The new feature supported

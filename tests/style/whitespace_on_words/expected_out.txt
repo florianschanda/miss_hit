@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+test.m: style: violates naming scheme for scripts
 In test.m, line 3
 | if(not_ok)
 | ^^ style: keyword must be succeeded by whitespace [fixed]
@@ -8,7 +9,7 @@ In test.m, line 3
 In test.m, line 4
 |     return;
 |           ^ style: end this with just a newline [fixed]
-MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 4 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 4 style issue(s)

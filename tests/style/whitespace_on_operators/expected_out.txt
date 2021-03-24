@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+codechecker_tests.m: style: violates naming scheme for scripts
 In codechecker_tests.m, line 15
 | x = ((a * 3) <= 1) && ((single(1 + 1) - (1^3 + 4))/5 ~= (1/3))
 |                                                   ^ style: non power binary operator must be surrounded by whitespace [fixed]
@@ -53,7 +54,8 @@ In codechecker_tests.m, line 88
 In codechecker_tests.m, line 90
 | import PackageName.* ;
 |                      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
-MISS_HIT Style Summary: 2 file(s) analysed, 18 style issue(s)
+test.m: style: violates naming scheme for scripts
+MISS_HIT Style Summary: 2 file(s) analysed, 20 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 2 file(s) analysed, 18 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 20 style issue(s)

@@ -1,6 +1,7 @@
 === PLAIN MODE ===
+test.m: style: violates naming scheme for scripts
 test.m:12: style: file exceeds 10 lines
-MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)

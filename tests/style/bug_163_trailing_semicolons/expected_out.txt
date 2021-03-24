@@ -1,4 +1,5 @@
 === PLAIN MODE ===
+test_01.m: style: violates naming scheme for scripts
 In test_01.m, line 3
 | a = [1; 2; ; 3];
 |            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
@@ -131,6 +132,7 @@ In test_01.m, line 19
 In test_01.m, line 19
 | f = [,];
 |      ^ style: this comma is not required and can be removed [fixed]
+test_02.m: style: violates naming scheme for scripts
 In test_02.m, line 3
 | a = [1; 2; ; 3];
 |            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
@@ -275,6 +277,7 @@ In test_05.m, line 3
 In test_05.m, line 3
 | x = [;,,]
 |        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+test_06.m: style: violates naming scheme for scripts
 In test_06.m, line 3
 | a = [,;,]
 |      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
@@ -296,6 +299,7 @@ In test_06.m, line 3
 In test_06.m, line 3
 | a = [,;,]
 |         ^ style: end statement with a semicolon [fixed]
+test_07_a.m: style: violates naming scheme for scripts
 In test_07_a.m, line 3
 | a = [;        % a messy example
 |      ^ style: this semicolon is not required and can be removed [fixed]
@@ -314,6 +318,7 @@ In test_07_a.m, line 4
 In test_07_a.m, line 4
 |      ;;1]     % with comments
 |         ^ style: end statement with a semicolon [fixed]
+test_07_b.m: style: violates naming scheme for scripts
 In test_07_b.m, line 3
 | b = [;        ... a messy example
 |      ^ style: this semicolon is not required and can be removed [fixed]
@@ -338,9 +343,11 @@ In test_07_b.m, line 4
 In test_07_b.m, line 6
 | % b = 1
 | ^^^^^^^ style: indentation not correct, should be 2 spaces, not 0 [fixed]
+test_07_c.m: style: violates naming scheme for scripts
 In test_07_c.m, line 4
 |      1]
 |       ^ style: end statement with a semicolon [fixed]
+test_07_d.m: style: violates naming scheme for scripts
 In test_07_d.m, line 4
 |     ;
 |     ^ style: this semicolon is not required and can be removed [fixed]
@@ -365,10 +372,10 @@ In test_07_d.m, line 8
 In test_07_d.m, line 9
 |     ]
 |     ^ style: end statement with a semicolon [fixed]
-MISS_HIT Style Summary: 10 file(s) analysed, 118 style issue(s), 6 error(s)
+MISS_HIT Style Summary: 10 file(s) analysed, 125 style issue(s), 6 error(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 10 file(s) analysed, 118 style issue(s), 3 error(s)
+MISS_HIT Style Summary: 10 file(s) analysed, 125 style issue(s), 3 error(s)
 
 === ! BROKEN FIXES ! ===
 Fixing is not idempotent for ./test_07_a.m
