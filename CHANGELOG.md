@@ -49,6 +49,11 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   naming scheme (the same default as we have for functions and
   classes).
 
+* Fix oversight in MH Lint for checking built-in shadows. Now files
+  (scripts, functions, and classes) are correctly considered. This
+  check uses a much broader list of built-in functions, than the check
+  that looks at assignments.
+
 ### 0.9.17
 
 * Updated language support to MATLAB 2021a. The new feature supported

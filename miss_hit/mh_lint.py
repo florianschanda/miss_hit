@@ -36,6 +36,7 @@ from miss_hit_core.errors import (Error,
                                   JSON_Message_Handler)
 from miss_hit_core.m_lexer import MATLAB_Lexer
 from miss_hit_core.m_parser import MATLAB_Parser
+from miss_hit_core.m_language_builtins import BUILTIN_FUNCTIONS
 
 from miss_hit.m_sem import sem_pass_1
 
@@ -110,6 +111,15 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
             n_cu = parser.parse_file()
         except Error:
             return MH_Lint_Result(wp)
+
+        # Check compilation units for shadowing a built-in
+        base_name = os.path.splitext(n_cu.name)[0]
+        if wp.cfg.active("builtin_shadow") and \
+           base_name in BUILTIN_FUNCTIONS:
+            wp.mh.check(n_cu.loc(),
+                        "this file shadows built-in %s which is very naughty"
+                        % base_name,
+                        "high")
 
         # Initial checks
         n_cu.visit(None, Stage_1_Linting(wp.mh), "Root")

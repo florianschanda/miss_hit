@@ -57,8 +57,8 @@
             quitely mis-behaves.
           </li>
           <li>
-            <b>high</b> - These are problems that MISS_HIT very sure
-            will cause major problems. Fix these!
+            <b>high</b> - These are problems that MISS_HIT is very
+            sure will cause major problems. Fix these!
           </li>
           <li>
             <b>medium</b> - Anything else.
@@ -128,12 +128,14 @@ end
 
       <h3>Shadowing of built-in functions ("builtin_shadow")</h3>
       <div>
-        This rule attempts to find cases where we assign to a
-        MATLAB&reg; builtin function (e.g. re-defining false to be
-        1). Note: this rule works on a hand-curated list of "high
-        impact" built-in functions, where it is likely this
-        re-definition will result in confusion. So we complain
-        e.g. about "true", but we do not complain about "bar".
+        This rule attempts to find cases where we assign to, or
+        shadow, a MATLAB&reg; builtin function (e.g. re-defining false
+        to be 1). For assignments, this rule works on a hand-curated
+        list of "high impact" built-in functions, where it is likely
+        this re-definition will result in confusion. So we complain
+        e.g. about "true", but we do not complain about "bar". For
+        script files, function files, and class files we check a much
+        broader set of built-ins.
       </div>
 
       <h3>Filename matching entity within</h3>
