@@ -149,7 +149,7 @@ end
 
       <h3>Name-value pairs in function calls</h3>
       <div>
-        This is a new (since MATLAB 2021a) and extremely confusing use
+        This is a new (since MATLAB&reg; 2021a) and extremely confusing use
         of = in function calls. It means something completely
         different to what it means in any other language, it also
         clashes with Octave, and finally it is next to impossible to
@@ -160,9 +160,9 @@ end
       </div>
       <div>
         <ul>
-          <li>In MATLAB &lt; 2021a, this is just a syntax error.</li>
+          <li>In MATLAB&reg; &lt; 2021a, this is just a syntax error.</li>
           <li>
-            In MATLAB &gt;= 2021a, this is actually two arguments, and
+            In MATLAB&reg; &gt;= 2021a, this is actually two arguments, and
             is equivalent to <pre>foo('a', b)</pre>
 
             Note that this is totally different to what you'd expect
@@ -186,6 +186,15 @@ foo(b);
         if <tt>foo</tt> is a lambda function it would be fine, but if
         it is an array, it is not.
       </div>
+
+      <h3>Contents.m only contains comments</h3>
+      <div>
+        A file called <tt>Contents.m</tt> must only contain comments,
+        as it
+        has <a href="https://www.mathworks.com/help/matlab/matlab_prog/create-a-help-summary-contents-m.html">special
+        significance</a> for the MATLAB&reg; help system.
+      </div>
+
     </section>
 
   </main>

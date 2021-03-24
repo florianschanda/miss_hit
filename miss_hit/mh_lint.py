@@ -53,6 +53,7 @@ class Stage_1_Linting(AST_Visitor):
     def check_compilation_unit(self, n_cu):
         assert isinstance(n_cu, Compilation_Unit)
 
+        # Check that filename matches the primary entity
         if isinstance(n_cu, Function_File):
             self.check_filename(file_name = n_cu.name,
                                 kind      = "function",
@@ -61,6 +62,34 @@ class Stage_1_Linting(AST_Visitor):
             self.check_filename(file_name = n_cu.name,
                                 kind      = "class",
                                 ent_name  = n_cu.n_classdef.n_name)
+
+        # Check that Contents.m doesn't contain anything but
+        # comments. We do this case-insensitive to make sure this
+        # nobody slips in a "ConTENTS.m" file on Linux that would
+        # cause issues in Windows.
+        if n_cu.name.lower() == "contents.m":
+            error_loc = None
+            if isinstance(n_cu, Script_File):
+                # No need to check functions, a script file with no
+                # statements would be a functin file OR a blank file
+                is_blank = len(n_cu.n_statements.l_statements) == 0
+                if not is_blank:
+                    error_loc = n_cu.n_statements.l_statements[0].loc()
+
+            elif isinstance(n_cu, Function_File):
+                # Function files are always a problem
+                is_blank = False
+                error_loc = n_cu.l_functions[0].loc()
+
+            elif isinstance(n_cu, Class_File):
+                # Class files are also always a problem
+                is_blank = False
+                error_loc = n_cu.n_classdef.loc()
+
+            if not is_blank:
+                self.mh.check(error_loc,
+                              "a Contents.m file must only contain comments",
+                              "low")
 
     def check_filename(self, file_name, kind, ent_name):
         assert isinstance(file_name, str)
