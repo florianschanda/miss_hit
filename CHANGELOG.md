@@ -65,7 +65,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   workarounds.
 
 * MISS_HIT is now also published on the
-  [MathWorks "File Exchange"|https://www.mathworks.com/matlabcentral/fileexchange/89436-miss_hit].
+  [MathWorks "File Exchange"](https://www.mathworks.com/matlabcentral/fileexchange/89436-miss_hit).
 
 * From now on, the tags will be just the version number, and not
   prepended with `release-`. For example the tag for this release is
