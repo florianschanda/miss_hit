@@ -44,6 +44,7 @@ from miss_hit_core.errors import (Location, Error, ICE,
 from miss_hit_core.m_ast import *
 from miss_hit_core.m_lexer import MATLAB_Lexer, Token_Buffer
 from miss_hit_core.m_parser import MATLAB_Parser
+from miss_hit_core.m_parse_utils import parse_docstrings
 
 
 class Style_Rule(metaclass=ABCMeta):
@@ -893,47 +894,6 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 mh.style_issue(new_location,
                                "non-%s character in source" %
                                cfg.style_config["enforce_encoding"])
-
-
-def parse_docstrings(mh, cfg, parse_tree, tbuf):
-    assert isinstance(mh, Message_Handler)
-    assert isinstance(parse_tree, Compilation_Unit)
-    assert isinstance(tbuf, Token_Buffer)
-
-    approaching_docstring = False
-    in_docstring = tbuf.tokens and tbuf.tokens[0].kind == "COMMENT"
-    if in_docstring:
-        ast_node = Docstring(cfg.style_config["copyright_regex"])
-        parse_tree.set_docstring(ast_node)
-    else:
-        ast_node = None
-
-    for token in tbuf.tokens:
-        # Recognise function docstrings
-        if approaching_docstring:
-            if token.first_in_statement:
-                if token.kind == "COMMENT":
-                    in_docstring = True
-                approaching_docstring = False
-        elif in_docstring:
-            if token.kind == "COMMENT":
-                ast_node.add_comment(token)
-            elif token.kind == "NEWLINE" and token.value.count("\n") == 1:
-                pass
-            else:
-                in_docstring = False
-
-        if token.kind == "KEYWORD" and token.value in ("function",
-                                                       "classdef"):
-            # Recognise function docstrings
-            approaching_docstring = True
-            if token.ast_link is None:
-                raise ICE("keyword is not linked to AST")
-            elif not isinstance(token.ast_link, Definition):
-                raise ICE("AST link is %s and not a Definition" %
-                          token.ast_link.__class__.__name__)
-            ast_node = Docstring(cfg.style_config["copyright_regex"])
-            token.ast_link.set_docstring(ast_node)
 
 
 def check_copyright(mh, cfg, parse_tree, is_embedded):

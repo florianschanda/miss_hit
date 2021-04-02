@@ -893,6 +893,7 @@ class Docstring(Node):
     def add_comment(self, t_comment):
         assert isinstance(t_comment, MATLAB_Token)
         assert t_comment.kind == "COMMENT"
+        assert t_comment.first_in_line
 
         self.l_comments.append(t_comment)
         t_comment.ast_link = self
