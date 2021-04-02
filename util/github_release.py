@@ -30,7 +30,7 @@ def main():
     api_endpoint = "https://api.github.com/repos/%s/%s/releases" % \
         ("florianschanda", "miss_hit")
 
-    tag_name = "release-%s" % VERSION
+    tag_name = VERSION
     rel_name = "Release %s" % VERSION
     rel_body = "### %s\n\n%s" % (VERSION, util.changelog.current_section())
 

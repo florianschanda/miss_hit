@@ -64,6 +64,15 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   lexer that relied on the old broken behaviour need to remove their
   workarounds.
 
+* MISS_HIT is now also published on the
+  [MathWorks "File Exchange"|https://www.mathworks.com/matlabcentral/fileexchange/89436-miss_hit].
+
+* From now on, the tags will be just the version number, and not
+  prepended with `release-`. For example the tag for this release is
+  `0.9.18` (and not `release-0.9.18`). The reason for this is that the
+  automatic sync with the MathWorks "File Exchange" only works if the
+  release numbers are following the MAJOR.MINOR.PATCH pattern.
+
 ### 0.9.17
 
 * Updated language support to MATLAB 2021a. The new feature supported
