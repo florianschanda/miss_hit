@@ -54,7 +54,7 @@ In test_06.m, line 9
 |               ^ info: NEWLINE
 In test_06.m, line 10
 |   %}
-| ^^^^ info: [SL] COMMENT '%}'
+| ^^^^ info: [SL] COMMENT '}'
 In test_06.m, line 10
 |   %}
 |     ^ info: NEWLINE

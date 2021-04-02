@@ -810,7 +810,10 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
         if valid_code and \
            cfg.active("indentation") and \
            token.kind != "NEWLINE":
-            if token.first_in_line and not token.block_comment:
+            # Normally we ignore block comments, but the opening token
+            # _is_ checked, as that one should align somehow.
+            if token.first_in_line and not (token.block_comment and
+                                            token.value != "{"):
                 if token.first_in_statement:
                     if token.ast_link:
                         current_indent = token.ast_link.get_indentation()

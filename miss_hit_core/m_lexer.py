@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2020, Florian Schanda                    ##
+##              Copyright (C) 2019-2021, Florian Schanda                    ##
 ##              Copyright (C) 2019-2020, Zenuity AB                         ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -981,6 +981,7 @@ class MATLAB_Lexer(Token_Generator):
                               "low")
             else:
                 self.block_comment += 1
+                token.block_comment = True
 
         elif self.block_comment and token.kind == "COMMENT":
             for c in self.comment_char:
@@ -988,6 +989,7 @@ class MATLAB_Lexer(Token_Generator):
                 if marker in token.raw_text:
                     if token.raw_text.strip() == marker:
                         self.block_comment -= 1
+                        token.value = "}"
                     else:
                         self.mh.check(token.location,
                                       "ignored block comment end: no text"

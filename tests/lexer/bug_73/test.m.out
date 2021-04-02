@@ -29,7 +29,7 @@ In test.m, line 5
 test.m:6:0: info: [SL] NEWLINE
 In test.m, line 7
 |         %}
-| ^^^^^^^^^^ info: [SL] COMMENT '%}'
+| ^^^^^^^^^^ info: [SL] COMMENT '}'
 In test.m, line 7
 |         %}
 |           ^ info: NEWLINE

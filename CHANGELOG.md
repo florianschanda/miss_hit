@@ -57,6 +57,13 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * New check for MH Lint to make sure that any file called `Contents.m`
   only contains comments.
 
+* Fixed an obscure internal issue in the lexer: the opening `%{` of a
+  block comment now correctly has the block_comment flag set, and the
+  closing marker `%}` now has the correct value of `}` instead of
+  `%}`. There is no user-visible change, but any direct users of the
+  lexer that relied on the old broken behaviour need to remove their
+  workarounds.
+
 ### 0.9.17
 
 * Updated language support to MATLAB 2021a. The new feature supported
