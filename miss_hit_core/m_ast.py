@@ -174,6 +174,13 @@ class MATLAB_Token:
         # tokens nominally belong.
         self.ast_link = None
 
+    def get_unstripped_comment(self):
+        assert self.kind == "COMMENT"
+        if self.block_comment:
+            return self.raw_text
+        else:
+            return self.raw_text[1:]
+
     def set_ast(self, node):
         assert isinstance(node, Node)
         self.ast_link = node
@@ -183,6 +190,8 @@ class MATLAB_Token:
 
         if self.value is None or self.kind == "NEWLINE":
             return "Token%s(%s)" % (star, self.kind)
+        elif self.kind == "COMMENT" and self.block_comment:
+            return "Token%s(BLOCK%s, <<%s>>)" % (star, self.kind, self.value)
         else:
             return "Token%s(%s, <<%s>>)" % (star, self.kind, self.value)
 
@@ -420,6 +429,7 @@ class Compilation_Unit(Node):
         assert isinstance(n_docstring, Docstring)
         self.n_docstring = n_docstring
         self.n_docstring.set_parent(self)
+
 
 ##############################################################################
 # Compilation units
@@ -841,6 +851,9 @@ class Copyright_Info(Node):
 
         self.set_parent(n_parent)
 
+    def is_block_comment(self):
+        return self.t_comment.block_comment
+
     def get_org(self):
         return self.match.group("org")
 
@@ -870,6 +883,21 @@ class Copyright_Info(Node):
         rv.col_start += self.match.span("org")[0]
         return rv
 
+    def loc_yend(self):
+        rv = self.get_comment_text_loc()
+        rv.col_end = rv.col_start + (self.match.span("yend")[1] - 1)
+        rv.col_start += self.match.span("yend")[0]
+        return rv
+
+    def loc_ystart(self):
+        if self.match.group("ystart"):
+            rv = self.get_comment_text_loc()
+            rv.col_end = rv.col_start + (self.match.span("ystart")[1] - 1)
+            rv.col_start += self.match.span("ystart")[0]
+            return rv
+        else:
+            return self.loc_yend()
+
     def set_parent(self, n_parent):
         assert isinstance(n_parent, Docstring)
         super().set_parent(n_parent)
@@ -894,6 +922,12 @@ class Docstring(Node):
         assert isinstance(t_comment, MATLAB_Token)
         assert t_comment.kind == "COMMENT"
         assert t_comment.first_in_line
+        if self.l_comments:
+            assert self.l_comments[-1].location.line < t_comment.location.line
+
+        # Do not add block comment braces
+        if t_comment.block_comment and t_comment.value in ("{", "}"):
+            return
 
         self.l_comments.append(t_comment)
         t_comment.ast_link = self
@@ -910,6 +944,70 @@ class Docstring(Node):
     def get_all_copyright_holders(self):
         return set(n_info.get_org()
                    for n_info in self.copyright_info)
+
+    def all_copyright_in_one_block(self, entities=None):
+        """ Check if all copyright statements are next to each other """
+        assert entities is None or isinstance(entities, set)
+
+        lines = sorted(info.t_comment.location.line
+                       for info in self.copyright_info
+                       if entities is None or info.get_org() in entities)
+        old_line = None
+        for line_no in lines:
+            if old_line is not None and line_no - old_line > 1:
+                return False
+            old_line = line_no
+
+        return True
+
+    def final_line(self):
+        """ Returns a tuple identifying the final line of the docstring
+
+        The tuple contains two values:
+          * A boolean, indicating if we deal with a block comment
+          * An int >= 0, indicating where to add a new line which would
+            extend the docstring
+
+        Returns the pen-ultimate line if the ending comment is a
+        closing block comment.
+
+        The only case we have a blank docstring is if we have a
+        compilation unit docstring, in which case we'd return 0.
+        """
+
+        if not self.l_comments:
+            return False, 0
+        elif self.l_comments[-1].block_comment:
+            return True, max(1, self.l_comments[-1].location.line)
+        else:
+            return False, self.l_comments[-1].location.line
+
+    def guess_docstring_offset(self):
+        """ Guesses the internal offset used for the docstring
+
+        For example:
+          % POTATO makes a potato
+          %   This adds a potato
+
+        Here the internal offset would be 3. The heuristic is not great
+        right now, I'll improve it as I get bug reports :)
+        """
+        offsets = {}
+        # OK, there is a minor bug here with tabs, but MH Style should
+        # have fixed your code already.
+        for t_comment in self.l_comments[1:]:
+            rstripped_comment = t_comment.get_unstripped_comment().rstrip()
+            offset = len(re.match("^ *", rstripped_comment).group(0))
+            if offset:
+                offsets[offset] = offsets.get(offset, 0) + 1
+
+        if offsets:
+            return min(offsets)
+        elif self.l_comments:
+            rstripped_comment = self.l_comments[0].get_unstripped_comment()
+            return len(re.match("^ *", rstripped_comment).group(0))
+        else:
+            return 1
 
 
 class Function_Signature(Node):

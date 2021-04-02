@@ -30,16 +30,66 @@ from miss_hit_core import command_line
 from miss_hit_core import work_package
 from miss_hit_core.m_ast import *
 from miss_hit_core.errors import Error, Message_Handler, ICE
-from miss_hit_core.m_lexer import MATLAB_Lexer
+from miss_hit_core.m_lexer import MATLAB_Lexer, Token_Buffer
+from miss_hit_core.m_parser import MATLAB_Parser
+from miss_hit_core.m_parse_utils import parse_docstrings
 
 
-def year_span_key(blob):
-    a_start, a_end, a_org = blob
+def get_primary_entity(options, cfg):
+    if options.primary_entity:
+        primary_entity = options.primary_entity
+    else:
+        primary_entity = cfg.style_config["copyright_primary_entity"]
 
-    if a_start is None:
-        a_start = a_end
+    if not primary_entity and len(cfg.style_config["copyright_entity"]) == 1:
+        primary_entity = list(cfg.style_config["copyright_entity"])[0]
 
-    return (a_start, a_end, a_org)
+    return primary_entity
+
+
+def replace_line(lines, line_no, block_comment,
+                 templates, org, year_range,
+                 offset=None):
+    assert isinstance(lines, list)
+    assert isinstance(line_no, int) and 1 <= line_no <= len(lines)
+    assert isinstance(block_comment, bool)
+    assert isinstance(templates, dict)
+    assert isinstance(org, str)
+    assert isinstance(year_range, tuple) and len(year_range) == 2
+    assert isinstance(year_range[0], int)
+    assert isinstance(year_range[1], int)
+    assert offset is None or (isinstance(offset, int) and offset >= 0)
+
+    # Replacing lines needs to do two things in order not to mess up
+    # any existing formatting.
+    #   1. Match the previous indentation
+    #   2. Match the previous offset after the comment character
+
+    old_line = lines[line_no - 1]
+    if block_comment:
+        old_indent = ""
+        old_offset = re.match("^[ \t]*", old_line).group(0)
+        comment_char = ""
+    else:
+        old_indent = re.match("^[ \t]*", old_line).group(0)
+        old_offset = re.match("^[ \t]*",
+                              old_line[len(old_indent) + 1:]).group(0)
+        comment_char = old_line[len(old_indent)]
+
+    if offset is not None:
+        old_offset = " " * offset
+
+    data = {"org"    : org,
+            "ystart" : year_range[0],
+            "yend"   : year_range[1]}
+
+    new_line = old_indent + comment_char + old_offset
+    if year_range[0] == year_range[1]:
+        new_line += templates["single"] % data
+    else:
+        new_line += templates["range"] % data
+
+    lines[line_no - 1] = new_line
 
 
 class MH_Copyright_Result(work_package.Result):
@@ -55,24 +105,6 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
     def process_wp(cls, wp):
         # Load file content
         content = wp.get_content()
-        is_embedded = isinstance(wp, work_package.Embedded_MATLAB_WP)
-
-        # Deal with command-line options
-        primary_entity = wp.cfg.style_config["copyright_primary_entity"]
-        if wp.options.primary_entity:
-            primary_entity = wp.options.primary_entity
-        old_entity = None
-        if wp.options.update_year:
-            action = "update_year"
-        elif wp.options.merge:
-            action = "merge"
-        elif wp.options.change_entity is not None:
-            action = "change_entity"
-            old_entity = wp.options.change_entity
-        elif wp.options.add_notice:
-            action = "add_notice"
-        else:
-            raise ICE("none of the action are set")
 
         # Create lexer
         lexer = MATLAB_Lexer(wp.mh, content, wp.filename, wp.blockname)
@@ -81,192 +113,184 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
         if not wp.cfg.pragmas:  # pragma: no cover
             lexer.process_pragmas = False
 
+        # Deal with command-line options, setting up three variables:
+        # * action - what to do
+        # * primary_entity - main entity
+        # * templates - how to write copyright notices
+        templates = {"single" : wp.options.template,
+                     "range"  : wp.options.template_range}
+        primary_entity = get_primary_entity(wp.options, wp.cfg)
+        if not primary_entity:
+            wp.mh.warning(lexer.get_file_loc(),
+                          "unable to determine primary copyright entity,"
+                          " skipping this file")
+            return MH_Copyright_Result(wp, False)
+        if wp.options.update_year:
+            action = "update_year"
+        elif wp.options.merge:
+            action = "merge"
+        elif wp.options.change_entity is not None:
+            action = "change_entity"
+        elif wp.options.add_notice:
+            action = "add_notice"
+        else:
+            raise ICE("none of the action are set")
+
+        allowed_entities = (wp.cfg.style_config["copyright_entity"] |
+                            set([primary_entity]))
+
         # We're dealing with an empty file here. Lets just not do anything
         if len(lexer.text.strip()) == 0:
             return MH_Copyright_Result(wp, False)
 
-        # Determine primary copyright holder. We use the command-line,
-        # or try and deduce from the config files.
-        if not primary_entity:
-            if len(wp.cfg.style_config["copyright_entity"]) == 1:
-                primary_entity = \
-                    list(wp.cfg.style_config["copyright_entity"])[0]
-            else:
-                wp.mh.warning(lexer.get_file_loc(),
-                              "unable to determine primary copyright entity,"
-                              " skipping this file")
+        # Parse
+        try:
+            tbuf = Token_Buffer(lexer, wp.cfg)
+            parser = MATLAB_Parser(wp.mh, tbuf, wp.cfg)
+            parse_tree = parser.parse_file()
+            parse_docstrings(wp.mh, wp.cfg, parse_tree, tbuf)
+        except Error:  # pragma: no cover
+            return MH_Copyright_Result(wp, False)
+
+        # Determine the docstring of the primary entity. We use the
+        # script/class docstring, if it exists and contains copyright
+        # info. Otherwise we use the compilation unit's docstring
+        # (i.e. file header). The style checker worries about the case
+        # where we have copyright in more than one location.
+        n_docstring = None
+        if isinstance(parse_tree, Class_File):
+            n_docstring = parse_tree.n_classdef.n_docstring
+        elif isinstance(parse_tree, Function_File):
+            n_docstring = parse_tree.l_functions[0].n_docstring
+        if n_docstring is None or not n_docstring.copyright_info:
+            n_docstring = parse_tree.n_docstring
+        # Note that n_docstring could be None at this point, so we do
+        # need to deal with that correctly.
+
+        # Set up line -> Copyright_Info map
+        cinfos = {}
+        if n_docstring:
+            for cinfo in n_docstring.copyright_info:
+                if cinfo.t_comment.location.line in cinfos:
+                    raise ICE("docstring with duplicate line (%u)" %
+                              cinfo.t_comment.location.line)
+                else:
+                    cinfos[cinfo.t_comment.location.line] = cinfo
+
+            # The merge action requires the copyright notice to be
+            # grouped. Enforce this now.
+            if action == "merge" and \
+               not (n_docstring.all_copyright_in_one_block(allowed_entities) or
+                    n_docstring.all_copyright_in_one_block()):
+                wp.mh.error(n_docstring.loc(),
+                            "cannot merge entries in this docstring as they"
+                            " are not all next to each other",
+                            fatal=False)
                 return MH_Copyright_Result(wp, False)
 
-        # Compile magic regex
-        cr_regex = re.compile(wp.cfg.style_config["copyright_regex"])
-
-        # Process tokens and take actions
+        # Perform actions
+        action_taken = False
+        lines = copy(lexer.context_line)
         try:
-            # Determine where the actual file content starts, and a
-            # list of all copyright info.
-            in_copyright_notice = (
-                wp.cfg.active("copyright_notice") and
-                (not is_embedded or
-                 wp.cfg.style_config["copyright_in_embedded_code"]))
-            old_copyright_info = []
-            file_start = 1
-            newlines = 1
-            comment_char = "%"
-            while in_copyright_notice:
-                token = lexer.token()
-                if token is None:
-                    in_copyright_notice = False
-                elif token.kind == "COMMENT":
-                    match = cr_regex.search(token.value)
-                    if match:
-                        if not token.raw_text.startswith("%"):
-                            comment_char = token.raw_text[0]
-                        old_copyright_info.append(
-                            (int(match.group("ystart"))
-                             if match.group("ystart")
-                             else None,
-                             int(match.group("yend")),
-                             match.group("org"),
-                             token))
-                        file_start = token.location.line + 1
-                    else:
-                        file_start = token.location.line
-                        in_copyright_notice = False
-                elif token.kind == "NEWLINE":
-                    newlines = len(token.value)
-                else:
-                    # Once we get a non-comment/non-copyright token,
-                    # the header has ended. We then emit messages if
-                    # we could not find anything.
-                    in_copyright_notice = False
-                    file_start = token.location.line
+            if action == "update_year":
+                new_year = wp.options.year
+                for line_no, cinfo in cinfos.items():
+                    ystart, yend = cinfo.get_range()
+                    if cinfo.get_org() != primary_entity:
+                        continue
 
-            # Update notices as instructed
-            copyright_info = []
-            action_taken = False
-            merged_copyright = [None, None, primary_entity]
-            original_primary = None
-            for ystart, yend, org, token in old_copyright_info:
-                if ystart is not None and ystart > yend:
-                    wp.mh.error(token.location,
-                                "initial year is later than end year")
+                    if yend <= new_year:
+                        new_range = (ystart, new_year)
+                        replace_line(lines, line_no, cinfo.is_block_comment(),
+                                     templates, primary_entity, new_range)
 
-                if action == "update_year":
-                    if org == primary_entity:
-                        if yend < wp.options.year:
-                            if ystart is None:
-                                ystart = yend
-                            yend = wp.options.year
-                            action_taken = True
-                        elif yend > wp.options.year:
-                            wp.mh.error(token.location,
-                                        "end year is later than %u" %
-                                        wp.options.year)
-
-                        if ystart is not None:
-                            if ystart == yend:
-                                ystart = None
-                                action_taken = True
-                    copyright_info.append((ystart, yend, org))
-
-                elif action == "change_entity":
-                    if org == old_entity:
-                        org = primary_entity
                         action_taken = True
-                    copyright_info.append((ystart, yend, org))
-
-                elif action == "merge":
-                    if org in wp.cfg.style_config["copyright_entity"] or \
-                       org == primary_entity:
-                        # Actions are definitely taken if we have multiple
-                        # primaries, or we have a non-primary entity
-                        if org == primary_entity:
-                            if original_primary is None:
-                                original_primary = (ystart, yend, org)
-                            else:
-                                action_taken = True
-                        else:
-                            action_taken = True
-
-                        # Update the merged entity
-                        if merged_copyright[0] is None:
-                            merged_copyright[0] = ystart
-                        elif ystart is not None:
-                            merged_copyright[0] = min(merged_copyright[0],
-                                                      ystart)
-
-                        if merged_copyright[0] is None:
-                            merged_copyright[0] = yend
-                        else:
-                            merged_copyright[0] = min(merged_copyright[0],
-                                                      yend)
-
-                        if merged_copyright[1] is None:
-                            merged_copyright[1] = yend
-                        else:
-                            # yend is always not None
-                            merged_copyright[1] = max(merged_copyright[1],
-                                                      yend)
                     else:
-                        copyright_info.append((ystart, yend, org))
+                        wp.mh.error(cinfo.loc_yend(),
+                                    "end year is later than %s" % new_year)
 
-                elif action == "add_notice":
-                    copyright_info.append((ystart, yend, org))
+            elif action == "merge":
+                merged_line = None
+                merged_line_is_block = None
+                killed_lines = []
+                new_range = None
+                for line_no in sorted(cinfos):
+                    cinfo = cinfos[line_no]
+                    ystart, yend = cinfo.get_range()
 
-                else:
-                    raise ICE("unexpected action %s" % action)
+                    if cinfo.get_org() not in allowed_entities:
+                        continue
+                    if cinfo.get_org() != primary_entity or ystart == yend:
+                        action_taken = True
 
-            # Final updates for the merge and add action
-            if action == "merge" and merged_copyright[1] is not None:
-                # Clean merged copyright
-                if merged_copyright[0] == merged_copyright[1]:
-                    merged_copyright[0] = None
+                    if ystart > yend:
+                        wp.mh.error(cinfo.loc_ystart(),
+                                    "initial year is later than end year")
 
-                # Add new entry and sort list chronologically
-                copyright_info.append(tuple(merged_copyright))
-                copyright_info.sort(key=year_span_key)
+                    if new_range is None:
+                        merged_line = line_no
+                        merged_line_is_block = cinfo.is_block_comment()
+                        new_range = cinfo.get_range()
+                    else:
+                        new_range = (min(ystart, new_range[0]),
+                                     max(yend, new_range[1]))
+                        killed_lines.append(line_no)
+                        action_taken = True
 
-                # Check if we'd actually change anything
-                if not action_taken and \
-                   tuple(merged_copyright) != original_primary:
-                    action_taken = True
+                if action_taken:
+                    replace_line(lines, merged_line, merged_line_is_block,
+                                 templates, primary_entity, new_range)
+                    for line_no in reversed(killed_lines):
+                        del lines[line_no - 1]
+
+            elif action == "change_entity":
+                for line_no, cinfo in cinfos.items():
+                    if cinfo.get_org() == wp.options.change_entity:
+                        replace_line(lines, line_no, cinfo.is_block_comment(),
+                                     templates, primary_entity,
+                                     cinfo.get_range())
+                        action_taken = True
 
             elif action == "add_notice":
-                if len(copyright_info) == 0:
-                    copyright_info.append((None,
-                                           wp.options.year,
-                                           primary_entity))
+                # Only add copyright notices to files without any
+                # notice.
+                if len(cinfos) == 0:
+                    # Find the right place to add the notice. Right
+                    # now we only do this for the file header; so we
+                    # need to find it and append at the end; or create
+                    # a new one.
                     action_taken = True
 
-            # Re-build file header
-            if action_taken:
-                new_content = []
-                for ystart, yend, org in copyright_info:
-                    sub = {"ystart" : ystart,
-                           "yend" : yend,
-                           "org"  : org}
-                    if ystart is None:
-                        new_content.append("%s %s" %
-                                           (comment_char,
-                                            wp.options.template % sub))
-                    else:
-                        new_content.append("%s %s" %
-                                           (comment_char,
-                                            wp.options.template_range % sub))
-                if newlines >= 2 or action == "add_notice":
-                    new_content.append("")
-                new_content += lexer.context_line[file_start - 1:]
+                    if parse_tree.n_docstring:
+                        is_block, line_no = parse_tree.n_docstring.final_line()
+                        off = parse_tree.n_docstring.guess_docstring_offset()
 
-                wp.write_modified("\n".join(new_content) + "\n")
-                return MH_Copyright_Result(wp, True)
+                        # Duplicate the last line
+                        lines = \
+                            lines[:line_no] + \
+                            [lines[line_no - 1]] + \
+                            lines[line_no:]
+                    else:
+                        is_block = False
+                        line_no = 0
+                        off = 1
+                        lines = ["% POTATO", ""] + lines
+
+                    # Then overwrite it
+                    replace_line(lines, line_no + 1, is_block,
+                                 templates, primary_entity,
+                                 (wp.options.year, wp.options.year),
+                                 offset = off)
 
             else:
-                wp.mh.info(lexer.get_file_loc(), "no action taken")
-                return MH_Copyright_Result(wp, False)
-
+                raise ICE("Unexpected action '%s'" % action)
         except Error:
-            # If there are any errors, we can stop here
             return MH_Copyright_Result(wp, False)
+
+        if action_taken:
+            wp.write_modified("\n".join(lines) + "\n")
+
+        return MH_Copyright_Result(wp, True)
 
 
 def main_handler():
@@ -332,8 +356,8 @@ def main_handler():
     options = command_line.parse_args(clp)
 
     # Sanity check year
-    if options.year < 1900:  # pragma: no cover
-        clp["ap"].error("year must be at lest 1900")
+    if options.year < 1000:  # pragma: no cover
+        clp["ap"].error("year must be at lest 1000")
     elif options.year >= 10000:  # pragma: no cover
         clp["ap"].error("I am extremely concerned that this tool is still"
                         " useful after 8000 years, stop what you're doing"

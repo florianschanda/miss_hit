@@ -45,13 +45,6 @@
     </section>
 
     <section>
-      <h2>Limitations</h2>
-      <div>
-        This tool does not yet support notices in docstrings.
-      </div>
-    </section>
-
-    <section>
       <h2>Usage</h2>
       <div>
         The tool is configured and run from the command-line. It does
@@ -195,15 +188,13 @@ copyright_3rd_party_entity: "Feature not a Bug Consulting Inc."
 </pre>
       </div>
 
-      <div>
-        Note that the resulting set of notices will be chronologically
-        sorted.
-      </div>
-
       <h4>--add-notice</h4>
       <div>
         Adds a new copyright notice with the current year and primary
-        copyright holder to files without a notice.
+        copyright holder to files without a notice. We do not attempt
+        to insert this into the docstring (if any) of the primary
+        entity, but instead this notice is added to the top of the
+        file (or at the end of the file docstring, if it exists).
       </div>
 
       <div>

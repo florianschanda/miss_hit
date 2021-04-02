@@ -39,8 +39,8 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   Your current notices, if they exist, should be compatible with the
   new default.
 
-  The MH Copyright tool does not yet deal with docstrings, it only
-  supports the old style (for now).
+* The MH Copyright tool has been updated to deal with docstrings as
+  well.
 
 * New rule for MH Style `naming_scripts` and associated configuration
   option `regex_script_name`. The existing naming rules cover all
