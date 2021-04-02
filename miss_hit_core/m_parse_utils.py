@@ -34,6 +34,9 @@ def parse_docstrings(mh, cfg, parse_tree, tbuf):
     assert isinstance(parse_tree, Compilation_Unit)
     assert isinstance(tbuf, Token_Buffer)
 
+    # The compilation unit's docstring are the leading comments in the
+    # file (if any).
+
     approaching_docstring = False
     in_docstring = tbuf.tokens and tbuf.tokens[0].kind == "COMMENT"
     if in_docstring:
@@ -43,13 +46,19 @@ def parse_docstrings(mh, cfg, parse_tree, tbuf):
         ast_node = None
 
     for token in tbuf.tokens:
-        # Recognise function docstrings
+        # Recognise docstrings
         if approaching_docstring:
+            # In this mode we keep eating tokens until we get to the
+            # first comment token, that is a _new_ statement. This
+            # deals with line continuations.
             if token.first_in_statement:
                 if token.kind == "COMMENT":
                     in_docstring = True
                 approaching_docstring = False
-        elif in_docstring:
+
+        if in_docstring:
+            # In this mode we eat comments and newlines until we get
+            # to a non-comment token, or more than one newline.
             if token.kind == "COMMENT":
                 ast_node.add_comment(token)
             elif token.kind == "NEWLINE" and token.value.count("\n") == 1:
