@@ -17,18 +17,18 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ## Changelog
 
-### 0.9.18-dev
+### 0.9.18
 
 * Completely new handling of copyright notices. New configuration
   option `copyright_location` decides which approach to use. It can
   take one of the following values:
-  * `file_header` - similar to the old behaviour, copyright notice
-    must be in the file header. However the tool is a bit more relaxed
-    where the copyright notice can appear, and it no longer must be
-    the first line in the file.
   * `docstring` - the new (and default) approach, copyright notice
     must be somewhere in the docstring of the class, function, or
-    script file.
+    script file; or at the top of the file.
+  * `file_header` - similar (but not identical) to the old behaviour,
+    copyright notice must be in the file header. However the tool is a
+    bit more relaxed where the copyright notice can appear, and it no
+    longer must be the first line in the file.
 
   Please note that this changes the *default* behaviour, if you like
   something closer to the old approach use `file_header`. The
@@ -37,10 +37,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   this new default achieves this.
 
   Your current notices, if they exist, should be compatible with the
-  new default.
+  new default. Except that we now process and check all notices, not
+  just the first one.
 
 * The MH Copyright tool has been updated to deal with docstrings as
-  well.
+  well. It is unfortunately slower (because it now has to parse the
+  file).
 
 * New rule for MH Style `naming_scripts` and associated configuration
   option `regex_script_name`. The existing naming rules cover all
@@ -67,7 +69,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * MISS_HIT is now also published on the
   [MathWorks "File Exchange"](https://www.mathworks.com/matlabcentral/fileexchange/89436-miss_hit).
 
-* From now on, the tags will be just the version number, and not
+  From now on, the tags will be just the version number, and not
   prepended with `release-`. For example the tag for this release is
   `0.9.18` (and not `release-0.9.18`). The reason for this is that the
   automatic sync with the MathWorks "File Exchange" only works if the
