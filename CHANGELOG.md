@@ -17,6 +17,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ## Changelog
 
+
+### 0.9.19-dev
+
+
 ### 0.9.18
 
 * Completely new handling of copyright notices. New configuration
