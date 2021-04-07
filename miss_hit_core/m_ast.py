@@ -844,7 +844,9 @@ class Copyright_Info(Node):
         super().__init__()
         assert isinstance(t_comment, MATLAB_Token)
         assert t_comment.kind == "COMMENT"
-        assert isinstance(re_match, re.Match)
+        # assert isinstance(re_match, re.Match)
+        # In 3.6 this is a _sre.SRE_Match object; so we can't easily
+        # check for this...
 
         self.t_comment = t_comment
         self.match = re_match

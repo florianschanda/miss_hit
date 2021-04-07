@@ -20,7 +20,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.20-dev
 
-
+* Fix a Python 3.6 compatibility issue that I missed during testing.
 
 ### 0.9.19
 
