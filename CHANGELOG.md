@@ -20,6 +20,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.19-dev
 
+* Fix a number of false alarms for MH Lint when detecting built-in
+  shadows. Now functions named e.g. `clear` are fine if they are in
+  packages (i.e. in directories starting with `+`).
 
 ### 0.9.18
 
