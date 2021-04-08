@@ -14,8 +14,8 @@ Doesn't exist. This is the first hurdle.
 
 ## Command form
 
-A function without outputs that takes string arguments such as "disp"
-or "clear" is normally called like this:
+A function without outputs, that takes string arguments such as "disp"
+or "clear", is normally called like this:
 
 ```
 disp('Potato!');
@@ -46,13 +46,13 @@ properties involving brackets. They are classed into two: opening
 `({[`, and closing `)}]`. If there is an imbalance, whitespace is
 included in the string lexed.
 
-For example this should lex as IDENT(foo) CARRAY(`bar`) CARRAY(`baz`):
+For example, this should lex as IDENT(foo) CARRAY(`bar`) CARRAY(`baz`):
 ```
 foo bar baz % potato
 ```
 
 However, this should lex as IDENT(foo) CARRAY(`b)ar baz `). Please
-note the trailing whitespace here, its intentional.
+note the trailing whitespace here, it's intentional.
 
 ```
 foo b)ar baz % potato
@@ -63,7 +63,7 @@ foo b)ar baz % potato
 To add to this, you can single-quote strings in command form, and they
 disappear.
 
-For example this again lexes as IDENT(foo) CARRAY(`bar`) CARRAY(`baz`):
+For example, this again lexes as IDENT(foo) CARRAY(`bar`) CARRAY(`baz`):
 ```
 foo 'bar' baz % potato
 ```
@@ -75,7 +75,7 @@ foo 'bar baz % potato
 ```
 
 Quotations without separating whitespace are concatenated into
-whatever is lexed. For example this lexes as IDENT(foo)
+whatever is lexed. For example, this lexes as IDENT(foo)
 CARRAY(`barbaz`). Note no quotations here.
 ```
 foo bar'baz'
@@ -86,7 +86,7 @@ The creates counter-intuitive things like:
 foo a' 'b  % actually a single CARRAY 'a b'
 ```
 
-A double single quote can be used to include a single quote:
+A double single quote escapes to a single quote:
 ```
 foo pot''''ato % pot'ato
 ```
@@ -139,7 +139,7 @@ it doesn't. But you still need to add a special error checking for
 number lexing to raise an error in this specific case.
 
 Also note that the `./` operator (and the other 4 operators that start
-with a '.') create an ambiguity here. The following expression:
+with a '.') create an ambiguity here. Consider the following expression:
 ```
 x = 1./b
 ```
@@ -151,9 +151,9 @@ and `b`.
 ## Single-quoted strings
 
 The single quote has two meanings. It can either be a transpose
-operation (e.g. `a'` or a character array (e.g. `'foo'`). It also
-means some expressions need intermediate values. For example the
-following cannot be simplified to `y = 'foo'';`:
+operation (e.g. `a'`) or a character array (e.g. `'foo'`). It also
+means some expressions require you to use intermediate values. For
+example the following cannot be simplified to `y = 'foo'';`:
 ```
 x = 'foo';
 y = x';
@@ -195,7 +195,7 @@ The canonical way to write a 2x2 identity matrix is this:
 m = [1, 0; 0, 1];
 ```
 
-However there are many ways this can be written:
+However there are many other ways this can be written:
 ```
 m = [1 0
      0 1];
@@ -239,7 +239,7 @@ z = [1, +++ 1] % this is also [1 1]
 The rules when to add such a comma are probably the single most
 complex feature of the lexer.
 
-First we need to find the first two character after any
+First we need to find the first two characters after any
 whitespace. Following the `1` in x, this would be `+ ` and for y it
 would be `++`. Note that this search must also correctly skip line
 continuations.
@@ -275,12 +275,16 @@ Do not add a comma otherwise.
 ### Lambda functions
 
 There is one more exception to these already confusing rules, and
-these are lambda functions. If we are after a closing bracket of a
+these are lambda functions. If we encounter a closing bracket of a
 lambda parameter list, then no comma is inserted:
 
 ```
 x = {@(x) 12};
 ```
+
+Note that your lexer will need to keep track of, and match, brackets;
+and distinguish between normal round brackets and a lambda function
+parameter list.
 
 ### Assignment targets
 
@@ -291,11 +295,16 @@ target. For example the following is not valid:
 [x; y] = size(1)';
 ```
 
-Hence the lexer should distinguish between a matrix and assignment
-targets. This essentially involves looking ahead matching brackets to
-find the first non-whitespace character following the closing `]`. If
-it is a `=` then we deal with an assignment target, if not then it
-must be a matrix.
+Ideally, in the parser we know if we're dealing with a matrix or not;
+so we can directly reject some expressions. Otherwise we'd have to go
+back after we've seen the `=` and either re-parse or do much deeper
+analysis; or reject during semantic analysis.
+
+To make this easier the lexer should distinguish between a matrix and
+assignment targets. This essentially involves looking ahead matching
+brackets to find the first non-whitespace character following the
+closing `]`. If it is a `=` then we deal with an assignment target, if
+not then it must be a matrix.
 
 This look-ahead is not easy, since strings can appear legitimately. For
 example:
@@ -325,8 +334,7 @@ In lexing terms, if the previous token was a selection token (`.`)
 then the following token is always an identifier.
 
 Having a function named `end` is also legal if the function is a class
-method. I am not sure yet how to deal with this, so for now MISS_HIT
-does not allow it.
+method.
 
 `~` is an operator, but it can be a legal identifier in an assignment
 target (to indicate "don't care"):
@@ -362,14 +370,15 @@ function potato(x)
 ```
 
 ### Interaction with command form
-Note that keeping track of block is essential anyway, since the
+Note that keeping track of blocks is essential anyway, since the
 argument validation `x uint` would normally be lexed as
 command-form. But inside `properties`, `events`, `enumeration`, and
-`arguments` blocks the command-form detection is always turned off.
+`arguments` blocks the command-form detection must always be turned
+off.
 
 ## Block comments
 
-Block comments can be nested (this is not document officially). The
+Block comments can be nested (this is not documented officially). The
 following will print 1 and 5:
 
 ```
@@ -398,8 +407,8 @@ disp 4
 disp 5
 ```
 
-MISS_HIT will emit warnings about comments that contain `%{` and `%}`
-unless they are proper block comments.
+MISS_HIT Lint will emit warnings about comments that contain `%{` and
+`%}` unless they are proper block comments.
 
 ## Unicode
 
@@ -417,7 +426,6 @@ end
 
 Here we have a clever use of the arabic percent `٪`. This is not `%`,
 which starts a comment. Instead we print:
-
 ```
 foo
 bar
@@ -431,7 +439,6 @@ bar
 ```
 
 If the `٪` is a `%` then the program would only print:
-
 ```
 foo
 bar

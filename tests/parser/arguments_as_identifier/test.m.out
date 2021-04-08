@@ -1,0 +1,4 @@
+In test.m, line 8
+|    arguments = 42; % keyword again not allowed in MISS_HIT
+|    ^^^^^^^^^ error: expected valid statement, found keyword 'arguments' instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)
