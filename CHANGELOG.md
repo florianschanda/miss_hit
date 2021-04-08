@@ -85,7 +85,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   [MathWorks "File Exchange"](https://www.mathworks.com/matlabcentral/fileexchange/89436-miss_hit).
 
   From now on, the tags will be just the version number, and not
-  prepended with `release-`. For example the tag for this release is
+  pre-pended with `release-`. For example the tag for this release is
   `0.9.18` (and not `release-0.9.18`). The reason for this is that the
   automatic sync with the MathWorks "File Exchange" only works if the
   release numbers are following the MAJOR.MINOR.PATCH pattern.
@@ -95,12 +95,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * Updated language support to MATLAB 2021a. The new feature supported
   is the new (and extremely unwise) function name-value pairs. This
   allows you to write `foo(bar=baz)` instead of two separate
-  arguments: `foo('bar', baz)`. Note very carfully that this is
+  arguments: `foo('bar', baz)`. Note very carefully that this is
   totally different to all other programming languages out there, and
   not what any reasonable person expects.
 
   Further note that Octave actually does something worse here, in
-  Octave this would be a side-effect assinment to bar, and only a
+  Octave this would be a side-effect assignment to bar, and only a
   single argument would be passed.
 
 * MH Lint has a new (low) check for discouraging the use of name-value
@@ -185,7 +185,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
   Currently the functionality is limited, however in the future this
   will be the basis for all advanced static analysis; since it
-  provides the equivalent of path or matlabpath to the MISS_HIT tools.
+  provides the equivalent of path or MATLABPATH to the MISS_HIT tools.
 
 * New documentation for the
   [common command-line interface](https://florianschanda.github.io/miss_hit/cli.html), which is shared between all MISS_HIT tools (except for MH Diff).
@@ -207,7 +207,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   anything.
 
 * Fixed bug in MH Metric HTML reports. When MH Metric was installed
-  via pip, the link to the assets and stylesheetds did not
+  via pip, the link to the assets and style sheets did not
   resolve. This is now fixed.
 
   In addition the new `--portable-html` option for MH Metric will
