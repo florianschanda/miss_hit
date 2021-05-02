@@ -20,6 +20,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.21-dev
 
+* MISS_HIT now has an official web-site: http://misshit.org
 
 
 ### 0.9.20

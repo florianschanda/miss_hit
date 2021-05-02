@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <title>
+    MISS_HIT
+  </title>
+</head>
+
+<body>
+  <header>
+    MISS_HIT - Free and open source code quality tools for Octave and
+    MATLAB
+  </header>
+  <main>
+    <div class="navigation">
+      <span><a href="index.html">About</a></span>
+      <span class='current'>Tools</span>
+      <span><a href="docs.html">Documentation</a></span>
+      <span><a href="download.html">Download</a></span>
+      <span><a href="license.html">License</a></span>
+    </div>
+
+    <div>
+      MISS_HIT contains more than one tool. This is a quick overview
+      over each tool.
+    </div>
+
+    <div class="title">
+      <img src="assets/package.svg" alt="Package" />
+      <h1>MH Style</h1>
+    </div>
+
+    <section>
+      <h2>A style checker and code formatter</h2>
+      <div>
+        This is the most popular MISS_HIT tool. It can style check
+        your code and auto-fix almost all problems.
+        <pre>function rv= foo (x), if x &lt; 0,,rv=-   x;else,rv=x;,; end;</pre>
+        Running mh_style with the <tt>--fix</tt> option:
+<pre>
+function rv = foo (x)
+    if x &lt; 0
+        rv = -x;
+    else
+        rv = x;
+    end
+</pre>
+      </div>
+      <div>
+        There is a rich configuration scheme to fine-tune the rules to
+        how you like them.
+      </div>
+      <div>
+        Otherwise, the style checker produces a list of problems:
+<pre>
+In test_01.m, line 3
+| a = [1,2,3,];
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+</pre>
+      </div>
+      <div>
+        You can find more information in
+        the <a href="https://florianschanda.github.io/miss_hit/style_checker.html">
+        style checker user manual</a>.
+      </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/package.svg" alt="Package" />
+      <h1>MH Metric</h1>
+    </div>
+
+    <section>
+      <h2>A code complexity metrics tool</h2>
+      <div>
+        Industrial code bases often encourage limits on how complex
+        the code is, so that testing and maintenance become easier
+        tasks. There is minimal built-in support for this in mlint
+        using the <tt>-cyc</tt> option, but it can't easily be
+        automated; embedded MATLAB in Simulink can't be checked
+        easily, and limits cannot be enforced in CI. This, and the
+        need for additional complexity metrics, motivated the creation
+        of MH Metric.
+      </div>
+      <div>
+        You can configure MH Metric to check your code against some
+        limits:
+        <pre>metric "npath": limit 5</pre>
+
+        When the tool encounters code that exceeds this limit, you get
+        a complaint:
+<pre>
+In function_file.m, line 3
+| function function_file
+|          ^^^^^^^^^^^^^ metric: exceeded npath: measured 8 > limit 5
+</pre>
+
+        MISS_HIT also includes a justification mechanism for metric
+        violations (and any other issue) through special comments you
+        can place in your code:
+<pre>
+function function_file
+    %| pragma Justify(metric, "npath",
+    %|                "there is a great reason why this is OK");
+</pre>
+      </div>
+
+      <div>
+        You can also produce reports in a variety of formats:
+        <ul>
+          <li>
+            <a href="metric_example.txt">Plain text</a> (good for the
+            command-line)
+          </li>
+          <li>
+            <a href="metric_example.html">HTML</a> (great for the
+            desktop and digging through the worst-case offenders)
+          </li>
+          <li>
+            <a href="metric_example.json">JSON</a> (great for
+            integrating the data into your own tools)
+          </li>
+        </ul>
+      </div>
+      <div>
+        You can find more information in
+        the <a href="https://florianschanda.github.io/miss_hit/metrics.html">
+        metrics user manual</a>.
+      </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/package.svg" alt="Package" />
+      <h1>MH Lint</h1>
+    </div>
+
+    <section>
+      <h2>A bug-finding tool for MATLAB and Octave</h2>
+      <div>
+        This static analysis tool can find problems in your code. It
+        makes no guarantees to find all problems (it is not sound),
+        nor does it guarantee that any problem found is a real problem
+        (it is not complete either).
+      </div>
+      <div>
+        This tool is <i>not</i> intended to replace
+        MATLAB <tt>mlint</tt>. It reports different problems and the
+        key focus is bugs, not style.
+      </div>
+      <div>
+        For example this condition almost certainly always evaluates
+        to true. But this is not what the user likely intended:
+<pre>
+In test.m, line 7
+| if x &lt; y &lt; z
+|          ^ check (high): chained relation does not work the way you think it does
+</pre>
+      </div>
+      <div>
+        You can find more information in
+        the <a href="https://florianschanda.github.io/miss_hit/lint.html">
+        lint user manual</a>.
+      </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/package.svg" alt="Package" />
+      <h1>MH Copyright</h1>
+    </div>
+
+    <section>
+      <h2>A code maintenance tool</h2>
+      <div>
+        This tool aims assist developers with some common but annoying
+        maintenance tasks relating to copyright notices in large
+        projects. A simple search and replace is often not actually
+        that simple, or changes something in e.g. a string that should
+        not be changed. MH Copyright can perform some of these tasks
+        for you.
+      </div>
+      <div>
+        For example if you have a copyright notice like this:
+        <pre>% (c) Copyright 2020 Florian Schanda</pre>
+
+        And you wish to update the year to include the current year,
+        you can use the <tt>--update-year</tt> action of MH Copyright:
+        <pre>% (c) Copyright 2020-2021 Florian Schanda</pre>
+      </div>
+      <div>
+        This tool can perform a number of tasks, that sometimes occur
+        in large (legacy) projects:
+        <ul>
+          <li>Update a copyright notice to the current year</li>
+          <li>Change one copyright holder into something else</li>
+          <li>Merge different copyright holders into one (useful if your company changes name or merges with a different one)</li>
+          <li>Add a notice to files that don't have one yet</li>
+        </ul>
+      </div>
+      <div>
+        You can find more information in
+        the <a href="https://florianschanda.github.io/miss_hit/copyright.html">
+        copyright user manual</a>.
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer>
+    Content &copy; 2021 Florian Schanda<br>
+    Style &copy; 2019-2020 Alina Boboc
+  </footer>
+</body>
+
+</html>

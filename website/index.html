@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <title>
+    MISS_HIT
+  </title>
+</head>
+
+<body>
+  <header>
+    MISS_HIT - Free and open source code quality tools for Octave and
+    MATLAB
+  </header>
+  <main>
+    <div class="navigation">
+      <span class='current'>About</span>
+      <span><a href="tools.html">Tools</a></span>
+      <span><a href="docs.html">Documentation</a></span>
+      <span><a href="download.html">Download</a></span>
+      <span><a href="license.html">License</a></span>
+    </div>
+
+    <div class="title">
+      <img src="assets/help-circle.svg" alt="About" />
+      <h1>What is MISS_HIT?</h1>
+    </div>
+
+    <section>
+      MISS_HIT is several things, but most importantly it is a set of
+      tools that will <i>make your code better</i> (and hopefully your
+      life easier) if you are writing programs using the MATLAB,
+      Simulink, or Octave programming languages. To be honest, I wrote
+      MISS_HIT out of frustration, in that there is a huge MATLAB
+      eco-system in industry, and the code quality is generally poor
+      as there is little to no tool-support that is taken for granted
+      in any other programming language. So MISS_HIT attempts to fill
+      the gaps with the following tools:
+      <ul>
+        <li>
+          <b>MH Style</b> - A configurable style checker and code
+          formatter (sometimes also called code beautifier or pretty
+          printer). It can take any MATLAB or Octave code and fix
+          e.g. indentation and other style problems.
+        </li>
+        <li>
+          <b>MH Metrics</b> - A code metrics tool, that can produce a
+          variety of complexity metrics for your code. It includes a
+          justification mechanism so that you can use this tool in CI,
+          and HTML reports.
+        </li>
+        <li>
+          <b>MH Lint</b> - A bug-finding static analysis tool, that
+          can detect some questionable, ambiguous, or misleading
+          constructs in your code.
+        </li>
+        <li>
+          <b>MH Copyright</b> - A tool that can simplify maintaining
+          and updating copyright notices and docstrings in your code.
+        </li>
+      </ul>
+      Please note that all these tools also support updating MATLAB
+      code embedded inside Simulink models.
+    </section>
+
+    <div class="title">
+      <img src="assets/terminal.svg" alt="Example" />
+      <h1>Example</h1>
+    </div>
+
+    <section>
+      The style checker can turn code like this:
+      <pre>function rv= foo (x), if x &lt; 0,,rv=-   x;else,rv=x;,; end;</pre>
+      Into something more readable:
+<pre>
+function rv = foo (x)
+    if x &lt; 0
+        rv = -x;
+    else
+        rv = x;
+    end
+</pre>
+    </section>
+
+    <div class="title">
+      <img src="assets/help-circle.svg" alt="About" />
+      <h1>Quick start</h1>
+    </div>
+
+    <section>
+      <div>
+        The easiest way to install it is to use the latest release
+        published on PyPI:
+        <pre>$ pip3 install miss_hit</pre>
+
+        Then, you can style-check your program, by simply using:
+        <pre>$ mh_style --fix my_program.m</pre>
+
+        Please refer to
+        the <a href="https://florianschanda.github.io/miss_hit/">online
+        documentation</a> on GitHub for more details.
+      </div>
+    </section>
+
+    <div class="title">
+      <img src="assets/help-circle.svg" alt="About" />
+      <h1>What makes MISS_HIT good?</h1>
+    </div>
+
+    <section>
+      <div>
+        There have been other attempts at this, but MISS_HIT tries to
+        do things differently (and I hope better). Specifically:
+        <ul>
+          <li>
+            It is completely stand-alone. It does not require a
+            working MATLAB or Octave setup.
+          </li>
+          <li>
+            It is not just a bag of reg-ex, or a wrapper arounds some
+            undocumented MATLAB internals. It is based on a feature
+            complete lexer and parser, which
+            supports <a href="https://github.com/florianschanda/miss_hit/blob/master/LEXING_ISSUES.md">every
+            single weird feature</a> of the MATLAB language.
+          </li>
+          <li>
+            It contains features specifically for huge industrial
+            code-bases (i.e. millions of lines): multi-threaded
+            analysis and a
+            sophisticated <a href="https://florianschanda.github.io/miss_hit/configuration.html">configuration</a>
+            and <a href="https://florianschanda.github.io/miss_hit/pragmas.html">justification</a>
+            mechanism.
+          </li>
+          <li>
+            Designed for both interactive use during development, and
+            integration into modern CI environments.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Content &copy; 2021 Florian Schanda<br>
+    Style &copy; 2019-2020 Alina Boboc
+  </footer>
+</body>
+
+</html>

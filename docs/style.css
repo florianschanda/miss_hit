@@ -106,6 +106,25 @@ div {
     margin-top: 1em;
 }
 
+div.navigation {
+    text-align: center;
+    font-size: 110%;
+}
+
+.navigation span.current {
+    font-weight: bold;
+}
+
+.navigation span::before {
+    content: "[";
+    margin-left: 1em;
+}
+
+.navigation span::after {
+    content: "]";
+    margin-right: 1em;
+}
+
 section {
     background-color: white;
     border-radius: 0.2em;

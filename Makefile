@@ -41,6 +41,10 @@ github_release:
 	git push
 	python3 -m util.github_release
 
+www:
+	make -C website
+	make -C website upload
+
 bump:
 	python3 -m util.bump_version_post_release
 
