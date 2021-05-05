@@ -1,0 +1,6 @@
+cvx_begin quiet
+    variable u(N+1)
+    minimize (square_pos(norm(H * u - y_des)) / (N + 1) + ...
+    eta(i) * square_pos(norm(u)) / (N + 1) + ...
+    delta(i) * square_pos(norm(D * u)) / N);
+cvx_end
