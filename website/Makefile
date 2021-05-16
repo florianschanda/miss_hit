@@ -1,11 +1,4 @@
-build: style.css assets metric_examples
-
-assets:
-	mkdir -p assets
-	cp ../docs/assets/*.svg assets/
-
-style.css:
-	cp ../docs/style.css .
+build: metric_examples
 
 metric_examples:
 	make -C examples/metrics

@@ -2,28 +2,64 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
   <title>
-    MISS_HIT
+    MISS_HIT - Download and Releases
   </title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="description" content=" MISS_HIT is a set of tools
+    that will make your code better if you are writing programs using the MATLAB, Simulink, or Octave
+    programming languages. It has a  configurable style checker and code formatter, a code metrics tool, a bug-finding static analysis tool and a tool that can simplify maintaining and
+    updating copyright notices and docstrings in your code" />
+  <meta name="keywords"
+    content="MATLAB, Simulink, Octave, MATLAB style checker, MATLAB code formatter, MATLAB bug-finding static analysis tool" />
+  <meta name="author" content="Florian Schanda" />
+  <link href="https://fonts.googleapis.com/css?family=Archivo:500|Open+Sans:300,700" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <header>
-    MISS_HIT - Free and open source code quality tools for Octave and
-    MATLAB
+    <div>
+      <h1>MISS_HIT</h1>
+      <h2>Free and open source code quality tools for Octave and MATLAB</h2>
+    </div>
+    <nav class="navigation">
+      <a href="index.html">About</a>
+      <a href="tools.html">Tools</a>
+      <a href="docs.html">Documentation</a>
+      <span>Download</span>
+      <a href="license.html">License</a>
+      </div>
+    </nav>
+    <nav class="navigationMobile">
+      <a href="#menu" onclick="showMenu()"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="feather feather-menu">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg></a>
+    </nav>
   </header>
   <main>
-    <div class="navigation">
-      <span><a href="index.html">About</a></span>
-      <span><a href="tools.html">Tools</a></span>
-      <span><a href="docs.html">Documentation</a></span>
-      <span class='current'>Download</span>
-      <span><a href="license.html">License</a></span>
-    </div>
 
+    <div id="menu" class="modal"  onclick="hideMenu()">
+      <a href="#" onclick="hideMenu()" >
+      <div  class="modal-dialog">
+      </div ></a>
+      <div class="modal-content">
+        <a href="#" class="closebtn">×</a>
+        <div class="container">
+          <a href="index.html">About</a>
+          <a href="tools.html">Tools</a>
+          <a href="docs.html">Documentation</a>
+          <a href="download.html">Download</a>
+          <a href="license.html">License</a>
+        </div>
+      </div>
+
+    </div>
     <div class="title">
       <img src="assets/download.svg" alt="Download" />
       <h1>Download MISS_HIT</h1>
@@ -84,9 +120,18 @@
   </main>
 
   <footer>
-    Content &copy; 2021 Florian Schanda<br>
-    Style &copy; 2019-2020 Alina Boboc
+    Made with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-heart">
+      <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+      </path>
+    </svg> in Munich<br />
+    Content &copy; 2021 Florian Schanda<br />
+    Style &copy; 2021 Alina Boboc
   </footer>
+  <script src="script.js"></script>
+
 </body>
 
 </html>
