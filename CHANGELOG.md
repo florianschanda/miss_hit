@@ -22,6 +22,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 * MISS_HIT now has an official web-site: http://misshit.org
 
+* New tool: [MH Trace](https://florianschanda.github.io/miss_hit/trace.html).
+  This tool can extract tracing information (e.g. TestTags) and produce an
+  easy to parse json file.
 
 ### 0.9.20
 

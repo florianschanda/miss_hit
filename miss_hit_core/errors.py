@@ -86,7 +86,7 @@ class Location:
              other.line if other.line else 0,
              other.col_start if other.col_start else -1)
 
-    def to_json(self):
+    def to_json(self, detailed=True):
         rv = {"filename": self.filename}
         if self.blockname:
             rv["block"] = self.blockname
@@ -94,9 +94,9 @@ class Location:
             rv["line"] = self.line
         if self.col_start:
             rv["col_start"] = self.col_start
-        if self.col_end:
+        if detailed and self.col_end:
             rv["col_end"] = self.col_end
-        if self.context:
+        if detailed and self.context:
             rv["context"] = self.context
         return rv
 
@@ -204,7 +204,8 @@ class Message_Handler:
     def __init__(self, tool_id):
         assert tool_id in ("debug",
                            "style", "metric",
-                           "lint", "bmc", "diff", "copyright")
+                           "lint", "trace", "bmc",
+                           "diff", "copyright")
 
         self.tool_id = tool_id
 

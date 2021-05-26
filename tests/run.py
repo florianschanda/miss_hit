@@ -348,6 +348,23 @@ def execute_sanity_test(name):
     return "Ran sanity test %s" % name
 
 
+def execute_trace_test(name):
+    for filename in ("mh_trace.json", "mh_trace_by_tag.json"):
+        if os.path.isfile(filename):
+            os.unlink(filename)
+
+    r = run_command("mh_trace", [])
+    plain_out = r.stdout
+    with open("test.out", "w") as fd:
+        fd.write(plain_out)
+
+    r = run_command("mh_trace",
+                    ["--json=mh_trace_by_tag.json",
+                     "--by-tag"])
+
+    return "Ran trace test %s" % name
+
+
 def execute_bmc_test(name):
     m_files = []
     for path, _, files in os.walk("."):
@@ -459,6 +476,7 @@ def run_test(test):
         "style"           : execute_style_test,
         "metrics"         : execute_metric_test,
         "lint"            : execute_lint_test,
+        "trace"           : execute_trace_test,
         "bmc"             : execute_bmc_test,
         "lexer"           : execute_lexer_test,
         "parser"          : execute_parser_test,
@@ -509,7 +527,7 @@ def main():
     else:
         suites = ["lexer", "parser", "simulink_parser", "sem",
                   "config_parser",
-                  "style", "metrics", "lint", "bmc", "copyright",
+                  "style", "metrics", "lint", "trace", "bmc", "copyright",
                   "projects",
                   "sanity"]
 

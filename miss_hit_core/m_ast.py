@@ -655,6 +655,14 @@ class Class_Definition(Definition):
         for n_attr in self.l_attr:
             n_attr.set_parent(self)
 
+    def get_attribute(self, name):
+        assert isinstance(name, str)
+
+        for n_nv_pair in self.l_attr:
+            if str(n_nv_pair.n_name) == name:
+                return n_nv_pair
+        return None
+
     def set_super_classes(self, l_super):
         assert isinstance(l_super, list)
         for n_super in l_super:
@@ -1255,6 +1263,14 @@ class Special_Block(Node):
         self.l_attr = l_attr
         for n_attr in self.l_attr:
             n_attr.set_parent(self)
+
+    def get_attribute(self, name):
+        assert isinstance(name, str)
+
+        for n_nv_pair in self.l_attr:
+            if str(n_nv_pair.n_name) == name:
+                return n_nv_pair
+        return None
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, (Class_Definition,

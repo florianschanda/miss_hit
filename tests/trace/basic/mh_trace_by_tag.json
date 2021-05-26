@@ -1,0 +1,116 @@
+{
+    "FeatureA": [
+        {
+            "name": "ExampleTagClassTest::testH",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagClassTest.m",
+                "line": 16
+            }
+        },
+        {
+            "name": "ExampleTagTest::testD",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagTest.m",
+                "line": 18
+            }
+        },
+        {
+            "name": "ExampleTagTest::testE",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagTest.m",
+                "line": 23
+            }
+        }
+    ],
+    "FeatureB": [
+        {
+            "name": "ExampleTagClassTest::testF",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagClassTest.m",
+                "line": 6
+            }
+        },
+        {
+            "name": "ExampleTagClassTest::testG",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagClassTest.m",
+                "line": 11
+            }
+        },
+        {
+            "name": "ExampleTagClassTest::testH",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagClassTest.m",
+                "line": 16
+            }
+        }
+    ],
+    "FeatureC": [
+        {
+            "name": "ExampleTagClassTest::testG",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagClassTest.m",
+                "line": 11
+            }
+        }
+    ],
+    "System": [
+        {
+            "name": "ExampleTagClassTest::testG",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagClassTest.m",
+                "line": 11
+            }
+        },
+        {
+            "name": "ExampleTagClassTest::testH",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagClassTest.m",
+                "line": 16
+            }
+        },
+        {
+            "name": "ExampleTagTest::testE",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagTest.m",
+                "line": 23
+            }
+        }
+    ],
+    "Unit": [
+        {
+            "name": "ExampleTagTest::testB",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagTest.m",
+                "line": 10
+            }
+        },
+        {
+            "name": "ExampleTagTest::testC",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagTest.m",
+                "line": 13
+            }
+        },
+        {
+            "name": "ExampleTagTest::testD",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagTest.m",
+                "line": 18
+            }
+        }
+    ]
+}

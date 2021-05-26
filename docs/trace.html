@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    MISS_HIT - MATLAB independent, small & safe, high integrity tools
+  </title>
+</head>
+
+<body>
+  <header>MISS_HIT 0.9.21-dev Tracing Tool</header>
+
+  <main>
+    <div class="section">
+      <a href="index.html">MISS_HIT</a> includes a simple tool
+      (<span class="file">mh_trace</span>), that can be used to
+      extract tracing tags for code and tests. The output is json and
+      is intended to be used by other tools.
+    </div>
+
+    <div class="title">
+      <img src="assets/file-text.svg" alt="" />
+      <h1>User manual</h1>
+    </div>
+
+    <section>
+      <h2>Introduction</h2>
+      <div>
+        Tracing your code and tests to your requirements and
+        specification is a common activity when developing to safety
+        standards (such as ISO 26262 or DO-178C). While you definitely
+        should not be using MATLAB for this, it is not my place to
+        judge; and so we have a tool to support this
+        activity. <tt>mh_trace</tt> can extract tags put in code and
+        test and generate an easy to parse json file that a different
+        tool can use to generate a traceability report.
+      </div>
+
+      <div>
+        The MATLAB language already includes some features
+        (<a href="https://www.mathworks.com/help/matlab/matlab_prog/tag-unit-tests.html">TestTags</a>)
+        to help you annotate tests; consider this example (taken from
+        the MathWorks website):
+      </div>
+      <div>
+<pre>
+classdef (TestTags = {'FeatureB'}) ...
+        ExampleTagClassTest < matlab.unittest.TestCase
+    methods (Test)
+        function testF (testCase)
+            % test code
+        end
+    end
+    methods (Test, TestTags = {'FeatureC','System'})
+        function testG (testCase)
+            % test code
+        end
+    end
+    methods (Test, TestTags = {'System','FeatureA'})
+        function testH (testCase)
+            % test code
+        end
+    end
+end
+</pre>
+      </div>
+      <div>
+        Running <tt>mh_trace</tt> will generate a json file (by
+        default <tt>mh_trace.json</tt>) that shows which tags affect
+        any given function:
+<pre>
+{
+    "ExampleTagClassTest::testF": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagClassTest.m",
+            "line": 6
+        },
+        "tags": ["FeatureB"]
+    },
+    "ExampleTagClassTest::testG": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagClassTest.m",
+            "line": 11
+        },
+        "tags": ["FeatureB", "FeatureC", "System"]
+    },
+    "ExampleTagClassTest::testH": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagClassTest.m",
+            "line": 16
+        },
+        "tags": ["FeatureA", "FeatureB", "System"]
+    }
+}
+</pre>
+      </div>
+
+      <div>
+        You can also generate the tracing information by tag (using
+        the <tt>--by-tag</tt> option):
+<pre>
+{
+    "FeatureA": [
+        {
+            "name": "ExampleTagClassTest::testH",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagClassTest.m",
+                "line": 16
+            }
+        }
+    ],
+    "FeatureB": [
+        {
+            "name": "ExampleTagClassTest::testF",
+            "source": {
+                "col_start": 17,
+                "filename": "ExampleTagClassTest.m",
+                "line": 6
+            }
+        },
+</pre>
+        (The rest is omitted because it's just more of the same...)
+      </div>
+    </section>
+
+    <section>
+      <h2>Command-line interface</h2>
+      <h4>--json FILE</h4>
+      <div>
+        By default we produce a file
+        called <tt>mh_trace.json</tt>. With this option you can change
+        the filename.
+      </div>
+
+      <h4>--by-tag</h4>
+      <div>
+        Produce tracing by-tag, instead of by-file (the default).
+      </div>
+    </section>
+
+    <section>
+      <h2>Limitations</h2>
+      <div>
+        The tool will only extrac tags from the files that MISS_HIT
+        normally processes. So if you have your unit tests excluded
+        from MISS_HIT then you will get no tracing. You could use the
+        common <tt>--ignore-config</tt> option to work around this; or
+        even better: don't exclude your unit tests.
+      </div>
+      <div>
+        Right now there is now way to trace code, as TestTags can only
+        apply to tests. I have a pragma planned to embedd tags into
+        code as well.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Content &copy; 2021 Florian Schanda<br>
+    Style &copy; 2019-2020 Alina Boboc<br>
+    MISS_HIT Lint is licensed under the AGPLv3
+  </footer>
+</body>
+
+</html>

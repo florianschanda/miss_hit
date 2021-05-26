@@ -1,0 +1,86 @@
+{
+    "ExampleTagClassTest::testF": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagClassTest.m",
+            "line": 6
+        },
+        "tags": [
+            "FeatureB"
+        ]
+    },
+    "ExampleTagClassTest::testG": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagClassTest.m",
+            "line": 11
+        },
+        "tags": [
+            "FeatureB",
+            "FeatureC",
+            "System"
+        ]
+    },
+    "ExampleTagClassTest::testH": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagClassTest.m",
+            "line": 16
+        },
+        "tags": [
+            "FeatureA",
+            "FeatureB",
+            "System"
+        ]
+    },
+    "ExampleTagTest::testA": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagTest.m",
+            "line": 5
+        },
+        "tags": []
+    },
+    "ExampleTagTest::testB": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagTest.m",
+            "line": 10
+        },
+        "tags": [
+            "Unit"
+        ]
+    },
+    "ExampleTagTest::testC": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagTest.m",
+            "line": 13
+        },
+        "tags": [
+            "Unit"
+        ]
+    },
+    "ExampleTagTest::testD": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagTest.m",
+            "line": 18
+        },
+        "tags": [
+            "FeatureA",
+            "Unit"
+        ]
+    },
+    "ExampleTagTest::testE": {
+        "source": {
+            "col_start": 17,
+            "filename": "ExampleTagTest.m",
+            "line": 23
+        },
+        "tags": [
+            "FeatureA",
+            "System"
+        ]
+    }
+}
