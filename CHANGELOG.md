@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
-### 0.9.21-dev
+### 0.9.21
 
 * MISS_HIT now has an official web-site: http://misshit.org
 
