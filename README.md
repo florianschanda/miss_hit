@@ -39,7 +39,7 @@ https://florianschanda.github.io/miss_hit/
 * Code/Test traceability `mh_trace`
 
   A simple tool to extrace tags from test and code to demonstrate
-  requirements ttraceability.
+  requirements traceability.
 
 * Diff helper `mh_diff`
 

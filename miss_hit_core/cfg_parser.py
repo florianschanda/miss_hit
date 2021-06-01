@@ -476,7 +476,7 @@ class Config_Parser:
             elif self.peek("IDENTIFIER", "tests"):
                 self.match("IDENTIFIER", "tests")
                 for t_path in self.parse_lib_paths():
-                    rv.add_source_path(self.mh, t_path)
+                    rv.add_test_path(self.mh, t_path)
             else:
                 self.mh.error(self.nt.location,
                               "expected paths property")
