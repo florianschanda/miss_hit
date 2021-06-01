@@ -20,7 +20,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.22-dev
 
-
+* Fix bug in MH Trace: libraries unit tests were considered part of
+  the source. This meant tests may have been analysed that would
+  otherwise have been (deliberately) excluded from analysis.
 
 ### 0.9.21
 
