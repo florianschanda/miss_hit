@@ -86,7 +86,7 @@ def sem_pass_1(mh, entrypoint, n_cu):
     item = os.path.normpath(n_cu.dirname)
     if entrypoint:
         best_match = None
-        for path in cfg_tree.get_path(entrypoint):
+        for path in cfg_tree.get_source_path(entrypoint):
             search_item = os.path.normpath(path)
             if item.startswith(search_item):
                 if best_match is None or len(best_match) < len(search_item):

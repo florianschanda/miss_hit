@@ -26,6 +26,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   This tool can extract tracing information (e.g. TestTags) and produce an
   easy to parse json file.
 
+* New configuration syntax to allow you to specify directories
+  containing your unit tests. This is specifically useful for
+  `mh_trace`.
+
 ### 0.9.20
 
 * Fix a Python 3.6 compatibility issue that I missed during testing.

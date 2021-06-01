@@ -441,8 +441,13 @@ class Config_Parser:
                 for t_lib in self.parse_lib_dependencies():
                     rv.add_lib_dependency(self.mh, t_lib)
             elif self.peek("IDENTIFIER", "paths"):
+                self.match("IDENTIFIER", "paths")
                 for t_path in self.parse_lib_paths():
-                    rv.add_path(self.mh, t_path)
+                    rv.add_source_path(self.mh, t_path)
+            elif self.peek("IDENTIFIER", "tests"):
+                self.match("IDENTIFIER", "tests")
+                for t_path in self.parse_lib_paths():
+                    rv.add_test_path(self.mh, t_path)
             else:
                 self.mh.error(self.nt.location,
                               "expected libraries|paths property")
@@ -465,8 +470,13 @@ class Config_Parser:
 
         while not (self.peek("C_KET") or self.peek_eof()):
             if self.peek("IDENTIFIER", "paths"):
+                self.match("IDENTIFIER", "paths")
                 for t_path in self.parse_lib_paths():
-                    rv.add_path(self.mh, t_path)
+                    rv.add_source_path(self.mh, t_path)
+            elif self.peek("IDENTIFIER", "tests"):
+                self.match("IDENTIFIER", "tests")
+                for t_path in self.parse_lib_paths():
+                    rv.add_source_path(self.mh, t_path)
             else:
                 self.mh.error(self.nt.location,
                               "expected paths property")
@@ -490,7 +500,6 @@ class Config_Parser:
 
     def parse_lib_paths(self):
         rv = []
-        self.match("IDENTIFIER", "paths")
         self.match("C_BRA")
         while self.peek("STRING"):
             self.match("STRING")

@@ -11,3 +11,5 @@ MISS_HIT Lint Summary: 3 file(s) analysed, everything seems fine
 
 * Code metrics for file dir_c/baz.m:
 MISS_HIT Metric Summary: 3 file(s) analysed, everything seems fine
+=== TRACING ===
+MISS_HIT Trace Summary: 3 file(s) analysed, everything seems fine

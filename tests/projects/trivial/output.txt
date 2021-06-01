@@ -111,3 +111,5 @@ MISS_HIT Lint Summary: 6 file(s) analysed, everything seems fine
   6. 1 (collection/lib_a/wibble.m, function wibble)
 
 MISS_HIT Metric Summary: 6 file(s) analysed, everything seems fine
+=== TRACING ===
+MISS_HIT Trace Summary: 6 file(s) analysed, everything seems fine

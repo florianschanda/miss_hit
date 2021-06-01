@@ -28,3 +28,13 @@ In lib_a/miss_hit.cfg, line 5
 | ^ error: expected valid config entry, found C_KET instead
 lib_a: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
 MISS_HIT Metric Summary: 3 file(s) analysed, 4 error(s)
+=== TRACING ===
+lib_a/miss_hit.cfg: error: config file contains errors
+In lib_a/miss_hit.cfg, line 3
+|         "potato"
+|         ^^^^^^^^ error: does not exist
+In lib_a/miss_hit.cfg, line 5
+| }
+| ^ error: expected valid config entry, found C_KET instead
+lib_a: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Trace Summary: 3 file(s) analysed, 4 error(s)

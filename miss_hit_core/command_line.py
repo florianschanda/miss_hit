@@ -197,7 +197,9 @@ def dispatch_wp(process_fn, wp):
     return results
 
 
-def execute(mh, options, extra_options, back_end, process_slx=True):
+def execute(mh, options, extra_options, back_end,
+            process_slx=True,
+            process_tests=False):
     assert isinstance(mh, errors.Message_Handler)
     assert isinstance(back_end, MISS_HIT_Back_End)
 
@@ -223,7 +225,9 @@ def execute(mh, options, extra_options, back_end, process_slx=True):
                                       options.entry_point)
 
             # Get PATH
-            item_list = cfg_tree.get_path(n_ep)
+            item_list = cfg_tree.get_source_path(n_ep)
+            if process_tests:
+                item_list += cfg_tree.get_test_path(n_ep)
 
             if options.debug_show_path:
                 print("Using the following PATH:")

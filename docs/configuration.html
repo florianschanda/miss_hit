@@ -192,6 +192,9 @@ library "Common" {
   paths {
     "src"
   }
+  tests {
+    "test"
+  }
 }
 </pre>
       </div>
@@ -201,7 +204,9 @@ library "Common" {
 	called <tt>Common</tt>. It's deliverable code is
 	in <tt>src</tt>, but <tt>test</tt> is not. This is identical
 	to how you would set up your matlabpath (in MATLAB) or path
-	(in Octave).
+	(in Octave). Most tools will only consider the deliverable
+	source code; but <tt>mh_trace</tt> will also look at your
+	tests.
       </div>
 
       <div>
@@ -212,6 +217,9 @@ library "Common" {
 entrypoint "Kitten_SWC" {
   paths {
     "src"
+  }
+  tests {
+    "test"
   }
   libraries {
     "Common"
@@ -633,10 +641,13 @@ STRING_LIST ::= STRING { ',' STRING }
 
 PATH_LIST ::= paths '{' OPTIONAL_STRING_LIST '}
 
-LIBRARY_PROPERTY ::= PATH_LIST
+TEST_LIST ::= tests '{' OPTIONAL_STRING_LIST '}
+
+LIBRARY_PROPERTY ::= PATH_LIST | TEST_LIST
 
 ENTRYPOINT_PROPERTY ::= libraries '{' OPTIONAL_STRING_LIST '}'
                       | PATH_LIST
+                      | TEST_LIST
 </pre>
       </div>
 

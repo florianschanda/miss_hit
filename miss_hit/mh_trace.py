@@ -148,7 +148,8 @@ class MH_Trace(command_line.MISS_HIT_Back_End):
         return MH_Trace_Result(wp, visitor.tracing)
 
     def process_result(self, result):
-        self.tracing.update(result.tracing)
+        if result.tracing:
+            self.tracing.update(result.tracing)
 
     def post_process(self):
         if self.options.by_tag:
@@ -192,7 +193,8 @@ def main_handler():
     mh.autofix      = False
 
     trace_backend = MH_Trace(options)
-    command_line.execute(mh, options, {}, trace_backend)
+    command_line.execute(mh, options, {}, trace_backend,
+                         process_tests=True)
 
 
 def main():

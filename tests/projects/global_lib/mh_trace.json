@@ -1,0 +1,34 @@
+{
+    "fun": {
+        "source": {
+            "col_start": 9,
+            "filename": "other_library/+potato/fun.m",
+            "line": 3
+        },
+        "tags": []
+    },
+    "sad": {
+        "source": {
+            "col_start": 9,
+            "filename": "other_library/+potato/sad.m",
+            "line": 3
+        },
+        "tags": []
+    },
+    "wibble": {
+        "source": {
+            "col_start": 9,
+            "filename": "collection/lib_a/wibble.m",
+            "line": 3
+        },
+        "tags": []
+    },
+    "wobble": {
+        "source": {
+            "col_start": 9,
+            "filename": "collection/lib_b/wobble.m",
+            "line": 3
+        },
+        "tags": []
+    }
+}

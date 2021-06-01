@@ -4,3 +4,5 @@ mh_style: error: 'dir_b' is not part of entry point potato
 mh_lint: error: 'dir_b' is not part of entry point potato
 === METRICS ===
 mh_metric: error: 'dir_b' is not part of entry point potato
+=== TRACING ===
+mh_trace: error: 'dir_b' is not part of entry point potato

@@ -401,13 +401,23 @@ def get_global_libraries():
             yield n_item
 
 
-def get_path(n_item):
+def get_source_path(n_item):
     assert isinstance(n_item, (Library_Declaration,
                                Entrypoint_Declaration))
     item_list = []
     for n_glib in get_global_libraries():
-        item_list += n_glib.get_path()
-    item_list += n_item.get_path()
+        item_list += n_glib.get_source_path()
+    item_list += n_item.get_source_path()
+    return item_list
+
+
+def get_test_path(n_item):
+    assert isinstance(n_item, (Library_Declaration,
+                               Entrypoint_Declaration))
+    item_list = []
+    for n_glib in get_global_libraries():
+        item_list += n_glib.get_test_path()
+    item_list += n_item.get_test_path()
     return item_list
 
 

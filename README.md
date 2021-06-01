@@ -36,6 +36,11 @@ https://florianschanda.github.io/miss_hit/
   A simple linter for MATLAB or Octave code, including
   MATLAB embedded inside Simulink models.
 
+* Code/Test traceability `mh_trace`
+
+  A simple tool to extrace tags from test and code to demonstrate
+  requirements ttraceability.
+
 * Diff helper `mh_diff`
 
   A tool for diffing MATLAB code inside Simulink models. Note that

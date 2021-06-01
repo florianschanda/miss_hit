@@ -28,3 +28,13 @@ In miss_hit.cfg, line 8
 | ^ error: expected valid config entry, found C_KET instead
 .: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
 MISS_HIT Metric Summary: 2 file(s) analysed, 4 error(s)
+=== TRACING ===
+miss_hit.cfg: error: config file contains errors
+In miss_hit.cfg, line 6
+|     "dir_c"
+|     ^^^^^^^ error: duplicate/overlapping path dir_c
+In miss_hit.cfg, line 8
+| }
+| ^ error: expected valid config entry, found C_KET instead
+.: error: cannot find project root because the config file contains errors: please add a config file with the 'project_root' directive
+MISS_HIT Trace Summary: 2 file(s) analysed, 4 error(s)

@@ -32,3 +32,5 @@ MISS_HIT Lint Summary: 1 file(s) analysed, everything seems fine
   1. 1 (dir_a/good.m, function good)
 
 MISS_HIT Metric Summary: 1 file(s) analysed, everything seems fine
+=== TRACING ===
+MISS_HIT Trace Summary: 1 file(s) analysed, everything seems fine

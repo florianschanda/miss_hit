@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -341,9 +341,16 @@ class Project_Directive(Config_Item):
         pass
 
     @abstractmethod
-    def get_path(self):
-        # Get the actual PATH for this library. This decides the
-        # search order for user-defined functions and classes.
+    def get_source_path(self):
+        # Get the actual PATH for source code for this library. This
+        # decides the search order for user-defined functions and
+        # classes.
+        pass
+
+    @abstractmethod
+    def get_test_path(self):
+        # Get the actual PATH for tests for this library. This decides
+        # the search order for user-defined functions and classes.
         pass
 
 
@@ -353,25 +360,34 @@ class Library_Declaration(Project_Directive):
             name = os.path.basename(os.path.abspath(directory))
         super().__init__(location, directory, name)
 
-        self.path_list = Path_List(directory)
-        self.is_global = False
+        self.path_list_source = Path_List(directory)
+        self.path_list_test   = Path_List(directory)
+        self.is_global        = False
 
     def __str__(self):
         return "Library(%s)" % self.name
 
-    def add_path(self, mh, t_path):
-        self.path_list.add_path(mh, t_path)
+    def add_source_path(self, mh, t_path):
+        self.path_list_source.add_path(mh, t_path)
+
+    def add_test_path(self, mh, t_path):
+        self.path_list_test.add_path(mh, t_path)
 
     def dump(self):
         print("  Library Declaration (%s)" % self.name)
-        for t_path in self.path_list.l_paths:
-            print("    Path: %s" % t_path.value)
+        for t_path in self.path_list_source.l_paths:
+            print("    Source Path: %s" % t_path.value)
+        for t_path in self.path_list_test.l_paths:
+            print("    Test   Path: %s" % t_path.value)
 
     def validate(self, mh, symbol_table):
         pass
 
-    def get_path(self):
-        return self.path_list.get_path()
+    def get_source_path(self):
+        return self.path_list_source.get_path()
+
+    def get_test_path(self):
+        return self.path_list_test.get_path()
 
     def set_global(self):
         self.is_global = True
@@ -381,7 +397,8 @@ class Entrypoint_Declaration(Project_Directive):
     def __init__(self, location, directory, name):
         super().__init__(location, directory, name)
 
-        self.path_list = Path_List(directory)
+        self.path_list_source = Path_List(directory)
+        self.path_list_test   = Path_List(directory)
 
         self.l_libraries = []
         self.s_libraries = set()
@@ -389,8 +406,11 @@ class Entrypoint_Declaration(Project_Directive):
         # is a list of tokens, but after validation is replaced with a
         # list of Library_Declaration nodes.
 
-    def add_path(self, mh, t_path):
-        self.path_list.add_path(mh, t_path)
+    def add_source_path(self, mh, t_path):
+        self.path_list_source.add_path(mh, t_path)
+
+    def add_test_path(self, mh, t_path):
+        self.path_list_test.add_path(mh, t_path)
 
     def add_lib_dependency(self, mh, t_lib):
         assert isinstance(t_lib, MATLAB_Token)
@@ -404,8 +424,10 @@ class Entrypoint_Declaration(Project_Directive):
 
     def dump(self):
         print("  Entrypoint Declaration (%s)" % self.name)
-        for t_path in self.path_list.l_paths:
-            print("    Path: %s" % t_path.value)
+        for t_path in self.path_list_source.l_paths:
+            print("    Source Path: %s" % t_path.value)
+        for t_path in self.path_list_test.l_paths:
+            print("    Test   Path: %s" % t_path.value)
         for t_lib in self.l_libraries:
             print("    Requires library: %s" % t_lib)
 
@@ -419,12 +441,22 @@ class Entrypoint_Declaration(Project_Directive):
                 resolved_library_list.append(symbol_table[t_lib.value])
         self.l_libraries = resolved_library_list
 
-    def get_path(self):
+    def get_source_path(self):
         # We start with the directory this entry point is in.
-        path = self.path_list.get_path()
+        path = self.path_list_source.get_path()
 
         # And now add, in order, the libraries' paths
         for n_lib in self.l_libraries:
-            path += n_lib.get_path()
+            path += n_lib.get_source_path()
+
+        return path
+
+    def get_test_path(self):
+        # We start with the directory this entry point is in.
+        path = self.path_list_test.get_path()
+
+        # And now add, in order, the libraries' paths
+        for n_lib in self.l_libraries:
+            path += n_lib.get_test_path()
 
         return path

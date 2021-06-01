@@ -1,0 +1,10 @@
+{
+    "good": {
+        "source": {
+            "col_start": 9,
+            "filename": "dir_a/good.m",
+            "line": 3
+        },
+        "tags": []
+    }
+}

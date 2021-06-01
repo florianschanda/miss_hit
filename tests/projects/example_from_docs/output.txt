@@ -9,3 +9,5 @@ MISS_HIT Lint Summary: 2 file(s) analysed, everything seems fine
 
 * Code metrics for file components/swc/kitten/src/main.m:
 MISS_HIT Metric Summary: 2 file(s) analysed, everything seems fine
+=== TRACING ===
+MISS_HIT Trace Summary: 2 file(s) analysed, everything seems fine

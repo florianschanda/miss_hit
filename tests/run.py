@@ -411,6 +411,11 @@ def execute_project_test(name):
         plain_out = r.stdout
         fd.write(plain_out.rstrip() + "\n")
 
+        fd.write("=== TRACING ===\n")
+        r = run_command("mh_trace", flags)
+        plain_out = r.stdout
+        fd.write(plain_out.rstrip() + "\n")
+
     return "Ran project test %s" % name
 
 

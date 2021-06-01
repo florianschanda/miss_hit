@@ -1,0 +1,45 @@
+=== STYLE ===
+In +util/potato.m, line 1
+| function x = potato(y)
+|              ^^^^^^ style: violates naming scheme for function
+In +util/potato.m, line 1
+| function x = potato(y)
+|              ^^^^^^ style: Could not find any copyright notice
+MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
+=== LINT ===
+MISS_HIT Lint Summary: 1 file(s) analysed, everything seems fine
+=== METRICS ===
+=== Code metric by file:
+
+* Code metrics for file +util/potato.m:
+  File lines: 3
+
+  Code metrics for function potato:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 2
+    Persistents          : 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric 'File lines':
+  1. 3 (+util/potato.m)
+
+* Function metric 'Cyclomatic complexity':
+  1. 1 (+util/potato.m, function potato)
+
+* Function metric 'Function lines':
+  1. 3 (+util/potato.m, function potato)
+
+* Function metric 'Number of paths':
+  1. 1 (+util/potato.m, function potato)
+
+* Function metric 'Parameters':
+  1. 2 (+util/potato.m, function potato)
+
+MISS_HIT Metric Summary: 1 file(s) analysed, everything seems fine
+=== TRACING ===
+MISS_HIT Trace Summary: 2 file(s) analysed, everything seems fine
