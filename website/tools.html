@@ -211,10 +211,10 @@ In test.m, line 7
     <section>
       <h2>A code/test traceability tool</h2>
       <div>
-        This tool can be used to extract tracing tags from your tests
-        and write them to an easily parsed JSON file. This is very
-        helpful if you want to demonstrate trequirements traceability
-        (for standards such as ISO 26262).
+        This tool can be used to extract tracing tags from your code
+        and tests and write them to an easily parsed JSON file. This
+        is very helpful if you want to demonstrate trequirements
+        traceability (for standards such as ISO 26262).
       </div>
       <div>
         For example:
@@ -222,7 +222,8 @@ In test.m, line 7
 classdef PotatoTests < matlab.unittest.TestCase
     methods (Test, TestTags = {'Kittens'})
         function my_test (testCase)
-            % test code
+            %| pragma Tag("Potato");
+            ... test code ...
         end
     end
 end
@@ -239,7 +240,7 @@ end
             "line": 3
         },
         "tags": [
-            "Kittens"
+            "Kittens", "Potato"
         ]
     }
 }

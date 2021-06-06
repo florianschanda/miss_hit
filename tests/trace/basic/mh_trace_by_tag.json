@@ -23,6 +23,14 @@
                 "filename": "ExampleTagTest.m",
                 "line": 23
             }
+        },
+        {
+            "name": "foo",
+            "source": {
+                "col_start": 13,
+                "filename": "foo.m",
+                "line": 1
+            }
         }
     ],
     "FeatureB": [
@@ -110,6 +118,52 @@
                 "col_start": 17,
                 "filename": "ExampleTagTest.m",
                 "line": 18
+            }
+        }
+    ],
+    "kitten": [
+        {
+            "name": "bar",
+            "source": {
+                "col_start": 13,
+                "filename": "bar.m",
+                "line": 5
+            }
+        },
+        {
+            "name": "bar::inner",
+            "source": {
+                "col_start": 17,
+                "filename": "bar.m",
+                "line": 9
+            }
+        }
+    ],
+    "potato": [
+        {
+            "name": "bar",
+            "source": {
+                "col_start": 13,
+                "filename": "bar.m",
+                "line": 5
+            }
+        },
+        {
+            "name": "bar::inner",
+            "source": {
+                "col_start": 17,
+                "filename": "bar.m",
+                "line": 9
+            }
+        }
+    ],
+    "wibble": [
+        {
+            "name": "bar::inner",
+            "source": {
+                "col_start": 17,
+                "filename": "bar.m",
+                "line": 9
             }
         }
     ]

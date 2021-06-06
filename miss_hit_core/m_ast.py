@@ -343,6 +343,9 @@ class Definition(Node):
         self.n_docstring = n_docstring
         self.n_docstring.set_parent(self)
 
+    def get_local_name(self):
+        raise ICE("get_local_name not implemented")
+
 
 class Pragma(Node):
     def __init__(self, t_pragma, t_kind):
@@ -490,6 +493,9 @@ class Script_File(Compilation_Unit):
             if not re.match("^(" + regex + ")$", file_root):
                 mh.style_issue(self.loc(),
                                "violates naming scheme for scripts")
+
+    def get_local_name(self):
+        return self.name.rsplit(".", 1)[0]
 
 
 class Function_File(Compilation_Unit):
@@ -743,6 +749,13 @@ class Class_Definition(Definition):
             for n_function in n_block.l_items:
                 n_function.sty_check_naming(mh, cfg)
 
+    def get_local_name(self):
+        if isinstance(self.n_parent, Class_File):
+            return str(self.n_name)
+        else:
+            raise ICE("logic error: parent of class is %s" %
+                      self.n_parent.__class__.__name__)
+
 
 class Function_Definition(Definition):
     def __init__(self, t_fun, n_sig,
@@ -841,11 +854,26 @@ class Function_Definition(Definition):
              self.n_parent.is_separate and
              self.n_parent.l_functions[0] == self)
 
+    def get_local_name(self):
+        if isinstance(self.n_parent, Function_File):
+            return str(self.n_sig.n_name)
+        elif isinstance(self.n_parent, Compilation_Unit):
+            return "%s::%s" % (self.n_parent.name,
+                               str(self.n_sig.n_name))
+        elif isinstance(self.n_parent, Special_Block):
+            return "%s::%s" % (self.n_parent.n_parent.get_local_name(),
+                               str(self.n_sig.n_name))
+        elif isinstance(self.n_parent, Function_Definition):
+            return "%s::%s" % (self.n_parent.get_local_name(),
+                               str(self.n_sig.n_name))
+        else:
+            raise ICE("logic error: parent of fn is %s" %
+                      self.n_parent.__class__.__name__)
+
 
 ##############################################################################
 # Nodes
 ##############################################################################
-
 
 class Copyright_Info(Node):
     def __init__(self, n_parent, t_comment, re_match):
@@ -2354,6 +2382,22 @@ class Import_Statement(Simple_Statement):
     def get_chain_strings(self):
         return [t.value if t.kind == "IDENTIFIER" else "*"
                 for t in self.l_chain]
+
+
+class Tag_Pragma(Pragma):
+    def __init__(self, t_pragma, t_kind, l_tags):
+        super().__init__(t_pragma, t_kind)
+        assert isinstance(l_tags, list)
+        assert len(l_tags) >= 1
+        for t_tag in l_tags:
+            assert t_tag.kind == "STRING"
+            t_tag.set_ast(self)
+
+        self.l_tags = l_tags
+        # The list of tags
+
+    def get_tags(self):
+        return {t_tag.value for t_tag in self.l_tags}
 
 
 class Justification_Pragma(Pragma):

@@ -82,5 +82,38 @@
             "FeatureA",
             "System"
         ]
+    },
+    "bar": {
+        "source": {
+            "col_start": 13,
+            "filename": "bar.m",
+            "line": 5
+        },
+        "tags": [
+            "kitten",
+            "potato"
+        ]
+    },
+    "bar::inner": {
+        "source": {
+            "col_start": 17,
+            "filename": "bar.m",
+            "line": 9
+        },
+        "tags": [
+            "kitten",
+            "potato",
+            "wibble"
+        ]
+    },
+    "foo": {
+        "source": {
+            "col_start": 13,
+            "filename": "foo.m",
+            "line": 1
+        },
+        "tags": [
+            "FeatureA"
+        ]
     }
 }

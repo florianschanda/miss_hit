@@ -128,6 +128,25 @@ end
 </pre>
         (The rest is omitted because it's just more of the same...)
       </div>
+
+      <h3>Annotating code</h3>
+      <div>
+        While TestTags can be used to annotate tests, it cannot be
+        used to annotate code. To trace code, MISS_HIT supports a
+        special pragma:
+        <pre>%| pragma Trace("Tag", "AnotherTag");</pre>
+      </div>
+      <div>
+        Pragma tag applies to all items scoped logically under the
+        entity that is tagged. For example placing the Tag pragma in a
+        class definition will affect all methods; placing it in a
+        function will also affect all nested functions; and placing it
+        in a compilation unit will affect all functions or methods in
+        that compilation unit.
+      </div>
+      <div>
+        Note: this pragma can also be used to tag tests.
+      </div>
     </section>
 
     <section>
@@ -153,11 +172,6 @@ end
         from MISS_HIT then you will get no tracing. You could use the
         common <tt>--ignore-config</tt> option to work around this; or
         even better: don't exclude your unit tests.
-      </div>
-      <div>
-        Right now there is now way to trace code, as TestTags can only
-        apply to tests. I have a pragma planned to embedd tags into
-        code as well.
       </div>
     </section>
 

@@ -89,11 +89,10 @@ a_expression ::= a_name
 </pre>
       </div>
 
-      <h2>Pragma</h2>
+      <h2>Annotation Pragmas</h2>
       <div>
-        Currently only a single annotation exists: justification
-        pragmas. These can appear in any place where normal program
-        statement can occur.
+        MISS_HIT annotation pragmas can appear in any place where
+        normal program statement can occur.
       </div>
 
       <div>
@@ -132,6 +131,26 @@ a_pragma_parameters ::= a_expression { ',' a_expression }
 </pre>
       </div>
 
+      <h3>Tag pragmas</h3>
+      <div>
+        A Tag pragma can be used to tag code (TestTags class/block
+        parameters already exist to tag unit tests; although you could
+        also use pragma Tag for this purpose). It has the following
+        signature:
+        <pre>pragma Tag (STRING [, STRING]+);</pre>
+      </div>
+      <div>
+        For example:
+        <pre>pragma Tag ("PotatoFeature");</pre>
+      </div>
+      <div>
+        Pragma tag applies to all items scoped logically under the
+        entity that is tagged. For example placing the Tag pragma in a
+        class definition will affect all methods; placing it in a
+        function will also affect all nested functions; and placing it
+        in a compilation unit will affect all functions or methods in
+        that compilation unit.
+      </div>
     </section>
 
   </main>

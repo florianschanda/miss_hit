@@ -47,69 +47,73 @@ class Function_Visitor(AST_Visitor):
     def __init__(self, mh):
         assert isinstance(mh, Message_Handler)
 
-        self.name_stack = []
         self.tag_stack = []
         self.mh = mh
         self.tracing = {}
 
-    def visit(self, node, n_parent, relation):
-        name = None
-        n_tags = None
-        if isinstance(node, Function_Definition):
-            self.name_stack.append(node.n_sig.n_name)
-            name = "::".join(map(str, self.name_stack))
-        elif isinstance(node, Class_Definition):
-            self.name_stack.append(node.n_name)
-            n_tags = node.get_attribute("TestTags")
-            self.tag_stack.append(set())
-        elif isinstance(node, Script_File):
-            self.name_stack.append(node.name)
-        elif isinstance(node, Special_Block) and node.kind() == "methods":
-            n_tags = node.get_attribute("TestTags")
-            self.tag_stack.append(set())
+    def get_test_tags(self, node):
+        n_tags = node.get_attribute("TestTags")
+        rv = set()
 
-        if n_tags is not None:
-            if isinstance(n_tags.n_value, (Cell_Expression,
+        if n_tags is None:
+            return rv
+
+        if not isinstance(n_tags.n_value, (Cell_Expression,
                                            Matrix_Expression)):
-                n_row_list = n_tags.n_value.n_content
-                if len(n_row_list.l_items) != 1:
-                    self.mh.error(n_tags.n_value.loc(),
-                                  "TestTags value must only contain precisely"
-                                  " 1 row",
-                                  fatal=False)
-                    return
+            self.mh.error(n_tags.n_value.loc(),
+                          "TestTags value must be a cell or matrix",
+                          fatal=False)
+            return rv
 
-                for n_tag in n_row_list.l_items[0].l_items:
-                    if isinstance(n_tag, (Char_Array_Literal,
-                                          String_Literal)):
-                        self.tag_stack[-1].add(n_tag.t_string.value)
-                    else:
-                        self.mh.error(n_tag.loc(),
-                                      "TestTags value must be a string or"
-                                      " carray literal",
-                                      fatal=False)
+        n_row_list = n_tags.n_value.n_content
+        if len(n_row_list.l_items) != 1:
+            self.mh.error(n_tags.n_value.loc(),
+                          "TestTags value must only contain precisely"
+                          " 1 row",
+                          fatal=False)
+            return rv
 
+        for n_tag in n_row_list.l_items[0].l_items:
+            if isinstance(n_tag, (Char_Array_Literal,
+                                  String_Literal)):
+                rv.add(n_tag.t_string.value)
             else:
-                self.mh.error(n_tags.n_value.loc(),
-                              "TestTags value must be a cell or matrix",
+                self.mh.error(n_tag.loc(),
+                              "TestTags value must be a string or"
+                              " carray literal",
                               fatal=False)
-                return
 
-        if name is None:
-            return
+        return rv
 
-        self.tracing[name] = {
-            "source": node.loc().to_json(detailed=False),
-            "tags"  : sorted(functools.reduce(operator.or_,
-                                              self.tag_stack,
-                                              set()))
-        }
+    def visit(self, node, n_parent, relation):
+        # Deal with the tag stack first
+        if isinstance(node, Function_Definition):
+            self.tag_stack.append(set())
+        elif isinstance(node, Class_Definition):
+            self.tag_stack.append(self.get_test_tags(node))
+        elif isinstance(node, Compilation_Unit):
+            self.tag_stack.append(set())
+        elif isinstance(node, Special_Block) and node.kind() == "methods":
+            self.tag_stack.append(self.get_test_tags(node))
+
+        # Amend current tag stack if we get a tag pragma
+        if isinstance(node, Tag_Pragma):
+            self.tag_stack[-1] |= node.get_tags()
 
     def visit_end(self, node, n_parent, relation):
-        if isinstance(node, Definition):
-            self.name_stack.pop()
-            if isinstance(node, Class_Definition):
-                self.tag_stack.pop()
+        # Create entry for tracing
+        if isinstance(node, Function_Definition):
+            name = node.get_local_name()
+            self.tracing[name] = {
+                "source": node.loc().to_json(detailed=False),
+                "tags"  : sorted(functools.reduce(operator.or_,
+                                                  self.tag_stack,
+                                                  set()))
+            }
+
+        if isinstance(node, (Definition,
+                             Compilation_Unit)):
+            self.tag_stack.pop()
         elif isinstance(node, Special_Block) and node.kind() == "methods":
             self.tag_stack.pop()
 

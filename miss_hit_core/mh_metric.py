@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##              Copyright (C) 2020, Veoneer System Software GmbH            ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -380,66 +380,31 @@ def get_function_metrics(mh, cfg, tree):
     metrics = {}
     justifications = {}
 
-    def process_function(n_fdef, naming_stack):
-        assert isinstance(n_fdef, Function_Definition)
-
-        # We need a unique name for the function for this function.
-        name = "::".join(map(str, naming_stack + [n_fdef.n_sig.n_name]))
-
-        metrics[name] = {m: {"measure" : MEASURE[m](n_fdef),
-                             "limit"   : None,
-                             "reason"  : None,
-                             "tickets" : set()}
-                         for m in config.FUNCTION_METRICS
-                         if cfg.metric_enabled(m)}
-
-        justifications[name] = get_justifications(mh, n_fdef.n_body)
-
-        return name
-
-    def process_script(n_script):
-        assert isinstance(n_script, Script_File)
-
-        # We need a unique name for the script
-        name = n_script.name.rsplit(".")[0]
-
-        metrics[name] = {m: {"measure" : MEASURE[m](n_script),
-                             "limit"   : None,
-                             "reason"  : None,
-                             "tickets" : set()}
-                         for m in config.FUNCTION_METRICS
-                         if cfg.metric_enabled(m)}
-
-        justifications[name] = get_justifications(mh, n_script.n_statements)
-
-        return name
-
     class Function_Visitor(AST_Visitor):
-        def __init__(self):
-            self.name_stack = []
-
         def visit(self, node, n_parent, relation):
-            name = None
             if isinstance(node, Function_Definition):
-                name = process_function(node, self.name_stack)
-                self.name_stack.append(node.n_sig.n_name)
-            elif isinstance(node, Class_Definition):
-                self.name_stack.append(node.n_name)
+                name = node.get_local_name()
+                n_body = node.n_body
             elif isinstance(node, Script_File):
-                name = process_script(node)
-                self.name_stack.append(node.name)
+                name = node.get_local_name()
+                n_body = node.n_statements
+            else:
+                return
+
+            metrics[name] = {m: {"measure" : MEASURE[m](node),
+                                 "limit"   : None,
+                                 "reason"  : None,
+                                 "tickets" : set()}
+                             for m in config.FUNCTION_METRICS
+                             if cfg.metric_enabled(m)}
+
+            justifications[name] = get_justifications(mh, n_body)
 
             # Check+justify function metrics
-
-            if name is not None:
-                for function_metric in config.FUNCTION_METRICS:
-                    check_metric(mh, cfg, node.loc(), function_metric,
-                                 metrics[name],
-                                 justifications[name])
-
-        def visit_end(self, node, n_parent, relation):
-            if isinstance(node, Definition):
-                self.name_stack.pop()
+            for function_metric in config.FUNCTION_METRICS:
+                check_metric(mh, cfg, node.loc(), function_metric,
+                             metrics[name],
+                             justifications[name])
 
     tree.visit(None, Function_Visitor(), "Root")
     return metrics

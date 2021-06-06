@@ -20,7 +20,11 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.23-dev
 
-
+* MH Trace can now produce tracing information from code. You can place
+  tracing tags in code using the new `pragma Tag`:
+  ```
+  %| pragma Tag("Potato");
+  ```
 
 ### 0.9.22
 
