@@ -1,0 +1,24 @@
+=== PLAIN MODE ===
+In invalid.m, line 4
+| glk'3nnb2''lkjlk2j354
+|     ^ error: expected end of statement, found NUMBER instead
+=== Code metric by file:
+
+* Code metrics for file invalid.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+MISS_HIT Metric Summary: 1 file(s) analysed, 1 error(s)
+
+
+=== HTML MODE ===
+In invalid.m, line 4
+| glk'3nnb2''lkjlk2j354
+|     ^ error: expected end of statement, found NUMBER instead
+MISS_HIT Metric Summary: 1 file(s) analysed, 1 error(s)
+
+
+=== JSON MODE ===
+In invalid.m, line 4
+| glk'3nnb2''lkjlk2j354
+|     ^ error: expected end of statement, found NUMBER instead
+MISS_HIT Metric Summary: 1 file(s) analysed, 1 error(s)

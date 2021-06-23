@@ -672,6 +672,14 @@ def write_html_report(fd,
         fd.write("<div class='metrics'>\n")
         fd.write("<h2><a name='%s'>%s</a></h2>\n" % (filename,
                                                      filename))
+
+        if metrics["errors"]:
+            fd.write("<div>")
+            fd.write("  File contains syntax or semantics errors,")
+            fd.write("  no metrics collected.\n")
+            fd.write("</div>")
+            continue
+
         fd.write("<table>\n")
 
         fd.write("<thead>\n")
