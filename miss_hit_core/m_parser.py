@@ -2027,7 +2027,7 @@ class MATLAB_Parser:
         n_ident, n_expr = self.parse_for_assignment(rv, allow_brackets=True)
         rv.set_ident(n_ident)
         rv.set_expression(n_expr)
-        self.match_eos(rv)
+        self.match_eos(rv, allow_nothing=True)
 
         rv.set_body(self.parse_delimited_input())
 

@@ -98,10 +98,27 @@ In test_4.m, line 10
 In test_4.m, line 10
 |             dat(i,:,:) = scaling(i) .* dat(i,:,:);
 |                                               ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+test_5.m: style: violates naming scheme for scripts
+test_5.m: style: Could not find any copyright notice
+In test_5.m, line 3
+| for i=1:a-1 x(i)=i; end
+|      ^ style: = must be preceeded by whitespace [fixed]
+In test_5.m, line 3
+| for i=1:a-1 x(i)=i; end
+|          ^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_5.m, line 3
+| for i=1:a-1 x(i)=i; end
+|           ^ style: end statement with a newline [fixed]
+In test_5.m, line 4
+| for i=1:a-1 x(i)=i; end
+|                 ^ style: = must be preceeded by whitespace [fixed]
+In test_5.m, line 4
+| for i=1:a-1 x(i)=i; end
+|                   ^ style: end statement with a newline [fixed]
 In @test3/Contents.m, line 1
 | % File Array Object
 | ^^^^^^^^^^^^^^^^^^^ style: No copyright notice found in docstring
-MISS_HIT Style Summary: 9 file(s) analysed, 44 style issue(s)
+MISS_HIT Style Summary: 10 file(s) analysed, 51 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 9 file(s) analysed, 44 style issue(s)
+MISS_HIT Style Summary: 10 file(s) analysed, 51 style issue(s)
