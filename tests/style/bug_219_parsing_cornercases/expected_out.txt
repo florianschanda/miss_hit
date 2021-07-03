@@ -67,10 +67,41 @@ In test_2_c.m, line 4
 In test_2_c.m, line 5
 | global VOX, try VOX.formant; catch, VOX.formant = 0; end
 |                                                    ^ style: end statement with a newline [fixed]
+test_4.m: style: violates naming scheme for scripts
+In test_4.m, line 1
+| % Taken from https://github.com/spm/spm12
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: No copyright notice found in docstring
+In test_4.m, line 5
+|         for i=1:length(scaling)
+|              ^ style: = must be preceeded by whitespace [fixed]
+In test_4.m, line 6
+|             dat(i,:) = scaling(i) .* dat(i,:);
+|                  ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_4.m, line 6
+|             dat(i,:) = scaling(i) .* dat(i,:);
+|                                           ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_4.m, line 8
+|     case'chans_samples_trials'
+|     ^^^^ style: keyword must be succeeded by whitespace [fixed]
+In test_4.m, line 9
+|         for i=1:length(scaling)
+|              ^ style: = must be preceeded by whitespace [fixed]
+In test_4.m, line 10
+|             dat(i,:,:) = scaling(i) .* dat(i,:,:);
+|                  ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_4.m, line 10
+|             dat(i,:,:) = scaling(i) .* dat(i,:,:);
+|                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_4.m, line 10
+|             dat(i,:,:) = scaling(i) .* dat(i,:,:);
+|                                             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+In test_4.m, line 10
+|             dat(i,:,:) = scaling(i) .* dat(i,:,:);
+|                                               ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In @test3/Contents.m, line 1
 | % File Array Object
 | ^^^^^^^^^^^^^^^^^^^ style: No copyright notice found in docstring
-MISS_HIT Style Summary: 8 file(s) analysed, 33 style issue(s)
+MISS_HIT Style Summary: 9 file(s) analysed, 44 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 8 file(s) analysed, 33 style issue(s)
+MISS_HIT Style Summary: 9 file(s) analysed, 44 style issue(s)
