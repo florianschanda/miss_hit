@@ -67,7 +67,10 @@ In test_2_c.m, line 4
 In test_2_c.m, line 5
 | global VOX, try VOX.formant; catch, VOX.formant = 0; end
 |                                                    ^ style: end statement with a newline [fixed]
-MISS_HIT Style Summary: 7 file(s) analysed, 32 style issue(s)
+In @test3/Contents.m, line 1
+| % File Array Object
+| ^^^^^^^^^^^^^^^^^^^ style: No copyright notice found in docstring
+MISS_HIT Style Summary: 8 file(s) analysed, 33 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 7 file(s) analysed, 32 style issue(s)
+MISS_HIT Style Summary: 8 file(s) analysed, 33 style issue(s)

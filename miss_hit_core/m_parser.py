@@ -627,7 +627,7 @@ class MATLAB_Parser:
                                   l_functions,
                                   self.lexer.in_class_directory,
                                   l_pragmas + l_more_pragmas)
-        elif self.peek("KEYWORD", "classdef") or self.lexer.in_class_directory:
+        elif self.peek("KEYWORD", "classdef"):
             cunit = self.parse_class_file(l_pragmas)
         elif self.lexer.octave_mode:
             cunit = self.parse_octave_script_file(l_pragmas)

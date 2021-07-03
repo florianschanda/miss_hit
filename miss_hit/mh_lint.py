@@ -147,7 +147,7 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
             os.path.abspath(wp.filename)))
         if wp.cfg.active("builtin_shadow") and \
            base_name in BUILTIN_FUNCTIONS and \
-           not dir_name.startswith("+"):
+           not (dir_name.startswith("+") or dir_name.startswith("@")):
             wp.mh.check(n_cu.loc(),
                         "this file shadows built-in %s which is very naughty"
                         % base_name,
