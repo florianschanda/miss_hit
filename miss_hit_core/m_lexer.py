@@ -952,7 +952,8 @@ class MATLAB_Lexer(Token_Generator):
         # Detect new statements. Note that this flags comments as
         # well, but that is fine.
         if not self.bracket_stack:
-            if kind in ("NEWLINE", "COMMA", "SEMICOLON"):
+            if kind in ("NEWLINE", "COMMA", "SEMICOLON") or \
+               (token.kind == "KEYWORD" and token.value == "try"):
                 self.first_in_statement = True
                 self.command_mode = False
 

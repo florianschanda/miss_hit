@@ -1,0 +1,34 @@
+=== PLAIN MODE ===
+test_1_a.m: style: violates naming scheme for scripts
+test_1_a.m: style: Could not find any copyright notice
+In test_1_a.m, line 1
+| try rotate3d off;end
+| ^^^ style: end statement with a newline [fixed]
+In test_1_a.m, line 2
+| try rotate3d off;end
+|                 ^ style: end statement with a newline [fixed]
+In test_1_a.m, line 2
+| try rotate3d off;end
+|                 ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+test_1_b.m: style: violates naming scheme for scripts
+test_1_b.m: style: Could not find any copyright notice
+In test_1_b.m, line 2
+| rotate3d off;
+| ^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+test_1_c.m: style: violates naming scheme for scripts
+test_1_c.m: style: Could not find any copyright notice
+In test_1_c.m, line 1
+| try rotate3d off;
+| ^^^ style: end statement with a newline [fixed]
+test_1_d.m: style: violates naming scheme for scripts
+test_1_d.m: style: Could not find any copyright notice
+In test_1_d.m, line 2
+| rotate3d off; end
+| ^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+In test_1_d.m, line 2
+| rotate3d off; end
+|             ^ style: end statement with a newline [fixed]
+MISS_HIT Style Summary: 4 file(s) analysed, 15 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 4 file(s) analysed, 15 style issue(s)

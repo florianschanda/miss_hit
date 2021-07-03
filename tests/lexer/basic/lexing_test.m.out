@@ -157,7 +157,7 @@ In lexing_test.m, line 22
 |                                                   ^^^ info: KEYWORD
 In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
-|                                                       ^^^^^ info: KEYWORD
+|                                                       ^^^^^ info: [S ] KEYWORD
 In lexing_test.m, line 22
 | if otherwise parfor persistent return spmd switch try while
 |                                                            ^ info: NEWLINE
