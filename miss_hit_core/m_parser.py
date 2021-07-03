@@ -2100,14 +2100,10 @@ class MATLAB_Parser:
 
         while True:
             rv.add_name(self.parse_identifier(allow_void=False))
-            if self.peek("NEWLINE"):
-                self.match("NEWLINE")
+            if not self.peek("IDENTIFIER"):
                 break
-            elif self.peek("SEMICOLON"):
-                self.match("SEMICOLON")
-                self.ct.set_ast(rv)
-                self.match("NEWLINE")
-                break
+
+        self.match_eos(rv, allow_nothing=True)
 
         return rv
 

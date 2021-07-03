@@ -28,7 +28,46 @@ In test_1_d.m, line 2
 In test_1_d.m, line 2
 | rotate3d off; end
 |             ^ style: end statement with a newline [fixed]
-MISS_HIT Style Summary: 4 file(s) analysed, 15 style issue(s)
+test_2_a.m: style: violates naming scheme for scripts
+test_2_a.m: style: Could not find any copyright notice
+In test_2_a.m, line 1
+| try, global dt, f  = f*dt; end
+|    ^ style: end this with just a newline [fixed]
+In test_2_a.m, line 1
+| try, global dt, f  = f*dt; end
+|               ^ style: end this with just a newline [fixed]
+In test_2_a.m, line 3
+| try, global dt, f  = f*dt; end
+|                       ^ style: non power binary operator must be surrounded by whitespace [fixed]
+In test_2_a.m, line 3
+| try, global dt, f  = f*dt; end
+|                          ^ style: end statement with a newline [fixed]
+test_2_b.m: style: violates naming scheme for scripts
+test_2_b.m: style: Could not find any copyright notice
+In test_2_b.m, line 1
+| global A; X   = A.x;
+|         ^ style: end this with just a newline [fixed]
+test_2_c.m: style: violates naming scheme for scripts
+test_2_c.m: style: Could not find any copyright notice
+In test_2_c.m, line 1
+| global VOX, try VOX.formant; catch, VOX.formant = 0; end
+|           ^ style: end this with just a newline [fixed]
+In test_2_c.m, line 1
+| global VOX, try VOX.formant; catch, VOX.formant = 0; end
+|                                   ^ style: end this with just a newline [fixed]
+In test_2_c.m, line 2
+| global VOX, try VOX.formant; catch, VOX.formant = 0; end
+|             ^^^ style: end statement with a newline [fixed]
+In test_2_c.m, line 3
+| global VOX, try VOX.formant; catch, VOX.formant = 0; end
+|                            ^ style: end statement with a newline [fixed]
+In test_2_c.m, line 4
+| global VOX, try VOX.formant; catch, VOX.formant = 0; end
+|                              ^^^^^ style: keyword must be succeeded by whitespace [fixed]
+In test_2_c.m, line 5
+| global VOX, try VOX.formant; catch, VOX.formant = 0; end
+|                                                    ^ style: end statement with a newline [fixed]
+MISS_HIT Style Summary: 7 file(s) analysed, 32 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 4 file(s) analysed, 15 style issue(s)
+MISS_HIT Style Summary: 7 file(s) analysed, 32 style issue(s)
