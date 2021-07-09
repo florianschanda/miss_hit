@@ -1,8 +1,11 @@
 === PLAIN MODE ===
+In inverted_copyright_1.m, line 5
+| function some_function()
+|          ^^^^^^^^^^^^^ style: violates naming scheme for function
 In real_world_1.m, line 1
 | function initCppSpm()
 |          ^^^^^^^^^^ style: violates naming scheme for function
-MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s)
+MISS_HIT Style Summary: 2 file(s) analysed, 2 style issue(s)

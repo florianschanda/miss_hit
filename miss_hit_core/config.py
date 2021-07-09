@@ -272,7 +272,7 @@ STYLE_RULES = {
             "copyright_regex": Copyright_Regex_Style_Configuration(
                 ("Regex for picking out copyright notice. Must include "
                  "named groups: 'ystart', 'yend', and 'org'"),
-                default = (r"(\(c\) )?Copyright "
+                default = (r"(\([cC]\) )?Copyright (\([cC]\) )?"
                            r"((?P<ystart>\d\d\d\d)(-| - ))?(?P<yend>\d\d\d\d)"
                            r"( by)? *(?P<org>.*)")),
             "copyright_entity": Set_Style_Configuration(
