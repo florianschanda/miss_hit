@@ -388,6 +388,14 @@ STYLE_RULES = {
                 default = DEFAULT_NAMING_SCHEME)
         }),
 
+    "naming_enumerations" : Style_Rule(
+        "Checks names of enumerations.",
+        {
+            "regex_enumeration_name" : Regex_Style_Configuration(
+                "Regex for parameter names",
+                default = DEFAULT_NAMING_SCHEME)
+        }),
+
     "indentation" : Style_Rule(
         "Make indentation consistent.",
         {

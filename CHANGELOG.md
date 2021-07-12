@@ -59,6 +59,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * MH Style support a new rule "naming_parameters" that enforces a
   naming scheme for function and method inputs and outputs.
 
+* MH Style support a new rule "naming_enumerations" that enforces a
+  naming scheme for class enumerations.
+
 ### 0.9.22
 
 * Fix bug in MH Trace: libraries unit tests were considered part of

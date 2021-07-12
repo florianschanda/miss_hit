@@ -748,6 +748,9 @@ class Class_Definition(Definition):
         for n_block in self.l_methods:
             for n_function in n_block.l_items:
                 n_function.sty_check_naming(mh, cfg)
+        for n_block in self.l_enumerations:
+            for n_enum in n_block.l_items:
+                n_enum.sty_check_naming(mh, cfg)
 
     def get_local_name(self):
         if isinstance(self.n_parent, Class_File):
@@ -1514,6 +1517,13 @@ class Class_Enumeration(Node):
         self.n_name.visit(self, function, "Name")
         self._visit_list(self.l_args, function, "Arguments")
         self._visit_end(parent, function, relation)
+
+    def sty_check_naming(self, mh, cfg):
+        assert isinstance(mh, Message_Handler)
+        assert isinstance(cfg, Config)
+
+        if cfg.active("naming_enumerations"):
+            self.n_name.sty_check_naming(mh, cfg, "enumeration")
 
 
 class Action(Node):
