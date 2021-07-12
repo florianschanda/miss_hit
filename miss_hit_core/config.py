@@ -244,7 +244,7 @@ DEFAULT_NAMING_SCHEME = "([A-Z]+|[A-Z][a-z]*)(_([A-Z]+|[A-Z][a-z]*|[0-9]+))*"
 # Underscore-separated acronyms or capitalised words. For example
 # "Kitten_Class" or "LASER", but not "potatoFarmer".
 
-DEFAULT_METHOD_NAMING_SCHEME = "[a-z]+(_[a-z]+)*"
+DEFAULT_LC_NAMING_SCHEME = "[a-z]+(_[a-z]+)*"
 # A much simpler naming scheme: underscore separated lowercase without
 # numbers.
 
@@ -369,7 +369,15 @@ STYLE_RULES = {
                 default = DEFAULT_NAMING_SCHEME),
             "regex_method_name" : Regex_Style_Configuration(
                 "Regex for class method names",
-                default = DEFAULT_METHOD_NAMING_SCHEME)
+                default = DEFAULT_LC_NAMING_SCHEME)
+        }),
+
+    "naming_parameters" : Style_Rule(
+        "Checks names of function and method parameters.",
+        {
+            "regex_parameter_name" : Regex_Style_Configuration(
+                "Regex for parameter names",
+                default = DEFAULT_LC_NAMING_SCHEME)
         }),
 
     "naming_classes" : Style_Rule(

@@ -1119,6 +1119,11 @@ class Function_Signature(Node):
         assert isinstance(mh, Message_Handler)
         assert isinstance(cfg, Config)
 
+        # Check naming of parameters
+        if cfg.active("naming_parameters"):
+            for param in self.l_inputs + self.l_outputs:
+                param.sty_check_naming(mh, cfg, "parameter")
+
         # We need to work out what we are. Options are:
         # 1. Class constructor (needs to follow class naming scheme)
         # 2. Ordinary function

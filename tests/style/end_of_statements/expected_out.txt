@@ -20,10 +20,34 @@ In other.m, line 12
 |                ^^^ style: violates naming scheme for function
 In other.m, line 17
 | function [output1, output2, output3,...
+|           ^^^^^^^ style: violates naming scheme for parameter
+In other.m, line 17
+| function [output1, output2, output3,...
+|                    ^^^^^^^ style: violates naming scheme for parameter
+In other.m, line 17
+| function [output1, output2, output3,...
+|                             ^^^^^^^ style: violates naming scheme for parameter
+In other.m, line 17
+| function [output1, output2, output3,...
 |                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
 In other.m, line 17
 | function [output1, output2, output3,...
 |                                     ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In other.m, line 18
+|           output4, output5, output6, output7, output8] =...
+|           ^^^^^^^ style: violates naming scheme for parameter
+In other.m, line 18
+|           output4, output5, output6, output7, output8] =...
+|                    ^^^^^^^ style: violates naming scheme for parameter
+In other.m, line 18
+|           output4, output5, output6, output7, output8] =...
+|                             ^^^^^^^ style: violates naming scheme for parameter
+In other.m, line 18
+|           output4, output5, output6, output7, output8] =...
+|                                      ^^^^^^^ style: violates naming scheme for parameter
+In other.m, line 18
+|           output4, output5, output6, output7, output8] =...
+|                                               ^^^^^^^ style: violates naming scheme for parameter
 In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
 |                                                        ^ style: = must be succeeded by whitespace [fixed]
@@ -33,6 +57,15 @@ In other.m, line 18
 In other.m, line 19
 |          test_LineEndings(input1, input2,    ...
 |          ^^^^^^^^^^^^^^^^ style: violates naming scheme for function
+In other.m, line 19
+|          test_LineEndings(input1, input2,    ...
+|                           ^^^^^^ style: violates naming scheme for parameter
+In other.m, line 19
+|          test_LineEndings(input1, input2,    ...
+|                                   ^^^^^^ style: violates naming scheme for parameter
+In other.m, line 20
+|                           input3) %#codegen
+|                           ^^^^^^ style: violates naming scheme for parameter
 In other.m, line 20
 |     aVar = 3,;
 |              ^ style: unnecessary statement terminator [fixed]
@@ -112,7 +145,7 @@ In test.m, line 7
 In test.m, line 9
 | spoon
 | ^^^^^ style: end statement with a semicolon [fixed]
-MISS_HIT Style Summary: 3 file(s) analysed, 39 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 50 style issue(s)
 
 === HTML MODE ===
-MISS_HIT Style Summary: 3 file(s) analysed, 39 style issue(s)
+MISS_HIT Style Summary: 3 file(s) analysed, 50 style issue(s)
