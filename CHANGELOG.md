@@ -34,24 +34,6 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   this setting, you must also include the new `copy` group in your
   regular expression, otherwise the tools break in interesting ways.
 
-### 0.9.22
-
-* Fix bug in MH Trace: libraries unit tests were considered part of
-  the source. This meant tests may have been analysed that would
-  otherwise have been (deliberately) excluded from analysis.
-
-### 0.9.21
-
-* MISS_HIT now has an official web-site: http://misshit.org
-
-* New tool: [MH Trace](https://florianschanda.github.io/miss_hit/trace.html).
-  This tool can extract tracing information (e.g. TestTags) and produce an
-  easy to parse json file.
-
-* New configuration syntax to allow you to specify directories
-  containing your unit tests. This is specifically useful for
-  `mh_trace`.
-
 * Fix various parsing corner cases in parsing *extremely* dubious
   code. MISS_HIT previously rejected all of these as parse errors, now
   it complains about (and fixes) the style instead:
@@ -70,6 +52,24 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 * Fix parsing of `Contents.m` in class directories (previously we
   expected some code, but these files are supposed to be blank).
+
+### 0.9.22
+
+* Fix bug in MH Trace: libraries unit tests were considered part of
+  the source. This meant tests may have been analysed that would
+  otherwise have been (deliberately) excluded from analysis.
+
+### 0.9.21
+
+* MISS_HIT now has an official web-site: http://misshit.org
+
+* New tool: [MH Trace](https://florianschanda.github.io/miss_hit/trace.html).
+  This tool can extract tracing information (e.g. TestTags) and produce an
+  easy to parse json file.
+
+* New configuration syntax to allow you to specify directories
+  containing your unit tests. This is specifically useful for
+  `mh_trace`.
 
 ### 0.9.20
 
