@@ -53,6 +53,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * Fix parsing of `Contents.m` in class directories (previously we
   expected some code, but these files are supposed to be blank).
 
+* Fix a tool crash in MH Metrics: when producing the HTML report the
+  tool would crash if there were parse errors in at least one file.
+
 ### 0.9.22
 
 * Fix bug in MH Trace: libraries unit tests were considered part of
