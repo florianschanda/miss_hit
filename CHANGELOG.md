@@ -52,6 +52,25 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   containing your unit tests. This is specifically useful for
   `mh_trace`.
 
+* Fix various parsing corner cases in parsing *extremely* dubious
+  code. MISS_HIT previously rejected all of these as parse errors, now
+  it complains about (and fixes) the style instead:
+
+  * A command-form invocation after a `try` on the same line is now
+    correctly recognised: `try rotate3d off; end`
+
+  * A global statement can be terminated by a comma or semicolon:
+    `try, global dt, f  = f*dt; end`
+
+  * A single quote directly after a keyword introduces a character
+    array: `case'potato'`
+
+  * The expression in a for loop does not require any termination:
+    `for i=1:indx(1)-1 y(i) = y(indx(1)); end`
+
+* Fix parsing of `Contents.m` in class directories (previously we
+  expected some code, but these files are supposed to be blank).
+
 ### 0.9.20
 
 * Fix a Python 3.6 compatibility issue that I missed during testing.
