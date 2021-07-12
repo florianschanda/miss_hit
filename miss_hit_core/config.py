@@ -271,10 +271,11 @@ STYLE_RULES = {
                 ["docstring", "file_header"]),
             "copyright_regex": Copyright_Regex_Style_Configuration(
                 ("Regex for picking out copyright notice. Must include "
-                 "named groups: 'ystart', 'yend', and 'org'"),
-                default = (r"(\(c\) )?Copyright "
-                           r"((?P<ystart>\d\d\d\d)(-| - ))?(?P<yend>\d\d\d\d)"
-                           r"( by)? *(?P<org>.*)")),
+                 "named groups: 'copy', 'ystart', 'yend', and 'org'"),
+                default =
+                (r"(?P<copy>(Copyright \([cC]\))|((\([cC]\) )?Copyright)) "
+                 r"((?P<ystart>\d\d\d\d)(-| - ))?(?P<yend>\d\d\d\d)"
+                 r"( by)? *(?P<org>.*)")),
             "copyright_entity": Set_Style_Configuration(
                 "Valid copyright holder."),
             "copyright_primary_entity": String_Style_Configuration(

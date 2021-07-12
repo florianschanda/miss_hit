@@ -1,0 +1,11 @@
+classdef test_6
+    % TEST_6 this is an excellent class
+    %   It can store an x
+    properties
+        x
+    end
+end
+
+% Tests two things:
+%   * The class case
+%   * The no docstring at all case

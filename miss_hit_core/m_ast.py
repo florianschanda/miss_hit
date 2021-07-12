@@ -892,6 +892,9 @@ class Copyright_Info(Node):
     def is_block_comment(self):
         return self.t_comment.block_comment
 
+    def get_copy_notice(self):
+        return self.match.group("copy")
+
     def get_org(self):
         return self.match.group("org")
 

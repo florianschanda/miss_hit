@@ -1,0 +1,9 @@
+=== PLAIN MODE ===
+test.m: style: violates naming scheme for scripts
+In test_2.m, line 1
+| function x = test_2
+|              ^^^^^^ style: violates naming scheme for function
+MISS_HIT Style Summary: 2 file(s) analysed, 2 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 2 file(s) analysed, 2 style issue(s)

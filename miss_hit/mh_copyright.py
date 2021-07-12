@@ -48,12 +48,13 @@ def get_primary_entity(options, cfg):
 
 
 def replace_line(lines, line_no, block_comment,
-                 templates, org, year_range,
+                 templates, copy_note, org, year_range,
                  offset=None):
     assert isinstance(lines, list)
     assert isinstance(line_no, int) and 1 <= line_no <= len(lines)
     assert isinstance(block_comment, bool)
     assert isinstance(templates, dict)
+    assert isinstance(copy_note, str)
     assert isinstance(org, str)
     assert isinstance(year_range, tuple) and len(year_range) == 2
     assert isinstance(year_range[0], int)
@@ -79,7 +80,8 @@ def replace_line(lines, line_no, block_comment,
     if offset is not None:
         old_offset = " " * offset
 
-    data = {"org"    : org,
+    data = {"copy"   : copy_note,
+            "org"    : org,
             "ystart" : year_range[0],
             "yend"   : year_range[1]}
 
@@ -202,7 +204,8 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                     if yend <= new_year:
                         new_range = (ystart, new_year)
                         replace_line(lines, line_no, cinfo.is_block_comment(),
-                                     templates, primary_entity, new_range)
+                                     templates, cinfo.get_copy_notice(),
+                                     primary_entity, new_range)
 
                         action_taken = True
                     else:
@@ -230,6 +233,7 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                     if new_range is None:
                         merged_line = line_no
                         merged_line_is_block = cinfo.is_block_comment()
+                        merged_line_copy_notice = cinfo.get_copy_notice()
                         new_range = cinfo.get_range()
                     else:
                         new_range = (min(ystart, new_range[0]),
@@ -239,7 +243,8 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
 
                 if action_taken:
                     replace_line(lines, merged_line, merged_line_is_block,
-                                 templates, primary_entity, new_range)
+                                 templates, merged_line_copy_notice,
+                                 primary_entity, new_range)
                     for line_no in reversed(killed_lines):
                         del lines[line_no - 1]
 
@@ -247,7 +252,8 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                 for line_no, cinfo in cinfos.items():
                     if cinfo.get_org() == wp.options.change_entity:
                         replace_line(lines, line_no, cinfo.is_block_comment(),
-                                     templates, primary_entity,
+                                     templates, cinfo.get_copy_notice(),
+                                     primary_entity,
                                      cinfo.get_range())
                         action_taken = True
 
@@ -276,9 +282,16 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                         off = 1
                         lines = ["% POTATO", ""] + lines
 
+                    if wp.options.style == "c_first" or \
+                       (wp.options.style == "dynamic" and
+                        not wp.cfg.octave):
+                        copy_notice = "(c) Copyright"
+                    else:
+                        copy_notice = "Copyright (c)"
+
                     # Then overwrite it
                     replace_line(lines, line_no + 1, is_block,
-                                 templates, primary_entity,
+                                 templates, copy_notice, primary_entity,
                                  (wp.options.year, wp.options.year),
                                  offset = off)
 
@@ -331,6 +344,14 @@ def main_handler():
                            default=False,
                            help=("Add a copyright notice to files that do not"
                                  " have one yet."))
+    c_actions.add_argument("--style",
+                           choices=("dynamic", "c_first", "c_last"),
+                           default="dynamic",
+                           help=("'(c) Copyright' or 'Copyright (c)'. Dynamic"
+                                 " picks the existing style, and if there is"
+                                 " nothing, picks c_first for MATLAB code and"
+                                 " c_last for Octave code."
+                                 " Default is %(default)s."))
 
     c_data = clp["ap"].add_argument_group("copyright data")
     c_data.add_argument("--year",
@@ -343,12 +364,12 @@ def main_handler():
                         metavar="COPYRIGHT_HOLDER",
                         help=("The primary copyright entity."))
     c_data.add_argument("--template-range",
-                        default="(c) Copyright %(ystart)u-%(yend)u %(org)s",
+                        default="%(copy)s %(ystart)u-%(yend)u %(org)s",
                         metavar="TEMPLATE_TEXT",
                         help=("Text template to use for a copyright notice"
                               " with a year range. default: '%(default)s'"))
     c_data.add_argument("--template",
-                        default="(c) Copyright %(yend)u %(org)s",
+                        default="%(copy)s %(yend)u %(org)s",
                         metavar="TEMPLATE_TEXT",
                         help=("Text template to use for a copyright notice"
                               " with a single year. default: '%(default)s'"))

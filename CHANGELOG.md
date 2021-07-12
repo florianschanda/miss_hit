@@ -26,6 +26,14 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   %| pragma Tag("Potato");
   ```
 
+* MH Style and MH Copyright now support octave-style copyright notices
+  (i.e. `Copyright (c) ...` instead of `(c) Copyright ...`).
+
+  The default regular expression for matching copyright notices has
+  changed and must now include a new group. If you have configured
+  this setting, you must also include the new `copy` group in your
+  regular expression, otherwise the tools break in interesting ways.
+
 ### 0.9.22
 
 * Fix bug in MH Trace: libraries unit tests were considered part of

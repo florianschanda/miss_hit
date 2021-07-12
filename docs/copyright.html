@@ -96,7 +96,7 @@
         copyright notices with a single year. By default this matches
         the <tt>copyright_regex</tt>. We highly recommend to never
         change or touch this. By default this is:
-        <pre>(c) Copyright %(yend)u %(org)s</pre>
+        <pre>%(copy)s %(yend)u %(org)s</pre>
       </div>
 
       <h4>--template-range</h4>
@@ -105,7 +105,29 @@
         copyright notices with a year range. By default this matches
         the <tt>copyright_regex</tt>. We highly recommend to never
         change or touch this. By default this is:
-        <pre>(c) Copyright %(ystart)-%(yend)u %(org)s</pre>
+        <pre>%(copy)s %(ystart)-%(yend)u %(org)s</pre>
+      </div>
+
+      <h4>--style</h4>
+      <div>
+        When <i>adding</i> a new copyright notice, then this flag
+        determines if we start the notice with "(c) Copyright" or
+        "Copyright (c)". There are three choices:
+        <ul>
+          <li>
+            <b>dynamic</b> - The default. Choses c_last for code
+            where Octave mode is enabled, and c_last otherwise.
+          </li>
+          <li>
+            <b>c_first</b> - Always chooses "(c) Copyright".
+          </li>
+          <li>
+            <b>c_last</b> - Always chooses "Copyright (c)".
+          </li>
+        </ul>
+        Note this setting has no effect if a notice is <i>changed</i>:
+        there we always keep the existing style (i.e. we use whatever
+        is matched in the copy subgroup of the copyright regex).
       </div>
 
       <h3>Actions</h3>

@@ -1,2 +1,2 @@
 === PLAIN MODE ===
-MISS_HIT Copyright Summary: 6 file(s) analysed, everything seems fine
+MISS_HIT Copyright Summary: 12 file(s) analysed, everything seems fine
