@@ -68,9 +68,9 @@ for more information.
 $ pip3 install --user miss_hit
 ```
 
-This installation also adds four executable scripts `mh_style`,
-`mh_metric`, `mh_lint`, and `mh_diff` into `.local/bin`, so please
-make sure that this is on your `PATH`.
+This installation also adds five executable scripts `mh_style`,
+`mh_metric`, `mh_lint`, `mh_copyright`, and `mh_diff` into
+`.local/bin`, so please make sure that this is on your `PATH`.
 
 You can also use the `python -m` syntax to directly invoke the
 program. This might be useful if you're on a heavily locked-down
@@ -98,9 +98,8 @@ checkout.  MISS_HIT does not require *any* python packages or
 libraries. Just check out the repository and put it on your
 path. That's it.
 
-The version of Python I am using is `3.6.9` but any earlier or later
-version should also work. I am not using any overly fancy language
-features.
+The version of Python I am using is `3.6` but any later version should
+also work. I am not using any overly fancy language features.
 
 ### Additional requirements for developing MISS_HIT
 
