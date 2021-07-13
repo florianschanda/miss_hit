@@ -34,6 +34,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   this setting, you must also include the new `copy` group in your
   regular expression, otherwise the tools break in interesting ways.
 
+* MH Style supports a new rule "naming_parameters" that enforces a
+  naming scheme for function and method inputs and outputs.
+
+* MH Style supports a new rule "naming_enumerations" that enforces a
+  naming scheme for class enumerations.
+
 * Fix various parsing corner cases in parsing *extremely* dubious
   code. MISS_HIT previously rejected all of these as parse errors, now
   it complains about (and fixes) the style instead:
@@ -55,12 +61,6 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 * Fix a tool crash in MH Metrics: when producing the HTML report the
   tool would crash if there were parse errors in at least one file.
-
-* MH Style support a new rule "naming_parameters" that enforces a
-  naming scheme for function and method inputs and outputs.
-
-* MH Style support a new rule "naming_enumerations" that enforces a
-  naming scheme for class enumerations.
 
 ### 0.9.22
 
