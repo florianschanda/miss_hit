@@ -16,7 +16,7 @@ setuptools.setup(
     description="Code formatting and code metrics for programs written in the MATLAB/Simulink and Octave languages.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/florianschanda/miss_hit",
+    url="https://misshit.org",
     project_urls={
         "Bug Tracker"   : "https://github.com/florianschanda/miss_hit/issues",
         "Documentation" : "https://florianschanda.github.io/miss_hit/",

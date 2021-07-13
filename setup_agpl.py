@@ -16,7 +16,7 @@ setuptools.setup(
     description="Static analysis and other utilities for programs written in the MATLAB/Simulink and Octave languages.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/florianschanda/miss_hit",
+    url="https://misshit.org",
     project_urls={
         "Bug Tracker"   : "https://github.com/florianschanda/miss_hit/issues",
         "Documentation" : "https://florianschanda.github.io/miss_hit/",
@@ -27,7 +27,7 @@ setuptools.setup(
     install_requires=["miss_hit_core==%s" % miss_hit_core.version.VERSION],
     python_requires=">=3.6, <4",
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
         "Operating System :: OS Independent",
