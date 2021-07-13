@@ -1,5 +1,5 @@
 {
-    "fun": {
+    "potato.fun": {
         "source": {
             "col_start": 9,
             "filename": "other_library/+potato/fun.m",
@@ -7,7 +7,7 @@
         },
         "tags": []
     },
-    "sad": {
+    "potato.sad": {
         "source": {
             "col_start": 9,
             "filename": "other_library/+potato/sad.m",

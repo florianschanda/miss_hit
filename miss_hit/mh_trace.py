@@ -44,12 +44,14 @@ class MH_Trace_Result(work_package.Result):
 
 
 class Function_Visitor(AST_Visitor):
-    def __init__(self, mh):
+    def __init__(self, mh, cu):
         assert isinstance(mh, Message_Handler)
+        assert isinstance(cu, Compilation_Unit)
 
         self.tag_stack = []
         self.mh = mh
         self.tracing = {}
+        self.name_prefix = cu.get_name_prefix()
 
     def get_test_tags(self, node):
         n_tags = node.get_attribute("TestTags")
@@ -103,7 +105,7 @@ class Function_Visitor(AST_Visitor):
     def visit_end(self, node, n_parent, relation):
         # Create entry for tracing
         if isinstance(node, Function_Definition):
-            name = node.get_local_name()
+            name = self.name_prefix + node.get_local_name()
             self.tracing[name] = {
                 "source": node.loc().to_json(detailed=False),
                 "tags"  : sorted(functools.reduce(operator.or_,
@@ -145,7 +147,7 @@ class MH_Trace(command_line.MISS_HIT_Back_End):
         except Error:
             return MH_Trace_Result(wp)
 
-        visitor = Function_Visitor(wp.mh)
+        visitor = Function_Visitor(wp.mh, n_cu)
         n_cu.visit(None, visitor, "Root")
 
         # Return results

@@ -1,0 +1,36 @@
+{
+    "Potato": [
+        {
+            "name": "Test",
+            "source": {
+                "col_start": 13,
+                "filename": "Test.m",
+                "line": 3
+            }
+        },
+        {
+            "name": "bar.Test",
+            "source": {
+                "col_start": 13,
+                "filename": "+bar/Test.m",
+                "line": 3
+            }
+        },
+        {
+            "name": "baz::Test",
+            "source": {
+                "col_start": 13,
+                "filename": "@baz/Test.m",
+                "line": 3
+            }
+        },
+        {
+            "name": "foo.Test",
+            "source": {
+                "col_start": 13,
+                "filename": "+foo/Test.m",
+                "line": 3
+            }
+        }
+    ]
+}

@@ -9,7 +9,7 @@
             "Something"
         ]
     },
-    "potato": {
+    "util.potato": {
         "source": {
             "col_start": 13,
             "filename": "+util/potato.m",

@@ -25,6 +25,7 @@
 
 import subprocess
 import re
+import os
 
 from copy import copy
 
@@ -432,6 +433,20 @@ class Compilation_Unit(Node):
         assert isinstance(n_docstring, Docstring)
         self.n_docstring = n_docstring
         self.n_docstring.set_parent(self)
+
+    def get_name_prefix(self):
+        rv = ""
+        cdir = os.path.normpath(self.dirname)
+        while True:
+            dname = os.path.basename(cdir)
+            cdir = os.path.dirname(cdir)
+            if dname.startswith("+"):
+                rv = dname[1:] + "." + rv
+            elif dname.startswith("@"):
+                rv = dname[1:] + "::" + rv
+            else:
+                break
+        return rv
 
 
 ##############################################################################
