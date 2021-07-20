@@ -20,7 +20,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.24-dev
 
-
+* Fix issue in MH Style where the new rule `naming_parameters` would
+  complain about `~` parameters. These will now always pass name
+  checking, regardless on how your regular expression for parameters
+  looks like.
 
 ### 0.9.23
 

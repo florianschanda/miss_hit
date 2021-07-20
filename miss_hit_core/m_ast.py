@@ -1772,6 +1772,11 @@ class Identifier(Name):
         assert isinstance(mh, Message_Handler)
         assert isinstance(cfg, Config)
 
+        # The ~ parameters names are exempt from any name checking, as
+        # they have special significance.
+        if self.t_ident.kind == "OPERATOR" and self.t_ident.value == "~":
+            return
+
         regex = cfg.style_config["regex_" + kind + "_name"]
         if not re.match("^(" + regex + ")$", self.t_ident.value):
             mh.style_issue(self.t_ident.location,
