@@ -1,0 +1,5 @@
+In typo.cfg, line 1
+| supresss_rule: "naming_parameters"
+| ^^^^^^^^^^^^^ error: expected valid style configuration name (did you mean suppress_rule?)
+typo.cfg: error: config file contains errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 2 error(s)

@@ -51,6 +51,17 @@ from miss_hit_core.config import (STYLE_RULES, STYLE_CONFIGURATION,
                                   Set_Style_Configuration)
 from miss_hit_core.cfg_ast import *
 
+KEYWORDS = ["metric",
+            "enable",
+            "enable_rule",
+            "suppress_rule",
+            "exclude_dir",
+            "project_root",
+            "octave",
+            "entrypoint",
+            "library",
+            "global"]
+
 
 class Config_Parser:
     def __init__(self, mh, config_file):
@@ -301,9 +312,10 @@ class Config_Parser:
         config_name = self.ct.value
         if config_name not in STYLE_CONFIGURATION:
             msg = "expected valid style configuration name"
-            suggestions = difflib.get_close_matches(config_name,
-                                                    list(STYLE_CONFIGURATION),
-                                                    n=1)
+            suggestions = difflib.get_close_matches(
+                config_name,
+                list(STYLE_CONFIGURATION) + KEYWORDS,
+                n=1)
             if suggestions:
                 msg += " (did you mean %s?)" % suggestions[0]
             self.mh.error(self.ct.location, msg)
