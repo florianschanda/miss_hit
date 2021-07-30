@@ -514,7 +514,7 @@ class MATLAB_Lexer(Token_Generator):
                 else:
                     self.lex_error("expected . to complete continuation token")
 
-            elif self.cc.isalpha():
+            elif self.cc.isalpha() or (self.octave_mode and self.cc == "_"):
                 # Could be an identifier or keyword
                 kind = "IDENTIFIER"
                 while self.nc.isalnum() or self.nc == "_":

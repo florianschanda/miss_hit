@@ -1,0 +1,32 @@
+=== PLAIN MODE ===
+In matlab/foo.m, line 5
+|     _x = _potato(5);
+|     ^ lex error: unexpected character '_'
+matlab/foo.m:12: style: file should end with a new line [fixed]
+matlab/run_test.m: style: violates naming scheme for scripts
+matlab/run_test.m: style: Could not find any copyright notice
+In matlab/run_test.m, line 1
+| foo()
+|     ^ style: end statement with a semicolon [fixed]
+In octave/foo.m, line 3
+| function foo
+|          ^^^ style: violates naming scheme for function
+In octave/foo.m, line 8
+|     function _rv = _potato(_input)
+|              ^^^ style: violates naming scheme for parameter
+In octave/foo.m, line 8
+|     function _rv = _potato(_input)
+|                    ^^^^^^^ style: violates naming scheme for nested
+In octave/foo.m, line 8
+|     function _rv = _potato(_input)
+|                            ^^^^^^ style: violates naming scheme for parameter
+octave/foo.m:12: style: file should end with a new line [fixed]
+octave/run_test.m: style: violates naming scheme for scripts
+octave/run_test.m: style: Could not find any copyright notice
+In octave/run_test.m, line 1
+| foo()
+|     ^ style: end statement with a semicolon [fixed]
+MISS_HIT Style Summary: 4 file(s) analysed, 12 style issue(s), 1 error(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 4 file(s) analysed, 12 style issue(s), 1 error(s)
