@@ -11,6 +11,10 @@ assignees: ''
 * Support a non-supported MATLAB or Octave construct
 * New feature in MISS_HIT
 
+**Your MATLAB/Octave environment**
+* MATLAB or Octave
+* Which release/version
+
 **MISS_HIT component affected**
 Choose one or more of the below:
 * Style checker

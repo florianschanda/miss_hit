@@ -13,6 +13,10 @@ Please choose one from:
 * Code metrics
 * Documentation
 
+**Your MATLAB/Octave environment**
+* MATLAB or Octave
+* Which release/version
+
 **Your operating system and Python version**
 * Linux or Windows?
 * State output of `python3 --version`
