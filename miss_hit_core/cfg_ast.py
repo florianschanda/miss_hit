@@ -333,6 +333,9 @@ class Project_Directive(Config_Item):
         self.name = name
         # Name (also what will be used in the symbol table)
 
+        self.shared = False
+        # If this code is shared between multiple entry points or not
+
     def evaluate(self, mh, config):
         raise ICE("logic error - called evaluate() for project directive")
 
@@ -363,6 +366,7 @@ class Library_Declaration(Project_Directive):
         self.path_list_source = Path_List(directory)
         self.path_list_test   = Path_List(directory)
         self.is_global        = False
+        self.shared           = True
 
     def __str__(self):
         return "Library(%s)" % self.name

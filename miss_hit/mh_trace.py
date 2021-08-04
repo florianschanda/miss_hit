@@ -35,6 +35,8 @@ from miss_hit_core.errors import (Error,
                                   Message_Handler)
 from miss_hit_core.m_lexer import MATLAB_Lexer
 from miss_hit_core.m_parser import MATLAB_Parser
+from miss_hit_core.cfg_tree import get_enclosing_ep
+from miss_hit_core.cfg_ast import Project_Directive
 
 
 class MH_Trace_Result(work_package.Result):
@@ -44,14 +46,20 @@ class MH_Trace_Result(work_package.Result):
 
 
 class Function_Visitor(AST_Visitor):
-    def __init__(self, mh, cu):
+    def __init__(self, mh, cu, ep):
         assert isinstance(mh, Message_Handler)
         assert isinstance(cu, Compilation_Unit)
+        assert ep is None or isinstance(ep, Project_Directive)
 
         self.tag_stack = []
         self.mh = mh
         self.tracing = {}
         self.name_prefix = cu.get_name_prefix()
+        self.in_test_block = False
+        if ep is None:
+            self.is_shared = None
+        else:
+            self.is_shared = ep.shared
 
     def get_test_tags(self, node):
         n_tags = node.get_attribute("TestTags")
@@ -97,6 +105,7 @@ class Function_Visitor(AST_Visitor):
             self.tag_stack.append(set())
         elif isinstance(node, Special_Block) and node.kind() == "methods":
             self.tag_stack.append(self.get_test_tags(node))
+            self.in_test_block = node.get_attribute("Test") is not None
 
         # Amend current tag stack if we get a tag pragma
         if isinstance(node, Tag_Pragma):
@@ -107,17 +116,21 @@ class Function_Visitor(AST_Visitor):
         if isinstance(node, Function_Definition):
             name = self.name_prefix + node.get_local_name()
             self.tracing[name] = {
-                "source": node.loc().to_json(detailed=False),
-                "tags"  : sorted(functools.reduce(operator.or_,
-                                                  self.tag_stack,
-                                                  set()))
+                "source" : node.loc().to_json(detailed=False),
+                "tags"   : sorted(functools.reduce(operator.or_,
+                                                   self.tag_stack,
+                                                   set())),
+                "test"   : self.in_test_block
             }
+            if self.is_shared is not None:
+                self.tracing[name]["shared"] = self.is_shared
 
         if isinstance(node, (Definition,
                              Compilation_Unit)):
             self.tag_stack.pop()
         elif isinstance(node, Special_Block) and node.kind() == "methods":
             self.tag_stack.pop()
+            self.in_test_block = False
 
 
 class MH_Trace(command_line.MISS_HIT_Back_End):
@@ -144,10 +157,11 @@ class MH_Trace(command_line.MISS_HIT_Back_End):
         try:
             parser = MATLAB_Parser(wp.mh, lexer, wp.cfg)
             n_cu = parser.parse_file()
+            n_ep = get_enclosing_ep(wp.filename)
         except Error:
             return MH_Trace_Result(wp)
 
-        visitor = Function_Visitor(wp.mh, n_cu)
+        visitor = Function_Visitor(wp.mh, n_cu, n_ep)
         n_cu.visit(None, visitor, "Root")
 
         # Return results
@@ -163,11 +177,18 @@ class MH_Trace(command_line.MISS_HIT_Back_End):
             for unitname in sorted(self.tracing):
                 source = self.tracing[unitname]["source"]
                 tags   = self.tracing[unitname]["tags"]
+                test   = self.tracing[unitname]["test"]
+                shared = self.tracing[unitname].get("shared", None)
                 for tag in tags:
                     if tag not in out:
                         out[tag] = []
-                    out[tag].append({"name"   : unitname,
-                                     "source" : source})
+                    item = {"name"   : unitname,
+                            "source" : source,
+                            "test"   : test}
+                    if shared is not None:
+                        item["shared"] = shared
+                    out[tag].append(item)
+
         else:
             out = self.tracing
 

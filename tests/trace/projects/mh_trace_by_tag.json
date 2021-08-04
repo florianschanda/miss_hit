@@ -1,0 +1,26 @@
+{
+    "bartag": [
+        {
+            "name": "bar",
+            "shared": true,
+            "source": {
+                "col_start": 13,
+                "filename": "lib_b/bar.m",
+                "line": 1
+            },
+            "test": false
+        }
+    ],
+    "footag": [
+        {
+            "name": "foo",
+            "shared": true,
+            "source": {
+                "col_start": 13,
+                "filename": "lib_a/foo.m",
+                "line": 1
+            },
+            "test": false
+        }
+    ]
+}

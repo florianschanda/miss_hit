@@ -421,6 +421,14 @@ def get_test_path(n_item):
     return item_list
 
 
+def get_enclosing_ep(path):
+    ap = os.path.abspath(path)
+    for n_ep in project_names.values():
+        if ap.startswith(n_ep.directory):
+            return n_ep
+    return None
+
+
 ##############################################################################
 # Sanity testing
 #############################################################################

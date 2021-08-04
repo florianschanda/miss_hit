@@ -1,34 +1,42 @@
 {
     "potato.fun": {
+        "shared": false,
         "source": {
             "col_start": 9,
             "filename": "other_library/+potato/fun.m",
             "line": 3
         },
-        "tags": []
+        "tags": [],
+        "test": false
     },
     "potato.sad": {
+        "shared": false,
         "source": {
             "col_start": 9,
             "filename": "other_library/+potato/sad.m",
             "line": 3
         },
-        "tags": []
+        "tags": [],
+        "test": false
     },
     "wibble": {
+        "shared": false,
         "source": {
             "col_start": 9,
             "filename": "collection/lib_a/wibble.m",
             "line": 3
         },
-        "tags": []
+        "tags": [],
+        "test": false
     },
     "wobble": {
+        "shared": false,
         "source": {
             "col_start": 9,
             "filename": "collection/lib_b/wobble.m",
             "line": 3
         },
-        "tags": []
+        "tags": [],
+        "test": false
     }
 }

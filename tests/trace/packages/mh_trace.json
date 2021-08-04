@@ -7,7 +7,8 @@
         },
         "tags": [
             "Potato"
-        ]
+        ],
+        "test": false
     },
     "bar.Test": {
         "source": {
@@ -17,7 +18,8 @@
         },
         "tags": [
             "Potato"
-        ]
+        ],
+        "test": false
     },
     "baz::Test": {
         "source": {
@@ -27,7 +29,8 @@
         },
         "tags": [
             "Potato"
-        ]
+        ],
+        "test": false
     },
     "foo.Test": {
         "source": {
@@ -37,6 +40,7 @@
         },
         "tags": [
             "Potato"
-        ]
+        ],
+        "test": false
     }
 }

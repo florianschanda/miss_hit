@@ -7,7 +7,8 @@
         },
         "tags": [
             "FeatureB"
-        ]
+        ],
+        "test": true
     },
     "ExampleTagClassTest::testG": {
         "source": {
@@ -19,7 +20,8 @@
             "FeatureB",
             "FeatureC",
             "System"
-        ]
+        ],
+        "test": true
     },
     "ExampleTagClassTest::testH": {
         "source": {
@@ -31,7 +33,8 @@
             "FeatureA",
             "FeatureB",
             "System"
-        ]
+        ],
+        "test": true
     },
     "ExampleTagTest::testA": {
         "source": {
@@ -39,7 +42,8 @@
             "filename": "ExampleTagTest.m",
             "line": 5
         },
-        "tags": []
+        "tags": [],
+        "test": true
     },
     "ExampleTagTest::testB": {
         "source": {
@@ -49,7 +53,8 @@
         },
         "tags": [
             "Unit"
-        ]
+        ],
+        "test": true
     },
     "ExampleTagTest::testC": {
         "source": {
@@ -59,7 +64,8 @@
         },
         "tags": [
             "Unit"
-        ]
+        ],
+        "test": true
     },
     "ExampleTagTest::testD": {
         "source": {
@@ -70,7 +76,8 @@
         "tags": [
             "FeatureA",
             "Unit"
-        ]
+        ],
+        "test": true
     },
     "ExampleTagTest::testE": {
         "source": {
@@ -81,7 +88,8 @@
         "tags": [
             "FeatureA",
             "System"
-        ]
+        ],
+        "test": true
     },
     "bar": {
         "source": {
@@ -92,7 +100,8 @@
         "tags": [
             "kitten",
             "potato"
-        ]
+        ],
+        "test": false
     },
     "bar::inner": {
         "source": {
@@ -104,7 +113,8 @@
             "kitten",
             "potato",
             "wibble"
-        ]
+        ],
+        "test": false
     },
     "foo": {
         "source": {
@@ -114,6 +124,7 @@
         },
         "tags": [
             "FeatureA"
-        ]
+        ],
+        "test": false
     }
 }

@@ -1,5 +1,6 @@
 {
     "TestPotato::test_01": {
+        "shared": false,
         "source": {
             "col_start": 17,
             "filename": "test/TestPotato.m",
@@ -7,14 +8,17 @@
         },
         "tags": [
             "Something"
-        ]
+        ],
+        "test": true
     },
     "util.potato": {
+        "shared": false,
         "source": {
             "col_start": 13,
             "filename": "+util/potato.m",
             "line": 1
         },
-        "tags": []
+        "tags": [],
+        "test": false
     }
 }

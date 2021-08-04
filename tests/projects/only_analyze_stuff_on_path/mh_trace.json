@@ -1,10 +1,12 @@
 {
     "good": {
+        "shared": true,
         "source": {
             "col_start": 9,
             "filename": "dir_a/good.m",
             "line": 3
         },
-        "tags": []
+        "tags": [],
+        "test": false
     }
 }

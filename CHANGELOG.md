@@ -23,6 +23,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * Support Octave identifiers in Octave mode. In Octave you can start
   identifiers with an underscore, but you can't do it in MATLAB.
 
+* Additional information in tracing output produced by `mh_trace`:
+  * `test` - True if the function is a unit test and false otherwise.
+  * `shared` - Only present if you use project configuration. True if
+    this function is part of a library, and False if it is party of
+    an entrypoint.
+
 ### 0.9.24
 
 * Fix issue in MH Style where the new rule `naming_parameters` would

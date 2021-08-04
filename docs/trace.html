@@ -79,7 +79,8 @@ end
             "filename": "ExampleTagClassTest.m",
             "line": 6
         },
-        "tags": ["FeatureB"]
+        "tags": ["FeatureB"],
+        "test": True
     },
     "ExampleTagClassTest::testG": {
         "source": {
@@ -87,7 +88,8 @@ end
             "filename": "ExampleTagClassTest.m",
             "line": 11
         },
-        "tags": ["FeatureB", "FeatureC", "System"]
+        "tags": ["FeatureB", "FeatureC", "System"],
+        "test": True
     },
     "ExampleTagClassTest::testH": {
         "source": {
@@ -95,7 +97,8 @@ end
             "filename": "ExampleTagClassTest.m",
             "line": 16
         },
-        "tags": ["FeatureA", "FeatureB", "System"]
+        "tags": ["FeatureA", "FeatureB", "System"],
+        "test": True
     }
 }
 </pre>
@@ -113,7 +116,8 @@ end
                 "col_start": 17,
                 "filename": "ExampleTagClassTest.m",
                 "line": 16
-            }
+            },
+            "test": True
         }
     ],
     "FeatureB": [
@@ -123,10 +127,18 @@ end
                 "col_start": 17,
                 "filename": "ExampleTagClassTest.m",
                 "line": 6
-            }
+            },
+            "test": True
         },
 </pre>
         (The rest is omitted because it's just more of the same...)
+      </div>
+
+      <div>
+        If you use project configuration (libraries and entrypoints)
+        then an additional field is present in the json output -
+        "shared" to indicate if this code belongs to a shared library
+        or if it is part of an entry point.
       </div>
 
       <h3>Annotating code</h3>
