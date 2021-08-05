@@ -29,6 +29,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
     this function is part of a library, and False if it is party of
     an entrypoint.
 
+* Minor improvement for error messages on config files with syntax
+  errors: suggestions are offered now.
+
 ### 0.9.24
 
 * Fix issue in MH Style where the new rule `naming_parameters` would
