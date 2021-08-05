@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
-### 0.9.25-dev
+### 0.9.25
 
 * Support Octave identifiers in Octave mode. In Octave you can start
   identifiers with an underscore, but you can't do it in MATLAB.
