@@ -54,6 +54,11 @@ def create_basic_clp(epilog=None):
                     action="store_true",
                     default=False,
                     help="Show version and exit")
+    ap.add_argument("--include-version",
+                    action="store_true",
+                    default=False,
+                    help=("Include version number in output, can helpful to"
+                          " debug CI issues"))
     ap.add_argument("files",
                     metavar="FILE|DIR",
                     nargs="*",
@@ -118,9 +123,10 @@ def create_basic_clp(epilog=None):
 def parse_args(clp):
     options = clp["ap"].parse_args()
 
-    if options.version:
+    if options.version or options.include_version:
         print(FULL_NAME)
-        sys.exit(0)
+        if options.version:
+            sys.exit(0)
 
     # False alarm from pylint
     # pylint: disable=no-member

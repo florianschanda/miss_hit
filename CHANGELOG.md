@@ -20,7 +20,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.26-dev
 
-
+* All tools have a new common option `--include-version`, which will
+  print the MISS_HIT version similar to `--version`; but will continue
+  execution. This is helpful to debug e.g. CI issues.
 
 ### 0.9.25
 
