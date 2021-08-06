@@ -590,7 +590,7 @@ METRIC_LIMIT ::= metric METRIC_OR_WC ':' report
 	consider it a medium/long term priority.
       </div>
 
-      <h3>Directory exclusion</h3>
+      <h3><a name="exclude_dir"></a>Directory exclusion</h3>
       <div>
 	Grammar: <pre>EXCLUSION ::= exclude_dir ':' STRING</pre>
       </div>
@@ -621,6 +621,12 @@ root
 	file, <tt>baz.m</tt>. Furthermore, because <tt>kitten</tt> is
 	considered a project root, any configuration
 	from <tt>root</tt> is entirely ignored.
+
+	<pre>$ mh_style *</pre>
+        Using the <tt>*</tt> wildcard will have a surprising effect:
+        it will expand to potato and kitten, so miss_hit will analyze
+        <i>all files</i> in this case, since you've explicitly
+        requested the traversal of <tt>kitten</tt>.
       </div>
 
       <h3><a name="projects">Projects</a></h3>
