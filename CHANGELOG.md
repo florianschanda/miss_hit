@@ -24,6 +24,11 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   print the MISS_HIT version similar to `--version`; but will continue
   execution. This is helpful to debug e.g. CI issues.
 
+* MH_Trace supports a new pragma `No_Tracing`, which can be used to
+  remove functions from the tracing output. This can be helpful if you
+  have e.g. a test driver or project initialisation code that is
+  neither product code or a test.
+
 ### 0.9.25
 
 * Support Octave identifiers in Octave mode. In Octave you can start

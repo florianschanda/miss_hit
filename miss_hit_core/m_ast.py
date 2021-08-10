@@ -2438,6 +2438,10 @@ class Tag_Pragma(Pragma):
         return {t_tag.value for t_tag in self.l_tags}
 
 
+class No_Tracing_Pragma(Pragma):
+    pass
+
+
 class Justification_Pragma(Pragma):
     def __init__(self, t_pragma, t_kind, t_tool):
         super().__init__(t_pragma, t_kind)

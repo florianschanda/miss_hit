@@ -1202,50 +1202,53 @@ class MATLAB_Parser:
 
         self.amatch("IDENTIFIER")
         t_pragma_kind = self.ct
-        if t_pragma_kind.value not in ("Justify", "Tag"):
+        if t_pragma_kind.value not in ("Justify", "Tag", "No_Tracing"):
             self.mh.error(t_pragma_kind.location,
                           "unknown miss_hit pragma '%s'" %
                           t_pragma_kind.value)
 
-        self.amatch("BRA")
-        punctuation.append(self.ct)
-
-        if t_pragma_kind.value == "Justify":
-            self.amatch("IDENTIFIER")
-            t_tool = self.ct
-
-            if t_tool.value != "metric":
-                self.mh.error(t_tool.location,
-                              "unknown miss_hit tool '%s'" % t_tool.value)
-
-            self.amatch("COMMA")
+        if t_pragma_kind.value in ("Justify", "Tag"):
+            # Pragmas with parameters
+            self.amatch("BRA")
             punctuation.append(self.ct)
 
-            self.amatch("STRING")
-            t_param = self.ct
+            if t_pragma_kind.value == "Justify":
+                self.amatch("IDENTIFIER")
+                t_tool = self.ct
 
-            if t_param.value not in METRICS:
-                self.mh.warning(t_param.location,
-                                "unknown metric '%s'" % t_param.value)
+                if t_tool.value != "metric":
+                    self.mh.error(t_tool.location,
+                                  "unknown miss_hit tool '%s'" % t_tool.value)
 
-            self.amatch("COMMA")
-            punctuation.append(self.ct)
+                self.amatch("COMMA")
+                punctuation.append(self.ct)
 
-            n_reason = self.parse_annotation_static_string_expression()
-
-        elif t_pragma_kind.value == "Tag":
-            l_tags = []
-            while not self.apeek("KET"):
                 self.amatch("STRING")
-                l_tags.append(self.ct)
-                if self.apeek("COMMA"):
-                    self.amatch("COMMA")
-                    punctuation.append(self.ct)
-        else:
-            raise ICE("logic error")
+                t_param = self.ct
 
-        self.amatch("KET")
-        punctuation.append(self.ct)
+                if t_param.value not in METRICS:
+                    self.mh.warning(t_param.location,
+                                    "unknown metric '%s'" % t_param.value)
+
+                self.amatch("COMMA")
+                punctuation.append(self.ct)
+
+                n_reason = self.parse_annotation_static_string_expression()
+
+            elif t_pragma_kind.value == "Tag":
+                l_tags = []
+                while not self.apeek("KET"):
+                    self.amatch("STRING")
+                    l_tags.append(self.ct)
+                    if self.apeek("COMMA"):
+                        self.amatch("COMMA")
+                        punctuation.append(self.ct)
+
+            else:
+                raise ICE("logic error")
+
+            self.amatch("KET")
+            punctuation.append(self.ct)
 
         self.amatch("SEMICOLON")
         punctuation.append(self.ct)
@@ -1257,6 +1260,8 @@ class MATLAB_Parser:
                 self.cfg.style_config["regex_tickets"])
         elif t_pragma_kind.value == "Tag":
             rv = Tag_Pragma(t_pragma, t_pragma_kind, l_tags)
+        elif t_pragma_kind.value == "No_Tracing":
+            rv = No_Tracing_Pragma(t_pragma, t_pragma_kind)
         else:
             raise ICE("logic error")
 

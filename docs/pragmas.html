@@ -151,12 +151,23 @@ a_pragma_parameters ::= a_expression { ',' a_expression }
         in a compilation unit will affect all functions or methods in
         that compilation unit.
       </div>
+
+      <h3>No_Tracing pragmas</h3>
+      <div>
+        A No_Tracing pragma can be used to indicate that some code or
+        test should not be included in the output of mh_trace. It has
+        the following signature:
+        <pre>pragma No_Tracing;</pre>
+      </div>
+      <div>
+        Pragma No_Tracing has the same scoping rules as pragma Tag.
+      </div>
     </section>
 
   </main>
 
   <footer>
-    Content &copy; 2020 Florian Schanda<br>
+    Content &copy; 2020-2021 Florian Schanda<br>
     Style &copy; 2019-2020 Alina Boboc<br>
     MISS_HIT is licensed under the GPLv3
   </footer>

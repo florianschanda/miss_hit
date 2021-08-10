@@ -1,0 +1,13 @@
+{
+    "Potato::method_a": {
+        "source": {
+            "col_start": 21,
+            "filename": "Potato.m",
+            "line": 6
+        },
+        "tags": [
+            "OK"
+        ],
+        "test": false
+    }
+}

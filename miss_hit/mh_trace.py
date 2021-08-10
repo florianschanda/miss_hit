@@ -52,6 +52,7 @@ class Function_Visitor(AST_Visitor):
         assert ep is None or isinstance(ep, Project_Directive)
 
         self.tag_stack = []
+        self.no_tracing_stack = []
         self.mh = mh
         self.tracing = {}
         self.name_prefix = cu.get_name_prefix()
@@ -99,21 +100,30 @@ class Function_Visitor(AST_Visitor):
         # Deal with the tag stack first
         if isinstance(node, Function_Definition):
             self.tag_stack.append(set())
+            self.no_tracing_stack.append(False)
         elif isinstance(node, Class_Definition):
             self.tag_stack.append(self.get_test_tags(node))
+            self.no_tracing_stack.append(False)
         elif isinstance(node, Compilation_Unit):
             self.tag_stack.append(set())
+            self.no_tracing_stack.append(False)
         elif isinstance(node, Special_Block) and node.kind() == "methods":
             self.tag_stack.append(self.get_test_tags(node))
+            self.no_tracing_stack.append(False)
             self.in_test_block = node.get_attribute("Test") is not None
 
-        # Amend current tag stack if we get a tag pragma
-        if isinstance(node, Tag_Pragma):
+        elif isinstance(node, Tag_Pragma):
+            # Amend current tag stack if we get a tag pragma
             self.tag_stack[-1] |= node.get_tags()
+
+        elif isinstance(node, No_Tracing_Pragma):
+            # Make a note of this no_tracing pragma
+            self.no_tracing_stack[-1] = True
 
     def visit_end(self, node, n_parent, relation):
         # Create entry for tracing
-        if isinstance(node, Function_Definition):
+        if isinstance(node, Function_Definition) and \
+           not any(self.no_tracing_stack):
             name = self.name_prefix + node.get_local_name()
             self.tracing[name] = {
                 "source" : node.loc().to_json(detailed=False),
@@ -128,8 +138,10 @@ class Function_Visitor(AST_Visitor):
         if isinstance(node, (Definition,
                              Compilation_Unit)):
             self.tag_stack.pop()
+            self.no_tracing_stack.pop()
         elif isinstance(node, Special_Block) and node.kind() == "methods":
             self.tag_stack.pop()
+            self.no_tracing_stack.pop()
             self.in_test_block = False
 
 

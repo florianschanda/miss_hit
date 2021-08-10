@@ -163,6 +163,24 @@ end
         difference between using this pragma and adding a TestTags
         property to tests.
       </div>
+
+      <h3>Excluding code</h3>
+      <div>
+        Most projects have some code for e.g. setting up the workspace
+        or build scripts. This code is not part of the delivery and so
+        should not make it into the requirements traceability report;
+        it can be excluded using the <tt>No_Tracing</tt> pragma:
+
+        <pre>%| pragma No_Tracing;</pre>
+
+        This pragma has identical scoping rules as pragma Tag, and
+        completely removes the affected functions from the json
+        output. If you place it at the top of a file, it excludes all
+        functions in that compilation unit. If a function is affected
+        by both Tags and a No_Tracing pragma then the No_Tracing
+        pragma takes precedence.
+      </div>
+
     </section>
 
     <section>
