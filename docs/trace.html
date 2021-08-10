@@ -146,7 +146,9 @@ end
         While TestTags can be used to annotate tests, it cannot be
         used to annotate code. To trace code, MISS_HIT supports a
         special pragma:
-        <pre>%| pragma Tag("Tag", "AnotherTag");</pre>
+        <pre>%| pragma Tag("potato-req-1");</pre>
+        You can also give more than one tag in a single Tag pragma:
+        <pre>%| pragma Tag("potato-req-1", "kitten-req-42");</pre>
       </div>
       <div>
         Pragma tag applies to all items scoped logically under the
@@ -157,7 +159,9 @@ end
         that compilation unit.
       </div>
       <div>
-        Note: this pragma can also be used to tag tests.
+        Note: this pragma can also be used to tag tests. There is no
+        difference between using this pragma and adding a TestTags
+        property to tests.
       </div>
     </section>
 
