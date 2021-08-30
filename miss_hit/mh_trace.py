@@ -46,11 +46,13 @@ class MH_Trace_Result(work_package.Result):
 
 
 class Function_Visitor(AST_Visitor):
-    def __init__(self, mh, cu, ep):
+    def __init__(self, in_test_dir, mh, cu, ep):
+        assert isinstance(in_test_dir, bool)
         assert isinstance(mh, Message_Handler)
         assert isinstance(cu, Compilation_Unit)
         assert ep is None or isinstance(ep, Project_Directive)
 
+        self.in_test_dir = in_test_dir
         self.tag_stack = []
         self.no_tracing_stack = []
         self.mh = mh
@@ -130,7 +132,7 @@ class Function_Visitor(AST_Visitor):
                 "tags"   : sorted(functools.reduce(operator.or_,
                                                    self.tag_stack,
                                                    set())),
-                "test"   : self.in_test_block
+                "test"   : self.in_test_block or self.in_test_dir
             }
             if self.is_shared is not None:
                 self.tracing[name]["shared"] = self.is_shared
@@ -173,7 +175,7 @@ class MH_Trace(command_line.MISS_HIT_Back_End):
         except Error:
             return MH_Trace_Result(wp)
 
-        visitor = Function_Visitor(wp.mh, n_cu, n_ep)
+        visitor = Function_Visitor(wp.in_test_dir, wp.mh, n_cu, n_ep)
         n_cu.visit(None, visitor, "Root")
 
         # Return results

@@ -20,7 +20,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.27-dev
 
-
+* MH_Trace now considers all functions in an entrypoint/library tests
+  directory to be a test (not just code in classes with a Test method
+  block). This essentially adds support for test systems that are not
+  based the `matlab.unittest.TestCase`.
 
 ### 0.9.26
 

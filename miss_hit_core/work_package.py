@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2021, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -32,10 +32,12 @@ from miss_hit_core.errors import Message_Handler, ICE, Location
 
 
 class Work_Package:
-    def __init__(self, filename, mh, options, extra_options):
+    def __init__(self, in_test_dir, filename, mh, options, extra_options):
+        assert isinstance(in_test_dir, bool)
         assert isinstance(filename, str)
         assert isinstance(mh, Message_Handler)
 
+        self.in_test_dir   = in_test_dir
         self.filename      = os.path.normpath(filename)
         self.mh            = mh
         self.cfg           = None
@@ -50,8 +52,8 @@ class Work_Package:
 class SIMULINK_File_WP(Work_Package):
     # This is a SIMULINK model that will in turn spawn multiple
     # Embedded_MATLAB_WP instances.
-    def __init__(self, filename, mh, options, extra_options):
-        super().__init__(filename, mh, options, extra_options)
+    def __init__(self, in_test_dir, filename, mh, options, extra_options):
+        super().__init__(in_test_dir, filename, mh, options, extra_options)
         self.cfg = cfg_tree.get_config(self.filename)
 
     def write_modified(self, content):
@@ -65,10 +67,10 @@ class MATLAB_Work_Package(Work_Package):
     # This is an abstract base class of a WP that contains some actual
     # MATLAB code. This is what will be fed to each tool.
     def __init__(self,
-                 filename, blockname,
+                 in_test_dir, filename, blockname,
                  encoding,
                  mh, options, extra_options):
-        super().__init__(filename, mh, options, extra_options)
+        super().__init__(in_test_dir, filename, mh, options, extra_options)
 
         assert isinstance(encoding, str)
         assert blockname is None or isinstance(blockname, str)
@@ -85,10 +87,10 @@ class MATLAB_Work_Package(Work_Package):
 
 class MATLAB_File_WP(MATLAB_Work_Package):
     # MATLAB code that is in an m-file somewhere
-    def __init__(self, filename,
+    def __init__(self, in_test_dir, filename,
                  encoding,
                  mh, options, extra_options):
-        super().__init__(filename, None,
+        super().__init__(in_test_dir, filename, None,
                          encoding,
                          mh, options, extra_options)
         self.cfg = cfg_tree.get_config(self.filename)
@@ -140,7 +142,8 @@ class Embedded_MATLAB_WP(MATLAB_Work_Package):
 
         n_container = simulink_block.get_container()
 
-        super().__init__(n_container.filename,
+        super().__init__(simulink_wp.in_test_dir,
+                         n_container.filename,
                          simulink_block.local_name(),
                          simulink_block.get_encoding(),
                          simulink_wp.mh.fork(),
@@ -169,11 +172,16 @@ class Result:
         self.processed = processed
 
 
-def create(filename, default_encoding, mh, options, extra_options):
+def create(in_test_dir,
+           filename,
+           default_encoding,
+           mh,
+           options,
+           extra_options):
     if filename.endswith(".m"):
-        return MATLAB_File_WP(filename, default_encoding,
+        return MATLAB_File_WP(in_test_dir, filename, default_encoding,
                               mh.fork(), options, extra_options)
 
     elif filename.endswith(".slx"):
-        return SIMULINK_File_WP(filename,
+        return SIMULINK_File_WP(in_test_dir, filename,
                                 mh.fork(), options, extra_options)

@@ -353,12 +353,21 @@ def execute_trace_test(name):
         if os.path.isfile(filename):
             os.unlink(filename)
 
-    r = run_command("mh_trace", [])
+    flags = []
+    if os.path.isfile("cmdline"):
+        with open("cmdline", "r") as fd:
+            for raw_flag in fd.readlines():
+                flag = raw_flag.strip()
+                if flag:
+                    flags.append(flag)
+
+    r = run_command("mh_trace", flags)
     plain_out = r.stdout
     with open("test.out", "w") as fd:
         fd.write(plain_out)
 
     r = run_command("mh_trace",
+                    flags +
                     ["--json=mh_trace_by_tag.json",
                      "--by-tag"])
 

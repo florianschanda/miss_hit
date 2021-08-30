@@ -272,9 +272,12 @@ class Octave_Mode(Config_Item):
 
 
 class Path_List:
-    def __init__(self, root):
+    def __init__(self, root, provide_default):
         assert isinstance(root, str)
+        assert isinstance(provide_default, bool)
+
         self.root = root
+        self.provide_default = provide_default
 
         self.s_paths = set()
         self.l_paths = []
@@ -310,10 +313,14 @@ class Path_List:
             return [os.path.join(self.root, path)
                     for path in self.l_paths]
 
-        else:
+        elif self.provide_default:
             # If we do not have any paths specified, so the only path
-            # is the item's root.
+            # is the item's root (if we have a default)
             return [self.root]
+
+        else:
+            # Otherwise, return nothing
+            return []
 
 
 class Project_Directive(Config_Item):
@@ -363,8 +370,8 @@ class Library_Declaration(Project_Directive):
             name = os.path.basename(os.path.abspath(directory))
         super().__init__(location, directory, name)
 
-        self.path_list_source = Path_List(directory)
-        self.path_list_test   = Path_List(directory)
+        self.path_list_source = Path_List(directory, True)
+        self.path_list_test   = Path_List(directory, False)
         self.is_global        = False
         self.shared           = True
 
@@ -401,8 +408,8 @@ class Entrypoint_Declaration(Project_Directive):
     def __init__(self, location, directory, name):
         super().__init__(location, directory, name)
 
-        self.path_list_source = Path_List(directory)
-        self.path_list_test   = Path_List(directory)
+        self.path_list_source = Path_List(directory, True)
+        self.path_list_test   = Path_List(directory, False)
 
         self.l_libraries = []
         self.s_libraries = set()

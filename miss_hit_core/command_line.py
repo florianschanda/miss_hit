@@ -231,13 +231,15 @@ def execute(mh, options, extra_options, back_end,
                                       options.entry_point)
 
             # Get PATH
-            item_list = cfg_tree.get_source_path(n_ep)
+            item_list = [(False, item)
+                         for item in cfg_tree.get_source_path(n_ep)]
             if process_tests:
-                item_list += cfg_tree.get_test_path(n_ep)
+                item_list += [(True, item)
+                              for item in cfg_tree.get_test_path(n_ep)]
 
             if options.debug_show_path:
                 print("Using the following PATH:")
-                for path in item_list:
+                for _, path in item_list:
                     print("> %s" % os.path.relpath(path))
 
             # Determine relevant files based on these
@@ -247,14 +249,15 @@ def execute(mh, options, extra_options, back_end,
             # See
             # https://www.mathworks.com/help/matlab/matlab_env/files-and-folders-that-matlab-accesses.html
 
-            items_in_path = set()
-            files_in_path = set()
-            for path_root in item_list:
+            code_in_path = set()
+            test_in_path = set()
+            for in_test_dir, path_root in item_list:
+                container = test_in_path if in_test_dir else code_in_path
                 for path, dirs, files in os.walk(path_root):
-                    items_in_path.add(os.path.normpath(path))
+                    container.add(os.path.normpath(path))
                     for f in files:
                         if f.endswith(".m") or f.endswith(".slx"):
-                            files_in_path.add(
+                            container.add(
                                 os.path.normpath(os.path.join(path, f)))
                     irrelevant_dirs = set(d for d in dirs
                                           if not (d.startswith("+") or
@@ -262,24 +265,33 @@ def execute(mh, options, extra_options, back_end,
                                                   d == "private"))
                     for idir in irrelevant_dirs:
                         dirs.remove(idir)
-            items_in_path |= files_in_path
 
             if options.files:
                 # If the user has supplied files/dirs to analyze, we
                 # only do that if they are part of _this_ entrypoint.
-                item_list = list(options.files)
-                for item in item_list:
-                    if os.path.abspath(item) not in items_in_path:
+                item_list = []
+                for item in options.files:
+                    if os.path.abspath(item) in code_in_path:
+                        item_list.append((False, item))
+                    elif os.path.abspath(item) in test_in_path:
+                        item_list.append((True, item))
+                    else:
                         mh.command_line_error("'%s' is not part of "
                                               "entry point %s" %
                                               (item, options.entry_point))
             else:
                 # Otherwise we look at all applicable files on the
                 # path.
-                item_list = list(sorted(files_in_path))
+                item_list = [(False, item)
+                             for item in sorted(code_in_path)
+                             if item.endswith(".m") or item.endswith(".slx")]
+                item_list += [(True, item)
+                              for item in sorted(test_in_path)
+                              if item.endswith(".m") or item.endswith(".slx")]
 
             # Post-process to use relative directories
-            item_list = [os.path.relpath(item) for item in item_list]
+            item_list = [(in_test_dir, os.path.relpath(item))
+                         for in_test_dir, item in item_list]
 
         else:
             # Without an entry point, we build a minimally sufficient
@@ -288,11 +300,12 @@ def execute(mh, options, extra_options, back_end,
             # configuration.
 
             if options.files:
-                item_list = list(options.files)
+                item_list = [(False, item)
+                             for item in list(options.files)]
             else:
-                item_list = ["."]
+                item_list = [(False, ".")]
 
-            for item in item_list:
+            for in_test_dir, item in item_list:
                 if os.path.isdir(item) or os.path.isfile(item):
                     cfg_tree.register_item(mh,
                                            os.path.abspath(item),
@@ -307,7 +320,7 @@ def execute(mh, options, extra_options, back_end,
     # build a list of work packages.
 
     work_list = []
-    for item in item_list:
+    for in_test_dir, item in item_list:
         if os.path.isdir(item):
             for path, dirs, files in os.walk(item):
                 dirs.sort()
@@ -324,13 +337,15 @@ def execute(mh, options, extra_options, back_end,
                     if f.endswith(".m") or (f.endswith(".slx") and
                                             process_slx):
                         work_list.append(
-                            work_package.create(os.path.join(path, f),
+                            work_package.create(in_test_dir,
+                                                os.path.join(path, f),
                                                 options.input_encoding,
                                                 mh,
                                                 options, extra_options))
 
         elif item.endswith(".m") or (item.endswith(".slx") and process_slx):
-            work_list.append(work_package.create(item,
+            work_list.append(work_package.create(in_test_dir,
+                                                 item,
                                                  options.input_encoding,
                                                  mh,
                                                  options, extra_options))
