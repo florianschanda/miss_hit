@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
-### 0.9.27-dev
+### 0.9.27
 
 * MH_Trace now considers all functions in an entrypoint/library tests
   directory to be a test (not just code in classes with a Test method
