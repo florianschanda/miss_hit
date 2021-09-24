@@ -1,0 +1,14 @@
+=== PLAIN MODE ===
+In MyTest.m, line 3
+|     methods (Test, TestTags=['potato']) % nok
+|                              ^^^^^^^^ check (high): expressions in matrix TestTags must be strings
+In MyTest.m, line 9
+|     methods (Test, TestTags={"potato"}) % nok
+|                              ^^^^^^^^ check (high): expressions in cell TestTags must be character arrays
+In MyTest.m, line 27
+|     methods (Test, TestTags='potato') % nok
+|                             ^^^^^^^^ check (high): TestTags must be a matrix or cell expression
+In MyTest.m, line 33
+|     methods (Test, TestTags={'potato'; 'kitten'}) % nok
+|                             ^ check (high): TestTags must contain precisely one row
+MISS_HIT Lint Summary: 1 file(s) analysed, 4 check(s)

@@ -27,6 +27,8 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   be fixed in ABC-123"), and you might want to check from time to time
   how much technical debt you have.
 
+* MH Lint now checks and enforces the correct syntax for TestTags.
+
 ### 0.9.27
 
 * MH_Trace now considers all functions in an entrypoint/library tests

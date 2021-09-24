@@ -195,6 +195,15 @@ foo(b);
         significance</a> for the MATLAB&reg; help system.
       </div>
 
+      <h3>Correct format for TestTags</h3>
+      <div>
+        The required syntax for TestTags
+        is <a href="https://www.mathworks.com/help/matlab/matlab_prog/tag-unit-tests.html">documented,
+        but subtle</a>. We've seen some cases where incorrect TestTags
+        cause the entire test to be silently ignored; so to guard
+        against this MH Lint enforces the correct syntax.
+      </div>
+
     </section>
 
   </main>

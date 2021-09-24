@@ -49,6 +49,8 @@ class Stage_1_Linting(AST_Visitor):
     def visit(self, node, n_parent, relation):
         if isinstance(node, Compilation_Unit):
             self.check_compilation_unit(node)
+        elif isinstance(node, Special_Block) and node.kind() == "methods":
+            self.check_methods_block(node)
 
     def check_compilation_unit(self, n_cu):
         assert isinstance(n_cu, Compilation_Unit)
@@ -90,6 +92,46 @@ class Stage_1_Linting(AST_Visitor):
                 self.mh.check(error_loc,
                               "a Contents.m file must only contain comments",
                               "low")
+
+    def check_methods_block(self, n_block):
+        assert isinstance(n_block, Special_Block) and \
+            n_block.kind() == "methods"
+
+        # Check that TestTags is well formed. Otherwise MATLAB can
+        # silently ignore these tests when you form a suite.
+        test_tags = n_block.get_attribute("TestTags")
+        if test_tags:
+            n_value = test_tags.n_value
+            if isinstance(n_value, Matrix_Expression):
+                n_rows = n_value.n_content
+            elif isinstance(n_value, Cell_Expression):
+                n_rows = n_value.n_content
+            else:
+                self.mh.check(n_value.loc(),
+                              "TestTags must be a matrix or cell expression",
+                              "high")
+                n_rows = None
+
+            if n_rows is not None and len(n_rows.l_items) != 1:
+                self.mh.check(n_value.loc(),
+                              "TestTags must contain precisely one row",
+                              "high")
+
+            if n_rows:
+                for n_row in n_rows.l_items:
+                    for n_item in n_row.l_items:
+                        if isinstance(n_value, Matrix_Expression) and \
+                           not isinstance(n_item, String_Literal):
+                            self.mh.check(n_item.loc(),
+                                          "expressions in matrix TestTags must"
+                                          " be strings",
+                                          "high")
+                        elif isinstance(n_value, Cell_Expression) and \
+                             not isinstance(n_item, Char_Array_Literal):
+                            self.mh.check(n_item.loc(),
+                                          "expressions in cell TestTags must"
+                                          " be character arrays",
+                                          "high")
 
     def check_filename(self, file_name, kind, ent_name):
         assert isinstance(file_name, str)
