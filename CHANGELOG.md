@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
-### 0.9.28-dev
+### 0.9.28
 
 * New command-line option for all tools (but only applicable for MH
   Metric for now): `--ignore-justifications-with-tickets`. This option
