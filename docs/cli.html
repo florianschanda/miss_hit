@@ -255,6 +255,16 @@ add_one.m:3:11: info: counter-example trace: x = 2147483647
 	MISS_HIT supports.
       </div>
 
+      <h4>--ignore-justifications-with-tickets</h4>
+      <div>
+	Ignore justification pragmas that mention a ticket. The use
+	case here are justifications put into the code, which really
+	are temporary justifications, e.g: "its ok for now, but we'll
+	fix it in ticket ABC-123". For example you might want to
+	process these normally during CI, but may want to check from
+	time to time so that you can reduce technical debt.
+      </div>
+
       <h4>--debug-show-path</h4>
       <div>
 	Debug/developer option. This displays the search PATH for

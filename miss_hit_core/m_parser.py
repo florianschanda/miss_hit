@@ -1257,7 +1257,8 @@ class MATLAB_Parser:
             rv = Metric_Justification_Pragma(
                 t_pragma, t_pragma_kind,
                 t_tool, t_param, n_reason,
-                self.cfg.style_config["regex_tickets"])
+                self.cfg.style_config["regex_tickets"],
+                self.cfg.ignore_pragmas_with_tickets)
         elif t_pragma_kind.value == "Tag":
             rv = Tag_Pragma(t_pragma, t_pragma_kind, l_tags)
         elif t_pragma_kind.value == "No_Tracing":

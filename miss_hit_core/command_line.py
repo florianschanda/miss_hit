@@ -82,6 +82,24 @@ def create_basic_clp(epilog=None):
                     help=("By default we use cp1252 to read m files, but this"
                           " can be changed to any valid encoding."))
 
+    pragma_options = ap.add_argument_group("pragma options")
+    rv["pragmas"] = pragma_options
+
+    pragma_options.add_argument(
+        "--ignore-pragmas",
+        default=False,
+        action="store_true",
+        help=("Disable special treatment of MISS_HIT pragmas. These are"
+              " comments that start with '%% mh:'"))
+
+    pragma_options.add_argument(
+        "--ignore-justifications-with-tickets",
+        default=False,
+        action="store_true",
+        help=("Ignore any justifications that mention a ticket, as they are"
+              " likely to be temporary justifications that need to be"
+              " resolved later."))
+
     output_options = ap.add_argument_group("output options")
     rv["output_options"] = output_options
 
@@ -100,13 +118,6 @@ def create_basic_clp(epilog=None):
                                         " language. Note: This is highly"
                                         " incomplete right now, only the"
                                         " # comments are supported."))
-
-    language_options.add_argument("--ignore-pragmas",
-                                  default=False,
-                                  action="store_true",
-                                  help=("Disable special treatment of"
-                                        " MISS_HIT pragmas. These are"
-                                        " comments that start with '%% mh:'"))
 
     debug_options = ap.add_argument_group("debugging options")
     rv["debug_options"] = debug_options

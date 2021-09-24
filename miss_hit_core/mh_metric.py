@@ -331,7 +331,9 @@ def get_justifications(mh, n_root):
 
     for n_statement in n_root.l_statements:
         if isinstance(n_statement, Metric_Justification_Pragma):
-            if n_statement.metric() in justifications:
+            if n_statement.ignored:
+                pass
+            elif n_statement.metric() in justifications:
                 mh.warning(n_statement.loc(),
                            "duplicate justification for %s" %
                            n_statement.metric)

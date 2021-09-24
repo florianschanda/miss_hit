@@ -41,6 +41,9 @@ class Config:
             self.pragmas = True
             # MH is enabled, octave mode is off, and we process pragmas
 
+            self.ignore_pragmas_with_tickets = False
+            # By default, all justifications are processed
+
             self.style_rules = set(STYLE_RULES)
             # All rules are enabled
 
@@ -59,9 +62,12 @@ class Config:
         else:
             assert isinstance(other, Config)
             # Inherit from existing configuration
-            self.enabled         = other.enabled
-            self.octave          = other.octave
-            self.pragmas         = other.pragmas
+            self.enabled                     = other.enabled
+            self.octave                      = other.octave
+            self.pragmas                     = other.pragmas
+            self.ignore_pragmas_with_tickets = \
+                other.ignore_pragmas_with_tickets
+
             self.style_rules     = deepcopy(other.style_rules)
             self.style_config    = deepcopy(other.style_config)
             self.enabled_metrics = deepcopy(other.enabled_metrics)

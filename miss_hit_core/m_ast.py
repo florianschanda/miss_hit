@@ -2459,10 +2459,13 @@ class Justification_Pragma(Pragma):
         # walk at the end and complain about all pragmas that don't
         # actually do something.
 
+        self.ignored = False
+        # If true, this pragma should just be ignored by the tools.
+
 
 class Metric_Justification_Pragma(Justification_Pragma):
     def __init__(self, t_pragma, t_kind, t_tool, t_metric, n_reason,
-                 ticket_regex):
+                 ticket_regex, ignore_pragmas_with_tickets):
         super().__init__(t_pragma, t_kind, t_tool)
         assert isinstance(t_tool, MATLAB_Token)
         assert t_tool.kind == "IDENTIFIER" and t_tool.value == "metric"
@@ -2470,6 +2473,7 @@ class Metric_Justification_Pragma(Justification_Pragma):
         assert t_metric.kind == "STRING"
         assert isinstance(n_reason, (String_Literal, Binary_Operation))
         assert isinstance(ticket_regex, str)
+        assert isinstance(ignore_pragmas_with_tickets, bool)
 
         self.t_metric = t_metric
         self.t_metric.set_ast(self)
@@ -2486,6 +2490,9 @@ class Metric_Justification_Pragma(Justification_Pragma):
             self.tickets = frozenset(match.group(0)
                                      for match in re.finditer(ticket_regex,
                                                               self.reason()))
+            if ignore_pragmas_with_tickets and self.tickets:
+                self.ignored = True
+                self.applies = True
         else:
             self.tickets = frozenset()
 

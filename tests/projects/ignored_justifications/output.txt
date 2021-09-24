@@ -1,0 +1,26 @@
+=== STYLE ===
+In Foo.m, line 1
+| function rv = Foo(a, b, c)
+|               ^^^ style: Could not find any copyright notice
+MISS_HIT Style Summary: 1 file(s) analysed, 1 style issue(s)
+=== LINT ===
+MISS_HIT Lint Summary: 1 file(s) analysed, everything seems fine
+=== METRICS ===
+In Foo.m, line 1
+| function rv = Foo(a, b, c)
+|               ^^^ metric: exceeded npath: measured 8 > limit 4
+=== Code metric by file:
+
+* Code metrics for file Foo.m:
+
+  Code metrics for function Foo:
+    Number of paths: 8 (!not justified!)
+
+=== Global summary of worst offenders by metric:
+
+* Function metric 'Number of paths':
+  1. 8 (Foo.m, function Foo)
+
+MISS_HIT Metric Summary: 1 file(s) analysed, 1 metric deviations(s)
+=== TRACING ===
+MISS_HIT Trace Summary: 1 file(s) analysed, everything seems fine

@@ -208,6 +208,8 @@ def apply_config(mh, options, dirname, exclusions_only=False):
             node.config.octave = True
         if options.ignore_pragmas:
             node.config.pragmas = False
+        if options.ignore_justifications_with_tickets:
+            node.config.ignore_pragmas_with_tickets = True
 
         # Specific options from mh_style:
         if "line_length" in options and options.line_length:

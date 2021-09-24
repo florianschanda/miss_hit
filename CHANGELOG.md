@@ -20,7 +20,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.28-dev
 
-
+* New command-line option for all tools (but only applicable for MH
+  Metric for now): `--ignore-justifications-with-tickets`. This option
+  can be used to ignore all justifications that quote a ticket. The
+  idea here is that these would be temporary justifications (e.g. "to
+  be fixed in ABC-123"), and you might want to check from time to time
+  how much technical debt you have.
 
 ### 0.9.27
 
