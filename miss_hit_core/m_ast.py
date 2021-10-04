@@ -2785,7 +2785,7 @@ class Unary_Operation(Expression):
         assert 1 <= precedence <= 12
         assert isinstance(t_op, MATLAB_Token)
         assert t_op.kind == "OPERATOR"
-        assert t_op.value in ("+", "-", "~", ".'", "'")
+        assert t_op.value in ("+", "-", "~", ".'", "'", "!")
         assert isinstance(n_expr, Expression)
 
         self.precedence = precedence

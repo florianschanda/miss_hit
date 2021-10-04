@@ -38,7 +38,8 @@ from miss_hit_core.config import Config
 from miss_hit import g_cfg
 
 
-def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
+def sanity_test(mh, filename, show_bt,
+                octave_mode, show_tree, show_dot, show_cfg):
     class CFG_Visitor(AST_Visitor):
         def visit(self, node, n_parent, relation):
             if isinstance(node, (Function_Definition, Script_File)):
@@ -54,6 +55,8 @@ def sanity_test(mh, filename, show_bt, show_tree, show_dot, show_cfg):
         content = fd.read()
     try:
         lexer = MATLAB_Lexer(mh, content, filename)
+        if octave_mode:
+            lexer.set_octave_mode()
         tbuf = Token_Buffer(lexer, Config())
         parser = MATLAB_Parser(mh,
                                tbuf,
@@ -105,6 +108,10 @@ def parser_test_main():
                     action="store_true",
                     default=False,
                     help="Create cfg with graphviz for each function")
+    ap.add_argument("--octave",
+                    action="store_true",
+                    default=False,
+                    help="Parse in Octave mode")
     options = ap.parse_args()
 
     mh = Message_Handler("debug")
@@ -113,6 +120,7 @@ def parser_test_main():
 
     sanity_test(mh, options.file,
                 not options.no_tb,
+                options.octave,
                 options.tree,
                 options.dot,
                 options.cfg)

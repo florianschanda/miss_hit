@@ -1,0 +1,9 @@
+----------------------------------------------------------------------
+--  Parse tree for test_3.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Naked_Expression_Statement
+      Expression: Escape form Function_Call
+        Arguments: Char_Array_Literal 'cd potato'
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

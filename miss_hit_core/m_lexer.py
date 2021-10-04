@@ -618,9 +618,10 @@ class MATLAB_Lexer(Token_Generator):
                     self.skip()
                     self.lex_error()
 
-            elif self.cc in ("<", ">", "=", "~"):
+            elif self.cc in ("<", ">", "=", "~") or \
+                 (self.cc == "!" and self.octave_mode):
                 # This is either a boolean relation, negation, or the
-                # assignment
+                # assignment. In Octave ! and != are also operators.
                 if self.nc == "=":
                     self.skip()
                     kind = "OPERATOR"
@@ -735,7 +736,7 @@ class MATLAB_Lexer(Token_Generator):
             elif self.cc == "@":
                 kind = "AT"
 
-            elif self.cc == "!":
+            elif self.cc == "!" and not self.octave_mode:
                 # Shell escapes go up to the end of the line
                 while self.nc not in ("\n", "\0"):
                     self.skip()

@@ -1535,8 +1535,10 @@ class MATLAB_Parser:
         return self.parse_precedence_2()
 
     # 4. Unary plus (+), unary minus (-), logical negation (~)
+    #
+    # In Octave ! is also the the logical negation operator.
     def parse_precedence_4(self):
-        if self.peek("OPERATOR") and self.nt.value in ("+", "-", "~"):
+        if self.peek("OPERATOR") and self.nt.value in ("+", "-", "~", "!"):
             self.match("OPERATOR")
             t_op = self.ct
             rhs = self.parse_precedence_4()
@@ -1598,13 +1600,16 @@ class MATLAB_Parser:
 
     # 8. Less than (<), less than or equal to (<=), greater than (>),
     #    greater than or equal to (>=), equal to (==), not equal to (~=)
+    #
+    # In Octave we also get != as not equal
     def parse_precedence_8(self):
         rv = self.parse_range_expression()
 
         chain_length = 1
         while self.peek("OPERATOR") and self.nt.value in ("<", "<=",
                                                           ">", ">=",
-                                                          "==", "~="):
+                                                          "==", "~=",
+                                                          "!="):
             chain_length += 1
             self.match("OPERATOR")
             t_op = self.ct

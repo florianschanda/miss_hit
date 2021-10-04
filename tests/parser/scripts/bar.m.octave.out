@@ -1,0 +1,23 @@
+----------------------------------------------------------------------
+--  Parse tree for bar.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <potato>
+      RHS: Reference
+        Name: Identifier <foo>
+        Arguments: Number_Literal <12>
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <kittens>
+      RHS: Number_Literal <42>
+  Functions: Function_Definition
+    Signature: Function_Signature
+      Name: Identifier <foo>
+      Inputs: Identifier <x>
+      Outputs: Identifier <y>
+    Body: Sequence_Of_Statements
+      Statements: Simple_Assignment_Statement
+        LHS: Identifier <y>
+        RHS: Identifier <x>
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

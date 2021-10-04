@@ -1,0 +1,4 @@
+In test_2.m, line 1
+| x = !1;
+|     ^^^ error: expected IDENTIFIER, found BANG instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

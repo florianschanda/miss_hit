@@ -1,0 +1,10 @@
+----------------------------------------------------------------------
+--  Parse tree for test_2.m
+Root: Script_File
+  Statements: Sequence_Of_Statements
+    Statements: Simple_Assignment_Statement
+      LHS: Identifier <x>
+      RHS: Unary_Operation !
+        Expression: Number_Literal <1>
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

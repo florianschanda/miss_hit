@@ -278,10 +278,21 @@ def execute_parser_test(name):
                         ["--no-tb",
                          "--tree",
                          f])
-        plain_out = r.stdout
+        plain_out_matlab = r.stdout
+
+        r = run_command("mh_debug_parser",
+                        ["--no-tb",
+                         "--tree",
+                         "--octave",
+                         f])
+        plain_out_octave = r.stdout
 
         with open(f + ".out", "w") as fd:
-            fd.write(plain_out)
+            fd.write(plain_out_matlab)
+        if plain_out_matlab != plain_out_octave:
+            with open(f + ".octave.out", "w") as fd:
+                fd.write(plain_out_octave)
+
 
     return "Ran parser test %s" % name
 

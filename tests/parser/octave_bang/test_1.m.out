@@ -1,0 +1,4 @@
+In test_1.m, line 1
+| 1 != 2
+|   ^^^^ error: expected end of statement, found BANG instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)

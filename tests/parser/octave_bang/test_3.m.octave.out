@@ -1,0 +1,4 @@
+In test_3.m, line 1
+| !cd potato
+|     ^^^^^^ error: expected end of statement, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 error(s)
