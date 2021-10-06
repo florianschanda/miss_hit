@@ -31,6 +31,7 @@
 
 import os
 
+from miss_hit_core import pathutil
 from miss_hit_core.cfg_parser import load_config
 from miss_hit_core.errors import ICE, Error, Location, Message_Handler
 from miss_hit_core.cfg_ast import *
@@ -327,7 +328,7 @@ def get_excluded_directories(dirname):
     elif not os.path.isdir(dirname):
         raise ICE("%s is not a directory" % dirname)
 
-    canonical_name = os.path.abspath(dirname)
+    canonical_name = pathutil.abspath(dirname)
     if canonical_name not in tree:
         raise ICE("%s was not registered" % dirname)
 
@@ -343,7 +344,7 @@ def get_config(filename):
     elif not os.path.isfile(filename):
         raise ICE("%s is not a file" % filename)
 
-    dirname = os.path.dirname(os.path.abspath(filename))
+    dirname = os.path.dirname(pathutil.abspath(filename))
     if dirname not in tree:
         raise ICE("%s was not registered" % dirname)
 
@@ -359,12 +360,12 @@ def register_item(mh, name, options):
 
     elif os.path.isfile(name):
         register_dir(mh, options,
-                     os.path.dirname(os.path.abspath(name)),
+                     os.path.dirname(pathutil.abspath(name)),
                      False)
 
     elif os.path.isdir(name):
         register_dir(mh, options,
-                     os.path.abspath(name),
+                     pathutil.abspath(name),
                      True)
 
     else:
@@ -374,7 +375,7 @@ def register_item(mh, name, options):
 def get_root(name):
     assert isinstance(name, str)
 
-    dirname = os.path.abspath(name)
+    dirname = pathutil.abspath(name)
     if dirname not in tree:
         raise ICE("%s was not registered" % dirname)
 
@@ -424,7 +425,7 @@ def get_test_path(n_item):
 
 
 def get_enclosing_ep(path):
-    ap = os.path.abspath(path)
+    ap = pathutil.abspath(path)
     for n_ep in project_names.values():
         if ap.startswith(n_ep.directory):
             return n_ep

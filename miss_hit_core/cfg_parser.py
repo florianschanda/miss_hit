@@ -38,6 +38,7 @@ import difflib
 import os.path
 from copy import deepcopy
 
+from miss_hit_core import pathutil
 from miss_hit_core import m_lexer
 from miss_hit_core.errors import ICE, Error, Location, Message_Handler
 from miss_hit_core.config import (STYLE_RULES, STYLE_CONFIGURATION,
@@ -69,7 +70,7 @@ class Config_Parser:
         assert isinstance(config_file, str)
 
         self.filename = config_file
-        self.dirname = os.path.dirname(os.path.abspath(config_file))
+        self.dirname = os.path.dirname(pathutil.abspath(config_file))
         self.mh = mh
 
         self.mh.register_file(self.filename)

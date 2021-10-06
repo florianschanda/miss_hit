@@ -33,6 +33,7 @@ import textwrap
 import multiprocessing
 import functools
 
+from miss_hit_core import pathutil
 from miss_hit_core import cfg_tree
 from miss_hit_core import errors
 from miss_hit_core import work_package
@@ -226,9 +227,9 @@ def execute(mh, options, extra_options, back_end,
             # different. We go find the project root and from there
             # build a config tree.
             cfg_tree.register_item(mh,
-                                   os.path.abspath("."),
+                                   pathutil.abspath("."),
                                    options)
-            prj_root = cfg_tree.get_root(os.path.abspath("."))
+            prj_root = cfg_tree.get_root(pathutil.abspath("."))
             cfg_tree.register_item(mh,
                                    prj_root,
                                    options)
@@ -282,9 +283,9 @@ def execute(mh, options, extra_options, back_end,
                 # only do that if they are part of _this_ entrypoint.
                 item_list = []
                 for item in options.files:
-                    if os.path.abspath(item) in code_in_path:
+                    if pathutil.abspath(item) in code_in_path:
                         item_list.append((False, item))
-                    elif os.path.abspath(item) in test_in_path:
+                    elif pathutil.abspath(item) in test_in_path:
                         item_list.append((True, item))
                     else:
                         mh.command_line_error("'%s' is not part of "
@@ -319,7 +320,7 @@ def execute(mh, options, extra_options, back_end,
             for in_test_dir, item in item_list:
                 if os.path.isdir(item) or os.path.isfile(item):
                     cfg_tree.register_item(mh,
-                                           os.path.abspath(item),
+                                           pathutil.abspath(item),
                                            options)
 
         mh.reset_seen()

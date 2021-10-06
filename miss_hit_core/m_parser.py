@@ -26,6 +26,7 @@
 
 import os
 
+from miss_hit_core import pathutil
 from miss_hit_core.config import Config, METRICS
 from miss_hit_core.errors import ICE, Message_Handler
 from miss_hit_core.m_ast import *
@@ -621,7 +622,7 @@ class MATLAB_Parser:
             l_functions, l_more_pragmas = self.parse_function_list()
             cunit = Function_File(os.path.basename(self.lexer.filename),
                                   os.path.dirname(
-                                      os.path.abspath(self.lexer.filename)),
+                                      pathutil.abspath(self.lexer.filename)),
                                   self.lexer.get_file_loc(),
                                   self.lexer.line_count(),
                                   l_functions,
@@ -670,7 +671,7 @@ class MATLAB_Parser:
 
         return Script_File(os.path.basename(self.lexer.filename),
                            os.path.dirname(
-                               os.path.abspath(self.lexer.filename)),
+                               pathutil.abspath(self.lexer.filename)),
                            self.lexer.get_file_loc(),
                            self.lexer.line_count(),
                            Sequence_Of_Statements(statements),
@@ -706,7 +707,7 @@ class MATLAB_Parser:
 
         return Script_File(os.path.basename(self.lexer.filename),
                            os.path.dirname(
-                               os.path.abspath(self.lexer.filename)),
+                               pathutil.abspath(self.lexer.filename)),
                            self.lexer.get_file_loc(),
                            self.lexer.line_count(),
                            Sequence_Of_Statements(statements),
@@ -721,7 +722,7 @@ class MATLAB_Parser:
 
         return Class_File(os.path.basename(self.lexer.filename),
                           os.path.dirname(
-                              os.path.abspath(self.lexer.filename)),
+                              pathutil.abspath(self.lexer.filename)),
                           self.lexer.get_file_loc(),
                           self.lexer.line_count(),
                           n_classdef,

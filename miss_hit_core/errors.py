@@ -29,6 +29,8 @@ import sys
 import html
 import json
 
+from miss_hit_core import pathutil
+
 
 class Location:
     """ This fully describes where a message originates from.
@@ -640,7 +642,7 @@ class HTML_Message_Handler(File_Based_Message_Handler):
                                                    "docs",
                                                    "style.css"),
                                       os.path.dirname(
-                                          os.path.abspath(self.filename))).
+                                          pathutil.abspath(self.filename))).
                       replace("\\", "/"))
         self.fd.write("<title>MISS_HIT Report</title>\n")
         self.fd.write("</head>\n")

@@ -28,6 +28,7 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 
+from miss_hit_core import pathutil
 from miss_hit_core.config import Config
 from miss_hit_core import m_ast
 
@@ -79,7 +80,7 @@ class Token_Generator(metaclass=ABCMeta):
         self.in_class_directory = \
            blockname is None and \
            os.path.basename(
-               os.path.dirname(os.path.abspath(filename))).startswith("@")
+               os.path.dirname(pathutil.abspath(filename))).startswith("@")
         # Make a note if this file resides inside a @ directory
 
         self.octave_mode = False

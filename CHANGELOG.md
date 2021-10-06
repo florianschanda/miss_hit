@@ -23,6 +23,13 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * Support the `!` and `!=` operators in Octave mode. In Octave mode we
   now also no longer parse `!` as if it was a MATLAB shell escape.
 
+* Work around an extremely weird bug on some Windows envionments. The
+  behaviour of os.path.abspath could sometimes differ, leading to
+  weird problems like parsing the same config file twice (and then
+  complaining about duplicate definitions). One known environment is
+  using a Windows Python in a git bash environment, but there may be
+  others. This is now hopefully fixed in all such cases.
+
 ### 0.9.28
 
 * New command-line option for all tools (but only applicable for MH

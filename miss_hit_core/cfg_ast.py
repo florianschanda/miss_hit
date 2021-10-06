@@ -30,6 +30,7 @@ from glob import glob
 
 from abc import ABCMeta, abstractmethod
 
+from miss_hit_core import pathutil
 from miss_hit_core.m_ast import MATLAB_Token
 from miss_hit_core.errors import Location, Message_Handler, ICE
 from miss_hit_core.config import (Config,
@@ -367,7 +368,7 @@ class Project_Directive(Config_Item):
 class Library_Declaration(Project_Directive):
     def __init__(self, location, directory, name=None):
         if name is None:
-            name = os.path.basename(os.path.abspath(directory))
+            name = os.path.basename(pathutil.abspath(directory))
         super().__init__(location, directory, name)
 
         self.path_list_source = Path_List(directory, True)

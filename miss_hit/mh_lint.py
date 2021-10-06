@@ -26,6 +26,7 @@
 
 import os
 
+from miss_hit_core import pathutil
 from miss_hit_core import command_line
 from miss_hit_core import work_package
 from miss_hit_core import cfg_tree
@@ -186,7 +187,7 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
         # Check compilation units for shadowing a built-in
         base_name = os.path.splitext(n_cu.name)[0]
         dir_name = os.path.basename(os.path.dirname(
-            os.path.abspath(wp.filename)))
+            pathutil.abspath(wp.filename)))
         if wp.cfg.active("builtin_shadow") and \
            base_name in BUILTIN_FUNCTIONS and \
            not (dir_name.startswith("+") or dir_name.startswith("@")):
