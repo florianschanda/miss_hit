@@ -812,7 +812,9 @@ class MATLAB_Lexer(Token_Generator):
                                     "enumeration", "arguments"):
                         self.in_special_section = True
 
-            elif kind == "KEYWORD" and raw_text == "end":
+            elif kind == "KEYWORD" and \
+                 raw_text == "end" and \
+                 self.first_in_statement:
                 if self.block_stack:
                     self.block_stack.pop()
                 self.in_special_section = False

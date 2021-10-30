@@ -1,0 +1,110 @@
+In Potato.m, line 1
+| % (c) Copyright 2021 Florian Schanda
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ info: [SL] COMMENT '(c) Copyright 2021 Florian Schanda'
+In Potato.m, line 1
+| % (c) Copyright 2021 Florian Schanda
+|                                     ^ info: NEWLINE
+In Potato.m, line 3
+| classdef Potato
+| ^^^^^^^^ info: [SL] KEYWORD
+In Potato.m, line 3
+| classdef Potato
+|          ^^^^^^ info: IDENTIFIER
+In Potato.m, line 3
+| classdef Potato
+|                ^ info: NEWLINE
+In Potato.m, line 5
+|     methods
+|     ^^^^^^^ info: [SL] KEYWORD
+In Potato.m, line 5
+|     methods
+|            ^ info: NEWLINE
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|         ^^^^^^^^ info: [SL] KEYWORD
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                  ^ info: IDENTIFIER
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                    ^ info: ASSIGNMENT
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                      ^^^ info: KEYWORD
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                         ^ info: BRA
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                          ^^^^ info: IDENTIFIER
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                              ^ info: COMMA
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                                ^ info: IDENTIFIER
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                                 ^ info: COMMA
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                                   ^ info: IDENTIFIER
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                                    ^ info: KET
+In Potato.m, line 7
+|         function n = end(this, k, n)
+|                                     ^ info: NEWLINE
+In Potato.m, line 8
+|             n = n + k;
+|             ^ info: [SL] IDENTIFIER
+In Potato.m, line 8
+|             n = n + k;
+|               ^ info: ASSIGNMENT
+In Potato.m, line 8
+|             n = n + k;
+|                 ^ info: IDENTIFIER
+In Potato.m, line 8
+|             n = n + k;
+|                   ^ info: OPERATOR
+In Potato.m, line 8
+|             n = n + k;
+|                     ^ info: IDENTIFIER
+In Potato.m, line 8
+|             n = n + k;
+|                      ^ info: SEMICOLON
+In Potato.m, line 8
+|             n = n + k;
+|                       ^ info: [S ] NEWLINE
+In Potato.m, line 9
+|         end
+|         ^^^ info: [SL] KEYWORD
+In Potato.m, line 9
+|         end
+|            ^ info: NEWLINE
+In Potato.m, line 11
+|     end
+|     ^^^ info: [SL] KEYWORD
+In Potato.m, line 11
+|     end
+|        ^ info: NEWLINE
+In Potato.m, line 13
+|     methods
+|     ^^^^^^^ info: [SL] KEYWORD
+In Potato.m, line 13
+|     methods
+|            ^ info: NEWLINE
+In Potato.m, line 15
+|     end
+|     ^^^ info: [SL] KEYWORD
+In Potato.m, line 15
+|     end
+|        ^ info: NEWLINE
+In Potato.m, line 17
+| end
+| ^^^ info: [SL] KEYWORD
+In Potato.m, line 17
+| end
+|    ^ info: NEWLINE
+Potato.m: lexed OK
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

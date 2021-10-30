@@ -20,7 +20,15 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.30-dev
 
+* Fix a lexing/parsing bug in all tools where classes containing more
+  than one methods block, with a function named `end` in one of the
+  blocks (but not the last one) would confuse the lexer in ending the
+  special treatment for words such as `methods` prematurely. This
+  manifested in a confusing error message pointing at `methods`
+  stating that we expect `methods`.
 
+  This is now fixed, and you can name functions `end` again, no matter
+  where.
 
 ### 0.9.29
 
