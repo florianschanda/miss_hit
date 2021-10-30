@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
-### 0.9.30-dev
+### 0.9.30
 
 * Fix a lexing/parsing bug in all tools where classes containing more
   than one methods block, with a function named `end` in one of the
