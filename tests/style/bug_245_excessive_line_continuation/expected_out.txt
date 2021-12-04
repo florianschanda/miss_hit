@@ -1,0 +1,154 @@
+=== PLAIN MODE ===
+test_1.m: style: violates naming scheme for scripts
+In test_1.m, line 3
+| a = b(...
+|       ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 4
+|     c(...
+|     ^ style: indentation not correct, should be 6 spaces, not 4 [fixed]
+In test_1.m, line 4
+|     c(...
+|       ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 5
+|     d(...
+|     ^ style: indentation not correct, should be 6 spaces, not 4 [fixed]
+In test_1.m, line 5
+|     d(...
+|       ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 6
+|     e(...
+|     ^ style: indentation not correct, should be 6 spaces, not 4 [fixed]
+In test_1.m, line 6
+|     e(...
+|       ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 7
+|     f(...
+|     ^ style: indentation not correct, should be 6 spaces, not 4 [fixed]
+In test_1.m, line 7
+|     f(...
+|       ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 8
+|     g(...
+|     ^ style: indentation not correct, should be 6 spaces, not 4 [fixed]
+In test_1.m, line 8
+|     g(...
+|       ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 9
+|     h...
+|     ^ style: indentation not correct, should be 6 spaces, not 4 [fixed]
+In test_1.m, line 9
+|     h...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 10
+|     )...
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+In test_1.m, line 10
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 11
+|     )...
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+In test_1.m, line 11
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 12
+|     )...
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+In test_1.m, line 12
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 13
+|     )...
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+In test_1.m, line 13
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 14
+|     )...
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+In test_1.m, line 14
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_1.m, line 15
+|     );
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+test_2.m: style: violates naming scheme for scripts
+test_3.m: style: violates naming scheme for scripts
+In test_3.m, line 3
+| a = foo(...
+|         ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 4
+|     potato(...
+|     ^^^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed]
+In test_3.m, line 4
+|     potato(...
+|            ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 5
+|     x(...
+|     ^ style: indentation not correct, should be 11 spaces, not 4 [fixed]
+In test_3.m, line 5
+|     x(...
+|       ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 6
+|     kitten_explosion(...
+|     ^^^^^^^^^^^^^^^^ style: indentation not correct, should be 6 spaces, not 4 [fixed]
+In test_3.m, line 6
+|     kitten_explosion(...
+|                      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 7
+|     wibble(...
+|     ^^^^^^ style: indentation not correct, should be 21 spaces, not 4 [fixed]
+In test_3.m, line 7
+|     wibble(...
+|            ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 8
+|     y(...
+|     ^ style: indentation not correct, should be 11 spaces, not 4 [fixed]
+In test_3.m, line 8
+|     y(...
+|       ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 9
+|     12345 ...
+|     ^^^^^ style: indentation not correct, should be 6 spaces, not 4 [fixed]
+In test_3.m, line 10
+|     )...
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+In test_3.m, line 10
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 11
+|     )...
+|     ^ style: indentation not correct, should be 10 spaces, not 4 [fixed]
+In test_3.m, line 11
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 12
+|     )...
+|     ^ style: indentation not correct, should be 20 spaces, not 4 [fixed]
+In test_3.m, line 12
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 13
+|     )...
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+In test_3.m, line 13
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 14
+|     )...
+|     ^ style: indentation not correct, should be 10 spaces, not 4 [fixed]
+In test_3.m, line 14
+|     )...
+|      ^^^^ style: continuation must be preceeded by whitespace [fixed]
+In test_3.m, line 15
+|     );
+|     ^ style: indentation not correct, should be 7 spaces, not 4 [fixed]
+test_4.m: style: violates naming scheme for scripts
+MISS_HIT Style Summary: 4 file(s) analysed, 51 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 4 file(s) analysed, 51 style issue(s)
+
+=== ! BROKEN FIXES ! ===
+Fixing is not idempotent for ./test_1.m
+Fixing is not idempotent for ./test_3.m
