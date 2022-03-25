@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2020, Florian Schanda                    ##
+##              Copyright (C) 2019-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -31,12 +31,15 @@ import copy
 import subprocess
 import multiprocessing
 import argparse
+import shutil
 
 TEST_ROOT = os.getcwd()
 MH_ROOT = os.path.normpath(os.path.join(TEST_ROOT, ".."))
 TEST_ENV = copy.copy(os.environ)
 TEST_ENV["PYTHONIOENCODING"] = "UTF-8"
 TEST_ENV["PYTHONPATH"] = MH_ROOT
+
+CBMC_AVILABLE=shutil.which("cbmc") is not None
 
 
 def run_command(command, args):
@@ -490,6 +493,8 @@ def run_test(test):
                                    "ONLY_LINUX")):
         if sys.platform != "linux":
             return "SKIPPED linux-only test %s" % test["test"]
+    elif test["kind"] == "bmc" and not CBMC_AVILABLE:
+        return "SKIPPED BMC test %s" % test["test"]
 
     # Set up in the correct directory
     os.chdir(os.path.join(TEST_ROOT,
