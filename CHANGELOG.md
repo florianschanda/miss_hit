@@ -26,6 +26,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   instead of `[1 -1]`. This could lead mh_style to change the meaning
   of the code. This issue affected both matrices and cells.
 
+* In some cases configuration files could be parsed in a different
+  order on different platforms. This makes no practical difference,
+  except for some error messages that would be slightly differently
+  worded. This can be visible in the internal MISS_HIT testsuite. This
+  is now fixed.
+
 ### 0.9.30
 
 * Fix a lexing/parsing bug in all tools where classes containing more

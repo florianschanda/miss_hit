@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020-2021, Florian Schanda                    ##
+##              Copyright (C) 2020-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -259,6 +259,7 @@ def apply_config_down(mh, options, dirname):
     if DEBUG_TRACE_TREE:
         print("Going down in %s" % dirname)
 
+    dirlist = []
     for dirent in os.scandir(dirname):
         # Only consider directories
         if not dirent.is_dir(follow_symlinks = False):
@@ -273,7 +274,11 @@ def apply_config_down(mh, options, dirname):
             continue
 
         child_dirname = os.path.join(dirname, dirent.name)
+        dirlist.append(child_dirname)
 
+    # We assemble the list of children first, and then sort to rule
+    # out platform/python differences. See #251 for example.
+    for child_dirname in sorted(dirlist):
         register_parent(mh, options, child_dirname)
         apply_config(mh, options, child_dirname)
         apply_config_down(mh, options, child_dirname)
