@@ -1,0 +1,32 @@
+In test2.m, line 1
+| {-1 -[1]}
+| ^ info: [SL] C_BRA
+In test2.m, line 1
+| {-1 -[1]}
+|  ^ info: OPERATOR
+In test2.m, line 1
+| {-1 -[1]}
+|   ^ info: NUMBER
+In test2.m, line 1
+| {-1<anon,> -[1]}
+|    ^^^^^^^ info: COMMA
+In test2.m, line 1
+| {-1 -[1]}
+|     ^ info: OPERATOR
+In test2.m, line 1
+| {-1 -[1]}
+|      ^ info: M_BRA
+In test2.m, line 1
+| {-1 -[1]}
+|       ^ info: NUMBER
+In test2.m, line 1
+| {-1 -[1]}
+|        ^ info: M_KET
+In test2.m, line 1
+| {-1 -[1]}
+|         ^ info: C_KET
+In test2.m, line 1
+| {-1 -[1]}
+|          ^ info: NEWLINE
+test2.m: lexed OK
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

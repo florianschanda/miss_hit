@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2021, Florian Schanda                    ##
+##              Copyright (C) 2019-2022, Florian Schanda                    ##
 ##              Copyright (C) 2019-2020, Zenuity AB                         ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -1143,9 +1143,9 @@ class MATLAB_Lexer(Token_Generator):
                 # .5 (we've ruled out everything else with .)
                 self.add_comma = True
             elif next_non_ws in "-+~":
-                if after_next_non_ws in ("+", "-", "("):
+                if after_next_non_ws in ("+", "-", "(", "[", "."):
                     self.add_comma = True
-                elif after_next_non_ws.isalnum() or after_next_non_ws == ".":
+                elif after_next_non_ws.isalnum():
                     # +6... -.1
                     self.add_comma = True
 
