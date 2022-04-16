@@ -1,0 +1,32 @@
+In test.m, line 1
+| [-.1 -~0] % should be [-.1 -1]
+| ^ info: [SL] M_BRA
+In test.m, line 1
+| [-.1 -~0] % should be [-.1 -1]
+|  ^ info: OPERATOR
+In test.m, line 1
+| [-.1 -~0] % should be [-.1 -1]
+|   ^^ info: NUMBER
+In test.m, line 1
+| [-.1<anon,> -~0] % should be [-.1 -1]
+|     ^^^^^^^ info: COMMA
+In test.m, line 1
+| [-.1 -~0] % should be [-.1 -1]
+|      ^ info: OPERATOR
+In test.m, line 1
+| [-.1 -~0] % should be [-.1 -1]
+|       ^ info: OPERATOR
+In test.m, line 1
+| [-.1 -~0] % should be [-.1 -1]
+|        ^ info: NUMBER
+In test.m, line 1
+| [-.1 -~0] % should be [-.1 -1]
+|         ^ info: M_KET
+In test.m, line 1
+| [-.1 -~0] % should be [-.1 -1]
+|           ^^^^^^^^^^^^^^^^^^^^ info: COMMENT 'should be [-.1 -1]'
+In test.m, line 1
+| [-.1 -~0] % should be [-.1 -1]
+|                               ^ info: NEWLINE
+test.m: lexed OK
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

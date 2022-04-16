@@ -1143,7 +1143,7 @@ class MATLAB_Lexer(Token_Generator):
                 # .5 (we've ruled out everything else with .)
                 self.add_comma = True
             elif next_non_ws in "-+~":
-                if after_next_non_ws in ("+", "-", "(", "[", "."):
+                if after_next_non_ws in ("+", "-", "(", "[", ".", "~"):
                     self.add_comma = True
                 elif after_next_non_ws.isalnum():
                     # +6... -.1

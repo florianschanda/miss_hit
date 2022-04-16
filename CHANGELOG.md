@@ -20,7 +20,13 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.32-dev
 
-
+* [*CORRECTNESS*] Fix another lexer bug where a matrix with a unary
+  minus in front did not correctly get interpreted as a separate
+  element in some cases. This could be seen in `[-.1 -~0]` which was
+  seen as `-1.1`, instead of `[-.1 -1]`. This could lead mh_style to
+  change the meaning of the code. You will notice that this is almost
+  the same as the bug in 0.9.31. I hate everything surrounding
+  matrices. I suspect this will not be the laste one like this.
 
 ### 0.9.31
 
