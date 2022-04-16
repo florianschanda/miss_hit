@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
-### 0.9.32-dev
+### 0.9.32
 
 * [*CORRECTNESS*] Fix another lexer bug where a matrix with a unary
   minus in front did not correctly get interpreted as a separate
