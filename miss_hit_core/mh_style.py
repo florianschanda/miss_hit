@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2021, Florian Schanda                    ##
+##              Copyright (C) 2019-2022, Florian Schanda                    ##
 ##              Copyright (C) 2019-2020, Zenuity AB                         ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -422,7 +422,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 enclosing_ast = None
             elif statement_start_token and \
                  statement_start_token.ast_link and \
-                 statement_start_token.ast_link.causes_indentation():
+                 statement_start_token.ast_link.causes_indentation(cfg):
                 # We've got a previous AST node. We remember it,
                 # and indent one level below it, but only if it is
                 # a statement that would create nesting.
@@ -816,9 +816,9 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                                             token.value != "{"):
                 if token.first_in_statement:
                     if token.ast_link:
-                        current_indent = token.ast_link.get_indentation()
+                        current_indent = token.ast_link.get_indentation(cfg)
                     elif enclosing_ast:
-                        current_indent = enclosing_ast.get_indentation() + 1
+                        current_indent = enclosing_ast.get_indentation(cfg) + 1
                     offset = 0
 
                 elif bracket_stack and \

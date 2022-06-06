@@ -1377,7 +1377,8 @@ class Token_Buffer(Token_Generator):
                        self.cfg.active("indentation"):
                         if new_tokens[-1].ast_link:
                             new_tokens[-1].fix.correct_indent = (
-                                new_tokens[-1].ast_link.get_indentation() *
+                                new_tokens[-1].ast_link.get_indentation(
+                                    self.cfg) *
                                 self.cfg.style_config["tab_width"])
 
         # Add newlines
@@ -1396,7 +1397,7 @@ class Token_Buffer(Token_Generator):
             if token.first_in_statement and \
                self.cfg.active("indentation") and \
                token.ast_link:
-                current_block_indent = token.ast_link.get_indentation()
+                current_block_indent = token.ast_link.get_indentation(self.cfg)
 
             # We've previously added a new-line. This means we need to
             # tidy up this token (specifically we need to indent it
@@ -1408,12 +1409,13 @@ class Token_Buffer(Token_Generator):
                 if self.cfg.active("indentation"):
                     if token.ast_link:
                         token.fix.correct_indent = (
-                            token.ast_link.get_indentation() *
+                            token.ast_link.get_indentation(self.cfg) *
                             self.cfg.style_config["tab_width"])
                     elif previous_token.ast_link and \
-                         not previous_token.ast_link.causes_indentation():
+                         not previous_token.ast_link.causes_indentation(
+                             self.cfg):
                         token.fix.correct_indent = (
-                            previous_token.ast_link.get_indentation() *
+                            previous_token.ast_link.get_indentation(self.cfg) *
                             self.cfg.style_config["tab_width"])
                     else:
                         token.fix.correct_indent = (

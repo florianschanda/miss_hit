@@ -20,6 +20,20 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.33-dev
 
+* Add a new configuration option "indent_function_file_body" for MH
+  Style. This is true by default. If you set it to false, then you get
+  the odd indentation style that somewhat common in the MATLAB world,
+  where functions in function files do not have their body indented.
+  For example:
+
+  ```
+  function z = Potato(w)
+  z = -w;
+  ```
+
+  Note that this option only affects top-level functions in function
+  files. Any other function (e.g. a method, or a nested function) is
+  not affected.
 
 
 ### 0.9.32

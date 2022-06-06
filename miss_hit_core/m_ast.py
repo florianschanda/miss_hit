@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2021, Florian Schanda                    ##
+##              Copyright (C) 2019-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -258,7 +258,7 @@ class Node:
     def pp_node(self, fd=None):
         self.visit(None, Text_Visitor(fd), "Root")
 
-    def causes_indentation(self):
+    def causes_indentation(self, cfg):
         if isinstance(self, If_Statement):
             # We do not indent for this, since the if actions
             # indent instead.
@@ -267,20 +267,26 @@ class Node:
         elif isinstance(self, (Action,
                                Special_Block,
                                Class_Definition,
-                               Function_Definition,
                                Compound_Statement)):
             return True
+
+        elif isinstance(self, Function_Definition):
+            if isinstance(self.n_parent, Function_File) and \
+               not cfg.style_config["indent_function_file_body"]:
+                return False
+            else:
+                return True
 
         else:
             return False
 
-    def get_indentation(self):
+    def get_indentation(self, cfg):
         # Indentation is the same level as the parent. + 1 if the
         # parent itself causes children to be indented.
 
         if self.n_parent:
-            indent = self.n_parent.get_indentation()
-            if self.n_parent.causes_indentation():
+            indent = self.n_parent.get_indentation(cfg)
+            if self.n_parent.causes_indentation(cfg):
                 indent += 1
         else:
             indent = 0

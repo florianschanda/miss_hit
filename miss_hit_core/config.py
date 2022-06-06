@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020-2021, Florian Schanda                    ##
+##              Copyright (C) 2020-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -409,6 +409,9 @@ STYLE_RULES = {
                 "Number of spaces to indent by.",
                 lower_limit = 2,
                 default = 4),
+            "indent_function_file_body" : Boolean_Style_Configuration(
+                "Indent the body of functions in a function file.",
+                default = True),
             "align_round_brackets" : Boolean_Style_Configuration(
                 "Align continuations inside normal brackets.",
                 default = True),

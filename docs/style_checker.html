@@ -649,6 +649,16 @@ x = some + ...
             this is 4.
           </li>
           <li>
+            <b>indent_function_file_body</b>: Indent the body of the
+            top-level functions in a function file. By default this is
+            true. What you get with this is sensibly and consistently
+            indented code. If you set it to false, then you get the
+            odd convention of NOT indenting the function body, which
+            appears to be somewhat common in the MATLAB world. This
+            only applies to functions in function files. Functions in
+            e.g. classes are always indented normally.
+          </li>
+          <li>
             <b>align_round_brackets</b>: Align continuations inside
             normal brackets to the opening brace. By default this is
             true.
