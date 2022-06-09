@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020-2021, Florian Schanda                    ##
+##              Copyright (C) 2020-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -346,6 +346,9 @@ def execute(mh, options, extra_options, back_end,
                     path = ""
 
                 for f in sorted(files):
+                    if not os.path.isfile(os.path.join(path, f)):
+                        # This removes broken symlinks
+                        continue
                     if f.endswith(".m") or (f.endswith(".slx") and
                                             process_slx):
                         work_list.append(

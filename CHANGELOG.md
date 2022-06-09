@@ -35,6 +35,8 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   files. Any other function (e.g. a method, or a nested function) is
   not affected.
 
+* Fix an issue where a broken symlink could cause the tools to crash
+  in some circumstances. Broken symlinks are now ignored.
 
 ### 0.9.32
 
