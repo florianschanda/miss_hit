@@ -20,6 +20,8 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.34-dev
 
+* Relaxed docstring recognition: now you can have blank lines (without
+  the comment indicator) in your docstring.
 
 
 ### 0.9.33

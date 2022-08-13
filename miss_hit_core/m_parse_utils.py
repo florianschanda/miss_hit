@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2021, Florian Schanda                         ##
+##              Copyright (C) 2021-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -61,7 +61,7 @@ def parse_docstrings(mh, cfg, parse_tree, tbuf):
             # to a non-comment token, or more than one newline.
             if token.kind == "COMMENT":
                 ast_node.add_comment(token)
-            elif token.kind == "NEWLINE" and token.value.count("\n") == 1:
+            elif token.kind == "NEWLINE":
                 pass
             else:
                 in_docstring = False
