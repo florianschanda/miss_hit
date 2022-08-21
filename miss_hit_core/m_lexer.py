@@ -33,7 +33,7 @@ from miss_hit_core.config import Config
 from miss_hit_core import m_ast
 
 from miss_hit_core.errors import Location, Error, Message_Handler, ICE
-from miss_hit_core.m_language import KEYWORDS, ANNOTATION_KEYWORDS
+from miss_hit_core.m_language import Language, MATLAB_Latest_Language
 
 # The 1999 technical report "The Design and Implementation of a Parser
 # and Scanner for the MATLAB Language in the MATCH Compiler" is a key
@@ -57,9 +57,7 @@ from miss_hit_core.m_language import KEYWORDS, ANNOTATION_KEYWORDS
 # A further difference between this lexer and the work outlined in the
 # TR is that we've based this on a newer MATLAB version. For example
 # issues such as [1.1.1] no longer exist which simplified the design
-# somewhat. We've also got a more complete set of features supported
-# (i.e. every single MATLAB 2019b+ feature should be working, except
-# for the .? construct).
+# somewhat. We've also got a more complete set of features supported.
 #
 # The whole concept of a separate lexing phase is put to an extreme
 # test in MATLAB. It would be "easier" if the lexer can parser could
@@ -70,10 +68,12 @@ from miss_hit_core.m_language import KEYWORDS, ANNOTATION_KEYWORDS
 
 
 class Token_Generator(metaclass=ABCMeta):
-    def __init__(self, filename, blockname=None):
+    def __init__(self, language, filename, blockname=None):
+        assert isinstance(language, Language)
         assert isinstance(filename, str)
         assert blockname is None or isinstance(blockname, str)
 
+        self.language  = language
         self.filename  = filename
         self.blockname = blockname
 
@@ -82,12 +82,6 @@ class Token_Generator(metaclass=ABCMeta):
            os.path.basename(
                os.path.dirname(pathutil.abspath(filename))).startswith("@")
         # Make a note if this file resides inside a @ directory
-
-        self.octave_mode = False
-        # If set to true, also deal with Octave's extensions to
-        # MATLAB.
-        #
-        # Note that this is highly incomplete right now.
 
     @abstractmethod
     def token(self):
@@ -105,8 +99,8 @@ class Token_Generator(metaclass=ABCMeta):
 
 
 class MATLAB_Lexer(Token_Generator):
-    def __init__(self, mh, content, filename, blockname=None):
-        super().__init__(filename, blockname)
+    def __init__(self, language, mh, content, filename, blockname=None):
+        super().__init__(language, filename, blockname)
         assert isinstance(content, str)
 
         self.text = content
@@ -164,19 +158,11 @@ class MATLAB_Lexer(Token_Generator):
         # things will be returned as strings, except for line
         # continuations. Comments and newlines end command form.
 
-        self.comment_char = frozenset("%")
-        # Characters that start a line comment. MATLAB only uses %,
-        # and Octave uses either.
-
         self.in_special_section = False
         # Some keywords (properties, attributes, etc.) introduce a
         # special section, in which the command_mode is never
         # activated. This section ends with the first 'end' keyword is
         # encountered.
-
-        self.config_file_mode = False
-        # We abuse this lexer to parse our config files. If this is
-        # set, we don't do command_mode or pragmas at all.
 
         self.process_pragmas = True
         # Process miss_hit pragmas. This could create parse errors for
@@ -199,15 +185,6 @@ class MATLAB_Lexer(Token_Generator):
 
         self.last_kind = None
         self.last_value = None
-
-    def set_octave_mode(self):
-        self.octave_mode = True
-        self.comment_char = frozenset("%#")
-
-    def set_config_file_mode(self):
-        self.config_file_mode = True
-        self.comment_char = frozenset("#")
-        self.process_pragmas = False
 
     def line_count(self):
         return len(self.context_line)
@@ -268,11 +245,11 @@ class MATLAB_Lexer(Token_Generator):
 
     def contains_block_open(self, string):
         return any(c + "{" in string
-                   for c in self.comment_char)
+                   for c in self.language.comment_chars)
 
     def contains_block_close(self, string):
         return any(c + "}" in string
-                   for c in self.comment_char)
+                   for c in self.language.comment_chars)
 
     def __token(self):
         # If we've been instructed to add an anonymous comma, we do
@@ -283,6 +260,7 @@ class MATLAB_Lexer(Token_Generator):
             fake_col = self.lexpos - self.col_offset + 1
             fake_line = fake_line[:fake_col] + "<anon,>" + fake_line[fake_col:]
             token = m_ast.MATLAB_Token(
+                self.language,
                 "COMMA",
                 ",",
                 Location(filename  = self.filename,
@@ -336,7 +314,7 @@ class MATLAB_Lexer(Token_Generator):
 
         elif self.command_mode:
             # Lexing in command mode
-            if self.cc in self.comment_char:
+            if self.cc in self.language.comment_chars:
                 # Comments go until the end of the line
                 kind = "COMMENT"
                 while self.nc not in ("\n", "\0"):
@@ -435,7 +413,7 @@ class MATLAB_Lexer(Token_Generator):
                             # line continuatins by accident.
                             break
 
-                        elif self.nc in self.comment_char:
+                        elif self.nc in self.language.comment_chars:
                             # Comments always terminate the string.
                             break
 
@@ -472,7 +450,7 @@ class MATLAB_Lexer(Token_Generator):
         else:
             # Ordinary lexing
 
-            if self.cc in self.comment_char and \
+            if self.cc in self.language.comment_chars and \
                self.nc == "|" and \
                self.first_in_line and \
                self.process_pragmas:
@@ -481,7 +459,7 @@ class MATLAB_Lexer(Token_Generator):
                 kind = "ANNOTATION"
                 self.skip()
 
-            elif self.cc in self.comment_char:
+            elif self.cc in self.language.comment_chars:
                 # Comments go until the end of the line
                 kind = "COMMENT"
                 while self.nc not in ("\n", "\0"):
@@ -515,13 +493,17 @@ class MATLAB_Lexer(Token_Generator):
                 else:
                     self.lex_error("expected . to complete continuation token")
 
-            elif self.cc.isalpha() or (self.octave_mode and self.cc == "_"):
+            elif self.cc.isalpha() or \
+                 (self.language.identifiers_starting_with_underscore and
+                  self.cc == "_"):
                 # Could be an identifier or keyword
                 kind = "IDENTIFIER"
                 while self.nc.isalnum() or self.nc == "_":
                     self.skip()
 
-            elif self.cc == "0" and self.nc in ("x", "X", "b", "B"):
+            elif self.cc == "0" and \
+                 self.nc in ("x", "X", "b", "B") and \
+                 self.language.hex_literals:
                 # Hex and binary literals are quite a bit different to
                 # normal numbers. If we see the starting 2 characters
                 # we definitely try to lex or error, which seems
@@ -620,7 +602,7 @@ class MATLAB_Lexer(Token_Generator):
                     self.lex_error()
 
             elif self.cc in ("<", ">", "=", "~") or \
-                 (self.cc == "!" and self.octave_mode):
+                 (self.cc == "!" and self.language.bang_is_negation):
                 # This is either a boolean relation, negation, or the
                 # assignment. In Octave ! and != are also operators.
                 if self.nc == "=":
@@ -643,7 +625,9 @@ class MATLAB_Lexer(Token_Generator):
                 kind = "OPERATOR"
                 self.skip()
 
-            elif self.cc == "." and self.nc == "?":
+            elif self.cc == "." and \
+                 self.nc == "?" and \
+                 self.language.has_nvp_delegate:
                 kind = "NVP_DELEGATE"
                 self.skip()
 
@@ -737,7 +721,7 @@ class MATLAB_Lexer(Token_Generator):
             elif self.cc == "@":
                 kind = "AT"
 
-            elif self.cc == "!" and not self.octave_mode:
+            elif self.cc == "!" and not self.language.bang_is_negation:
                 # Shell escapes go up to the end of the line
                 while self.nc not in ("\n", "\0"):
                     self.skip()
@@ -763,9 +747,11 @@ class MATLAB_Lexer(Token_Generator):
         # Classify keywords, except after selections. That way we
         # permit structure fields with names like "function".
         if kind == "IDENTIFIER" and self.last_kind != "SELECTION":
-            if self.in_annotation and raw_text in ANNOTATION_KEYWORDS:
+            if self.in_annotation and \
+               raw_text in self.language.annotation_keywords:
                 kind = "KEYWORD"
-            elif not self.in_annotation and raw_text in KEYWORDS:
+            elif not self.in_annotation and \
+                 raw_text in self.language.keywords:
                 kind = "KEYWORD"
 
         # Keep track of blocks, and special sections where
@@ -787,30 +773,20 @@ class MATLAB_Lexer(Token_Generator):
                 elif self.block_stack[-1] == "classdef":
                     # Directly inside a classdef, we have 4 extra
                     # keywords
-                    extra_kw = {"properties",
-                                "enumeration",
-                                "events",
-                                "methods"}
-                elif self.block_stack[-1] in ("properties",
-                                              "enumeration",
-                                              "events"):
+                    extra_kw = self.language.class_keywords
+                elif self.block_stack[-1] != "methods" and \
+                     self.block_stack[-1] in self.language.class_keywords:
                     # In three of the four class blocks, these
                     # keywords persist
-                    extra_kw = {"properties",
-                                "enumeration",
-                                "events",
-                                "methods"}
+                    extra_kw = self.language.class_keywords
                 elif self.block_stack[-1] == "function":
                     # Inside functions we add the arguments block as
                     # an extra keyword
-                    extra_kw = {"arguments"}
+                    extra_kw = self.language.function_contract_keywords
 
                 if raw_text in extra_kw:
                     kind = "KEYWORD"
                     self.block_stack.append(raw_text)
-                    if raw_text in ("properties", "events",
-                                    "enumeration", "arguments"):
-                        self.in_special_section = True
 
             elif kind == "KEYWORD" and \
                  raw_text == "end" and \
@@ -821,6 +797,10 @@ class MATLAB_Lexer(Token_Generator):
                 # TODO: Silent error if we can't match blocks? Or
                 # complain loudly?
 
+        if kind == "KEYWORD" and raw_text in ("properties", "events",
+                                              "enumeration", "arguments"):
+            self.in_special_section = True
+
         if self.line - 1 < len(self.context_line):
             ctx_line = self.context_line[self.line - 1]
         else:
@@ -830,7 +810,8 @@ class MATLAB_Lexer(Token_Generator):
         ######################################################################
         # Create token
 
-        token = m_ast.MATLAB_Token(kind,
+        token = m_ast.MATLAB_Token(self.language,
+                                   kind,
                                    raw_text,
                                    Location(filename  = self.filename,
                                             blockname = self.blockname,
@@ -863,7 +844,7 @@ class MATLAB_Lexer(Token_Generator):
 
         # Detect if we should enter command form. If the next
         # character is not a space, it's never a command.
-        if not self.config_file_mode and \
+        if self.language.allow_command_form and \
            not self.in_special_section and \
            not self.in_annotation and \
            token.first_in_statement and \
@@ -978,8 +959,9 @@ class MATLAB_Lexer(Token_Generator):
                               "ignored block comment: no text must appear"
                               " after the {",
                               "low")
-            elif token.raw_text.strip() not in ["%s{" % c
-                                                for c in self.comment_char]:
+            elif token.raw_text.strip() not in \
+                 ["%s{" % c
+                  for c in self.language.comment_chars]:
                 self.mh.check(token.location,
                               "ignored block comment: no text must appear"
                               " around the block comment marker",
@@ -989,7 +971,7 @@ class MATLAB_Lexer(Token_Generator):
                 token.block_comment = True
 
         elif self.block_comment and token.kind == "COMMENT":
-            for c in self.comment_char:
+            for c in self.language.comment_chars:
                 marker = c + "}"
                 if marker in token.raw_text:
                     if token.raw_text.strip() == marker:
@@ -1033,7 +1015,7 @@ class MATLAB_Lexer(Token_Generator):
 
         # Determine if whitespace is currently significant (i.e. we're
         # in a matrix).
-        ws_is_significant = (not self.config_file_mode and
+        ws_is_significant = (not self.language.ws_insignificant and
                              self.bracket_stack and
                              self.bracket_stack[-1].kind in ("M_BRA",
                                                              "C_BRA") and
@@ -1124,7 +1106,7 @@ class MATLAB_Lexer(Token_Generator):
                 # NEWLINE
                 # SEMICOLON
                 pass
-            elif next_non_ws in self.comment_char:
+            elif next_non_ws in self.language.comment_chars:
                 # COMMENT
                 pass
             elif next_non_ws.isalnum():
@@ -1218,15 +1200,13 @@ class Token_Buffer(Token_Generator):
     def __init__(self, lexer, cfg):
         assert isinstance(lexer, MATLAB_Lexer)
         assert isinstance(cfg, Config)
-        super().__init__(lexer.filename, lexer.blockname)
+        super().__init__(lexer.language, lexer.filename, lexer.blockname)
 
         self.cfg = cfg
         self.pos = 0
         self.tokens = []
         self.mh = lexer.mh
         self.lines = lexer.line_count()
-        self.comment_char = lexer.comment_char
-        self.octave_mode = lexer.octave_mode
 
         while True:
             tok = lexer.token()
@@ -1429,7 +1409,8 @@ class Token_Buffer(Token_Generator):
                     token.value += "\n"
                 else:
                     newline_added = True
-                    new_tokens.append(m_ast.MATLAB_Token("NEWLINE", "\n",
+                    new_tokens.append(m_ast.MATLAB_Token(self.language,
+                                                         "NEWLINE", "\n",
                                                          token.location,
                                                          False, False,
                                                          anonymous = True))
@@ -1542,7 +1523,8 @@ def sanity_test(mh, filename):
     with open(filename, "r") as fd:
         content = fd.read()
     try:
-        lexer = MATLAB_Lexer(mh, content, filename)
+        language = MATLAB_Latest_Language()
+        lexer = MATLAB_Lexer(language, mh, content, filename)
         lexer.debug_comma = True
         while True:
             tok = lexer.token()

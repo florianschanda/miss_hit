@@ -1,10 +1,6 @@
 % (c) Copyright 2021 Florian Schanda
 
 function rv = Valid_6 (x)
-    arguments
-        x uint32
-    end
-
     import Potato.Kitten
 
     global y

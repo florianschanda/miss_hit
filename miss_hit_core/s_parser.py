@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2020-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -38,6 +38,7 @@ from abc import ABCMeta, abstractmethod
 from miss_hit_core.config import Config
 from miss_hit_core.s_ast import *
 from miss_hit_core.errors import Message_Handler, ICE
+from miss_hit_core.m_language import MATLAB_Latest_Language
 
 # pylint: disable=invalid-name
 anatomy = {}
@@ -484,7 +485,8 @@ def sanity_test(mh, filename, _):
         mh.info(n_block.loc(),
                 "block contains %u lines of MATLAB" %
                 len(n_block.get_text().splitlines()))
-        lexer = m_lexer.MATLAB_Lexer(mh,
+        lexer = m_lexer.MATLAB_Lexer(MATLAB_Latest_Language(),
+                                     mh,
                                      n_block.get_text(),
                                      filename,
                                      n_block.local_name())

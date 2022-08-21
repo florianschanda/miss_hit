@@ -2,7 +2,7 @@
 test_1.m: error: file is not auto-fixed because it contains parse errors
 In test_1.m, line 5
 | function z = f(x, a)
-|              ^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use the --octave mode
+|              ^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
 test_2.m: style: violates naming scheme for scripts
 In test_2.m, line 1
 | % Taken from issue #199 (by alvinseville7cf)

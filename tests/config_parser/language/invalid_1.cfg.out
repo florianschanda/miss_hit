@@ -1,0 +1,32 @@
+In invalid_1.cfg, line 1
+| octave: false
+|         ^^^^^ error: A value of 'false' makes no sense here; use "latest" or a specific version.
+In invalid_1.cfg, line 2
+| octave: "2017b"
+|         ^^^^^^^ error: Octave version must be MAJOR.MINOR, e.g. 4.4
+In invalid_1.cfg, line 3
+| octave: "3.0"
+|         ^^^^^ error: earliest Octave language supported is 4.2
+In invalid_1.cfg, line 4
+| octave: "4.x"
+|         ^^^^^ error: Octave version must be MAJOR.MINOR, e.g. 4.4
+In invalid_1.cfg, line 5
+| octave: "99.0"
+|         ^^^^^^ error: latest Octave language supported is 7.2
+In invalid_1.cfg, line 7
+| matlab: false
+|         ^^^^^ error: A value of 'false' makes no sense here; use "latest" or a specific version.
+In invalid_1.cfg, line 8
+| matlab: "4.4"
+|         ^^^^^ error: MATLAB version must be YEAR[ab], e.g. 2017b
+In invalid_1.cfg, line 9
+| matlab: "2017a"
+|         ^^^^^^^ error: earliest MATLAB language supported is 2017b
+In invalid_1.cfg, line 10
+| matlab: "2017c"
+|         ^^^^^^^ error: MATLAB version must be YEAR[ab], e.g. 2017b
+In invalid_1.cfg, line 11
+| matlab: "2099b"
+|         ^^^^^^^ error: latest MATLAB language supported is 2022a
+invalid_1.cfg: error: config file contains errors
+MISS_HIT Debug Summary: 1 file(s) analysed, 11 error(s)

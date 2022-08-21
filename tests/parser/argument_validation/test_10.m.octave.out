@@ -1,0 +1,16 @@
+In test_10.m, line 4
+|     arguments (Repeating)
+|                         ^ style: end statement with a semicolon
+In test_10.m, line 5
+|         x double
+|           ^^^^^^ style: end statement with a semicolon
+In test_10.m, line 6
+|         y double
+|           ^^^^^^ style: end statement with a semicolon
+In test_10.m, line 7
+|         option {mustBeMember(option,["linear","cubic"])}
+|                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: end statement with a semicolon
+In test_10.m, line 12
+|     xCell = x;
+|     ^^^^^ error: expected end of file, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 4 style issue(s), 1 error(s)

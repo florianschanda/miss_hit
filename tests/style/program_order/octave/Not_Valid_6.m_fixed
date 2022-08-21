@@ -1,10 +1,6 @@
 % (c) Copyright 2021 Florian Schanda
 
 function rv = Not_Valid_6 (x)
-    arguments
-        x uint32
-    end
-
     global y
     persistent z
     global w

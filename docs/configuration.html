@@ -474,7 +474,7 @@ CONFIG_FILE ::= { DIRECTIVE } EOF_OF_FILE
 
       <h3>INTEGER</h3>
       <div>
-	Grammar: <pre>STRING ::= &lt;non-negative-integer&gt;</pre>
+	Grammar: <pre>INTEGER ::= &lt;non-negative-integer&gt;</pre>
       </div>
     </section>
 
@@ -578,16 +578,32 @@ METRIC_LIMIT ::= metric METRIC_OR_WC ':' report
 
       <h3>Language dialect</h3>
       <div>
-	Grammar: <pre>DIALECT ::= octave ':' BOOLEAN</pre>
+	Grammar:
+<pre>
+DIALECT ::= octave ':' STRING
+          | matlab ':' STRING
+</pre>
       </div>
       <div>
 	This directive controls which language is processed by
-	MISS_HIT. By default we process MATLAB, but if this is set to
-	true we instead process Octave.
+	MISS_HIT. By default we process MATLAB (latest). Note that
+	specifying the dialect option more than once just means the
+	most recent one takes effect, which is the same for any other
+	option.
       </div>
       <div>
-	Please note that Octave support is limited right now, but I
-	consider it a medium/long term priority.
+        The MATLAB version string can be "latest" or a YEAR[ab]
+        string, such as "2017b". The earliest MATLAB supported is
+        2017b. The latest MATLAB supported is 2022a.
+      </div>
+      <div>
+        The OCTAVE version string can be "latest" or a MAJOR.MINOR
+        string, such as "4.4". The earliest Octave supported is
+        4.2. The latest Octave supported is 7.2. Please note that
+        Octave support is extremely limited right now, but I consider
+        it a medium/long term priority. Many features are missing,
+        such as the specific end keywords, the treatment of strings,
+        default arguments, increments, unwind protect, etc.
       </div>
 
       <h3><a name="exclude_dir"></a>Directory exclusion</h3>
@@ -691,7 +707,7 @@ ENTRYPOINT_PROPERTY ::= libraries '{' OPTIONAL_STRING_LIST '}'
   </main>
 
   <footer>
-    Content &copy; 2020 Florian Schanda<br>
+    Content &copy; 2020-2022 Florian Schanda<br>
     Style &copy; 2019-2020 Alina Boboc<br>
     MISS_HIT is licensed under the GPLv3
   </footer>

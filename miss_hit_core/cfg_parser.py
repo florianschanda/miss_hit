@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020-2021, Florian Schanda                    ##
+##              Copyright (C) 2020-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -40,6 +40,9 @@ from copy import deepcopy
 
 from miss_hit_core import pathutil
 from miss_hit_core import m_lexer
+from miss_hit_core.m_language import (Config_Language,
+                                      Base_MATLAB_Language,
+                                      Base_Octave_Language)
 from miss_hit_core.errors import ICE, Error, Location, Message_Handler
 from miss_hit_core.config import (STYLE_RULES, STYLE_CONFIGURATION,
                                   METRICS,
@@ -52,23 +55,13 @@ from miss_hit_core.config import (STYLE_RULES, STYLE_CONFIGURATION,
                                   Set_Style_Configuration)
 from miss_hit_core.cfg_ast import *
 
-KEYWORDS = ["metric",
-            "enable",
-            "enable_rule",
-            "suppress_rule",
-            "exclude_dir",
-            "project_root",
-            "octave",
-            "entrypoint",
-            "library",
-            "global"]
-
 
 class Config_Parser:
     def __init__(self, mh, config_file):
         assert isinstance(mh, Message_Handler)
         assert isinstance(config_file, str)
 
+        self.language = Config_Language()
         self.filename = config_file
         self.dirname = os.path.dirname(pathutil.abspath(config_file))
         self.mh = mh
@@ -76,8 +69,9 @@ class Config_Parser:
         self.mh.register_file(self.filename)
         with open(config_file, "r") as fd:
             content = fd.read()
-        self.lexer = m_lexer.MATLAB_Lexer(mh, content, self.filename)
-        self.lexer.set_config_file_mode()
+        self.lexer = m_lexer.MATLAB_Lexer(self.language,
+                                          mh, content, self.filename)
+        self.lexer.process_pragmas = False
 
         # pylint: disable=invalid-name
         self.ct = None
@@ -163,34 +157,35 @@ class Config_Parser:
     def parse_config_item(self):
         n_item = None
 
-        if self.peek("IDENTIFIER", "metric"):
+        if self.peek("KEYWORD", "metric"):
             n_item = self.parse_metric_limit()
 
-        elif self.peek("IDENTIFIER", "enable"):
+        elif self.peek("KEYWORD", "enable"):
             n_item = self.parse_simple_enable()
 
-        elif self.peek("IDENTIFIER", "enable_rule") or \
-             self.peek("IDENTIFIER", "suppress_rule"):
+        elif self.peek("KEYWORD", "enable_rule") or \
+             self.peek("KEYWORD", "suppress_rule"):
             n_item = self.parse_style_application()
 
-        elif self.peek("IDENTIFIER", "exclude_dir"):
+        elif self.peek("KEYWORD", "exclude_dir"):
             n_item = self.parse_directory_exclusion()
 
-        elif self.peek("IDENTIFIER", "project_root"):
+        elif self.peek("KEYWORD", "project_root"):
             n_item = self.parse_project_root()
 
-        elif self.peek("IDENTIFIER", "octave"):
-            n_item = self.parse_octave_mode()
+        elif self.peek("KEYWORD", "octave") or \
+             self.peek("KEYWORD", "matlab"):
+            n_item = self.parse_language_mode()
 
-        elif self.peek("IDENTIFIER", "entrypoint"):
+        elif self.peek("KEYWORD", "entrypoint"):
             n_item = self.parse_entrypoint()
 
-        elif self.peek("IDENTIFIER", "library"):
+        elif self.peek("KEYWORD", "library"):
             n_item = self.parse_library()
 
         elif self.peek("KEYWORD", "global"):
             self.match("KEYWORD", "global")
-            if self.peek("IDENTIFIER", "library"):
+            if self.peek("KEYWORD", "library"):
                 n_item = self.parse_library()
                 n_item.set_global()
             else:
@@ -277,14 +272,14 @@ class Config_Parser:
             self.mh.error(self.ct.location, "expected true or false")
 
     def parse_simple_enable(self):
-        self.match("IDENTIFIER", "enable")
+        self.match("KEYWORD", "enable")
         self.match("COLON")
         value = self.parse_boolean()
 
         return Activation(value)
 
     def parse_style_application(self):
-        self.match("IDENTIFIER")
+        self.match("KEYWORD")
         if self.ct.value == "enable_rule":
             enabled = True
         elif self.ct.value == "suppress_rule":
@@ -315,7 +310,7 @@ class Config_Parser:
             msg = "expected valid style configuration name"
             suggestions = difflib.get_close_matches(
                 config_name,
-                list(STYLE_CONFIGURATION) + KEYWORDS,
+                list(STYLE_CONFIGURATION) + list(self.language.keywords),
                 n=1)
             if suggestions:
                 msg += " (did you mean %s?)" % suggestions[0]
@@ -367,7 +362,7 @@ class Config_Parser:
         return Style_Configuration(config_name, value)
 
     def parse_directory_exclusion(self):
-        self.match("IDENTIFIER", "exclude_dir")
+        self.match("KEYWORD", "exclude_dir")
         self.match("COLON")
         value = self.parse_string()
 
@@ -387,7 +382,7 @@ class Config_Parser:
         return rv
 
     def parse_metric_limit(self):
-        self.match("IDENTIFIER", "metric")
+        self.match("KEYWORD", "metric")
 
         if self.peek("OPERATOR", "*"):
             self.match("OPERATOR", "*")
@@ -406,16 +401,16 @@ class Config_Parser:
 
         self.match("COLON")
 
-        if self.peek("IDENTIFIER", "disable"):
-            self.match("IDENTIFIER", "disable")
+        if self.peek("KEYWORD", "disable"):
+            self.match("KEYWORD", "disable")
             return Metric_Limit(metric_name, False)
 
-        elif self.peek("IDENTIFIER", "report"):
-            self.match("IDENTIFIER", "report")
+        elif self.peek("KEYWORD", "report"):
+            self.match("KEYWORD", "report")
             return Metric_Limit(metric_name, True)
 
-        elif self.peek("IDENTIFIER", "limit"):
-            self.match("IDENTIFIER", "limit")
+        elif self.peek("KEYWORD", "limit"):
+            self.match("KEYWORD", "limit")
             if metric_name == "*":
                 self.mh.error(self.ct.location,
                               "cannot apply limit to all metrics")
@@ -432,17 +427,52 @@ class Config_Parser:
                               "expected disable|report|limit")
 
     def parse_project_root(self):
-        self.match("IDENTIFIER", "project_root")
+        self.match("KEYWORD", "project_root")
         return Project_Root()
 
-    def parse_octave_mode(self):
-        self.match("IDENTIFIER", "octave")
+    def parse_language_mode(self):
+        if self.peek("KEYWORD", "matlab"):
+            self.match("KEYWORD", "matlab")
+            base = "matlab"
+        else:
+            self.match("KEYWORD", "octave")
+            base = "octave"
+
         self.match("COLON")
-        value = self.parse_boolean()
-        return Octave_Mode(value)
+
+        if self.peek("NUMBER") or \
+           self.peek("IDENTIFIER", "false") or \
+           self.peek("IDENTIFIER", "true"):
+            value = self.parse_boolean()
+            if value:
+                self.mh.warning(self.ct.location,
+                                "This usage is deprecated."
+                                " Change to \"latest\"")
+            else:
+                self.mh.error(self.ct.location,
+                              "A value of 'false' makes no sense here;"
+                              " use \"latest\" or a specific version.")
+            rv = Language_Version(base, "latest")
+
+        else:
+            self.match("STRING")
+            try:
+                if base == "matlab":
+                    major, minor = Base_MATLAB_Language.parse_version(
+                        self.ct.value)
+                else:
+                    major, minor = Base_Octave_Language.parse_version(
+                        self.ct.value)
+                rv = Language_Version(base, major, minor)
+            except ValueError as verr:
+                self.mh.error(self.ct.location,
+                              verr.args[0])
+
+        rv.assign_language(self.mh, self.ct.location)
+        return rv
 
     def parse_entrypoint(self):
-        self.match("IDENTIFIER", "entrypoint")
+        self.match("KEYWORD", "entrypoint")
         self.match("STRING")
         rv = Entrypoint_Declaration(self.ct.location,
                                     self.dirname,
@@ -450,15 +480,15 @@ class Config_Parser:
         self.match("C_BRA")
 
         while not (self.peek("C_KET") or self.peek_eof()):
-            if self.peek("IDENTIFIER", "libraries"):
+            if self.peek("KEYWORD", "libraries"):
                 for t_lib in self.parse_lib_dependencies():
                     rv.add_lib_dependency(self.mh, t_lib)
-            elif self.peek("IDENTIFIER", "paths"):
-                self.match("IDENTIFIER", "paths")
+            elif self.peek("KEYWORD", "paths"):
+                self.match("KEYWORD", "paths")
                 for t_path in self.parse_lib_paths():
                     rv.add_source_path(self.mh, t_path)
-            elif self.peek("IDENTIFIER", "tests"):
-                self.match("IDENTIFIER", "tests")
+            elif self.peek("KEYWORD", "tests"):
+                self.match("KEYWORD", "tests")
                 for t_path in self.parse_lib_paths():
                     rv.add_test_path(self.mh, t_path)
             else:
@@ -469,7 +499,7 @@ class Config_Parser:
         return rv
 
     def parse_library(self):
-        self.match("IDENTIFIER", "library")
+        self.match("KEYWORD", "library")
         if self.peek("STRING"):
             self.match("STRING")
             name = self.ct.value
@@ -482,12 +512,12 @@ class Config_Parser:
         self.match("C_BRA")
 
         while not (self.peek("C_KET") or self.peek_eof()):
-            if self.peek("IDENTIFIER", "paths"):
-                self.match("IDENTIFIER", "paths")
+            if self.peek("KEYWORD", "paths"):
+                self.match("KEYWORD", "paths")
                 for t_path in self.parse_lib_paths():
                     rv.add_source_path(self.mh, t_path)
-            elif self.peek("IDENTIFIER", "tests"):
-                self.match("IDENTIFIER", "tests")
+            elif self.peek("KEYWORD", "tests"):
+                self.match("KEYWORD", "tests")
                 for t_path in self.parse_lib_paths():
                     rv.add_test_path(self.mh, t_path)
             else:
@@ -499,7 +529,7 @@ class Config_Parser:
 
     def parse_lib_dependencies(self):
         rv = []
-        self.match("IDENTIFIER", "libraries")
+        self.match("KEYWORD", "libraries")
         self.match("C_BRA")
         while self.peek("STRING"):
             self.match("STRING")

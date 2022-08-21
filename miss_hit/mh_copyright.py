@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2021, Florian Schanda                         ##
+##              Copyright (C) 2021-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -33,6 +33,7 @@ from miss_hit_core.errors import Error, Message_Handler, ICE
 from miss_hit_core.m_lexer import MATLAB_Lexer, Token_Buffer
 from miss_hit_core.m_parser import MATLAB_Parser
 from miss_hit_core.m_parse_utils import parse_docstrings
+from miss_hit_core.m_language import Base_Octave_Language
 
 
 def get_primary_entity(options, cfg):
@@ -109,9 +110,11 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
         content = wp.get_content()
 
         # Create lexer
-        lexer = MATLAB_Lexer(wp.mh, content, wp.filename, wp.blockname)
-        if wp.cfg.octave:
-            lexer.set_octave_mode()
+        lexer = MATLAB_Lexer(wp.cfg.language,
+                             wp.mh,
+                             content,
+                             wp.filename,
+                             wp.blockname)
         if not wp.cfg.pragmas:  # pragma: no cover
             lexer.process_pragmas = False
 
@@ -284,7 +287,7 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
 
                     if wp.options.style == "c_first" or \
                        (wp.options.style == "dynamic" and
-                        not wp.cfg.octave):
+                        not isinstance(wp.cfg.language, Base_Octave_Language)):
                         copy_notice = "(c) Copyright"
                     else:
                         copy_notice = "Copyright (c)"

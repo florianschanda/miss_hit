@@ -30,7 +30,7 @@ import os
 from copy import copy
 
 from miss_hit_core.config import Config
-from miss_hit_core.m_language import TOKEN_KINDS
+from miss_hit_core.m_language import Language
 from miss_hit_core.m_language_builtins import HIGH_IMPACT_BUILTIN_FUNCTIONS
 from miss_hit_core.errors import Message_Handler, ICE, Location
 
@@ -38,22 +38,6 @@ from miss_hit_core.errors import Message_Handler, ICE, Location
 ##############################################################################
 # Lexical tokens
 ##############################################################################
-
-TOKENS_WITH_IMPLICIT_VALUE = frozenset([
-    "COMMA",
-    "SEMICOLON",
-    "COLON",
-    "BRA", "KET",      # ( )
-    "C_BRA", "C_KET",  # { }
-    "M_BRA", "M_KET",  # [ ] for matrices
-    "A_BRA", "A_KET",  # [ ] for assignment targets
-    "ASSIGNMENT",
-    "SELECTION",
-    "AT",
-    "METACLASS"
-])
-assert TOKENS_WITH_IMPLICIT_VALUE <= TOKEN_KINDS
-
 
 class Autofix_Instruction:
     def __init__(self):
@@ -114,6 +98,7 @@ class Autofix_Instruction:
 
 class MATLAB_Token:
     def __init__(self,
+                 language,
                  kind,
                  raw_text,
                  location,
@@ -124,7 +109,8 @@ class MATLAB_Token:
                  contains_quotes = False,
                  block_comment = False,
                  annotation = False):
-        assert kind in TOKEN_KINDS
+        assert isinstance(language, Language)
+        assert kind in language.token_kinds
         assert isinstance(raw_text, str)
         assert isinstance(location, Location)
         assert isinstance(first_in_line, bool)
@@ -146,7 +132,7 @@ class MATLAB_Token:
         self.annotation         = annotation
 
         if value is None:
-            if self.kind in TOKENS_WITH_IMPLICIT_VALUE:
+            if self.kind in language.tokens_with_implicit_value:
                 self.value = None
             elif self.kind == "CONTINUATION":
                 self.value = self.raw_text[3:].strip()

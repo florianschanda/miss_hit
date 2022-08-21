@@ -24,6 +24,7 @@
 ##############################################################################
 
 from copy import deepcopy
+from miss_hit_core.m_language import MATLAB_Latest_Language
 
 
 ##############################################################################
@@ -36,10 +37,11 @@ class Config:
         if other is None:
             # Set up default configuration
 
-            self.enabled = True
-            self.octave  = False
-            self.pragmas = True
-            # MH is enabled, octave mode is off, and we process pragmas
+            self.enabled  = True
+            self.language = MATLAB_Latest_Language()
+            self.pragmas  = True
+            # MH is enabled, language is the latest matlab, and we
+            # process pragmas
 
             self.ignore_pragmas_with_tickets = False
             # By default, all justifications are processed
@@ -63,7 +65,7 @@ class Config:
             assert isinstance(other, Config)
             # Inherit from existing configuration
             self.enabled                     = other.enabled
-            self.octave                      = other.octave
+            self.language                    = other.language
             self.pragmas                     = other.pragmas
             self.ignore_pragmas_with_tickets = \
                 other.ignore_pragmas_with_tickets
@@ -75,9 +77,9 @@ class Config:
 
     def dump(self, indent=0):
         items = ["MH Configuration object"]
-        items.append("Enabled = %s" % self.enabled)
-        items.append("Octave  = %s" % self.octave)
-        items.append("Pragmas = %s" % self.pragmas)
+        items.append("Enabled  = %s" % self.enabled)
+        items.append("Language = %s" % self.language)
+        items.append("Pragmas  = %s" % self.pragmas)
         items.append("Style Rules")
         maxlen = max(len(item) for item in STYLE_RULES)
         for rule in sorted(STYLE_RULES):

@@ -1,0 +1,13 @@
+In test_15.m, line 4
+|     arguments
+|     ^^^^^^^^^ style: end statement with a semicolon
+In test_15.m, line 5
+|         NameValueArgs.Name1
+|                       ^^^^^ style: end statement with a semicolon
+In test_15.m, line 6
+|         NameValueArgs.Name2
+|                       ^^^^^ style: end statement with a semicolon
+In test_15.m, line 10
+|     result = NameValueArgs.Name1 * NameValueArgs.Name2;
+|     ^^^^^^ error: expected end of file, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 3 style issue(s), 1 error(s)

@@ -1,0 +1,16 @@
+In test_26.m, line 4
+|     arguments
+|     ^^^^^^^^^ style: end statement with a semicolon
+In test_26.m, line 5
+|         a uint32
+|           ^^^^^^ style: end statement with a semicolon
+In test_26.m, line 6
+|         b uint32
+|           ^^^^^^ style: end statement with a semicolon
+In test_26.m, line 7
+|         c uint32 = a .* b
+|                         ^ style: end statement with a semicolon
+In test_26.m, line 11
+| end
+| ^^^ error: expected end of file, found KEYWORD instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 4 style issue(s), 1 error(s)

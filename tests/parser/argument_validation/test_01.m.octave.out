@@ -1,0 +1,7 @@
+In test_01.m, line 4
+|   arguments
+|   ^^^^^^^^^ style: end statement with a semicolon
+In test_01.m, line 5
+|     x (1, 1) single {mustBePositive, mustBeFinite}
+|              ^^^^^^ error: expected end of statement, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 style issue(s), 1 error(s)

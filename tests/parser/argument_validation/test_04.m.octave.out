@@ -1,0 +1,13 @@
+In test_04.m, line 4
+|     arguments
+|     ^^^^^^^^^ style: end statement with a semicolon
+In test_04.m, line 5
+|         x (1,:) {mustBeNumeric,mustBeReal}
+|                                          ^ style: end statement with a semicolon
+In test_04.m, line 6
+|         v (1,:) {mustBeNumeric,mustBeReal,mustBeEqualSize(v,x)}
+|                                                               ^ style: end statement with a semicolon
+In test_04.m, line 7
+|         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
+|                      ^^^^ error: expected end of statement, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 3 style issue(s), 1 error(s)

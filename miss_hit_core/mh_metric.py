@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020-2021, Florian Schanda                    ##
+##              Copyright (C) 2020-2022, Florian Schanda                    ##
 ##              Copyright (C) 2020, Veoneer System Software GmbH            ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -964,10 +964,11 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
 
         # Create lexer
 
-        lexer = MATLAB_Lexer(wp.mh, wp.get_content(),
-                             wp.filename, wp.blockname)
-        if wp.cfg.octave:
-            lexer.set_octave_mode()
+        lexer = MATLAB_Lexer(wp.cfg.language,
+                             wp.mh,
+                             wp.get_content(),
+                             wp.filename,
+                             wp.blockname)
         if not wp.cfg.pragmas:
             lexer.process_pragmas = False
 

@@ -1,0 +1,16 @@
+In test_03.m, line 4
+|     arguments
+|     ^^^^^^^^^ style: end statement with a semicolon
+In test_03.m, line 5
+|         a double
+|           ^^^^^^ style: end statement with a semicolon
+In test_03.m, line 6
+|         b char
+|           ^^^^ style: end statement with a semicolon
+In test_03.m, line 7
+|         c SpeedEnum
+|           ^^^^^^^^^ style: end statement with a semicolon
+In test_03.m, line 11
+|     disp(class(a));
+|     ^^^^ error: expected end of file, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 4 style issue(s), 1 error(s)

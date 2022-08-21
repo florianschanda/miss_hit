@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020-2021, Florian Schanda                    ##
+##              Copyright (C) 2020-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -31,6 +31,7 @@ from glob import glob
 from abc import ABCMeta, abstractmethod
 
 from miss_hit_core import pathutil
+from miss_hit_core import m_language
 from miss_hit_core.m_ast import MATLAB_Token
 from miss_hit_core.errors import Location, Message_Handler, ICE
 from miss_hit_core.config import (Config,
@@ -251,25 +252,58 @@ class Project_Root(Config_Item):
         raise ICE("logic error - called evaluate() for project_root")
 
 
-class Octave_Mode(Config_Item):
-    # Toggle octave mode. For now this is just on or off, but in the
-    # future it could be a 'both' mode as well.
-    def __init__(self, enabled):
+class Language_Version(Config_Item):
+    # Specify a language
+    def __init__(self, base, major, minor=None):
         super().__init__()
-        assert isinstance(enabled, bool)
-        self.enabled = enabled
+        assert base in ("matlab", "octave")
+        self.base     = base
+
+        if major == "latest":
+            assert minor is None
+        elif base == "matlab":
+            assert isinstance(major, int) and major >= 2000
+            assert minor in ("a", "b")
+        else:
+            assert isinstance(major, int) and major >= 0
+            assert isinstance(minor, int) and minor >= 0
+
+        self.major    = major
+        self.minor    = minor
+        self.language = None
+
+    def assign_language(self, mh, error_location):
+        try:
+            if self.base == "matlab":
+                self.language = m_language.Base_MATLAB_Language.get_version(
+                    self.major,
+                    self.minor)
+            else:
+                self.language = m_language.Base_Octave_Language.get_version(
+                    self.major,
+                    self.minor)
+        except ValueError as verr:
+            mh.error(error_location, verr.args[0])
 
     def dump(self):
-        if self.enabled:
-            print("  Dialect: Octave")
+        if self.base == "matlab":
+            if self.major == "latest":
+                print("  Language: MATLAB (%s)" % self.language.name)
+            else:
+                print("  Language: MATLAB %u%s (%s)" %
+                      (self.major, self.minor, self.language.name))
         else:
-            print("  Dialect: MATLAB")
+            if self.major == "latest":
+                print("  Language: Octave (%s)" % self.language.name)
+            else:
+                print("  Language: Octave %u.%u (%s)" %
+                      (self.major, self.minor, self.language.name))
 
     def evaluate(self, mh, config):
         assert isinstance(mh, Message_Handler)
         assert isinstance(config, Config)
 
-        config.octave = self.enabled
+        config.language = self.language
 
 
 class Path_List:

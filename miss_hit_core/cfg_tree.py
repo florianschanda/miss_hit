@@ -205,8 +205,8 @@ def apply_config(mh, options, dirname, exclusions_only=False):
     # command-line.
     if not exclusions_only:
         # Common options (from command_line.py) to all tools first:
-        if options.octave:
-            node.config.octave = True
+        if options.language is not None:
+            node.config.language = options.language
         if options.ignore_pragmas:
             node.config.pragmas = False
         if options.ignore_justifications_with_tickets:
@@ -484,7 +484,7 @@ def sanity_test():
             continue
 
         print("  Enabled = %s" % cfg.enabled)
-        print("  Octave  = %s" % cfg.octave)
+        print("  Octave  = %s" % cfg.language)
         print("  Rules   = %u" % len(cfg.style_rules))
         print("  SConf   = %s" % cfg.style_config)
         print("  Metrics = %u" % len(cfg.enabled_metrics))

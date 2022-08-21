@@ -20,13 +20,31 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.35-dev
 
+* You can now specify more precise Octave and MATLAB versions. This
+  change is massive, and likely to have subtle bugs. You can now write
+  `octave: "4.4"` or `matlab: "2020b"` in your config files; or specify
+  `--octave=4.4` or `--matlab=2020b` from the command-line. There is
+  also a special `latest` version for both Octave and MATLAB, which is
+  an alias for the latest supported version.
 
+  This is also the first change that introduces backwards
+  incompatibility, specifically:
+  * The command-line option `--octave` no longer works. You need to
+    specify `--octave=latest` to get the same behaviour.
+  * The config setting `octave: true` still works, but is
+    deprecated. It means the same thing as `octave: "latest"`.
+  * The config setting `octave: false` doesn't make sense anymore (and
+    never really did), so it now raises an error.
+
+  As always note that for MATLAB, support should be faily good and
+  accurate. For Octave many things are missing (such as the `end_X`
+  set of keywords). I do plan to improve the situation, but please
+  create tickets for things you need sooner.
 
 ### 0.9.34
 
 * Relaxed docstring recognition: now you can have blank lines (without
   the comment indicator) in your docstring.
-
 
 ### 0.9.33
 

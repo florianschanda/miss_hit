@@ -1,0 +1,717 @@
+=== STYLE ===
+In matlab_2017b/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2017b/hexlit.m, line 3
+| x = 0x5;
+|      ^^ error: expected end of statement, found IDENTIFIER instead
+In matlab_2017b/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2017b/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2017b/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In matlab_2017b/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In matlab_2020b/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2020b/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2020b/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2020b/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In matlab_2020b/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In matlab_2021a/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2021a/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2021a/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2021a/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In octave_4_2/cdef_subfun.m, line 7
+| function y = Potato(x)
+| ^^^^^^^^ error: expected end of file, found KEYWORD instead
+In octave_4_2/fun_contract.m, line 4
+|     arguments
+|     ^^^^^^^^^ style: end statement with a semicolon
+In octave_4_2/fun_contract.m, line 5
+|         x uint32
+|           ^^^^^^ style: end statement with a semicolon
+In octave_4_2/fun_contract.m, line 7
+| end
+| ^^^ error: expected end of file, found KEYWORD instead
+In octave_4_2/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In octave_4_2/shellescape.m, line 3
+| ! ls
+| ^ style: unary operator must not be followed by whitespace
+In octave_4_2/shellescape.m, line 3
+| ! ls
+|   ^^ style: end statement with a semicolon
+In octave_4_4/fun_contract.m, line 4
+|     arguments
+|     ^^^^^^^^^ style: end statement with a semicolon
+In octave_4_4/fun_contract.m, line 5
+|         x uint32
+|           ^^^^^^ style: end statement with a semicolon
+In octave_4_4/fun_contract.m, line 7
+| end
+| ^^^ error: expected end of file, found KEYWORD instead
+In octave_4_4/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In octave_4_4/shellescape.m, line 3
+| ! ls
+| ^ style: unary operator must not be followed by whitespace
+In octave_4_4/shellescape.m, line 3
+| ! ls
+|   ^^ style: end statement with a semicolon
+MISS_HIT Style Summary: 45 file(s) analysed, 8 style issue(s), 20 error(s)
+=== LINT ===
+In matlab_2017b/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2017b/hexlit.m, line 3
+| x = 0x5;
+|      ^^ error: expected end of statement, found IDENTIFIER instead
+In matlab_2017b/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2017b/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2017b/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In matlab_2017b/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In matlab_2020b/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2020b/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2020b/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2020b/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In matlab_2020b/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In matlab_2021a/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2021a/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2021a/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2021a/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ check (low): name-value pairs have extremely confusing semantics and should be avoided, use two arguments instead
+In matlab_2021a/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In octave_4_2/cdef_subfun.m, line 7
+| function y = Potato(x)
+| ^^^^^^^^ error: expected end of file, found KEYWORD instead
+In octave_4_2/fun_contract.m, line 7
+| end
+| ^^^ error: expected end of file, found KEYWORD instead
+In octave_4_2/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In octave_4_4/fun_contract.m, line 7
+| end
+| ^^^ error: expected end of file, found KEYWORD instead
+In octave_4_4/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+MISS_HIT Lint Summary: 45 file(s) analysed, 1 check(s), 20 error(s)
+=== METRICS ===
+In matlab_2017b/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2017b/hexlit.m, line 3
+| x = 0x5;
+|      ^^ error: expected end of statement, found IDENTIFIER instead
+In matlab_2017b/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2017b/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2017b/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In matlab_2017b/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In matlab_2020b/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2020b/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2020b/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2020b/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In matlab_2020b/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In matlab_2021a/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2021a/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2021a/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2021a/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In octave_4_2/cdef_subfun.m, line 7
+| function y = Potato(x)
+| ^^^^^^^^ error: expected end of file, found KEYWORD instead
+In octave_4_2/fun_contract.m, line 7
+| end
+| ^^^ error: expected end of file, found KEYWORD instead
+In octave_4_2/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In octave_4_4/fun_contract.m, line 7
+| end
+| ^^^ error: expected end of file, found KEYWORD instead
+In octave_4_4/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+=== Code metric by file:
+
+* Code metrics for file matlab_2017b/cdef_subfun.m:
+  File lines: 9
+
+  Code metrics for function cdef_subfun.m::Potato:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 2
+    Persistents          : 0
+
+* Code metrics for file matlab_2017b/comments.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2017b/fun_contract.m:
+  File lines: 7
+
+  Code metrics for function fun_contract:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 5
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 1
+    Persistents          : 0
+
+* Code metrics for file matlab_2017b/hexlit.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2017b/ident_with_underscore.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2017b/negation.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2017b/sa_pair.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2017b/script_global.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2017b/shellescape.m:
+  File lines: 3
+
+  Code metrics for function shellescape:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file matlab_2020b/cdef_subfun.m:
+  File lines: 9
+
+  Code metrics for function cdef_subfun.m::Potato:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 2
+    Persistents          : 0
+
+* Code metrics for file matlab_2020b/comments.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2020b/fun_contract.m:
+  File lines: 7
+
+  Code metrics for function fun_contract:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 5
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 1
+    Persistents          : 0
+
+* Code metrics for file matlab_2020b/hexlit.m:
+  File lines: 3
+
+  Code metrics for function hexlit:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file matlab_2020b/ident_with_underscore.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2020b/negation.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2020b/sa_pair.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2020b/script_global.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2020b/shellescape.m:
+  File lines: 3
+
+  Code metrics for function shellescape:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file matlab_2021a/cdef_subfun.m:
+  File lines: 9
+
+  Code metrics for function cdef_subfun.m::Potato:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 2
+    Persistents          : 0
+
+* Code metrics for file matlab_2021a/comments.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2021a/fun_contract.m:
+  File lines: 7
+
+  Code metrics for function fun_contract:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 5
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 1
+    Persistents          : 0
+
+* Code metrics for file matlab_2021a/hexlit.m:
+  File lines: 3
+
+  Code metrics for function hexlit:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file matlab_2021a/ident_with_underscore.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2021a/negation.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2021a/sa_pair.m:
+  File lines: 3
+
+  Code metrics for function sa_pair:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file matlab_2021a/script_global.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file matlab_2021a/shellescape.m:
+  File lines: 3
+
+  Code metrics for function shellescape:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_2/cdef_subfun.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file octave_4_2/comments.m:
+  File lines: 1
+
+  Code metrics for function comments:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_2/fun_contract.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file octave_4_2/hexlit.m:
+  File lines: 3
+
+  Code metrics for function hexlit:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_2/ident_with_underscore.m:
+  File lines: 3
+
+  Code metrics for function ident_with_underscore:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_2/negation.m:
+  File lines: 3
+
+  Code metrics for function negation:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_2/sa_pair.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file octave_4_2/script_global.m:
+  File lines: 9
+
+  Code metrics for function script_global:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+  Code metrics for function script_global.m::Foo:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 2
+    Persistents          : 0
+
+* Code metrics for file octave_4_2/shellescape.m:
+  File lines: 3
+
+  Code metrics for function shellescape:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_4/cdef_subfun.m:
+  File lines: 9
+
+  Code metrics for function cdef_subfun.m::Potato:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 2
+    Persistents          : 0
+
+* Code metrics for file octave_4_4/comments.m:
+  File lines: 1
+
+  Code metrics for function comments:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_4/fun_contract.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file octave_4_4/hexlit.m:
+  File lines: 3
+
+  Code metrics for function hexlit:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_4/ident_with_underscore.m:
+  File lines: 3
+
+  Code metrics for function ident_with_underscore:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_4/negation.m:
+  File lines: 3
+
+  Code metrics for function negation:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+* Code metrics for file octave_4_4/sa_pair.m:
+  Contains syntax or semantics errors,
+  no metrics collected.
+
+* Code metrics for file octave_4_4/script_global.m:
+  File lines: 9
+
+  Code metrics for function script_global:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+  Code metrics for function script_global.m::Foo:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Function lines       : 3
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 2
+    Persistents          : 0
+
+* Code metrics for file octave_4_4/shellescape.m:
+  File lines: 3
+
+  Code metrics for function shellescape:
+    Control nesting      : 0
+    Cyclomatic complexity: 1
+    Globals              : 0
+    Number of paths      : 1
+    Parameters           : 0
+    Persistents          : 0
+
+=== Global summary of worst offenders by metric:
+
+* File metric 'File lines':
+  1. 9 (octave_4_4/script_global.m)
+  2. 9 (octave_4_4/cdef_subfun.m)
+  3. 9 (octave_4_2/script_global.m)
+  4. 9 (matlab_2021a/cdef_subfun.m)
+  5. 9 (matlab_2020b/cdef_subfun.m)
+  6. 9 (matlab_2017b/cdef_subfun.m)
+  7. 7 (matlab_2021a/fun_contract.m)
+  8. 7 (matlab_2020b/fun_contract.m)
+  9. 7 (matlab_2017b/fun_contract.m)
+  10. 3 (octave_4_4/shellescape.m)
+
+* Function metric 'Cyclomatic complexity':
+  1. 1 (octave_4_4/shellescape.m, function shellescape)
+  2. 1 (octave_4_4/script_global.m, function script_global.m::Foo)
+  3. 1 (octave_4_4/script_global.m, function script_global)
+  4. 1 (octave_4_4/negation.m, function negation)
+  5. 1 (octave_4_4/ident_with_underscore.m, function ident_with_underscore)
+  6. 1 (octave_4_4/hexlit.m, function hexlit)
+  7. 1 (octave_4_4/comments.m, function comments)
+  8. 1 (octave_4_4/cdef_subfun.m, function cdef_subfun.m::Potato)
+  9. 1 (octave_4_2/shellescape.m, function shellescape)
+  10. 1 (octave_4_2/script_global.m, function script_global.m::Foo)
+
+* Function metric 'Function lines':
+  1. 5 (matlab_2021a/fun_contract.m, function fun_contract)
+  2. 5 (matlab_2020b/fun_contract.m, function fun_contract)
+  3. 5 (matlab_2017b/fun_contract.m, function fun_contract)
+  4. 3 (octave_4_4/script_global.m, function script_global.m::Foo)
+  5. 3 (octave_4_4/cdef_subfun.m, function cdef_subfun.m::Potato)
+  6. 3 (octave_4_2/script_global.m, function script_global.m::Foo)
+  7. 3 (matlab_2021a/cdef_subfun.m, function cdef_subfun.m::Potato)
+  8. 3 (matlab_2020b/cdef_subfun.m, function cdef_subfun.m::Potato)
+  9. 3 (matlab_2017b/cdef_subfun.m, function cdef_subfun.m::Potato)
+
+* Function metric 'Number of paths':
+  1. 1 (octave_4_4/shellescape.m, function shellescape)
+  2. 1 (octave_4_4/script_global.m, function script_global.m::Foo)
+  3. 1 (octave_4_4/script_global.m, function script_global)
+  4. 1 (octave_4_4/negation.m, function negation)
+  5. 1 (octave_4_4/ident_with_underscore.m, function ident_with_underscore)
+  6. 1 (octave_4_4/hexlit.m, function hexlit)
+  7. 1 (octave_4_4/comments.m, function comments)
+  8. 1 (octave_4_4/cdef_subfun.m, function cdef_subfun.m::Potato)
+  9. 1 (octave_4_2/shellescape.m, function shellescape)
+  10. 1 (octave_4_2/script_global.m, function script_global.m::Foo)
+
+* Function metric 'Parameters':
+  1. 2 (octave_4_4/script_global.m, function script_global.m::Foo)
+  2. 2 (octave_4_4/cdef_subfun.m, function cdef_subfun.m::Potato)
+  3. 2 (octave_4_2/script_global.m, function script_global.m::Foo)
+  4. 2 (matlab_2021a/cdef_subfun.m, function cdef_subfun.m::Potato)
+  5. 2 (matlab_2020b/cdef_subfun.m, function cdef_subfun.m::Potato)
+  6. 2 (matlab_2017b/cdef_subfun.m, function cdef_subfun.m::Potato)
+  7. 1 (matlab_2021a/fun_contract.m, function fun_contract)
+  8. 1 (matlab_2020b/fun_contract.m, function fun_contract)
+  9. 1 (matlab_2017b/fun_contract.m, function fun_contract)
+
+MISS_HIT Metric Summary: 45 file(s) analysed, 20 error(s)
+=== TRACING ===
+In matlab_2017b/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2017b/hexlit.m, line 3
+| x = 0x5;
+|      ^^ error: expected end of statement, found IDENTIFIER instead
+In matlab_2017b/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2017b/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2017b/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In matlab_2017b/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In matlab_2020b/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2020b/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2020b/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2020b/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In matlab_2020b/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In matlab_2021a/comments.m, line 1
+| # (c) Copyright 2022 Florian Schanda
+| ^ lex error: unexpected character '#'
+In matlab_2021a/ident_with_underscore.m, line 3
+| _x = 12;
+| ^ lex error: unexpected character '_'
+In matlab_2021a/negation.m, line 3
+| x = (1 != 2);
+|        ^^^^^^ error: expected KET, found BANG instead
+In matlab_2021a/script_global.m, line 5
+| function rv = Foo(potato)
+|               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language
+In octave_4_2/cdef_subfun.m, line 7
+| function y = Potato(x)
+| ^^^^^^^^ error: expected end of file, found KEYWORD instead
+In octave_4_2/fun_contract.m, line 7
+| end
+| ^^^ error: expected end of file, found KEYWORD instead
+In octave_4_2/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+In octave_4_4/fun_contract.m, line 7
+| end
+| ^^^ error: expected end of file, found KEYWORD instead
+In octave_4_4/sa_pair.m, line 3
+| foo(value = 2);
+|           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
+MISS_HIT Trace Summary: 45 file(s) analysed, 20 error(s)

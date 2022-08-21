@@ -1,0 +1,7 @@
+In test_02.m, line 4
+|     arguments
+|     ^^^^^^^^^ style: end statement with a semicolon
+In test_02.m, line 5
+|         A (1,1) string
+|                 ^^^^^^ error: expected end of statement, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 style issue(s), 1 error(s)

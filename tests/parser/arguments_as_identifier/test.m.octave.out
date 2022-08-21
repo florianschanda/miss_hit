@@ -1,0 +1,10 @@
+In test.m, line 2
+|    arguments % keyword
+|    ^^^^^^^^^ style: end statement with a semicolon
+In test.m, line 3
+|       x uint
+|         ^^^^ style: end statement with a semicolon
+In test.m, line 5
+|    try
+|    ^^^ error: expected end of file, found KEYWORD instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 2 style issue(s), 1 error(s)

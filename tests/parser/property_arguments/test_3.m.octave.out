@@ -1,0 +1,7 @@
+In test_3.m, line 19
+|     arguments
+|     ^^^^^^^^^ style: end statement with a semicolon
+In test_3.m, line 20
+|         x (:,:) double
+|                 ^^^^^^ error: expected end of statement, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 style issue(s), 1 error(s)

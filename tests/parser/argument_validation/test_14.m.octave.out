@@ -1,0 +1,13 @@
+In test_14.m, line 15
+|     arguments
+|     ^^^^^^^^^ style: end statement with a semicolon
+In test_14.m, line 16
+|         a uint32
+|           ^^^^^^ style: end statement with a semicolon
+In test_14.m, line 17
+|         b uint32
+|           ^^^^^^ style: end statement with a semicolon
+In test_14.m, line 19
+|     arguments (Repeating)
+|     ^^^^^^^^^ error: expected end of file, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 3 style issue(s), 1 error(s)

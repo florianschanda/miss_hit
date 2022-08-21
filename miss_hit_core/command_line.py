@@ -41,6 +41,8 @@ from miss_hit_core import s_parser
 from miss_hit_core import s_ast
 
 from miss_hit_core.version import GITHUB_ISSUES, VERSION, FULL_NAME
+from miss_hit_core.m_language import (Base_MATLAB_Language,
+                                      Base_Octave_Language)
 
 
 def create_basic_clp(epilog=None):
@@ -54,7 +56,26 @@ def create_basic_clp(epilog=None):
     ap.add_argument("-v", "--version",
                     action="store_true",
                     default=False,
-                    help="Show version and exit")
+                    help="Show MISS_HIT version and exit")
+
+    language_options = ap.add_mutually_exclusive_group()
+    language_options.add_argument("--octave",
+                                  default=None,
+                                  metavar="VERSION",
+                                  help=("Enable support for the Octave"
+                                        " language at a given version,"
+                                        " e.g. 4.4. If no version is specified"
+                                        " then latest supported is used."))
+
+    language_options.add_argument("--matlab",
+                                  default=None,
+                                  metavar="VERSION",
+                                  help=("Enable support for the MATLAB"
+                                        " language at a given version,"
+                                        " e.g. 2021a. If no version is "
+                                        " specified then the latest supported"
+                                        " is used."))
+
     ap.add_argument("--include-version",
                     action="store_true",
                     default=False,
@@ -109,17 +130,6 @@ def create_basic_clp(epilog=None):
                                 default=False,
                                 help="Don't show line-context on messages")
 
-    language_options = ap.add_argument_group("language options")
-    rv["language_options"] = language_options
-
-    language_options.add_argument("--octave",
-                                  default=False,
-                                  action="store_true",
-                                  help=("Enable support for the Octave"
-                                        " language. Note: This is highly"
-                                        " incomplete right now, only the"
-                                        " # comments are supported."))
-
     debug_options = ap.add_argument_group("debugging options")
     rv["debug_options"] = debug_options
 
@@ -160,6 +170,22 @@ def parse_args(clp):
         "potato".encode(options.input_encoding)
     except LookupError:
         clp["ap"].error("invalid encoding '%s'" % options.input_encoding)
+
+    options.language = None
+    if options.octave is not None:
+        try:
+            major, minor = Base_Octave_Language.parse_version(options.octave)
+            options.language = Base_Octave_Language.get_version(major, minor)
+        except ValueError as verr:
+            clp["ap"].error(verr.args[0])
+        del options.octave
+    if options.matlab is not None:
+        try:
+            major, minor = Base_MATLAB_Language.parse_version(options.matlab)
+            options.language = Base_MATLAB_Language.get_version(major, minor)
+        except ValueError as verr:
+            clp["ap"].error(verr.args[0])
+        del options.matlab
 
     return options
 

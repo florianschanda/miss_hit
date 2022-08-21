@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2021, Florian Schanda                         ##
+##              Copyright (C) 2021-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -156,12 +156,11 @@ class MH_Trace(command_line.MISS_HIT_Back_End):
     @classmethod
     def process_wp(cls, wp):
         # Create lexer
-        lexer = MATLAB_Lexer(wp.mh,
+        lexer = MATLAB_Lexer(wp.cfg.language,
+                             wp.mh,
                              wp.get_content(),
                              wp.filename,
                              wp.blockname)
-        if wp.cfg.octave:
-            lexer.set_octave_mode()
         if not wp.cfg.pragmas:
             lexer.process_pragmas = False
         if len(lexer.text.strip()) == 0:

@@ -638,9 +638,10 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     # Ignore block comments
                     pass
 
-                elif token.raw_text.strip() in ("%s%s" % (cc, cb)
-                                                for cc in tbuf.comment_char
-                                                for cb in "{}"):
+                elif token.raw_text.strip() in (
+                        "%s%s" % (cc, cb)
+                        for cc in tbuf.language.comment_chars
+                        for cb in "{}"):
                     # Leave block comment indicators alone
                     pass
 
@@ -1015,9 +1016,11 @@ class MH_Style(command_line.MISS_HIT_Back_End):
 
         # Create lexer
 
-        lexer = MATLAB_Lexer(wp.mh, content, wp.filename, wp.blockname)
-        if wp.cfg.octave:
-            lexer.set_octave_mode()
+        lexer = MATLAB_Lexer(wp.cfg.language,
+                             wp.mh,
+                             content,
+                             wp.filename,
+                             wp.blockname)
         if not wp.cfg.pragmas:
             lexer.process_pragmas = False
 

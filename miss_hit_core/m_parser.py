@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2021, Florian Schanda                    ##
+##              Copyright (C) 2019-2022, Florian Schanda                    ##
 ##              Copyright (C) 2019-2020, Zenuity AB                         ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -30,6 +30,7 @@ from miss_hit_core import pathutil
 from miss_hit_core.config import Config, METRICS
 from miss_hit_core.errors import ICE, Message_Handler
 from miss_hit_core.m_ast import *
+from miss_hit_core.m_language import Language
 from miss_hit_core.m_lexer import Token_Generator
 
 
@@ -92,6 +93,7 @@ class MATLAB_Parser:
         assert isinstance(cfg, Config)
 
         self.lexer = lexer
+        self.language = self.lexer.language
         self.mh    = mh
         self.cfg   = cfg
 
@@ -207,7 +209,7 @@ class MATLAB_Parser:
                 break
 
     def match(self, kind, value=None):
-        assert kind in TOKEN_KINDS
+        assert kind in self.language.token_kinds
         self.skip()
         if self.ct is None:
             self.mh.error(self.lexer.get_file_loc(),
@@ -233,7 +235,7 @@ class MATLAB_Parser:
                           (kind, value, self.ct.kind, self.ct.value))
 
     def amatch(self, kind, value=None):
-        assert kind in TOKEN_KINDS
+        assert kind in self.language.token_kinds
         self.skip()
         if self.ct is None:
             self.mh.error(self.lexer.get_file_loc(),
@@ -275,7 +277,7 @@ class MATLAB_Parser:
         return self.nt and self.nt.annotation
 
     def peek(self, kind, value=None):
-        assert kind in TOKEN_KINDS
+        assert kind in self.language.token_kinds
         if self.nt and \
            self.nt.kind == kind and \
            not self.nt.annotation:
@@ -287,7 +289,7 @@ class MATLAB_Parser:
             return False
 
     def peek2(self, kind, value=None):
-        assert kind in TOKEN_KINDS
+        assert kind in self.language.token_kinds
         if self.nnt and \
            self.nnt.kind == kind and \
            not self.nnt.annotation:
@@ -299,7 +301,7 @@ class MATLAB_Parser:
             return False
 
     def apeek(self, kind, value=None):
-        assert kind in TOKEN_KINDS
+        assert kind in self.language.token_kinds
         if self.nt and \
            self.nt.kind == kind and \
            self.nt.annotation:
@@ -630,7 +632,7 @@ class MATLAB_Parser:
                                   l_pragmas + l_more_pragmas)
         elif self.peek("KEYWORD", "classdef"):
             cunit = self.parse_class_file(l_pragmas)
-        elif self.lexer.octave_mode:
+        elif self.language.script_global_functions:
             cunit = self.parse_octave_script_file(l_pragmas)
         else:
             cunit = self.parse_matlab_script_file(l_pragmas)
@@ -641,7 +643,7 @@ class MATLAB_Parser:
                 self.mh.error(cunit.l_functions[0].loc(),
                               "script-global functions are an Octave-specific"
                               " feature; move your functions to the end of"
-                              " the script file or use the --octave mode")
+                              " the script file or use an Octave language")
 
         if self.debug_tree:
             cunit.debug_parse_tree()
@@ -718,7 +720,12 @@ class MATLAB_Parser:
         self.functions_require_end = True
 
         n_classdef                  = self.parse_classdef()
-        l_functions, l_more_pragmas = self.parse_function_list()
+
+        if self.language.allow_classdef_subfunctions:
+            l_functions, l_more_pragmas = self.parse_function_list()
+        else:
+            l_functions    = []
+            l_more_pragmas = []
 
         return Class_File(os.path.basename(self.lexer.filename),
                           os.path.dirname(
@@ -1869,7 +1876,7 @@ class MATLAB_Parser:
             return args
 
         while True:
-            if not self.lexer.octave_mode and \
+            if self.language.string_argument_pairs and \
                self.peek("IDENTIFIER") and self.peek2("ASSIGNMENT"):
                 # Special case for the 2021a MATLAB mis-feature of
                 # name-value pairs in function calls
