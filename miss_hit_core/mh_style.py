@@ -634,7 +634,8 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     # processed it. This is fine.
                     pass
 
-                elif token.raw_text.startswith("%!") and cfg.octave:
+                elif token.raw_text.startswith("%!") and \
+                    tbuf.language.infile_tests:
                     # This is a test for octave, but no further processing 
                     # is implemented.
                     pass

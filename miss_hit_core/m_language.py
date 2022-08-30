@@ -114,6 +114,9 @@ class Language:
         # Sometimes whitespace is significant, e.g. inside a
         # matrix. In the config file mode it is never.
 
+        self.infile_tests = False
+        # Allows tests in files which start with characters %! at the end of octave files 
+
         ########################
         # Grammar features
 
@@ -280,6 +283,8 @@ class Base_Octave_Language(Base_Language):
         self.bang_is_negation = True
 
         self.hex_literals = True
+
+        self.infile_tests = True
 
         self.script_global_functions = True
 
