@@ -1,10 +1,10 @@
 === PLAIN MODE ===
-In off/Test_Test.m, line 7
+In off/Test_Infile_Test.m, line 7
 | %!test
 | ^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]
-In off/Test_Test.m, line 8
-| %! assert(Test_Test(),1)
-| ^^^^^^^^^^^^^^^^^^^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]
+In off/Test_Infile_Test.m, line 8
+| %! assert(Test_Infile_Test(),1)
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: comment body must be separated with whitespace from the starting % [fixed]
 MISS_HIT Style Summary: 2 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===
