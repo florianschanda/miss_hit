@@ -44,7 +44,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 * MISS_HIT now recognises and processes Octave test `.tst` files
   (along with `.m` and `.slx` files). The Octave test annotation
   language (comments starting with `%!`) is ignored by MH Style for
-  now.
+  now. Thank you to Alois Spitzbart for the idea.
 
 ### 0.9.34
 
