@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020-2021, Florian Schanda                    ##
+##              Copyright (C) 2020-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -179,6 +179,10 @@ def create(in_test_dir,
            options,
            extra_options):
     if filename.endswith(".m"):
+        return MATLAB_File_WP(in_test_dir, filename, default_encoding,
+                              mh.fork(), options, extra_options)
+
+    elif filename.endswith(".tst"):
         return MATLAB_File_WP(in_test_dir, filename, default_encoding,
                               mh.fork(), options, extra_options)
 

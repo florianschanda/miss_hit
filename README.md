@@ -157,8 +157,9 @@ the same license:
 
 ### Copyright of octave tests
 
-This project includes modified/adapted parts of the GNU Octave
-testsuite under `tests/parser/octave_*`. These are (c) their original
+This project includes verbatim and modified/adapted parts of the GNU
+Octave testsuite under `tests/parser/octave_*` and
+`tests/style/octave_annotations`. These are (c) their original
 authors. Each file there describes from which file they derive.
 
 ### Note on parser tests
@@ -169,6 +170,6 @@ attribution (in comment form) is always included in these cases.
 
 ### Note on the documentation assets
 
-The documentation uses
-[feather icons](https://github.com/feathericons/feather/blob/master/LICENSE)
+The documentation uses [feather
+icons](https://github.com/feathericons/feather/blob/master/LICENSE)
 which are licensed under the MIT License.

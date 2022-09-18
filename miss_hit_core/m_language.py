@@ -125,6 +125,10 @@ class Language:
         # Functions sprinkled in the middle of a script, instead of at
         # the end only.
 
+        ########################
+        # Other features
+        self.octave_test_pragmas = False
+
 
 class Config_Language(Language):
     def __init__(self):
@@ -282,6 +286,8 @@ class Base_Octave_Language(Base_Language):
         self.hex_literals = True
 
         self.script_global_functions = True
+
+        self.octave_test_pragmas = True
 
     @classmethod
     def parse_version(cls, version):

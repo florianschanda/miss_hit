@@ -45,6 +45,16 @@ from miss_hit_core.m_language import (Base_MATLAB_Language,
                                       Base_Octave_Language)
 
 
+def has_relevant_extension(path, process_slx=True):
+    assert isinstance(path, str)
+    assert isinstance(process_slx, bool)
+
+    if process_slx:
+        return os.path.splitext(path)[1] in (".m", ".tst", ".slx")
+    else:
+        return os.path.splitext(path)[1] in (".m", ".tst")
+
+
 def create_basic_clp(epilog=None):
     rv = {}
 
@@ -294,7 +304,7 @@ def execute(mh, options, extra_options, back_end,
                 for path, dirs, files in os.walk(path_root):
                     container.add(os.path.normpath(path))
                     for f in files:
-                        if f.endswith(".m") or f.endswith(".slx"):
+                        if has_relevant_extension(f):
                             container.add(
                                 os.path.normpath(os.path.join(path, f)))
                     irrelevant_dirs = set(d for d in dirs
@@ -322,10 +332,10 @@ def execute(mh, options, extra_options, back_end,
                 # path.
                 item_list = [(False, item)
                              for item in sorted(code_in_path)
-                             if item.endswith(".m") or item.endswith(".slx")]
+                             if has_relevant_extension(item)]
                 item_list += [(True, item)
                               for item in sorted(test_in_path)
-                              if item.endswith(".m") or item.endswith(".slx")]
+                              if has_relevant_extension(item)]
 
             # Post-process to use relative directories
             item_list = [(in_test_dir, os.path.relpath(item))
@@ -375,8 +385,7 @@ def execute(mh, options, extra_options, back_end,
                     if not os.path.isfile(os.path.join(path, f)):
                         # This removes broken symlinks
                         continue
-                    if f.endswith(".m") or (f.endswith(".slx") and
-                                            process_slx):
+                    if has_relevant_extension(f, process_slx):
                         work_list.append(
                             work_package.create(in_test_dir,
                                                 os.path.join(path, f),
@@ -384,7 +393,7 @@ def execute(mh, options, extra_options, back_end,
                                                 mh,
                                                 options, extra_options))
 
-        elif item.endswith(".m") or (item.endswith(".slx") and process_slx):
+        elif has_relevant_extension(item, process_slx):
             work_list.append(work_package.create(in_test_dir,
                                                  item,
                                                  options.input_encoding,

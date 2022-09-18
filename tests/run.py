@@ -83,7 +83,7 @@ def relevant_files():
     rv = []
     for path, _, files in os.walk("."):
         for f in files:
-            if f.endswith(".m") or f.endswith(".slx"):
+            if f.endswith(".m") or f.endswith(".tst") or f.endswith(".slx"):
                 rv.append(os.path.join(path, f))
     return rv
 

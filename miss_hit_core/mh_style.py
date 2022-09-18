@@ -629,6 +629,13 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     # not be subject to style checks
                     pass
 
+                elif token.raw_text.startswith("%!") and \
+                     tbuf.language.octave_test_pragmas:
+                    # This is an octave test pragma. For now we ignore
+                    # it, but it would be nice to pretty-print the
+                    # contents.
+                    pass
+
                 elif token.raw_text.startswith("%|"):
                     # This is a miss-hit pragma, but we've not
                     # processed it. This is fine.

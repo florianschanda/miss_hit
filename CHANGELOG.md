@@ -41,6 +41,11 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   set of keywords). I do plan to improve the situation, but please
   create tickets for things you need sooner.
 
+* MISS_HIT now recognises and processes Octave test `.tst` files
+  (along with `.m` and `.slx` files). The Octave test annotation
+  language (comments starting with `%!`) is ignored by MH Style for
+  now.
+
 ### 0.9.34
 
 * Relaxed docstring recognition: now you can have blank lines (without
