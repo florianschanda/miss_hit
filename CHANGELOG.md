@@ -36,7 +36,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   * The config setting `octave: false` doesn't make sense anymore (and
     never really did), so it now raises an error.
 
-  As always note that for MATLAB, support should be faily good and
+  As always note that for MATLAB, support should be fairly good and
   accurate. For Octave many things are missing (such as the `end_X`
   set of keywords). I do plan to improve the situation, but please
   create tickets for things you need sooner.
