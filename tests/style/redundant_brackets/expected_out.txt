@@ -1,39 +1,39 @@
 === PLAIN MODE ===
-expr.m: style: violates naming scheme for scripts
+expr.m: style: violates naming scheme for scripts [naming_scripts]
 In expr.m, line 9
 | x = ((1 + 2)) * 3;
-|      ^ style: redundant parenthesis [fixed]
+|      ^ style: redundant parenthesis [fixed] [redundant_brackets]
 In expr.m, line 11
 | x = foo((x + 1), 2);
-|         ^ style: redundant parenthesis [fixed]
+|         ^ style: redundant parenthesis [fixed] [redundant_brackets]
 In expr.m, line 13
 | x = [(1 + 1) + 2] % ok
-|                 ^ style: end statement with a semicolon [fixed]
+|                 ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In expr.m, line 15
 | x = [(1 +1) +1] % very important brackets
-|         ^ style: non power binary operator must be surrounded by whitespace [fixed]
+|         ^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In expr.m, line 15
 | x = [(1 +1) +1] % very important brackets
-|               ^ style: end statement with a semicolon [fixed]
+|               ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In expr.m, line 19
 | x = m((2));
-|       ^ style: redundant parenthesis [fixed]
+|       ^ style: redundant parenthesis [fixed] [redundant_brackets]
 In expr.m, line 21
 | (x + 1);
-| ^ style: redundant parenthesis [fixed]
+| ^ style: redundant parenthesis [fixed] [redundant_brackets]
 In expr.m, line 30
 |         (2));
-|         ^ style: redundant parenthesis [fixed]
-test.m: style: violates naming scheme for scripts
+|         ^ style: redundant parenthesis [fixed] [redundant_brackets]
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 9
 | if (foo)
-|    ^ style: redundant parenthesis [fixed]
+|    ^ style: redundant parenthesis [fixed] [redundant_brackets]
 In test.m, line 13
 | if ((foo))
-|    ^ style: redundant parenthesis [fixed]
+|    ^ style: redundant parenthesis [fixed] [redundant_brackets]
 In test.m, line 13
 | if ((foo))
-|     ^ style: redundant parenthesis [fixed]
+|     ^ style: redundant parenthesis [fixed] [redundant_brackets]
 MISS_HIT Style Summary: 2 file(s) analysed, 13 style issue(s)
 
 === HTML MODE ===

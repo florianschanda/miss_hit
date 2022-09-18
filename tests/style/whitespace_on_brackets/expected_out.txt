@@ -1,29 +1,29 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 3
 | ( 1 + 1 ) % not ok
-| ^ style: redundant parenthesis [fixed]
+| ^ style: redundant parenthesis [fixed] [redundant_brackets]
 In test.m, line 3
 | ( 1 + 1 ) % not ok
-| ^ style: ( must not be followed by whitespace [fixed]
+| ^ style: ( must not be followed by whitespace [fixed] [whitespace_brackets]
 In test.m, line 3
 | ( 1 + 1 ) % not ok
-|         ^ style: end statement with a semicolon [fixed]
+|         ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test.m, line 3
 | ( 1 + 1 ) % not ok
-|         ^ style: ) must not be preceeded by whitespace [fixed]
+|         ^ style: ) must not be preceeded by whitespace [fixed] [whitespace_brackets]
 In test.m, line 4
 | (1 + 1)   % ok
-| ^ style: redundant parenthesis [fixed]
+| ^ style: redundant parenthesis [fixed] [redundant_brackets]
 In test.m, line 4
 | (1 + 1)   % ok
-|       ^ style: end statement with a semicolon [fixed]
+|       ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test.m, line 6
 |    42)
-|    ^^ style: indentation not correct, should be 4 spaces, not 3 [fixed]
+|    ^^ style: indentation not correct, should be 4 spaces, not 3 [fixed] [indentation]
 In test.m, line 6
 |    42)
-|      ^ style: end statement with a semicolon [fixed]
+|      ^ style: end statement with a semicolon [fixed] [end_of_statements]
 MISS_HIT Style Summary: 1 file(s) analysed, 9 style issue(s)
 
 === HTML MODE ===

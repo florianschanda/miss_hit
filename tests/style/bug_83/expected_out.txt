@@ -1,34 +1,34 @@
 === PLAIN MODE ===
 In test.m, line 1
 | % Example provided by Niklas Nylen   
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: No copyright notice found in docstring
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: No copyright notice found in docstring [copyright_notice]
 In test.m, line 1
 | % Example provided by Niklas Nylen   
 |                                   ^^^^ style: trailing whitespace [fixed]
 In test.m, line 3
 | function testfile() 
-|          ^^^^^^^^ style: violates naming scheme for function
+|          ^^^^^^^^ style: violates naming scheme for function [naming_functions]
 In test.m, line 3
 | function testfile() 
 |                    ^^ style: trailing whitespace [fixed]
 In test.m, line 4
 | x = y + ...   
-| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In test.m, line 4
 | x = y + ...   
 |            ^^^^ style: trailing whitespace [fixed]
 In test.m, line 5
 |  z;  
-|  ^ style: indentation not correct, should be 5 spaces, not 1 [fixed]
+|  ^ style: indentation not correct, should be 5 spaces, not 1 [fixed] [indentation]
 In test.m, line 5
 |  z;  
 |    ^^^ style: trailing whitespace [fixed]
 In test.m, line 7
 | % Whitespace after ... is not trimmed
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In test.m, line 8
 | % Also added comment with trailing WS
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 MISS_HIT Style Summary: 1 file(s) analysed, 10 style issue(s)
 
 === HTML MODE ===

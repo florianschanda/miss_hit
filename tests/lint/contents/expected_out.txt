@@ -1,5 +1,5 @@
 === PLAIN MODE ===
 In invalid/Contents.m, line 10
 | disp("Potato");
-| ^^^^ check (low): a Contents.m file must only contain comments
+| ^^^^ check (low): a Contents.m file must only contain comments [malformed_contents]
 MISS_HIT Lint Summary: 2 file(s) analysed, 1 check(s)

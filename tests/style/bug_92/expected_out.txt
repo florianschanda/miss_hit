@@ -1,19 +1,19 @@
 === PLAIN MODE ===
 In test.m, line 3
 | classdef test
-|          ^^^^ style: violates naming scheme for class
+|          ^^^^ style: violates naming scheme for class [naming_classes]
 In test.m, line 5
 |         x, y, z
-|          ^ style: end this with just a newline [fixed]
+|          ^ style: end this with just a newline [fixed] [end_of_statements]
 In test.m, line 5
 |         x, y, z
-|             ^ style: end this with just a newline [fixed]
+|             ^ style: end this with just a newline [fixed] [end_of_statements]
 In test.m, line 6
 |         a; b; c
-|          ^ style: end this with just a newline [fixed]
+|          ^ style: end this with just a newline [fixed] [end_of_statements]
 In test.m, line 6
 |         a; b; c
-|             ^ style: end this with just a newline [fixed]
+|             ^ style: end this with just a newline [fixed] [end_of_statements]
 MISS_HIT Style Summary: 1 file(s) analysed, 5 style issue(s)
 
 === HTML MODE ===

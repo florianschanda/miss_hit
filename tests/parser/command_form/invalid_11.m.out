@@ -1,15 +1,15 @@
 In invalid_11.m, line 5
 |   x + 1  %
-|       ^ style: end statement with a semicolon
+|       ^ style: end statement with a semicolon [end_of_statements]
 In invalid_11.m, line 6
 |   x+ 1   %
-|      ^ style: end statement with a semicolon
+|      ^ style: end statement with a semicolon [end_of_statements]
 In invalid_11.m, line 7
 |   x+1    % all fail because function handle + 1 doesn't work
-|     ^ style: end statement with a semicolon
+|     ^ style: end statement with a semicolon [end_of_statements]
 In invalid_11.m, line 8
 |   x +1   % fail, because you can't use lambda function in command form
-|     ^^ style: end statement with a semicolon
+|     ^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for invalid_11.m
 Root: Function_File

@@ -1,21 +1,21 @@
 In test_01.m, line 3
 | function test_01(x);
-|                    ^ style: end this with just a newline
+|                    ^ style: end this with just a newline [end_of_statements]
 In test_01.m, line 4
 |   if x > 0;
-|           ^ style: end this with just a newline
+|           ^ style: end this with just a newline [end_of_statements]
 In test_01.m, line 5
 |     disp(x),
-|            ^ style: end this with a semicolon instead of a comma
+|            ^ style: end this with a semicolon instead of a comma [end_of_statements]
 In test_01.m, line 7
 |     disp(-x)
-|            ^ style: end statement with a semicolon
+|            ^ style: end statement with a semicolon [end_of_statements]
 In test_01.m, line 8
 |   end;
-|      ^ style: end this with just a newline
+|      ^ style: end this with just a newline [end_of_statements]
 In test_01.m, line 9
 | end,
-|    ^ style: end this with just a newline
+|    ^ style: end this with just a newline [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_01.m
 Root: Function_File

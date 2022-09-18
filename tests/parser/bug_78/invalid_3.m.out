@@ -1,6 +1,6 @@
 In invalid_3.m, line 3
 | disp f] o[ b   % 'f] o[' 'b'
-|            ^ style: end statement with a semicolon
+|            ^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for invalid_3.m
 Root: Script_File

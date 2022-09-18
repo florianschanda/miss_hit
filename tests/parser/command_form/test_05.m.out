@@ -1,6 +1,6 @@
 In test_05.m, line 4
 |   cd ../foo
-|      ^^^^^^ style: end statement with a semicolon
+|      ^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_05.m
 Root: Function_File

@@ -1,6 +1,6 @@
 In indexing.m, line 4
 |     assert (b{(a. b1 + 1)} == 4);
-|               ^ style: redundant parenthesis
+|               ^ style: redundant parenthesis [redundant_brackets]
 ----------------------------------------------------------------------
 --  Parse tree for indexing.m
 Root: Function_File

@@ -953,11 +953,13 @@ class MATLAB_Lexer(Token_Generator):
                 self.mh.check(token.location,
                               "ignored block comment: it must not be"
                               " preceded by program text",
+                              "ignored_block_comment",
                               "low")
             elif token.value.strip() != "{" and self.block_comment == 0:
                 self.mh.check(token.location,
                               "ignored block comment: no text must appear"
                               " after the {",
+                              "ignored_block_comment",
                               "low")
             elif token.raw_text.strip() not in \
                  ["%s{" % c
@@ -965,6 +967,7 @@ class MATLAB_Lexer(Token_Generator):
                 self.mh.check(token.location,
                               "ignored block comment: no text must appear"
                               " around the block comment marker",
+                              "ignored_block_comment",
                               "low")
             else:
                 self.block_comment += 1
@@ -982,6 +985,7 @@ class MATLAB_Lexer(Token_Generator):
                                       "ignored block comment end: no text"
                                       " must appear around the block comment"
                                       " marker %s" % marker,
+                                      "ignored_block_comment",
                                       "low")
 
         self.last_kind = kind

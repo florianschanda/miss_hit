@@ -49,10 +49,10 @@ In octave_4_2/cdef_subfun.m, line 7
 | ^^^^^^^^ error: expected end of file, found KEYWORD instead
 In octave_4_2/fun_contract.m, line 4
 |     arguments
-|     ^^^^^^^^^ style: end statement with a semicolon
+|     ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In octave_4_2/fun_contract.m, line 5
 |         x uint32
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In octave_4_2/fun_contract.m, line 7
 | end
 | ^^^ error: expected end of file, found KEYWORD instead
@@ -61,16 +61,16 @@ In octave_4_2/sa_pair.m, line 3
 |           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
 In octave_4_2/shellescape.m, line 3
 | ! ls
-| ^ style: unary operator must not be followed by whitespace
+| ^ style: unary operator must not be followed by whitespace [operator_whitespace]
 In octave_4_2/shellescape.m, line 3
 | ! ls
-|   ^^ style: end statement with a semicolon
+|   ^^ style: end statement with a semicolon [end_of_statements]
 In octave_4_4/fun_contract.m, line 4
 |     arguments
-|     ^^^^^^^^^ style: end statement with a semicolon
+|     ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In octave_4_4/fun_contract.m, line 5
 |         x uint32
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In octave_4_4/fun_contract.m, line 7
 | end
 | ^^^ error: expected end of file, found KEYWORD instead
@@ -79,10 +79,10 @@ In octave_4_4/sa_pair.m, line 3
 |           ^ error: expected IDENTIFIER, found ASSIGNMENT instead
 In octave_4_4/shellescape.m, line 3
 | ! ls
-| ^ style: unary operator must not be followed by whitespace
+| ^ style: unary operator must not be followed by whitespace [operator_whitespace]
 In octave_4_4/shellescape.m, line 3
 | ! ls
-|   ^^ style: end statement with a semicolon
+|   ^^ style: end statement with a semicolon [end_of_statements]
 MISS_HIT Style Summary: 45 file(s) analysed, 8 style issue(s), 20 error(s)
 === LINT ===
 In matlab_2017b/comments.m, line 1
@@ -129,7 +129,7 @@ In matlab_2021a/negation.m, line 3
 |        ^^^^^^ error: expected KET, found BANG instead
 In matlab_2021a/sa_pair.m, line 3
 | foo(value = 2);
-|           ^ check (low): name-value pairs have extremely confusing semantics and should be avoided, use two arguments instead
+|           ^ check (low): name-value pairs have extremely confusing semantics and should be avoided, use two arguments instead [name_value_pairs]
 In matlab_2021a/script_global.m, line 5
 | function rv = Foo(potato)
 |               ^^^ error: script-global functions are an Octave-specific feature; move your functions to the end of the script file or use an Octave language

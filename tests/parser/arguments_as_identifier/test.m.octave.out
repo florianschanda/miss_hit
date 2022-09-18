@@ -1,9 +1,9 @@
 In test.m, line 2
 |    arguments % keyword
-|    ^^^^^^^^^ style: end statement with a semicolon
+|    ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 3
 |       x uint
-|         ^^^^ style: end statement with a semicolon
+|         ^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 5
 |    try
 |    ^^^ error: expected end of file, found KEYWORD instead

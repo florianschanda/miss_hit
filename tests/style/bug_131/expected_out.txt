@@ -1,13 +1,13 @@
 === PLAIN MODE ===
 In Potato.m, line 3
 |     enumeration Picasso, Laura, King_Edward
-|     ^^^^^^^^^^^ style: end statement with a newline [fixed]
+|     ^^^^^^^^^^^ style: end statement with a newline [fixed] [end_of_statements]
 In Potato.m, line 3
 |     enumeration Picasso, Laura, King_Edward
-|                        ^ style: end this with just a newline [fixed]
+|                        ^ style: end this with just a newline [fixed] [end_of_statements]
 In Potato.m, line 3
 |     enumeration Picasso, Laura, King_Edward
-|                               ^ style: end this with just a newline [fixed]
+|                               ^ style: end this with just a newline [fixed] [end_of_statements]
 MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
 
 === HTML MODE ===

@@ -4,7 +4,7 @@ Symbol table for +foo/Potato.m with 1 active scopes:
 === Level 1 ===
 Symbol table for Kitten.m with 1 active scopes:
 === Level 1 ===
-script.m: check (high): this file shadows built-in script which is very naughty
+script.m: check (high): this file shadows built-in script which is very naughty [builtin_shadow]
 Symbol table for script.m with 1 active scopes:
 === Level 1 ===
 Symbol table for test.m with 1 active scopes:

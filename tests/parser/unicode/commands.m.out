@@ -1,9 +1,9 @@
 In commands.m, line 1
 | debugprint 🥔
-|            ^ style: end statement with a semicolon
+|            ^ style: end statement with a semicolon [end_of_statements]
 In commands.m, line 2
 | debugprint '🥔'
-|            ^^^ style: end statement with a semicolon
+|            ^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for commands.m
 Root: Script_File

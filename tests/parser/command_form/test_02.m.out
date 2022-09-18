@@ -1,15 +1,15 @@
 In test_02.m, line 6
 |     foo +kitten   % not valid
-|         ^^^^^^^ style: end statement with a semicolon
+|         ^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_02.m, line 7
 |     foo + kitten
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_02.m, line 8
 |     foo+ kitten
-|          ^^^^^^ style: end statement with a semicolon
+|          ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_02.m, line 9
 |     foo+kitten
-|         ^^^^^^ style: end statement with a semicolon
+|         ^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_02.m
 Root: Function_File

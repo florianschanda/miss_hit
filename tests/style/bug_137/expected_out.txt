@@ -1,7 +1,7 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
-test.m: style: Could not find any copyright notice
-test.m:1:0: style: files should not start with a newline [fixed]
+test.m: style: violates naming scheme for scripts [naming_scripts]
+test.m: style: Could not find any copyright notice [copyright_notice]
+test.m:1:0: style: files should not start with a newline [fixed] [no_starting_newline]
 test.m:2: style: more than one consecutive blank line [fixed]
 test.m:3: style: more than one consecutive blank line [fixed]
 MISS_HIT Style Summary: 1 file(s) analysed, 5 style issue(s)

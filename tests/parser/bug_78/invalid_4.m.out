@@ -1,6 +1,6 @@
 In invalid_4.m, line 3
 | disp foo bar     % 'foo' 'bar'
-|          ^^^ style: end statement with a semicolon
+|          ^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for invalid_4.m
 Root: Script_File

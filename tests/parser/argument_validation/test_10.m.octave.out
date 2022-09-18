@@ -1,15 +1,15 @@
 In test_10.m, line 4
 |     arguments (Repeating)
-|                         ^ style: end statement with a semicolon
+|                         ^ style: end statement with a semicolon [end_of_statements]
 In test_10.m, line 5
 |         x double
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_10.m, line 6
 |         y double
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_10.m, line 7
 |         option {mustBeMember(option,["linear","cubic"])}
-|                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: end statement with a semicolon
+|                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_10.m, line 12
 |     xCell = x;
 |     ^^^^^ error: expected end of file, found IDENTIFIER instead

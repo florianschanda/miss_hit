@@ -5,10 +5,10 @@ In test_02.m, line 4
 |                        ^^^^^^^ error: unknown miss_hit tool 'metrics'
 In test_04.m, line 5
 |       %|                 "this is a multi-line " +
-|       ^^ style: indentation not correct, should be 4 spaces, not 6 [fixed]
+|       ^^ style: indentation not correct, should be 4 spaces, not 6 [fixed] [indentation]
 In test_04.m, line 6
 |       %|                 "justification");
-|       ^^ style: indentation not correct, should be 4 spaces, not 6 [fixed]
+|       ^^ style: indentation not correct, should be 4 spaces, not 6 [fixed] [indentation]
 MISS_HIT Style Summary: 4 file(s) analysed, 2 style issue(s), 2 error(s)
 
 === HTML MODE ===

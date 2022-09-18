@@ -3,7 +3,7 @@ In invalid_8.m, line 4
 |         ^ lex error: this command form string is not terminated properly
 In invalid_8.m, line 4
 | disp foo'''''bar
-|      ^^^^^^^^^^^ style: end statement with a semicolon
+|      ^^^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for invalid_8.m
 Root: Script_File

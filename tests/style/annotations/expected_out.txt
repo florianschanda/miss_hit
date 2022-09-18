@@ -1,29 +1,29 @@
 === PLAIN MODE ===
-basic.m: style: violates naming scheme for scripts
+basic.m: style: violates naming scheme for scripts [naming_scripts]
 In basic.m, line 4
 | %|pragma Justify( metric,"npath","reason" )     ;
-| ^^ style: annotation indication must be succeeded by whitespace [fixed]
+| ^^ style: annotation indication must be succeeded by whitespace [fixed] [annotation_whitespace]
 In basic.m, line 4
 | %|pragma Justify( metric,"npath","reason" )     ;
-| ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In basic.m, line 4
 | %|pragma Justify( metric,"npath","reason" )     ;
-|                 ^ style: ( must not be followed by whitespace [fixed]
+|                 ^ style: ( must not be followed by whitespace [fixed] [whitespace_brackets]
 In basic.m, line 4
 | %|pragma Justify( metric,"npath","reason" )     ;
-|                         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In basic.m, line 4
 | %|pragma Justify( metric,"npath","reason" )     ;
-|                                 ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                 ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In basic.m, line 4
 | %|pragma Justify( metric,"npath","reason" )     ;
-|                                           ^ style: ) must not be preceeded by whitespace [fixed]
+|                                           ^ style: ) must not be preceeded by whitespace [fixed] [whitespace_brackets]
 In basic.m, line 4
 | %|pragma Justify( metric,"npath","reason" )     ;
-|                                                 ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                                 ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In basic.m, line 5
 | %|
-| ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 MISS_HIT Style Summary: 1 file(s) analysed, 9 style issue(s)
 
 === HTML MODE ===

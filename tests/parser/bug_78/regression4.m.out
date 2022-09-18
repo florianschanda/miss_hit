@@ -1,6 +1,6 @@
 In regression4.m, line 3
 | [x,y] = (size(1));
-|         ^ style: redundant parenthesis
+|         ^ style: redundant parenthesis [redundant_brackets]
 ----------------------------------------------------------------------
 --  Parse tree for regression4.m
 Root: Script_File

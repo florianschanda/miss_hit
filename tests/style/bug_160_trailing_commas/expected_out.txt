@@ -1,93 +1,93 @@
 === PLAIN MODE ===
-test_01.m: style: violates naming scheme for scripts
+test_01.m: style: violates naming scheme for scripts [naming_scripts]
 In test_01.m, line 3
 | a = [1,2,3,];
-|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 3
 | a = [1,2,3,];
-|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 3
 | a = [1,2,3,];
-|           ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|           ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 3
 | a = [1,2,3,];
-|           ^ style: this comma is not required and can be removed [fixed]
+|           ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_01.m, line 5
 | b = [1,];
-|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 5
 | b = [1,];
-|       ^ style: this comma is not required and can be removed [fixed]
+|       ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_01.m, line 7
 | c = [,1,2];
-|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 7
 | c = [,1,2];
-|      ^ style: this comma is not required and can be removed [fixed]
+|      ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_01.m, line 7
 | c = [,1,2];
-|        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 9
 | d = [1,2,
-|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 9
 | d = [1,2,
-|         ^ style: this comma is not required and can be removed [fixed]
+|         ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_01.m, line 10
 |      3,4];
-|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 12
 | e = [1,2,;3,4,];
-|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 12
 | e = [1,2,;3,4,];
-|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 12
 | e = [1,2,;3,4,];
-|         ^ style: this comma is not required and can be removed [fixed]
+|         ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_01.m, line 12
 | e = [1,2,;3,4,];
-|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 12
 | e = [1,2,;3,4,];
-|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 12
 | e = [1,2,;3,4,];
-|              ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|              ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 12
 | e = [1,2,;3,4,];
-|              ^ style: this comma is not required and can be removed [fixed]
-test_02.m: style: violates naming scheme for scripts
+|              ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
+test_02.m: style: violates naming scheme for scripts [naming_scripts]
 In test_02.m, line 3
 | a = [1, 2, 3, ];
-|             ^ style: this comma is not required and can be removed [fixed]
+|             ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_02.m, line 3
 | a = [1, 2, 3, ];
-|               ^ style: ] must not be preceeded by whitespace [fixed]
+|               ^ style: ] must not be preceeded by whitespace [fixed] [whitespace_brackets]
 In test_02.m, line 5
 | b = [1, ];
-|       ^ style: this comma is not required and can be removed [fixed]
+|       ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_02.m, line 5
 | b = [1, ];
-|         ^ style: ] must not be preceeded by whitespace [fixed]
+|         ^ style: ] must not be preceeded by whitespace [fixed] [whitespace_brackets]
 In test_02.m, line 7
 | c = [, 1, 2];
-|      ^ style: this comma is not required and can be removed [fixed]
+|      ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_02.m, line 9
 | d = [1, 2,
-|          ^ style: this comma is not required and can be removed [fixed]
+|          ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_02.m, line 12
 | e = [1, 2, ;3, 4, ];
-|          ^ style: this comma is not required and can be removed [fixed]
+|          ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_02.m, line 12
 | e = [1, 2, ;3, 4, ];
-|            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 12
 | e = [1, 2, ;3, 4, ];
-|                 ^ style: this comma is not required and can be removed [fixed]
+|                 ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_02.m, line 12
 | e = [1, 2, ;3, 4, ];
-|                   ^ style: ] must not be preceeded by whitespace [fixed]
+|                   ^ style: ] must not be preceeded by whitespace [fixed] [whitespace_brackets]
 MISS_HIT Style Summary: 2 file(s) analysed, 31 style issue(s)
 
 === HTML MODE ===

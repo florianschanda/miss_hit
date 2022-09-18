@@ -4,7 +4,7 @@ In Kitten.m, line 19
 |                        ^^^^^^ error: class can only have one constructor, previous declaration in line 11
 In Kitten.m, line 19
 |         function obj = Kitten(x)
-|                        ^^^^^^ style: violates naming scheme for method
+|                        ^^^^^^ style: violates naming scheme for method [naming_functions]
 MISS_HIT Style Summary: 2 file(s) analysed, 1 style issue(s), 1 error(s)
 
 === HTML MODE ===

@@ -1,6 +1,6 @@
 In test_04.m, line 5
 |   properties(l)
-|               ^ style: end statement with a semicolon
+|               ^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_04.m
 Root: Function_File

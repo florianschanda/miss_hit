@@ -1,377 +1,377 @@
 === PLAIN MODE ===
-test_01.m: style: violates naming scheme for scripts
+test_01.m: style: violates naming scheme for scripts [naming_scripts]
 In test_01.m, line 3
 | a = [1; 2; ; 3];
-|            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 3
 | a = [1; 2; ; 3];
-|            ^ style: this semicolon is not required and can be removed [fixed]
+|            ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 6
 | b = [;;1;;];
-|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 6
 | b = [;;1;;];
-|      ^ style: this semicolon is not required and can be removed [fixed]
+|      ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 6
 | b = [;;1;;];
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 6
 | b = [;;1;;];
-|       ^ style: this semicolon is not required and can be removed [fixed]
+|       ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 6
 | b = [;;1;;];
-|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 6
 | b = [;;1;;];
-|         ^ style: this semicolon is not required and can be removed [fixed]
+|         ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 6
 | b = [;;1;;];
-|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 6
 | b = [;;1;;];
-|          ^ style: this semicolon is not required and can be removed [fixed]
+|          ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 9
 | c = [1; 2;
-|          ^ style: this semicolon is not required and can be removed [fixed]
+|          ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 10
 |      3; 4;];
-|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 10
 |      3; 4;];
-|          ^ style: this semicolon is not required and can be removed [fixed]
+|          ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 13
 | d = [1;;;2];
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 13
 | d = [1;;;2];
-|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 13
 | d = [1;;;2];
-|        ^ style: this semicolon is not required and can be removed [fixed]
+|        ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 13
 | d = [1;;;2];
-|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 13
 | d = [1;;;2];
-|         ^ style: this semicolon is not required and can be removed [fixed]
+|         ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|        ^ style: this semicolon is not required and can be removed [fixed]
+|        ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|         ^ style: this comma is not required and can be removed [fixed]
+|         ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|          ^ style: this semicolon is not required and can be removed [fixed]
+|          ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|           ^ style: this semicolon is not required and can be removed [fixed]
+|           ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|            ^ style: this comma is not required and can be removed [fixed]
+|            ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|              ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|              ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|               ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|               ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|               ^ style: this semicolon is not required and can be removed [fixed]
+|               ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                ^ style: this semicolon is not required and can be removed [fixed]
+|                ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                  ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                  ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                  ^ style: this comma is not required and can be removed [fixed]
+|                  ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                   ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                   ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                   ^ style: this semicolon is not required and can be removed [fixed]
+|                   ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                    ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                    ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                    ^ style: this semicolon is not required and can be removed [fixed]
+|                    ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                     ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                     ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_01.m, line 16
 | e = [1;;,;;,2;;;3,;;;];
-|                     ^ style: this semicolon is not required and can be removed [fixed]
+|                     ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_01.m, line 19
 | f = [,];
-|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_01.m, line 19
 | f = [,];
-|      ^ style: this comma is not required and can be removed [fixed]
-test_02.m: style: violates naming scheme for scripts
+|      ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
+test_02.m: style: violates naming scheme for scripts [naming_scripts]
 In test_02.m, line 3
 | a = [1; 2; ; 3];
-|            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|            ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 3
 | a = [1; 2; ; 3];
-|            ^ style: this semicolon is not required and can be removed [fixed]
+|            ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 6
 | b = [; ; 1; ; ];
-|      ^ style: this semicolon is not required and can be removed [fixed]
+|      ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 6
 | b = [; ; 1; ; ];
-|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 6
 | b = [; ; 1; ; ];
-|        ^ style: this semicolon is not required and can be removed [fixed]
+|        ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 6
 | b = [; ; 1; ; ];
-|           ^ style: this semicolon is not required and can be removed [fixed]
+|           ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 6
 | b = [; ; 1; ; ];
-|             ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|             ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 6
 | b = [; ; 1; ; ];
-|             ^ style: this semicolon is not required and can be removed [fixed]
+|             ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 6
 | b = [; ; 1; ; ];
-|               ^ style: ] must not be preceeded by whitespace [fixed]
+|               ^ style: ] must not be preceeded by whitespace [fixed] [whitespace_brackets]
 In test_02.m, line 9
 | c = [1; 2;
-|          ^ style: this semicolon is not required and can be removed [fixed]
+|          ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 10
 |      3; 4; ];
-|          ^ style: this semicolon is not required and can be removed [fixed]
+|          ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 10
 |      3; 4; ];
-|            ^ style: ] must not be preceeded by whitespace [fixed]
+|            ^ style: ] must not be preceeded by whitespace [fixed] [whitespace_brackets]
 In test_02.m, line 13
 | d = [1; ; ; 2];
-|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 13
 | d = [1; ; ; 2];
-|         ^ style: this semicolon is not required and can be removed [fixed]
+|         ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 13
 | d = [1; ; ; 2];
-|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 13
 | d = [1; ; ; 2];
-|           ^ style: this semicolon is not required and can be removed [fixed]
+|           ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|         ^ style: this semicolon is not required and can be removed [fixed]
+|         ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|           ^ style: this semicolon is not required and can be removed [fixed]
+|           ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|             ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|             ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|             ^ style: this semicolon is not required and can be removed [fixed]
+|             ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                  ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                  ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                  ^ style: this semicolon is not required and can be removed [fixed]
+|                  ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                    ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                    ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                    ^ style: this semicolon is not required and can be removed [fixed]
+|                    ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                       ^ style: this semicolon is not required and can be removed [fixed]
+|                       ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                         ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                         ^ style: this semicolon is not required and can be removed [fixed]
+|                         ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                           ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                           ^ style: this semicolon is not required and can be removed [fixed]
+|                           ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_02.m, line 16
 | e = [1; ; ; ; 2; ; ; 3; ; ; ];
-|                             ^ style: ] must not be preceeded by whitespace [fixed]
+|                             ^ style: ] must not be preceeded by whitespace [fixed] [whitespace_brackets]
 test_03.m: error: file is not auto-fixed because it contains parse errors
 In test_03.m, line 3
 | x = [,,]
-|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [whitespace_comma]
 In test_03.m, line 3
 | x = [,,]
-|      ^ style: this comma is not required and can be removed
+|      ^ style: this comma is not required and can be removed [spurious_row_comma]
 In test_03.m, line 3
 | x = [,,]
 |       ^ error: expected M_KET, found COMMA instead
 In test_03.m, line 3
 | x = [,,]
-|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [whitespace_comma]
 test_04.m: error: file is not auto-fixed because it contains parse errors
 In test_04.m, line 3
 | x = [,,;]
-|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [whitespace_comma]
 In test_04.m, line 3
 | x = [,,;]
-|      ^ style: this comma is not required and can be removed
+|      ^ style: this comma is not required and can be removed [spurious_row_comma]
 In test_04.m, line 3
 | x = [,,;]
 |       ^ error: expected M_KET, found COMMA instead
 In test_04.m, line 3
 | x = [,,;]
-|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [whitespace_comma]
 In test_04.m, line 3
 | x = [,,;]
-|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [whitespace_semicolon]
 test_05.m: error: file is not auto-fixed because it contains parse errors
 In test_05.m, line 3
 | x = [;,,]
-|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace
+|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [whitespace_semicolon]
 In test_05.m, line 3
 | x = [;,,]
-|      ^ style: this semicolon is not required and can be removed
+|      ^ style: this semicolon is not required and can be removed [spurious_row_semicolon]
 In test_05.m, line 3
 | x = [;,,]
-|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
+|       ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [whitespace_comma]
 In test_05.m, line 3
 | x = [;,,]
-|       ^ style: this comma is not required and can be removed
+|       ^ style: this comma is not required and can be removed [spurious_row_comma]
 In test_05.m, line 3
 | x = [;,,]
 |        ^ error: expected M_KET, found COMMA instead
 In test_05.m, line 3
 | x = [;,,]
-|        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace
-test_06.m: style: violates naming scheme for scripts
+|        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [whitespace_comma]
+test_06.m: style: violates naming scheme for scripts [naming_scripts]
 In test_06.m, line 3
 | a = [,;,]
-|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_06.m, line 3
 | a = [,;,]
-|      ^ style: this comma is not required and can be removed [fixed]
+|      ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_06.m, line 3
 | a = [,;,]
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_06.m, line 3
 | a = [,;,]
-|       ^ style: this semicolon is not required and can be removed [fixed]
+|       ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_06.m, line 3
 | a = [,;,]
-|        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_06.m, line 3
 | a = [,;,]
-|        ^ style: this comma is not required and can be removed [fixed]
+|        ^ style: this comma is not required and can be removed [fixed] [spurious_row_comma]
 In test_06.m, line 3
 | a = [,;,]
-|         ^ style: end statement with a semicolon [fixed]
-test_07_a.m: style: violates naming scheme for scripts
+|         ^ style: end statement with a semicolon [fixed] [end_of_statements]
+test_07_a.m: style: violates naming scheme for scripts [naming_scripts]
 In test_07_a.m, line 3
 | a = [;        % a messy example
-|      ^ style: this semicolon is not required and can be removed [fixed]
+|      ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_07_a.m, line 4
 |      ;;1]     % with comments
-|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_07_a.m, line 4
 |      ;;1]     % with comments
-|      ^ style: this semicolon is not required and can be removed [fixed]
+|      ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_07_a.m, line 4
 |      ;;1]     % with comments
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_07_a.m, line 4
 |      ;;1]     % with comments
-|       ^ style: this semicolon is not required and can be removed [fixed]
+|       ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_07_a.m, line 4
 |      ;;1]     % with comments
-|         ^ style: end statement with a semicolon [fixed]
-test_07_b.m: style: violates naming scheme for scripts
+|         ^ style: end statement with a semicolon [fixed] [end_of_statements]
+test_07_b.m: style: violates naming scheme for scripts [naming_scripts]
 In test_07_b.m, line 3
 | b = [;        ... a messy example
-|      ^ style: this semicolon is not required and can be removed [fixed]
+|      ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_07_b.m, line 4
 |      ;;1]     ... with continuations
-|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|      ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_07_b.m, line 4
 |      ;;1]     ... with continuations
-|      ^ style: this semicolon is not required and can be removed [fixed]
+|      ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_07_b.m, line 4
 |      ;;1]     ... with continuations
-|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_07_b.m, line 4
 |      ;;1]     ... with continuations
-|       ^ style: this semicolon is not required and can be removed [fixed]
+|       ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_07_b.m, line 4
 |      ;;1]     ... with continuations
-|         ^ style: end statement with a semicolon [fixed]
+|         ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_07_b.m, line 4
 |      ;;1]     ... with continuations
-|               ^^^^^^^^^^^^^^^^^^^^^^^ style: useless line continuation [fixed]
+|               ^^^^^^^^^^^^^^^^^^^^^^^ style: useless line continuation [fixed] [useless_continuation]
 In test_07_b.m, line 6
 | % b = 1
-| ^^^^^^^ style: indentation not correct, should be 2 spaces, not 0 [fixed]
-test_07_c.m: style: violates naming scheme for scripts
+| ^^^^^^^ style: indentation not correct, should be 2 spaces, not 0 [fixed] [indentation]
+test_07_c.m: style: violates naming scheme for scripts [naming_scripts]
 In test_07_c.m, line 4
 |      1]
-|       ^ style: end statement with a semicolon [fixed]
-test_07_d.m: style: violates naming scheme for scripts
+|       ^ style: end statement with a semicolon [fixed] [end_of_statements]
+test_07_d.m: style: violates naming scheme for scripts [naming_scripts]
 In test_07_d.m, line 4
 |     ;
-|     ^ style: this semicolon is not required and can be removed [fixed]
+|     ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_07_d.m, line 4
 |     ;
-|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed] [indentation]
 In test_07_d.m, line 5
 |     ;
-|     ^ style: this semicolon is not required and can be removed [fixed]
+|     ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_07_d.m, line 5
 |     ;
-|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed] [indentation]
 In test_07_d.m, line 7
 |     1
-|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed] [indentation]
 In test_07_d.m, line 8
 |     ;
-|     ^ style: this semicolon is not required and can be removed [fixed]
+|     ^ style: this semicolon is not required and can be removed [fixed] [spurious_row_semicolon]
 In test_07_d.m, line 8
 |     ;
-|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed]
+|     ^ style: indentation not correct, should be 5 spaces, not 4 [fixed] [indentation]
 In test_07_d.m, line 9
 |     ]
-|     ^ style: end statement with a semicolon [fixed]
+|     ^ style: end statement with a semicolon [fixed] [end_of_statements]
 MISS_HIT Style Summary: 10 file(s) analysed, 125 style issue(s), 6 error(s)
 
 === HTML MODE ===

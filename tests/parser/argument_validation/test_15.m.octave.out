@@ -1,12 +1,12 @@
 In test_15.m, line 4
 |     arguments
-|     ^^^^^^^^^ style: end statement with a semicolon
+|     ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_15.m, line 5
 |         NameValueArgs.Name1
-|                       ^^^^^ style: end statement with a semicolon
+|                       ^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_15.m, line 6
 |         NameValueArgs.Name2
-|                       ^^^^^ style: end statement with a semicolon
+|                       ^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_15.m, line 10
 |     result = NameValueArgs.Name1 * NameValueArgs.Name2;
 |     ^^^^^^ error: expected end of file, found IDENTIFIER instead

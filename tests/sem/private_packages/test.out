@@ -2,5 +2,5 @@ Using the following PATH:
 > .
 Symbol table for +foo/Wibble.m with 1 active scopes:
 === Level 1 ===
-+foo/private/+bar/Potato.m: check (medium): cannot nest package inside a private directory
++foo/private/+bar/Potato.m: check (medium): cannot nest package inside a private directory [illegal_directory_structure]
 MISS_HIT Lint Summary: 2 file(s) analysed, 1 check(s)

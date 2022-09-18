@@ -3,29 +3,29 @@ In matlab/foo.m, line 5
 |     _x = _potato(5);
 |     ^ lex error: unexpected character '_'
 matlab/foo.m:12: style: file should end with a new line [fixed]
-matlab/run_test.m: style: violates naming scheme for scripts
-matlab/run_test.m: style: Could not find any copyright notice
+matlab/run_test.m: style: violates naming scheme for scripts [naming_scripts]
+matlab/run_test.m: style: Could not find any copyright notice [copyright_notice]
 In matlab/run_test.m, line 1
 | foo()
-|     ^ style: end statement with a semicolon [fixed]
+|     ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In octave/foo.m, line 3
 | function foo
-|          ^^^ style: violates naming scheme for function
+|          ^^^ style: violates naming scheme for function [naming_functions]
 In octave/foo.m, line 8
 |     function _rv = _potato(_input)
-|              ^^^ style: violates naming scheme for parameter
+|              ^^^ style: violates naming scheme for parameter [naming_parameters]
 In octave/foo.m, line 8
 |     function _rv = _potato(_input)
-|                    ^^^^^^^ style: violates naming scheme for nested
+|                    ^^^^^^^ style: violates naming scheme for nested [naming_functions]
 In octave/foo.m, line 8
 |     function _rv = _potato(_input)
-|                            ^^^^^^ style: violates naming scheme for parameter
+|                            ^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 octave/foo.m:12: style: file should end with a new line [fixed]
-octave/run_test.m: style: violates naming scheme for scripts
-octave/run_test.m: style: Could not find any copyright notice
+octave/run_test.m: style: violates naming scheme for scripts [naming_scripts]
+octave/run_test.m: style: Could not find any copyright notice [copyright_notice]
 In octave/run_test.m, line 1
 | foo()
-|     ^ style: end statement with a semicolon [fixed]
+|     ^ style: end statement with a semicolon [fixed] [end_of_statements]
 MISS_HIT Style Summary: 4 file(s) analysed, 12 style issue(s), 1 error(s)
 
 === HTML MODE ===

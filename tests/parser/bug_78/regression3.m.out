@@ -1,9 +1,9 @@
 In regression3.m, line 3
 | try(disp(5));
-| ^^^ style: end statement with a newline
+| ^^^ style: end statement with a newline [end_of_statements]
 In regression3.m, line 3
 | try(disp(5));
-|    ^ style: redundant parenthesis
+|    ^ style: redundant parenthesis [redundant_brackets]
 ----------------------------------------------------------------------
 --  Parse tree for regression3.m
 Root: Script_File

@@ -1,6 +1,6 @@
 In test_24.m, line 11
 |     bar(x,y,propertyCell{:})
-|                            ^ style: end statement with a semicolon
+|                            ^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_24.m
 Root: Function_File

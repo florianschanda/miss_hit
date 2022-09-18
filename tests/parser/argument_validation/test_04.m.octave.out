@@ -1,12 +1,12 @@
 In test_04.m, line 4
 |     arguments
-|     ^^^^^^^^^ style: end statement with a semicolon
+|     ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_04.m, line 5
 |         x (1,:) {mustBeNumeric,mustBeReal}
-|                                          ^ style: end statement with a semicolon
+|                                          ^ style: end statement with a semicolon [end_of_statements]
 In test_04.m, line 6
 |         v (1,:) {mustBeNumeric,mustBeReal,mustBeEqualSize(v,x)}
-|                                                               ^ style: end statement with a semicolon
+|                                                               ^ style: end statement with a semicolon [end_of_statements]
 In test_04.m, line 7
 |         method (1,:) char {mustBeMember(method,{'linear','cubic','spline'})} = 'linear'
 |                      ^^^^ error: expected end of statement, found IDENTIFIER instead

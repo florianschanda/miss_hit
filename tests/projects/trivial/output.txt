@@ -1,5 +1,5 @@
 === STYLE ===
-example.m: style: violates naming scheme for scripts
+example.m: style: violates naming scheme for scripts [naming_scripts]
 MISS_HIT Style Summary: 6 file(s) analysed, 1 style issue(s)
 === LINT ===
 MISS_HIT Lint Summary: 6 file(s) analysed, everything seems fine

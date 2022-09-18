@@ -1,14 +1,14 @@
 === PLAIN MODE ===
 In MyTest.m, line 3
 |     methods (Test, TestTags=['potato']) % nok
-|                              ^^^^^^^^ check (high): expressions in matrix TestTags must be strings
+|                              ^^^^^^^^ check (high): expressions in matrix TestTags must be strings [malformed_test_tags]
 In MyTest.m, line 9
 |     methods (Test, TestTags={"potato"}) % nok
-|                              ^^^^^^^^ check (high): expressions in cell TestTags must be character arrays
+|                              ^^^^^^^^ check (high): expressions in cell TestTags must be character arrays [malformed_test_tags]
 In MyTest.m, line 27
 |     methods (Test, TestTags='potato') % nok
-|                             ^^^^^^^^ check (high): TestTags must be a matrix or cell expression
+|                             ^^^^^^^^ check (high): TestTags must be a matrix or cell expression [malformed_test_tags]
 In MyTest.m, line 33
 |     methods (Test, TestTags={'potato'; 'kitten'}) % nok
-|                             ^ check (high): TestTags must contain precisely one row
+|                             ^ check (high): TestTags must contain precisely one row [malformed_test_tags]
 MISS_HIT Lint Summary: 1 file(s) analysed, 4 check(s)

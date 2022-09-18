@@ -1,6 +1,6 @@
 In add_one.m, line 3
 |     rv = x + 1;
-|            ^ check (medium): operation saturates for some inputs
+|            ^ check (medium): operation saturates for some inputs [integer_overflow]
 In add_one.m, line 3
 |     rv = x + 1;
 |            ^ info: counter-example trace: x = 2147483647

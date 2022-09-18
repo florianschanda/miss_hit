@@ -1,17 +1,17 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 2
 | x = a + b;% Some comment
-|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|          ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test.m, line 2
 | x = a + b;% Some comment
-|           ^^^^^^^^^^^^^^ style: comment must be preceeded by whitespace [fixed]
+|           ^^^^^^^^^^^^^^ style: comment must be preceeded by whitespace [fixed] [whitespace_comments]
 In test.m, line 3
 | y = a + b +... Another comment
-|           ^ style: non power binary operator must be surrounded by whitespace [fixed]
+|           ^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In test.m, line 3
 | y = a + b +... Another comment
-|            ^^^^^^^^^^^^^^^^^^^^ style: continuation must be preceeded by whitespace [fixed]
+|            ^^^^^^^^^^^^^^^^^^^^ style: continuation must be preceeded by whitespace [fixed] [whitespace_continuation]
 MISS_HIT Style Summary: 1 file(s) analysed, 5 style issue(s)
 
 === HTML MODE ===

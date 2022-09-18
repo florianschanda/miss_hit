@@ -1,6 +1,6 @@
 In invalid_06.m, line 5
 |     potato +kitten % unknown potato
-|            ^^^^^^^ style: end statement with a semicolon
+|            ^^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for invalid_06.m
 Root: Function_File

@@ -41,6 +41,19 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   set of keywords). I do plan to improve the situation, but please
   create tickets for things you need sooner.
 
+* Several tools that generate messages (`mh_style`, `mh_metric`, and
+  `mh_lint`) will now add the originating check id in the message. For
+  example:
+
+  ```
+  In test.m, line 4
+  | false = 0.01; % bad
+  | ^^^^^ check (medium): redefining this builtin is very naughty [builtin_shadow]
+  ```
+
+  This should make it much easier to disable rules if you don't like
+  to read the manual.
+
 * MISS_HIT now recognises and processes Octave test `.tst` files
   (along with `.m` and `.slx` files). The Octave test annotation
   language (comments starting with `%!`) is ignored by MH Style for

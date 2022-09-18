@@ -1,5 +1,5 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 test.m:5: style: more than one consecutive blank line [fixed]
 test.m:8: style: more than one consecutive blank line [fixed]
 test.m:9: style: more than one consecutive blank line [fixed]

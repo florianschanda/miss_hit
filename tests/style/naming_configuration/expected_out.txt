@@ -1,10 +1,10 @@
 === PLAIN MODE ===
 In test.m, line 3
 | function Good_Function()
-|          ^^^^^^^^^^^^^ style: violates naming scheme for function
+|          ^^^^^^^^^^^^^ style: violates naming scheme for function [naming_functions]
 In test.m, line 9
 | function bad_function()
-|          ^^^^^^^^^^^^ style: violates naming scheme for function
+|          ^^^^^^^^^^^^ style: violates naming scheme for function [naming_functions]
 MISS_HIT Style Summary: 3 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===

@@ -1,5 +1,5 @@
 === PLAIN MODE ===
 In test.m, line 7
 | if x < y < z
-|          ^ check (high): chained relation does not work the way you think it does
+|          ^ check (high): chained relation does not work the way you think it does [chained_relation]
 MISS_HIT Lint Summary: 1 file(s) analysed, 1 check(s)

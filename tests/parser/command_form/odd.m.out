@@ -1,18 +1,18 @@
 In odd.m, line 5
 |   wibble a' 'b c  % wibble('a b', 'c')
-|                ^ style: end statement with a semicolon
+|                ^ style: end statement with a semicolon [end_of_statements]
 In odd.m, line 6
 |   wibble [a 1 b] c % wibble('[a 1 b]', 'c')
-|                  ^ style: end statement with a semicolon
+|                  ^ style: end statement with a semicolon [end_of_statements]
 In odd.m, line 7
 |   wibble [a 1 b) c % wibble('[a 1 b)', 'c')
-|                  ^ style: end statement with a semicolon
+|                  ^ style: end statement with a semicolon [end_of_statements]
 In odd.m, line 8
 |   wibble a 1) % wibble('a', '1) ')
-|            ^^^ style: end statement with a semicolon
+|            ^^^ style: end statement with a semicolon [end_of_statements]
 In odd.m, line 9
 |   wibble [a 1 b c % wibble('[a 1 b c ')
-|          ^^^^^^^^^ style: end statement with a semicolon
+|          ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for odd.m
 Root: Function_File

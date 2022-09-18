@@ -1,6 +1,6 @@
 In test_01.m, line 4
 | disp x
-|      ^ style: end statement with a semicolon
+|      ^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_01.m
 Root: Function_File

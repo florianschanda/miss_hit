@@ -1,26 +1,26 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 5
 |  return;
 | ^ style: tab is not allowed [fixed]
 In test.m, line 5
 |     return;
-|           ^ style: end this with just a newline [fixed]
+|           ^ style: end this with just a newline [fixed] [end_of_statements]
 In test.m, line 8
 | % tabs in comments are not ok
 |                   ^ style: tab is not allowed [fixed]
 In test.m, line 12
 |  "a b"
-|  ^^^^^ style: end statement with a semicolon [fixed]
+|  ^^^^^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test.m, line 12
 |  "a b"
-|  ^^^^^ style: indentation not correct, should be 0 spaces, not 1 [fixed]
+|  ^^^^^ style: indentation not correct, should be 0 spaces, not 1 [fixed] [indentation]
 In test.m, line 12
 |  "a b"
 |    ^ style: tab is not allowed [fixed]
 In test.m, line 13
 | "a  b"
-| ^^^^^^ style: end statement with a semicolon [fixed]
+| ^^^^^^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test.m, line 13
 | "a b"
 |   ^ style: tab is not allowed [fixed]

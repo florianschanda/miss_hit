@@ -1,15 +1,15 @@
 In invalid_05.m, line 9
 |     arguments
-|     ^^^^^^^^^ style: end statement with a semicolon
+|     ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In invalid_05.m, line 10
 |         a uint32 = b * c
-|                        ^ style: end statement with a semicolon
+|                        ^ style: end statement with a semicolon [end_of_statements]
 In invalid_05.m, line 11
 |         b uint32
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In invalid_05.m, line 12
 |         c uint32
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In invalid_05.m, line 16
 | end
 | ^^^ error: expected end of file, found KEYWORD instead

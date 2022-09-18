@@ -1,6 +1,6 @@
 In invalid_02.m, line 4
 |   potato
-|   ^^^^^^ style: end statement with a semicolon
+|   ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In invalid_02.m, line 3
 | function invalid_02
 | ^^^^^^^^ error: this function must be terminated with end

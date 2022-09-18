@@ -1,6 +1,6 @@
 In no_fallthrough.m, line 5
 | switch(result)
-|       ^ style: redundant parenthesis
+|       ^ style: redundant parenthesis [redundant_brackets]
 ----------------------------------------------------------------------
 --  Parse tree for no_fallthrough.m
 Root: Script_File

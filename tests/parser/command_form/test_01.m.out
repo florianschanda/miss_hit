@@ -1,9 +1,9 @@
 In test_01.m, line 16
 |     foo kitten % kitten
-|         ^^^^^^ style: end statement with a semicolon
+|         ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_01.m, line 17
 |     foo +kitten % +kitten
-|         ^^^^^^^ style: end statement with a semicolon
+|         ^^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_01.m
 Root: Function_File

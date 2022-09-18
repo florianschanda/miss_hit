@@ -1,12 +1,12 @@
 In test_14.m, line 15
 |     arguments
-|     ^^^^^^^^^ style: end statement with a semicolon
+|     ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_14.m, line 16
 |         a uint32
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_14.m, line 17
 |         b uint32
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_14.m, line 19
 |     arguments (Repeating)
 |     ^^^^^^^^^ error: expected end of file, found IDENTIFIER instead

@@ -1,8 +1,8 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 4
 | cd fail
-|    ^^^^ style: end statement with a semicolon [fixed]
+|    ^^^^ style: end statement with a semicolon [fixed] [end_of_statements]
 MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===

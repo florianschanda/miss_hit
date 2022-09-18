@@ -1,12 +1,12 @@
 In Potato.m, line 3
 |     enumeration Picasso, Laura, King_Edward
-|     ^^^^^^^^^^^ style: end statement with a newline
+|     ^^^^^^^^^^^ style: end statement with a newline [end_of_statements]
 In Potato.m, line 3
 |     enumeration Picasso, Laura, King_Edward
-|                        ^ style: end this with just a newline
+|                        ^ style: end this with just a newline [end_of_statements]
 In Potato.m, line 3
 |     enumeration Picasso, Laura, King_Edward
-|                               ^ style: end this with just a newline
+|                               ^ style: end this with just a newline [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for Potato.m
 Root: Class_File

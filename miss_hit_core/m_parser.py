@@ -334,6 +334,7 @@ class MATLAB_Parser:
            n_expr.t_bracket_open:
             self.mh.style_issue(n_expr.t_bracket_open.location,
                                 "redundant parenthesis",
+                                "redundant_brackets",
                                 True)
             n_expr.t_bracket_open.fix.delete = True
             n_expr.t_bracket_close.fix.delete = True
@@ -397,6 +398,7 @@ class MATLAB_Parser:
                             ending_token.fix.add_newline = True
                         self.mh.style_issue(ending_token.location,
                                             "end this with a ; and newline",
+                                            "end_of_statements",
                                             True)
                     else:
                         fixed = False
@@ -405,6 +407,7 @@ class MATLAB_Parser:
                             fixed = True
                         self.mh.style_issue(ending_token.location,
                                             "end statement with a newline",
+                                            "end_of_statements",
                                             fixed)
                 return
             elif self.peek_eof():
@@ -430,6 +433,7 @@ class MATLAB_Parser:
                 self.mh.style_issue(terminator_tokens[0].location,
                                     "end this with a semicolon"
                                     " instead of a comma",
+                                    "end_of_statements",
                                     True)
                 terminator_tokens[0].fix.change_to_semicolon = True
 
@@ -437,6 +441,7 @@ class MATLAB_Parser:
                 assert terminator_tokens[0].kind == "NEWLINE"
                 self.mh.style_issue(ending_token.location,
                                     "end statement with a semicolon",
+                                    "end_of_statements",
                                     True)
                 ending_token.fix.add_semicolon_after = True
 
@@ -447,6 +452,7 @@ class MATLAB_Parser:
                     fixed = True
                 self.mh.style_issue(terminator_tokens[0].location,
                                     "end statement with a newline",
+                                    "end_of_statements",
                                     fixed)
 
         else:
@@ -460,6 +466,7 @@ class MATLAB_Parser:
                 # the comma
                 self.mh.style_issue(ending_token.location,
                                     "end this with just a newline",
+                                    "end_of_statements",
                                     False)
                 if first_newline is None:
                     terminator_tokens[0].fix.change_to_semicolon = True
@@ -478,12 +485,14 @@ class MATLAB_Parser:
                     fixed = True
                 self.mh.style_issue(terminator_tokens[0].location,
                                     "end this with just a newline",
+                                    "end_of_statements",
                                     fixed)
 
         for terminator in terminator_tokens[1:]:
             if terminator.kind != "NEWLINE":
                 self.mh.style_issue(terminator.location,  # Molten steel?
                                     "unnecessary statement terminator",
+                                    "end_of_statements",
                                     True)
                 terminator.fix.delete = True
 
@@ -1628,6 +1637,7 @@ class MATLAB_Parser:
                 self.mh.check(t_op.location,
                               "chained relation does not work the"
                               " way you think it does",
+                              "chained_relation",
                               "high")
 
         return rv
@@ -1890,6 +1900,7 @@ class MATLAB_Parser:
                               "name-value pairs have extremely confusing"
                               " semantics and should be avoided, use two"
                               " arguments instead",
+                              "name_value_pairs",
                               severity="low")
 
                 nv_pair.set_value(t_eq, self.parse_expression())

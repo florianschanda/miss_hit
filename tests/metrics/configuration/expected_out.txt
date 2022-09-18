@@ -1,8 +1,8 @@
 === PLAIN MODE ===
-test.m: metric: exceeded file_length: measured 25 > limit 10
+test.m: metric: exceeded file lines: measured 25 > limit 10 [file_length]
 In test.m, line 12
 | function y = test_2 (x)
-|              ^^^^^^ metric: exceeded npath: measured 8 > limit 5
+|              ^^^^^^ metric: exceeded number of paths: measured 8 > limit 5 [npath]
 === Code metric by file:
 
 * Code metrics for file test.m:
@@ -55,16 +55,16 @@ MISS_HIT Metric Summary: 1 file(s) analysed, 2 metric deviations(s)
 
 
 === HTML MODE ===
-test.m: metric: exceeded file_length: measured 25 > limit 10
+test.m: metric: exceeded file lines: measured 25 > limit 10 [file_length]
 In test.m, line 12
 | function y = test_2 (x)
-|              ^^^^^^ metric: exceeded npath: measured 8 > limit 5
+|              ^^^^^^ metric: exceeded number of paths: measured 8 > limit 5 [npath]
 MISS_HIT Metric Summary: 1 file(s) analysed, 2 metric deviations(s)
 
 
 === JSON MODE ===
-test.m: metric: exceeded file_length: measured 25 > limit 10
+test.m: metric: exceeded file lines: measured 25 > limit 10 [file_length]
 In test.m, line 12
 | function y = test_2 (x)
-|              ^^^^^^ metric: exceeded npath: measured 8 > limit 5
+|              ^^^^^^ metric: exceeded number of paths: measured 8 > limit 5 [npath]
 MISS_HIT Metric Summary: 1 file(s) analysed, 2 metric deviations(s)

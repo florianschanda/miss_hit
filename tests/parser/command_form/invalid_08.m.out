@@ -1,6 +1,6 @@
 In invalid_08.m, line 5
 |   bar
-|   ^^^ style: end statement with a semicolon
+|   ^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for invalid_08.m
 Root: Function_File

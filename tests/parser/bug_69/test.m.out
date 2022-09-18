@@ -1,15 +1,15 @@
 In test.m, line 4
 | if x == 0 x = 1; else x = 2; end
-|         ^ style: end statement with a newline
+|         ^ style: end statement with a newline [end_of_statements]
 In test.m, line 4
 | if x == 0 x = 1; else x = 2; end
-|                ^ style: end statement with a newline
+|                ^ style: end statement with a newline [end_of_statements]
 In test.m, line 4
 | if x == 0 x = 1; else x = 2; end
-|                  ^^^^ style: end statement with a newline
+|                  ^^^^ style: end statement with a newline [end_of_statements]
 In test.m, line 4
 | if x == 0 x = 1; else x = 2; end
-|                            ^ style: end statement with a newline
+|                            ^ style: end statement with a newline [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test.m
 Root: Script_File

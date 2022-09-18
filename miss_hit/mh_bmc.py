@@ -313,7 +313,9 @@ def analyze(mh, new_filename, lexer, n_file):
                 col_end   = orig_col_end,
                 context   = lexer.context_line[orig_line - 1])
 
-            mh.check(loc, "operation saturates for some inputs")
+            mh.check(loc,
+                     "operation saturates for some inputs",
+                     "integer_overflow")
 
             for trace in item["trace"][:-1]:
                 if trace["internal"] or trace["hidden"]:

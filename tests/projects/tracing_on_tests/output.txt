@@ -1,10 +1,10 @@
 === STYLE ===
 In +util/potato.m, line 1
 | function x = potato(y)
-|              ^^^^^^ style: violates naming scheme for function
+|              ^^^^^^ style: violates naming scheme for function [naming_functions]
 In +util/potato.m, line 1
 | function x = potato(y)
-|              ^^^^^^ style: Could not find any copyright notice
+|              ^^^^^^ style: Could not find any copyright notice [copyright_notice]
 MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
 === LINT ===
 MISS_HIT Lint Summary: 1 file(s) analysed, everything seems fine

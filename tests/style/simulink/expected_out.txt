@@ -1,31 +1,31 @@
 === PLAIN MODE ===
 In test1.slx/Add One, line 1
 | function y = add_one(u)
-|              ^^^^^^^ style: violates naming scheme for function
+|              ^^^^^^^ style: violates naming scheme for function [naming_functions]
 In test1.slx/Add One, line 1
 | function y = add_one(u)
-|              ^^^^^^^ style: Could not find any copyright notice
+|              ^^^^^^^ style: Could not find any copyright notice [copyright_notice]
 In test1.slx/Add One, line 3
 | y = u + 1;
-| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In test1.slx/Multiply, line 1
 | function y = my_multiply(u, v)
-|              ^^^^^^^^^^^ style: violates naming scheme for function
+|              ^^^^^^^^^^^ style: violates naming scheme for function [naming_functions]
 In test1.slx/Multiply, line 1
 | function y = my_multiply(u, v)
-|              ^^^^^^^^^^^ style: Could not find any copyright notice
+|              ^^^^^^^^^^^ style: Could not find any copyright notice [copyright_notice]
 In test1.slx/Multiply, line 3
 | y = u * v;
-| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In test1.slx/Sub One, line 1
 | function y = sub_one(u)
-|              ^^^^^^^ style: violates naming scheme for function
+|              ^^^^^^^ style: violates naming scheme for function [naming_functions]
 In test1.slx/Sub One, line 1
 | function y = sub_one(u)
-|              ^^^^^^^ style: Could not find any copyright notice
+|              ^^^^^^^ style: Could not find any copyright notice [copyright_notice]
 In test1.slx/Sub One, line 3
 | y = u - 1;
-| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 MISS_HIT Style Summary: 1 file(s) analysed, 9 style issue(s)
 
 === HTML MODE ===

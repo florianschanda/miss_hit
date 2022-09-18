@@ -1,11 +1,11 @@
 === PLAIN MODE ===
 In potato.m, line 3
 | classdef potato
-|          ^^^^^^ style: violates naming scheme for class
-test.m: style: violates naming scheme for scripts
+|          ^^^^^^ style: violates naming scheme for class [naming_classes]
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 3
 |     %{
-|     ^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
+|     ^^ style: indentation not correct, should be 0 spaces, not 4 [fixed] [indentation]
 MISS_HIT Style Summary: 2 file(s) analysed, 3 style issue(s)
 
 === HTML MODE ===

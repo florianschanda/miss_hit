@@ -1,20 +1,20 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 3
 | [ somevar] = 1;
-| ^ style: [ must not be followed by whitespace [fixed]
+| ^ style: [ must not be followed by whitespace [fixed] [whitespace_brackets]
 In test.m, line 4
 | [somevar ] = 2;
-|          ^ style: ] must not be preceeded by whitespace [fixed]
+|          ^ style: ] must not be preceeded by whitespace [fixed] [whitespace_brackets]
 In test.m, line 5
 | [ somevar ] = 3;
-| ^ style: [ must not be followed by whitespace [fixed]
+| ^ style: [ must not be followed by whitespace [fixed] [whitespace_brackets]
 In test.m, line 5
 | [ somevar ] = 3;
-|           ^ style: ] must not be preceeded by whitespace [fixed]
+|           ^ style: ] must not be preceeded by whitespace [fixed] [whitespace_brackets]
 In test.m, line 6
 | niceTable = [ 0  1  2  3; ...
-|             ^ style: [ must not be followed by whitespace [fixed]
+|             ^ style: [ must not be followed by whitespace [fixed] [whitespace_brackets]
 MISS_HIT Style Summary: 1 file(s) analysed, 6 style issue(s)
 
 === HTML MODE ===

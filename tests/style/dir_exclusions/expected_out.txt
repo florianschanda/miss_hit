@@ -1,5 +1,5 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In inc/test.m, line 3
 | _not_fine_;
 | ^ lex error: unexpected character '_'

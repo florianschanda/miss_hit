@@ -92,6 +92,7 @@ class Stage_1_Linting(AST_Visitor):
             if not is_blank:
                 self.mh.check(error_loc,
                               "a Contents.m file must only contain comments",
+                              "malformed_contents",
                               "low")
 
     def check_methods_block(self, n_block):
@@ -110,12 +111,14 @@ class Stage_1_Linting(AST_Visitor):
             else:
                 self.mh.check(n_value.loc(),
                               "TestTags must be a matrix or cell expression",
+                              "malformed_test_tags",
                               "high")
                 n_rows = None
 
             if n_rows is not None and len(n_rows.l_items) != 1:
                 self.mh.check(n_value.loc(),
                               "TestTags must contain precisely one row",
+                              "malformed_test_tags",
                               "high")
 
             if n_rows:
@@ -126,12 +129,14 @@ class Stage_1_Linting(AST_Visitor):
                             self.mh.check(n_item.loc(),
                                           "expressions in matrix TestTags must"
                                           " be strings",
+                                          "malformed_test_tags",
                                           "high")
                         elif isinstance(n_value, Cell_Expression) and \
                              not isinstance(n_item, Char_Array_Literal):
                             self.mh.check(n_item.loc(),
                                           "expressions in cell TestTags must"
                                           " be character arrays",
+                                          "malformed_test_tags",
                                           "high")
 
     def check_filename(self, file_name, kind, ent_name):
@@ -148,6 +153,7 @@ class Stage_1_Linting(AST_Visitor):
             self.mh.check(ent_name.loc(),
                           "%s name does not match the filename %s" %
                           (kind, base_filename),
+                          "filename_primary_entity_name",
                           "low")
 
 
@@ -193,6 +199,7 @@ class MH_Lint(command_line.MISS_HIT_Back_End):
             wp.mh.check(n_cu.loc(),
                         "this file shadows built-in %s which is very naughty"
                         % base_name,
+                        "builtin_shadow",
                         "high")
 
         # Initial checks

@@ -1,9 +1,9 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
-nested/test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
+nested/test.m: style: violates naming scheme for scripts [naming_scripts]
 In nested/test.m, line 4
 |     + 2;
-|     ^ style: continuations should not start with binary operators
+|     ^ style: continuations should not start with binary operators [operator_after_continuation]
 MISS_HIT Style Summary: 2 file(s) analysed, 3 style issue(s)
 
 === HTML MODE ===

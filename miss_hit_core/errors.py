@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2021, Florian Schanda                    ##
+##              Copyright (C) 2019-2022, Florian Schanda                    ##
 ##              Copyright (C) 2019, Zenuity AB                              ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -30,6 +30,7 @@ import html
 import json
 
 from miss_hit_core import pathutil
+from miss_hit_core.config import STYLE_RULES, METRICS
 
 
 class Location:
@@ -141,7 +142,7 @@ class Style_Justification(Justification):
 
 
 class Message:
-    def __init__(self, location, kind, message, fatal, autofixed):
+    def __init__(self, location, kind, check_id, message, fatal, autofixed):
         assert isinstance(location, Location)
         assert kind in ("info",       # diagnostics and information
                         "style",      # style issues (from mh_style)
@@ -150,6 +151,12 @@ class Message:
                         "warning",    # other issues
                         "lex error",  # errors in the lexing phase
                         "error")      # other errors
+        if check_id is not None:
+            assert isinstance(check_id, str)
+            if kind == "style":
+                assert check_id in STYLE_RULES
+            elif kind == "metric":
+                assert check_id in METRICS
         assert isinstance(message, str)
         assert isinstance(fatal, bool)
         assert isinstance(autofixed, bool)
@@ -158,6 +165,7 @@ class Message:
 
         self.location  = location
         self.kind      = kind
+        self.check_id  = check_id
         self.severity  = "medium"  # can be low, medium, high
         self.message   = message
         self.fixed     = autofixed
@@ -191,9 +199,10 @@ class Message:
 
 
 class Check_Message(Message):
-    def __init__(self, location, severity, message):
+    def __init__(self, location, severity, check_id, message):
         super().__init__(location  = location,
                          kind      = "check",
+                         check_id  = check_id,
                          message   = message,
                          fatal     = False,
                          autofixed = False)
@@ -379,6 +388,9 @@ class Message_Handler:
         if message.fixed and self.autofix:
             mtext += " [fixed]"
 
+        if message.check_id:
+            mtext += " [%s]" % message.check_id
+
         if message.location.blockname is None:
             full_location = message.location.filename
         else:
@@ -505,36 +517,41 @@ class Message_Handler:
     def info(self, location, message):
         msg = Message(location  = location,
                       kind      = "info",
+                      check_id  = None,
                       message   = message,
                       fatal     = False,
                       autofixed = False)
         self.register_message(msg)
 
-    def style_issue(self, location, message, autofix=False):
+    def style_issue(self, location, message, check_id, autofix=False):
         msg = Message(location  = location,
                       kind      = "style",
+                      check_id  = check_id,
                       message   = message,
                       fatal     = False,
                       autofixed = autofix)
         self.register_message(msg)
 
-    def metric_issue(self, location, message):
+    def metric_issue(self, location, message, metric_id):
         msg = Message(location  = location,
                       kind      = "metric",
+                      check_id  = metric_id,
                       message   = message,
                       fatal     = False,
                       autofixed = False)
         self.register_message(msg)
 
-    def check(self, location, message, severity="medium"):
+    def check(self, location, message, check_id, severity="medium"):
         msg = Check_Message(location = location,
                             severity = severity,
+                            check_id = check_id,
                             message  = message)
         self.register_message(msg)
 
     def warning(self, location, message):
         msg = Message(location  = location,
                       kind      = "warning",
+                      check_id  = None,
                       message   = message,
                       fatal     = False,
                       autofixed = False)
@@ -543,6 +560,7 @@ class Message_Handler:
     def lex_error(self, location, message, fatal=True):
         msg = Message(location  = location,
                       kind      = "lex error",
+                      check_id  = None,
                       message   = message,
                       fatal     = fatal,
                       autofixed = False)
@@ -551,6 +569,7 @@ class Message_Handler:
     def error(self, location, message, fatal=True):
         msg = Message(location  = location,
                       kind      = "error",
+                      check_id  = None,
                       message   = message,
                       fatal     = fatal,
                       autofixed = False)

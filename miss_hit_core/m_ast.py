@@ -499,7 +499,8 @@ class Script_File(Compilation_Unit):
             file_root = self.name.rsplit(".", 1)[0]
             if not re.match("^(" + regex + ")$", file_root):
                 mh.style_issue(self.loc(),
-                               "violates naming scheme for scripts")
+                               "violates naming scheme for scripts",
+                               "naming_scripts")
 
     def get_local_name(self):
         return self.name.rsplit(".", 1)[0]
@@ -751,7 +752,7 @@ class Class_Definition(Definition):
         assert isinstance(mh, Message_Handler)
         assert isinstance(cfg, Config)
         if cfg.active("naming_classes"):
-            self.n_name.sty_check_naming(mh, cfg, "class")
+            self.n_name.sty_check_naming(mh, cfg, "class", "naming_classes")
         for n_block in self.l_methods:
             for n_function in n_block.l_items:
                 n_function.sty_check_naming(mh, cfg)
@@ -1132,7 +1133,8 @@ class Function_Signature(Node):
         # Check naming of parameters
         if cfg.active("naming_parameters"):
             for param in self.l_inputs + self.l_outputs:
-                param.sty_check_naming(mh, cfg, "parameter")
+                param.sty_check_naming(mh, cfg, "parameter",
+                                       "naming_parameters",)
 
         # We need to work out what we are. Options are:
         # 1. Class constructor (needs to follow class naming scheme)
@@ -1152,7 +1154,7 @@ class Function_Signature(Node):
             if not isinstance(self.n_name, Identifier):
                 raise ICE("class constructor with %s node as name" %
                           self.n_name.__class__.__name__)
-            self.n_name.sty_check_naming(mh, cfg, "class")
+            self.n_name.sty_check_naming(mh, cfg, "class", "naming_functions")
 
         elif isinstance(n_fdef, Special_Block):
             # This is case 4: naked signature. Check as if it's
@@ -1160,32 +1162,35 @@ class Function_Signature(Node):
             if not isinstance(self.n_name, Identifier):
                 raise ICE("forward declaration with %s node as name" %
                           self.n_name.__class__.__name__)
-            self.n_name.sty_check_naming(mh, cfg, "method")
+            self.n_name.sty_check_naming(mh, cfg, "method", "naming_functions")
 
         elif isinstance(n_fdef.n_parent, Function_Definition):
             # This is case 2: nested function
             if not isinstance(self.n_name, Identifier):
                 raise ICE("nested function with %s node as name" %
                           self.n_name.__class__.__name__)
-            self.n_name.sty_check_naming(mh, cfg, "nested")
+            self.n_name.sty_check_naming(mh, cfg, "nested", "naming_functions")
 
         elif n_fdef.is_class_method():
             # This is case 3: class method. This is the only case we
             # can have a dotted name.
             if isinstance(self.n_name, Identifier):
-                self.n_name.sty_check_naming(mh, cfg, "method")
+                self.n_name.sty_check_naming(mh, cfg, "method",
+                                             "naming_functions")
             elif not isinstance(self.n_name, Selection):
                 raise ICE("class method with %s node as name" %
                           self.n_name.__class__.__name__)
             else:
-                self.n_name.n_field.sty_check_naming(mh, cfg, "method")
+                self.n_name.n_field.sty_check_naming(mh, cfg, "method",
+                                                     "naming_functions")
 
         else:
             # The remaining case is 1: normal function
             if not isinstance(self.n_name, Identifier):
                 raise ICE("ordinary function with %s node as name" %
                           self.n_name.__class__.__name__)
-            self.n_name.sty_check_naming(mh, cfg, "function")
+            self.n_name.sty_check_naming(mh, cfg, "function",
+                                         "naming_functions")
 
 
 class Sequence_Of_Statements(Node):
@@ -1530,7 +1535,8 @@ class Class_Enumeration(Node):
         assert isinstance(cfg, Config)
 
         if cfg.active("naming_enumerations"):
-            self.n_name.sty_check_naming(mh, cfg, "enumeration")
+            self.n_name.sty_check_naming(mh, cfg, "enumeration",
+                                         "naming_enumerations")
 
 
 class Action(Node):
@@ -1760,9 +1766,11 @@ class Identifier(Name):
     def is_simple_dotted_name(self):
         return self.t_ident.kind in ("IDENTIFIER", "KEYWORD")
 
-    def sty_check_naming(self, mh, cfg, kind):
+    def sty_check_naming(self, mh, cfg, kind, check_id):
         assert isinstance(mh, Message_Handler)
         assert isinstance(cfg, Config)
+        assert isinstance(kind, str)
+        assert isinstance(check_id, str)
 
         # The ~ parameters names are exempt from any name checking, as
         # they have special significance.
@@ -1772,7 +1780,8 @@ class Identifier(Name):
         regex = cfg.style_config["regex_" + kind + "_name"]
         if not re.match("^(" + regex + ")$", self.t_ident.value):
             mh.style_issue(self.t_ident.location,
-                           "violates naming scheme for %s" % kind)
+                           "violates naming scheme for %s" % kind,
+                           check_id)
 
     def sty_check_builtin_shadow(self, mh, cfg):
         assert isinstance(mh, Message_Handler)
@@ -1780,7 +1789,8 @@ class Identifier(Name):
 
         if self.t_ident.value in HIGH_IMPACT_BUILTIN_FUNCTIONS:
             mh.check(self.t_ident.location,
-                     "redefining this builtin is very naughty")
+                     "redefining this builtin is very naughty",
+                     "builtin_shadow")
 
 
 class Selection(Name):

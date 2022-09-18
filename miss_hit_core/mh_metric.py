@@ -320,7 +320,10 @@ def check_metric(mh, cfg, loc, metric, metrics, justifications):
             else:
                 mh.metric_issue(loc,
                                 "exceeded %s: measured %u > limit %u" %
-                                (metric, measure, limit))
+                                (config.METRICS[metric].longname.lower(),
+                                 measure,
+                                 limit),
+                                metric)
 
 
 def get_justifications(mh, n_root):

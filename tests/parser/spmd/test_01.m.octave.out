@@ -1,6 +1,6 @@
 In test_01.m, line 4
 |   spmd
-|   ^^^^ style: end statement with a semicolon
+|   ^^^^ style: end statement with a semicolon [end_of_statements]
 In test_01.m, line 8
 | end
 | ^^^ error: expected end of file, found KEYWORD instead

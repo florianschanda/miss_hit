@@ -4,22 +4,22 @@ In off/test.m, line 5
 |    ^ lex error: unexpected character '#'
 In on/test.m, line 3
 | function potato()
-|          ^^^^^^ style: violates naming scheme for function
+|          ^^^^^^ style: violates naming scheme for function [naming_functions]
 In on/test.m, line 4
 |   disp foo#bar
-|   ^^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+|   ^^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed] [indentation]
 In on/test.m, line 4
 |   disp foo#bar
-|        ^^^ style: end statement with a semicolon [fixed]
+|        ^^^ style: end statement with a semicolon [fixed] [end_of_statements]
 In on/test.m, line 4
 |   disp foo#bar
-|           ^^^^ style: comment body must be separated with whitespace from the starting # [fixed]
+|           ^^^^ style: comment body must be separated with whitespace from the starting # [fixed] [whitespace_comments]
 In on/test.m, line 4
 |   disp foo#bar
-|           ^^^^ style: comment must be preceeded by whitespace [fixed]
+|           ^^^^ style: comment must be preceeded by whitespace [fixed] [whitespace_comments]
 In on/test.m, line 5
 |    # This is a comment
-|    ^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 3 [fixed]
+|    ^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 3 [fixed] [indentation]
 MISS_HIT Style Summary: 2 file(s) analysed, 6 style issue(s), 1 error(s)
 
 === HTML MODE ===

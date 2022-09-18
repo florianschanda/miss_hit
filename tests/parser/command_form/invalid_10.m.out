@@ -1,15 +1,15 @@
 In invalid_10.m, line 5
 |   x + 1  % ok, 6
-|       ^ style: end statement with a semicolon
+|       ^ style: end statement with a semicolon [end_of_statements]
 In invalid_10.m, line 6
 |   x+ 1   % ok, 6
-|      ^ style: end statement with a semicolon
+|      ^ style: end statement with a semicolon [end_of_statements]
 In invalid_10.m, line 7
 |   x+1    % ok, 6
-|     ^ style: end statement with a semicolon
+|     ^ style: end statement with a semicolon [end_of_statements]
 In invalid_10.m, line 8
 |   x +1   % fail, because command syntax and x is not a function
-|     ^^ style: end statement with a semicolon
+|     ^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for invalid_10.m
 Root: Function_File

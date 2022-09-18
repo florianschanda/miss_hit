@@ -1,10 +1,10 @@
 === PLAIN MODE ===
 In Test_1.m, line 6
 |         foo  % no
-|         ^^^ style: violates naming scheme for enumeration
+|         ^^^ style: violates naming scheme for enumeration [naming_enumerations]
 In Test_1.m, line 16
 |         wrong5  % no
-|         ^^^^^^ style: violates naming scheme for enumeration
+|         ^^^^^^ style: violates naming scheme for enumeration [naming_enumerations]
 MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===

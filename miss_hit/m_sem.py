@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2020-2021, Florian Schanda                    ##
+##              Copyright (C) 2020-2022, Florian Schanda                    ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -115,7 +115,8 @@ def sem_pass_1(mh, entrypoint, n_cu):
                     pass
                 else:
                     mh.check(n_cu.loc(),
-                             "cannot nest package inside a %s" % sequence)
+                             "cannot nest package inside a %s" % sequence,
+                             "illegal_directory_structure")
                     return None
 
             elif item.startswith("@"):
@@ -125,7 +126,8 @@ def sem_pass_1(mh, entrypoint, n_cu):
                 else:
                     mh.check(n_cu.loc(),
                              "cannot nest class directory inside a %s" %
-                             sequence)
+                             sequence,
+                             "illegal_directory_structure")
                     return None
 
             elif item == "private":
@@ -135,13 +137,15 @@ def sem_pass_1(mh, entrypoint, n_cu):
                 else:
                     mh.check(n_cu.loc(),
                              "cannot private directory inside a %s" %
-                             sequence)
+                             sequence,
+                             "illegal_directory_structure")
                     return None
 
             else:
                 mh.check(n_cu.loc(),
                          "is not on path and cannot be accessed" %
-                         sequence)
+                         sequence,
+                         "illegal_directory_structure")
                 return None
 
     return rv

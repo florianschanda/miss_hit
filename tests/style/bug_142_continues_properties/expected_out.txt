@@ -1,82 +1,82 @@
 === PLAIN MODE ===
 In Potato.m, line 6
 |         foo, ... comment1
-|            ^ style: end this with just a newline [fixed]
+|            ^ style: end this with just a newline [fixed] [end_of_statements]
 In Potato.m, line 6
 |         foo, ... comment1
-|              ^^^^^^^^^^^^^ style: useless line continuation [fixed]
+|              ^^^^^^^^^^^^^ style: useless line continuation [fixed] [useless_continuation]
 In Potato.m, line 7
 |         bar (1, 1), ... comment2
-|                   ^ style: end this with just a newline [fixed]
+|                   ^ style: end this with just a newline [fixed] [end_of_statements]
 In Potato.m, line 7
 |         bar (1, 1), ... comment2
-|                     ^^^^^^^^^^^^^ style: useless line continuation [fixed]
+|                     ^^^^^^^^^^^^^ style: useless line continuation [fixed] [useless_continuation]
 In Potato.m, line 8
 |         bar (1, 1), ... comment2
-|         ^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+|         ^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed] [indentation]
 In Potato.m, line 8
 |         baz = 5; ... comment3
-|                ^ style: end this with just a newline [fixed]
+|                ^ style: end this with just a newline [fixed] [end_of_statements]
 In Potato.m, line 8
 |         baz = 5; ... comment3
-|                  ^^^^^^^^^^^^^ style: useless line continuation [fixed]
+|                  ^^^^^^^^^^^^^ style: useless line continuation [fixed] [useless_continuation]
 In Potato.m, line 10
 |         baz = 5; ... comment3
-|         ^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+|         ^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed] [indentation]
 In Potato.m, line 12
 |         bork single
-|         ^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+|         ^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed] [indentation]
 In Potato.m, line 13
 |         foo2,, ... comment1
-|             ^ style: end this with just a newline [fixed]
+|             ^ style: end this with just a newline [fixed] [end_of_statements]
 In Potato.m, line 13
 |         foo2,, ... comment1
-|             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In Potato.m, line 13
 |         foo2,, ... comment1
-|              ^ style: unnecessary statement terminator [fixed]
+|              ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In Potato.m, line 13
 |         foo2,, ... comment1
-|                ^^^^^^^^^^^^^ style: useless line continuation [fixed]
+|                ^^^^^^^^^^^^^ style: useless line continuation [fixed] [useless_continuation]
 In Potato.m, line 14
 |         bar2 (1, 1), ... comment2
-|                    ^ style: end this with just a newline [fixed]
+|                    ^ style: end this with just a newline [fixed] [end_of_statements]
 In Potato.m, line 14
 |         bar2 (1, 1), ... comment2
-|                      ^^^^^^^^^^^^^ style: useless line continuation [fixed]
+|                      ^^^^^^^^^^^^^ style: useless line continuation [fixed] [useless_continuation]
 In Potato.m, line 18
 |         bar2 (1, 1), ... comment2
-|         ^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+|         ^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed] [indentation]
 In Potato.m, line 16
 |         baz2 = 5; ... comment4
-|                 ^ style: end this with just a newline [fixed]
+|                 ^ style: end this with just a newline [fixed] [end_of_statements]
 In Potato.m, line 16
 |         baz2 = 5; ... comment4
-|                   ^^^^^^^^^^^^^ style: useless line continuation [fixed]
+|                   ^^^^^^^^^^^^^ style: useless line continuation [fixed] [useless_continuation]
 In Potato.m, line 21
 |         baz2 = 5; ... comment4
-|         ^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+|         ^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed] [indentation]
 In Potato.m, line 20
 |         ... comment3
-|         ^^^^^^^^^^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+|         ^^^^^^^^^^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed] [indentation]
 In Potato.m, line 23
 |         ... comment5
-|         ^^^^^^^^^^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+|         ^^^^^^^^^^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed] [indentation]
 In Potato.m, line 24
 |         bork2 single
-|         ^^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed]
+|         ^^^^^ style: indentation not correct, should be 10 spaces, not 8 [fixed] [indentation]
 In Potato2.m, line 6
 | classdef Potato2
-|          ^^^^^^^ style: violates naming scheme for class
+|          ^^^^^^^ style: violates naming scheme for class [naming_classes]
 In Potato2.m, line 10
 |         ...
-|         ^^^^ style: useless line continuation [fixed]
+|         ^^^^ style: useless line continuation [fixed] [useless_continuation]
 In Potato2.m, line 12
 |         ...
-|         ^^^^ style: useless line continuation [fixed]
+|         ^^^^ style: useless line continuation [fixed] [useless_continuation]
 In Potato2.m, line 14
 |         ...
-|         ^^^^ style: useless line continuation [fixed]
+|         ^^^^ style: useless line continuation [fixed] [useless_continuation]
 MISS_HIT Style Summary: 2 file(s) analysed, 26 style issue(s)
 
 === HTML MODE ===

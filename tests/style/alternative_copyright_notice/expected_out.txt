@@ -1,9 +1,9 @@
 === PLAIN MODE ===
-test_1.m: style: violates naming scheme for scripts
-test_2.m: style: violates naming scheme for scripts
+test_1.m: style: violates naming scheme for scripts [naming_scripts]
+test_2.m: style: violates naming scheme for scripts [naming_scripts]
 In test_2.m, line 1
 | % Copyright by Potato years 2021 through 2021
-|                ^^^^^^ style: Copyright entity 'Potato' is not Florian Schanda
+|                ^^^^^^ style: Copyright entity 'Potato' is not Florian Schanda [copyright_notice]
 MISS_HIT Style Summary: 2 file(s) analysed, 3 style issue(s)
 
 === HTML MODE ===

@@ -1,6 +1,6 @@
 In test_1.m, line 1
 | 1 != 2
-|      ^ style: end statement with a semicolon
+|      ^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_1.m
 Root: Script_File

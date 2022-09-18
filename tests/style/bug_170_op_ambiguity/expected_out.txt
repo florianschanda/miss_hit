@@ -1,60 +1,60 @@
 === PLAIN MODE ===
-test_01.m: style: violates naming scheme for scripts
+test_01.m: style: violates naming scheme for scripts [naming_scripts]
 In test_01.m, line 3
 | b = [1 2 3]
-|           ^ style: end statement with a semicolon [fixed]
+|           ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_01.m, line 5
 | x = 1./b
-|      ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+|      ^^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In test_01.m, line 5
 | x = 1./b
-|        ^ style: end statement with a semicolon [fixed]
+|        ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_01.m, line 7
 | y = 1. /b
-|        ^ style: non power binary operator must be surrounded by whitespace [fixed]
+|        ^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In test_01.m, line 7
 | y = 1. /b
-|         ^ style: end statement with a semicolon [fixed]
+|         ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_01.m, line 9
 | z = 1 ./b
-|       ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+|       ^^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In test_01.m, line 9
 | z = 1 ./b
-|         ^ style: end statement with a semicolon [fixed]
+|         ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_01.m, line 11
 | w = 1./ b
-|      ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+|      ^^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In test_01.m, line 11
 | w = 1./ b
-|         ^ style: end statement with a semicolon [fixed]
-test_02.m: style: violates naming scheme for scripts
+|         ^ style: end statement with a semicolon [fixed] [end_of_statements]
+test_02.m: style: violates naming scheme for scripts [naming_scripts]
 In test_02.m, line 3
 | b = [1 2 3]
-|           ^ style: end statement with a semicolon [fixed]
+|           ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_02.m, line 5
 | x = [1./b]
-|       ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+|       ^^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In test_02.m, line 5
 | x = [1./b]
-|          ^ style: end statement with a semicolon [fixed]
+|          ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_02.m, line 7
 | y = [1. /b]
-|         ^ style: non power binary operator must be surrounded by whitespace [fixed]
+|         ^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In test_02.m, line 7
 | y = [1. /b]
-|           ^ style: end statement with a semicolon [fixed]
+|           ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_02.m, line 9
 | z = [1 ./b]
-|        ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+|        ^^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In test_02.m, line 9
 | z = [1 ./b]
-|           ^ style: end statement with a semicolon [fixed]
+|           ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_02.m, line 11
 | w = [1./ b]
-|       ^^ style: non power binary operator must be surrounded by whitespace [fixed]
+|       ^^ style: non power binary operator must be surrounded by whitespace [fixed] [operator_whitespace]
 In test_02.m, line 11
 | w = [1./ b]
-|           ^ style: end statement with a semicolon [fixed]
+|           ^ style: end statement with a semicolon [fixed] [end_of_statements]
 MISS_HIT Style Summary: 2 file(s) analysed, 20 style issue(s)
 
 === HTML MODE ===

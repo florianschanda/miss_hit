@@ -1,8 +1,8 @@
 === PLAIN MODE ===
-test_fail_1.m: style: violates naming scheme for scripts
+test_fail_1.m: style: violates naming scheme for scripts [naming_scripts]
 test_fail_1.m:4: style: trailing blank lines at end of file [fixed]
-test_ok_1.m: style: violates naming scheme for scripts
-test_ok_2.m: style: violates naming scheme for scripts
+test_ok_1.m: style: violates naming scheme for scripts [naming_scripts]
+test_ok_2.m: style: violates naming scheme for scripts [naming_scripts]
 MISS_HIT Style Summary: 3 file(s) analysed, 4 style issue(s)
 
 === HTML MODE ===

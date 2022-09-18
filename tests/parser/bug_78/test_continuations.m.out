@@ -1,15 +1,15 @@
 In test_continuations.m, line 4
 |    baz
-|    ^^^ style: end statement with a semicolon
+|    ^^^ style: end statement with a semicolon [end_of_statements]
 In test_continuations.m, line 8
 |    baz
-|    ^^^ style: end statement with a semicolon
+|    ^^^ style: end statement with a semicolon [end_of_statements]
 In test_continuations.m, line 12
 |    baz
-|    ^^^ style: end statement with a semicolon
+|    ^^^ style: end statement with a semicolon [end_of_statements]
 In test_continuations.m, line 16
 |    baz
-|    ^^^ style: end statement with a semicolon
+|    ^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_continuations.m
 Root: Script_File

@@ -1,6 +1,6 @@
 In test_02.m, line 3
 | disp potato
-|      ^^^^^^ style: end statement with a semicolon
+|      ^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_02.m
 Root: Script_File

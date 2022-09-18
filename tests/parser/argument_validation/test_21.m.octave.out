@@ -1,12 +1,12 @@
 In test_21.m, line 4
 |     arguments
-|     ^^^^^^^^^ style: end statement with a semicolon
+|     ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_21.m, line 5
 |         width double
-|               ^^^^^^ style: end statement with a semicolon
+|               ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_21.m, line 6
 |         height double
-|                ^^^^^^ style: end statement with a semicolon
+|                ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_21.m, line 7
 |         lineOptions.LineStyle (1,1) string = "-"
 |                                     ^^^^^^ error: expected end of statement, found IDENTIFIER instead

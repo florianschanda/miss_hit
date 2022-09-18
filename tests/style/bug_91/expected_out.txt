@@ -1,10 +1,10 @@
 === PLAIN MODE ===
 In foo.m, line 3
 | classdef foo
-|          ^^^ style: violates naming scheme for class
+|          ^^^ style: violates naming scheme for class [naming_classes]
 In foo.m, line 5
 |         x; % potato
-|          ^ style: end this with just a newline [fixed]
+|          ^ style: end this with just a newline [fixed] [end_of_statements]
 MISS_HIT Style Summary: 1 file(s) analysed, 2 style issue(s)
 
 === HTML MODE ===

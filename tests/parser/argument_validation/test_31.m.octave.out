@@ -1,6 +1,6 @@
 In test_31.m, line 4
 |     arguments
-|     ^^^^^^^^^ style: end statement with a semicolon
+|     ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_31.m, line 5
 |         a (1,1) double
 |                 ^^^^^^ error: expected end of statement, found IDENTIFIER instead

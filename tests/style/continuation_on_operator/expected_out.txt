@@ -1,11 +1,11 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 17
 |     + c + d;
-|     ^ style: continuations should not start with binary operators
+|     ^ style: continuations should not start with binary operators [operator_after_continuation]
 In test.m, line 19
 |     && (c || d);
-|     ^^ style: continuations should not start with binary operators
+|     ^^ style: continuations should not start with binary operators [operator_after_continuation]
 MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s)
 
 === HTML MODE ===

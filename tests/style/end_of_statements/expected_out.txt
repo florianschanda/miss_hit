@@ -1,150 +1,150 @@
 === PLAIN MODE ===
 In newlines.m, line 1
 | classdef newlines
-|          ^^^^^^^^ style: violates naming scheme for class
+|          ^^^^^^^^ style: violates naming scheme for class [naming_classes]
 In newlines.m, line 1
 | classdef newlines
-|          ^^^^^^^^ style: Could not find any copyright notice
+|          ^^^^^^^^ style: Could not find any copyright notice [copyright_notice]
 In newlines.m, line 3
 |         x, y; z
-|          ^ style: end this with just a newline [fixed]
+|          ^ style: end this with just a newline [fixed] [end_of_statements]
 In newlines.m, line 3
 |         x, y; z
-|             ^ style: end this with just a newline [fixed]
-other.m: style: violates naming scheme for scripts
+|             ^ style: end this with just a newline [fixed] [end_of_statements]
+other.m: style: violates naming scheme for scripts [naming_scripts]
 In other.m, line 12
 | function out = foo(in)
-| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In other.m, line 12
 | function out = foo(in)
-|                ^^^ style: violates naming scheme for function
+|                ^^^ style: violates naming scheme for function [naming_functions]
 In other.m, line 17
 | function [output1, output2, output3,...
-|           ^^^^^^^ style: violates naming scheme for parameter
+|           ^^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 17
 | function [output1, output2, output3,...
-|                    ^^^^^^^ style: violates naming scheme for parameter
+|                    ^^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 17
 | function [output1, output2, output3,...
-|                             ^^^^^^^ style: violates naming scheme for parameter
+|                             ^^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 17
 | function [output1, output2, output3,...
-|                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In other.m, line 17
 | function [output1, output2, output3,...
-|                                     ^^^^ style: continuation must be preceeded by whitespace [fixed]
+|                                     ^^^^ style: continuation must be preceeded by whitespace [fixed] [whitespace_continuation]
 In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
-|           ^^^^^^^ style: violates naming scheme for parameter
+|           ^^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
-|                    ^^^^^^^ style: violates naming scheme for parameter
+|                    ^^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
-|                             ^^^^^^^ style: violates naming scheme for parameter
+|                             ^^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
-|                                      ^^^^^^^ style: violates naming scheme for parameter
+|                                      ^^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
-|                                               ^^^^^^^ style: violates naming scheme for parameter
+|                                               ^^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
-|                                                        ^ style: = must be succeeded by whitespace [fixed]
+|                                                        ^ style: = must be succeeded by whitespace [fixed] [whitespace_assignment]
 In other.m, line 18
 |           output4, output5, output6, output7, output8] =...
-|                                                         ^^^^ style: continuation must be preceeded by whitespace [fixed]
+|                                                         ^^^^ style: continuation must be preceeded by whitespace [fixed] [whitespace_continuation]
 In other.m, line 19
 |          test_LineEndings(input1, input2,    ...
-|          ^^^^^^^^^^^^^^^^ style: violates naming scheme for function
+|          ^^^^^^^^^^^^^^^^ style: violates naming scheme for function [naming_functions]
 In other.m, line 19
 |          test_LineEndings(input1, input2,    ...
-|                           ^^^^^^ style: violates naming scheme for parameter
+|                           ^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 19
 |          test_LineEndings(input1, input2,    ...
-|                                   ^^^^^^ style: violates naming scheme for parameter
+|                                   ^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 20
 |                           input3) %#codegen
-|                           ^^^^^^ style: violates naming scheme for parameter
+|                           ^^^^^^ style: violates naming scheme for parameter [naming_parameters]
 In other.m, line 20
 |     aVar = 3,;
-|              ^ style: unnecessary statement terminator [fixed]
+|              ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In other.m, line 21
 |     aVar = 3,;
-|             ^ style: end this with a semicolon instead of a comma [fixed]
+|             ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In other.m, line 21
 |     aVar = 3,;
-|             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In other.m, line 23
 |     ;
-|     ^ style: unnecessary statement terminator [fixed]
+|     ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In other.m, line 24
 |     ,
-|     ^ style: unnecessary statement terminator [fixed]
+|     ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In other.m, line 26
 |     if input1 > input2 output1=0, else output2=1; end
-|                 ^^^^^^ style: end statement with a newline [fixed]
+|                 ^^^^^^ style: end statement with a newline [fixed] [end_of_statements]
 In other.m, line 27
 |     if input1 > input2 output1=0, else output2=1; end
-|                               ^ style: = must be preceeded by whitespace [fixed]
+|                               ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In other.m, line 27
 |     if input1 > input2 output1=0, else output2=1; end
-|                                 ^ style: end this with a semicolon instead of a comma [fixed]
+|                                 ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In other.m, line 27
 |     if input1 > input2 output1=0, else output2=1; end
-|                                 ^ style: end statement with a newline [fixed]
+|                                 ^ style: end statement with a newline [fixed] [end_of_statements]
 In other.m, line 28
 |     if input1 > input2 output1=0, else output2=1; end
-|                                   ^^^^ style: end statement with a newline [fixed]
+|                                   ^^^^ style: end statement with a newline [fixed] [end_of_statements]
 In other.m, line 29
 |     if input1 > input2 output1=0, else output2=1; end
-|                                               ^ style: = must be preceeded by whitespace [fixed]
+|                                               ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In other.m, line 29
 |     if input1 > input2 output1=0, else output2=1; end
-|                                                 ^ style: end statement with a newline [fixed]
+|                                                 ^ style: end statement with a newline [fixed] [end_of_statements]
 In other.m, line 26
 |     if input1 > input2;
-|                       ^ style: end this with just a newline [fixed]
+|                       ^ style: end this with just a newline [fixed] [end_of_statements]
 In other.m, line 28
 |     else;
-|         ^ style: end this with just a newline [fixed]
+|         ^ style: end this with just a newline [fixed] [end_of_statements]
 In other.m, line 31
 |     end;
-|        ^ style: end this with just a newline [fixed]
+|        ^ style: end this with just a newline [fixed] [end_of_statements]
 In other.m, line 32
 |         output1=0
-|                ^ style: = must be preceeded by whitespace [fixed]
+|                ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In other.m, line 32
 |         output1=0
-|                 ^ style: end statement with a semicolon [fixed]
+|                 ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In other.m, line 34
 |         output2=1 ...
-|                ^ style: = must be preceeded by whitespace [fixed]
+|                ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In other.m, line 35
 |                     ,
-|                     ^ style: end this with a semicolon instead of a comma [fixed]
-test.m: style: violates naming scheme for scripts
+|                     ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 3
 | foo = 1,
-|        ^ style: end this with a semicolon instead of a comma [fixed]
+|        ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In test.m, line 5
 | potato = 2, 
-|           ^ style: end this with a semicolon instead of a comma [fixed]
+|           ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In test.m, line 5
 | potato = 2, 
 |            ^^ style: trailing whitespace [fixed]
 In test.m, line 6
 | kitten = 3,     % comment
-|           ^ style: end this with a semicolon instead of a comma [fixed]
+|           ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In test.m, line 7
 | baz = 4, bar = 5;
-|        ^ style: end this with a semicolon instead of a comma [fixed]
+|        ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In test.m, line 7
 | baz = 4, bar = 5;
-|        ^ style: end statement with a newline [fixed]
+|        ^ style: end statement with a newline [fixed] [end_of_statements]
 In test.m, line 9
 | spoon
-| ^^^^^ style: end statement with a semicolon [fixed]
+| ^^^^^ style: end statement with a semicolon [fixed] [end_of_statements]
 MISS_HIT Style Summary: 3 file(s) analysed, 50 style issue(s)
 
 === HTML MODE ===

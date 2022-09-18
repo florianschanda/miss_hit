@@ -1,12 +1,12 @@
 === PLAIN MODE ===
-eps.m: check (high): this file shadows built-in eps which is very naughty
+eps.m: check (high): this file shadows built-in eps which is very naughty [builtin_shadow]
 In test.m, line 4
 | false = 0.01; % bad
-| ^^^^^ check (medium): redefining this builtin is very naughty
+| ^^^^^ check (medium): redefining this builtin is very naughty [builtin_shadow]
 In test.m, line 6
 | x = pi, [true] = 42; % bad
-|          ^^^^ check (medium): redefining this builtin is very naughty
+|          ^^^^ check (medium): redefining this builtin is very naughty [builtin_shadow]
 In test.m, line 8
 | [a, uint8, b(i)] = potato; % uint8 bad, but the i is ok
-|     ^^^^^ check (medium): redefining this builtin is very naughty
+|     ^^^^^ check (medium): redefining this builtin is very naughty [builtin_shadow]
 MISS_HIT Lint Summary: 3 file(s) analysed, 4 check(s)

@@ -1,6 +1,6 @@
 Using the following PATH:
 > .
-@Foo/@Wibble/Wibble.m: check (medium): cannot nest class directory inside a class directory
+@Foo/@Wibble/Wibble.m: check (medium): cannot nest class directory inside a class directory [illegal_directory_structure]
 Symbol table for @Foo/Foo.m with 1 active scopes:
 === Level 1 ===
 Class Entity (Foo)

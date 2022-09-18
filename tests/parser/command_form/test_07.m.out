@@ -1,6 +1,6 @@
 In test_07.m, line 8
 |   noargs
-|   ^^^^^^ style: end statement with a semicolon
+|   ^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_07.m
 Root: Function_File

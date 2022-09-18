@@ -1,15 +1,15 @@
 In test_03.m, line 4
 |     arguments
-|     ^^^^^^^^^ style: end statement with a semicolon
+|     ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_03.m, line 5
 |         a double
-|           ^^^^^^ style: end statement with a semicolon
+|           ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_03.m, line 6
 |         b char
-|           ^^^^ style: end statement with a semicolon
+|           ^^^^ style: end statement with a semicolon [end_of_statements]
 In test_03.m, line 7
 |         c SpeedEnum
-|           ^^^^^^^^^ style: end statement with a semicolon
+|           ^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_03.m, line 11
 |     disp(class(a));
 |     ^^^^ error: expected end of file, found IDENTIFIER instead

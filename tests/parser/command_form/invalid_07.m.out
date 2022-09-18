@@ -1,6 +1,6 @@
 In invalid_07.m, line 5
 |     potato + kitten % var, but unknwon
-|              ^^^^^^ style: end statement with a semicolon
+|              ^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for invalid_07.m
 Root: Function_File

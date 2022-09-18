@@ -1,14 +1,14 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 7
 | sutff; % mh:ignore_style
 |        ^^^^^^^^^^^^^^^^^ warning: style justification does not apply
 In test.m, line 10
 |   potato ];
-|   ^^^^^^ style: indentation not correct, should be 1 spaces, not 2 [fixed]
+|   ^^^^^^ style: indentation not correct, should be 1 spaces, not 2 [fixed] [indentation]
 In test.m, line 10
 |   potato ];
-|          ^ style: ] must not be preceeded by whitespace [fixed]
+|          ^ style: ] must not be preceeded by whitespace [fixed] [whitespace_brackets]
 MISS_HIT Style Summary: 1 file(s) analysed, 3 style issue(s), 1 warning(s), 2 justified message(s)
 
 === HTML MODE ===

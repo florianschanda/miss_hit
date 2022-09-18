@@ -1,15 +1,15 @@
 In test_03.m, line 5
 |     potato +kitten
-|            ^^^^^^^ style: end statement with a semicolon
+|            ^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_03.m, line 6
 |     potato + kitten
-|              ^^^^^^ style: end statement with a semicolon
+|              ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_03.m, line 7
 |     potato+ kitten
-|             ^^^^^^ style: end statement with a semicolon
+|             ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test_03.m, line 8
 |     potato+kitten
-|            ^^^^^^ style: end statement with a semicolon
+|            ^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test_03.m
 Root: Function_File

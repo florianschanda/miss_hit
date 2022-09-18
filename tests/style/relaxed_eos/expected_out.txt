@@ -1,199 +1,199 @@
 === PLAIN MODE ===
 In test_01.m, line 3
 | function test_01(x);
-|          ^^^^^^^ style: violates naming scheme for function
+|          ^^^^^^^ style: violates naming scheme for function [naming_functions]
 In test_01.m, line 3
 | function test_01(x);
-|                    ^ style: end this with just a newline [fixed]
+|                    ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_01.m, line 4
 |   if x > 0;
-|   ^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+|   ^^ style: indentation not correct, should be 4 spaces, not 2 [fixed] [indentation]
 In test_01.m, line 4
 |   if x > 0;
-|           ^ style: end this with just a newline [fixed]
+|           ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_01.m, line 5
 |     disp(x), % comment 1
-|     ^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed]
+|     ^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed] [indentation]
 In test_01.m, line 5
 |     disp(x), % comment 1
-|            ^ style: end this with a semicolon instead of a comma [fixed]
+|            ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In test_01.m, line 6
 |   else
-|   ^^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+|   ^^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed] [indentation]
 In test_01.m, line 7
 |     disp(-x) % comment 2
-|     ^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed]
+|     ^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed] [indentation]
 In test_01.m, line 7
 |     disp(-x) % comment 2
-|            ^ style: end statement with a semicolon [fixed]
+|            ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_01.m, line 8
 |   end;
-|   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+|   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed] [indentation]
 In test_01.m, line 8
 |   end;
-|      ^ style: end this with just a newline [fixed]
+|      ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_01.m, line 9
 | end,
-|    ^ style: end this with just a newline [fixed]
+|    ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|          ^^^^^^^ style: violates naming scheme for function
+|          ^^^^^^^ style: violates naming scheme for function [naming_functions]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                    ^ style: end this with just a newline [fixed]
+|                    ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                               ^ style: end this with just a newline [fixed]
+|                               ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                                               ^ style: unnecessary statement terminator [fixed]
+|                                                               ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                                                     ^ style: end this with just a newline [fixed]
+|                                                                     ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                                                     ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                                                     ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                                                         ^ style: end this with just a newline [fixed]
+|                                                                         ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_02.m, line 3
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                                                                 ^^^^ style: line exceeds 80 characters
+|                                                                                 ^^^^ style: line exceeds 80 characters [line_length]
 In test_02.m, line 5
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                           ^ style: end this with a semicolon instead of a comma [fixed]
+|                                           ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In test_02.m, line 5
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                           ^ style: end statement with a newline [fixed]
+|                                           ^ style: end statement with a newline [fixed] [end_of_statements]
 In test_02.m, line 6
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                              ^^^^ style: end statement with a newline [fixed]
+|                                              ^^^^ style: end statement with a newline [fixed] [end_of_statements]
 In test_02.m, line 7
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                                              ^ style: end statement with a newline [fixed]
+|                                                              ^ style: end statement with a newline [fixed] [end_of_statements]
 In test_02.m, line 7
 | function test_02(x);  if x > 0;    disp(x),  else    disp(-x);;  end;end, % comment
-|                                                              ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                                              ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|          ^^^^^^^ style: violates naming scheme for function
+|          ^^^^^^^ style: violates naming scheme for function [naming_functions]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                    ^ style: end this with just a newline [fixed]
+|                    ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                     ^ style: unnecessary statement terminator [fixed]
+|                     ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                     ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                     ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                      ^ style: unnecessary statement terminator [fixed]
+|                      ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                      ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                       ^ style: unnecessary statement terminator [fixed]
+|                       ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                       ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                        ^ style: unnecessary statement terminator [fixed]
+|                        ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                        ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                         ^ style: unnecessary statement terminator [fixed]
+|                         ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                         ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                          ^ style: unnecessary statement terminator [fixed]
+|                          ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                          ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                          ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                           ^ style: unnecessary statement terminator [fixed]
+|                           ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                              ^ style: unnecessary statement terminator [fixed]
+|                                              ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                                              ^ style: unnecessary statement terminator [fixed]
+|                                                              ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                                              ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                                              ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                                               ^ style: unnecessary statement terminator [fixed]
+|                                                               ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                                                    ^ style: end this with just a newline [fixed]
+|                                                                    ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_03.m, line 3
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                                                                 ^^^ style: line exceeds 80 characters
+|                                                                                 ^^^ style: line exceeds 80 characters [line_length]
 In test_03.m, line 4
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                    ^ style: end statement with a newline [fixed]
+|                                    ^ style: end statement with a newline [fixed] [end_of_statements]
 In test_03.m, line 5
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                             ^ style: end this with a semicolon instead of a comma [fixed]
+|                                             ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In test_03.m, line 5
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                             ^ style: end statement with a newline [fixed]
+|                                             ^ style: end statement with a newline [fixed] [end_of_statements]
 In test_03.m, line 5
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test_03.m, line 6
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                                ^^^^ style: end statement with a newline [fixed]
+|                                                ^^^^ style: end statement with a newline [fixed] [end_of_statements]
 In test_03.m, line 7
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                                             ^ style: end statement with a newline [fixed]
+|                                                             ^ style: end statement with a newline [fixed] [end_of_statements]
 In test_03.m, line 7
 | function test_03(x),,,;,,,, if x > 0 disp(x),, else disp(-x);,; end, end % comment
-|                                                             ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                                             ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In test_04.m, line 3
 | function test_04(x);
-|          ^^^^^^^ style: violates naming scheme for function
+|          ^^^^^^^ style: violates naming scheme for function [naming_functions]
 In test_04.m, line 3
 | function test_04(x);
-|                    ^ style: end this with just a newline [fixed]
+|                    ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_04.m, line 4
 |   if x > 0; disp(x), % comment 1
-|   ^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+|   ^^ style: indentation not correct, should be 4 spaces, not 2 [fixed] [indentation]
 In test_04.m, line 4
 |   if x > 0; disp(x), % comment 1
-|           ^ style: end this with just a newline [fixed]
+|           ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_04.m, line 5
 |   if x > 0; disp(x), % comment 1
-|                    ^ style: end this with a semicolon instead of a comma [fixed]
+|                    ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
 In test_04.m, line 6
 |   else disp(-x)      % comment 2
-|   ^^^^ style: end statement with a newline [fixed]
+|   ^^^^ style: end statement with a newline [fixed] [end_of_statements]
 In test_04.m, line 6
 |   else disp(-x)      % comment 2
-|   ^^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+|   ^^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed] [indentation]
 In test_04.m, line 7
 |   else disp(-x)      % comment 2
-|               ^ style: end statement with a semicolon [fixed]
+|               ^ style: end statement with a semicolon [fixed] [end_of_statements]
 In test_04.m, line 6
 |   end;
-|      ^ style: end this with just a newline [fixed]
+|      ^ style: end this with just a newline [fixed] [end_of_statements]
 In test_04.m, line 8
 |   end;
-|   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed]
+|   ^^^ style: indentation not correct, should be 4 spaces, not 2 [fixed] [indentation]
 In test_04.m, line 7
 | end,
-|    ^ style: end this with just a newline [fixed]
+|    ^ style: end this with just a newline [fixed] [end_of_statements]
 MISS_HIT Style Summary: 4 file(s) analysed, 65 style issue(s)
 
 === HTML MODE ===

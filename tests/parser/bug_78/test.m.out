@@ -1,39 +1,39 @@
 In test.m, line 3
 | disp f)oo % bar  % 'f)oo'
-|      ^^^^^ style: end statement with a semicolon
+|      ^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 4
 | disp f)oo bar    % 'f)oo bar    '
-|      ^^^^^^^^^^^^ style: end statement with a semicolon
+|      ^^^^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 5
 | disp f(o,o)      % 'f(o,o)'
-|      ^^^^^^ style: end statement with a semicolon
+|      ^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 6
 | disp f(o, oo)    % 'f(o, oo)'
-|      ^^^^^^^^ style: end statement with a semicolon
+|      ^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 7
 | disp f(o[ b      % 'f(o[ b      '
-|      ^^^^^^^^^^^^ style: end statement with a semicolon
+|      ^^^^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 8
 | disp f] oo       % 'f] oo       '
-|      ^^^^^^^^^^^^ style: end statement with a semicolon
+|      ^^^^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 9
 | disp f]f[[ bar   % 'f]f[[ bar   '
-|      ^^^^^^^^^^^^ style: end statement with a semicolon
+|      ^^^^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 10
 | disp foo(%bar    % 'foo('
-|      ^^^^ style: end statement with a semicolon
+|      ^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 11
 | disp foo( %bar   % 'foo( '
-|      ^^^^^ style: end statement with a semicolon
+|      ^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 12
 | disp ]foo        % ']foo        '
-|      ^^^^^^^^^^^^ style: end statement with a semicolon
+|      ^^^^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 13
 | disp }foo        % '}foo        '
-|      ^^^^^^^^^^^^ style: end statement with a semicolon
+|      ^^^^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 In test.m, line 14
 | d2 foo )foo      % 'foo' ')foo      '
-|        ^^^^^^^^^^ style: end statement with a semicolon
+|        ^^^^^^^^^^ style: end statement with a semicolon [end_of_statements]
 ----------------------------------------------------------------------
 --  Parse tree for test.m
 Root: Script_File

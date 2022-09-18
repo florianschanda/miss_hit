@@ -1,82 +1,82 @@
 === PLAIN MODE ===
 In Test_01.m, line 5
 | end
-| ^^^ style: function should be suceeded by an empty line [fixed]
+| ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_01.m, line 7
 | function Test_01_A
-| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_02.m, line 6
 | function Test_02_A
-| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_05.m, line 6
 |     function Potato
-|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_05.m, line 8
 |     end
-|     ^^^ style: function should be suceeded by an empty line [fixed]
+|     ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_06.m, line 6
 |     function Potato
-|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_06.m, line 7
 |     end;
-|        ^ style: end this with just a newline [fixed]
+|        ^ style: end this with just a newline [fixed] [end_of_statements]
 In Test_06.m, line 8
 |     end;
-|     ^^^ style: function should be suceeded by an empty line [fixed]
+|     ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_06.m, line 9
 | end;
-|    ^ style: end this with just a newline [fixed]
+|    ^ style: end this with just a newline [fixed] [end_of_statements]
 In Test_07.m, line 6
 | end
-| ^^^ style: function should be suceeded by an empty line [fixed]
+| ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_07.m, line 9
 | function Test_07_A
-| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_08.m, line 7
 | % This is another function
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In Test_08.m, line 8
 | function Test_08_A
-| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_09.m, line 7
 |     function Potato
-|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_09.m, line 9
 |     end
-|     ^^^ style: function should be suceeded by an empty line [fixed]
+|     ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_10.m, line 10
 |     function Potato
-|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_10.m, line 12
 |     end
-|     ^^^ style: function should be suceeded by an empty line [fixed]
+|     ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_10.m, line 17
 | end
-| ^^^ style: function should be suceeded by an empty line [fixed]
+| ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_11.m, line 11
 |     function Potato
-|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+|     ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_11.m, line 13
 |     end
-|     ^^^ style: function should be suceeded by an empty line [fixed]
+|     ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_11.m, line 19
 | end
-| ^^^ style: function should be suceeded by an empty line [fixed]
+| ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_12.m, line 4
 |     b, c)
-|     ^ style: indentation not correct, should be 21 spaces, not 4 [fixed]
+|     ^ style: indentation not correct, should be 21 spaces, not 4 [fixed] [indentation]
 In Test_13.m, line 10
 |         function potato
-|         ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+|         ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_13.m, line 12
 |         end
-|         ^^^ style: function should be suceeded by an empty line [fixed]
+|         ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_14.m, line 6
 | end % of Test_14
-| ^^^ style: function should be suceeded by an empty line [fixed]
+| ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In Test_14.m, line 9
 | function Test_14_A
-| ^^^^^^^^ style: function should be preceeded by an empty line [fixed]
+| ^^^^^^^^ style: function should be preceeded by an empty line [fixed] [whitespace_around_functions]
 MISS_HIT Style Summary: 14 file(s) analysed, 26 style issue(s)
 
 === HTML MODE ===

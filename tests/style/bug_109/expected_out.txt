@@ -1,12 +1,12 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
-test.m: style: Could not find any copyright notice
+test.m: style: violates naming scheme for scripts [naming_scripts]
+test.m: style: Could not find any copyright notice [copyright_notice]
 In test.m, line 1
 | x = foo(bar:...
-|             ^^^^ style: continuation must be preceeded by whitespace [fixed]
+|             ^^^^ style: continuation must be preceeded by whitespace [fixed] [whitespace_continuation]
 In test.m, line 2
 |         baz)
-|            ^ style: end statement with a semicolon [fixed]
+|            ^ style: end statement with a semicolon [fixed] [end_of_statements]
 MISS_HIT Style Summary: 1 file(s) analysed, 4 style issue(s)
 
 === HTML MODE ===

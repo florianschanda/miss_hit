@@ -102,6 +102,7 @@ class Rule_File_Length(Style_Rule_File):
                                     len(lines)),
                            "file exceeds %u lines" %
                            cfg.style_config["file_length"],
+                           "file_length",
                            self.autofix)
 
 
@@ -123,11 +124,13 @@ class Rule_File_EOF_Lines(Style_Rule_File):
             mh.style_issue(Location(filename,
                                     len(lines)),
                            "trailing blank lines at end of file",
+                           None,
                            self.autofix)
         elif len(full_text) and full_text[-1] != "\n":
             mh.style_issue(Location(filename,
                                     len(lines)),
                            "file should end with a new line",
+                           None,
                            self.autofix)
 
 
@@ -166,6 +169,7 @@ class Rule_Line_Length(Style_Rule_Line):
                                     line),
                            "line exceeds %u characters" %
                            cfg.style_config["line_length"],
+                           "line_length",
                            self.autofix)
 
 
@@ -189,6 +193,7 @@ class Rule_Line_Blank_Lines(Style_Rule_Line):
             mh.style_issue(Location(filename,
                                     line_no),
                            "more than one consecutive blank line",
+                           None,
                            self.autofix)
         else:
             self.is_blank = True
@@ -244,6 +249,7 @@ class Rule_Line_Tabs(Style_Rule_Line):
                                     line.index("\t"),
                                     line),
                            "tab is not allowed",
+                           None,
                            self.autofix)
 
 
@@ -267,6 +273,7 @@ class Rule_Line_Trailing_Whitesapce(Style_Rule_Line):
                 mh.style_issue(Location(filename,
                                         line_no),
                                "whitespace on blank line",
+                               None,
                                self.autofix)
             else:
                 mh.style_issue(Location(filename,
@@ -275,6 +282,7 @@ class Rule_Line_Trailing_Whitesapce(Style_Rule_Line):
                                         len(line),
                                         line),
                                "trailing whitespace",
+                               None,
                                self.autofix)
 
 
@@ -453,12 +461,14 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     mh.style_issue(token.location,
                                    "comma cannot be preceeded by whitespace "
                                    "and must be followed by whitespace",
+                                   "whitespace_comma",
                                    fixed)
 
             if cfg.active("spurious_row_comma") and token.fix.spurious:
                 token.fix.delete = True
                 mh.style_issue(token.location,
                                "this comma is not required and can be removed",
+                               "spurious_row_comma",
                                fixed)
 
         elif token.kind == "SEMICOLON":
@@ -472,6 +482,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                                    "semicolon cannot be preceeded by "
                                    "whitespace and must be followed by "
                                    "whitespace",
+                                   "whitespace_semicolon",
                                    fixed)
 
             if cfg.active("spurious_row_semicolon") and token.fix.spurious:
@@ -479,6 +490,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 mh.style_issue(token.location,
                                "this semicolon is not required and can "
                                "be removed",
+                               "spurious_row_semicolon",
                                fixed)
 
         elif token.kind == "COLON":
@@ -495,6 +507,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                         token.fix.ensure_trim_before = True
                         mh.style_issue(token.location,
                                        "no whitespace before colon",
+                                       "whitespace_colon",
                                        fixed)
                 elif (prev_in_line and ws_before > 0) or \
                      (next_in_line and ws_after > 0):
@@ -503,6 +516,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     mh.style_issue(token.location,
                                    "no whitespace around colon"
                                    " allowed",
+                                   "whitespace_colon",
                                    fixed)
 
         # Corresponds to the old CodeChecker EqualSignWhitespace rule
@@ -514,10 +528,12 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 if prev_in_line and ws_before == 0:
                     mh.style_issue(token.location,
                                    "= must be preceeded by whitespace",
+                                   "whitespace_assignment",
                                    fixed)
                 elif next_in_line and ws_after == 0:
                     mh.style_issue(token.location,
                                    "= must be succeeded by whitespace",
+                                   "whitespace_assignment",
                                    fixed)
 
         # Corresponds to the old CodeChecker ParenthesisWhitespace and
@@ -529,6 +545,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 mh.style_issue(token.location,
                                "%s must not be followed by whitespace" %
                                token.raw_text,
+                               "whitespace_brackets",
                                fixed)
                 token.fix.ensure_trim_after = True
 
@@ -538,6 +555,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 mh.style_issue(token.location,
                                "%s must not be preceeded by whitespace" %
                                token.raw_text,
+                               "whitespace_brackets",
                                fixed)
                 token.fix.ensure_trim_before = True
 
@@ -548,6 +566,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                next_in_line and ws_after == 0:
                 mh.style_issue(token.location,
                                "keyword must be succeeded by whitespace",
+                               "whitespace_keywords",
                                fixed)
                 token.fix.ensure_ws_after = True
 
@@ -580,6 +599,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     mh.style_issue(token.location,
                                    "function should be preceeded by an empty"
                                    " line",
+                                   "whitespace_around_functions",
                                    fixed)
 
             # Make sure we have whitespace _after_ the function end
@@ -613,6 +633,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     mh.style_issue(token.location,
                                    "function should be suceeded by an"
                                    " empty line",
+                                   "whitespace_around_functions",
                                    fixed)
                     if true_end_nl:
                         true_end_nl.fix.add_newline = True
@@ -658,6 +679,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     mh.style_issue(token.location,
                                    "MATLAB pragma must not contain whitespace "
                                    "between %# and the pragma",
+                                   "whitespace_comments",
                                    fixed)
                     token.raw_text = "%#" + token.raw_text[2:].strip()
 
@@ -667,6 +689,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     mh.style_issue(token.location,
                                    "MATLAB pragma must not contain whitespace "
                                    "between % and the pragma",
+                                   "whitespace_comments",
                                    fixed)
                     token.raw_text = "%#" + token.raw_text.split("#", 1)[1]
 
@@ -676,6 +699,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                                    "comment body must be separated with "
                                    "whitespace from the starting %s" %
                                    comment_char,
+                                   "whitespace_comments",
                                    fixed)
                     token.raw_text = (comment_char * (len(token.raw_text) -
                                                       len(comment_body)) +
@@ -686,6 +710,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 if prev_in_line and ws_before == 0:
                     mh.style_issue(token.location,
                                    "comment must be preceeded by whitespace",
+                                   "whitespace_comments",
                                    fixed)
                     token.fix.ensure_ws_before = True
 
@@ -695,6 +720,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                prev_in_line and ws_before == 0:
                 mh.style_issue(token.location,
                                "continuation must be preceeded by whitespace",
+                               "whitespace_continuation",
                                fixed)
                 token.fix.ensure_ws_before = True
 
@@ -706,7 +732,8 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 # its a unary.
                 mh.style_issue(next_token.location,
                                "continuations should not start with binary "
-                               "operators")
+                               "operators",
+                               "operator_after_continuation")
 
             if cfg.active("useless_continuation"):
                 if next_token and next_token.kind in ("NEWLINE", "COMMENT"):
@@ -714,11 +741,13 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     # or comment are not actually helpful at all.
                     mh.style_issue(token.location,
                                    "useless line continuation",
+                                   "useless_continuation",
                                    fixed)
                     token.fix.replace_with_newline = True
                 elif prev_token and prev_token.fix.statement_terminator:
                     mh.style_issue(token.location,
                                    "useless line continuation",
+                                   "useless_continuation",
                                    fixed)
                     token.fix.delete = True
 
@@ -731,6 +760,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     mh.style_issue(token.location,
                                    "suffix operator must not be preceeded by"
                                    " whitespace",
+                                   "operator_whitespace",
                                    fixed)
                     token.fix.ensure_trim_before = True
                 elif (next_in_line and ws_after > 0) and \
@@ -738,6 +768,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     mh.style_issue(token.location,
                                    "unary operator must not be followed by"
                                    " whitespace",
+                                   "operator_whitespace",
                                    fixed)
                     token.fix.ensure_trim_after = True
             elif token.fix.binary_operator:
@@ -747,6 +778,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                         mh.style_issue(token.location,
                                        "power binary operator"
                                        " must not be surrounded by whitespace",
+                                       "operator_whitespace",
                                        fixed)
                         token.fix.ensure_trim_before = True
                         token.fix.ensure_trim_after = True
@@ -756,6 +788,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                         mh.style_issue(token.location,
                                        "non power binary operator"
                                        " must be surrounded by whitespace",
+                                       "operator_whitespace",
                                        fixed)
                         token.fix.ensure_ws_before = True
                         token.fix.ensure_ws_after = True
@@ -792,6 +825,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                     mh.style_issue(token.location,
                                    "annotation indication must be succeeded"
                                    " by whitespace",
+                                   "annotation_whitespace",
                                    fixed)
 
         elif token.kind == "NEWLINE":
@@ -799,6 +833,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 # Files should not *start* with newline(s)
                 mh.style_issue(token.location,
                                "files should not start with a newline",
+                               "no_starting_newline",
                                fixed)
                 token.fix.delete = True
 
@@ -812,6 +847,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 continuation_is_fixed = True
             mh.style_issue(next_in_line.location,
                            "this continuation is dangerously misleading",
+                           "dangerous_continuation",
                            fixed and continuation_is_fixed)
 
         # Complain about indentation
@@ -880,6 +916,7 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                                    " %u spaces, not %u" %
                                    (correct_spaces,
                                     token.location.col_start),
+                                   "indentation",
                                    fixed)
 
         # Keep track of matrix and cell expressions. Again, required
@@ -904,7 +941,8 @@ def stage_3_analysis(mh, cfg, tbuf, is_embedded, fixed, valid_code):
                 new_location.col_end = token.location.col_start + (uee.end - 1)
                 mh.style_issue(new_location,
                                "non-%s character in source" %
-                               cfg.style_config["enforce_encoding"])
+                               cfg.style_config["enforce_encoding"],
+                               "unicode")
 
 
 def check_copyright(mh, cfg, parse_tree, is_embedded):
@@ -946,7 +984,8 @@ def check_copyright(mh, cfg, parse_tree, is_embedded):
     # expect to find at least a docstring of some kind
     if n_docstring is None:
         mh.style_issue(n_primary.loc(),
-                       "Could not find any copyright notice")
+                       "Could not find any copyright notice",
+                       "copyright_notice")
         return
 
     # We need to check that we only have one location with copyright
@@ -957,7 +996,8 @@ def check_copyright(mh, cfg, parse_tree, is_embedded):
            n_docstring.copyright_info:
             mh.style_issue(n_primary.loc(),
                            "Copyright info should be in EITHER file header"
-                           " or primary docstring, but not both")
+                           " or primary docstring, but not both",
+                           "copyright_notice")
 
     mentioned_entities = n_docstring.get_all_copyright_holders()
 
@@ -965,7 +1005,8 @@ def check_copyright(mh, cfg, parse_tree, is_embedded):
     # the least, we require there to be any kind of statement.
     if len(mentioned_entities) == 0:
         mh.style_issue(n_docstring.loc(),
-                       "No copyright notice found in %s" % location_kind)
+                       "No copyright notice found in %s" % location_kind,
+                       "copyright_notice")
         return
 
     # If any copyright entities have been provided, we make sure that
@@ -986,7 +1027,8 @@ def check_copyright(mh, cfg, parse_tree, is_embedded):
             if n_info.get_org() not in allowed_entities:
                 mh.style_issue(n_info.loc_org(),
                                "Copyright entity '%s' is not %s"
-                               % (n_info.get_org(), choices))
+                               % (n_info.get_org(), choices),
+                               "copyright_notice")
 
 
 def stage_4_analysis(mh, cfg, parse_tree, is_embedded):

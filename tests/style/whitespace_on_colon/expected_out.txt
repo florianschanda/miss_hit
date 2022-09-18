@@ -1,20 +1,20 @@
 === PLAIN MODE ===
-test.m: style: violates naming scheme for scripts
+test.m: style: violates naming scheme for scripts [naming_scripts]
 In test.m, line 15
 | for i = 1 : 2
-|           ^ style: no whitespace around colon allowed [fixed]
+|           ^ style: no whitespace around colon allowed [fixed] [whitespace_colon]
 In test.m, line 16
 |     z = A(m,:);
-|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test.m, line 17
 |     z = A(:,n);
-|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|            ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In test.m, line 18
 |     x = j : i : k;
-|           ^ style: no whitespace around colon allowed [fixed]
+|           ^ style: no whitespace around colon allowed [fixed] [whitespace_colon]
 In test.m, line 18
 |     x = j : i : k;
-|               ^ style: no whitespace around colon allowed [fixed]
+|               ^ style: no whitespace around colon allowed [fixed] [whitespace_colon]
 MISS_HIT Style Summary: 1 file(s) analysed, 6 style issue(s)
 
 === HTML MODE ===

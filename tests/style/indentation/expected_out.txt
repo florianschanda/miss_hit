@@ -1,277 +1,277 @@
 === PLAIN MODE ===
 In matlab_style/Comments.m, line 1
 |     % (c) Copyright 2020 Florian Schanda
-|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed] [indentation]
 In matlab_style/Comments.m, line 12
 |           % (C1) indented twice
-|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 10 [fixed]
+|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 10 [fixed] [indentation]
 In matlab_style/Comments.m, line 13
 |           % (C2) indented twice
-|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 10 [fixed]
+|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 10 [fixed] [indentation]
 In matlab_style/Comments.m, line 14
 | x = x - 1;
-| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In matlab_style/Comments.m, line 15
 | % (D1) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In matlab_style/Comments.m, line 16
 | % (D2) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In matlab_style/Comments.m, line 17
 | break
-| ^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In matlab_style/Comments.m, line 18
 | % (K1) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In matlab_style/Comments.m, line 19
 | % (K2) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In matlab_style/Comments.m, line 29
 | % (H1) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In matlab_style/Comments.m, line 30
 | % (H2) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In matlab_style/Comments.m, line 36
 | end
-| ^^^ style: function should be suceeded by an empty line [fixed]
+| ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In matlab_style/Simple.m, line 1
 |     % (c) Copyright 2020 Florian Schanda
-|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed] [indentation]
 In matlab_style/Simple.m, line 5
 | x = y;
-| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In matlab_style/Simple.m, line 7
 |               x = Potato(y);
-|               ^ style: indentation not correct, should be 4 spaces, not 14 [fixed]
+|               ^ style: indentation not correct, should be 4 spaces, not 14 [fixed] [indentation]
 In matlab_style/Simple.m, line 8
 |      end
-|      ^^^ style: indentation not correct, should be 0 spaces, not 5 [fixed]
+|      ^^^ style: indentation not correct, should be 0 spaces, not 5 [fixed] [indentation]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|             ^ style: = must be preceeded by whitespace [fixed]
+|             ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|               ^^^ style: violates naming scheme for function
+|               ^^^ style: violates naming scheme for function [naming_functions]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|               ^^^ style: Could not find any copyright notice
+|               ^^^ style: Could not find any copyright notice [copyright_notice]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                      ^ style: end this with just a newline [fixed]
+|                      ^ style: end this with just a newline [fixed] [end_of_statements]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                ^ style: end this with just a newline [fixed]
+|                                ^ style: end this with just a newline [fixed] [end_of_statements]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                 ^ style: unnecessary statement terminator [fixed]
+|                                 ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                 ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                 ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                             ^ style: end this with just a newline [fixed]
+|                                             ^ style: end this with just a newline [fixed] [end_of_statements]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                    ^ style: unnecessary statement terminator [fixed]
+|                                                    ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                     ^ style: unnecessary statement terminator [fixed]
+|                                                     ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In matlab_style/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                          ^ style: end this with just a newline [fixed]
+|                                                          ^ style: end this with just a newline [fixed] [end_of_statements]
 In matlab_style/awful.m, line 3
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                     ^ style: = must be preceeded by whitespace [fixed]
+|                                     ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In matlab_style/awful.m, line 3
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                        ^ style: end statement with a newline [fixed]
+|                                        ^ style: end statement with a newline [fixed] [end_of_statements]
 In matlab_style/awful.m, line 3
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In matlab_style/awful.m, line 5
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                 ^ style: = must be preceeded by whitespace [fixed]
+|                                                 ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In matlab_style/awful.m, line 5
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                   ^ style: end statement with a newline [fixed]
+|                                                   ^ style: end statement with a newline [fixed] [end_of_statements]
 In matlab_style/awful.m, line 5
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                   ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                                   ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In normal/Comments.m, line 1
 |     % (c) Copyright 2020 Florian Schanda
-|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed] [indentation]
 In normal/Comments.m, line 4
 | % (A1) this should be indented
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 5
 | % (A2) this should be indented
-| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 7
 | x = 10;
-| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 8
 | % (B1) also indented
-| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 9
 | % (B2) also indented
-| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 11
 | for i = 1:10
-| ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 12
 |           % (C1) indented twice
-|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 10 [fixed]
+|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 10 [fixed] [indentation]
 In normal/Comments.m, line 13
 |           % (C2) indented twice
-|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 10 [fixed]
+|           ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 10 [fixed] [indentation]
 In normal/Comments.m, line 14
 | x = x - 1;
-| ^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 8 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 15
 | % (D1) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 16
 | % (D2) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 17
 | break
-| ^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+| ^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 18
 | % (K1) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 19
 | % (K2) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 20
 | end
-| ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 21
 | % (E1) indented once
-| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 22
 | % (E2) indented once
-| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 24
 | x = x + 1;
-| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 25
 | % (F1) indented once
-| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 26
 | % (F2) indented once
-| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 28
 | if x > 1
-| ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 29
 | % (H1) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 30
 | % (H2) indented twice
-| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 31
 | end
-| ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 33
 | % (J1) indented once
-| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 34
 | % (J2) indented once
-| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Comments.m, line 36
 | end
-| ^^^ style: function should be suceeded by an empty line [fixed]
+| ^^^ style: function should be suceeded by an empty line [fixed] [whitespace_around_functions]
 In normal/Simple.m, line 1
 |     % (c) Copyright 2020 Florian Schanda
-|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed]
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 0 spaces, not 4 [fixed] [indentation]
 In normal/Simple.m, line 4
 | if y > 0
-| ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Simple.m, line 5
 | x = y;
-| ^ style: indentation not correct, should be 8 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 8 spaces, not 0 [fixed] [indentation]
 In normal/Simple.m, line 6
 | else
-| ^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/Simple.m, line 7
 |               x = Potato(y);
-|               ^ style: indentation not correct, should be 8 spaces, not 14 [fixed]
+|               ^ style: indentation not correct, should be 8 spaces, not 14 [fixed] [indentation]
 In normal/Simple.m, line 8
 |      end
-|      ^^^ style: indentation not correct, should be 4 spaces, not 5 [fixed]
+|      ^^^ style: indentation not correct, should be 4 spaces, not 5 [fixed] [indentation]
 In normal/Simple.m, line 11
 | z = -w;
-| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed]
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|             ^ style: = must be preceeded by whitespace [fixed]
+|             ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|               ^^^ style: violates naming scheme for function
+|               ^^^ style: violates naming scheme for function [naming_functions]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|               ^^^ style: Could not find any copyright notice
+|               ^^^ style: Could not find any copyright notice [copyright_notice]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                      ^ style: end this with just a newline [fixed]
+|                      ^ style: end this with just a newline [fixed] [end_of_statements]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                ^ style: end this with just a newline [fixed]
+|                                ^ style: end this with just a newline [fixed] [end_of_statements]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                 ^ style: unnecessary statement terminator [fixed]
+|                                 ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                 ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                 ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                             ^ style: end this with just a newline [fixed]
+|                                             ^ style: end this with just a newline [fixed] [end_of_statements]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                             ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                    ^ style: unnecessary statement terminator [fixed]
+|                                                    ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                                    ^ style: comma cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_comma]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                     ^ style: unnecessary statement terminator [fixed]
+|                                                     ^ style: unnecessary statement terminator [fixed] [end_of_statements]
 In normal/awful.m, line 1
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                          ^ style: end this with just a newline [fixed]
+|                                                          ^ style: end this with just a newline [fixed] [end_of_statements]
 In normal/awful.m, line 3
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                     ^ style: = must be preceeded by whitespace [fixed]
+|                                     ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In normal/awful.m, line 3
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                        ^ style: end statement with a newline [fixed]
+|                                        ^ style: end statement with a newline [fixed] [end_of_statements]
 In normal/awful.m, line 3
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                        ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 In normal/awful.m, line 5
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                 ^ style: = must be preceeded by whitespace [fixed]
+|                                                 ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
 In normal/awful.m, line 5
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                   ^ style: end statement with a newline [fixed]
+|                                                   ^ style: end statement with a newline [fixed] [end_of_statements]
 In normal/awful.m, line 5
 | function abs= foo (x), if x < 0,,abs=-x;else,abs=x;,; end;
-|                                                   ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed]
+|                                                   ^ style: semicolon cannot be preceeded by whitespace and must be followed by whitespace [fixed] [whitespace_semicolon]
 MISS_HIT Style Summary: 6 file(s) analysed, 91 style issue(s)
 
 === HTML MODE ===
