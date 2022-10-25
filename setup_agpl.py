@@ -42,6 +42,7 @@ setuptools.setup(
             "mh_lint = miss_hit.mh_lint:main",
             "mh_diff = miss_hit.mh_diff:main",
             "mh_copyright = miss_hit.mh_copyright:main",
+            "mh_trace = miss_hit.mh_trace:main",
         ],
     },
 )

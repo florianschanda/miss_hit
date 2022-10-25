@@ -20,6 +20,8 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.36-dev
 
+* Fixed minor issue where `mh_trace` was not made available as a
+  command-line tool when installing the PyPI package `miss_hit`.
 
 
 ### 0.9.35
