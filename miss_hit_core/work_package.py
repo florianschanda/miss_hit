@@ -4,6 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2020-2022, Florian Schanda                    ##
+##              Copyright (C) 2023,      BMW AG                             ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -27,6 +28,7 @@ import os.path
 
 from miss_hit_core import s_ast
 from miss_hit_core import cfg_tree
+from miss_hit_core import s_parser
 
 from miss_hit_core.errors import Message_Handler, ICE, Location
 
@@ -54,13 +56,24 @@ class SIMULINK_File_WP(Work_Package):
     # Embedded_MATLAB_WP instances.
     def __init__(self, in_test_dir, filename, mh, options, extra_options):
         super().__init__(in_test_dir, filename, mh, options, extra_options)
-        self.cfg = cfg_tree.get_config(self.filename)
+        self.cfg       = cfg_tree.get_config(self.filename)
+        self.slp       = None
+        self.n_content = None
 
     def write_modified(self, content):
         raise ICE("logic error - must not be called for SL File WP")
 
     def register_file(self):
         self.mh.register_file(self.filename)
+
+    def parse_simulink(self):
+        self.slp = s_parser.Simulink_SLX_Parser(self.mh,
+                                                self.filename,
+                                                self.cfg)
+        self.n_content = self.slp.parse_file()
+
+    def save_and_close(self):
+        self.slp.save_and_close()
 
 
 class MATLAB_Work_Package(Work_Package):

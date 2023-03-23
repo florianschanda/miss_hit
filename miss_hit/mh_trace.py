@@ -4,6 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2021-2022, Florian Schanda                    ##
+##              Copyright (C) 2023,      BMW AG                             ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -30,6 +31,8 @@ import json
 
 from miss_hit_core import command_line
 from miss_hit_core import work_package
+from miss_hit_core import s_ast
+
 from miss_hit_core.m_ast import *
 from miss_hit_core.errors import (Error,
                                   Message_Handler)
@@ -40,9 +43,10 @@ from miss_hit_core.cfg_ast import Project_Directive
 
 
 class MH_Trace_Result(work_package.Result):
-    def __init__(self, wp, tracing=None):
+    def __init__(self, wp, imp_items=None, act_items=None):
         super().__init__(wp, True)
-        self.tracing = tracing
+        self.imp_items = imp_items
+        self.act_items = act_items
 
 
 class Function_Visitor(AST_Visitor):
@@ -56,11 +60,12 @@ class Function_Visitor(AST_Visitor):
         self.tag_stack = []
         self.no_tracing_stack = []
         self.mh = mh
-        self.tracing = {}
+        self.imp_items = []
+        self.act_items = []
         self.name_prefix = cu.get_name_prefix()
         self.in_test_block = False
         if ep is None:
-            self.is_shared = None
+            self.is_shared = False
         else:
             self.is_shared = ep.shared
 
@@ -127,31 +132,117 @@ class Function_Visitor(AST_Visitor):
         if isinstance(node, Function_Definition) and \
            not any(self.no_tracing_stack):
             name = self.name_prefix + node.get_local_name()
-            self.tracing[name] = {
-                "source" : node.loc().to_json(detailed=False),
-                "tags"   : sorted(functools.reduce(operator.or_,
-                                                   self.tag_stack,
-                                                   set())),
-                "test"   : self.in_test_block or self.in_test_dir
-            }
-            if self.is_shared is not None:
-                self.tracing[name]["shared"] = self.is_shared
+            tag  = "matlab %s" % name
+            location = node.loc()
+            lobster_loc  = {"kind"   : "file",
+                            "file"   : location.filename,
+                            "line"   : location.line,
+                            "column" : location.col_start}
+            all_tags = sorted(functools.reduce(operator.or_,
+                                               self.tag_stack,
+                                               set()))
+            item = {"tag"         : tag,
+                    "location"    : lobster_loc,
+                    "name"        : node.get_local_name(),
+                    "refs"        : ["req %s" % tag for tag in all_tags],
+                    "just_up"     : [],
+                    "just_down"   : [],
+                    "just_global" : []}
+
+            if self.in_test_block or self.in_test_dir:
+                item["framework"] = "MATLAB"
+                item["kind"]      = "Test"
+                item["status"]    = None
+                self.act_items.append(item)
+
+            else:
+                item["language"] = "MATLAB"
+                item["kind"]     = "Function"
+                item["shared"]   = self.is_shared
+                self.imp_items.append(item)
 
         if isinstance(node, (Definition,
                              Compilation_Unit)):
             self.tag_stack.pop()
             self.no_tracing_stack.pop()
+
         elif isinstance(node, Special_Block) and node.kind() == "methods":
             self.tag_stack.pop()
             self.no_tracing_stack.pop()
             self.in_test_block = False
 
 
+class Simulink_Walker:
+    def __init__(self, in_test_dir, mh, n_root, ep):
+        assert isinstance(n_root, s_ast.Container)
+        assert ep is None or isinstance(ep, Project_Directive)
+
+        self.in_test_dir = in_test_dir
+        self.mh          = mh
+        self.n_root      = n_root
+        self.imp_items   = []
+        self.act_items   = []
+        if ep is None:
+            self.is_shared = False
+        else:
+            self.is_shared = ep.shared
+
+        self.naming_stack = [n_root.name]
+        self.walk_container(self.n_root)
+
+    def walk_container(self, n_container):
+        self.walk_system(n_container.n_system)
+
+    def walk_system(self, n_system):
+        TRACE_PREFIX = "lobster-trace:"
+
+        name = "/".join(self.naming_stack)
+        tag  = "simulink %s" % name
+        lobster_loc  = {"kind"   : "file",
+                        "file"   : self.n_root.filename,
+                        "line"   : None,
+                        "column" : None}
+        item = {"tag"         : tag,
+                "location"    : lobster_loc,
+                "name"        : name,
+                "refs"        : [],
+                "just_up"     : [],
+                "just_down"   : [],
+                "just_global" : []}
+
+        for n_anno in n_system.d_annos.values():
+            if n_anno.text.startswith(TRACE_PREFIX):
+                item["refs"] += \
+                    ["req %s" % x.strip()
+                     for x in n_anno.text[len(TRACE_PREFIX):].split(",")]
+
+        if self.in_test_dir:
+            item["framework"] = "SIMULINK"
+            item["kind"]      = "Test"
+            item["status"]    = None
+            self.act_items.append(item)
+        else:
+            item["language"] = "Simulink"
+            item["kind"]     = "Block"
+            item["shared"]   = self.is_shared
+            self.imp_items.append(item)
+
+        for n_block in n_system.d_blocks.values():
+            if isinstance(n_block, s_ast.Sub_System):
+                self.walk_subsystem(n_block)
+
+    def walk_subsystem(self, n_subsystem):
+        self.naming_stack.append(n_subsystem.name)
+        self.walk_system(n_subsystem.n_system)
+        self.naming_stack.pop()
+
+
 class MH_Trace(command_line.MISS_HIT_Back_End):
     def __init__(self, options):
         super().__init__("MH Trace")
-        self.tracing = {}
-        self.options = options
+        self.imp_items = []
+        self.act_items = []
+        self.options   = options
 
     @classmethod
     def process_wp(cls, wp):
@@ -178,50 +269,68 @@ class MH_Trace(command_line.MISS_HIT_Back_End):
         n_cu.visit(None, visitor, "Root")
 
         # Return results
-        return MH_Trace_Result(wp, visitor.tracing)
+        return MH_Trace_Result(wp, visitor.imp_items, visitor.act_items)
+
+    @classmethod
+    def process_simulink_wp(cls, wp):
+        assert isinstance(wp, work_package.SIMULINK_File_WP)
+
+        if wp.n_content is None:
+            return MH_Trace_Result(wp)
+        else:
+            n_ep = get_enclosing_ep(wp.filename)
+            walker = Simulink_Walker(wp.in_test_dir, wp.mh, wp.n_content, n_ep)
+            return MH_Trace_Result(wp, walker.imp_items, walker.act_items)
 
     def process_result(self, result):
-        if result.tracing:
-            self.tracing.update(result.tracing)
+        if result.imp_items:
+            self.imp_items += result.imp_items
+        if result.act_items:
+            self.act_items += result.act_items
 
     def post_process(self):
-        if self.options.by_tag:
-            out = {}
-            for unitname in sorted(self.tracing):
-                source = self.tracing[unitname]["source"]
-                tags   = self.tracing[unitname]["tags"]
-                test   = self.tracing[unitname]["test"]
-                shared = self.tracing[unitname].get("shared", None)
-                for tag in tags:
-                    if tag not in out:
-                        out[tag] = []
-                    item = {"name"   : unitname,
-                            "source" : source,
-                            "test"   : test}
-                    if shared is not None:
-                        item["shared"] = shared
-                    out[tag].append(item)
+        if self.options.only_tagged_blocks:
+            self.imp_items = list(filter(
+                lambda x: x["language"] != "Simulink" or x["refs"],
+                self.imp_items))
+            self.act_items = list(filter(
+                lambda x: x["framework"] != "Simulink" or x["refs"],
+                self.act_items))
 
-        else:
-            out = self.tracing
-
-        with open(self.options.json, "w") as fd:
-            json.dump(out, fd, indent=4, sort_keys=True)
+        with open(self.options.out_imp, "w", encoding="UTF-8") as fd:
+            data = {"data"      : self.imp_items,
+                    "generator" : "MH Trace",
+                    "schema"    : "lobster-imp-trace",
+                    "version"   : 3}
+            json.dump(data, fd, indent=2, sort_keys=True)
+            fd.write("\n")
+        with open(self.options.out_act, "w", encoding="UTF-8") as fd:
+            data = {"data"      : self.act_items,
+                    "generator" : "MH Trace",
+                    "schema"    : "lobster-act-trace",
+                    "version"   : 3}
+            json.dump(data, fd, indent=2, sort_keys=True)
+            fd.write("\n")
 
 
 def main_handler():
     clp = command_line.create_basic_clp()
 
     clp["output_options"].add_argument(
-        "--json",
-        default="mh_trace.json",
-        help="name of the JSON report (by default mh_trace.json)")
+        "--out-imp",
+        default="mh_imp_trace.lobster",
+        help=("name of the implementation LOBSTER artefact"
+              " (by default %(default)s)"))
     clp["output_options"].add_argument(
-        "--by-tag",
+        "--out-act",
+        default="mh_act_trace.lobster",
+        help=("name of the activity LOBSTER artefact"
+              " (by default %(default)s)"))
+    clp["output_options"].add_argument(
+        "--only-tagged-blocks",
         action="store_true",
         default=False,
-        help=("group tracing information by tag; by default we group by"
-              " unit name first"))
+        help="Only emit traces for Simulink blocks with at least one tag")
 
     options = command_line.parse_args(clp)
 

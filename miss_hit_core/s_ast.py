@@ -4,6 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2020, Florian Schanda                         ##
+##              Copyright (C) 2023, BMW AG                                  ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -127,6 +128,7 @@ class System(Node):
     def __init__(self):
         super().__init__()
         self.d_blocks = {}
+        self.d_annos  = {}
 
     def add_block(self, n_block):
         assert isinstance(n_block, Block)
@@ -135,14 +137,27 @@ class System(Node):
         self.d_blocks[n_block.sid] = n_block
         n_block.set_parent(self)
 
+    def add_annotation(self, n_anno):
+        assert isinstance(n_anno, Annotation)
+        assert n_anno.sid not in self.d_annos
+
+        self.d_annos[n_anno.sid] = n_anno
+        n_anno.set_parent(self)
+
     def blocks(self):
         for blk_id in sorted(self.d_blocks):
             yield self.d_blocks[blk_id]
+
+    def annotations(self):
+        for anno_id in sorted(self.d_annos):
+            yield self.d_annos[anno_id]
 
     def dump_hierarchy(self, indent=0):
         print(" " * indent, "System")
         for n_block in self.blocks():
             n_block.dump_hierarchy(indent + 1)
+        for n_anno in self.annotations():
+            n_anno.dump_hierarchy(indent + 1)
 
     def iter_all_blocks(self):
         for n_block in self.d_blocks.values():
@@ -270,9 +285,15 @@ class Annotation(Node):
     # This is a text annotation, i.e. a comment. It doesn't do
     # anything, but we're going to use them to justify miss_hit
     # messages.
+    def __init__(self, sid, text):
+        super().__init__()
+        assert isinstance(sid, str), "expected string, got %s" % type(sid)
+        assert isinstance(text, str)
+        self.sid  = sid
+        self.text = text
 
-    # pylint: disable=abstract-method
-    pass
+    def dump_hierarchy(self, indent=0):
+        print(" " * indent, "Annotation (%s)" % repr(self.text))
 
 
 class Connector(Node):

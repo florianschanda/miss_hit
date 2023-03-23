@@ -4,6 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2020-2022, Florian Schanda                    ##
+##              Copyright (C) 2023,      BMW AG                             ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -37,7 +38,6 @@ from miss_hit_core import pathutil
 from miss_hit_core import cfg_tree
 from miss_hit_core import errors
 from miss_hit_core import work_package
-from miss_hit_core import s_parser
 from miss_hit_core import s_ast
 
 from miss_hit_core.version import GITHUB_ISSUES, VERSION, FULL_NAME
@@ -207,7 +207,11 @@ class MISS_HIT_Back_End:
 
     @classmethod
     def process_wp(cls, wp):
-        raise errors.ICE("unimplemented process_wp function")
+        return work_package.Result(wp, False)
+
+    @classmethod
+    def process_simulink_wp(cls, wp):
+        return work_package.Result(wp, False)
 
     def process_result(self, result):
         pass
@@ -216,7 +220,7 @@ class MISS_HIT_Back_End:
         pass
 
 
-def dispatch_wp(process_fn, wp):
+def dispatch_wp(process_m_fn, process_s_fn, wp):
     results = []
 
     try:
@@ -226,27 +230,27 @@ def dispatch_wp(process_fn, wp):
 
         elif isinstance(wp, work_package.SIMULINK_File_WP):
             wp.register_file()
-            slp = s_parser.Simulink_SLX_Parser(wp.mh, wp.filename, wp.cfg)
-            n_content = slp.parse_file()
-            if n_content:
-                for block in n_content.iter_all_blocks():
+            wp.parse_simulink()
+            if wp.n_content:
+                for block in wp.n_content.iter_all_blocks():
                     if isinstance(block, s_ast.Matlab_Function):
                         block_wp = work_package.Embedded_MATLAB_WP(wp, block)
                         block_wp.register_file()
-                        results.append(process_fn(block_wp))
+                        results.append(process_m_fn(block_wp))
+            results.append(process_s_fn(wp))
             if wp.modified:
-                slp.save_and_close()
+                wp.save_and_close()
 
         elif isinstance(wp, work_package.MATLAB_File_WP):
             wp.register_file()
-            results.append(process_fn(wp))
+            results.append(process_m_fn(wp))
 
         else:
             raise errors.ICE("unknown work package kind %s" %
                              wp.__class__.__name__)
 
     except errors.Error as err:
-        raise errors.ICE("uncaught Error in process_wp") from err
+        raise errors.ICE("uncaught Error in process_generic_wp") from err
 
     return results
 
@@ -406,7 +410,9 @@ def execute(mh, options, extra_options, back_end,
     # Resolve all work packages, using single or multi-threading (the
     # default) as demanded.
 
-    process_fn = functools.partial(dispatch_wp, back_end.process_wp)
+    process_fn = functools.partial(dispatch_wp,
+                                   back_end.process_wp,
+                                   back_end.process_simulink_wp)
 
     if options.single:
         for wp in work_list:

@@ -363,7 +363,10 @@ def execute_sanity_test(name):
 
 
 def execute_trace_test(name):
-    for filename in ("mh_trace.json", "mh_trace_by_tag.json"):
+    for filename in ("mh_trace.json",
+                     "mh_trace_by_tag.json",
+                     "mh_act_trace.lobster",
+                     "mh_imp_trace.lobster"):
         if os.path.isfile(filename):
             os.unlink(filename)
 
@@ -379,11 +382,6 @@ def execute_trace_test(name):
     plain_out = r.stdout
     with open("test.out", "w") as fd:
         fd.write(plain_out)
-
-    r = run_command("mh_trace",
-                    flags +
-                    ["--json=mh_trace_by_tag.json",
-                     "--by-tag"])
 
     return "Ran trace test %s" % name
 

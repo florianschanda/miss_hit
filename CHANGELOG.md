@@ -20,13 +20,35 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.37-dev
 
+* Rework `mh_trace` and its output format. It now generates LOBSTER
+  traces. See https://github.com/bmw-software-engineering/lobster for
+  more information, including a description of the interchange
+  format. The old output format is no longer supported now that there
+  is a good standard.
 
+* Add support for Simulink tracing in `mh_trace`. You can add
+  annotations to any block starting with the text `lobster-trace:`
+  followed by a list of requirement tags. For example `lobster-trace:
+  foo.my_req`.
+
+* Remove `mh_trace` commandline flag `--json` and replace it with
+  `--out-imp` and `--out-act`. The default filename produced is now
+  `mh_imp_trace.lobster` and `mh_act_trace.lobster`.
+
+* Remove `mh_trace` commandline flag `--by-tag`. You can use a tool
+  like LOBSTER to recover this information.
+
+* Add `mh_trace` commandline flag `--only-tagged-blocks`. This filters
+  out all Simulink blocks that do not contain at least one tag.
+
+* Fix a bug in `mh_trace` where precisely duplicated package +
+  function names result in only one tracable item. Now there are two,
+  and a tool like LOBSTER will complain.
 
 ### 0.9.36
 
 * Fixed minor issue where `mh_trace` was not made available as a
   command-line tool when installing the PyPI package `miss_hit`.
-
 
 ### 0.9.35
 

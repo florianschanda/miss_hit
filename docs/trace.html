@@ -17,8 +17,8 @@
     <div class="section">
       <a href="index.html">MISS_HIT</a> includes a simple tool
       (<span class="file">mh_trace</span>), that can be used to
-      extract tracing tags for code and tests. The output is json and
-      is intended to be used by other tools.
+      extract tracing tags for code and tests. The output is in the
+      LOBSTER format</a>.
     </div>
 
     <div class="title">
@@ -34,9 +34,11 @@
         standards (such as ISO 26262 or DO-178C). While you definitely
         should not be using MATLAB for this, it is not my place to
         judge; and so we have a tool to support this
-        activity. <tt>mh_trace</tt> can extract tags put in code and
-        test and generate an easy to parse json file that a different
-        tool can use to generate a traceability report.
+        activity. <tt>mh_trace</tt> can extract tags put in code,
+        tests, and Simulink models and generate
+        a <a href="https://github.com/bmw-software-engineering/lobster/blob/main/docs/schemas.md">LOBSTER
+        trace</a> files that a different tool (such as LOBSTER) can
+        use to generate a traceability report.
       </div>
 
       <div>
@@ -68,77 +70,34 @@ end
 </pre>
       </div>
       <div>
-        Running <tt>mh_trace</tt> will generate a json file (by
-        default <tt>mh_trace.json</tt>) that shows which tags affect
-        any given function:
+        Running <tt>mh_trace</tt> will generate two lobster files (by
+        default <tt>mh_imp_trace.lobster</tt> for code and models,
+        and <tt>mh_act_trace.lobster</tt> for tests) that shows which
+        tags affect any given function. Here shown is a snippet for
+        the testG function:
 <pre>
-{
-    "ExampleTagClassTest::testF": {
-        "source": {
-            "col_start": 17,
-            "filename": "ExampleTagClassTest.m",
-            "line": 6
-        },
-        "tags": ["FeatureB"],
-        "test": True
+    {
+      "framework": "MATLAB",
+      "just_down": [],
+      "just_global": [],
+      "just_up": [],
+      "kind": "Test",
+      "location": {
+        "column": 17,
+        "file": "ExampleTagClassTest.m",
+        "kind": "file",
+        "line": 11
+      },
+      "name": "ExampleTagClassTest::testG",
+      "refs": [
+        "req FeatureB",
+        "req FeatureC",
+        "req System"
+      ],
+      "status": null,
+      "tag": "matlab ExampleTagClassTest::testG"
     },
-    "ExampleTagClassTest::testG": {
-        "source": {
-            "col_start": 17,
-            "filename": "ExampleTagClassTest.m",
-            "line": 11
-        },
-        "tags": ["FeatureB", "FeatureC", "System"],
-        "test": True
-    },
-    "ExampleTagClassTest::testH": {
-        "source": {
-            "col_start": 17,
-            "filename": "ExampleTagClassTest.m",
-            "line": 16
-        },
-        "tags": ["FeatureA", "FeatureB", "System"],
-        "test": True
-    }
-}
 </pre>
-      </div>
-
-      <div>
-        You can also generate the tracing information by tag (using
-        the <tt>--by-tag</tt> option):
-<pre>
-{
-    "FeatureA": [
-        {
-            "name": "ExampleTagClassTest::testH",
-            "source": {
-                "col_start": 17,
-                "filename": "ExampleTagClassTest.m",
-                "line": 16
-            },
-            "test": True
-        }
-    ],
-    "FeatureB": [
-        {
-            "name": "ExampleTagClassTest::testF",
-            "source": {
-                "col_start": 17,
-                "filename": "ExampleTagClassTest.m",
-                "line": 6
-            },
-            "test": True
-        },
-</pre>
-        (The rest is omitted because it's just more of the same...)
-      </div>
-
-      <div>
-        If you use project configuration (libraries and entrypoints)
-        then an additional field is present in the json output -
-        "shared" to indicate if this code belongs to a shared library
-        or if it is part of an entry point.
       </div>
 
       <h3>Annotating code</h3>
@@ -164,6 +123,16 @@ end
         property to tests.
       </div>
 
+      <h3>Annotating models</h3>
+      <div>
+	Simply place an annotation anywhere in your block. The text
+	must be a single line only and start
+	with <tt>lobster-trace:</tt> and is followed by a (comma
+	separated) list of tags. For example:
+        <pre>lobster-trace: foo.My_Req_1, foo.My_Req_2</pre>
+	You may place as many of these annotations as you wish.
+      </div>
+
       <h3>Excluding code</h3>
       <div>
         Most projects have some code for e.g. setting up the workspace
@@ -185,16 +154,25 @@ end
 
     <section>
       <h2>Command-line interface</h2>
-      <h4>--json FILE</h4>
+      <h4>--out-imp FILE</h4>
       <div>
         By default we produce a file
-        called <tt>mh_trace.json</tt>. With this option you can change
-        the filename.
+        called <tt>mh_imp_trace.lobster</tt> for code and models. With
+        this option you can change the filename.
       </div>
 
-      <h4>--by-tag</h4>
+      <h4>--out-act FILE</h4>
       <div>
-        Produce tracing by-tag, instead of by-file (the default).
+        By default we produce a file
+        called <tt>mh_act_trace.lobster</tt> for tests. With this
+        option you can change the filename.
+      </div>
+
+      <h4>--only-tagged-blocks</h4>
+      <div>
+        By default we produce list all blocks in a Simulink model or
+        library, with this option we only include the ones that have
+        at least one tag.
       </div>
     </section>
 
@@ -205,14 +183,14 @@ end
         normally processes. So if you have your unit tests excluded
         from MISS_HIT then you will get no tracing. You could use the
         common <tt>--ignore-config</tt> option to work around this; or
-        even better: don't exclude your unit tests.
+        even better: don not exclude your unit tests.
       </div>
     </section>
 
   </main>
 
   <footer>
-    Content &copy; 2021 Florian Schanda<br>
+    Content &copy; 2021-2023 Florian Schanda<br>
     Style &copy; 2019-2020 Alina Boboc<br>
     MISS_HIT Lint is licensed under the AGPLv3
   </footer>

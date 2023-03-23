@@ -4,6 +4,7 @@
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
 ##              Copyright (C) 2020-2022, Florian Schanda                    ##
+##              Copyright (C) 2023,      BMW AG                             ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
 ##                                                                          ##
@@ -344,6 +345,20 @@ class Simulink_SLX_Parser(Simulink_Parser):
 
         return n_block
 
+    def parse_annotation(self, et_anno):
+        assert isinstance(et_anno, ET.Element)
+        assert et_anno.tag == "Annotation"
+
+        content = None
+        for et_item in et_anno:
+            if et_item.tag == "P" and et_item.attrib["Name"] == "Name":
+                content = et_item.text
+        assert content is not None
+
+        n_anno = Annotation(et_anno.attrib["SID"],
+                            content)
+        return n_anno
+
     def parse_system(self, et_system):
         assert isinstance(et_system, ET.Element)
         assert et_system.tag == "System"
@@ -375,6 +390,10 @@ class Simulink_SLX_Parser(Simulink_Parser):
         for et_block in block_items:
             n_block = self.parse_block(et_block)
             n_system.add_block(n_block)
+
+        for et_anno in anno_items:
+            n_anno = self.parse_annotation(et_anno)
+            n_system.add_annotation(n_anno)
 
         return n_system
 
