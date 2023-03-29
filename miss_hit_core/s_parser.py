@@ -73,6 +73,7 @@ class Simulink_SLX_Parser(Simulink_Parser):
         self.xml_blockdiagram   = None
         self.xml_stateflow      = None
         self.xml_coreproperties = None
+        self.xml_ref_systems    = {}
         # ETree nodes for the relevant files
 
         self.other_content = {}
@@ -85,11 +86,15 @@ class Simulink_SLX_Parser(Simulink_Parser):
                         self.xml_blockdiagram = ET.parse(fd)
                     elif name == "simulink/stateflow.xml":
                         self.xml_stateflow = ET.parse(fd)
+                    elif name.startswith("simulink/systems/") and \
+                         name.endswith(".xml"):
+                        sys_id = name[17:-4]
+                        self.xml_ref_systems[sys_id] = ET.parse(fd)
                     else:
                         self.other_content[name] = fd.read()
-        # Read entire zipfile, storing content here. The two XML files
-        # we're interested in we already parse with ETree. The rest of
-        # the parsing happens in parse_file.
+        # Read entire zipfile, storing content here. We parse the XML
+        # files we're interested in with ETree. The rest of the
+        # parsing happens in parse_file.
 
         self.sf_names = {}
         # Dictionary for Stateflow items mapping from string names to
@@ -147,6 +152,10 @@ class Simulink_SLX_Parser(Simulink_Parser):
             if self.xml_coreproperties:
                 with zfd.open("metadata/coreProperties.xml", mode="w") as fd:
                     self.xml_coreproperties.write(fd)
+            for sys_id in self.xml_ref_systems:
+                with zfd.open("simulink/systems/%s.xml" % sys_id,
+                              mode="w") as fd:
+                    self.xml_ref_systems[sys_id].write(fd)
             for name in sorted(self.other_content):
                 with zfd.open(name, mode="w") as fd:
                     fd.write(self.other_content[name])
@@ -362,6 +371,18 @@ class Simulink_SLX_Parser(Simulink_Parser):
     def parse_system(self, et_system):
         assert isinstance(et_system, ET.Element)
         assert et_system.tag == "System"
+
+        if "Ref" in et_system.attrib:
+            sys_id = et_system.attrib["Ref"]
+            for et_item in et_system:
+                self.mh.error(self.loc(),
+                              "Referenced system %s contains items" %
+                              sys_id)
+            if sys_id not in self.xml_ref_systems:
+                self.mh.error(self.loc(),
+                              "Referenced system %s not contained in slx" %
+                              sys_id)
+            return self.parse_system(self.xml_ref_systems[sys_id].getroot())
 
         n_system = System()
 

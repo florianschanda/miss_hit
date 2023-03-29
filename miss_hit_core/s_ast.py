@@ -293,7 +293,13 @@ class Annotation(Node):
         self.text = text
 
     def dump_hierarchy(self, indent=0):
-        print(" " * indent, "Annotation (%s)" % repr(self.text))
+        if len(self.text) > 40:
+            text = self.text[:40] + "..."
+        else:
+            text = self.text
+        if "\n" in text:
+            text = repr(text)
+        print(" " * indent, "Annotation (%s)" % text)
 
 
 class Connector(Node):

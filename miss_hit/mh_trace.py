@@ -197,7 +197,7 @@ class Simulink_Walker:
         TRACE_PREFIX = "lobster-trace:"
 
         name = "/".join(self.naming_stack)
-        tag  = "simulink %s" % name
+        tag  = "simulink %s" % name.replace(" ", "_")
         lobster_loc  = {"kind"   : "file",
                         "file"   : self.n_root.filename,
                         "line"   : None,
