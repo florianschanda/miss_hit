@@ -24,7 +24,7 @@ setuptools.setup(
     },
     license="GNU General Public License v3",
     packages=["miss_hit_core"],
-    python_requires=">=3.6, <4",
+    python_requires=">=3.7, <4",
     package_data = {
         "miss_hit_core": ["resources/*.css", "resources/assets/*"],
     },

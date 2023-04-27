@@ -25,7 +25,7 @@ setuptools.setup(
     license="GNU Affero General Public License v3",
     packages=["miss_hit"],
     install_requires=["miss_hit_core==%s" % miss_hit_core.version.VERSION],
-    python_requires=">=3.6, <4",
+    python_requires=">=3.7, <4",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
