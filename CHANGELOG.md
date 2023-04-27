@@ -18,6 +18,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
+### 0.9.39-dev
+
+
+
 ### 0.9.38
 
 * Fix issue where a Simulink model with self-contained links would not
