@@ -35,6 +35,8 @@ import zipfile
 import xml.etree.ElementTree as ET
 
 from abc import ABCMeta, abstractmethod
+from io import StringIO
+from html.parser import HTMLParser
 
 from miss_hit_core.config import Config
 from miss_hit_core.s_ast import *
@@ -44,6 +46,36 @@ from miss_hit_core.m_language import MATLAB_Latest_Language
 # pylint: disable=invalid-name
 anatomy = {}
 # pylint: enable=invalid-name
+
+
+class HTML_Text_Extractor(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.reset()
+        self.strict = False
+        self.convert_charrefs = True
+        self.text = ""
+        self.processing = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "body":
+            self.processing = True
+        if not self.processing:
+            return
+        if tag == "br":
+            self.text += "\n"
+
+    def handle_endtag(self, tag):
+        if tag == "body":
+            self.processing = False
+        if not self.processing:
+            return
+        if tag in ("p", "div"):
+            self.text += "\n"
+
+    def handle_data(self, d):
+        if self.processing:
+            self.text += d
 
 
 class Simulink_Parser(metaclass=ABCMeta):
@@ -74,6 +106,7 @@ class Simulink_SLX_Parser(Simulink_Parser):
         self.xml_stateflow      = None
         self.xml_coreproperties = None
         self.xml_ref_systems    = {}
+        self.xml_ref_stateflow  = {}
         # ETree nodes for the relevant files
 
         self.other_content = {}
@@ -90,6 +123,10 @@ class Simulink_SLX_Parser(Simulink_Parser):
                          name.endswith(".xml"):
                         sys_id = name[17:-4]
                         self.xml_ref_systems[sys_id] = ET.parse(fd)
+                    elif name.startswith("simulink/stateflow/") and \
+                         name.endswith(".xml"):
+                        sf_id = name[19:-4]
+                        self.xml_ref_stateflow[sf_id] = ET.parse(fd)
                     else:
                         self.other_content[name] = fd.read()
         # Read entire zipfile, storing content here. We parse the XML
@@ -136,6 +173,12 @@ class Simulink_SLX_Parser(Simulink_Parser):
         # the blockdiagram.
         if self.xml_stateflow:
             self.parse_stateflow(self.xml_stateflow.getroot())
+        for item in self.xml_ref_stateflow.values():
+            et_item = item.getroot()
+            if et_item.tag == "Stateflow":
+                self.parse_stateflow(et_item)
+            else:
+                self.parse_partial_stateflow(et_item)
 
         # Parse blockdiagram and return the AST.
         return self.parse_blockdiagram(self.xml_blockdiagram.getroot())
@@ -156,6 +199,10 @@ class Simulink_SLX_Parser(Simulink_Parser):
                 with zfd.open("simulink/systems/%s.xml" % sys_id,
                               mode="w") as fd:
                     self.xml_ref_systems[sys_id].write(fd)
+            for sf_id in self.xml_ref_stateflow:
+                with zfd.open("simulink/systems/%s.xml" % sf_id,
+                              mode="w") as fd:
+                    self.xml_ref_stateflow[sf_id].write(fd)
             for name in sorted(self.other_content):
                 with zfd.open(name, mode="w") as fd:
                     fd.write(self.other_content[name])
@@ -167,6 +214,10 @@ class Simulink_SLX_Parser(Simulink_Parser):
     ######################################################################
     # Stateflow parsing
     ######################################################################
+
+    def parse_partial_stateflow(self, et_node):
+        assert isinstance(et_node, ET.Element)
+        assert et_node.tag == "chart"
 
     def parse_stateflow(self, et_stateflow):
         assert isinstance(et_stateflow, ET.Element)
@@ -237,8 +288,13 @@ class Simulink_SLX_Parser(Simulink_Parser):
                 # TODO: Unclear what exactly this does right now.
                 pass
             elif et_item.tag == "chart":
-                chart_id = int(et_item.attrib["id"])
-                d_machine[chart_id] = et_item
+                if "Ref" in et_item.attrib:
+                    chart_node = \
+                        self.xml_ref_stateflow[et_item.attrib["Ref"]].getroot()
+                else:
+                    chart_node = et_item
+                chart_id = int(chart_node.attrib["id"])
+                d_machine[chart_id] = chart_node
             else:
                 self.mh.error(self.loc(),
                               "Unknown item %s in Children" % et_item.tag)
@@ -363,6 +419,11 @@ class Simulink_SLX_Parser(Simulink_Parser):
             if et_item.tag == "P" and et_item.attrib["Name"] == "Name":
                 content = et_item.text
         assert content is not None
+
+        if content.startswith("<!DOCTYPE HTML"):
+            html_parser = HTML_Text_Extractor()
+            html_parser.feed(content)
+            content = html_parser.text.strip()
 
         n_anno = Annotation(et_anno.attrib["SID"],
                             content)

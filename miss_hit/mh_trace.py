@@ -211,10 +211,12 @@ class Simulink_Walker:
                 "just_global" : []}
 
         for n_anno in n_system.d_annos.values():
-            if n_anno.text.startswith(TRACE_PREFIX):
-                item["refs"] += \
-                    ["req %s" % x.strip()
-                     for x in n_anno.text[len(TRACE_PREFIX):].split(",")]
+            for anno_line in n_anno.text.splitlines():
+                anno_line = anno_line.strip()
+                if anno_line.startswith(TRACE_PREFIX):
+                    item["refs"] += \
+                        ["req %s" % x.strip()
+                         for x in anno_line[len(TRACE_PREFIX):].split(",")]
 
         if self.in_test_dir:
             item["framework"] = "SIMULINK"

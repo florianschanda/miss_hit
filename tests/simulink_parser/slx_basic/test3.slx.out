@@ -3,7 +3,7 @@
   System
    Block Inport ('In1')
    Block Outport ('Out1')
-   Annotation ('This is an annotation')
+   Annotation (This is an annotation)
 
 === Summary of misc. children ===
 Children in Inport

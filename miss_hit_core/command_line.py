@@ -230,7 +230,11 @@ def dispatch_wp(process_m_fn, process_s_fn, wp):
 
         elif isinstance(wp, work_package.SIMULINK_File_WP):
             wp.register_file()
-            wp.parse_simulink()
+            try:
+                wp.parse_simulink()
+            except errors.Error:
+                results.append(work_package.Result(wp, False))
+                return results
             if wp.n_content:
                 for block in wp.n_content.iter_all_blocks():
                     if isinstance(block, s_ast.Matlab_Function):

@@ -24,8 +24,14 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   parse the referenced systems. Only the top-level system would be
   parsed and references were never followed.
 
+* Fix issue where a Simulink model with referenced stateflow would not
+  parse the referenced machines and charts.
+
 * Fix issue in `mh_trace` where sometimes LOBSTER tags could be
   generated which contained spaces.
+
+* Support multi-line and HTML annotations in Simulink for `mh_trace`
+  annotations.
 
 ### 0.9.37
 
