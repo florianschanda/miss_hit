@@ -20,7 +20,12 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.39-dev
 
+* Add another method of tracing Simulink models via [block
+  properties](https://www.mathworks.com/help/simulink/ug/block-properties-dialog-box.html).
 
+* The top-level system of a Simulink Library (but not Model) no longer
+  appears in the tracing output, as there is no way to access or
+  manipulate this in the Simulink user interface.
 
 ### 0.9.38
 
