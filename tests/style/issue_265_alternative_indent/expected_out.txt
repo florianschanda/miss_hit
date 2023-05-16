@@ -1,0 +1,98 @@
+=== PLAIN MODE ===
+In test_from_ticket.m, line 1
+| function output = mainfun(input)
+|                   ^^^^^^^ style: violates naming scheme for function [naming_functions]
+In test_from_ticket.m, line 1
+| function output = mainfun(input)
+|                   ^^^^^^^ style: Could not find any copyright notice [copyright_notice]
+In test_from_ticket.m, line 2
+| %
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 3
+| % docstring for mainfun
+| ^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 4
+| % copyright ...
+| ^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 5
+| % the main-function should be flattened without indentation
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 6
+| %
+| ^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 8
+| statement1;
+| ^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 9
+| statement2;
+| ^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 11
+| %% -------- local functions -------
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 13
+| % comment for relatively short localfun 1
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 14
+| function output=localfun1(input)
+| ^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 14
+| function output=localfun1(input)
+|                ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
+In test_from_ticket.m, line 14
+| function output=localfun1(input)
+|                 ^^^^^^^^^ style: violates naming scheme for nested [naming_functions]
+In test_from_ticket.m, line 15
+|     % local-functions, or functions with an "end" at the bottom should be indented
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed] [indentation]
+In test_from_ticket.m, line 15
+|     % local-functions, or functions with an "end" at the bottom should be indented
+|                                                                                 ^^^ style: line exceeds 80 characters [line_length]
+In test_from_ticket.m, line 16
+|     statement1
+|     ^^^^^^^^^^ style: end statement with a semicolon [fixed] [end_of_statements]
+In test_from_ticket.m, line 16
+|     statement1
+|     ^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed] [indentation]
+In test_from_ticket.m, line 17
+|     statement2
+|     ^^^^^^^^^^ style: end statement with a semicolon [fixed] [end_of_statements]
+In test_from_ticket.m, line 17
+|     statement2
+|     ^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed] [indentation]
+In test_from_ticket.m, line 18
+| end
+| ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 20
+| % comment for relatively short localfun 2
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 21
+| function output=localfun2(input)
+| ^^^^^^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+In test_from_ticket.m, line 21
+| function output=localfun2(input)
+|                ^ style: = must be preceeded by whitespace [fixed] [whitespace_assignment]
+In test_from_ticket.m, line 21
+| function output=localfun2(input)
+|                 ^^^^^^^^^ style: violates naming scheme for nested [naming_functions]
+In test_from_ticket.m, line 22
+|     % short comment on
+|     ^^^^^^^^^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed] [indentation]
+In test_from_ticket.m, line 23
+|     statement1
+|     ^^^^^^^^^^ style: end statement with a semicolon [fixed] [end_of_statements]
+In test_from_ticket.m, line 23
+|     statement1
+|     ^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed] [indentation]
+In test_from_ticket.m, line 24
+|     statement2
+|     ^^^^^^^^^^ style: end statement with a semicolon [fixed] [end_of_statements]
+In test_from_ticket.m, line 24
+|     statement2
+|     ^^^^^^^^^^ style: indentation not correct, should be 8 spaces, not 4 [fixed] [indentation]
+In test_from_ticket.m, line 25
+| end
+| ^^^ style: indentation not correct, should be 4 spaces, not 0 [fixed] [indentation]
+MISS_HIT Style Summary: 1 file(s) analysed, 31 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 1 file(s) analysed, 31 style issue(s)
