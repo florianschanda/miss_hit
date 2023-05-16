@@ -305,7 +305,7 @@ class Simulink_SLX_Parser(Simulink_Parser):
     # Simulink parsing
     ######################################################################
 
-    def parse_block_matlab_function(self, et_block, props):
+    def parse_block_matlab_function(self, et_block, props, custom_attr):
         assert isinstance(et_block, ET.Element)
         assert isinstance(props, dict)
         assert et_block.tag == "Block"
@@ -349,9 +349,10 @@ class Simulink_SLX_Parser(Simulink_Parser):
 
         return Matlab_Function(et_block.attrib["SID"],
                                et_block.attrib["Name"],
-                               SLX_Reference(et_script))
+                               SLX_Reference(et_script),
+                               custom_attr)
 
-    def parse_block_subsystem(self, et_block):
+    def parse_block_subsystem(self, et_block, custom_attr):
         assert isinstance(et_block, ET.Element)
         assert et_block.tag == "Block"
         assert et_block.attrib["BlockType"] == "SubSystem"
@@ -364,7 +365,9 @@ class Simulink_SLX_Parser(Simulink_Parser):
         if props.get("SFBlockType", None) == "MATLAB Function":
             # This could be a special "MATLAB Function" sub-system, in
             # which case we special case
-            n_block = self.parse_block_matlab_function(et_block, props)
+            n_block = self.parse_block_matlab_function(et_block,
+                                                       props,
+                                                       custom_attr)
 
         else:
             # This is a normal sub-system. First we're finding the system
@@ -380,7 +383,8 @@ class Simulink_SLX_Parser(Simulink_Parser):
             # Then we build a sub-system block referencing the system
             n_block = Sub_System(et_block.attrib["SID"],
                                  system_name,
-                                 n_system)
+                                 n_system,
+                                 custom_attr)
 
         return n_block
 
@@ -398,15 +402,22 @@ class Simulink_SLX_Parser(Simulink_Parser):
             if et_child.tag not in ("P", "Port"):
                 anatomy[block_type].add(et_child.tag)
 
-        # Parse block
+        # Get custom attributes
+        custom_attr = []
+        for et_item in et_block:
+            if et_item.tag == "P":
+                if et_item.attrib["Name"] == "AttributesFormatString":
+                    custom_attr = et_item.text.splitlines()
 
+        # Parse block
         if block_type == "SubSystem":
-            n_block = self.parse_block_subsystem(et_block)
+            return self.parse_block_subsystem(et_block, custom_attr)
         else:
-            # Some other generic block
+            # Some other generic block.
             n_block = Block(et_block.attrib["SID"],
                             et_block.attrib["Name"],
-                            block_type)
+                            block_type,
+                            custom_attr)
 
         return n_block
 

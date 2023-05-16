@@ -165,19 +165,23 @@ class System(Node):
 
 
 class Block(Node):
-    def __init__(self, sid, name, kind):
+    def __init__(self, sid, name, kind, custom_attr):
         assert isinstance(sid, str), "expected string, got %s" % type(sid)
         assert isinstance(name, str)
         assert isinstance(kind, str)
+        assert isinstance(custom_attr, list)
 
         super().__init__()
 
-        self.sid  = sid
-        self.name = name
-        self.kind = kind
+        self.sid         = sid
+        self.name        = name
+        self.kind        = kind
+        self.custom_attr = custom_attr
 
     def dump_hierarchy(self, indent=0):
         print(" " * indent, "Block %s (%s)" % (self.kind, repr(self.name)))
+        for attr in self.custom_attr:
+            print(" " * (indent + 1), "Attribute (%s)" % attr)
 
     def set_parent(self, n_parent):
         assert isinstance(n_parent, System)
@@ -224,8 +228,8 @@ class Block(Node):
 
 
 class Sub_System(Block):
-    def __init__(self, sid, name, n_system):
-        super().__init__(sid, name, "SubSystem")
+    def __init__(self, sid, name, n_system, custom_attr):
+        super().__init__(sid, name, "SubSystem", custom_attr)
         assert isinstance(n_system, System)
 
         self.n_system = n_system
@@ -233,6 +237,8 @@ class Sub_System(Block):
 
     def dump_hierarchy(self, indent=0):
         print(" " * indent, "Block %s (%s)" % (self.kind, repr(self.name)))
+        for attr in self.custom_attr:
+            print(" " * (indent + 1), "Attribute (%s)" % attr)
         self.n_system.dump_hierarchy(indent + 1)
 
     def iter_all_blocks(self):
@@ -246,8 +252,8 @@ class Matlab_Function(Block):
     # MATLAB function. We hide this as well, but in a different way:
     # we pretend it's a distinct top-level object (and not a special
     # kind of sub-system).
-    def __init__(self, sid, name, sref):
-        super().__init__(sid, name, "SubSystem")
+    def __init__(self, sid, name, sref, custom_attr):
+        super().__init__(sid, name, "SubSystem", custom_attr)
         assert isinstance(sref, Source_Reference)
 
         self.sref = sref

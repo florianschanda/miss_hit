@@ -42,6 +42,10 @@ from miss_hit_core.cfg_tree import get_enclosing_ep
 from miss_hit_core.cfg_ast import Project_Directive
 
 
+TRACE_PREFIX = "lobster-trace:"
+EXCLUDE_PREFIX = "lobster-exclude:"
+
+
 class MH_Trace_Result(work_package.Result):
     def __init__(self, wp, imp_items=None, act_items=None):
         super().__init__(wp, True)
@@ -187,55 +191,77 @@ class Simulink_Walker:
         else:
             self.is_shared = ep.shared
 
-        self.naming_stack = [n_root.name]
+        if isinstance(n_root, s_ast.Model):
+            self.naming_stack = [n_root.name]
+        else:
+            assert isinstance(n_root, s_ast.Library)
+            # For libraries we skip the top-level system since it
+            # cannot be accessed from the GUI (and so cannot be traced
+            # either)
+            self.naming_stack = []
+
         self.walk_container(self.n_root)
 
     def walk_container(self, n_container):
-        self.walk_system(n_container.n_system)
+        self.walk_system(n_container.n_system, [])
 
-    def walk_system(self, n_system):
-        TRACE_PREFIX = "lobster-trace:"
+    def walk_system(self, n_system, inherited_tags):
+        if self.naming_stack:
+            name = "/".join(self.naming_stack)
+            tag  = "simulink %s" % name.replace(" ", "_")
+            lobster_loc  = {"kind"   : "file",
+                            "file"   : self.n_root.filename,
+                            "line"   : None,
+                            "column" : None}
+            item = {"tag"         : tag,
+                    "location"    : lobster_loc,
+                    "name"        : name,
+                    "refs"        : inherited_tags,
+                    "just_up"     : [],
+                    "just_down"   : [],
+                    "just_global" : []}
 
-        name = "/".join(self.naming_stack)
-        tag  = "simulink %s" % name.replace(" ", "_")
-        lobster_loc  = {"kind"   : "file",
-                        "file"   : self.n_root.filename,
-                        "line"   : None,
-                        "column" : None}
-        item = {"tag"         : tag,
-                "location"    : lobster_loc,
-                "name"        : name,
-                "refs"        : [],
-                "just_up"     : [],
-                "just_down"   : [],
-                "just_global" : []}
+            for n_anno in n_system.d_annos.values():
+                for anno_line in n_anno.text.splitlines():
+                    anno_line = anno_line.strip()
+                    if anno_line.startswith(TRACE_PREFIX):
+                        item["refs"] += \
+                            ["req %s" % x.strip()
+                             for x in anno_line[len(TRACE_PREFIX):].split(",")]
 
-        for n_anno in n_system.d_annos.values():
-            for anno_line in n_anno.text.splitlines():
-                anno_line = anno_line.strip()
-                if anno_line.startswith(TRACE_PREFIX):
-                    item["refs"] += \
-                        ["req %s" % x.strip()
-                         for x in anno_line[len(TRACE_PREFIX):].split(",")]
-
-        if self.in_test_dir:
-            item["framework"] = "SIMULINK"
-            item["kind"]      = "Test"
-            item["status"]    = None
-            self.act_items.append(item)
-        else:
-            item["language"] = "Simulink"
-            item["kind"]     = "Block"
-            item["shared"]   = self.is_shared
-            self.imp_items.append(item)
+            if self.in_test_dir:
+                item["framework"] = "SIMULINK"
+                item["kind"]      = "Test"
+                item["status"]    = None
+                self.act_items.append(item)
+            else:
+                item["language"] = "Simulink"
+                item["kind"]     = "Block"
+                item["shared"]   = self.is_shared
+                self.imp_items.append(item)
 
         for n_block in n_system.d_blocks.values():
             if isinstance(n_block, s_ast.Sub_System):
                 self.walk_subsystem(n_block)
+            else:
+                # Other blocks that are not sub-systems contribute
+                # their tracing tags to the containing sub-system
+                for anno_line in n_block.custom_attr:
+                    if anno_line.startswith(TRACE_PREFIX):
+                        item["refs"] += \
+                            ["req %s" % x.strip()
+                             for x in anno_line[len(TRACE_PREFIX):].split(",")]
+
 
     def walk_subsystem(self, n_subsystem):
         self.naming_stack.append(n_subsystem.name)
-        self.walk_system(n_subsystem.n_system)
+        inherited_tags = []
+        for anno_line in n_subsystem.custom_attr:
+            if anno_line.startswith(TRACE_PREFIX):
+                inherited_tags += \
+                    ["req %s" % x.strip()
+                     for x in anno_line[len(TRACE_PREFIX):].split(",")]
+        self.walk_system(n_subsystem.n_system, inherited_tags)
         self.naming_stack.pop()
 
 
