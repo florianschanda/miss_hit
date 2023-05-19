@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
-### 0.9.39-dev
+### 0.9.39
 
 * Add another method of tracing Simulink models via [block
   properties](https://www.mathworks.com/help/simulink/ug/block-properties-dialog-box.html).
