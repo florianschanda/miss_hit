@@ -90,15 +90,23 @@ $ mh_style src/
 Configuration and setup is described in the
 [user manuals](https://florianschanda.github.io/miss_hit)
 
+### Installation via pipx
+
+Very similar to the above:
+
+```
+$ pipx install miss_hit --include-deps
+```
+
 ### Installation by checkout
 
-It is recommended to use pip, as that gets you the latest stable
-release. However, it is possible to directly use MISS_HIT from a
-checkout.  MISS_HIT does not require *any* python packages or
-libraries. Just check out the repository and put it on your
-path. That's it.
+It is recommended to use pip or pipx, as that gets you the latest
+stable release. However, it is possible to directly use MISS_HIT from
+a checkout. MISS_HIT currently does not require *any* non-standard
+python packages or libraries as dependencies. Just check out the
+repository and put it on your path. That's it.
 
-The version of Python I am using is `3.6` but any later version should
+The version of Python I am using is `3.7` but any later version should
 also work. I am not using any overly fancy language features.
 
 ### Additional requirements for developing MISS_HIT
