@@ -27,6 +27,11 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
   appears in the tracing output, as there is no way to access or
   manipulate this in the Simulink user interface.
 
+* Add new option `--untagged-blocks-inherit-tags` for `mh_trace` which
+  cases any untagged system to inherit any tags from its parent. Once
+  new tags are encountered this breaks the inheritence chain. Note
+  that embedded MATLAB blocks are unaffected by this option.
+
 ### 0.9.38
 
 * Fix issue where a Simulink model with self-contained links would not

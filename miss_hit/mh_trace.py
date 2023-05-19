@@ -177,9 +177,10 @@ class Function_Visitor(AST_Visitor):
 
 
 class Simulink_Walker:
-    def __init__(self, in_test_dir, mh, n_root, ep):
+    def __init__(self, in_test_dir, mh, n_root, ep, inherit):
         assert isinstance(n_root, s_ast.Container)
         assert ep is None or isinstance(ep, Project_Directive)
+        assert isinstance(inherit, bool)
 
         self.in_test_dir = in_test_dir
         self.mh          = mh
@@ -199,6 +200,9 @@ class Simulink_Walker:
             # cannot be accessed from the GUI (and so cannot be traced
             # either)
             self.naming_stack = []
+
+        self.inherit_tags_from_parent = inherit
+        self.system_stack             = []
 
         self.walk_container(self.n_root)
 
@@ -240,18 +244,35 @@ class Simulink_Walker:
                 item["shared"]   = self.is_shared
                 self.imp_items.append(item)
 
+        else:
+            item = None
+
+        # Other blocks that are not sub-systems contribute
+        # their tracing tags to the containing sub-system
         for n_block in n_system.d_blocks.values():
-            if isinstance(n_block, s_ast.Sub_System):
-                self.walk_subsystem(n_block)
-            else:
-                # Other blocks that are not sub-systems contribute
-                # their tracing tags to the containing sub-system
+            if not isinstance(n_block, s_ast.Sub_System):
                 for anno_line in n_block.custom_attr:
                     if anno_line.startswith(TRACE_PREFIX):
                         item["refs"] += \
                             ["req %s" % x.strip()
                              for x in anno_line[len(TRACE_PREFIX):].split(",")]
 
+        if item:
+            # Copy tags from parent if we don't have tags and we're
+            # running in simulink tag inheriting mode
+            if self.inherit_tags_from_parent and \
+               len(item["refs"]) == 0 and \
+               self.system_stack:
+                item["refs"] = self.system_stack[-1]["refs"]
+
+            self.system_stack.append(item)
+
+        for n_block in n_system.d_blocks.values():
+            if isinstance(n_block, s_ast.Sub_System):
+                self.walk_subsystem(n_block)
+
+        if item:
+            self.system_stack.pop()
 
     def walk_subsystem(self, n_subsystem):
         self.naming_stack.append(n_subsystem.name)
@@ -307,7 +328,12 @@ class MH_Trace(command_line.MISS_HIT_Back_End):
             return MH_Trace_Result(wp)
         else:
             n_ep = get_enclosing_ep(wp.filename)
-            walker = Simulink_Walker(wp.in_test_dir, wp.mh, wp.n_content, n_ep)
+            walker = Simulink_Walker(
+                in_test_dir = wp.in_test_dir,
+                mh          = wp.mh,
+                n_root      = wp.n_content,
+                ep          = n_ep,
+                inherit     = wp.options.untagged_blocks_inherit_tags)
             return MH_Trace_Result(wp, walker.imp_items, walker.act_items)
 
     def process_result(self, result):
@@ -359,6 +385,11 @@ def main_handler():
         action="store_true",
         default=False,
         help="Only emit traces for Simulink blocks with at least one tag")
+    clp["output_options"].add_argument(
+        "--untagged-blocks-inherit-tags",
+        action="store_true",
+        default=False,
+        help="Blocks without tags inherit all tags from their parent block")
 
     options = command_line.parse_args(clp)
 
