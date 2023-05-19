@@ -358,7 +358,7 @@ class MH_BMC(command_line.MISS_HIT_Back_End):
             return MH_BMC_Result(wp)
 
         new_filename = wp.filename.replace(".m", ".json_symtab")
-        with open(new_filename, "w") as fd:
+        with open(new_filename, "w", encoding="UTF-8") as fd:
             json.dump(gst.to_json(), fd, indent=2)
         # wp.mh.info(n_tree.loc(),
         #            "wrote goto symbol table to %s" % new_filename)

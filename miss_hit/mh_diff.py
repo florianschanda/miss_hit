@@ -105,9 +105,13 @@ def main():
         if before is None:
             if options.kdiff3:
                 with tempfile.TemporaryDirectory() as dirname:
-                    with open(os.path.join(dirname, "before"), "w") as fd:
+                    with open(os.path.join(dirname, "before"),
+                              "w",
+                              encoding="UTF-8") as fd:
                         pass
-                    with open(os.path.join(dirname, "after"), "w") as fd:
+                    with open(os.path.join(dirname, "after"),
+                              "w",
+                              encoding="UTF-8") as fd:
                         fd.write(after)
                     cmd = "kdiff3 %s %s" % (os.path.join(dirname, "before"),
                                             os.path.join(dirname, "after"))
@@ -122,9 +126,13 @@ def main():
         else:
             if options.kdiff3:
                 with tempfile.TemporaryDirectory() as dirname:
-                    with open(os.path.join(dirname, "before"), "w") as fd:
+                    with open(os.path.join(dirname, "before"),
+                              "w",
+                              encoding="UTF-8") as fd:
                         fd.write(before)
-                    with open(os.path.join(dirname, "after"), "w") as fd:
+                    with open(os.path.join(dirname, "after"),
+                              "w",
+                              encoding="UTF-8") as fd:
                         fd.write(after)
                     cmd = "kdiff3 %s %s" % (os.path.join(dirname, "before"),
                                             os.path.join(dirname, "after"))

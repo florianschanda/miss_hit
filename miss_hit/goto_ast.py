@@ -51,6 +51,7 @@ class GOTO_Symbol_Table:
         self.stab[sym.name] = sym
 
     def to_json(self):
+        # pylint: disable=consider-using-dict-items
         return {"symbolTable" : {name: self.stab[name].to_json()
                                  for name in self.stab}}
 
@@ -195,8 +196,8 @@ class Irep(Node):
         if self.sub:
             rv["sub"] = [item.to_json() for item in self.sub]
         if self.named_sub:
-            rv["namedSub"] = {k : self.named_sub[k].to_json()
-                              for k in self.named_sub}
+            rv["namedSub"] = {k : value.to_json()
+                              for k, value in self.named_sub.items()}
         return rv
 
 
@@ -384,7 +385,7 @@ def sanity_test():
     }}
 
     pprint(stab)
-    with open("sanity.json_symtab", "w") as fd:
+    with open("sanity.json_symtab", "w", encoding="UTF-8") as fd:
         json.dump(stab, fd, indent=2)
 
 

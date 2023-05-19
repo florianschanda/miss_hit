@@ -67,7 +67,7 @@ class Config_Parser:
         self.mh = mh
 
         self.mh.register_file(self.filename)
-        with open(config_file, "r") as fd:
+        with open(config_file, "r", encoding="UTF-8") as fd:
             content = fd.read()
         self.lexer = m_lexer.MATLAB_Lexer(self.language,
                                           mh, content, self.filename)

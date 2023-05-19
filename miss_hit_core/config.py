@@ -23,6 +23,8 @@
 ##                                                                          ##
 ##############################################################################
 
+# pylint: disable=consider-using-dict-items
+
 from copy import deepcopy
 from miss_hit_core.m_language import MATLAB_Latest_Language
 

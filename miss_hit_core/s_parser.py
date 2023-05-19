@@ -35,7 +35,6 @@ import zipfile
 import xml.etree.ElementTree as ET
 
 from abc import ABCMeta, abstractmethod
-from io import StringIO
 from html.parser import HTMLParser
 
 from miss_hit_core.config import Config
@@ -48,7 +47,7 @@ anatomy = {}
 # pylint: enable=invalid-name
 
 
-class HTML_Text_Extractor(HTMLParser):
+class HTML_Text_Extractor(HTMLParser):  # pylint: disable=abstract-method
     def __init__(self):
         super().__init__()
         self.reset()
@@ -73,9 +72,9 @@ class HTML_Text_Extractor(HTMLParser):
         if tag in ("p", "div"):
             self.text += "\n"
 
-    def handle_data(self, d):
+    def handle_data(self, data):
         if self.processing:
-            self.text += d
+            self.text += data
 
 
 class Simulink_Parser(metaclass=ABCMeta):
@@ -195,14 +194,14 @@ class Simulink_SLX_Parser(Simulink_Parser):
             if self.xml_coreproperties:
                 with zfd.open("metadata/coreProperties.xml", mode="w") as fd:
                     self.xml_coreproperties.write(fd)
-            for sys_id in self.xml_ref_systems:
+            for sys_id, et_node in self.xml_ref_systems.items():
                 with zfd.open("simulink/systems/%s.xml" % sys_id,
                               mode="w") as fd:
-                    self.xml_ref_systems[sys_id].write(fd)
-            for sf_id in self.xml_ref_stateflow:
+                    et_node.write(fd)
+            for sf_id, et_node in self.xml_ref_stateflow.items():
                 with zfd.open("simulink/systems/%s.xml" % sf_id,
                               mode="w") as fd:
-                    self.xml_ref_stateflow[sf_id].write(fd)
+                    et_node.write(fd)
             for name in sorted(self.other_content):
                 with zfd.open(name, mode="w") as fd:
                     fd.write(self.other_content[name])
@@ -241,8 +240,7 @@ class Simulink_SLX_Parser(Simulink_Parser):
                               "unknown top-level stateflow item %s" %
                               et_item.tag)
 
-        for name in d_instances:
-            machine_id, chart_id = d_instances[name]
+        for name, (machine_id, chart_id) in d_instances.items():
             self.sf_names[name] = d_machines[machine_id][chart_id]
 
     def parse_instance(self, et_instance):

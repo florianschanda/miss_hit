@@ -53,7 +53,7 @@ def sanity_test(mh, filename, show_bt,
                     cfg.debug_write_dot(node.name)
 
     mh.register_file(filename)
-    with open(filename, "r") as fd:
+    with open(filename, "r", encoding="UTF-8") as fd:
         content = fd.read()
     try:
         if octave_mode:

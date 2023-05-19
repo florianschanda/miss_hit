@@ -3347,7 +3347,7 @@ def dot(fd, parent, annotation, node):
 def dotpr(filename, root_node):
     assert isinstance(filename, str)
     assert isinstance(root_node, Node)
-    with open(filename, "w") as fd:
+    with open(filename, "w", encoding="UTF-8") as fd:
         fd.write("digraph G {\n")
         dot(fd, None, "", root_node)
         fd.write("}\n")

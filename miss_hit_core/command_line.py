@@ -428,14 +428,14 @@ def execute(mh, options, extra_options, back_end,
                     back_end.process_result(result)
 
     else:
-        pool = multiprocessing.Pool()
-        for results in pool.imap(process_fn, work_list, 5):
-            for result in results:
-                assert isinstance(result, work_package.Result)
-                mh.integrate(result.wp.mh)
-                if result.processed:
-                    mh.finalize_file(result.wp.filename)
-                    back_end.process_result(result)
+        with multiprocessing.Pool() as pool:
+            for results in pool.imap(process_fn, work_list, 5):
+                for result in results:
+                    assert isinstance(result, work_package.Result)
+                    mh.integrate(result.wp.mh)
+                    if result.processed:
+                        mh.finalize_file(result.wp.filename)
+                        back_end.process_result(result)
 
     # Call hook for final work and issue summary message
 

@@ -243,7 +243,7 @@ class Message_Handler:
 
     def debug_dump(self):
         print("Debug dump for Message_Handler object")
-        for file_name in self.messages:
+        for file_name in sorted(self.messages):
             print("> File name: %s" % file_name)
             for line in sorted(self.messages[file_name]):
                 print("  Line: %u" % line)
@@ -646,10 +646,11 @@ class HTML_Message_Handler(File_Based_Message_Handler):
         return rv
 
     def setup_fd(self):
+        # pylint: disable=consider-using-with
         if self.fd is not None:
             return
 
-        self.fd = open(self.filename, "w")
+        self.fd = open(self.filename, "w", encoding="UTF-8")
         self.fd.write("<!DOCTYPE html>\n")
         self.fd.write("<html>\n")
         self.fd.write("<head>\n")
@@ -737,10 +738,11 @@ class JSON_Message_Handler(File_Based_Message_Handler):
         return rv
 
     def setup_fd(self):
+        # pylint: disable=consider-using-with
         if self.fd is not None:
             return
 
-        self.fd = open(self.filename, "w")
+        self.fd = open(self.filename, "w", encoding="UTF-8")
         self.blob = {}
 
     def emit_message(self, message):

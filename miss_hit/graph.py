@@ -104,7 +104,7 @@ class Graph:
             dst.in_edges.remove(src)
 
     def debug_write_dot(self, filename):
-        with open(filename + ".dot", "w") as fd:
+        with open(filename + ".dot", "w", encoding="UTF-8") as fd:
             fd.write("digraph G {\n")
             for vert in sorted(self.vertices):
                 fd.write("  %u [label=\"%s\"];\n" %

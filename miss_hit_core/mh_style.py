@@ -1234,8 +1234,8 @@ def main_handler():
     style_option = clp["ap"].add_argument_group("rule options")
 
     # Add any parameters from rules
-    for rule_kind in rule_set:
-        for rule in rule_set[rule_kind]:
+    for rules in rule_set.values():
+        for rule in rules:
             rule_params = getattr(rule, "parameters", None)
             if not rule_params:
                 continue
@@ -1277,8 +1277,12 @@ def main_handler():
         "rule_set" : rule_set,
     }
 
+    # pylint: disable=consider-using-with
     if options.debug_dump_tree:
-        extra_options["fd_tree"] = open(options.debug_dump_tree, "w")
+        extra_options["fd_tree"] = open(options.debug_dump_tree,
+                                        "w",
+                                        encoding="UTF-8")
+    # pylint: enable=consider-using-with
 
     style_backend = MH_Style()
     command_line.execute(mh, options, extra_options,

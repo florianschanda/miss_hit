@@ -233,6 +233,7 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                         wp.mh.error(cinfo.loc_ystart(),
                                     "initial year is later than end year")
 
+                    # pylint: disable=unsubscriptable-object
                     if new_range is None:
                         merged_line = line_no
                         merged_line_is_block = cinfo.is_block_comment()
@@ -243,6 +244,7 @@ class MH_Copyright(command_line.MISS_HIT_Back_End):
                                      max(yend, new_range[1]))
                         killed_lines.append(line_no)
                         action_taken = True
+                    # pylint: enable=unsubscriptable-object
 
                 if action_taken:
                     replace_line(lines, merged_line, merged_line_is_block,

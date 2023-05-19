@@ -143,8 +143,7 @@ def sem_pass_1(mh, entrypoint, n_cu):
 
             else:
                 mh.check(n_cu.loc(),
-                         "is not on path and cannot be accessed" %
-                         sequence,
+                         "is not on path and cannot be accessed",
                          "illegal_directory_structure")
                 return None
 

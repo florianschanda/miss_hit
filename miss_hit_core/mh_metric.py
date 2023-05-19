@@ -1047,13 +1047,13 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
         # Generate report
 
         if self.options.text:
-            with open(self.options.text, "w") as fd:
+            with open(self.options.text, "w", encoding="UTF-8") as fd:
                 write_text_report(fd,
                                   self.metrics,
                                   ticket_summary,
                                   worst_offenders)
         elif self.options.html:
-            with open(self.options.html, "w") as fd:
+            with open(self.options.html, "w", encoding="UTF-8") as fd:
                 write_html_report(fd,
                                   self.options.entry_point,
                                   self.options.portable_html,
@@ -1061,7 +1061,7 @@ class MH_Metric(command_line.MISS_HIT_Back_End):
                                   ticket_summary,
                                   worst_offenders)
         elif self.options.json:
-            with open(self.options.json, "w") as fd:
+            with open(self.options.json, "w", encoding="UTF-8") as fd:
                 json.dump(build_json_report(self.metrics, worst_offenders),
                           fd,
                           indent=4,

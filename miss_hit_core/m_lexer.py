@@ -541,9 +541,9 @@ class MATLAB_Lexer(Token_Generator):
                     if suffix not in ("8", "16", "32", "64"):
                         self.lex_error("suffix must be 8, 16, 32, or 64")
                     else:
-                        max_digits = int(suffix) / bits_per_digit
+                        max_digits = int(suffix) // bits_per_digit
                 else:
-                    max_digits = 64 / bits_per_digit
+                    max_digits = 64 // bits_per_digit
 
                 if len(digits) > max_digits:
                     self.lex_error(
@@ -1524,7 +1524,7 @@ class Token_Buffer(Token_Generator):
 
 def sanity_test(mh, filename):
     mh.register_file(filename)
-    with open(filename, "r") as fd:
+    with open(filename, "r", encoding="UTF-8") as fd:
         content = fd.read()
     try:
         language = MATLAB_Latest_Language()
