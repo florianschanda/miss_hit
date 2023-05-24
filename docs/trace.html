@@ -126,14 +126,19 @@ end
       <h3>Annotating models</h3>
       <h4>With annotations</h4>
       <div>
-	Simply place an annotation anywhere in your block. The text
-	must be a single line only and start
-	with <tt>lobster-trace:</tt> and is followed by a (comma
-	separated) list of tags. For example:
-        <pre>lobster-trace: foo.My_Req_1, foo.My_Req_2</pre> You may
-	place as many of these annotations as you wish. You may also
-	write multiple annotations in the same annotation on each
-	line.
+	Simply place an annotation anywhere in your block. If the text
+	contains a line that starts with <tt>lobster-trace:</tt> then
+	it is interpreted as a tracing tag.
+	<figure>
+	  <img src="subsystem_annotation_example.png" height="250">
+	  <figcaption>
+	    Example showing usage of annotations for tracing
+	  </figcaption>
+	</figure>
+
+	You may place as many of these annotations as you wish, and
+	any formatting (a feature of more recent Simulink releases) is
+	ignored.
       </div>
 
       <h4>With block properties</h4>
