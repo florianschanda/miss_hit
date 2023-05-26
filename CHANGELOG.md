@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
-### 0.9.40-dev
+### 0.9.40
 
 * Fix tool crash when encountering a Simulink area annotation with no
   text. These annotations are now properly supported and you can even
