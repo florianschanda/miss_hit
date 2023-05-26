@@ -1,0 +1,16 @@
+=== Parsing areas.slx ===
+ Model
+  System
+   Block Inport ('Inport')
+   Block Outport ('Outport')
+   Block Inport ('Inport1')
+   Block Outport ('Outport1')
+   Annotation ()
+   Annotation (stuff in here)
+   Annotation (lobster-trace: potato.kitten)
+   Annotation (This is my potato)
+
+=== Summary of misc. children ===
+Children in Inport
+Children in Outport
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

@@ -124,7 +124,7 @@ end
       </div>
 
       <h3>Annotating models</h3>
-      <h4>With annotations</h4>
+      <h4>With text annotations</h4>
       <div>
 	Simply place an annotation anywhere in your block. If the text
 	contains a line that starts with <tt>lobster-trace:</tt> then
@@ -139,6 +139,26 @@ end
 	You may place as many of these annotations as you wish, and
 	any formatting (a feature of more recent Simulink releases) is
 	ignored.
+      </div>
+
+      <h4>With area annotations</h4>
+      <div>
+	You may also use area annotations. Note however that the
+	grouping is irrelevant, the traceable item that these tags
+	relate to are the enclosing system or sub-system; similar to a
+	text annotation.
+	<figure>
+	  <img src="area_annotation_example.png" height="150">
+	  <figcaption>
+	    Example showing usage of area annotations for tracing
+	  </figcaption>
+	</figure>
+
+	The point of these is to make it easier for the human to see
+	what is going on in larger systems. If you want a more
+	fine-grained tracing you still need to chop up your larger
+	system into several smaller sub-systems; similar to a large
+	spaghetti MATLAB function.
       </div>
 
       <h4>With block properties</h4>

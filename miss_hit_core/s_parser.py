@@ -422,20 +422,34 @@ class Simulink_SLX_Parser(Simulink_Parser):
     def parse_annotation(self, et_anno):
         assert isinstance(et_anno, ET.Element)
         assert et_anno.tag == "Annotation"
+        # https://uk.mathworks.com/help/simulink/slref/simulink.annotation.html
 
         content = None
+        annotation_type = None
         for et_item in et_anno:
             if et_item.tag == "P" and et_item.attrib["Name"] == "Name":
                 content = et_item.text
-        assert content is not None
+                annotation_type = "note_annotation"
+                break
+            elif et_item.tag == "P" and \
+                 et_item.attrib["Name"] == "AnnotationType":
+                annotation_type = et_item.text
+        assert annotation_type in ("note_annotation",
+                                   "area_annotation",
+                                   "image_annotation"), \
+            "unexpected %s annotation in %s" % (annotation_type,
+                                                self.filename)
 
-        if content.startswith("<!DOCTYPE HTML"):
+        if content is None:
+            content = ""
+        elif content.startswith("<!DOCTYPE HTML"):
             html_parser = HTML_Text_Extractor()
             html_parser.feed(content)
             content = html_parser.text.strip()
 
         n_anno = Annotation(et_anno.attrib["SID"],
                             content)
+
         return n_anno
 
     def parse_system(self, et_system):

@@ -20,7 +20,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.40-dev
 
-
+* Fix tool crash when encountering a Simulink area annotation with no
+  text. These annotations are now properly supported and you can even
+  add tracing text to them.
 
 ### 0.9.39
 
