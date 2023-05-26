@@ -1,0 +1,7 @@
+In test_34.m, line 13
+|             arguments (Input)
+|                             ^ style: end statement with a semicolon [end_of_statements]
+In test_34.m, line 14
+|                 R (1,1) Rectangle
+|                         ^^^^^^^^^ error: expected end of statement, found IDENTIFIER instead
+MISS_HIT Debug Summary: 1 file(s) analysed, 1 style issue(s), 1 error(s)

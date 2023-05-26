@@ -1,0 +1,89 @@
+----------------------------------------------------------------------
+--  Parse tree for test_34.m
+Root: Class_File
+  Classdef: Class_Definition
+    Name: Identifier <Rectangle>
+    Properties: Properties Special_Block
+      Items: Entity_Constraints
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <X>
+        Class: Identifier <double>
+        Functions: Identifier <mustBeReal>
+        Default: Number_Literal <0>
+      Items: Entity_Constraints
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <Y>
+        Class: Identifier <double>
+        Functions: Identifier <mustBeReal>
+        Default: Number_Literal <0>
+      Items: Entity_Constraints
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <Width>
+        Class: Identifier <double>
+        Functions: Identifier <mustBeReal>
+        Default: Number_Literal <0>
+      Items: Entity_Constraints
+        Dimension 1 constraint: 1
+        Dimension 2 constraint: 1
+        Name: Identifier <Height>
+        Class: Identifier <double>
+        Functions: Identifier <mustBeReal>
+        Default: Number_Literal <0>
+    Methods: Methods Special_Block
+      Items: Function_Definition
+        Signature: Function_Signature
+          Name: Identifier <enlarge>
+          Inputs: Identifier <R>
+          Inputs: Identifier <x>
+          Inputs: Identifier <y>
+          Outputs: Identifier <R>
+        Validation: Arguments Special_Block
+          Attributes: Name_Value_Pair
+            Name: Identifier <Input>
+          Items: Entity_Constraints
+            Dimension 1 constraint: 1
+            Dimension 2 constraint: 1
+            Name: Identifier <R>
+            Class: Identifier <Rectangle>
+          Items: Entity_Constraints
+            Dimension 1 constraint: 1
+            Dimension 2 constraint: 1
+            Name: Identifier <x>
+            Functions: Identifier <mustBeNonnegative>
+          Items: Entity_Constraints
+            Dimension 1 constraint: 1
+            Dimension 2 constraint: 1
+            Name: Identifier <y>
+            Functions: Identifier <mustBeNonnegative>
+        Validation: Arguments Special_Block
+          Attributes: Name_Value_Pair
+            Name: Identifier <Output>
+          Items: Entity_Constraints
+            Dimension 1 constraint: 1
+            Dimension 2 constraint: 1
+            Name: Identifier <R>
+            Class: Identifier <Rectangle>
+        Body: Sequence_Of_Statements
+          Statements: Simple_Assignment_Statement
+            LHS: Selection
+              Prefix: Identifier <R>
+              Field: Identifier <Width>
+            RHS: Binary_Operation +
+              LHS: Selection
+                Prefix: Identifier <R>
+                Field: Identifier <Width>
+              RHS: Identifier <x>
+          Statements: Simple_Assignment_Statement
+            LHS: Selection
+              Prefix: Identifier <R>
+              Field: Identifier <Height>
+            RHS: Binary_Operation +
+              LHS: Selection
+                Prefix: Identifier <R>
+                Field: Identifier <Height>
+              RHS: Identifier <y>
+----------------------------------------------------------------------
+MISS_HIT Debug Summary: 1 file(s) analysed, everything seems fine

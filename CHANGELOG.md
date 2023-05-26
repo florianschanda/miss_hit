@@ -20,7 +20,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.41-dev
 
-
+* Fix parsing bug for argument and property validation blocks. The
+  list of validation functions may be empty, previously the MISS_HIT
+  parser complained about non-empty lists.
 
 ### 0.9.40
 

@@ -3,7 +3,7 @@
 ##                                                                          ##
 ##          MATLAB Independent, Small & Safe, High Integrity Tools          ##
 ##                                                                          ##
-##              Copyright (C) 2019-2022, Florian Schanda                    ##
+##              Copyright (C) 2019-2023, Florian Schanda                    ##
 ##              Copyright (C) 2019-2020, Zenuity AB                         ##
 ##                                                                          ##
 ##  This file is part of MISS_HIT.                                          ##
@@ -1016,7 +1016,7 @@ class MATLAB_Parser:
                     self.match("C_BRA")
                     self.ct.set_ast(cons)
 
-                    while True:
+                    while not self.peek("C_KET"):
                         cons.add_functional_constraint(
                             self.parse_name(allow_void=False))
                         if self.peek("COMMA"):
