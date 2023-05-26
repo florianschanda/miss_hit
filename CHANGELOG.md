@@ -18,6 +18,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
+### 0.9.42-dev
+
+
+
 ### 0.9.41
 
 * Fix parsing bug for argument and property validation blocks. The
