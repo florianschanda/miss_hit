@@ -54,11 +54,12 @@ class MH_Trace_Result(work_package.Result):
 
 
 class Function_Visitor(AST_Visitor):
-    def __init__(self, in_test_dir, mh, cu, ep):
+    def __init__(self, in_test_dir, mh, cu, ep, blockname):
         assert isinstance(in_test_dir, bool)
         assert isinstance(mh, Message_Handler)
         assert isinstance(cu, Compilation_Unit)
         assert ep is None or isinstance(ep, Project_Directive)
+        assert isinstance(blockname, str) or blockname is None
 
         self.in_test_dir = in_test_dir
         self.tag_stack = []
@@ -68,6 +69,7 @@ class Function_Visitor(AST_Visitor):
         self.act_items = []
         self.name_prefix = cu.get_name_prefix()
         self.in_test_block = False
+        self.blockname = blockname
         if ep is None:
             self.is_shared = False
         else:
@@ -135,7 +137,10 @@ class Function_Visitor(AST_Visitor):
         # Create entry for tracing
         if isinstance(node, Function_Definition) and \
            not any(self.no_tracing_stack):
-            name = self.name_prefix + node.get_local_name()
+            if self.blockname:
+                name = self.blockname
+            else:
+                name = self.name_prefix + node.get_local_name()
             tag  = "matlab %s" % name
             location = node.loc()
             lobster_loc  = {"kind"   : "file",
@@ -314,7 +319,11 @@ class MH_Trace(command_line.MISS_HIT_Back_End):
         except Error:
             return MH_Trace_Result(wp)
 
-        visitor = Function_Visitor(wp.in_test_dir, wp.mh, n_cu, n_ep)
+        visitor = Function_Visitor(wp.in_test_dir,
+                                   wp.mh,
+                                   n_cu,
+                                   n_ep,
+                                   wp.blockname)
         n_cu.visit(None, visitor, "Root")
 
         # Return results

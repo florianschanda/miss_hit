@@ -20,7 +20,10 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.42-dev
 
-
+* Fix issue with MATLAB functions embedded in Simulink. Usually people
+  left the default name (i.e. `fcn`) which caused many duplicate items
+  to appear in the `mh_trace` output. Now embedded functions use the
+  name of the subsystem (i.e. what you'd see in Simulink as the name).
 
 ### 0.9.41
 

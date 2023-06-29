@@ -157,7 +157,7 @@ class Embedded_MATLAB_WP(MATLAB_Work_Package):
 
         super().__init__(simulink_wp.in_test_dir,
                          n_container.filename,
-                         simulink_block.local_name(),
+                         simulink_block.full_name(),
                          simulink_block.get_encoding(),
                          simulink_wp.mh.fork(),
                          simulink_wp.options,

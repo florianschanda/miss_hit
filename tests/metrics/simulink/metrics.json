@@ -1,6 +1,6 @@
 {
     "metrics": {
-        "test1.slx/Add One": {
+        "test1.slx/test1/Add One": {
             "file_metrics": {
                 "file_length": {
                     "measure": 3,
@@ -40,7 +40,7 @@
                 }
             }
         },
-        "test1.slx/Multiply": {
+        "test1.slx/test1/Multiply": {
             "file_metrics": {
                 "file_length": {
                     "measure": 3,
@@ -80,7 +80,7 @@
                 }
             }
         },
-        "test1.slx/Sub One": {
+        "test1.slx/test1/Sub One": {
             "file_metrics": {
                 "file_length": {
                     "measure": 3,
@@ -120,7 +120,7 @@
                 }
             }
         },
-        "test2.slx/My_Sub_System/Potato": {
+        "test2.slx/test2/My_Sub_System/Potato": {
             "file_metrics": {
                 "file_length": {
                     "measure": 3,
@@ -160,7 +160,7 @@
                 }
             }
         },
-        "test2.slx/Potato": {
+        "test2.slx/test2/Potato": {
             "file_metrics": {
                 "file_length": {
                     "measure": 3,
@@ -204,31 +204,31 @@
     "worst_case": {
         "cyc": [
             {
-                "file": "test2.slx/Potato",
+                "file": "test2.slx/test2/Potato",
                 "function": "fcn",
                 "measure": 1,
                 "status": "measured only"
             },
             {
-                "file": "test2.slx/My_Sub_System/Potato",
+                "file": "test2.slx/test2/My_Sub_System/Potato",
                 "function": "fcn",
                 "measure": 1,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Sub One",
+                "file": "test1.slx/test1/Sub One",
                 "function": "sub_one",
                 "measure": 1,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Multiply",
+                "file": "test1.slx/test1/Multiply",
                 "function": "my_multiply",
                 "measure": 1,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Add One",
+                "file": "test1.slx/test1/Add One",
                 "function": "add_one",
                 "measure": 1,
                 "status": "measured only"
@@ -236,58 +236,58 @@
         ],
         "file_length": [
             {
-                "file": "test2.slx/Potato",
+                "file": "test2.slx/test2/Potato",
                 "measure": 3,
                 "status": "measured only"
             },
             {
-                "file": "test2.slx/My_Sub_System/Potato",
+                "file": "test2.slx/test2/My_Sub_System/Potato",
                 "measure": 3,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Sub One",
+                "file": "test1.slx/test1/Sub One",
                 "measure": 3,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Multiply",
+                "file": "test1.slx/test1/Multiply",
                 "measure": 3,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Add One",
+                "file": "test1.slx/test1/Add One",
                 "measure": 3,
                 "status": "measured only"
             }
         ],
         "function_length": [
             {
-                "file": "test2.slx/Potato",
+                "file": "test2.slx/test2/Potato",
                 "function": "fcn",
                 "measure": 3,
                 "status": "measured only"
             },
             {
-                "file": "test2.slx/My_Sub_System/Potato",
+                "file": "test2.slx/test2/My_Sub_System/Potato",
                 "function": "fcn",
                 "measure": 3,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Sub One",
+                "file": "test1.slx/test1/Sub One",
                 "function": "sub_one",
                 "measure": 3,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Multiply",
+                "file": "test1.slx/test1/Multiply",
                 "function": "my_multiply",
                 "measure": 3,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Add One",
+                "file": "test1.slx/test1/Add One",
                 "function": "add_one",
                 "measure": 3,
                 "status": "measured only"
@@ -295,31 +295,31 @@
         ],
         "npath": [
             {
-                "file": "test2.slx/Potato",
+                "file": "test2.slx/test2/Potato",
                 "function": "fcn",
                 "measure": 1,
                 "status": "measured only"
             },
             {
-                "file": "test2.slx/My_Sub_System/Potato",
+                "file": "test2.slx/test2/My_Sub_System/Potato",
                 "function": "fcn",
                 "measure": 1,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Sub One",
+                "file": "test1.slx/test1/Sub One",
                 "function": "sub_one",
                 "measure": 1,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Multiply",
+                "file": "test1.slx/test1/Multiply",
                 "function": "my_multiply",
                 "measure": 1,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Add One",
+                "file": "test1.slx/test1/Add One",
                 "function": "add_one",
                 "measure": 1,
                 "status": "measured only"
@@ -327,31 +327,31 @@
         ],
         "parameters": [
             {
-                "file": "test1.slx/Multiply",
+                "file": "test1.slx/test1/Multiply",
                 "function": "my_multiply",
                 "measure": 3,
                 "status": "measured only"
             },
             {
-                "file": "test2.slx/Potato",
+                "file": "test2.slx/test2/Potato",
                 "function": "fcn",
                 "measure": 2,
                 "status": "measured only"
             },
             {
-                "file": "test2.slx/My_Sub_System/Potato",
+                "file": "test2.slx/test2/My_Sub_System/Potato",
                 "function": "fcn",
                 "measure": 2,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Sub One",
+                "file": "test1.slx/test1/Sub One",
                 "function": "sub_one",
                 "measure": 2,
                 "status": "measured only"
             },
             {
-                "file": "test1.slx/Add One",
+                "file": "test1.slx/test1/Add One",
                 "function": "add_one",
                 "measure": 2,
                 "status": "measured only"
