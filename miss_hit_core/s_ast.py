@@ -199,8 +199,10 @@ class Block(Node):
         name_stack = []
         ptr = self
         while ptr:
-            if isinstance(ptr, Container):
+            if isinstance(ptr, Model):
                 name_stack.append(ptr.name)
+            elif isinstance(ptr, Library):
+                break
             elif isinstance(ptr, Block):
                 name_stack.append(ptr.name)
             ptr = ptr.n_parent

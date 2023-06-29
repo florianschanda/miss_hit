@@ -31,7 +31,7 @@
         "kind": "file",
         "line": 1
       },
-      "name": "fcn",
+      "name": "test/Potato/Thing_A",
       "refs": [],
       "shared": false,
       "tag": "matlab test/Potato/Thing_A"
@@ -48,7 +48,7 @@
         "kind": "file",
         "line": 1
       },
-      "name": "fcn",
+      "name": "test/Potato/Thing_B",
       "refs": [
         "req foo.bar"
       ],

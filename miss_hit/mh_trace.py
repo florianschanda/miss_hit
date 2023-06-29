@@ -138,9 +138,11 @@ class Function_Visitor(AST_Visitor):
         if isinstance(node, Function_Definition) and \
            not any(self.no_tracing_stack):
             if self.blockname:
-                name = self.blockname
+                name      = self.blockname
+                shortname = self.blockname
             else:
-                name = self.name_prefix + node.get_local_name()
+                name      = self.name_prefix + node.get_local_name()
+                shortname = node.get_local_name()
             tag  = "matlab %s" % name
             location = node.loc()
             lobster_loc  = {"kind"   : "file",
@@ -152,7 +154,7 @@ class Function_Visitor(AST_Visitor):
                                                set()))
             item = {"tag"         : tag,
                     "location"    : lobster_loc,
-                    "name"        : node.get_local_name(),
+                    "name"        : shortname,
                     "refs"        : ["req %s" % tag for tag in all_tags],
                     "just_up"     : [],
                     "just_down"   : [],
