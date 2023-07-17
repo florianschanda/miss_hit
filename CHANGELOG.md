@@ -18,7 +18,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ## Changelog
 
 
-### 0.9.42-dev
+### 0.9.42
 
 * Fix issue with MATLAB functions embedded in Simulink. Usually people
   left the default name (i.e. `fcn`) which caused many duplicate items
