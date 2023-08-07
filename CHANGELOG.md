@@ -21,6 +21,7 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 ### 0.9.43-dev
 
 
+* Fix hanging tools when an internal compiler error was raised.
 
 ### 0.9.42
 
