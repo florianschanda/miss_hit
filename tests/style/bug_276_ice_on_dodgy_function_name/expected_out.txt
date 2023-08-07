@@ -1,0 +1,9 @@
+=== PLAIN MODE ===
+test.m: error: file is not auto-fixed because it contains parse errors
+In test.m, line 1
+| function pth = foo.bar()
+|                   ^ error: dotted name is not permitted outside class
+MISS_HIT Style Summary: 1 file(s) analysed, 2 error(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 1 file(s) analysed, 1 error(s)

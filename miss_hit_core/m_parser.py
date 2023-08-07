@@ -710,7 +710,7 @@ class MATLAB_Parser:
         # statements intermixed with (global) function definitions
         while not self.peek_eof():
             if self.peek("KEYWORD", "function"):
-                l_functions.append(self.parse_function_def())
+                l_functions.append(self.parse_function_def(in_class = False))
             elif self.peek("KEYWORD", "pragma"):
                 l_more_pragmas.append(self.parse_annotation_pragma())
             else:
@@ -751,7 +751,7 @@ class MATLAB_Parser:
         while self.peek("KEYWORD", "function") or \
               self.apeek("KEYWORD", "pragma"):
             if self.peek("KEYWORD", "function"):
-                l_functions.append(self.parse_function_def())
+                l_functions.append(self.parse_function_def(in_class = False))
             else:
                 l_pragmas.append(self.parse_annotation_pragma())
 
@@ -780,7 +780,9 @@ class MATLAB_Parser:
 
         return functions
 
-    def parse_function_signature(self):
+    def parse_function_signature(self, in_class):
+        assert isinstance(in_class, bool)
+
         rv = Function_Signature()
 
         # Parse returns. Either 'x' or a list '[x, y]'
@@ -842,18 +844,24 @@ class MATLAB_Parser:
             self.match("KET")
             self.ct.set_ast(rv)
 
+        if isinstance(n_name, Selection) and not in_class:
+            self.mh.error(n_name.loc(),
+                          "dotted name is not permitted outside class")
+
         rv.set_name(n_name)
         rv.set_inputs(l_inputs)
         rv.set_outputs(l_outputs)
         self.match_eos(rv)
         return rv
 
-    def parse_function_def(self):
+    def parse_function_def(self, in_class):
+        assert isinstance(in_class, bool)
+
         self.match("KEYWORD", "function")
         self.push_context("function")
         t_fun = self.ct
 
-        n_sig = self.parse_function_signature()
+        n_sig = self.parse_function_signature(in_class)
 
         l_body = []
         l_nested = []
@@ -1059,9 +1067,9 @@ class MATLAB_Parser:
 
         while not self.peek("KEYWORD", "end"):
             if self.peek("KEYWORD", "function"):
-                rv.add_method(self.parse_function_def())
+                rv.add_method(self.parse_function_def(in_class = True))
             else:
-                rv.add_method(self.parse_function_signature())
+                rv.add_method(self.parse_function_signature(in_class = True))
 
         self.match("KEYWORD", "end")
         self.ct.set_ast(rv)
@@ -1334,7 +1342,7 @@ class MATLAB_Parser:
                     self.mh.error(self.nt.location,
                                   "nested function cannot appear inside"
                                   " %s" % self.context[-1])
-                return self.parse_function_def()
+                return self.parse_function_def(in_class = False)
             else:
                 self.mh.error(self.nt.location,
                               "expected valid statement,"

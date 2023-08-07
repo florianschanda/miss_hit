@@ -20,6 +20,9 @@ Not quite compatible with Octave yet. See #43 [octave support](https://github.co
 
 ### 0.9.43-dev
 
+* Fix parsing error surrounding function names (only in classes may
+  you use a dotted name). When such a function appeared outside a
+  class the tools would either incorrectly accept this name or crash.
 
 * Fix hanging tools when an internal compiler error was raised.
 
