@@ -28,6 +28,7 @@ import os
 import sys
 import html
 import json
+import hashlib
 
 from miss_hit_core import pathutil
 from miss_hit_core.config import STYLE_RULES, METRICS
@@ -101,6 +102,12 @@ class Location:
             rv["col_end"] = self.col_end
         if detailed and self.context:
             rv["context"] = self.context
+        return rv
+
+    def to_gitlab(self):
+        rv = {}
+        rv["path"] = self.filename if self.filename else ""
+        rv["lines"] = {"begin": self.line if self.line else 0}
         return rv
 
     def short_string(self):
@@ -196,6 +203,36 @@ class Message:
                 "message"   : self.message,
                 "fixable"   : self.fixed,
                 "fatal"     : self.fatal}
+
+    def to_gitlab(self):
+        check_name = self.check_id if self.check_id else ""
+
+        map_severity = {
+            "low": "info",
+            "medium": "minor",
+            "high": "major",
+        }
+        severity = map_severity.get(self.severity, "minor")
+
+        if self.fatal:
+            severity = "critical"
+            check_name = "fatal"
+
+        contents = {
+            "description" : self.message,
+            "check_name"  : check_name,
+            "fingerprint" : 0,
+            "severity"    : severity,
+            "location"    : self.location.to_gitlab(),
+        }
+
+        # Produce unique fingerprint based on contents
+        # Use sort_keys for better reproducibility
+        contents["fingerprint"] = hashlib.sha1(
+            json.dumps(contents, sort_keys=True).encode("utf-8")
+        ).hexdigest()
+
+        return contents
 
 
 class Check_Message(Message):
@@ -753,6 +790,37 @@ class JSON_Message_Handler(File_Based_Message_Handler):
             self.blob[message.location.filename] = []
 
         self.blob[message.location.filename].append(message.to_json())
+
+    def emit_summary(self):
+        self.setup_fd()
+        super().emit_summary()
+        json.dump(self.blob, self.fd, indent=2)
+        self.fd.write("\n")
+        self.fd.close()
+
+
+class GITLAB_Message_Handler(File_Based_Message_Handler):
+    def __init__(self, tool_id, filename):
+        super().__init__(tool_id, filename)
+        self.blob = None
+
+    def fork(self):
+        rv = GITLAB_Message_Handler(self.tool_id, self.filename)
+        self.fork_copy_attributes(rv)
+        return rv
+
+    def setup_fd(self):
+        # pylint: disable=consider-using-with
+        if self.fd is not None:
+            return
+
+        self.fd = open(self.filename, "w", encoding="UTF-8")
+        self.blob = []
+
+    def emit_message(self, message):
+        self.setup_fd()
+
+        self.blob.append(message.to_gitlab())
 
     def emit_summary(self):
         self.setup_fd()
