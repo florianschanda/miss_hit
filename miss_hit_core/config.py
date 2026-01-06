@@ -356,6 +356,10 @@ STYLE_RULES = {
     "end_of_statements" : Style_Rule(
         "Ensures consistent ending of statements."),
 
+    "no_fix_missing_semicolon" : Style_Rule(
+        "Allows statement to not end in a semicolon if"
+        " 'end_of_statements' is enabled."),
+
     "builtin_shadow" : Style_Rule(
         "Checks that assignments do not overwrite builtin functions such as"
         " true, false, or pi."),

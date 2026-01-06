@@ -439,11 +439,12 @@ class MATLAB_Parser:
 
             else:
                 assert terminator_tokens[0].kind == "NEWLINE"
-                self.mh.style_issue(ending_token.location,
-                                    "end statement with a semicolon",
-                                    "end_of_statements",
-                                    True)
-                ending_token.fix.add_semicolon_after = True
+                if not self.cfg.active("no_fix_missing_semicolon"):
+                    self.mh.style_issue(ending_token.location,
+                                        "end statement with a semicolon",
+                                        "end_of_statements",
+                                        True)
+                    ending_token.fix.add_semicolon_after = True
 
             if first_newline is None:
                 fixed = False

@@ -149,7 +149,7 @@ foo/external/some_toolkit.m
     <section>
       <h2>Configuration file syntax reference</h2>
       <div>
-        In general the config files follow a simply sytax:
+        In general the config files follow a simply syntax:
         <pre>key: value</pre> The key is some identifier like
         tab_width, and the value is the configuration for that
         key. Integers are written directly, and strings are enclosed
@@ -581,6 +581,8 @@ end
         effectively bans commas and requires semicolons + newline at
         the end of most statements. The exceptions are things like
         'return' or the end of compound statements such as 'if'.
+        Fixing missing semicolons can be disabled with
+        "no_fix_missing_semicolon".
       </div>
 
       <div>

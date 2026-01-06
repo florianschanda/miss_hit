@@ -1,0 +1,8 @@
+% (c) Copyright 2019 Zenuity AB
+
+% Should end in semicolons
+foo = 1;
+baz = 4, bar = 5;
+% foo and spoon should reamin without a semicolon
+spoon
+bas = 5, foo = 9

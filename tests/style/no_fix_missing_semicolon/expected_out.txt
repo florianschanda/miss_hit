@@ -1,0 +1,18 @@
+=== PLAIN MODE ===
+test.m: style: violates naming scheme for scripts [naming_scripts]
+In test.m, line 5
+| baz = 4, bar = 5;
+|        ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
+In test.m, line 5
+| baz = 4, bar = 5;
+|        ^ style: end statement with a newline [fixed] [end_of_statements]
+In test.m, line 9
+| bas = 5, foo = 9
+|        ^ style: end this with a semicolon instead of a comma [fixed] [end_of_statements]
+In test.m, line 9
+| bas = 5, foo = 9
+|        ^ style: end statement with a newline [fixed] [end_of_statements]
+MISS_HIT Style Summary: 1 file(s) analysed, 5 style issue(s)
+
+=== HTML MODE ===
+MISS_HIT Style Summary: 1 file(s) analysed, 5 style issue(s)
